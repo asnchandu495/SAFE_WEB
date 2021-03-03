@@ -1,0 +1,44 @@
+.textColour {
+  color: #e50000;
+  font-size: 50px;
+  font-weight: bold;
+  padding-bottom: 0px;
+  margin-right: 50px;
+}
+
+.textAllignment {
+  text-align: left;
+}
+
+.headingText {
+  font-size: 22px;
+  margin-bottom: 10px !important;
+  margin-top: 16px !important;
+  line-height: 27px;
+}
+
+.normalText {
+  font-size: 15px;
+}
+
+.widthChange {
+  width: 100% !important;
+}
+.bgUnauthorized {
+  /* The image used */
+  /* background-image: url("/images/401_Error.jpg"); */
+  /* Full height */
+  height: 100%;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+}

@@ -1,0 +1,54 @@
+.user-update-details-card {
+  .MuiCardContent-root {
+    padding: 0;
+  }
+}
+
+.user-update-details-card {
+  .card-heading {
+    border-bottom: 1px solid #f5f5f5;
+    padding: 5px 15px;
+  }
+}
+
+.user-update-details-card {
+  .card-actions {
+    border-top: 1px solid #f5f5f5;
+    padding: 8px 15px;
+    width: 100%;
+    display: inline-flex;
+    justify-content: flex-end;
+  }
+}
+.user-update-details-card {
+  .card-form {
+    padding: 15px;
+  }
+}
+
+.details-action-container {
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.details-action-container {
+  .inlne-action-btns {
+    margin-right: 5px !important;
+  }
+}
+
+.inlne-action-btns {
+  padding: 5px !important;
+  min-width: fit-content !important;
+  height: 30px !important;
+}
+
+.inlne-action-btns {
+  .MuiSvgIcon-root {
+    height: 18px !important;
+  }
+}
+
+.grid-no-pad-left-right {
+  padding: 12px 0 !important;
+}
