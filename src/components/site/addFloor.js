@@ -127,10 +127,11 @@ function AddFloor(props) {
     } else {
       SetformData(resetformData);
     }
-  }, [props.SelectedRowId]);
+  }, [props]);
   const handleClose = () => {
     resetCovidStateFormData();
     props.setopenaddFloorModal(false);
+    setIsDuplicate(false);
   };
 
   function resetCovidStateFormData() {
@@ -195,6 +196,7 @@ function AddFloor(props) {
           setTimeout(() => {
             props.setopenaddFloorModal(false);
             resetCovidStateFormData();
+            setIsDuplicate(false);
             setshowLoadder(false);
           }, 3000);
         })
@@ -203,6 +205,7 @@ function AddFloor(props) {
           setStateSnackbar(true);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
+          setshowLoadder(false);
         });
     } else {
       props
@@ -212,9 +215,10 @@ function AddFloor(props) {
           setToasterMessage("Floor added");
           settoasterServerity("success");
           setTimeout(() => {
+            setshowLoadder(false);
             props.setopenaddFloorModal(false);
             resetCovidStateFormData();
-            setshowLoadder(false);
+            setIsDuplicate(false);
             updateSiteFloorData(formData);
           }, 3000);
         })
@@ -223,6 +227,7 @@ function AddFloor(props) {
           setStateSnackbar(true);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
+          setshowLoadder(false);
         });
     }
   }
@@ -259,7 +264,7 @@ function AddFloor(props) {
                       variant="outlined"
                       validators={[
                         "required",
-                        "matchRegexp:^[a-zA-Z0-9 ]*$",
+                        "matchRegexp:^[a-zA-Z0-9]*$",
                         "matchRegexp:^.{0,50}$",
                       ]}
                       errorMessages={[

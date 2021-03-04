@@ -81,6 +81,7 @@ function CreateFAQ(props) {
           setStateSnackbar(true);
           setToasterMessage("FAQ updated");
           settoasterServerity("success");
+          setisAlertBoxOpened(false);
           setTimeout(() => {
             setshowLoadder(false);
             props.history.push("/faq/view-faq/" + formData.id);
@@ -100,6 +101,7 @@ function CreateFAQ(props) {
           setStateSnackbar(true);
           setToasterMessage("FAQ created");
           settoasterServerity("success");
+          setisAlertBoxOpened(false);
           setTimeout(() => {
             setshowLoadder(false);
             SetformData({

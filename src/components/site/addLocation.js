@@ -190,6 +190,7 @@ function AddLocation(props) {
   const handleClose = () => {
     resetCovidStateFormData();
     props.setopenAddLocationModal(false);
+    setIsDuplicate(false);
     props.setSelectedRowId("");
   };
 
@@ -335,6 +336,7 @@ function AddLocation(props) {
             setshowLoadder(false);
             props.setSelectedRowId("");
             props.setopenAddLocationModal(false);
+            setIsDuplicate(false);
           }, 3000);
         })
         .catch((err) => {
@@ -356,6 +358,7 @@ function AddLocation(props) {
             setshowLoadder(false);
             props.setSelectedRowId("");
             props.setopenAddLocationModal(false);
+            setIsDuplicate(false);
           }, 3000);
         })
         .catch((err) => {
@@ -441,7 +444,7 @@ function AddLocation(props) {
                       variant="outlined"
                       validators={[
                         "required",
-                        "matchRegexp:^[a-zA-Z0-9 ]*$",
+                        "matchRegexp:^[a-zA-Z0-9]*$",
                         "matchRegexp:^.{0,50}$",
                       ]}
                       errorMessages={[
