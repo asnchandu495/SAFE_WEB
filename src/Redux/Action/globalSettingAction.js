@@ -33,6 +33,7 @@ export function createGlobalSetting(data) {
       .then((response) => {
         data.id = response.id;
         dispatch(CreateGlobalSettingSuccess(data));
+        return response;
       })
       .catch((error) => {
         throw error;

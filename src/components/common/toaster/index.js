@@ -37,7 +37,7 @@ function ToasterComponent(props) {
         }}
         open={props.stateSnackbar}
         onClose={handleCloseSnackbar}
-        autoHideDuration={500000}
+        autoHideDuration={5000}
       >
         <Alert onClose={handleCloseSnackbar} severity={props.toasterServerity}>
           <AlertTitle>

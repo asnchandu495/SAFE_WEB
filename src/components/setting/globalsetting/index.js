@@ -90,6 +90,11 @@ function GlobalSetting(props) {
     props
       .createGlobalSetting(finalData)
       .then((result) => {
+        let setName = "id";
+        SetformData((logInForm) => ({
+          ...logInForm,
+          [setName]: result.id,
+        }));
         setStateSnackbar(true);
         setToasterMessage("Global setting data updated");
         settoasterServerity("success");
