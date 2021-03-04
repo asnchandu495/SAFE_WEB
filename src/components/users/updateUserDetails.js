@@ -54,6 +54,8 @@ function UpdateUserDetails(props) {
       });
   }, []);
 
+  console.log(applicationUserData);
+
   return (
     <div className="innerpage-container">
       {!componentLoadder ? (
@@ -81,7 +83,7 @@ function UpdateUserDetails(props) {
               to={`/users/allusers`}
               className="active"
             >
-              jjjj
+              {applicationUserData.firstName} {applicationUserData.lastName}
             </LinkTo>
           </Breadcrumbs>
           <Grid container spacing={3}>
@@ -107,7 +109,9 @@ function UpdateUserDetails(props) {
             </Grid>
             <Grid item xs={12} sm={6}>
               <AllocateUserToSecondaryGroup
-                secondaryGroup={applicationUserData.applicationUserToSecondaryGroup}
+                secondaryGroup={
+                  applicationUserData.applicationUserToSecondaryGroup
+                }
                 applicationUserId={applicationUserData.id}
               ></AllocateUserToSecondaryGroup>
             </Grid>
