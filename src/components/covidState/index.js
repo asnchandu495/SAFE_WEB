@@ -90,7 +90,7 @@ function CovidState(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no covid states are created",
+        noMatch: "No COVID states found",
       },
     },
   };
