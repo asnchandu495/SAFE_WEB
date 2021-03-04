@@ -97,6 +97,14 @@ function CreateUser(props) {
     UserSecondaryGroupMasterData,
     setUserSecondaryGroupMasterData,
   ] = useState();
+  const [
+    UserPrimaryGroupMasterDataOriginal,
+    setUserPrimaryGroupMasterDataOriginal,
+  ] = useState();
+  const [
+    UserSecondaryGroupMasterDataOriginal,
+    setUserSecondaryGroupMasterDataOriginal,
+  ] = useState();
   const [AllSupervisorRole, setAllSupervisorRole] = useState();
   const [CountryMasterData, setCountryMasterData] = useState();
   const [SiteMasterData, setSiteMasterData] = useState();
@@ -232,6 +240,8 @@ function CreateUser(props) {
           setUserPrimaryGroupMasterData(UserGroup);
           setUserSecondaryGroupMasterData(UserGroup);
           setAllSupervisorRole(getAllSuperVisor);
+          setUserPrimaryGroupMasterDataOriginal(UserGroup);
+          setUserSecondaryGroupMasterDataOriginal(UserGroup);
           setcomponentLoadder(false);
         }
       )
@@ -469,6 +479,13 @@ function CreateUser(props) {
 
   function handleChangeUserPrimaryGroup(event, value) {
     setisAlertBoxOpened(true);
+    if (value) {
+      let currentSGroupData = UserSecondaryGroupMasterDataOriginal;
+      let filteredSGroupData = currentSGroupData.filter((sgroup) => {
+        return sgroup.id != value.id;
+      });
+      setUserSecondaryGroupMasterData(filteredSGroupData);
+    }
     setUserSelectedPrimaryGroupValue(value);
   }
 
@@ -479,6 +496,11 @@ function CreateUser(props) {
 
   function handleChangeUserSecondaryGroup(event, value) {
     setisAlertBoxOpened(true);
+    let currentPGroupData = UserPrimaryGroupMasterDataOriginal;
+    let filteredPGroupData = currentPGroupData.filter(
+      (elem) => !value.find(({ id }) => elem.id == id)
+    );
+    setUserPrimaryGroupMasterData(filteredPGroupData);
     setUserSelectedSecondaryGroupValue(value);
   }
 
