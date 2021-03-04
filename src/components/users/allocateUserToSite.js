@@ -16,6 +16,8 @@ import UserService from "../../services/usersService";
 import UserGroupService from "../../services/userGroupService";
 import MasterService from "../../services/masterDataService";
 import ToasterMessageComponent from "../common/toaster";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 
 function AllocateUserToSite(props) {
   const usersApiCall = new UserService();
@@ -29,6 +31,7 @@ function AllocateUserToSite(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
+  const [buttonloadder, setbuttonloadder] = useState(false);
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
@@ -55,6 +58,7 @@ function AllocateUserToSite(props) {
   }
 
   function UserSitesUpdate(e) {
+    setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.userData.id;
     data.sites = UserSelectedTeamValue;
@@ -64,11 +68,13 @@ function AllocateUserToSite(props) {
         setStateSnackbar(true);
         setToasterMessage("Sites assigned to users");
         settoasterServerity("success");
+        setbuttonloadder(false);
       })
       .catch((err) => {
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
+        setbuttonloadder(false);
       });
   }
 
@@ -115,8 +121,17 @@ function AllocateUserToSite(props) {
                     type="submit"
                     size="small"
                     className="inlne-action-btns save-icon"
+                    disabled={buttonloadder}
                   >
-                    <CheckIcon />
+                    {!buttonloadder ? (
+                      <CheckIcon />
+                    ) : (
+                      <CircularProgress
+                        size={15}
+                        thickness={5}
+                        color={"white"}
+                      />
+                    )}
                   </Button>
                   <Button
                     variant="contained"

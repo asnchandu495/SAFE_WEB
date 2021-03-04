@@ -16,6 +16,8 @@ import UserService from "../../services/usersService";
 import UserGroupService from "../../services/userGroupService";
 import MasterService from "../../services/masterDataService";
 import ToasterMessageComponent from "../common/toaster";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 
 function AllocateUserToSecondaryGroup(props) {
   const usersApiCall = new UserService();
@@ -32,6 +34,7 @@ function AllocateUserToSecondaryGroup(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
+  const [buttonloadder, setbuttonloadder] = useState(false);
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
@@ -59,6 +62,7 @@ function AllocateUserToSecondaryGroup(props) {
     setUserSelectedSecondaryGroupValue(value);
   }
   function UserSecondaryGroup(e) {
+    setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
     data.groups = UserSelectedSecondaryGroupValue;
@@ -69,11 +73,13 @@ function AllocateUserToSecondaryGroup(props) {
         setStateSnackbar(true);
         setToasterMessage("Secondary group assigned to users");
         settoasterServerity("success");
+        setbuttonloadder(false);
       })
       .catch((err) => {
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
+        setbuttonloadder(false);
       });
   }
 
@@ -122,8 +128,17 @@ function AllocateUserToSecondaryGroup(props) {
                     type="submit"
                     size="small"
                     className="inlne-action-btns save-icon"
+                    disabled={buttonloadder}
                   >
-                    <CheckIcon />
+                    {!buttonloadder ? (
+                      <CheckIcon />
+                    ) : (
+                      <CircularProgress
+                        size={15}
+                        thickness={5}
+                        color={"white"}
+                      />
+                    )}
                   </Button>
                   <Button
                     variant="contained"

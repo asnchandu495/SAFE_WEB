@@ -16,6 +16,7 @@ import UserService from "../../services/usersService";
 import UserGroupService from "../../services/userGroupService";
 import MasterService from "../../services/masterDataService";
 import ToasterMessageComponent from "../common/toaster";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function AllocateUserToTeam(props) {
   const usersApiCall = new UserService();
@@ -29,6 +30,7 @@ function AllocateUserToTeam(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [buttonloadder, setbuttonloadder] = useState(false);
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
@@ -53,10 +55,8 @@ function AllocateUserToTeam(props) {
   function handleChangeTeam(event, value) {
     setUserSelectedTeamValue(value);
   }
-  console.log(UserSelectedTeamValue);
-  console.log(BusinessTeamMasterData);
-
   function UserTeamUpdate(e) {
+    setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
     data.applicationUserToTeamMapping = UserSelectedTeamValue;
@@ -66,11 +66,13 @@ function AllocateUserToTeam(props) {
         setStateSnackbar(true);
         setToasterMessage("Teams assigned to users");
         settoasterServerity("success");
+        setbuttonloadder(false);
       })
       .catch((err) => {
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
+        setbuttonloadder(false);
       });
   }
 
@@ -117,8 +119,17 @@ function AllocateUserToTeam(props) {
                     type="submit"
                     size="small"
                     className="inlne-action-btns save-icon"
+                    disabled={buttonloadder}
                   >
-                    <CheckIcon />
+                    {!buttonloadder ? (
+                      <CheckIcon />
+                    ) : (
+                      <CircularProgress
+                        size={15}
+                        thickness={5}
+                        color={"white"}
+                      />
+                    )}
                   </Button>
                   <Button
                     variant="contained"
