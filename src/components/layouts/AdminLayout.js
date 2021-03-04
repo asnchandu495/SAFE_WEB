@@ -51,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
     display: "inline-flex",
+    height: "100%",
+    alignItems: "center",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -294,16 +296,20 @@ function AdminLayout(props) {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            <img src={Logo} alt="Sutherland" title="Sutherland"></img>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={handleDrawerOpen}
-              className={clsx(classes.menuButton)}
-            >
-              <MenuIcon />
-            </IconButton>
+            <span className="logo-container">
+              <img src={Logo} alt="Sutherland" title="Sutherland"></img>
+            </span>
+            <span>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={handleDrawerOpen}
+                className={clsx(classes.menuButton)}
+              >
+                <MenuIcon />
+              </IconButton>
+            </span>
             {/* {openDrawer ? (
               <IconButton
                 edge="start"

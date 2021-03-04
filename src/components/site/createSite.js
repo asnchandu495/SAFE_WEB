@@ -95,7 +95,7 @@ function CreateSite(props) {
   const [CountryMasterData, setCountryMasterData] = useState([]);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [componentLoadder, setComponentLoadder] = useState(false);
+  const [componentLoadder, setComponentLoadder] = useState(true);
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
@@ -130,38 +130,28 @@ function CreateSite(props) {
 
   useEffect(() => {
     setComponentLoadder(true);
-    if (siteId && props.userSiteData) {
-      setComponentLoadder(true);
-      SetformData(props.userSiteData);
-    }
-    props
-      .LoadData()
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
     Promise.all([
       masterDataCallApi.getCountries(),
       siteApiCall.getSiteManagers(),
       siteApiCall.getLocationManagers(),
+      props.LoadData(),
     ])
-      .then(([getCountries, getSiteManagers, getLocationManagers]) => {
-        setCountryMasterData(getCountries);
-        setSiteManger(getSiteManagers);
-        setSecurityManger(getLocationManagers);
-        setComponentLoadder(false);
-      })
+      .then(
+        ([getCountries, getSiteManagers, getLocationManagers, loadData]) => {
+          if (siteId && props.userSiteData) {
+            SetformData(props.userSiteData);
+          }
+          setCountryMasterData(getCountries);
+          setSiteManger(getSiteManagers);
+          setSecurityManger(getLocationManagers);
+          setComponentLoadder(false);
+        }
+      )
       .catch((error) => {
         console.log(error);
       });
   }, [props]);
 
-  const handleBack = () => {
-    // setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
   function UserBasicInfo(e) {
     e.preventDefault();
     SelectCountryValidation();
@@ -397,11 +387,7 @@ function CreateSite(props) {
                       >
                         Site manager
                       </label>
-                      <FormControl
-                        variant="outlined"
-                        className={classes.formControl}
-                        fullWidth
-                      >
+                      <FormControl variant="outlined" fullWidth>
                         <InputLabel
                           id="demo-simple-select-outlined-label"
                           shrink={false}
@@ -416,14 +402,16 @@ function CreateSite(props) {
                           id="demo-simple-select-outlined"
                           placeholder="Select"
                           name="siteManager"
-                          value={formData.siteManager}
+                          value={
+                            formData.siteManager ? formData.siteManager : ""
+                          }
                           onChange={handleChange}
                           InputLabelProps={{ shrink: false }}
                           className="global-input single-select"
                           required
                         >
                           <MenuItem value="">None</MenuItem>
-                          {siteManger.length > 0
+                          {siteManger && siteManger.length > 0
                             ? siteManger.map((lan) => {
                                 return (
                                   <MenuItem value={lan.applicationUserId}>
@@ -449,11 +437,7 @@ function CreateSite(props) {
                       >
                         Security manager
                       </label>
-                      <FormControl
-                        variant="outlined"
-                        className={classes.formControl}
-                        fullWidth
-                      >
+                      <FormControl variant="outlined" fullWidth>
                         <InputLabel
                           id="demo-simple-select-outlined-label"
                           shrink={false}
@@ -468,14 +452,18 @@ function CreateSite(props) {
                           id="demo-simple-select-outlined"
                           placeholder="Select"
                           name="securityManager"
-                          value={formData.securityManager}
+                          value={
+                            formData.securityManager
+                              ? formData.securityManager
+                              : ""
+                          }
                           onChange={handleChange}
                           InputLabelProps={{ shrink: false }}
                           className="global-input single-select"
                           required
                         >
                           <MenuItem value="">None</MenuItem>
-                          {securityManger.length > 0
+                          {securityManger && securityManger.length > 0
                             ? securityManger.map((lan) => {
                                 return (
                                   <MenuItem value={lan.applicationUserId}>
@@ -620,14 +608,14 @@ function CreateSite(props) {
                           id="demo-simple-select-outlined"
                           placeholder="Select"
                           name="countryId"
-                          value={formData.countryId}
+                          value={formData.countryId ? formData.countryId : ""}
                           onChange={handleChange}
                           InputLabelProps={{ shrink: false }}
                           className="global-input single-select"
                           required
                         >
                           <MenuItem value="">None</MenuItem>
-                          {CountryMasterData.length > 0
+                          {CountryMasterData && CountryMasterData.length > 0
                             ? CountryMasterData.map((lan) => {
                                 return (
                                   <MenuItem value={lan.id}>{lan.name}</MenuItem>
