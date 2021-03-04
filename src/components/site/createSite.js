@@ -12,6 +12,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import * as UserSiteAction from "../../Redux/Action/siteAction";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -682,7 +683,9 @@ function CreateSite(props) {
                   </Grid>
                 </Grid>
               </ValidatorForm>
-            ) : null}
+            ) : (
+              <ComponentLoadderComponent></ComponentLoadderComponent>
+            )}
           </Fragment>
         </Paper>
       </div>

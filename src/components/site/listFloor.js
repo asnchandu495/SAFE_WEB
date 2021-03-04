@@ -125,7 +125,7 @@ function ListFloor(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "No Floors found for this site",
+        noMatch: "There are no floors",
       },
     },
 
