@@ -18,13 +18,17 @@ import MasterService from "../../services/masterDataService";
 import ToasterMessageComponent from "../common/toaster";
 
 function AllocateUserToPrimaryGroup(props) {
+  console.log(props);
   const usersApiCall = new UserService();
   const masterDataCallApi = new MasterService();
   const userGroupApiCall = new UserGroupService();
 
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
   const [formFieldValidation, setformFieldValidation] = useState(false);
-  const [UserSelectedTeamValue, setUserSelectedTeamValue] = useState([]);
+  const [
+    UserSelectedPrimaryGroupValue,
+    setUserSelectedPrimaryGroupValue,
+  ] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
@@ -33,7 +37,9 @@ function AllocateUserToPrimaryGroup(props) {
   );
 
   const [formData, SetformData] = useState({
-    applactionUserToTeamMaping: [],
+    isPrimary: true,
+    applicationUserId: "",
+    groups: [],
   });
 
   useEffect(() => {
@@ -49,30 +55,28 @@ function AllocateUserToPrimaryGroup(props) {
   function handleChangeTeam(event, value) {
     console.log(event);
     console.log(value);
-    // setUserSelectedTeamValue(value);
+    setUserSelectedPrimaryGroupValue(value);
   }
 
   function UserPrimaryGroup(e) {
-    // console.log(formData);
-    // var data = formData;
-    // data.applicationUserId = props.userData.id;
-    // data.applicationUserToRoleMapping = UserSelectedTeamValue;
-    // console.log(data);
-    // console.log(UserSelectedTeamValue);
-    // usersApiCall
-    //   .UpdateApplicationUserPrimaryGroup(data)
-    //   .then((result) => {
-    //     console.log(result);
-    //     setStateSnackbar(true);
-    //     setToasterMessage("Primary group assigned to users");
-    //     settoasterServerity("success");
-    //   })
-    //   .catch((err) => {
-    //     setToasterMessage(err.data.errors);
-    //     settoasterServerity("error");
-    //     setStateSnackbar(true);
-    //   });
+    var data = formData;
+    data.applicationUserId = props.applicationUserId;
+    data.groups = [UserSelectedPrimaryGroupValue];
+    usersApiCall
+      .UpdateApplicationUserPrimaryGroup(data)
+      .then((result) => {
+        console.log(result);
+        setStateSnackbar(true);
+        setToasterMessage("Primary group assigned to users");
+        settoasterServerity("success");
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+      });
   }
+  console.log(UserSelectedPrimaryGroupValue);
 
   return (
     <Card className="user-update-details-card">
@@ -90,7 +94,7 @@ function AllocateUserToPrimaryGroup(props) {
                       : []
                   }
                   getOptionLabel={(option) => option.groupName}
-                  defaultValue={UserSelectedTeamValue}
+                  defaultValue={UserSelectedPrimaryGroupValue}
                   onChange={handleChangeTeam}
                   filterSelectedOptions
                   className="global-input autocomplete-select"

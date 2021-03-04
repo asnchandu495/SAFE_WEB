@@ -111,8 +111,9 @@ export default class UserService {
 
   UpdateApplicationUserPrimaryGroup(getData) {
     var finalData = JSON.stringify(getData);
+    console.log(finalData);
     return this.fetch(`${this.baseURL}/ApplicationUser/AssignUserToGroups`, {
-      method: "PUT",
+      method: "POST",
       body: finalData,
     }).then((res) => {
       return Promise.resolve(res);

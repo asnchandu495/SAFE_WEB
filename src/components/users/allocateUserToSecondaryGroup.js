@@ -24,7 +24,7 @@ function AllocateUserToSecondaryGroup(props) {
 
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
   const [formFieldValidation, setformFieldValidation] = useState(false);
-  const [UserSelectedTeamValue, setUserSelectedTeamValue] = useState([]);
+  const [UserSelectedSecondaryGroupValue, setUserSelectedSecondaryGroupValue] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
@@ -32,7 +32,14 @@ function AllocateUserToSecondaryGroup(props) {
     "array"
   );
 
+  const [formData, SetformData] = useState({
+    isPrimary: false,
+    applicationUserId: "",
+    groups: [],
+  });
+
   useEffect(() => {
+    setUserSelectedSecondaryGroupValue(props.secondaryGroup);
     Promise.all([userGroupApiCall.loadUserGroup()])
       .then(([getTeams]) => {
         setBusinessTeamMasterData(getTeams);
@@ -42,16 +49,18 @@ function AllocateUserToSecondaryGroup(props) {
       });
   }, []);
 
+  console.log(BusinessTeamMasterData);
+
   function handleChangeTeam(event, value) {
-    setUserSelectedTeamValue(value);
+    setUserSelectedSecondaryGroupValue(value);
   }
 
   function UserSecondaryGroup(e) {
-    // console.log(formData);
-    // var data = formData;
-    // data.applicationUserId = props.userData.id;
-    // data.applicationUserToRoleMapping = UserSelectedTeamValue;
-    // console.log(data);
+    console.log(formData);
+    var data = formData;
+    data.applicationUserId = props.applicationUserId;
+    data.groups = UserSelectedSecondaryGroupValue;
+    console.log(data);
     // console.log(UserSelectedTeamValue);
     // usersApiCall
     //   .UpdateApplicationUserSecondaryGroup(data)
@@ -87,7 +96,7 @@ function AllocateUserToSecondaryGroup(props) {
                       : []
                   }
                   getOptionLabel={(option) => option.groupName}
-                  defaultValue={UserSelectedTeamValue}
+                  defaultValue={UserSelectedSecondaryGroupValue}
                   onChange={handleChangeTeam}
                   filterSelectedOptions
                   className="global-input autocomplete-select"
