@@ -55,15 +55,10 @@ function AllocateUserToSecondaryGroup(props) {
       });
   }, []);
 
-  console.log(BusinessTeamMasterData);
-
   function handleChangeTeam(event, value) {
     setUserSelectedSecondaryGroupValue(value);
   }
-
-  console.log(UserSelectedSecondaryGroupValue);
   function UserSecondaryGroup(e) {
-    console.log(formData);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
     data.groups = UserSelectedSecondaryGroupValue;
