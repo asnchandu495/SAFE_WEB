@@ -43,30 +43,6 @@ const theme1 = createMuiTheme({
   },
 });
 
-var siteData = [
-  {
-    id: "12",
-    siteName: "hsrLayout",
-    noFloors: "2",
-    siteManger: "Akash",
-    securityManager: "Sunil",
-  },
-  {
-    id: "34",
-    siteName: "BtmLayout",
-    noFloors: "2",
-    siteManger: "Saravana",
-    securityManager: "Chandru",
-  },
-  {
-    id: "56",
-    siteName: "Marathalli",
-    noFloors: "13",
-    siteManger: "Sunil",
-    securityManager: "Vinya",
-  },
-];
-
 function ListSite(props) {
   const classes = useStyles();
 
@@ -180,7 +156,7 @@ function ListSite(props) {
       },
     },
     {
-      name: "siteManager",
+      name: "siteManagerName",
       label: "Site Manager",
       options: {
         filter: false,
@@ -189,7 +165,7 @@ function ListSite(props) {
     },
 
     {
-      name: "securityManager",
+      name: "securityManagerName",
       label: "Security Manager",
       options: {
         filter: false,

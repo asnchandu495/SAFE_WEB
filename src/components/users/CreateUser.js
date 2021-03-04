@@ -242,50 +242,56 @@ function CreateUser(props) {
 
   function UserBasicInfo(e) {
     e.preventDefault();
-    SelectGenderValidation();
-    SelectDesignationValidation();
-    SelectRoleValidation();
-    SelectTeamValidation();
-    SelectPrimaryGroupValidation();
-    SelectCountryValidation();
-    SelectUserSiteValidation();
-    SelectSuperVisorValidation();
-    if (
-      formData.gender &&
-      UserSelectedRoleValue.length > 0 &&
-      UserSelectedTeamValue.length > 0 &&
-      UserSelectedPrimaryGroupValue &&
-      UserSelectedDesignationValue &&
-      formData.supervisorId &&
-      UserSelectCountry &&
-      UserSelectSiteValue.length > 0
-    ) {
-      SubmitUserForm();
+    if (userId) {
+      SelectGenderValidation();
+      SelectDesignationValidation();
+      SelectCountryValidation();
+      SelectSuperVisorValidation();
+      if (
+        formData.gender &&
+        UserSelectedDesignationValue &&
+        formData.supervisorId &&
+        UserSelectCountry
+      ) {
+        SubmitUserForm();
+      } else {
+        return false;
+      }
     } else {
-      return false;
+      SelectGenderValidation();
+      SelectDesignationValidation();
+      SelectRoleValidation();
+      SelectTeamValidation();
+      SelectPrimaryGroupValidation();
+      SelectCountryValidation();
+      SelectUserSiteValidation();
+      SelectSuperVisorValidation();
+      if (
+        formData.gender &&
+        UserSelectedRoleValue.length > 0 &&
+        UserSelectedTeamValue.length > 0 &&
+        UserSelectedPrimaryGroupValue &&
+        UserSelectedDesignationValue &&
+        formData.supervisorId &&
+        UserSelectCountry &&
+        UserSelectSiteValue.length > 0
+      ) {
+        SubmitUserForm();
+      } else {
+        return false;
+      }
     }
-  }
-
-  console.log(formData);
-
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
   }
 
   function SubmitUserForm() {
     setshowLoadder(true);
     var data = formData;
-    console.log(data);
-    data.applicationUserToRole = UserSelectedRoleValue;
-    data.group = UserSelectedPrimaryGroupValue;
-    data.applicationUserToSecondaryGroup = UserSelectedSecondaryGroupValue;
-    data.country = UserSelectCountry;
-    data.applicationUserToSite = UserSelectSiteValue;
-    data.applicationUserToTeamMapping = UserSelectedTeamValue;
-    data.designation = UserSelectedDesignationValue;
-    data.zipCode = parseInt(data.zipCode);
 
     if (userId) {
+      data.country = UserSelectCountry;
+      data.designation = UserSelectedDesignationValue;
+      data.zipCode = parseInt(data.zipCode);
+
       props
         .UpdateUser(data)
         .then((result) => {
@@ -305,6 +311,15 @@ function CreateUser(props) {
           setshowLoadder(false);
         });
     } else {
+      data.applicationUserToRole = UserSelectedRoleValue;
+      data.group = UserSelectedPrimaryGroupValue;
+      data.applicationUserToSecondaryGroup = UserSelectedSecondaryGroupValue;
+      data.country = UserSelectCountry;
+      data.applicationUserToSite = UserSelectSiteValue;
+      data.applicationUserToTeamMapping = UserSelectedTeamValue;
+      data.designation = UserSelectedDesignationValue;
+      data.zipCode = parseInt(data.zipCode);
+
       props
         .AddUser(data)
         .then((result) => {
@@ -496,10 +511,6 @@ function CreateUser(props) {
     }));
   }
 
-  function BreadcrumbNavigation(getRoute) {
-    props.history.push(getRoute);
-  }
-
   function redirectUsersListPage() {
     props.history.push("/users/allusers");
   }
@@ -525,7 +536,7 @@ function CreateUser(props) {
           Users
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          {userId ? "Update user" : "Add new user"}
+          {userId ? "Update basic info" : "Add new user"}
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (
