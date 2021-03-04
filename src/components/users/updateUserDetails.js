@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
-import HomeIcon from "@material-ui/icons/Home";
-import GroupIcon from "@material-ui/icons/Group";
-import PersonIcon from "@material-ui/icons/Person";
 import AllocateUserToTeam from "./allocateUserToTeam";
 import AllocateUserToSite from "./allocateUserToSite";
 import AllocateUserToPrimaryGroup from "./allocateUserToPrimaryGroup";
 import AllocateUserToSecondaryGroup from "./allocateUserToSecondaryGroup";
 import AllocateUserToRole from "./allocateUserToRole";
+import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { connect } from "react-redux";
 import * as UserAction from "../../Redux/Action/userAction";
 import UserService from "../../services/usersService";
@@ -36,10 +33,8 @@ function UpdateUserDetails(props) {
   const apiCallUser = new UserService();
   const [applicationUserData, setapplicationUserData] = useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
-
-  function BreadcrumbNavigation(getRoute) {
-    props.history.push(getRoute);
-  }
+  const [activeCard, setActiveCard] = useState("");
+  const [isUpdated, setIsUpdated] = useState("NO");
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -48,13 +43,12 @@ function UpdateUserDetails(props) {
       .then((result) => {
         setapplicationUserData(result);
         setcomponentLoadder(false);
+        setIsUpdated("NO");
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  console.log(applicationUserData);
+  }, [isUpdated]);
 
   return (
     <div className="innerpage-container">
@@ -92,6 +86,9 @@ function UpdateUserDetails(props) {
                 userData={props.userData}
                 applicationUserId={applicationUserData.id}
                 siteTeamData={applicationUserData.applicationUserToTeamMapping}
+                setActiveCard={setActiveCard}
+                activeCard={activeCard}
+                setIsUpdated={setIsUpdated}
               ></AllocateUserToTeam>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -99,12 +96,19 @@ function UpdateUserDetails(props) {
                 userData={props.userData}
                 applicationUserId={applicationUserData.id}
                 siteData={applicationUserData.applicationUserToSite}
+                setActiveCard={setActiveCard}
+                activeCard={activeCard}
+                setIsUpdated={setIsUpdated}
               ></AllocateUserToSite>
             </Grid>
             <Grid item xs={12} sm={6}>
               <AllocateUserToPrimaryGroup
                 primaryGroup={applicationUserData.group}
                 applicationUserId={applicationUserData.id}
+                applicationUserData={applicationUserData}
+                setActiveCard={setActiveCard}
+                activeCard={activeCard}
+                setIsUpdated={setIsUpdated}
               ></AllocateUserToPrimaryGroup>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -113,17 +117,26 @@ function UpdateUserDetails(props) {
                   applicationUserData.applicationUserToSecondaryGroup
                 }
                 applicationUserId={applicationUserData.id}
+                applicationUserData={applicationUserData}
+                setActiveCard={setActiveCard}
+                activeCard={activeCard}
+                setIsUpdated={setIsUpdated}
               ></AllocateUserToSecondaryGroup>
             </Grid>
             <Grid item xs={12} sm={6}>
               <AllocateUserToRole
                 applicationUserId={applicationUserData.id}
                 siteRoleData={applicationUserData.applicationUserToRole}
+                setActiveCard={setActiveCard}
+                activeCard={activeCard}
+                setIsUpdated={setIsUpdated}
               ></AllocateUserToRole>
             </Grid>
           </Grid>
         </div>
-      ) : null}
+      ) : (
+        <ComponentLoadderComponent></ComponentLoadderComponent>
+      )}
     </div>
   );
 }

@@ -74,21 +74,21 @@ function Users(props) {
     setConfirmationModalActionType,
   ] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
-  const [reloadPage, setReloadPage] = useState(false);
+  const [reloadPage, setReloadPage] = useState("NO");
   const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
     []
   );
 
   useEffect(() => {
+    setcomponentLoadder(true);
     if (prevOpen.current === true && openMoreMenu === false) {
       anchorRef.current.focus();
     }
     prevOpen.current = openMoreMenu;
-
     props
       .LoadAllUser()
       .then((result) => {
-        setReloadPage(false);
+        setReloadPage("NO");
         setcomponentLoadder(false);
       })
       .catch((err) => {

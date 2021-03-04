@@ -54,7 +54,13 @@ function AllocateUserToTeam(props) {
 
   function handleChangeTeam(event, value) {
     setUserSelectedTeamValue(value);
+    props.setActiveCard("userTeam");
   }
+
+  function cancelEdit() {
+    props.setActiveCard("");
+  }
+
   function UserTeamUpdate(e) {
     setbuttonloadder(true);
     var data = formData;
@@ -66,7 +72,11 @@ function AllocateUserToTeam(props) {
         setStateSnackbar(true);
         setToasterMessage("Teams assigned to users");
         settoasterServerity("success");
-        setbuttonloadder(false);
+        setTimeout(() => {
+          props.setIsUpdated("YES");
+          props.setActiveCard("");
+          setbuttonloadder(false);
+        }, 6000);
       })
       .catch((err) => {
         setToasterMessage(err.data.errors);
@@ -108,39 +118,44 @@ function AllocateUserToTeam(props) {
                     )}
                   />
                 </Grid>
-                <Grid
-                  item
-                  sm={3}
-                  className="grid-no-pad-left-right details-action-container"
-                >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    size="small"
-                    className="inlne-action-btns save-icon"
-                    disabled={buttonloadder}
+                {props.activeCard == "userTeam" ? (
+                  <Grid
+                    item
+                    sm={3}
+                    className="grid-no-pad-left-right details-action-container"
                   >
-                    {!buttonloadder ? (
-                      <CheckIcon />
-                    ) : (
-                      <CircularProgress
-                        size={15}
-                        thickness={5}
-                        color={"white"}
-                      />
-                    )}
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="button"
-                    size="small"
-                    className="inlne-action-btns cancel-icon"
-                  >
-                    <CloseIcon />
-                  </Button>
-                </Grid>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      size="small"
+                      className="inlne-action-btns save-icon"
+                      disabled={buttonloadder}
+                    >
+                      {!buttonloadder ? (
+                        <CheckIcon />
+                      ) : (
+                        <CircularProgress
+                          size={15}
+                          thickness={5}
+                          color={"white"}
+                        />
+                      )}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="button"
+                      size="small"
+                      className="inlne-action-btns cancel-icon"
+                      onClick={cancelEdit}
+                    >
+                      <CloseIcon />
+                    </Button>
+                  </Grid>
+                ) : (
+                  ""
+                )}
               </Grid>
 
               {formFieldValidation.Team ? (

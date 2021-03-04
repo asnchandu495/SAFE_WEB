@@ -221,10 +221,10 @@ function UpdateCovidState(props) {
           setTimeout(() => {
             props.setopenCovidStateInfoModal(false);
             props.setSelectedUsersForCovidState([]);
-            props.setReloadPage(true);
+            props.setReloadPage("YES");
             resetCovidStateFormData();
             setshowLoadder(false);
-            window.location.reload();
+            // window.location.reload();
           }, 3000);
         })
         .catch((err) => {
@@ -340,7 +340,7 @@ function UpdateCovidState(props) {
                     <TextField
                       {...params}
                       variant="outlined"
-                      placeholder="Select user team"
+                      placeholder="Select covid state"
                     />
                   )}
                 />
