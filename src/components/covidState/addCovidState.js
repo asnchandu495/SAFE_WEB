@@ -254,7 +254,7 @@ function CreateCovidState(props) {
                   Covid states
                 </LinkTo>
                 <LinkTo color="textPrimary" href="#" className="active">
-                  {userGroupUpdateid != 0
+                  {userGroupUpdateid
                     ? "Update Covid state"
                     : "Create Covid state"}
                 </LinkTo>

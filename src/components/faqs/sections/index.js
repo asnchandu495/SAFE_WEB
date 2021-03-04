@@ -54,12 +54,14 @@ function FaqSections(props) {
   );
   const [showLoadder, setshowLoadder] = useState(false);
   const [componentLoadder, setComponentLoadder] = useState(true);
+  const [faqTittle, setfaqTittle] = useState("");
 
   useEffect(() => {
     if (getFaqIdSecId != 0) {
       faqApiCall
         .getFaqById(props.match.params.id)
         .then((faqDetails) => {
+          setfaqTittle(faqDetails.title);
           let allSections = faqDetails.sections;
           let selectedSection = allSections.filter((sec) => {
             return sec.id == getFaqIdSecId;
@@ -73,9 +75,17 @@ function FaqSections(props) {
           console.log(error);
         });
     } else {
-      setComponentLoadder(false);
+      faqApiCall
+        .getFaqById(props.match.params.id)
+        .then((faqDetails) => {
+          setfaqTittle(faqDetails.title);
+          setComponentLoadder(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }, []);
+  }, [props]);
 
   function handleChangeInput(e) {
     const { name, value } = e.target;
@@ -206,7 +216,7 @@ function FaqSections(props) {
           FAQs
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="inactive">
-          llll
+          {faqTittle}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           {props.match.params.secId == 0 ? "Create section" : "Update section"}

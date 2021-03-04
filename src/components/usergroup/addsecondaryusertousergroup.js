@@ -98,7 +98,6 @@ function AddSecondaryUserToUserGroups(props) {
     selectableRows: "multiple",
     rowsSelected: selectedUsersToGroup,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
-      console.log(currentRowSelected);
       setSelectedUsers(allRowsSelected);
       var selectedUsersToGroupArray = [];
       allRowsSelected.map((user, i) => {
@@ -161,12 +160,10 @@ function AddSecondaryUserToUserGroups(props) {
 
   function assignUsers() {
     setshowLoadder(true);
-    console.log(selectedUsers);
     let finalUsers = [];
     selectedUsers.map((user) => {
       finalUsers.push({ id: applicationUsers[user.dataIndex].id });
     });
-    console.log(finalUsers);
     var data = formData;
     data.groupId = userGroupUpdateid;
     data.applicationUserIds = finalUsers;
@@ -214,7 +211,7 @@ function AddSecondaryUserToUserGroups(props) {
               User groups
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="inactive">
-              jjjj
+              {selectedGroupInfo.groupName}
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
               Assign Secondary Users
