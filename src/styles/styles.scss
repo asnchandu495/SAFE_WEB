@@ -327,6 +327,27 @@ body,
   td:last-child {
     text-align: center;
   }
+  .update-icon-with-text {
+    min-width: 110px;
+    border-radius: 25px;
+    margin: 5px 8px;
+    height: 30px;
+    min-height: 25px;
+    width: 110px;
+    padding: 6px 13px;
+    color: #fff;
+    background: var(--primary-26235d) 0% 0% no-repeat padding-box;
+    &:hover {
+      background: var(--primary-26235d) 0% 0% no-repeat padding-box;
+    }
+    .MuiButton-startIcon {
+      margin: 0 5px 0 0;
+      .MuiSvgIcon-root {
+        font-size: 13px;
+        color: #fff;
+      }
+    }
+  }
   thead {
     th {
       background: var(--universal-white-ffffff) 0% 0% no-repeat padding-box;

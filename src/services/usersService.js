@@ -151,6 +151,19 @@ export default class UserService {
     });
   }
 
+  UpdateUserCovidStateBulk(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.baseURL}/ApplicationUser/UpdateCovidStateByList`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   UpdateUserCovidTempearture(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(`${this.baseURL}/ApplicationUser/UpdateTemperature`, {

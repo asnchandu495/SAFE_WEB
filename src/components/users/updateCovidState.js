@@ -127,7 +127,7 @@ function UpdateCovidState(props) {
   const [
     UserSelectedCovidStateValue,
     setUserSelectedCovidStateValue,
-  ] = useState([]);
+  ] = useState();
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
@@ -136,24 +136,44 @@ function UpdateCovidState(props) {
   const [showLoadder, setshowLoadder] = useState(false);
 
   useEffect(() => {
-    if (props.SelectedRowId) {
-      Promise.all([
-        masterDataCallApi.getCOVIDStates(),
-        usersApiCall.getCovidStateInfo(props.SelectedRowId),
-      ])
-        .then(([covidStates, getCovidInfo]) => {
+    setcomponentLoadder(true);
+    if (props.selectedUsersForCovidState.length > 0) {
+      Promise.all([masterDataCallApi.getCOVIDStates()])
+        .then(([covidStates]) => {
           setStateMasterData(covidStates);
-          if (getCovidInfo) {
-            SetformData(getCovidInfo);
-          }
         })
         .catch((error) => {
           console.log(error);
         });
 
       setcomponentLoadder(false);
+    } else {
+      if (props.SelectedRowId) {
+        Promise.all([
+          masterDataCallApi.getCOVIDStates(),
+          usersApiCall.getCovidStateInfo(props.SelectedRowId),
+        ])
+          .then(([covidStates, getCovidInfo]) => {
+            setStateMasterData(covidStates);
+            if (getCovidInfo) {
+              let data = {
+                id: getCovidInfo.covidStateId,
+                stateName: getCovidInfo.stateName,
+              };
+              setUserSelectedCovidStateValue(data);
+              SetformData(getCovidInfo);
+              setcomponentLoadder(false);
+            } else {
+              setcomponentLoadder(false);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
-  }, [props.SelectedRowId]);
+  }, [props]);
+
   const handleClose = () => {
     resetCovidStateFormData();
     props.setopenCovidStateInfoModal(false);
@@ -164,25 +184,11 @@ function UpdateCovidState(props) {
   }
 
   function handleChangeUpdateCovidState(event, value) {
-    console.log(value);
-    // var changeValue=value.map(item=>{
-    //   item.covidStateId=item.id
-    //   item.id=props.SelectedRowId;
-    //   return item;
-    // })
-
-    // setUserSelectedCovidStateValue(changeValue);
-    // // const { name, value } = e.target;
-    // // SetformData((logInForm) => ({
-    // //   ...logInForm,
-    // //   [name]: value,
-    // // }));
+    setSelectCovidState(value);
   }
 
-  console.log(UserSelectedCovidStateValue);
-
   function userCovidInfo() {
-    if (formData.covidStateId == "") {
+    if (!SelectCovidState) {
       setcovidstateFieldValidation(true);
       return false;
     } else {
@@ -194,26 +200,64 @@ function UpdateCovidState(props) {
   function submitUserCovidInformation() {
     setshowLoadder(true);
     var data = formData;
-    data.id = props.SelectedRowId;
-    usersApiCall
-      .UpdateUserCovidState(data)
-      .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("User's covid state updated");
-        settoasterServerity("success");
-        setTimeout(() => {
-          props.setopenCovidStateInfoModal(false);
-          resetCovidStateFormData();
-          setshowLoadder(false);
-        }, 3000);
-      })
-      .catch((err) => {
-        console.log(err);
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
+    if (props.selectedUsersForCovidState.length > 0) {
+      console.log(props.selectedUsersForCovidState);
+      let updateCOVIDStatusbyUsersList = [];
+      props.selectedUsersForCovidState.map((user) => {
+        updateCOVIDStatusbyUsersList.push({
+          id: user.id,
+          covidStateId: SelectCovidState.id,
+        });
       });
+      let sendData = {
+        updateCOVIDStatusbyUsersList: updateCOVIDStatusbyUsersList,
+      };
+      usersApiCall
+        .UpdateUserCovidStateBulk(sendData)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Covid state update to the selected users");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.setopenCovidStateInfoModal(false);
+            props.setSelectedUsersForCovidState([]);
+            props.setReloadPage(true);
+            resetCovidStateFormData();
+            setshowLoadder(false);
+            window.location.reload();
+          }, 3000);
+        })
+        .catch((err) => {
+          console.log(err);
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    } else {
+      data.id = props.SelectedRowId;
+      data.covidStateId = SelectCovidState.id;
+      usersApiCall
+        .UpdateUserCovidState(data)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("User's covid state updated");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.setopenCovidStateInfoModal(false);
+            resetCovidStateFormData();
+            props.setReloadPage(true);
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          console.log(err);
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
   }
 
   return (
@@ -284,7 +328,11 @@ function UpdateCovidState(props) {
                       : []
                   }
                   getOptionLabel={(option) => option.stateName}
-                  defaultValue={UserSelectedCovidStateValue}
+                  defaultValue={
+                    UserSelectedCovidStateValue
+                      ? UserSelectedCovidStateValue
+                      : ""
+                  }
                   onChange={handleChangeUpdateCovidState}
                   filterSelectedOptions
                   className="global-input autocomplete-select"
@@ -296,7 +344,7 @@ function UpdateCovidState(props) {
                     />
                   )}
                 />
-                {covidstateFieldValidation.Team ? (
+                {covidstateFieldValidation ? (
                   <FormHelperText className="error-msg">
                     Please select covid state{" "}
                   </FormHelperText>
