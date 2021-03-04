@@ -142,7 +142,7 @@ function ListSite(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no location haven't been created",
+        noMatch: "No Locations found for this site",
       },
     },
 
