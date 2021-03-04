@@ -155,27 +155,29 @@ function ViewUser(props) {
 
   return (
     <div className="innerpage-container">
-      <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
-        <LinkTo
-          color="inherit"
-          href="#"
-          to={`/home/dashboard`}
-          className="inactive"
-        >
-          Home
-        </LinkTo>
-        <LinkTo
-          color="textPrimary"
-          href="#"
-          to={`/users/allusers`}
-          className="inactive"
-        >
-          Users
-        </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="active">
-          kkk
-        </LinkTo>
-      </Breadcrumbs>
+      {!componentLoadder ? (
+        <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
+          <LinkTo
+            color="inherit"
+            href="#"
+            to={`/home/dashboard`}
+            className="inactive"
+          >
+            Home
+          </LinkTo>
+          <LinkTo
+            color="textPrimary"
+            href="#"
+            to={`/users/allusers`}
+            className="inactive"
+          >
+            Users
+          </LinkTo>
+          <LinkTo color="textPrimary" href="#" className="active">
+            {viewUserDetails.firstName} {viewUserDetails.lastName}
+          </LinkTo>
+        </Breadcrumbs>
+      ) : null}
       {!componentLoadder ? (
         <Paper className={classes.instructions}>
           <div className={`global-form inline-form`}>
