@@ -9,11 +9,7 @@ var intialState = [];
 export default function AddLocationReducer(state = intialState, action) {
   switch (action.type) {
     case LOAD_LOCATION_SUCCESS:
-      if (intialState.length == 0) {
-        return (intialState = action.loadUserSite);
-      } else {
-        return state;
-      }
+      return action.loadUserSite;
 
     case CREATE_LOCATION_SUCCESS:
       return [{ ...action.userSite }, ...state];

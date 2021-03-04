@@ -9,11 +9,7 @@ var intialState = [];
 export default function AddFloorReducer(state = intialState, action) {
   switch (action.type) {
     case LOAD_FLOOR_SUCCESS:
-      if (intialState.length == 0) {
-        return (intialState = action.loadUserSite);
-      } else {
-        return state;
-      }
+      return action.loadUserSite;
 
     case CREATE_FLOOR_SUCCESS:
       return [{ ...action.userSite }, ...state];

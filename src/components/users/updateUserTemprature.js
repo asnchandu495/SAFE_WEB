@@ -199,7 +199,10 @@ function UpdateTempearture(props) {
                   fullWidth
                   validators={["required"]}
                   errorMessages={["Please enter tempeature"]}
-                  validators={["required", "matchRegexp:^d{0,3}(.d{1,2})?$"]}
+                  validators={[
+                    "required",
+                    "matchRegexp:^\\d{1,3}(\\.\\d{1,2})?$",
+                  ]}
                   errorMessages={[
                     "Please enter tempeature",
                     "Enter numbers not valid",

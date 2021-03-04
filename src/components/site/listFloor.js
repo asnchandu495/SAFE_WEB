@@ -86,11 +86,10 @@ function ListFloor(props) {
     setConfirmationModalActionType,
   ] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
-  console.log(props.FloorData);
 
   useEffect(() => {
     props
-      .LoadData(siteId)
+      .LoadData(props.match.params.siteId)
       .then((result) => {
         setcomponentLoadder(false);
       })

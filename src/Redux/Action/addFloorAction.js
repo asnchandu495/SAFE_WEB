@@ -29,6 +29,7 @@ export function loadFloor(id) {
   return function (dispatch) {
     return SiteStateApi.getListFloor(id)
       .then((data) => {
+        console.log(data);
         dispatch(LoadFloorSuccess(data));
       })
       .catch((error) => {

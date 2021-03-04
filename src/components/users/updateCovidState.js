@@ -163,17 +163,14 @@ function UpdateCovidState(props) {
     SetformData(resetformData);
   }
 
-  function handleChangeUpdateCovidState(event,value) {
+  function handleChangeUpdateCovidState(event, value) {
     console.log(value);
     // var changeValue=value.map(item=>{
     //   item.covidStateId=item.id
     //   item.id=props.SelectedRowId;
     //   return item;
     // })
-   
 
-  
-   
     // setUserSelectedCovidStateValue(changeValue);
     // // const { name, value } = e.target;
     // // SetformData((logInForm) => ({
@@ -278,12 +275,8 @@ function UpdateCovidState(props) {
               //   </Grid>
               // </Grid>
 
-              <Grid
-                item
-                sm={12}
-              >
+              <Grid item sm={12}>
                 <Autocomplete
-                  multiple
                   id="tags-outlined"
                   options={
                     StateMasterData && StateMasterData.length > 0

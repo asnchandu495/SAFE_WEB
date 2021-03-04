@@ -102,6 +102,14 @@ function EmergencyContact(props) {
       },
     },
     {
+      name: "groupName",
+      label: "Group",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
       name: "language",
       label: "Language",
       options: {
