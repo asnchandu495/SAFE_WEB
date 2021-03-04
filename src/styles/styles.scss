@@ -405,6 +405,9 @@ body,
     .edit-icon {
       background: var(--info-17a2b8) 0% 0% no-repeat padding-box;
     }
+    .HiddenButton {
+      visibility: hidden;
+    }
     .delete-icon {
       background: var(--danger-de1b54) 0% 0% no-repeat padding-box;
     }

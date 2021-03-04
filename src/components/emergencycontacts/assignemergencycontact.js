@@ -185,19 +185,21 @@ function AssignEmergencyContacts(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                {!isActive ? (
-                  <Tooltip title="Cancel assignement emergency contacts">
-                    <Button
-                      variant="contained"
-                      color="default"
-                      startIcon={<CloseIcon />}
-                      className={`delete-icon`}
-                      onClick={() =>
-                        handleClickOpenConfirmationModal(thisRowData)
-                      }
-                    ></Button>
-                  </Tooltip>
-                ) : null}
+                <Tooltip title="Cancel assignement emergency contacts">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<CloseIcon />}
+                    className={[
+                      "delete-icon",
+                      isActive ? "HiddenButton" : "showButton",
+                    ].join(" ")}
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
+                  ></Button>
+                </Tooltip>
+
                 <Tooltip title="Change doc status">
                   <Button
                     variant="contained"
