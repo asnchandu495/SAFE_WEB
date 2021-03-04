@@ -53,6 +53,8 @@ function AllocateUserToTeam(props) {
   function handleChangeTeam(event, value) {
     setUserSelectedTeamValue(value);
   }
+  console.log(UserSelectedTeamValue);
+  console.log(BusinessTeamMasterData);
 
   function UserTeamUpdate(e) {
     var data = formData;

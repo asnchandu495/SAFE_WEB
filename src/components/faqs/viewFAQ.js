@@ -141,7 +141,7 @@ function ViewFaq(props) {
           aria-current="page"
           className="active"
         >
-          ssss
+          {selectedFaqDetails.title}
         </LinkTo>
       </Breadcrumbs>
       {componentLoadder ? (

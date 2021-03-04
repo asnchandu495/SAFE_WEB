@@ -139,7 +139,7 @@ function ViewUserGroup(props) {
           User groups
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          jjjj
+        {viewUserGroupDetails.groupName}
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper">

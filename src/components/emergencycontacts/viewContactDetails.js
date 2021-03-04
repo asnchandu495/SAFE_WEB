@@ -64,7 +64,7 @@ function ViewEmergencyContactDetails(props) {
           Emergency contacts
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          kkk
+        {emergencyContact.title}
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper">
