@@ -389,7 +389,7 @@ function Users(props) {
                 placement === "bottom" ? "center top" : "center bottom",
             }}
           >
-            <Paper>
+            <Paper className="user-list-more-options">
               <ClickAwayListener onClickAway={handleCloseMoreMenu}>
                 <MenuList id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   <MenuItem onClick={handleClickUpdateUserDetails}>

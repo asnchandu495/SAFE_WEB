@@ -668,3 +668,25 @@ label.required {
     height: 80px;
   }
 }
+
+.user-list-more-options {
+  background: var(--secondary-5f5f5f) 0% 0% no-repeat padding-box !important;
+  border-radius: 5px 5px 0px 0px !important;
+  font: var(--unnamed-font-style-normal) normal var(--unnamed-font-size-14)
+    var(--unnamed-font-family-proxima-nova) !important;
+  letter-spacing: var(--unnamed-character-spacing-0);
+  color: var(--universal-white-ffffff) !important;
+  text-align: left;
+  opacity: 1;
+  ul {
+    padding: 0;
+    li {
+      font: var(--unnamed-font-style-normal) normal normal
+        var(--unnamed-font-size-14) / var(--unnamed-line-spacing-24)
+        var(--unnamed-font-family-proxima-nova);
+      letter-spacing: var(--unnamed-character-spacing-0);
+      color: var(--universal-white-ffffff);
+      text-align: left;
+    }
+  }
+}
