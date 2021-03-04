@@ -161,6 +161,22 @@ export default class SiteService {
     });
   }
 
+  getSiteManagers(id) {
+    return this.fetch(`${this.baseURL}/Site/SiteManager`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  getLocationManagers(id) {
+    return this.fetch(`${this.baseURL}/Site/SecurityManager`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

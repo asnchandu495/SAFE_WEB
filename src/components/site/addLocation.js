@@ -467,7 +467,12 @@ function AddLocation(props) {
                     )}
                   </Grid>
                 </Grid>
-                <Grid item cs={12} container style={{ padding: 0 }}>
+                <Grid
+                  item
+                  cs={12}
+                  container
+                  className="location-pin-micro-checkbox"
+                >
                   <Grid item xs={3}></Grid>
                   <Grid item xs={7}>
                     <FormControlLabel
@@ -511,6 +516,7 @@ function AddLocation(props) {
                       value={formData.densityThreasholdLowFrom}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      disabled={!formData.pinMicroActive}
                     />
                   </Grid>
                   <Grid item xs={1} className={classes.temperatureRange}>
@@ -528,6 +534,7 @@ function AddLocation(props) {
                       value={formData.densityThreasholdLowTo}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      disabled={!formData.pinMicroActive}
                     />
                   </Grid>
                 </Grid>
@@ -553,6 +560,7 @@ function AddLocation(props) {
                       value={formData.densityThreasholdMediumFrom}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      disabled={!formData.pinMicroActive}
                     />
                   </Grid>
                   <Grid item xs={1} className={classes.temperatureRange}>
@@ -570,6 +578,7 @@ function AddLocation(props) {
                       value={formData.densityThreasholdMediumTo}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      disabled={!formData.pinMicroActive}
                     />
                   </Grid>
                 </Grid>
@@ -595,6 +604,7 @@ function AddLocation(props) {
                       value={formData.densityThreasholdHighFrom}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      disabled={!formData.pinMicroActive}
                     />
                   </Grid>
                   <Grid item xs={1} className={classes.temperatureRange}>
@@ -617,6 +627,7 @@ function AddLocation(props) {
                       }
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      disabled={!formData.pinMicroActive}
                     />
                   </Grid>
                   <Grid item xs={2} style={{ paddingLeft: 10 }}>

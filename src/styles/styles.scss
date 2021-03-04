@@ -643,3 +643,22 @@ label.required {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+
+.change-password-form {
+  .MuiOutlinedInput-input {
+    padding: 10px 14px !important;
+    &:focus {
+      padding: 9px 13px !important;
+    }
+  }
+  .submit-button {
+    margin-top: 10px;
+    button {
+      width: 100% !important;
+    }
+  }
+}
+
+.location-pin-micro-checkbox {
+  margin-top: 10px;
+}

@@ -103,6 +103,8 @@ function CreateSite(props) {
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [allLanguages, setAllLanguages] = useState([]);
+  const [siteManger, setSiteManger] = useState([]);
+  const [securityManger, setSecurityManger] = useState([]);
   const [formData, SetformData] = useState({
     id: "",
     name: "",
@@ -141,10 +143,20 @@ function CreateSite(props) {
         console.log(err);
       });
 
-    masterDataCallApi.getCountries().then((result) => {
-      setCountryMasterData(result);
-      setComponentLoadder(false);
-    });
+    Promise.all([
+      masterDataCallApi.getCountries(),
+      siteApiCall.getSiteManagers(),
+      siteApiCall.getLocationManagers(),
+    ])
+      .then(([getCountries, getSiteManagers, getLocationManagers]) => {
+        setCountryMasterData(getCountries);
+        setSiteManger(getSiteManagers);
+        setSecurityManger(getLocationManagers);
+        setComponentLoadder(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [props]);
 
   const handleBack = () => {
@@ -343,7 +355,10 @@ function CreateSite(props) {
                 <Grid container spacing={3}>
                   <Grid item container xs={12} spacing={1} sm={12}>
                     <Grid item xs={4}>
-                      <label htmlFor="password" className="input-label">
+                      <label
+                        htmlFor="password"
+                        className="input-label required"
+                      >
                         Site name
                       </label>
                       <TextValidator
@@ -376,7 +391,10 @@ function CreateSite(props) {
                       )}
                     </Grid>
                     <Grid item xs={4}>
-                      <label htmlFor="password" className="input-label">
+                      <label
+                        htmlFor="password"
+                        className="input-label required"
+                      >
                         Site manager
                       </label>
                       <FormControl
@@ -402,12 +420,13 @@ function CreateSite(props) {
                           onChange={handleChange}
                           InputLabelProps={{ shrink: false }}
                           className="global-input single-select"
+                          required
                         >
                           <MenuItem value="">None</MenuItem>
                           {siteManger.length > 0
                             ? siteManger.map((lan) => {
                                 return (
-                                  <MenuItem value={lan.value}>
+                                  <MenuItem value={lan.applicationUserId}>
                                     {lan.name}
                                   </MenuItem>
                                 );
@@ -424,7 +443,10 @@ function CreateSite(props) {
                       )}
                     </Grid>
                     <Grid item xs={4}>
-                      <label htmlFor="password" className="input-label">
+                      <label
+                        htmlFor="password"
+                        className="input-label required"
+                      >
                         Security manager
                       </label>
                       <FormControl
@@ -450,12 +472,13 @@ function CreateSite(props) {
                           onChange={handleChange}
                           InputLabelProps={{ shrink: false }}
                           className="global-input single-select"
+                          required
                         >
                           <MenuItem value="">None</MenuItem>
                           {securityManger.length > 0
                             ? securityManger.map((lan) => {
                                 return (
-                                  <MenuItem value={lan.value}>
+                                  <MenuItem value={lan.applicationUserId}>
                                     {lan.name}
                                   </MenuItem>
                                 );
@@ -492,7 +515,10 @@ function CreateSite(props) {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <label htmlFor="password" className="input-label">
+                      <label
+                        htmlFor="password"
+                        className="input-label required"
+                      >
                         Address 1
                       </label>
                       <TextValidator
@@ -571,7 +597,10 @@ function CreateSite(props) {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <label htmlFor="password" className="input-label">
+                      <label
+                        htmlFor="password"
+                        className="input-label required"
+                      >
                         Country
                       </label>
                       <FormControl
@@ -595,6 +624,7 @@ function CreateSite(props) {
                           onChange={handleChange}
                           InputLabelProps={{ shrink: false }}
                           className="global-input single-select"
+                          required
                         >
                           <MenuItem value="">None</MenuItem>
                           {CountryMasterData.length > 0
@@ -615,7 +645,10 @@ function CreateSite(props) {
                       )}
                     </Grid>
                     <Grid item xs={4}>
-                      <label htmlFor="password" className="input-label">
+                      <label
+                        htmlFor="password"
+                        className="input-label required"
+                      >
                         Enter postal code
                       </label>
                       <TextValidator

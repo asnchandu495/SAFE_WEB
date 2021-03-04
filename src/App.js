@@ -43,6 +43,9 @@ import UpdateUserDetails from "./components/users/updateUserDetails";
 import ImportUsers from "./components/users/ImportUsers";
 import ImportUsersHistory from "./components/users/ImportUserHistory";
 import ViewUser from "./components/users/viewUsers";
+import UserProfie from "./components/profile";
+import InternalServer from "./components/common/ErrorPage/InternalServerError/index";
+import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
 
 function App(props) {
   const AuthContainer = () => {
@@ -55,6 +58,13 @@ function App(props) {
       </AuthLayout>
     );
   };
+
+  const ErrorPageContainer = () => (
+    <div>
+      <Route path="/InternalServerError" component={InternalServer} />
+      <Route path="/Unauthorized" component={Unauthorized} />
+    </div>
+  );
 
   const AdminContainer = () => {
     return (
@@ -170,6 +180,7 @@ function App(props) {
           path="/users/import-users-history"
           component={ImportUsersHistory}
         ></Route>
+        <Route path="/user/view-profile" component={UserProfie}></Route>
       </AdminLayout>
     );
   };
@@ -306,6 +317,9 @@ function App(props) {
           component={AdminContainer}
         ></Route>
         <Route path="/users/view-user/:id" component={AdminContainer}></Route>
+        <Route path="/user/view-profile" component={AdminContainer}></Route>
+        <Route path="/InternalServerError" component={ErrorPageContainer} />
+        <Route path="/Unauthorized" component={ErrorPageContainer} />
       </Switch>
     </BrowserRouter>
   );
