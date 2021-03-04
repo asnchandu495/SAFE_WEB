@@ -21,6 +21,7 @@ import UserService from "../../services/usersService";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
@@ -73,6 +74,10 @@ function Users(props) {
     setConfirmationModalActionType,
   ] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [reloadPage, setReloadPage] = useState(false);
+  const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
+    []
+  );
 
   useEffect(() => {
     if (prevOpen.current === true && openMoreMenu === false) {
@@ -83,12 +88,13 @@ function Users(props) {
     props
       .LoadAllUser()
       .then((result) => {
+        setReloadPage(false);
         setcomponentLoadder(false);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [openMoreMenu]);
+  }, [openMoreMenu, reloadPage]);
 
   const handleToggleMoreMenu = (thisRowData) => {
     setSelectedRowDetails(thisRowData);
@@ -133,11 +139,46 @@ function Users(props) {
     print: false,
     viewColumns: false,
     download: false,
-    selectableRows: false,
+    selectableRows: "multiple",
+    disableToolbarSelect: true,
+    // rowsSelected: selectedUsersForCovidState,
+    onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
+      var selectedUsersToCovidStateArray = [];
+      allRowsSelected.map((user, i) => {
+        selectedUsersToCovidStateArray.push(user.dataIndex);
+      });
+      let finalUsers = [];
+      selectedUsersToCovidStateArray.map((user) => {
+        finalUsers.push({ id: props.UserData[user].id });
+      });
+      setSelectedUsersForCovidState(finalUsers);
+    },
     textLabels: {
       body: {
         noMatch: "There are no users",
       },
+    },
+    customToolbar: () => {
+      return (
+        <span>
+          {selectedUsersForCovidState.length > 0 ? (
+            <div className={`maingrid-actions`}>
+              <Tooltip title="Update covid state">
+                <Button
+                  variant="contained"
+                  startIcon={<LocalHospitalIcon />}
+                  className={`update-icon-with-text`}
+                  onClick={handleClickOpenCovidStateInfoModal}
+                >
+                  Update
+                </Button>
+              </Tooltip>
+            </div>
+          ) : (
+            ""
+          )}
+        </span>
+      );
     },
   };
 
@@ -197,8 +238,8 @@ function Users(props) {
     },
 
     {
-      name: "state",
-      label: "State",
+      name: "covidState",
+      label: "Covid state",
       options: {
         filter: false,
         sort: true,
@@ -330,6 +371,7 @@ function Users(props) {
       ) : (
         <MuiThemeProvider theme={theme1}>
           {" "}
+          {reloadPage ? "yes" : "no"}
           <MUIDataTable
             title={""}
             data={
@@ -345,6 +387,9 @@ function Users(props) {
         openCovidStateInfoModal={openCovidStateInfoModal}
         SelectedRowId={SelectedRowId}
         setopenCovidStateInfoModal={setopenCovidStateInfoModal}
+        selectedUsersForCovidState={selectedUsersForCovidState}
+        setSelectedUsersForCovidState={setSelectedUsersForCovidState}
+        setReloadPage={setReloadPage}
       />
       <ShiftingInfo
         openshiftInfoModal={openshiftInfoModal}

@@ -16,17 +16,17 @@ export default class UserService {
   }
 
   ListApplicationUsers() {
-    let sendData={
+    let sendData = {
       primaryGroupId: "",
       designationId: "",
       covidStateId: "",
       roleIds: [],
-      siteId: []
+      siteId: [],
     };
-    var data=JSON.stringify(sendData);
+    var data = JSON.stringify(sendData);
     return this.fetch(`${this.baseURL}/ApplicationUser/ListApplicationUsers`, {
       method: "POST",
-      body:data
+      body: data,
     }).then((res) => {
       return Promise.resolve(res);
     });
@@ -148,6 +148,19 @@ export default class UserService {
       method: "PUT",
       body: finalData,
     }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  UpdateUserCovidStateBulk(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.baseURL}/ApplicationUser/UpdateCovidStateByList`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
       return Promise.resolve(res);
     });
   }
