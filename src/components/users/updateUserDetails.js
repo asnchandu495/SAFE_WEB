@@ -107,7 +107,7 @@ function UpdateUserDetails(props) {
             </Grid>
             <Grid item xs={12} sm={6}>
               <AllocateUserToSecondaryGroup
-                secondaryGroup={props.applicationUserToSecondaryGroup}
+                secondaryGroup={applicationUserData.applicationUserToSecondaryGroup}
                 applicationUserId={applicationUserData.id}
               ></AllocateUserToSecondaryGroup>
             </Grid>
