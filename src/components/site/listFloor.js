@@ -86,15 +86,19 @@ function ListFloor(props) {
     setConfirmationModalActionType,
   ] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [siteName, setsiteName] = useState("");
 
   useEffect(() => {
-    props
-      .LoadData(props.match.params.siteId)
-      .then((result) => {
+    Promise.all([
+      props.LoadData(props.match.params.siteId),
+      apiCallSite.getSiteById(props.match.params.siteId),
+    ])
+      .then(([result, getSiteData]) => {
+        setsiteName(getSiteData.name);
         setcomponentLoadder(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
   }, []);
 
@@ -224,6 +228,7 @@ function ListFloor(props) {
     props.history.push(getRoute);
   }
 
+  console.log(props.FloorData);
   return (
     <div className="innerpage-container">
       {componentLoadder ? (
@@ -253,7 +258,7 @@ function ListFloor(props) {
               aria-current="page"
               className="inactive"
             >
-              kkkk
+              {siteName}
             </LinkTo>
             <LinkTo
               color="textPrimary"
@@ -316,6 +321,7 @@ ListFloor.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
+  console.log(state);
   return {
     FloorData: state.FloorState,
   };

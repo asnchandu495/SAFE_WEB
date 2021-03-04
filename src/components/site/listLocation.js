@@ -100,12 +100,12 @@ function ListSite(props) {
     setConfirmationModalActionType,
   ] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [siteName, setsiteName] = useState("");
 
   useEffect(() => {
-    props
-      .LoadData(siteId)
-      .then((result) => {
-        setlistLocationData(result);
+    Promise.all([props.LoadData(siteId), apiCallSite.getSiteById(siteId)])
+      .then(([result, getSiteData]) => {
+        setsiteName(getSiteData.name);
         setcomponentLoadder(false);
       })
       .catch((err) => {
@@ -295,7 +295,7 @@ function ListSite(props) {
               aria-current="page"
               className="inactive"
             >
-              kkkk
+             {siteName}
             </LinkTo>
             <LinkTo
               color="textPrimary"

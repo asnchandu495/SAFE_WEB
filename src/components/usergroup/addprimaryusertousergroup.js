@@ -74,7 +74,6 @@ function AddPrimaryUserToUserGroups(props) {
             }
           });
           setSelectedUsersToGroup(selectedUsersToGroupArray);
-          console.log(1);
         })
         .catch((error) => {
           console.log(error);
@@ -99,7 +98,6 @@ function AddPrimaryUserToUserGroups(props) {
     selectableRows: "multiple",
     rowsSelected: selectedUsersToGroup,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
-      console.log(currentRowSelected);
       setSelectedUsers(allRowsSelected);
       var selectedUsersToGroupArray = [];
       allRowsSelected.map((user, i) => {
@@ -161,13 +159,11 @@ function AddPrimaryUserToUserGroups(props) {
   }
 
   function assignUsers() {
-    console.log(selectedUsers);
     setshowLoadder(true);
     let finalUsers = [];
     selectedUsers.map((user) => {
       finalUsers.push({ id: applicationUsers[user.dataIndex].id });
     });
-    console.log(finalUsers);
     var data = formData;
     data.groupId = userGroupUpdateid;
     data.applicationUserIds = finalUsers;
@@ -215,7 +211,7 @@ function AddPrimaryUserToUserGroups(props) {
               User groups
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="inactive">
-              jjjj
+              {selectedGroupInfo.groupName}
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
               Assign Primary Users
