@@ -63,12 +63,9 @@ function AllocateUserToRole(props) {
   }
 
   function UserRoleUpdate(e) {
-    console.log(formData);
     var data = formData;
-    data.applicationUserId = props.userData.id;
+    data.applicationUserId = props.applicationUserId;
     data.applicationUserToRoleMapping = UserSelectedRoleValue;
-    console.log(data);
-    console.log(UserSelectedRoleValue);
     usersApiCall
       .UpdateApplicationUserRole(data)
       .then((result) => {
@@ -83,7 +80,6 @@ function AllocateUserToRole(props) {
         setStateSnackbar(true);
       });
   }
-  console.log(UserSelectedRoleValue);
 
   return (
     <Card className="user-update-details-card">
@@ -103,7 +99,7 @@ function AllocateUserToRole(props) {
                         : []
                     }
                     getOptionLabel={(option) => option.description}
-                    defaultValue={value}
+                    defaultValue={UserSelectedRoleValue}
                     onChange={handleChangeTeam}
                     filterSelectedOptions
                     className="global-input autocomplete-select"

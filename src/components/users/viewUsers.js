@@ -83,7 +83,7 @@ function ViewUser(props) {
       });
   }, []);
 
-  console.log(viewUserDetails);
+  console.log(JSON.stringify(viewUserDetails));
 
   function handleClickGoBack() {
     props.history.push("/users/allusers");
@@ -98,7 +98,7 @@ function ViewUser(props) {
     var displayRoles = "";
     if (UserRoles) {
       var UserRoleList = UserRoles.map((item) => {
-        return item.name;
+        return item.id;
       });
       if (UserRoleList.length > 0) {
         displayRoles = UserRoleList.join(", ");
@@ -112,7 +112,7 @@ function ViewUser(props) {
     var displayRoles = "";
     if (UserRoles) {
       var UserRoleList = UserRoles.map((item) => {
-        return item.name;
+        return item.groupName;
       });
       if (UserRoleList.length > 0) {
         displayRoles = UserRoleList.join(", ");
@@ -258,7 +258,7 @@ function ViewUser(props) {
                 </Grid>
                 <Grid item xs={8}>
                   {renderapplicationUseTeamGroup(
-                    viewUserDetails.applactionUserToTeamMaping
+                    viewUserDetails.applicationUserToTeamMapping
                   )}
                 </Grid>
               </Grid>
@@ -268,9 +268,17 @@ function ViewUser(props) {
                 </Grid>
                 <Grid item xs={8}>
                   {renderapplicationUserRole(
-                    viewUserDetails.applicationUserToRoleMapping
+                    viewUserDetails.applicationUserToRole
                   )}
                   {/* <label>{viewUserDetails.applicationUserToRoleMapping.Role}</label> */}
+                </Grid>
+              </Grid>
+              <Grid item xs={6} container>
+                <Grid item xs={4}>
+                  <label>Supervisor :</label>
+                </Grid>
+                <Grid item xs={8}>
+                  <label>{viewUserDetails.supervisor}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
@@ -278,7 +286,7 @@ function ViewUser(props) {
                   <label>Primary Group :</label>
                 </Grid>
                 <Grid item xs={8}>
-                  <label>{viewUserDetails.group.name}</label>
+                  <label>{viewUserDetails.group.groupName}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
@@ -287,7 +295,7 @@ function ViewUser(props) {
                 </Grid>
                 <Grid item xs={8}>
                   {renderapplicationUserSecondaryGroup(
-                    viewUserDetails.applicationUserToSecondaryGroupMapping
+                    viewUserDetails.applicationUserToSecondaryGroup
                   )}
                 </Grid>
               </Grid>
@@ -297,7 +305,7 @@ function ViewUser(props) {
                 </Grid>
                 <Grid item xs={8}>
                   {renderapplicationUserSite(
-                    viewUserDetails.applicationUserToSiteMapping
+                    viewUserDetails.applicationUserToSite
                   )}
                 </Grid>
               </Grid>

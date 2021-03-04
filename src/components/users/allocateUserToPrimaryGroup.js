@@ -18,7 +18,6 @@ import MasterService from "../../services/masterDataService";
 import ToasterMessageComponent from "../common/toaster";
 
 function AllocateUserToPrimaryGroup(props) {
-  console.log(props);
   const usersApiCall = new UserService();
   const masterDataCallApi = new MasterService();
   const userGroupApiCall = new UserGroupService();
@@ -29,6 +28,7 @@ function AllocateUserToPrimaryGroup(props) {
     UserSelectedPrimaryGroupValue,
     setUserSelectedPrimaryGroupValue,
   ] = useState([]);
+  const [componentLoadder, setcomponentLoadder] = useState(true);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
@@ -43,9 +43,12 @@ function AllocateUserToPrimaryGroup(props) {
   });
 
   useEffect(() => {
+    setcomponentLoadder(true);
+    setUserSelectedPrimaryGroupValue([props.primaryGroup]);
     Promise.all([userGroupApiCall.loadUserGroup()])
       .then(([getTeams]) => {
         setBusinessTeamMasterData(getTeams);
+        setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
@@ -53,8 +56,6 @@ function AllocateUserToPrimaryGroup(props) {
   }, []);
 
   function handleChangeTeam(event, value) {
-    console.log(event);
-    console.log(value);
     setUserSelectedPrimaryGroupValue(value);
   }
 
@@ -65,7 +66,6 @@ function AllocateUserToPrimaryGroup(props) {
     usersApiCall
       .UpdateApplicationUserPrimaryGroup(data)
       .then((result) => {
-        console.log(result);
         setStateSnackbar(true);
         setToasterMessage("Primary group assigned to users");
         settoasterServerity("success");
@@ -76,73 +76,77 @@ function AllocateUserToPrimaryGroup(props) {
         setStateSnackbar(true);
       });
   }
-  console.log(UserSelectedPrimaryGroupValue);
-
+ 
   return (
     <Card className="user-update-details-card">
-      <ValidatorForm className={`global-form`} onSubmit={UserPrimaryGroup}>
-        <CardContent>
-          <Typography className="card-heading">Update Primary Group</Typography>
-          <div className="card-form">
-            <Grid container spacing={3}>
-              <Grid item sm={9}>
-                <Autocomplete
-                  id="tags-outlined"
-                  options={
-                    BusinessTeamMasterData && BusinessTeamMasterData.length > 0
-                      ? BusinessTeamMasterData
-                      : []
-                  }
-                  getOptionLabel={(option) => option.groupName}
-                  defaultValue={UserSelectedPrimaryGroupValue}
-                  onChange={handleChangeTeam}
-                  filterSelectedOptions
-                  className="global-input autocomplete-select"
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      placeholder="Select primary group"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid
-                item
-                sm={3}
-                className="grid-no-pad-left-right details-action-container"
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  size="small"
-                  className="inlne-action-btns save-icon"
+      {!componentLoadder ? (
+        <ValidatorForm className={`global-form`} onSubmit={UserPrimaryGroup}>
+          <CardContent>
+            <Typography className="card-heading">
+              Update Primary Group
+            </Typography>
+            <div className="card-form">
+              <Grid container spacing={3}>
+                <Grid item sm={9}>
+                  <Autocomplete
+                    id="tags-outlined"
+                    options={
+                      BusinessTeamMasterData &&
+                      BusinessTeamMasterData.length > 0
+                        ? BusinessTeamMasterData
+                        : []
+                    }
+                    getOptionLabel={(option) => option.groupName}
+                    defaultValue={UserSelectedPrimaryGroupValue[0]}
+                    onChange={handleChangeTeam}
+                    filterSelectedOptions
+                    className="global-input autocomplete-select"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        placeholder="Select primary group"
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  sm={3}
+                  className="grid-no-pad-left-right details-action-container"
                 >
-                  <CheckIcon />
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="button"
-                  size="small"
-                  className="inlne-action-btns cancel-icon"
-                >
-                  <CloseIcon />
-                </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    size="small"
+                    className="inlne-action-btns save-icon"
+                  >
+                    <CheckIcon />
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    size="small"
+                    className="inlne-action-btns cancel-icon"
+                  >
+                    <CloseIcon />
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
 
-            {formFieldValidation.Team ? (
-              <FormHelperText className="error-msg">
-                Please select team{" "}
-              </FormHelperText>
-            ) : (
-              ""
-            )}
-          </div>
-        </CardContent>
-      </ValidatorForm>
+              {formFieldValidation.Team ? (
+                <FormHelperText className="error-msg">
+                  Please select team{" "}
+                </FormHelperText>
+              ) : (
+                ""
+              )}
+            </div>
+          </CardContent>
+        </ValidatorForm>
+      ) : null}
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}

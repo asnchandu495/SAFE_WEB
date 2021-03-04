@@ -24,7 +24,11 @@ function AllocateUserToSecondaryGroup(props) {
 
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
   const [formFieldValidation, setformFieldValidation] = useState(false);
-  const [UserSelectedSecondaryGroupValue, setUserSelectedSecondaryGroupValue] = useState([]);
+  const [
+    UserSelectedSecondaryGroupValue,
+    setUserSelectedSecondaryGroupValue,
+  ] = useState([]);
+  const [componentLoadder, setcomponentLoadder] = useState(true);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
@@ -39,112 +43,111 @@ function AllocateUserToSecondaryGroup(props) {
   });
 
   useEffect(() => {
+    setcomponentLoadder(true);
     setUserSelectedSecondaryGroupValue(props.secondaryGroup);
     Promise.all([userGroupApiCall.loadUserGroup()])
       .then(([getTeams]) => {
         setBusinessTeamMasterData(getTeams);
+        setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  console.log(BusinessTeamMasterData);
-
   function handleChangeTeam(event, value) {
     setUserSelectedSecondaryGroupValue(value);
   }
-
   function UserSecondaryGroup(e) {
-    console.log(formData);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
     data.groups = UserSelectedSecondaryGroupValue;
-    console.log(data);
-    // console.log(UserSelectedTeamValue);
-    // usersApiCall
-    //   .UpdateApplicationUserSecondaryGroup(data)
-    //   .then((result) => {
-    //     console.log(result);
-    //     setStateSnackbar(true);
-    //     setToasterMessage("Secondary group assigned to users");
-    //     settoasterServerity("success");
-    //   })
-    //   .catch((err) => {
-    //     setToasterMessage(err.data.errors);
-    //     settoasterServerity("error");
-    //     setStateSnackbar(true);
-    //   });
+    usersApiCall
+      .UpdateApplicationUserSecondaryGroup(data)
+      .then((result) => {
+        console.log(result);
+        setStateSnackbar(true);
+        setToasterMessage("Secondary group assigned to users");
+        settoasterServerity("success");
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+      });
   }
 
   return (
     <Card className="user-update-details-card">
-      <ValidatorForm className={`global-form`} onSubmit={UserSecondaryGroup}>
-        <CardContent>
-          <Typography className="card-heading">
-            Update Secondary Group
-          </Typography>
-          <div className="card-form">
-            <Grid container spacing={3}>
-              <Grid item sm={9}>
-                <Autocomplete
-                  multiple
-                  id="tags-outlined"
-                  options={
-                    BusinessTeamMasterData && BusinessTeamMasterData.length > 0
-                      ? BusinessTeamMasterData
-                      : []
-                  }
-                  getOptionLabel={(option) => option.groupName}
-                  defaultValue={UserSelectedSecondaryGroupValue}
-                  onChange={handleChangeTeam}
-                  filterSelectedOptions
-                  className="global-input autocomplete-select"
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      placeholder="Select secondary group"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid
-                item
-                sm={3}
-                className="grid-no-pad-left-right details-action-container"
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  size="small"
-                  className="inlne-action-btns save-icon"
+      {!componentLoadder ? (
+        <ValidatorForm className={`global-form`} onSubmit={UserSecondaryGroup}>
+          <CardContent>
+            <Typography className="card-heading">
+              Update Secondary Group
+            </Typography>
+            <div className="card-form">
+              <Grid container spacing={3}>
+                <Grid item sm={9}>
+                  <Autocomplete
+                    multiple
+                    id="tags-outlined"
+                    options={
+                      BusinessTeamMasterData &&
+                      BusinessTeamMasterData.length > 0
+                        ? BusinessTeamMasterData
+                        : []
+                    }
+                    getOptionLabel={(option) => option.groupName}
+                    defaultValue={UserSelectedSecondaryGroupValue}
+                    onChange={handleChangeTeam}
+                    filterSelectedOptions
+                    className="global-input autocomplete-select"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        placeholder="Select secondary group"
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  sm={3}
+                  className="grid-no-pad-left-right details-action-container"
                 >
-                  <CheckIcon />
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="button"
-                  size="small"
-                  className="inlne-action-btns cancel-icon"
-                >
-                  <CloseIcon />
-                </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    size="small"
+                    className="inlne-action-btns save-icon"
+                  >
+                    <CheckIcon />
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    size="small"
+                    className="inlne-action-btns cancel-icon"
+                  >
+                    <CloseIcon />
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
 
-            {formFieldValidation.Team ? (
-              <FormHelperText className="error-msg">
-                Please select team{" "}
-              </FormHelperText>
-            ) : (
-              ""
-            )}
-          </div>
-        </CardContent>
-      </ValidatorForm>
+              {formFieldValidation.Team ? (
+                <FormHelperText className="error-msg">
+                  Please select team{" "}
+                </FormHelperText>
+              ) : (
+                ""
+              )}
+            </div>
+          </CardContent>
+        </ValidatorForm>
+      ) : null}
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
