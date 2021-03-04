@@ -124,6 +124,10 @@ function UpdateCovidState(props) {
     covidStateId: "",
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [
+    UserSelectedCovidStateValue,
+    setUserSelectedCovidStateValue,
+  ] = useState([]);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
@@ -159,13 +163,26 @@ function UpdateCovidState(props) {
     SetformData(resetformData);
   }
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    SetformData((logInForm) => ({
-      ...logInForm,
-      [name]: value,
-    }));
+  function handleChangeUpdateCovidState(event,value) {
+    console.log(value);
+    // var changeValue=value.map(item=>{
+    //   item.covidStateId=item.id
+    //   item.id=props.SelectedRowId;
+    //   return item;
+    // })
+   
+
+  
+   
+    // setUserSelectedCovidStateValue(changeValue);
+    // // const { name, value } = e.target;
+    // // SetformData((logInForm) => ({
+    // //   ...logInForm,
+    // //   [name]: value,
+    // // }));
   }
+
+  console.log(UserSelectedCovidStateValue);
 
   function userCovidInfo() {
     if (formData.covidStateId == "") {
@@ -216,49 +233,83 @@ function UpdateCovidState(props) {
         <ValidatorForm className={`global-form`} onSubmit={userCovidInfo}>
           <DialogContent dividers>
             {!componentLoadder ? (
-              <Grid container spacing={3}>
-                <Grid item sm={12} container>
-                  <FormControl variant="outlined" fullWidth>
-                    <InputLabel
-                      id="demo-simple-select-outlined-label"
-                      shrink={false}
-                      className="select-label"
-                    >
-                      {formData.covidStateId == "" ? "Select covid state" : ""}
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      placeholder="Select covid state"
-                      name="covidStateId"
-                      value={formData.covidStateId}
-                      onChange={handleChange}
-                      InputLabelProps={{ shrink: false }}
-                      className="global-input single-select"
-                    >
-                      <MenuItem value="">None</MenuItem>
-                      {StateMasterData && StateMasterData.length > 0
-                        ? StateMasterData.map((stateMasterData) => {
-                            return (
-                              <MenuItem
-                                value={stateMasterData.stateName}
-                                key={stateMasterData.id + "covidstate"}
-                              >
-                                {stateMasterData.stateName}
-                              </MenuItem>
-                            );
-                          })
-                        : ""}
-                    </Select>
-                  </FormControl>
-                  {covidstateFieldValidation ? (
-                    <FormHelperText className="error-message-select">
-                      Please select covid state{" "}
-                    </FormHelperText>
-                  ) : (
-                    ""
+              // <Grid container spacing={3}>
+              //   <Grid item sm={12} container>
+              //     <FormControl variant="outlined" fullWidth>
+              //       <InputLabel
+              //         id="demo-simple-select-outlined-label"
+              //         shrink={false}
+              //         className="select-label"
+              //       >
+              //         {formData.covidStateId == "" ? "Select covid state" : ""}
+              //       </InputLabel>
+              //       <Select
+              //         labelId="demo-simple-select-outlined-label"
+              //         id="demo-simple-select-outlined"
+              //         placeholder="Select covid state"
+              //         name="covidStateId"
+              //         value={formData.covidStateId}
+              //         onChange={handleChange}
+              //         InputLabelProps={{ shrink: false }}
+              //         className="global-input single-select"
+              //       >
+              //         <MenuItem value="">None</MenuItem>
+              //         {StateMasterData && StateMasterData.length > 0
+              //           ? StateMasterData.map((stateMasterData) => {
+              //               return (
+              //                 <MenuItem
+              //                   value={stateMasterData.stateName}
+              //                   key={stateMasterData.id + "covidstate"}
+              //                 >
+              //                   {stateMasterData.stateName}
+              //                 </MenuItem>
+              //               );
+              //             })
+              //           : ""}
+              //       </Select>
+              //     </FormControl>
+              //     {covidstateFieldValidation ? (
+              //       <FormHelperText className="error-message-select">
+              //         Please select covid state{" "}
+              //       </FormHelperText>
+              //     ) : (
+              //       ""
+              //     )}
+              //   </Grid>
+              // </Grid>
+
+              <Grid
+                item
+                sm={12}
+              >
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={
+                    StateMasterData && StateMasterData.length > 0
+                      ? StateMasterData
+                      : []
+                  }
+                  getOptionLabel={(option) => option.stateName}
+                  defaultValue={UserSelectedCovidStateValue}
+                  onChange={handleChangeUpdateCovidState}
+                  filterSelectedOptions
+                  className="global-input autocomplete-select"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      placeholder="Select user team"
+                    />
                   )}
-                </Grid>
+                />
+                {covidstateFieldValidation.Team ? (
+                  <FormHelperText className="error-msg">
+                    Please select covid state{" "}
+                  </FormHelperText>
+                ) : (
+                  ""
+                )}
               </Grid>
             ) : null}
           </DialogContent>

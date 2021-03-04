@@ -16,8 +16,17 @@ export default class UserService {
   }
 
   ListApplicationUsers() {
+    let sendData={
+      primaryGroupId: "",
+      designationId: "",
+      covidStateId: "",
+      roleIds: [],
+      siteId: []
+    };
+    var data=JSON.stringify(sendData);
     return this.fetch(`${this.baseURL}/ApplicationUser/ListApplicationUsers`, {
-      method: "GET",
+      method: "POST",
+      body:data
     }).then((res) => {
       return Promise.resolve(res);
     });

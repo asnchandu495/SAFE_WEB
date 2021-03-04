@@ -77,6 +77,7 @@ function AllocateUserToRole(props) {
       });
   }
 
+
   return (
     <Card className="user-update-details-card">
       {!componentLoadder ? (
