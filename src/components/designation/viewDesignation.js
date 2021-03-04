@@ -63,7 +63,7 @@ function CreateUserGroup(props) {
               Designations
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
-              kk
+            {formData.name}
             </LinkTo>
           </Breadcrumbs>
           <Paper className={`main-paper`}>

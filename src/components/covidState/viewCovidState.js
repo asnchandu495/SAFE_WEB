@@ -69,7 +69,7 @@ function ViewCovidState(props) {
               Covid states
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
-              jk
+            {formData.stateName}
             </LinkTo>
           </Breadcrumbs>
           <Paper className={`main-paper`}>

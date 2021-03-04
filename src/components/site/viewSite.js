@@ -276,7 +276,7 @@ function ViewSite(props) {
               aria-current="page"
               className="active"
             >
-              kkkk
+              {viewSiteValue.name}
             </LinkTo>
           </Breadcrumbs>
           <Paper className={`main-paper`}>
