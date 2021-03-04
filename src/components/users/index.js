@@ -371,7 +371,6 @@ function Users(props) {
       ) : (
         <MuiThemeProvider theme={theme1}>
           {" "}
-          {reloadPage ? "yes" : "no"}
           <MUIDataTable
             title={""}
             data={
