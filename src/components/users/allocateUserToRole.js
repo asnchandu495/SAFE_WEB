@@ -17,6 +17,13 @@ import UserGroupService from "../../services/userGroupService";
 import MasterService from "../../services/masterDataService";
 import ToasterMessageComponent from "../common/toaster";
 
+var value = [
+  {
+    id: "Supervisor",
+    // description: "Supervisor",
+  },
+];
+
 function AllocateUserToRole(props) {
   const usersApiCall = new UserService();
   const masterDataCallApi = new MasterService();
@@ -76,7 +83,7 @@ function AllocateUserToRole(props) {
         setStateSnackbar(true);
       });
   }
-
+  console.log(UserSelectedRoleValue);
 
   return (
     <Card className="user-update-details-card">
@@ -96,7 +103,7 @@ function AllocateUserToRole(props) {
                         : []
                     }
                     getOptionLabel={(option) => option.description}
-                    defaultValue={UserSelectedRoleValue}
+                    defaultValue={value}
                     onChange={handleChangeTeam}
                     filterSelectedOptions
                     className="global-input autocomplete-select"
