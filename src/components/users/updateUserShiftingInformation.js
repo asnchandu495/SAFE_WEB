@@ -118,7 +118,6 @@ function UpdateShiftingInfo(props) {
         .then((shiftInfo) => {
           console.log(shiftInfo);
           if (shiftInfo) {
-            console.log(shiftInfo);
             SetformData(shiftInfo);
           }
           setcomponentLoadder(false);
@@ -127,7 +126,7 @@ function UpdateShiftingInfo(props) {
           console.log(error);
         });
     }
-  }, [props.SelectedRowId]);
+  }, [props]);
 
   function handleDateChangeS(currentTime) {
     let thisTime = "startTime";
@@ -152,7 +151,7 @@ function UpdateShiftingInfo(props) {
   function submitUserShiftInform() {
     setshowLoadder(true);
     var data = formData;
-    data.id = selectedId;
+    data.applicationUserId = selectedId;
     usersApiCall
       .UpdateUserShiftInfo(data)
       .then((result) => {
