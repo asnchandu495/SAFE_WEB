@@ -86,20 +86,16 @@ function GlobalSetting(props) {
     finalData.geoFencingTolerance = parseInt(formData.geoFencingTolerance);
     let finalFacialRecVal = parseFloat(formData.facialTolerance);
     finalData.facialTolerance = finalFacialRecVal;
-    console.log(finalData);
     props
       .createGlobalSetting(finalData)
       .then((result) => {
-        let setName = "id";
-        SetformData((logInForm) => ({
-          ...logInForm,
-          [setName]: result.id,
-        }));
         setStateSnackbar(true);
         setToasterMessage("Global setting data updated");
         settoasterServerity("success");
-        setshowLoadder(false);
         setisAlertBoxOpened(false);
+        setTimeout(() => {
+          setshowLoadder(false);
+        }, 6000);
       })
       .catch((err) => {
         setToasterMessage(err.data.errors);

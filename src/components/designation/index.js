@@ -180,7 +180,7 @@ function ListAssignedDesignation(props) {
     setConfirmationModalActionType("DeactiveDesignation");
     setConfirmationHeaderTittle("Delete Designation");
     setConfirmationDialogContextText(
-      `By deleting designation ${value[1]}, all data related it to it, will be lost. Are you sure you want to
+      `By deleting designation ${value[1]}, all data related to it will be lost. Are you sure you want to
       delete now ?`
     );
   };

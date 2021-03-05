@@ -205,7 +205,7 @@ function UpdateTempearture(props) {
                   ]}
                   errorMessages={[
                     "Please enter tempeature",
-                    "Enter numbers not valid",
+                    "Entered numbers are not valid",
                   ]}
                   id="temperature"
                   placeholder="Temperature"

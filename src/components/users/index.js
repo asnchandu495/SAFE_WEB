@@ -80,11 +80,11 @@ function Users(props) {
   );
 
   useEffect(() => {
-    setcomponentLoadder(true);
     if (prevOpen.current === true && openMoreMenu === false) {
       anchorRef.current.focus();
     }
     prevOpen.current = openMoreMenu;
+    setcomponentLoadder(true);
     props
       .LoadAllUser()
       .then((result) => {
@@ -94,7 +94,7 @@ function Users(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, [openMoreMenu, reloadPage]);
+  }, [reloadPage]);
 
   const handleToggleMoreMenu = (thisRowData) => {
     setSelectedRowDetails(thisRowData);
@@ -246,11 +246,17 @@ function Users(props) {
       },
     },
     {
-      name: "designationName",
+      name: "designation",
       label: "Designation",
       options: {
         filter: false,
         sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return <span>{thisRowData[7].name}</span>;
+          }
+        },
       },
     },
     {

@@ -242,7 +242,7 @@ function CreateNew(props) {
                   ]}
                   errorMessages={[
                     "Please enter contact title",
-                    "Special charcters are not allowed",
+                    "Special characters are not allowed",
                     "Maximum 60 characters",
                   ]}
                   fullWidth
@@ -338,7 +338,7 @@ function CreateNew(props) {
                                   ]}
                                   errorMessages={[
                                     "Please enter purpose",
-                                    "Special charcters are not allowed",
+                                    "Special characters are not allowed",
                                     "Maximum 60 characters",
                                   ]}
                                   fullWidth

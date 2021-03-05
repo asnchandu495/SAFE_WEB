@@ -168,6 +168,7 @@ function CreateUser(props) {
     state: "",
     country: "",
     supervisorId: "",
+    supervisor: "",
     zipCode: null,
   });
 
@@ -193,6 +194,7 @@ function CreateUser(props) {
     state: "",
     country: "",
     supervisorId: "",
+    supervisor: "",
     zipCode: null,
   });
 
@@ -210,6 +212,7 @@ function CreateUser(props) {
           props.userData.applicationUserToSecondaryGroup
         );
         setUserSelectCountry(props.userData.country);
+        setUserSelectSupervisorData(props.userData.supervisor);
       }
     }
 
@@ -248,7 +251,7 @@ function CreateUser(props) {
       .catch((error) => {
         console.log(error);
       });
-  }, [props.users]);
+  }, []);
 
   function UserBasicInfo(e) {
     e.preventDefault();
@@ -260,7 +263,7 @@ function CreateUser(props) {
       if (
         formData.gender &&
         UserSelectedDesignationValue &&
-        formData.supervisorId &&
+        UserSelectSupervisorData &&
         UserSelectCountry
       ) {
         SubmitUserForm();
@@ -282,7 +285,7 @@ function CreateUser(props) {
         UserSelectedTeamValue.length > 0 &&
         UserSelectedPrimaryGroupValue &&
         UserSelectedDesignationValue &&
-        formData.supervisorId &&
+        UserSelectSupervisorData &&
         UserSelectCountry &&
         UserSelectSiteValue.length > 0
       ) {
@@ -301,7 +304,8 @@ function CreateUser(props) {
       data.country = UserSelectCountry;
       data.designation = UserSelectedDesignationValue;
       data.zipCode = parseInt(data.zipCode);
-
+      data.supervisor = UserSelectSupervisorData;
+      data.supervisorId = UserSelectSupervisorData.id;
       props
         .UpdateUser(data)
         .then((result) => {
@@ -309,10 +313,7 @@ function CreateUser(props) {
           setStateSnackbar(true);
           setToasterMessage("User updated");
           settoasterServerity("success");
-          setTimeout(() => {
-            props.history.push("/users/allusers");
-            setshowLoadder(false);
-          }, 3000);
+          setshowLoadder(false);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -329,7 +330,8 @@ function CreateUser(props) {
       data.applicationUserToTeamMapping = UserSelectedTeamValue;
       data.designation = UserSelectedDesignationValue;
       data.zipCode = parseInt(data.zipCode);
-
+      data.supervisor = UserSelectSupervisorData;
+      data.supervisorId = UserSelectSupervisorData.applicationUserId;
       props
         .AddUser(data)
         .then((result) => {
@@ -338,9 +340,9 @@ function CreateUser(props) {
           setToasterMessage("User added");
           settoasterServerity("success");
           setTimeout(() => {
-            props.history.push("/users/allusers");
+            props.history.push(`/users/allusers`);
             setshowLoadder(false);
-          }, 3000);
+          }, 8000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -436,7 +438,7 @@ function CreateUser(props) {
   }
 
   function SelectSuperVisorValidation() {
-    if (formData.supervisorId) {
+    if (UserSelectSupervisorData) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["supervisor"]: false,
@@ -511,17 +513,7 @@ function CreateUser(props) {
 
   function handleChangeSuperVisor(event, value) {
     setisAlertBoxOpened(true);
-    if (value) {
-      SetformData((logInForm) => ({
-        ...logInForm,
-        ["supervisorId"]: value.applicationUserId,
-      }));
-    } else {
-      SetformData((logInForm) => ({
-        ...logInForm,
-        ["supervisorId"]: "",
-      }));
-    }
+    setUserSelectSupervisorData(value);
   }
 
   function handleChange(e) {
@@ -841,7 +833,7 @@ function CreateUser(props) {
                       options={AllSupervisorRole}
                       getOptionLabel={(option) => option.name}
                       onChange={handleChangeSuperVisor}
-                      defaultValue={formData.supervisorId}
+                      defaultValue={UserSelectSupervisorData}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
                       renderInput={(params) => (

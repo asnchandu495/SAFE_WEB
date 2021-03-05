@@ -151,7 +151,7 @@ function CreateSite(props) {
       .catch((error) => {
         console.log(error);
       });
-  }, [props]);
+  }, []);
 
   function UserBasicInfo(e) {
     e.preventDefault();
@@ -246,7 +246,7 @@ function CreateSite(props) {
           setisAlertBoxOpened(false);
           setTimeout(() => {
             props.history.push("/site/all-site");
-          }, 3000);
+          }, 6000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);

@@ -31,9 +31,7 @@ export function createGlobalSetting(data) {
   return function (dispatch) {
     return GlobalSettingApi.AddGlobalSetting(data)
       .then((response) => {
-        data.id = response.id;
         dispatch(CreateGlobalSettingSuccess(data));
-        return response;
       })
       .catch((error) => {
         throw error;
