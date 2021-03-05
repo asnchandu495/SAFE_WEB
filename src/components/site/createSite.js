@@ -10,6 +10,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
@@ -106,6 +108,12 @@ function CreateSite(props) {
   const [allLanguages, setAllLanguages] = useState([]);
   const [siteManger, setSiteManger] = useState([]);
   const [securityManger, setSecurityManger] = useState([]);
+  const [userSelectedSiteManager, setUserSelectedSiteManager] = useState();
+  const [
+    userSelectedSecurityManager,
+    setUserSelectedSecurityManager,
+  ] = useState();
+
   const [formData, SetformData] = useState({
     id: "",
     name: "",
@@ -117,8 +125,10 @@ function CreateSite(props) {
     countryId: "",
     zipCode: "",
     siteManager: "",
+    siteManagerName: "",
     noFloors: "",
     securityManager: "",
+    securityManagerName: "",
     floors: [],
     locations: [],
   });
@@ -140,11 +150,20 @@ function CreateSite(props) {
       .then(
         ([getCountries, getSiteManagers, getLocationManagers, loadData]) => {
           if (siteId && props.userSiteData) {
+            console.log(props.userSiteData);
             SetformData(props.userSiteData);
           }
           setCountryMasterData(getCountries);
           setSiteManger(getSiteManagers);
           setSecurityManger(getLocationManagers);
+          setUserSelectedSecurityManager({
+            applicationUserId: props.userSiteData.securityManager,
+            name: props.userSiteData.securityManagerName,
+          });
+          setUserSelectedSiteManager({
+            applicationUserId: props.userSiteData.siteManager,
+            name: props.userSiteData.siteManagerName,
+          });
           setComponentLoadder(false);
         }
       )
@@ -160,8 +179,8 @@ function CreateSite(props) {
     SelectSecurityManagerValidation();
     if (
       formData.countryId &&
-      formData.siteManager &&
-      formData.securityManager
+      userSelectedSiteManager &&
+      userSelectedSecurityManager
     ) {
       submitCreateSiteForm();
     } else {
@@ -184,7 +203,7 @@ function CreateSite(props) {
   }
 
   function SelectSiteManagerValidation() {
-    if (formData.siteManager) {
+    if (userSelectedSiteManager) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["siteManager"]: false,
@@ -198,7 +217,7 @@ function CreateSite(props) {
   }
 
   function SelectSecurityManagerValidation() {
-    if (formData.securityManager) {
+    if (userSelectedSecurityManager) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["securityManager"]: false,
@@ -216,6 +235,11 @@ function CreateSite(props) {
     var data = formData;
     if (!siteId) {
       data.zipCode = parseInt(data.zipCode);
+      data.siteManager = userSelectedSiteManager.applicationUserId;
+      data.siteManagerName = userSelectedSiteManager.name;
+
+      data.securityManager = userSelectedSecurityManager.applicationUserId;
+      data.securityManagerName = userSelectedSecurityManager.name;
       props
         .AddData(data)
         .then((result) => {
@@ -236,6 +260,11 @@ function CreateSite(props) {
         });
     } else {
       data.zipCode = parseInt(data.zipCode);
+      data.siteManager = userSelectedSiteManager.applicationUserId;
+      data.siteManagerName = userSelectedSiteManager.name;
+
+      data.securityManager = userSelectedSecurityManager.applicationUserId;
+      data.securityManagerName = userSelectedSecurityManager.name;
       props
         .UpdateData(data)
         .then((result) => {
@@ -298,8 +327,14 @@ function CreateSite(props) {
     }
   }
 
-  function BreadcrumbNavigation(getRoute) {
-    props.history.push(getRoute);
+  function handleChangeSiteManager(event, value) {
+    setisAlertBoxOpened(true);
+    setUserSelectedSiteManager(value);
+  }
+
+  function handleChangeSecurityManager(event, value) {
+    setisAlertBoxOpened(true);
+    setUserSelectedSecurityManager(value);
   }
 
   function redirectToViewUsersGroup() {
@@ -388,41 +423,22 @@ function CreateSite(props) {
                       >
                         Site manager
                       </label>
-                      <FormControl variant="outlined" fullWidth>
-                        <InputLabel
-                          id="demo-simple-select-outlined-label"
-                          shrink={false}
-                          className="select-label"
-                        >
-                          {formData.siteManager == ""
-                            ? " Select site manager"
-                            : ""}
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-outlined-label"
-                          id="demo-simple-select-outlined"
-                          placeholder="Select"
-                          name="siteManager"
-                          value={
-                            formData.siteManager ? formData.siteManager : ""
-                          }
-                          onChange={handleChange}
-                          InputLabelProps={{ shrink: false }}
-                          className="global-input single-select"
-                          required
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          {siteManger && siteManger.length > 0
-                            ? siteManger.map((lan) => {
-                                return (
-                                  <MenuItem value={lan.applicationUserId}>
-                                    {lan.name}
-                                  </MenuItem>
-                                );
-                              })
-                            : ""}
-                        </Select>
-                      </FormControl>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={siteManger}
+                        getOptionLabel={(option) => option.name}
+                        onChange={handleChangeSiteManager}
+                        defaultValue={userSelectedSiteManager}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select site manager"
+                          />
+                        )}
+                      />
                       {formFieldValidation.siteManager ? (
                         <FormHelperText className="error-msg">
                           Please select site manager{" "}
@@ -438,43 +454,22 @@ function CreateSite(props) {
                       >
                         Security manager
                       </label>
-                      <FormControl variant="outlined" fullWidth>
-                        <InputLabel
-                          id="demo-simple-select-outlined-label"
-                          shrink={false}
-                          className="select-label"
-                        >
-                          {formData.securityManager == ""
-                            ? " Select security manager"
-                            : ""}
-                        </InputLabel>
-                        <Select
-                          labelId="demo-simple-select-outlined-label"
-                          id="demo-simple-select-outlined"
-                          placeholder="Select"
-                          name="securityManager"
-                          value={
-                            formData.securityManager
-                              ? formData.securityManager
-                              : ""
-                          }
-                          onChange={handleChange}
-                          InputLabelProps={{ shrink: false }}
-                          className="global-input single-select"
-                          required
-                        >
-                          <MenuItem value="">None</MenuItem>
-                          {securityManger && securityManger.length > 0
-                            ? securityManger.map((lan) => {
-                                return (
-                                  <MenuItem value={lan.applicationUserId}>
-                                    {lan.name}
-                                  </MenuItem>
-                                );
-                              })
-                            : ""}
-                        </Select>
-                      </FormControl>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={securityManger}
+                        getOptionLabel={(option) => option.name}
+                        onChange={handleChangeSecurityManager}
+                        defaultValue={userSelectedSecurityManager}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select security manager"
+                          />
+                        )}
+                      />
                       {formFieldValidation.securityManager ? (
                         <FormHelperText className="error-msg">
                           Please select security manager{" "}
