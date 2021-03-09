@@ -58,7 +58,7 @@ function CreateUserGroup(props) {
   function UserBasicInfo(e) {
     setshowLoadder(true);
     e.preventDefault();
-    if (userGroupUpdateid) {
+    if (userGroupUpdateid != 0) {
       var data = formData;
       props
         .UpdateUserGroup(data)

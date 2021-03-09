@@ -63,7 +63,7 @@ function AddDesignation(props) {
   function UserBasicInfo(e) {
     e.preventDefault();
     setshowLoadder(true);
-    if (designationIdFromURL) {
+    if (designationIdFromURL != 0) {
       var data = formData;
       data.attendanceGracetime = parseInt(data.attendanceGracetime);
       props
