@@ -47,6 +47,10 @@ import UserProfie from "./components/profile";
 import InternalServer from "./components/common/ErrorPage/InternalServerError/index";
 import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
 
+// import ViewTeam from './components/teams/ViewTeam';
+import Teams from './components/teams';
+import CreateTeam from './components/teams/CreateTeam';
+
 function App(props) {
   const AuthContainer = () => {
     return (
@@ -181,6 +185,17 @@ function App(props) {
           component={ImportUsersHistory}
         ></Route>
         <Route path="/user/view-profile" component={UserProfie}></Route>
+
+        <Route
+          path="/teams/allteams"
+          component={Teams}
+        ></Route>
+
+        
+        <Route
+          path="/teams/add-teams/0"
+          component={CreateTeam}
+        ></Route>
       </AdminLayout>
     );
   };
@@ -314,6 +329,15 @@ function App(props) {
         ></Route>
         <Route
           path="/users/import-users-history"
+          component={AdminContainer}
+        ></Route>
+
+        <Route
+          path="/teams/allteams"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/teams/add-teams/0"
           component={AdminContainer}
         ></Route>
         <Route path="/users/view-user/:id" component={AdminContainer}></Route>
