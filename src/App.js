@@ -44,12 +44,13 @@ import ImportUsers from "./components/users/ImportUsers";
 import ImportUsersHistory from "./components/users/ImportUserHistory";
 import ViewUser from "./components/users/viewUsers";
 import UserProfie from "./components/profile";
+import Teams from "./components/teams";
+import CreateTeam from "./components/teams/CreateTeam";
+import Questionaire from "./components/questionaires";
+import ConfigureQuestionaire from "./components/questionaires/create";
+import AddQuestion from "./components/questionaires/addQuestion";
 import InternalServer from "./components/common/ErrorPage/InternalServerError/index";
 import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
-
-// import ViewTeam from './components/teams/ViewTeam';
-import Teams from './components/teams';
-import CreateTeam from './components/teams/CreateTeam';
 
 function App(props) {
   const AuthContainer = () => {
@@ -185,19 +186,20 @@ function App(props) {
           component={ImportUsersHistory}
         ></Route>
         <Route path="/user/view-profile" component={UserProfie}></Route>
-
+        <Route path="/teams/allteams" component={Teams}></Route>
+        <Route path="/teams/add-teams/:id" component={CreateTeam}></Route>
         <Route
-          path="/teams/allteams"
-          component={Teams}
+          path="/questionaires/allquestionaires"
+          component={Questionaire}
         ></Route>
-
-        
         <Route
-          path="/teams/add-teams/:id"
-          component={CreateTeam}
+          path="/questionaires/create-questionaire/:id"
+          component={ConfigureQuestionaire}
         ></Route>
-
-        
+        <Route
+          path="/questionaires/add-questions/:id/:qid"
+          component={AddQuestion}
+        ></Route>
       </AdminLayout>
     );
   };
@@ -333,20 +335,22 @@ function App(props) {
           path="/users/import-users-history"
           component={AdminContainer}
         ></Route>
-
-        <Route
-          path="/teams/allteams"
-          component={AdminContainer}
-        ></Route>
-        <Route
-          path="/teams/add-teams/:id"
-          component={AdminContainer}
-        ></Route>
-
-        
-        
         <Route path="/users/view-user/:id" component={AdminContainer}></Route>
         <Route path="/user/view-profile" component={AdminContainer}></Route>
+        <Route path="/teams/allteams" component={AdminContainer}></Route>
+        <Route path="/teams/add-teams/:id" component={AdminContainer}></Route>
+        <Route
+          path="/questionaires/allquestionaires"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/questionaires/create-questionaire/:id"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/questionaires/add-questions/:id/:qid"
+          component={AdminContainer}
+        ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />
         <Route path="/Unauthorized" component={ErrorPageContainer} />
       </Switch>
