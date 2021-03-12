@@ -35,7 +35,8 @@ import LiveHelpIcon from "@material-ui/icons/LiveHelp";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import AuthService from "../../services/authService";
-import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import GroupWorkIcon from "@material-ui/icons/GroupWork";
+import ListAltIcon from "@material-ui/icons/ListAlt";
 import Logo from "../assets/Logo-dashboard.svg";
 import "./AdminLayout.scss";
 
@@ -136,8 +137,8 @@ function AdminLayout(props) {
   const [openCovidStateMenu, setopenCovidStateMenu] = useState(false);
   const [openFAQMenu, setopenFAQMenu] = useState(false);
   const [openSiteMenu, setopenSiteMenu] = useState(false);
-  const [openTeamMenu,setTeamMenu]=useState(false);
-
+  const [openTeamMenu, setTeamMenu] = useState(false);
+  const [openQuestionaires, setOpenQuestionaires] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -158,6 +159,8 @@ function AdminLayout(props) {
     setopenFAQMenu(false);
     setopenSetting(false);
     setopenSiteMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
   };
 
   const handleClickSetting = (value) => {
@@ -170,6 +173,8 @@ function AdminLayout(props) {
     setopenCovidStateMenu(false);
     setopenFAQMenu(false);
     setopenSiteMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
   };
 
   const handleClickUserManagment = (value) => {
@@ -182,6 +187,8 @@ function AdminLayout(props) {
     setopenFAQMenu(false);
     setopenSetting(false);
     setopenSiteMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
   };
 
   const handleClickEmergencyContact = (value) => {
@@ -194,6 +201,8 @@ function AdminLayout(props) {
     setopenFAQMenu(false);
     setopenSetting(false);
     setopenSiteMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
   };
 
   const handleClickLevelMenuForOpenDesignation = (value) => {
@@ -206,6 +215,8 @@ function AdminLayout(props) {
     setopenFAQMenu(false);
     setopenSetting(false);
     setopenSiteMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
   };
 
   const handleClickLevelMenuCovidState = (value) => {
@@ -218,6 +229,8 @@ function AdminLayout(props) {
     setopenFAQMenu(false);
     setopenSetting(false);
     setopenSiteMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
   };
 
   const handleClickLevelMenuFAQ = () => {
@@ -230,6 +243,8 @@ function AdminLayout(props) {
     setopenSetting(false);
     setopenSiteMenu(false);
     setopenFAQMenu(!openFAQMenu);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
   };
 
   const handleClickLevelSiteMenu = () => {
@@ -242,11 +257,11 @@ function AdminLayout(props) {
     setopenSetting(false);
     setopenSiteMenu(!openSiteMenu);
     setopenFAQMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
   };
 
-
-
-  const handleClickTeams= (value) => {
+  const handleClickTeams = (value) => {
     setOpenDrawer(true);
     setopenUserManagment(false);
     setOpenUsers(false);
@@ -257,13 +272,22 @@ function AdminLayout(props) {
     setopenSetting(false);
     setopenSiteMenu(false);
     setTeamMenu(!openTeamMenu);
+    setOpenQuestionaires(false);
   };
 
-
-
-
-
-
+  const handleClickopenQuestionaire = () => {
+    setOpenDrawer(true);
+    setopenEmergencyContact(false);
+    setOpenUsers(false);
+    setopenUserManagment(false);
+    setopenDesiginationMenu(false);
+    setopenCovidStateMenu(false);
+    setopenSetting(false);
+    setopenSiteMenu(false);
+    setopenFAQMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(!openQuestionaires);
+  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -769,10 +793,6 @@ function AdminLayout(props) {
               </Collapse>
               <Divider></Divider>
 
-
-
-                    
-              
               <ListItem button onClick={handleClickEmergencyContact}>
                 <ListItemIcon>
                   <ContactPhoneIcon />
@@ -830,28 +850,9 @@ function AdminLayout(props) {
                     </ListItemIcon>
                     <ListItemText primary="Assign" />
                   </ListItem>
-
-
-                  
-                    
-                  
-
-
-
-
-
-
-
-
-
-
                 </List>
               </Collapse>
-              
-
-
-
-
+              <Divider></Divider>
               <ListItem button onClick={handleClickTeams}>
                 <ListItemIcon>
                   <GroupWorkIcon />
@@ -876,20 +877,17 @@ function AdminLayout(props) {
                     [classes.hide]: !openDrawer,
                   })}
                 >
-
-                <ListItem
-                  button
-                  className={classes.nested}
-                  component={Link}
-                  to="/teams/allteams">
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/teams/allteams"
+                  >
                     <ListItemIcon>
-                      <ArrowForwardIcon/> </ListItemIcon>
-                      <ListItemText primary="View"/>
-                   
+                      <ArrowForwardIcon />{" "}
+                    </ListItemIcon>
+                    <ListItemText primary="View" />
                   </ListItem>
-
-
-
 
                   <ListItem
                     button
@@ -902,32 +900,58 @@ function AdminLayout(props) {
                     </ListItemIcon>
                     <ListItemText primary="CREATE" />
                   </ListItem>
-
-
-                  
-                
-                 
-
-
-
-
-                  
-
-
-
                 </List>
               </Collapse>
               <Divider></Divider>
-
-
-
-
-
-
-
-
-
-              
+              <ListItem button onClick={handleClickopenQuestionaire}>
+                <ListItemIcon>
+                  <ListAltIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="questionaires"
+                  className={clsx({
+                    [classes.hide]: !openDrawer,
+                  })}
+                />
+                {openQuestionaires ? (
+                  <ExpandLess className="exp-coll-icon" />
+                ) : (
+                  <ExpandMore className="exp-coll-icon" />
+                )}
+              </ListItem>
+              <Collapse in={openQuestionaires} timeout="auto" unmountOnExit>
+                <List
+                  component="div"
+                  disablePadding
+                  className={clsx({
+                    [classes.hide]: !openDrawer,
+                  })}
+                >
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/questionaires/allquestionaires"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="View" />
+                  </ListItem>
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/questionaires/create-questionaire/0"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Create" />
+                  </ListItem>
+                </List>
+              </Collapse>
+              <Divider></Divider>
             </List>
           </div>
         </Scrollbars>
