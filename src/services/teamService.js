@@ -35,8 +35,8 @@ export default class teamsApi {
     });
   }
 
-  deleteUserGroup(data) {
-    return this.fetch(`${this.baseURL}/Group/DeleteGroup/` + data, {
+  deleteTeam(data) {
+    return this.fetch(`${this.baseURL}/Team/DeleteTeam/${data}` , {
       method: "DELETE",
     }).then((res) => {
       return Promise.resolve(res);
@@ -67,13 +67,16 @@ export default class teamsApi {
       return Promise.resolve(res);
     });
   }
-  
+  getToken() {
+    // Retrieves the user token from localStorage
+    return localStorage.getItem("id_token");
+  }
   
   fetch(url, options) {
     // performs api calls sending the required authentication headers
     const headers = {};
 
-    // headers["Authorization"] = "Bearer " + this.getToken();
+    headers["Authorization"] = "Bearer " + this.getToken();
     headers["Accept"] = "application/json";
     headers["Access-Control-Allow-Origin"] = "*";
     headers["Content-Type"] = "application/json";

@@ -11,6 +11,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import teamService from '../../services/teamService';
+
+import ConfirmationDialog from "../common/confirmdialogbox";
   
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -45,7 +47,24 @@ const Teams=(props)=> {
   const teamApiCall = new teamService();
     const [ teamList,setTeamList] =useState([]);
     let history = useHistory();
+    const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
     
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [
+    ConfirmationDialogContextText,
+    setConfirmationDialogContextText,
+  ] = useState("");
+  
+  const [
+    ConfirmationModalActionType,
+    setConfirmationModalActionType,
+  ] = useState("");
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+  
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
 
 
     useEffect(() => {
@@ -67,6 +86,18 @@ const Teams=(props)=> {
       console.log(value);
       props.history.push(`/teams/add-teams/${userId}`);
     }
+
+
+    
+  function handleClickDeleteUserGrup(value) {
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteTeams");
+    setConfirmationHeaderTittle("Delete Team");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${value[1]} ?`
+    );
+  }
  
     // const classes = style();
 
@@ -145,7 +176,7 @@ const Teams=(props)=> {
                         color="default"
                         startIcon={<DeleteIcon />}
                         className={`delete-icon`}
-                        onClick="#"
+                        onClick={() => handleClickDeleteUserGrup(thisRowData)}
                       ></Button>
                     </Tooltip>
                     
@@ -219,6 +250,18 @@ const Teams=(props)=> {
      />
            </MuiThemeProvider>
         
+
+           <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        SelectedRowDetails={SelectedRowDetails}
+      />
      </div>
  );
 }
