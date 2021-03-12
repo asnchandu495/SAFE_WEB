@@ -23,6 +23,7 @@ import * as AddFloorAction from "../../../Redux/Action/addFloorAction";
 import PropTypes from "prop-types";
 import FaqService from "../../../services/faqService";
 
+
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -343,7 +344,7 @@ const mapDispatchToProps = {
   ChangeAssignEmergencyContactStatus:
     AssignEmergencyContactAction.UpdateAssignEmergencyContact,
   DeleteUser: UserAction.deleteUser,
-  DelteUserGroup: UserGroupAction.deleteUserGroup,
+  
   DelteUserDesignation: DesignationAction.deleteUserDesignation,
   DelteCovidState: CovidStateAction.deleteCovidState,
   DeleteFaq: FaqAction.deleteFaq,

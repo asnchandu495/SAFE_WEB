@@ -35,6 +35,7 @@ import LiveHelpIcon from "@material-ui/icons/LiveHelp";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import LocationCityIcon from "@material-ui/icons/LocationCity";
 import AuthService from "../../services/authService";
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
 import Logo from "../assets/Logo-dashboard.svg";
 import "./AdminLayout.scss";
 
@@ -135,6 +136,8 @@ function AdminLayout(props) {
   const [openCovidStateMenu, setopenCovidStateMenu] = useState(false);
   const [openFAQMenu, setopenFAQMenu] = useState(false);
   const [openSiteMenu, setopenSiteMenu] = useState(false);
+  const [openTeamMenu,setTeamMenu]=useState(false);
+
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -240,6 +243,27 @@ function AdminLayout(props) {
     setopenSiteMenu(!openSiteMenu);
     setopenFAQMenu(false);
   };
+
+
+
+  const handleClickTeams= (value) => {
+    setOpenDrawer(true);
+    setopenUserManagment(false);
+    setOpenUsers(false);
+    setopenEmergencyContact(false);
+    setopenDesiginationMenu(false);
+    setopenCovidStateMenu(false);
+    setopenFAQMenu(false);
+    setopenSetting(false);
+    setopenSiteMenu(false);
+    setTeamMenu(!openTeamMenu);
+  };
+
+
+
+
+
+
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -744,6 +768,11 @@ function AdminLayout(props) {
                 </List>
               </Collapse>
               <Divider></Divider>
+
+
+
+                    
+              
               <ListItem button onClick={handleClickEmergencyContact}>
                 <ListItemIcon>
                   <ContactPhoneIcon />
@@ -801,8 +830,104 @@ function AdminLayout(props) {
                     </ListItemIcon>
                     <ListItemText primary="Assign" />
                   </ListItem>
+
+
+                  
+                    
+                  
+
+
+
+
+
+
+
+
+
+
                 </List>
               </Collapse>
+              
+
+
+
+
+              <ListItem button onClick={handleClickTeams}>
+                <ListItemIcon>
+                  <GroupWorkIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Teams"
+                  className={clsx({
+                    [classes.hide]: !openDrawer,
+                  })}
+                />
+                {openTeamMenu ? (
+                  <ExpandLess className="exp-coll-icon" />
+                ) : (
+                  <ExpandMore className="exp-coll-icon" />
+                )}
+              </ListItem>
+              <Collapse in={openTeamMenu} timeout="auto" unmountOnExit>
+                <List
+                  component="div"
+                  disablePadding
+                  className={clsx({
+                    [classes.hide]: !openDrawer,
+                  })}
+                >
+
+                <ListItem
+                  button
+                  className={classes.nested}
+                  component={Link}
+                  to="/teams/allteams">
+                    <ListItemIcon>
+                      <ArrowForwardIcon/> </ListItemIcon>
+                      <ListItemText primary="View"/>
+                   
+                  </ListItem>
+
+
+
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/teams/add-teams/0"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="CREATE" />
+                  </ListItem>
+
+
+                  
+                
+                 
+
+
+
+
+                  
+
+
+
+                </List>
+              </Collapse>
+              <Divider></Divider>
+
+
+
+
+
+
+
+
+
+              
             </List>
           </div>
         </Scrollbars>

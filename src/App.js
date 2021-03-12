@@ -47,6 +47,10 @@ import UserProfie from "./components/profile";
 import InternalServer from "./components/common/ErrorPage/InternalServerError/index";
 import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
 
+// import ViewTeam from './components/teams/ViewTeam';
+import Teams from './components/teams';
+import CreateTeam from './components/teams/CreateTeam';
+
 function App(props) {
   const AuthContainer = () => {
     return (
@@ -181,6 +185,19 @@ function App(props) {
           component={ImportUsersHistory}
         ></Route>
         <Route path="/user/view-profile" component={UserProfie}></Route>
+
+        <Route
+          path="/teams/allteams"
+          component={Teams}
+        ></Route>
+
+        
+        <Route
+          path="/teams/add-teams/:id"
+          component={CreateTeam}
+        ></Route>
+
+        
       </AdminLayout>
     );
   };
@@ -239,7 +256,7 @@ function App(props) {
           component={AdminContainer}
         ></Route>
         <Route
-          path="/designation/update-designation/:id"
+          path="/deupdate-designationsignation//:id"
           component={AdminContainer}
         ></Route>
         <Route
@@ -316,6 +333,18 @@ function App(props) {
           path="/users/import-users-history"
           component={AdminContainer}
         ></Route>
+
+        <Route
+          path="/teams/allteams"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/teams/add-teams/:id"
+          component={AdminContainer}
+        ></Route>
+
+        
+        
         <Route path="/users/view-user/:id" component={AdminContainer}></Route>
         <Route path="/user/view-profile" component={AdminContainer}></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />
