@@ -10,9 +10,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
- 
+import teamService from '../../services/teamService';
+  
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
 const style = makeStyles({
   titleItemRight: {
@@ -39,16 +41,37 @@ const theme1 = createMuiTheme({
     },
   },
 });
-const Teams=()=> {
-    // const [ data,setdata] =useState([]);
- 
-    const classes = style();
+const Teams=(props)=> {
+  const teamApiCall = new teamService();
+    const [ teamList,setTeamList] =useState([]);
+    let history = useHistory();
+    
 
-    let data=[
-        ["Team1", "Team 1", "Manager 1"],
-        ["Team1", "Team 2", "Manager 2"],
-        ["Team3", "Team 3", "Manager 3  "],
-      ];
+
+    useEffect(() => {
+      teamApiCall.getTeamList()
+      .then((res)=>{
+        // console.log(res);
+        setTeamList(res);
+      })
+      .catch((error) => {
+       console.log(error);
+     });
+
+
+
+
+     }, []);
+     function handleClickUpdateTeams(value) {
+      var userId = value[0];
+      console.log(value);
+      props.history.push(`/teams/add-teams/${userId}`);
+    }
+ 
+    // const classes = style();
+
+    
+
     
       const columns = [
         {
@@ -69,11 +92,20 @@ const Teams=()=> {
           },
         },
         {
-          name: "floors",
+          name: "teamanager",
           label: "Team Manager",
           options: {
             filter: false,
             sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+              var thisRowData = tableMeta.rowData;
+              if (thisRowData) {
+                console.log(thisRowData);
+                return  <span>{thisRowData[2].name}</span>
+                 
+                
+              }
+            },
           },
         },
        
@@ -103,7 +135,7 @@ const Teams=()=> {
                         color="default"
                         startIcon={<EditIcon />}
                         className={`edit-icon`}
-                        onClick="#"
+                        onClick={() => handleClickUpdateTeams(thisRowData)}
                       ></Button>
                     </Tooltip>
                    
@@ -180,7 +212,7 @@ const Teams=()=> {
       <MuiThemeProvider theme={theme1}>
             {" "}
      <MUIDataTable
-     data={data}
+     data={teamList}
      columns={columns}
      options={options}
      className="global-table"
