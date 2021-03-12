@@ -17,7 +17,9 @@ import ConfirmationDialog from "../common/confirmdialogbox";
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
-
+import { connect } from "react-redux";
+import * as teamAction from "../../Redux/Action/teamAction";
+import propTypes from "prop-types";
 const style = makeStyles({
   titleItemRight: {
     color: "white",
@@ -43,7 +45,7 @@ const theme1 = createMuiTheme({
     },
   },
 });
-const Teams=(props)=> {
+function Teams(props) {
   const teamApiCall = new teamService();
     const [ teamList,setTeamList] =useState([]);
     let history = useHistory();
@@ -65,13 +67,18 @@ const Teams=(props)=> {
   
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-
-
+  const [reloadPage, setReloadPage] = useState("NO");
+  
+  const [componentLoadder, setcomponentLoadder] = useState(true);
     useEffect(() => {
-      teamApiCall.getTeamList()
+      setcomponentLoadder(true);
+      props
+      .LoadAllTeams()
       .then((res)=>{
         // console.log(res);
-        setTeamList(res);
+        // setReloadPage("NO");
+        // setcomponentLoadder(false);
+        // setTeamList(res);
       })
       .catch((error) => {
        console.log(error);
@@ -80,7 +87,7 @@ const Teams=(props)=> {
 
 
 
-     }, []);
+     }, [reloadPage]);
      function handleClickUpdateTeams(value) {
       var userId = value[0];
       console.log(value);
@@ -243,7 +250,7 @@ const Teams=(props)=> {
       <MuiThemeProvider theme={theme1}>
             {" "}
      <MUIDataTable
-     data={teamList}
+     data={ props.TeamData && props.TeamData.length > 0 ? props.TeamData : [] }
      columns={columns}
      options={options}
      className="global-table"
@@ -265,6 +272,26 @@ const Teams=(props)=> {
      </div>
  );
 }
+
+
+Teams.propTypes={
+  TeamData:propTypes.array.isRequired,
+  LoadAllTeams:propTypes.func.isRequired,
+};
+
+function mapStateToProps(state,ownProps){
+  return {
+    TeamData: state.team,
+  };
+}
+
+
+const mapDispatchToProps={
+  LoadAllTeams:teamAction.loadTeam,
+}
   
-  export default Teams;
+  // export default Teams;
+  
+export default connect(mapStateToProps, mapDispatchToProps)(Teams);
+
   

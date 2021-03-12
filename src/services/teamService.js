@@ -1,6 +1,6 @@
 import Environment from "../shared/Constants";
 
-export default class teamsApi {
+export default class TeamService {
   constructor() {
     this.baseURL = Environment.baseURL;
     this.authURL = Environment.authURL;
@@ -53,8 +53,8 @@ export default class teamsApi {
     });
   }
 
-  getGroupInfo(id) {
-    return this.fetch(`${this.baseURL}/Group/ViewGroup/${id}`, {
+  viewApplicationUserByTeamId(id) {
+    return this.fetch(`${this.baseURL}/Team/ViewApplicationUserByTeamId?Id=${id}`, {
       method: "GET",
     }).then((res) => {
       return Promise.resolve(res);
