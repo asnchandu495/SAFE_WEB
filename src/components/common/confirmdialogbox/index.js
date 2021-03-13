@@ -117,6 +117,7 @@ function CustomizedDialogs(props) {
         .deleteTeam(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
+          props.setStateSnackbar(true);
           props.setToasterMessage("Team deleted");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);

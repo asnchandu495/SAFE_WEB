@@ -46,6 +46,7 @@ import ViewUser from "./components/users/viewUsers";
 import UserProfie from "./components/profile";
 import Teams from "./components/teams";
 import CreateTeam from "./components/teams/CreateTeam";
+import AddedPrimaryUserTeam from "./components/teams/addedprimaryuserteam"
 import Questionaire from "./components/questionaires";
 import ConfigureQuestionaire from "./components/questionaires/create";
 import AddQuestion from "./components/questionaires/addQuestion";
@@ -188,6 +189,10 @@ function App(props) {
         <Route path="/user/view-profile" component={UserProfie}></Route>
         <Route path="/teams/allteams" component={Teams}></Route>
         <Route path="/teams/add-teams/:id" component={CreateTeam}></Route>
+        <Route
+          path="/teams/add-primary-user-teams/:id"
+          component={AddedPrimaryUserTeam}
+        ></Route>
         <Route
           path="/questionaires/allquestionaires"
           component={Questionaire}
@@ -339,6 +344,8 @@ function App(props) {
         <Route path="/user/view-profile" component={AdminContainer}></Route>
         <Route path="/teams/allteams" component={AdminContainer}></Route>
         <Route path="/teams/add-teams/:id" component={AdminContainer}></Route>
+        <Route path="/teams/add-primary-user-teams/:id"  component={AdminContainer}
+        ></Route>
         <Route
           path="/questionaires/allquestionaires"
           component={AdminContainer}

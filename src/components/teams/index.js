@@ -19,6 +19,8 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import * as teamAction from "../../Redux/Action/teamAction";
+
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import propTypes from "prop-types";
 const style = makeStyles({
   titleItemRight: {
@@ -96,7 +98,7 @@ function Teams(props) {
 
 
     
-  function handleClickDeleteUserGrup(value) {
+  function handleClickDeleteTeam(value) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteTeams");
@@ -104,6 +106,11 @@ function Teams(props) {
     setConfirmationDialogContextText(
       `Are you sure you want to delete ${value[1]} ?`
     );
+  }
+
+  function handleClickaddedsecondaryteams(value) {
+    var groupId = value[0];
+    props.history.push("/teams/add-primary-user-teams/" + groupId);
   }
  
     // const classes = style();
@@ -183,9 +190,20 @@ function Teams(props) {
                         color="default"
                         startIcon={<DeleteIcon />}
                         className={`delete-icon`}
-                        onClick={() => handleClickDeleteUserGrup(thisRowData)}
+                        onClick={() => handleClickDeleteTeam(thisRowData)}
                       ></Button>
                     </Tooltip>
+
+
+                    <Tooltip title="Assign users as primary team">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<GroupAddIcon />}
+                    className={`edit-icon`}
+                    onClick={()=>handleClickaddedsecondaryteams(thisRowData)}
+                     ></Button>
+                </Tooltip>
                     
                   </div>
                 );
@@ -214,12 +232,12 @@ function Teams(props) {
         selectableRows: false,
         textLabels: {
           body: {
-            noMatch: "There are no users assign teams",
+            noMatch: "There are no users  teams",
           },
         },
       };
     
- 
+      
  
  return (
    
