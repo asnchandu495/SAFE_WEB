@@ -774,6 +774,7 @@ label.required {
     width: 100%;
     .question-type-card {
       max-width: 300px;
+      min-width: 300px;
       width: 100%;
       box-shadow: none;
       border: 1px solid #f5f5f5;
@@ -790,11 +791,53 @@ label.required {
         padding: 10px;
       }
     }
+    .question-card {
+      width: 100%;
+      box-shadow: none;
+      border: 1px solid #f5f5f5;
+      border-radius: 2px;
+      .MuiCardContent-root {
+        padding: 0;
+      }
+      .MuiTypography-gutterBottom {
+        border-bottom: 1px solid #f5f5f5;
+        padding: 8px;
+        font-size: 16px;
+      }
+      .card-form {
+        padding: 10px;
+      }
+      .MuiInputBase-input {
+        height: 19px;
+      }
+      .MuiOutlinedInput-inputMultiline {
+        height: 48px;
+      }
+    }
     .action-container {
       display: inline-flex !important;
       justify-content: flex-end;
       width: 100%;
       border-top: 1px solid #f5f5f5;
     }
+    .center-align {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .global-form {
+      width: 100%;
+    }
+    .question-flags {
+      border-top: 1px solid #f5f5f5;
+      padding: 0 10px;
+    }
+    .question-details {
+      padding: 10px;
+    }
   }
+}
+
+.m-top-10 {
+  margin-top: 10px !important;
 }
