@@ -289,3 +289,5 @@ function teamCreation(e){
     );
 }
 export default CreateTeam;
+
+// export default connect(mapStateToProps, mapDispatchToProps)(CreateTeam);
