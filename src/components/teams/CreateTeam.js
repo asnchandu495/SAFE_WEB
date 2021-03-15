@@ -30,7 +30,7 @@ function CreateTeam(props) {
         country: false,
       });
       const[teamManagers,setTeamManagers]=useState([]);
-      const[selectedTeamManager,setSelectedTeamManager]=useState({});
+      const[selectedTeamManager,setSelectedTeamManager]=useState();
       const [stateSnackbar, setStateSnackbar] = useState(false);
     const [toasterMessage, setToasterMessage] = useState("");
     const [toasterServerity, settoasterServerity] = useState("");
@@ -54,39 +54,25 @@ function CreateTeam(props) {
         }
     });
       
-      useEffect(() => {
-        var data = formData;
-        if (teamId != 0) {
-          teamApiCall.viewApplicationUserByTeamId(teamId)
-          .then((res)=>{
-           
-              console.log(res);
-          })
-          .catch((error) => {
-           console.log(error);
-         });
-          // // data.name = name;
-          // // data.desc = desc;
-          // data.manager = selectedTeamManager;
-         
-          // // setComponentLoadder(true);
-          // teamApiCall.updateTeams()
-          // .then((result) => {
-          //   console.log(result);
-          //   // setComponentLoadder(false);
-          // })
-          // .catch((err) => {
-          //   console.log(err);
-          // });
-          // console.log(props);
-        }
-        // }else{
-    
-        // alert(teamId);
+      useEffect(() => {       
+        
        teamApiCall.getTeamManager()
        .then((res)=>{
-        
+         console.log(res);
            setTeamManagers(res);
+           if (teamId != 0) {
+            teamApiCall.viewApplicationUserByTeamId(teamId)
+            .then((teamData)=>{
+              // console.log(teamData.teamanager);
+              setComponentLoadder(true);
+              SetformData(teamData);
+              setSelectedTeamManager(teamData.teamanager);
+            })
+            .catch((error) => {
+             console.log(error);
+           });
+            
+          }
        })
        .catch((error) => {
         console.log(error);
@@ -111,6 +97,29 @@ function teamCreation(e){
   e.preventDefault();
  
    const teamData=formData;
+   if(teamId!=0){
+    
+    teamData.manager=selectedTeamManager;
+    
+    // setSelectedTeamManager=teamData.teamanager.name;
+    teamApiCall.updateTeams(teamData)
+    .then((result) => {
+      setshowLoadder(false);
+      setStateSnackbar(true);
+      setToasterMessage("Team  Updated");
+      settoasterServerity("success");
+      setTimeout(() => {
+        props.history.push("/teams/allteams");
+        setshowLoadder(false);
+      }, 3000);
+    })
+    .catch((err) => {
+      setToasterMessage(err.data.errors);
+      settoasterServerity("error");
+      setStateSnackbar(true);
+      setshowLoadder(false);
+    });
+   }else{
   teamData.manager=selectedTeamManager;
   // console.log(teamData);
   teamApiCall.createTeams(teamData)
@@ -130,7 +139,7 @@ function teamCreation(e){
     setStateSnackbar(true);
     setshowLoadder(false);
   });
-  
+}
 
 
 }
@@ -154,12 +163,9 @@ function teamCreation(e){
         Teams
         </LinkTo>
         <LinkTo
-          color="textPrimary"
-          href="#"
-          to={`usergroups/allusergroups`}
-          className="inactive"
+          color="textPrimary" href="#" className="active"
         >
-          Create Team
+          {teamId != 0 ? "Update Team " : "Create Team "}
         </LinkTo>
         
             </Breadcrumbs>
@@ -168,7 +174,7 @@ function teamCreation(e){
         <Grid container spacing={3}>
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label className="required">Team Name</label>
+                  <label className="input-label required">Team Name</label>
                 </Grid>
                 <Grid item xs={5}>
                   <TextValidator
@@ -187,8 +193,10 @@ function teamCreation(e){
                     id="name"
                     placeholder="Team name"
                     name="name"
+                    autoComplete="name"
                     onChange={handleChange}
                     value={formData.name}
+                    autoFocus
                     InputLabelProps={{ shrink: false }}
                     className="global-input"
                   />
@@ -228,7 +236,8 @@ function teamCreation(e){
                         options={teamManagers}
                         getOptionLabel={(option) => option.name}
                         onChange={handleChangeTeamManagers}
-                        defaultValue="#"
+                        defaultValue={selectedTeamManager}
+                        
                         filterSelectedOptions
                         className="global-input autocomplete-select"
                         renderInput={(params) => (
@@ -239,7 +248,7 @@ function teamCreation(e){
                           />
                         )}
                       />
-                      {formFieldValidation.securityManager ? (
+                      {formFieldValidation.manager ? (
                         <FormHelperText className="error-msg">
                           Please select  manager{" "}
                         </FormHelperText>

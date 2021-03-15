@@ -19,7 +19,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import * as teamAction from "../../Redux/Action/teamAction";
-
+import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import propTypes from "prop-types";
 const style = makeStyles({
@@ -79,7 +79,7 @@ function Teams(props) {
       .then((res)=>{
         // console.log(res);
         // setReloadPage("NO");
-        // setcomponentLoadder(false);
+        setcomponentLoadder(false);
         // setTeamList(res);
       })
       .catch((error) => {
@@ -144,7 +144,7 @@ function Teams(props) {
           },
         },
         {
-          name: "teamanager",
+          name: "manager",
           label: "Team Manager",
           options: {
             filter: false,
@@ -248,7 +248,11 @@ function Teams(props) {
  
  return (
    
-     <div>
+  <div className="innerpage-container">
+        {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <>
         <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
             <LinkTo
               color="inherit"
@@ -280,8 +284,11 @@ function Teams(props) {
      options={options}
      className="global-table"
      />
+     
            </MuiThemeProvider>
         
+           </>
+      )}
 
            <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}

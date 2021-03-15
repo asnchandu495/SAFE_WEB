@@ -45,7 +45,7 @@ export default class TeamService {
 
   assignUserGroups(data) {
     var finalData = JSON.stringify(data);
-    return this.fetch(`${this.baseURL}/Group/AssignUserGroups`, {
+    return this.fetch(`${this.baseURL}/Team/AssignApplicationUsersToTeam`, {
       method: "POST",
       body: finalData,
     }).then((res) => {
@@ -68,15 +68,15 @@ export default class TeamService {
     });
   }
 
-  assignUserGroups(data) {
-    var finalData = JSON.stringify(data);
-    return this.fetch(`${this.baseURL}/Group/AssignUserGroups`, {
-      method: "POST",
-      body: finalData,
-    }).then((res) => {
-      return Promise.resolve(res);
-    });
-  }
+  // assignUserGroups(data) {
+  //   var finalData = JSON.stringify(data);
+  //   return this.fetch(`${this.baseURL}/Group/AssignUserGroups`, {
+  //     method: "POST",
+  //     body: finalData,
+  //   }).then((res) => {
+  //     return Promise.resolve(res);
+  //   });
+  // }
 
   getToken() {
     // Retrieves the user token from localStorage
