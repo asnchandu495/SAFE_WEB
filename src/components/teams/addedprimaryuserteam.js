@@ -66,10 +66,25 @@ function AddPrimaryUserTeam(props) {
         UsersApi.ListApplicationUsers(),
       ])
         .then(([teamInfo,applicationUsers]) => {
+          let primaryUsers = teamInfo.users;
          setApplicationUsers(applicationUsers);
          setSelectedTeamInfo(teamInfo);
-        
+         setComponentLoadder(false);
+         var selectedUsersToGroupArray = [];
+          
+         applicationUsers.map((user, i) => {
+          const found = primaryUsers.some((u) => u.id === user.id);
+          // console.log(user.id);
          
+          if (found) {
+            // console.log(selectedUsersToGroupArray);
+           
+            selectedUsersToGroupArray.push(i);
+          }else{
+            console.log('no');
+          }
+        });
+        setSelectedUsersToGroup(selectedUsersToGroupArray);
           setComponentLoadder(false);
           
         })
@@ -97,8 +112,10 @@ function AddPrimaryUserTeam(props) {
     rowsSelected: selectedUsersToGroup,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
       setSelectedUsers(allRowsSelected);
+      console.log(allRowsSelected);
       var selectedUsersToGroupArray = [];
       allRowsSelected.map((user, i) => {
+        // console.log(user.dataIndex);
         selectedUsersToGroupArray.push(user.dataIndex);
       });
       setSelectedUsersToGroup(selectedUsersToGroupArray);
