@@ -17,6 +17,8 @@ import Typography from "@material-ui/core/Typography";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
 function AddQuestion(props) {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -121,39 +123,134 @@ function AddQuestion(props) {
           </Grid>
           <Grid item xs={12} sm={9}>
             <Paper className="add-new-question">
-              <Card className="question-type-card">
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="h6">
-                    Question type
-                  </Typography>
-                  <div className="card-form">
-                    <FormControl variant="outlined" fullWidth>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value=""
-                        name="gender"
-                        // onChange={handleChange}
-                        placeholder="Gender"
-                        InputLabelProps={{ shrink: false }}
-                        className="global-input single-select"
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={"Male"}>Male</MenuItem>
-                        <MenuItem value={"Female"}>Female</MenuItem>
-                        <MenuItem value={"Others"}>Others</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
-                </CardContent>
-                <CardActions className="action-container">
-                  <Button size="small" color="primary">
-                    Next
-                  </Button>
-                </CardActions>
-              </Card>
+              <ValidatorForm className={`global-form`}>
+                <Grid container spacing={0}>
+                  <Grid item xs={12} sm={12} className="center-align">
+                    <Card className="question-type-card">
+                      <CardContent>
+                        <Typography gutterBottom variant="h6" component="h6">
+                          Question type
+                        </Typography>
+                        <div className="card-form">
+                          <FormControl variant="outlined" fullWidth>
+                            <InputLabel
+                              id="demo-simple-select-outlined-label"
+                              shrink={false}
+                              className="select-label"
+                            >
+                              Question type
+                            </InputLabel>
+                            <Select
+                              labelId="demo-simple-select-outlined-label"
+                              id="demo-simple-select-outlined"
+                              value=""
+                              name="gender"
+                              // onChange={handleChange}
+                              placeholder="Question type"
+                              InputLabelProps={{ shrink: false }}
+                              className="global-input single-select"
+                            >
+                              <MenuItem value="">
+                                <em>None</em>
+                              </MenuItem>
+                              <MenuItem value={"Male"}>Male</MenuItem>
+                              <MenuItem value={"Female"}>Female</MenuItem>
+                              <MenuItem value={"Others"}>Others</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
+                      </CardContent>
+                      <CardActions className="action-container">
+                        <Button size="small" color="primary">
+                          Next
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} sm={12} className="center-align">
+                    <Grid item xs={12} sm={9}>
+                      <Card className="question-card">
+                        <CardContent>
+                          <Typography gutterBottom variant="h6" component="h6">
+                            Question details
+                          </Typography>
+                          <Grid item xs={12} sm={12}>
+                            <Grid
+                              item
+                              xs={12}
+                              sm={12}
+                              className="question-details"
+                            >
+                              <Grid item xs={12} sm={12}>
+                                <TextValidator
+                                  variant="outlined"
+                                  validators={[
+                                    "required",
+                                    "matchRegexp:^[a-zA-Z ]*$",
+                                    "matchRegexp:^.{0,50}$",
+                                  ]}
+                                  errorMessages={[
+                                    "Please enter first name",
+                                    "Only alphabets are allowed",
+                                    "Maximum 50 characters",
+                                  ]}
+                                  fullWidth
+                                  id="firstName"
+                                  placeholder="Question..."
+                                  name="firstName"
+                                  value=""
+                                  autoFocus
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                />
+                              </Grid>
+                              <Grid item xs={12} sm={12} className="m-top-10">
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id="description"
+                                  placeholder="Add description"
+                                  validators={["matchRegexp:^.{0,150}$"]}
+                                  errorMessages={["Maximum 150 characters"]}
+                                  name="description"
+                                  multiline
+                                  rows={2}
+                                  value=""
+                                  className="global-input global-input-multiline"
+                                  InputLabelProps={{ shrink: false }}
+                                />
+                              </Grid>
+                            </Grid>
+                            <Grid
+                              item
+                              xs={12}
+                              sm={12}
+                              className="question-flags"
+                            >
+                              <Grid item container xs={12}>
+                                <Grid item xs={12} sm={6}>
+                                  <p>qwerty</p>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                  <p>qwerty</p>
+                                </Grid>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </CardContent>
+                        <CardActions className="action-container">
+                          <Button size="small" color="primary">
+                            Back
+                          </Button>
+                          <Button size="small" color="primary">
+                            Save
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </ValidatorForm>
             </Paper>
           </Grid>
         </Grid>
