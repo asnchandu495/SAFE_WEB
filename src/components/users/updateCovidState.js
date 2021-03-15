@@ -201,7 +201,6 @@ function UpdateCovidState(props) {
     setshowLoadder(true);
     var data = formData;
     if (props.selectedUsersForCovidState.length > 0) {
-      console.log(props.selectedUsersForCovidState);
       let updateCOVIDStatusbyUsersList = [];
       props.selectedUsersForCovidState.map((user) => {
         updateCOVIDStatusbyUsersList.push({

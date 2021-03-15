@@ -43,8 +43,6 @@ function ViewCovidState(props) {
     props.history.push("/covidstate/all-covidstate");
   }
 
-  console.log(formData);
-
   return (
     <div className="innerpage-container">
       {componentLoadder ? (
@@ -69,7 +67,7 @@ function ViewCovidState(props) {
               Covid states
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
-            {formData.stateName}
+              {formData.stateName}
             </LinkTo>
           </Breadcrumbs>
           <Paper className={`main-paper`}>

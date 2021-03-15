@@ -13,7 +13,7 @@ import UserService from "../../services/usersService";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import teamService from '../../services/teamService';
+import teamService from "../../services/teamService";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -28,10 +28,8 @@ const theme1 = createMuiTheme({
 });
 
 function AddPrimaryUserTeam(props) {
-  
   const teamApiCall = new teamService();
   const teamId = props.match.params.id;
-  // console.log(userGroupUpdateid);
 
   const UserGroupApi = new UserGroupApiServices();
   const UsersApi = new UserService();
@@ -42,7 +40,7 @@ function AddPrimaryUserTeam(props) {
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [formData, setFormData] = useState({
     teamId: "",
-     users: [],
+    users: [],
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -58,35 +56,28 @@ function AddPrimaryUserTeam(props) {
 
   useEffect(() => {
     if (teamId) {
-     
-
       Promise.all([
         // UserGroupApi.getGroupInfo(userGroupUpdateid),
         teamApiCall.viewApplicationUserByTeamId(teamId),
         UsersApi.ListApplicationUsers(),
       ])
-        .then(([teamInfo,applicationUsers]) => {
+        .then(([teamInfo, applicationUsers]) => {
           let primaryUsers = teamInfo.users;
-         setApplicationUsers(applicationUsers);
-         setSelectedTeamInfo(teamInfo);
-         setComponentLoadder(false);
-         var selectedUsersToGroupArray = [];
-          
-         applicationUsers.map((user, i) => {
-          const found = primaryUsers.some((u) => u.id === user.id);
-          // console.log(user.id);
-         
-          if (found) {
-            // console.log(selectedUsersToGroupArray);
-           
-            selectedUsersToGroupArray.push(i);
-          }else{
-            console.log('no');
-          }
-        });
-        setSelectedUsersToGroup(selectedUsersToGroupArray);
+          setApplicationUsers(applicationUsers);
+          setSelectedTeamInfo(teamInfo);
           setComponentLoadder(false);
-          
+          var selectedUsersToGroupArray = [];
+
+          applicationUsers.map((user, i) => {
+            const found = primaryUsers.some((u) => u.id === user.id);
+            if (found) {
+              selectedUsersToGroupArray.push(i);
+            } else {
+              console.log("no");
+            }
+          });
+          setSelectedUsersToGroup(selectedUsersToGroupArray);
+          setComponentLoadder(false);
         })
         .catch((error) => {
           console.log(error);
@@ -112,10 +103,8 @@ function AddPrimaryUserTeam(props) {
     rowsSelected: selectedUsersToGroup,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
       setSelectedUsers(allRowsSelected);
-      console.log(allRowsSelected);
       var selectedUsersToGroupArray = [];
       allRowsSelected.map((user, i) => {
-        // console.log(user.dataIndex);
         selectedUsersToGroupArray.push(user.dataIndex);
       });
       setSelectedUsersToGroup(selectedUsersToGroupArray);
@@ -180,15 +169,13 @@ function AddPrimaryUserTeam(props) {
       finalUsers.push({ id: applicationUsers[user.dataIndex].id });
     });
     var data = formData;
-    console.log(data);
-    
+
     data.teamId = teamId;
     data.users = finalUsers;
-//  console.log(finalUsers);
- 
-    teamApiCall.assignUserGroups(data)
+
+    teamApiCall
+      .assignUserGroups(data)
       .then((result) => {
-        console.log(result);
         setStateSnackbar(true);
         setToasterMessage("Users added to Team");
         settoasterServerity("success");
@@ -233,7 +220,7 @@ function AddPrimaryUserTeam(props) {
               {selectedTeamInfo.name}
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
-              Assign   Users
+              Assign Users
             </LinkTo>
           </Breadcrumbs>
           <MuiThemeProvider theme={theme1}>
@@ -300,7 +287,4 @@ const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddPrimaryUserTeam);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPrimaryUserTeam);

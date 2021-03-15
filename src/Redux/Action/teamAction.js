@@ -1,23 +1,21 @@
 import { LOAD_ALL_TEAMS } from "../utilits";
-import TeamService from '../../services/teamService';
+import TeamService from "../../services/teamService";
 
-const teamApiCall=new TeamService();
+const teamApiCall = new TeamService();
 
-export function LoadAllTeams(loadTeam){
-    return { type: LOAD_ALL_TEAMS,loadTeam };
+export function LoadAllTeams(loadTeam) {
+  return { type: LOAD_ALL_TEAMS, loadTeam };
 }
 
-export function loadTeam(){
-    return function (dispatch){
-        return teamApiCall
-        .getTeamList()
-        .then((response)=>{
-            // console.log(response);
-            dispatch(LoadAllTeams(response));
-        })
-        .catch((error)=>{
+export function loadTeam() {
+  return function (dispatch) {
+    return teamApiCall
+      .getTeamList()
+      .then((response) => {
+        dispatch(LoadAllTeams(response));
+      })
+      .catch((error) => {
         throw error;
-        
-         });
-    };
+      });
+  };
 }

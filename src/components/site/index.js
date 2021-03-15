@@ -103,8 +103,6 @@ function ListSite(props) {
     props.history.push(`/site/${thisId}/list-location`);
   }
 
-  console.log(props.SiteData);
-
   const options = {
     filter: false,
     filterType: "dropdown",

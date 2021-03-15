@@ -78,7 +78,6 @@ export default function UserProfile() {
     usersApiCall
       .getProfileDetails()
       .then((profileInfo) => {
-        console.log(profileInfo);
         setLoggedinUserDetails(profileInfo);
         setcomponentLoadder(false);
       })

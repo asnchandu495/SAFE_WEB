@@ -123,9 +123,7 @@ function AssignEmergencyContactToUserGroup(props) {
       });
     props
       .LoadAllEmergencyContactList()
-      .then((result) => {
-        console.log(result);
-      })
+      .then((result) => {})
       .catch((err) => {
         console.log(err);
       });

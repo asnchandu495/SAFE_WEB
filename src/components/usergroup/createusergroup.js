@@ -43,7 +43,6 @@ function CreateUserGroup(props) {
     props
       .LoadAllUserGroup()
       .then((result) => {
-        console.log(result);
         setComponentLoadder(false);
       })
       .catch((err) => {

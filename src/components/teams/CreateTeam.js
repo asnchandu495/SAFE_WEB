@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -7,147 +6,130 @@ import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import { connect } from "react-redux";
-import * as UserGroupAction from "../../Redux/Action/userGroupAction";
 import PropTypes from "prop-types";
 import AlertBoxComponent from "../common/alert";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import TextField from "@material-ui/core/TextField";
-
+import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import teamService from '../../services/teamService';
+import teamService from "../../services/teamService";
 
-
-
-  
 function CreateTeam(props) {
-  
-  
-    const [formFieldValidation, setformFieldValidation] = useState({
-        securityManager: false,
-        siteManager: false,
-        country: false,
-      });
-      const[teamManagers,setTeamManagers]=useState([]);
-      const[selectedTeamManager,setSelectedTeamManager]=useState();
-      const [stateSnackbar, setStateSnackbar] = useState(false);
-    const [toasterMessage, setToasterMessage] = useState("");
-    const [toasterServerity, settoasterServerity] = useState("");
-    const [componentLoadder, setComponentLoadder] = useState(false);
-    const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-      "array"
-    );
+  const [formFieldValidation, setformFieldValidation] = useState({
+    securityManager: false,
+    siteManager: false,
+    country: false,
+  });
+  const [teamManagers, setTeamManagers] = useState([]);
+  const [selectedTeamManager, setSelectedTeamManager] = useState();
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [componentLoadder, setComponentLoadder] = useState(true);
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
   const [showLoadder, setshowLoadder] = useState(false);
-   const teamId = props.match.params.id;  
-      
-      const teamApiCall = new teamService();
+  const teamId = props.match.params.id;
 
+  const teamApiCall = new teamService();
 
-      const[formData,SetformData]=useState({
-        "id": "",
-        "name": "",
-        "description": "",
-        "manager": {
-            "name": "string",
-            "id": "string"
-        }
-    });
-      
-      useEffect(() => {       
-        
-       teamApiCall.getTeamManager()
-       .then((res)=>{
-         console.log(res);
-           setTeamManagers(res);
-           if (teamId != 0) {
-            teamApiCall.viewApplicationUserByTeamId(teamId)
-            .then((teamData)=>{
-              // console.log(teamData.teamanager);
-              setComponentLoadder(true);
+  const [formData, SetformData] = useState({
+    id: "",
+    name: "",
+    description: "",
+    manager: {},
+  });
+
+  useEffect(() => {
+    teamApiCall
+      .getTeamManager()
+      .then((res) => {
+        setTeamManagers(res);
+        if (teamId != 0) {
+          teamApiCall
+            .viewApplicationUserByTeamId(teamId)
+            .then((teamData) => {
               SetformData(teamData);
-              setSelectedTeamManager(teamData.teamanager);
+              setSelectedTeamManager(teamData.manager);
+              setComponentLoadder(false);
             })
             .catch((error) => {
-             console.log(error);
-           });
-            
-          }
-       })
-       .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          setComponentLoadder(false);
+        }
+      })
+      .catch((error) => {
         console.log(error);
       });
-    // }
-      }, []);
+  }, []);
 
-
- function handleChange(e) {
-     const { name, value } = e.target;
-      SetformData((formData) => ({
-        ...formData,
-        [name]: value,
-      }));
-    }
-   function handleChangeTeamManagers(event, value) {
-   setSelectedTeamManager(value);
+  function handleChange(e) {
+    const { name, value } = e.target;
+    SetformData((formData) => ({
+      ...formData,
+      [name]: value,
+    }));
+  }
+  function handleChangeTeamManagers(event, value) {
+    setSelectedTeamManager(value);
   }
 
-function teamCreation(e){
-  setshowLoadder(true);
-  e.preventDefault();
- 
-   const teamData=formData;
-   if(teamId!=0){
-    
-    teamData.manager=selectedTeamManager;
-    
-    // setSelectedTeamManager=teamData.teamanager.name;
-    teamApiCall.updateTeams(teamData)
-    .then((result) => {
-      setshowLoadder(false);
-      setStateSnackbar(true);
-      setToasterMessage("Team  Updated");
-      settoasterServerity("success");
-      setTimeout(() => {
-        props.history.push("/teams/allteams");
-        setshowLoadder(false);
-      }, 3000);
-    })
-    .catch((err) => {
-      setToasterMessage(err.data.errors);
-      settoasterServerity("error");
-      setStateSnackbar(true);
-      setshowLoadder(false);
-    });
-   }else{
-  teamData.manager=selectedTeamManager;
-  // console.log(teamData);
-  teamApiCall.createTeams(teamData)
-  .then((result) => {
-    setStateSnackbar(true);
-    setToasterMessage("Team  Created");
-    settoasterServerity("success");
-    setTimeout(() => {
-      props.history.push("/teams/allteams");
-      setshowLoadder(false);
-    }, 6000);
-    
-  })
-  .catch((err) => {
-    setToasterMessage(err.data.errors);
-    settoasterServerity("error");
-    setStateSnackbar(true);
-    setshowLoadder(false);
-  });
-}
+  function teamCreation(e) {
+    setshowLoadder(true);
+    e.preventDefault();
 
+    const teamData = formData;
+    if (teamId != 0) {
+      teamData.manager = selectedTeamManager;
+      teamApiCall
+        .updateTeams(teamData)
+        .then((result) => {
+          setshowLoadder(false);
+          setStateSnackbar(true);
+          setToasterMessage("Team  Updated");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.history.push("/teams/allteams");
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    } else {
+      teamData.manager = selectedTeamManager;
+      teamApiCall
+        .createTeams(teamData)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Team  Created");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.history.push("/teams/allteams");
+            setshowLoadder(false);
+          }, 6000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
+  }
 
-}
-
-    return(
-        <div className="innerpage-container">
-           <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
-           <LinkTo
+  return (
+    <div className="innerpage-container">
+      <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
+        <LinkTo
           color="inherit"
           href="#"
           to={`/home/dashboard`}
@@ -156,22 +138,23 @@ function teamCreation(e){
           Home
         </LinkTo>
         <LinkTo
-        color="textPrimary"
-        href="#"
-        to={`usergroups/allusergroups`}
-        className="inactive">
-        Teams
-        </LinkTo>
-        <LinkTo
-          color="textPrimary" href="#" className="active"
+          color="textPrimary"
+          href="#"
+          to={`usergroups/allusergroups`}
+          className="inactive"
         >
+          Teams
+        </LinkTo>
+        <LinkTo color="textPrimary" href="#" className="active">
           {teamId != 0 ? "Update Team " : "Create Team "}
         </LinkTo>
-        
-            </Breadcrumbs>
+      </Breadcrumbs>
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
         <Paper className="main-paper">
-        <ValidatorForm className={`global-form`} onSubmit={teamCreation}>
-        <Grid container spacing={3}>
+          <ValidatorForm className={`global-form`} onSubmit={teamCreation}>
+            <Grid container spacing={3}>
               <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label className="input-label required">Team Name</label>
@@ -200,7 +183,6 @@ function teamCreation(e){
                     InputLabelProps={{ shrink: false }}
                     className="global-input"
                   />
-                  
                 </Grid>
               </Grid>
               <Grid item container xs={12}>
@@ -230,32 +212,31 @@ function teamCreation(e){
                   <label>Manager</label>
                 </Grid>
                 <Grid item xs={5}>
-                      
-                      <Autocomplete
-                        id="tags-outlined"
-                        options={teamManagers}
-                        getOptionLabel={(option) => option.name}
-                        onChange={handleChangeTeamManagers}
-                        defaultValue={selectedTeamManager}
-                        
-                        filterSelectedOptions
-                        className="global-input autocomplete-select"
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            variant="outlined"
-                            placeholder="Select  manager"
-                          />
-                        )}
+                  <Autocomplete
+                    id="tags-outlined"
+                    options={teamManagers}
+                    getOptionLabel={(option) => option.name}
+                    onChange={handleChangeTeamManagers}
+                    defaultValue={formData.manager ? formData.manager : {}}
+                    filterSelectedOptions
+                    className="global-input autocomplete-select"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        placeholder="Select  manager"
                       />
-                      {formFieldValidation.manager ? (
-                        <FormHelperText className="error-msg">
-                          Please select  manager{" "}
-                        </FormHelperText>
-                      ) : (
-                        ""
-                      )}
-                    </Grid></Grid>
+                    )}
+                  />
+                  {formFieldValidation.manager ? (
+                    <FormHelperText className="error-msg">
+                      Please select manager{" "}
+                    </FormHelperText>
+                  ) : (
+                    ""
+                  )}
+                </Grid>
+              </Grid>
               <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label>&nbsp;</label>
@@ -268,8 +249,7 @@ function teamCreation(e){
                       className="global-submit-btn"
                       disabled={showLoadder}
                     >
-                     {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                      
+                      {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
                     </Button>
                     <Button
                       variant="contained"
@@ -282,20 +262,20 @@ function teamCreation(e){
                   </div>
                 </Grid>
               </Grid>
-           
-              </Grid>      
-              </ValidatorForm>
-
+            </Grid>
+          </ValidatorForm>
         </Paper>
-        <ToasterMessageComponent
+      )}
+
+      <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
         toasterMessage={toasterMessage}
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
-        </div>
-    );
+    </div>
+  );
 }
 export default CreateTeam;
 

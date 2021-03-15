@@ -252,7 +252,6 @@ ViewAllFAQs.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return {
     FaqData: state.faqState,
   };

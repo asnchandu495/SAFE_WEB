@@ -77,7 +77,6 @@ function AllocateUserToRole(props) {
     usersApiCall
       .UpdateApplicationUserRole(data)
       .then((result) => {
-        console.log(result);
         setStateSnackbar(true);
         setToasterMessage("Roles assigned to users");
         settoasterServerity("success");

@@ -61,7 +61,6 @@ function AddPrimaryUserToUserGroups(props) {
         UsersApi.ListApplicationUsers(),
       ])
         .then(([groupInfo, applicationUsers]) => {
-          console.log(groupInfo);
           let primaryUsers = groupInfo.primaryapplicationuserDetails;
           setSelectedGroupInfo(groupInfo);
           setApplicationUsers(applicationUsers);
@@ -71,7 +70,6 @@ function AddPrimaryUserToUserGroups(props) {
           applicationUsers.map((user, i) => {
             const found = primaryUsers.some((u) => u.id === user.id);
             if (found) {
-              
               selectedUsersToGroupArray.push(i);
             }
           });
@@ -100,7 +98,6 @@ function AddPrimaryUserToUserGroups(props) {
     selectableRows: "multiple",
     rowsSelected: selectedUsersToGroup,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
-      
       setSelectedUsers(allRowsSelected);
       var selectedUsersToGroupArray = [];
       allRowsSelected.map((user, i) => {

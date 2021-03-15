@@ -235,9 +235,7 @@ function AddFloor(props) {
   function updateSiteFloorData(value) {
     props
       .UpdateSiteFloor(value)
-      .then((result) => {
-        console.log(result);
-      })
+      .then((result) => {})
       .catch((err) => {
         console.log(err);
       });
