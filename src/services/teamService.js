@@ -1,6 +1,6 @@
 import Environment from "../shared/Constants";
 
-export default class teamsApi {
+export default class TeamService {
   constructor() {
     this.baseURL = Environment.baseURL;
     this.authURL = Environment.authURL;
@@ -35,8 +35,8 @@ export default class teamsApi {
     });
   }
 
-  deleteUserGroup(data) {
-    return this.fetch(`${this.baseURL}/Group/DeleteGroup/` + data, {
+  deleteTeam(data) {
+    return this.fetch(`${this.baseURL}/Team/DeleteTeam/${data}` , {
       method: "DELETE",
     }).then((res) => {
       return Promise.resolve(res);
@@ -53,8 +53,8 @@ export default class teamsApi {
     });
   }
 
-  getGroupInfo(id) {
-    return this.fetch(`${this.baseURL}/Group/ViewGroup/${id}`, {
+  viewApplicationUserByTeamId(id) {
+    return this.fetch(`${this.baseURL}/Team/ViewApplicationUserByTeamId?Id=${id}`, {
       method: "GET",
     }).then((res) => {
       return Promise.resolve(res);
@@ -67,13 +67,27 @@ export default class teamsApi {
       return Promise.resolve(res);
     });
   }
-  
+
+  assignUserGroups(data) {
+    var finalData = JSON.stringify(data);
+    return this.fetch(`${this.baseURL}/Group/AssignUserGroups`, {
+      method: "POST",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  getToken() {
+    // Retrieves the user token from localStorage
+    return localStorage.getItem("id_token");
+  }
   
   fetch(url, options) {
     // performs api calls sending the required authentication headers
     const headers = {};
 
-    // headers["Authorization"] = "Bearer " + this.getToken();
+    headers["Authorization"] = "Bearer " + this.getToken();
     headers["Accept"] = "application/json";
     headers["Access-Control-Allow-Origin"] = "*";
     headers["Content-Type"] = "application/json";

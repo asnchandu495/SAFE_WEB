@@ -61,11 +61,17 @@ export default class userApi {
     });
   }
 
+  getToken() {
+    // Retrieves the user token from localStorage
+    return localStorage.getItem("id_token");
+  }
+
+
   fetch(url, options) {
     // performs api calls sending the required authentication headers
     const headers = {};
 
-    // headers["Authorization"] = "Bearer " + this.getToken();
+    headers["Authorization"] = "Bearer " + this.getToken();
     headers["Accept"] = "application/json";
     headers["Access-Control-Allow-Origin"] = "*";
     headers["Content-Type"] = "application/json";

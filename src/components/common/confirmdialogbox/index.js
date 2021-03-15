@@ -23,6 +23,8 @@ import * as AddFloorAction from "../../../Redux/Action/addFloorAction";
 import PropTypes from "prop-types";
 import FaqService from "../../../services/faqService";
 
+import teamService from '../../../services/teamService';
+
 
 const styles = (theme) => ({
   root: {
@@ -70,6 +72,7 @@ const DialogActions = withStyles((theme) => ({
 
 function CustomizedDialogs(props) {
   const faqApiCall = new FaqService();
+  const teamApiCall = new teamService();
 
   const handleClickYes = () => {
     if (props.ConfirmationModalActionType == "RemoveProfilePhoto") {
@@ -106,7 +109,28 @@ function CustomizedDialogs(props) {
           console.log(error);
           toasterErrorMessage(error);
         });
-    } else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
+    }
+    
+    else if (props.ConfirmationModalActionType == "DeleteTeams") {
+      var thisId = props.SelectedRowDetails[0];
+      teamApiCall
+        .deleteTeam(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Team deleted");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
+    }
+    
+    
+    
+    else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
       var thisId = props.SelectedRowDetails[0];
       props
         .DeletEmergencyContactList(thisId)
@@ -334,6 +358,7 @@ CustomizedDialogs.propTypes = {
   DeleteUser: PropTypes.func.isRequired,
   DelteUserGroup: PropTypes.func.isRequired,
   ChangeAssignEmergencyContactStatus: PropTypes.func.isRequired,
+  // DeleteTeams:PropTypes.func.isRequired,
 };
 function mapStateToProps(state, ownProps) {}
 

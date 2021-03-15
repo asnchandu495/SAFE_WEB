@@ -39,7 +39,7 @@ function CreateTeam(props) {
       "array"
     );
   const [showLoadder, setshowLoadder] = useState(false);
-      // const userGroupUpdateid = match.params.id;    
+   const teamId = props.match.params.id;  
       
       const teamApiCall = new teamService();
 
@@ -55,6 +55,34 @@ function CreateTeam(props) {
     });
       
       useEffect(() => {
+        var data = formData;
+        if (teamId != 0) {
+          teamApiCall.viewApplicationUserByTeamId(teamId)
+          .then((res)=>{
+           
+              console.log(res);
+          })
+          .catch((error) => {
+           console.log(error);
+         });
+          // // data.name = name;
+          // // data.desc = desc;
+          // data.manager = selectedTeamManager;
+         
+          // // setComponentLoadder(true);
+          // teamApiCall.updateTeams()
+          // .then((result) => {
+          //   console.log(result);
+          //   // setComponentLoadder(false);
+          // })
+          // .catch((err) => {
+          //   console.log(err);
+          // });
+          // console.log(props);
+        }
+        // }else{
+    
+        // alert(teamId);
        teamApiCall.getTeamManager()
        .then((res)=>{
         
@@ -63,6 +91,7 @@ function CreateTeam(props) {
        .catch((error) => {
         console.log(error);
       });
+    // }
       }, []);
 
 

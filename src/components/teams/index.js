@@ -11,11 +11,17 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import teamService from '../../services/teamService';
+
+import ConfirmationDialog from "../common/confirmdialogbox";
   
 
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import * as teamAction from "../../Redux/Action/teamAction";
 
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
+import propTypes from "prop-types";
 const style = makeStyles({
   titleItemRight: {
     color: "white",
@@ -41,18 +47,40 @@ const theme1 = createMuiTheme({
     },
   },
 });
-const Teams=(props)=> {
+function Teams(props) {
   const teamApiCall = new teamService();
     const [ teamList,setTeamList] =useState([]);
     let history = useHistory();
+    const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
     
-
-
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [
+    ConfirmationDialogContextText,
+    setConfirmationDialogContextText,
+  ] = useState("");
+  
+  const [
+    ConfirmationModalActionType,
+    setConfirmationModalActionType,
+  ] = useState("");
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+  
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [reloadPage, setReloadPage] = useState("NO");
+  
+  const [componentLoadder, setcomponentLoadder] = useState(true);
     useEffect(() => {
-      teamApiCall.getTeamList()
+      setcomponentLoadder(true);
+      props
+      .LoadAllTeams()
       .then((res)=>{
         // console.log(res);
-        setTeamList(res);
+        // setReloadPage("NO");
+        // setcomponentLoadder(false);
+        // setTeamList(res);
       })
       .catch((error) => {
        console.log(error);
@@ -61,13 +89,37 @@ const Teams=(props)=> {
 
 
 
-     }, []);
+     }, [reloadPage]);
      function handleClickUpdateTeams(value) {
       var userId = value[0];
       console.log(value);
       props.history.push(`/teams/add-teams/${userId}`);
     }
+
+
+    
+  function handleClickDeleteTeam(value) {
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteTeams");
+    setConfirmationHeaderTittle("Delete Team");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${value[1]} ?`
+    );
+  }
+
+  function handleClickaddedsecondaryteams(value) {
+    
+    var groupId = value[0];
+    props.history.push("/teams/add-primary-user-teams/" + groupId);
+  }
  
+  function handleClickViewTeams(value) {
+    
+    var teamId = value[0];
+    props.history.push("/teams/view-team/" + teamId);
+  }
+
     // const classes = style();
 
     
@@ -126,7 +178,7 @@ const Teams=(props)=> {
                         color="default"
                         startIcon={<VisibilityIcon />}
                         className={`view-icon`}
-                        onClick="#"
+                        onClick={() => handleClickViewTeams(thisRowData)}
                       ></Button>
                     </Tooltip>
                     <Tooltip title="Edit">
@@ -145,9 +197,20 @@ const Teams=(props)=> {
                         color="default"
                         startIcon={<DeleteIcon />}
                         className={`delete-icon`}
-                        onClick="#"
+                        onClick={() => handleClickDeleteTeam(thisRowData)}
                       ></Button>
                     </Tooltip>
+
+
+                    <Tooltip title="Assign users as primary team">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<GroupAddIcon />}
+                    className={`edit-icon`}
+                    onClick={()=>handleClickaddedsecondaryteams(thisRowData)}
+                     ></Button>
+                </Tooltip>
                     
                   </div>
                 );
@@ -176,12 +239,12 @@ const Teams=(props)=> {
         selectableRows: false,
         textLabels: {
           body: {
-            noMatch: "There are no users assign teams",
+            noMatch: "There are no users  teams",
           },
         },
       };
     
- 
+      
  
  return (
    
@@ -212,16 +275,48 @@ const Teams=(props)=> {
       <MuiThemeProvider theme={theme1}>
             {" "}
      <MUIDataTable
-     data={teamList}
+     data={ props.TeamData && props.TeamData.length > 0 ? props.TeamData : [] }
      columns={columns}
      options={options}
      className="global-table"
      />
            </MuiThemeProvider>
         
+
+           <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        SelectedRowDetails={SelectedRowDetails}
+      />
      </div>
  );
 }
+
+
+Teams.propTypes={
+  TeamData:propTypes.array.isRequired,
+  LoadAllTeams:propTypes.func.isRequired,
+};
+
+function mapStateToProps(state,ownProps){
+  return {
+    TeamData: state.team,
+  };
+}
+
+
+const mapDispatchToProps={
+  LoadAllTeams:teamAction.loadTeam,
+}
   
-  export default Teams;
+  // export default Teams;
+  
+export default connect(mapStateToProps, mapDispatchToProps)(Teams);
+
   
