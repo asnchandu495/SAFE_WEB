@@ -67,7 +67,10 @@ function ViewTeam(props) {
     teamApiCall.viewApplicationUserByTeamId(userGroupId)
       .then((groupInfo) => {
         setViewTeamDetails(groupInfo);
-        console.log(groupInfo);
+        // console.log('Team : ',groupInfo.teamanager.name); 
+        // console.log(groupInfo.teamanager.name); 
+
+       
         // setComponentLoadder(false);
       })
       .catch((error) => {
@@ -101,23 +104,18 @@ function ViewTeam(props) {
     rowsPerPage: 5,
   };
 
+  
+
   const columns = [
     {
-      name: "teamName",
+      name: "name",
       label: "Name",
       options: {
         filter: true,
         sort: true,
       },
     },
-    {
-      name: "description",
-      label: "Description",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
+    
   ];
 
   function BreadcrumbNavigation(getRoute) {
@@ -144,7 +142,7 @@ function ViewTeam(props) {
           Teams
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-        {ViewTeamDetails.teamName}
+        {ViewTeamDetails.name}
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper">
@@ -157,7 +155,7 @@ function ViewTeam(props) {
                     <label>Team Name :</label>
                   </Grid>
                   <Grid item xs={9}>
-                    <label>{ViewTeamDetails.teamName}</label>
+                    <label>{ViewTeamDetails.name}</label>
                   </Grid>
                 </Grid>
                 <Grid item xs={12} container>
@@ -166,7 +164,20 @@ function ViewTeam(props) {
                   </Grid>
                   <Grid item xs={9}>
                     {ViewTeamDetails.description}
+                   
                   </Grid>
+                </Grid>
+                <Grid item xs={12} container>
+                  <Grid item xs={3}>
+                    <label>Team Manager :</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                  <label>
+                    {ViewTeamDetails.manager
+                      ? ViewTeamDetails.manager.name
+                      : ""}
+                  </label>
+                </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3} direction="column">
                   <Grid item xs={12} container>
@@ -174,49 +185,23 @@ function ViewTeam(props) {
                       Users:
                     </Grid>
                     <Grid item xs={9} className="inner-tabs">
-                      <AppBar position="static" color="default">
-                        <Tabs
-                          value={tabValue}
-                          onChange={handleTabChange}
-                          indicatorColor="primary"
-                          textColor="primary"
-                          variant="fullWidth"
-                          aria-label="full width tabs example"
-                        >
-                          <Tab label="Primary Users" {...a11yProps(0)} />
-                          
-                        </Tabs>
-                      </AppBar>
-                      <TabPanel value={tabValue} index={0}>
+                     
+                     
                         <MUIDataTable
                           title={""}
                           data={
-                            ViewTeamDetails.primaryapplicationuserDetails &&
-                            ViewTeamDetails.primaryapplicationuserDetails
+                            ViewTeamDetails.users &&
+                            ViewTeamDetails.users
                               .length > 0
-                              ? ViewTeamDetails.primaryapplicationuserDetails
+                              ? ViewTeamDetails.users
                               : []
                           }
                           columns={columns}
                           options={options}
                           className="global-table"
                         />
-                      </TabPanel>
-                      <TabPanel value={tabValue} index={1}>
-                        <MUIDataTable
-                          title={""}
-                          data={
-                            ViewTeamDetails.secondaryapplicationuserDetails &&
-                            ViewTeamDetails.secondaryapplicationuserDetails
-                              .length > 0
-                              ? ViewTeamDetails.secondaryapplicationuserDetails
-                              : []
-                          }
-                          columns={columns}
-                          options={options}
-                          className="global-table"
-                        />
-                      </TabPanel>
+                     
+                      
                     </Grid>
                   </Grid>
                 </Grid>

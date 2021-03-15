@@ -41,10 +41,8 @@ function AddPrimaryUserTeam(props) {
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [formData, setFormData] = useState({
-    groupId: "",
-    isPrimary: true,
-    isSecondary: false,
-    applicationUserIds: [],
+    teamId: "",
+     users: [],
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -68,10 +66,25 @@ function AddPrimaryUserTeam(props) {
         UsersApi.ListApplicationUsers(),
       ])
         .then(([teamInfo,applicationUsers]) => {
+          let primaryUsers = teamInfo.users;
          setApplicationUsers(applicationUsers);
          setSelectedTeamInfo(teamInfo);
-        
+         setComponentLoadder(false);
+         var selectedUsersToGroupArray = [];
+          
+         applicationUsers.map((user, i) => {
+          const found = primaryUsers.some((u) => u.id === user.id);
+          // console.log(user.id);
          
+          if (found) {
+            // console.log(selectedUsersToGroupArray);
+           
+            selectedUsersToGroupArray.push(i);
+          }else{
+            console.log('no');
+          }
+        });
+        setSelectedUsersToGroup(selectedUsersToGroupArray);
           setComponentLoadder(false);
           
         })
@@ -99,8 +112,10 @@ function AddPrimaryUserTeam(props) {
     rowsSelected: selectedUsersToGroup,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
       setSelectedUsers(allRowsSelected);
+      console.log(allRowsSelected);
       var selectedUsersToGroupArray = [];
       allRowsSelected.map((user, i) => {
+        // console.log(user.dataIndex);
         selectedUsersToGroupArray.push(user.dataIndex);
       });
       setSelectedUsersToGroup(selectedUsersToGroupArray);
@@ -165,13 +180,17 @@ function AddPrimaryUserTeam(props) {
       finalUsers.push({ id: applicationUsers[user.dataIndex].id });
     });
     var data = formData;
-    data.groupId = teamId;
-    data.applicationUserIds = finalUsers;
-
-    UserGroupApi.assignUserGroups(data)
+    console.log(data);
+    
+    data.teamId = teamId;
+    data.users = finalUsers;
+//  console.log(finalUsers);
+ 
+    teamApiCall.assignUserGroups(data)
       .then((result) => {
+        console.log(result);
         setStateSnackbar(true);
-        setToasterMessage("Users added to group");
+        setToasterMessage("Users added to Team");
         settoasterServerity("success");
         setTimeout(() => {
           props.history.push("/teams/allteams");
@@ -211,7 +230,7 @@ function AddPrimaryUserTeam(props) {
               Teams
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="inactive">
-              {selectedTeamInfo.teamName}
+              {selectedTeamInfo.name}
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
               Assign   Users

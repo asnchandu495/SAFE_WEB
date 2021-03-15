@@ -118,7 +118,7 @@ function CustomizedDialogs(props) {
         .then((result) => {
           props.setStateSnackbar(true);
           props.setStateSnackbar(true);
-          props.setToasterMessage("Team deleted");
+          props.setToasterMessage("Team is deleted");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
