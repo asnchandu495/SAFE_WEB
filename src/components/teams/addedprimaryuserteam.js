@@ -71,6 +71,7 @@ function AddPrimaryUserTeam(props) {
          setApplicationUsers(applicationUsers);
          setSelectedTeamInfo(teamInfo);
         
+         
           setComponentLoadder(false);
           
         })
@@ -173,7 +174,7 @@ function AddPrimaryUserTeam(props) {
         setToasterMessage("Users added to group");
         settoasterServerity("success");
         setTimeout(() => {
-          props.history.push("/usergroups/allusergroups");
+          props.history.push("/teams/allteams");
           setshowLoadder(false);
         }, 3000);
       })

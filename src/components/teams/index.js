@@ -109,10 +109,17 @@ function Teams(props) {
   }
 
   function handleClickaddedsecondaryteams(value) {
+    
     var groupId = value[0];
     props.history.push("/teams/add-primary-user-teams/" + groupId);
   }
  
+  function handleClickViewTeams(value) {
+    
+    var teamId = value[0];
+    props.history.push("/teams/view-team/" + teamId);
+  }
+
     // const classes = style();
 
     
@@ -171,7 +178,7 @@ function Teams(props) {
                         color="default"
                         startIcon={<VisibilityIcon />}
                         className={`view-icon`}
-                        onClick="#"
+                        onClick={() => handleClickViewTeams(thisRowData)}
                       ></Button>
                     </Tooltip>
                     <Tooltip title="Edit">

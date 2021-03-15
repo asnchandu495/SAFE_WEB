@@ -44,14 +44,16 @@ import ImportUsers from "./components/users/ImportUsers";
 import ImportUsersHistory from "./components/users/ImportUserHistory";
 import ViewUser from "./components/users/viewUsers";
 import UserProfie from "./components/profile";
-import Teams from "./components/teams";
-import CreateTeam from "./components/teams/CreateTeam";
 import AddedPrimaryUserTeam from "./components/teams/addedprimaryuserteam"
 import Questionaire from "./components/questionaires";
 import ConfigureQuestionaire from "./components/questionaires/create";
 import AddQuestion from "./components/questionaires/addQuestion";
 import InternalServer from "./components/common/ErrorPage/InternalServerError/index";
 import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
+
+import Teams from "./components/teams";
+import CreateTeam from "./components/teams/CreateTeam";
+import ViewTeam from "./components/teams/ViewTeam";
 
 function App(props) {
   const AuthContainer = () => {
@@ -193,6 +195,12 @@ function App(props) {
           path="/teams/add-primary-user-teams/:id"
           component={AddedPrimaryUserTeam}
         ></Route>
+
+       <Route path="/teams/view-team/:id" component={ViewTeam}></Route>
+
+
+
+
         <Route
           path="/questionaires/allquestionaires"
           component={Questionaire}
@@ -345,6 +353,10 @@ function App(props) {
         <Route path="/teams/allteams" component={AdminContainer}></Route>
         <Route path="/teams/add-teams/:id" component={AdminContainer}></Route>
         <Route path="/teams/add-primary-user-teams/:id"  component={AdminContainer}
+        ></Route>
+        <Route
+          path="/teams/view-team/:id"
+          component={AdminContainer}
         ></Route>
         <Route
           path="/questionaires/allquestionaires"
