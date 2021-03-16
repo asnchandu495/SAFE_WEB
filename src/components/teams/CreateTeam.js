@@ -77,7 +77,6 @@ function CreateTeam(props) {
     }));
   }
   function handleChangeTeamManagers(event, value) {
-    // console.log(value);s
     setSelectedTeamManager(value);
   }
 
@@ -86,9 +85,7 @@ function CreateTeam(props) {
 function teamCreation(e) {
   e.preventDefault();
    SelectManagerValidation();
-    if (selectedTeamManager) {
-      
-        // alert("ffdsf");
+    if(selectedTeamManager) {
       SubmitUserForm();
     } else {
       return false;
@@ -98,14 +95,10 @@ function teamCreation(e) {
 
  function SubmitUserForm() {
     setshowLoadder(true);
-    // e.preventDefault();
-
-    const teamData = formData;
+    var teamData = formData;
     if (teamId != 0) {
-      teamData.manager = selectedTeamManager;
-      // teamApiCall
-        // .updateTeams(teamData)
-        props
+     teamData.manager = selectedTeamManager;
+       props
         .UpdateTeamCall(teamData)
         .then((result) => {
           setshowLoadder(false);
@@ -118,19 +111,19 @@ function teamCreation(e) {
           }, 3000);
         })
         .catch((err) => {
-          setToasterMessage(err.data.errors);
+          console.log(err);
+         setToasterMessage(err.data.errors);
+
           settoasterServerity("error");
           setStateSnackbar(true);
           setshowLoadder(false);
         });
     } else {
-      
       teamData.manager = selectedTeamManager;
       
       props
       .CreateTeamCall(teamData)
-      // teamApiCall
-        // .createTeams(teamData)
+      
         .then((result) => {
           setStateSnackbar(true);
           setToasterMessage("Team  Created");
@@ -196,9 +189,8 @@ function teamCreation(e) {
           {teamId != 0 ? "Update Team " : "Create Team "}
         </LinkTo>
       </Breadcrumbs>
-      {componentLoadder ? (
-        <ComponentLoadderComponent />
-      ) : (
+      {!componentLoadder ? (
+        
         <Paper className="main-paper">
           <ValidatorForm className={`global-form`} onSubmit={teamCreation}>
             <Grid container spacing={3}>
@@ -321,7 +313,9 @@ function teamCreation(e) {
             </Grid>
           </ValidatorForm>
         </Paper>
-      )}
+        ) : (
+          <ComponentLoadderComponent />
+        )}
 
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
