@@ -208,7 +208,7 @@ function AddPrimaryUserTeam(props) {
             <LinkTo
               color="textPrimary"
               href="#"
-              to={`teams/allteaams`}
+              to={`/teams/allteams`}
               className="inactive"
             >
               Teams
@@ -247,7 +247,7 @@ function AddPrimaryUserTeam(props) {
                   variant="contained"
                   type="reset"
                   onClick={() =>
-                    BreadcrumbNavigation("/usergroups/allusergroups")
+                    BreadcrumbNavigation("/teams/allteams")
                   }
                   className="global-cancel-btn"
                 >

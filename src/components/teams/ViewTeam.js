@@ -129,7 +129,7 @@ function ViewTeam(props) {
         <LinkTo
           color="textPrimary"
           href="#"
-          to={`teams/allteams`}
+          to={`/teams/allteams`}
           className="inactive"
         >
           Teams
