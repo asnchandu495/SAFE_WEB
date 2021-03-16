@@ -6,6 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import { connect } from "react-redux";
+
+import * as TeamAction from "../../Redux/Action/teamAction";
 import PropTypes from "prop-types";
 import AlertBoxComponent from "../common/alert";
 import ToasterMessageComponent from "../common/toaster";
@@ -18,9 +20,8 @@ import teamService from "../../services/teamService";
 
 function CreateTeam(props) {
   const [formFieldValidation, setformFieldValidation] = useState({
-    securityManager: false,
-    siteManager: false,
-    country: false,
+    manager: false,
+    
   });
   const [teamManagers, setTeamManagers] = useState([]);
   const [selectedTeamManager, setSelectedTeamManager] = useState();
@@ -76,18 +77,36 @@ function CreateTeam(props) {
     }));
   }
   function handleChangeTeamManagers(event, value) {
+    // console.log(value);s
     setSelectedTeamManager(value);
   }
 
-  function teamCreation(e) {
+//validation
+
+function teamCreation(e) {
+  e.preventDefault();
+   SelectManagerValidation();
+    if (selectedTeamManager) {
+      
+        // alert("ffdsf");
+      SubmitUserForm();
+    } else {
+      return false;
+    }
+  
+}
+
+ function SubmitUserForm() {
     setshowLoadder(true);
-    e.preventDefault();
+    // e.preventDefault();
 
     const teamData = formData;
     if (teamId != 0) {
       teamData.manager = selectedTeamManager;
-      teamApiCall
-        .updateTeams(teamData)
+      // teamApiCall
+        // .updateTeams(teamData)
+        props
+        .UpdateTeamCall(teamData)
         .then((result) => {
           setshowLoadder(false);
           setStateSnackbar(true);
@@ -105,9 +124,13 @@ function CreateTeam(props) {
           setshowLoadder(false);
         });
     } else {
+      
       teamData.manager = selectedTeamManager;
-      teamApiCall
-        .createTeams(teamData)
+      
+      props
+      .CreateTeamCall(teamData)
+      // teamApiCall
+        // .createTeams(teamData)
         .then((result) => {
           setStateSnackbar(true);
           setToasterMessage("Team  Created");
@@ -126,6 +149,30 @@ function CreateTeam(props) {
     }
   }
 
+
+
+  function redirectToAllTeam() {
+    props.history.push("/teams/allteams");
+  }
+
+  function SelectManagerValidation() {
+    if (selectedTeamManager) {
+      
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["manager"]: false,
+      }));
+    } else {
+      
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["manager"]: true,
+      }));
+    }
+  }
+
+
+
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -140,7 +187,7 @@ function CreateTeam(props) {
         <LinkTo
           color="textPrimary"
           href="#"
-          to={`usergroups/allusergroups`}
+          to={`/teams/allteams`}
           className="inactive"
         >
           Teams
@@ -209,15 +256,24 @@ function CreateTeam(props) {
               </Grid>
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label>Manager</label>
+                <label htmlFor="password" className="input-label required">
+                      Manager
+                    </label>
                 </Grid>
                 <Grid item xs={5}>
                   <Autocomplete
                     id="tags-outlined"
-                    options={teamManagers}
+                    // /options={teamManagers}
+                options={
+                    teamManagers &&
+                      teamManagers.length > 0
+                        ? teamManagers
+                        : []
+                    }
                     getOptionLabel={(option) => option.name}
                     onChange={handleChangeTeamManagers}
-                    defaultValue={formData.manager ? formData.manager : {}}
+                    // defaultValue={formData.manager ? formData.manager : {}}
+                    defaultValue={selectedTeamManager}
                     filterSelectedOptions
                     className="global-input autocomplete-select"
                     renderInput={(params) => (
@@ -254,7 +310,7 @@ function CreateTeam(props) {
                     <Button
                       variant="contained"
                       type="reset"
-                      onClick="#"
+                      onClick={redirectToAllTeam}
                       className="global-cancel-btn"
                     >
                       Cancel
@@ -277,6 +333,41 @@ function CreateTeam(props) {
     </div>
   );
 }
-export default CreateTeam;
 
-// export default connect(mapStateToProps, mapDispatchToProps)(CreateTeam);
+export function getTeamById(users, id) {
+  return users.find((user) => user.id === id) || null;
+}
+
+
+
+CreateTeam.propTypes = {
+  teamDatas: PropTypes.array.isRequired,
+  teamData: PropTypes.array.isRequired,
+  LoadAllUserGroup: PropTypes.func.isRequired,
+  CreateTeamCall: PropTypes.func.isRequired,
+  UpdateTeamCall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  const id = ownProps.match.params.id;
+  const emptyObject = {};
+  const teamData =
+    id && state.usergroup.length > 0
+      ? getTeamById(state.usergroup, id)
+      : emptyObject;
+  return {
+    teamData,
+    teamDatas: state.team,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadAllUserGroup: TeamAction.loadTeam,
+  CreateTeamCall: TeamAction.createTeamData,
+  UpdateTeamCall: TeamAction.updateTeamData,
+  
+};
+
+// export default CreateTeam;
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTeam);

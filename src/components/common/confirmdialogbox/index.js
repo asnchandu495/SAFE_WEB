@@ -25,6 +25,8 @@ import FaqService from "../../../services/faqService";
 
 import teamService from "../../../services/teamService";
 
+import * as TeamAction from "../../../Redux/Action/teamAction";
+
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -109,12 +111,14 @@ function CustomizedDialogs(props) {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteTeams") {
+    
       var thisId = props.SelectedRowDetails[0];
-      teamApiCall
-        .deleteTeam(thisId)
+      props
+        .DeleteTeam(thisId)
         .then((result) => {
+          
           props.setStateSnackbar(true);
-          props.setStateSnackbar(true);
+          // props.setStateSnackbar(true);s
           props.setToasterMessage("Team is deleted");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
@@ -345,7 +349,7 @@ CustomizedDialogs.propTypes = {
   DeleteUser: PropTypes.func.isRequired,
   DelteUserGroup: PropTypes.func.isRequired,
   ChangeAssignEmergencyContactStatus: PropTypes.func.isRequired,
-  // DeleteTeams:PropTypes.func.isRequired,
+  DeleteTeam:PropTypes.func.isRequired,
 };
 function mapStateToProps(state, ownProps) {}
 
@@ -366,6 +370,7 @@ const mapDispatchToProps = {
   DeleteLocation: AddLocationAction.DeleteLocation,
   DeleteFloor: AddFloorAction.DeleteFloor,
   DeleteSiteFloor: SiteAction.deleteSiteFloor,
+  DeleteTeam: TeamAction.deleteTeamData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomizedDialogs);

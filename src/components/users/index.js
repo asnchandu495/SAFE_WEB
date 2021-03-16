@@ -325,6 +325,7 @@ function Users(props) {
   ];
 
   const handleClickOpenConfirmationModal = (value) => {
+    
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeactiveUser");
