@@ -16,7 +16,6 @@ export default class SiteService {
   }
 
   getSiteById(id) {
-    console.log(id);
     return this.fetch(`${this.baseURL}/Site/GetSiteById/` + id, {
       method: "GET",
     }).then((res) => {
@@ -133,7 +132,6 @@ export default class SiteService {
   // }
 
   CreateSitelocation(getData) {
-    console.log(getData);
     var finalData = JSON.stringify(getData);
     return this.fetch(`${this.baseURL}/Site/AddLocationToSite`, {
       method: "POST",

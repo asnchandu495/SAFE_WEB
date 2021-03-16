@@ -202,7 +202,6 @@ function CreateUser(props) {
     setcomponentLoadder(true);
     if (props.users.length > 0) {
       if (userId) {
-        console.log(props.userData);
         SetformData(props.userData);
         setUserSelectedTeamValue(props.userData.applicationUserToTeamMapping);
         setUserSelectedDesignationValue(props.userData.designation);

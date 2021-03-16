@@ -23,8 +23,7 @@ import * as AddFloorAction from "../../../Redux/Action/addFloorAction";
 import PropTypes from "prop-types";
 import FaqService from "../../../services/faqService";
 
-import teamService from '../../../services/teamService';
-
+import teamService from "../../../services/teamService";
 
 const styles = (theme) => ({
   root: {
@@ -109,9 +108,7 @@ function CustomizedDialogs(props) {
           console.log(error);
           toasterErrorMessage(error);
         });
-    }
-    
-    else if (props.ConfirmationModalActionType == "DeleteTeams") {
+    } else if (props.ConfirmationModalActionType == "DeleteTeams") {
       var thisId = props.SelectedRowDetails[0];
       teamApiCall
         .deleteTeam(thisId)
@@ -126,11 +123,7 @@ function CustomizedDialogs(props) {
           console.log(error);
           toasterErrorMessage(error);
         });
-    }
-    
-    
-    
-    else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
+    } else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
       var thisId = props.SelectedRowDetails[0];
       props
         .DeletEmergencyContactList(thisId)
@@ -245,7 +238,6 @@ function CustomizedDialogs(props) {
         });
     } else if (props.ConfirmationModalActionType == "DeleteFloor") {
       var thisId = props.SelectedRowDetails[0];
-      console.log(thisId);
       props
         .DeleteFloor(thisId)
         .then((result) => {
@@ -253,11 +245,6 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Floor is deleted");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
-          // props.DeleteSiteFloor(thisId).then(result=>{
-          //   console.log(result);
-          // }).catch(err=>{
-          //   console.log(err);
-          // })
         })
         .catch((error) => {
           console.log(error);
@@ -369,7 +356,7 @@ const mapDispatchToProps = {
   ChangeAssignEmergencyContactStatus:
     AssignEmergencyContactAction.UpdateAssignEmergencyContact,
   DeleteUser: UserAction.deleteUser,
-  
+
   DelteUserDesignation: DesignationAction.deleteUserDesignation,
   DelteCovidState: CovidStateAction.deleteCovidState,
   DeleteFaq: FaqAction.deleteFaq,

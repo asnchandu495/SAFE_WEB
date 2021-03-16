@@ -53,7 +53,6 @@ function TemperatureRange(props) {
 
   function submitForm(e) {
     e.preventDefault();
-    console.log(JSON.stringify(temperatureConfigForm));
   }
 
   // handle input change

@@ -74,7 +74,6 @@ function ViewUser(props) {
     apiCallUsers
       .GetApplicationUsersById(userId)
       .then((result) => {
-        console.log(result);
         setviewUserDetails(result);
         setcomponentLoadder(false);
       })
@@ -82,8 +81,6 @@ function ViewUser(props) {
         console.log(err);
       });
   }, []);
-
-  console.log(JSON.stringify(viewUserDetails));
 
   function handleClickGoBack() {
     props.history.push("/users/allusers");
@@ -148,10 +145,6 @@ function ViewUser(props) {
     }
     return <span>{displayRoles}</span>;
   }
-
-  // applicationUserToSiteMapping
-
-  console.log(viewUserDetails);
 
   return (
     <div className="innerpage-container">

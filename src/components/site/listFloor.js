@@ -228,7 +228,6 @@ function ListFloor(props) {
     props.history.push(getRoute);
   }
 
-  console.log(props.FloorData);
   return (
     <div className="innerpage-container">
       {componentLoadder ? (
@@ -321,7 +320,6 @@ ListFloor.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  console.log(state);
   return {
     FloorData: state.FloorState,
   };

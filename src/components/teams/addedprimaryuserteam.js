@@ -188,7 +188,7 @@ function AddPrimaryUserTeam(props) {
  
     teamApiCall.assignUserGroups(data)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         setStateSnackbar(true);
         setToasterMessage("Users added to Team");
         settoasterServerity("success");

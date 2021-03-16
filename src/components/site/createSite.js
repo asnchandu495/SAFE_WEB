@@ -150,7 +150,6 @@ function CreateSite(props) {
       .then(
         ([getCountries, getSiteManagers, getLocationManagers, loadData]) => {
           if (siteId && props.userSiteData) {
-            console.log(props.userSiteData);
             SetformData(props.userSiteData);
           }
           setCountryMasterData(getCountries);

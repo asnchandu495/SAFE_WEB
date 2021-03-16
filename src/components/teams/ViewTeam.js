@@ -13,7 +13,7 @@ import Tab from "@material-ui/core/Tab";
 import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
 import UserGroupApiServices from "../../services/userGroupService";
-import teamService from '../../services/teamService';
+import teamService from "../../services/teamService";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,21 +57,17 @@ function ViewTeam(props) {
   const [tableBodyHeight, setTableBodyHeight] = useState("300px");
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
   const [ViewTeamDetails, setViewTeamDetails] = useState([]);
-  
+
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [tabValue, setTabValue] = useState(0);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const teamApiCall = new teamService();
 
   useEffect(() => {
-    teamApiCall.viewApplicationUserByTeamId(userGroupId)
-      .then((groupInfo) => {
-        setViewTeamDetails(groupInfo);
-        // console.log('Team : ',groupInfo.teamanager.name); 
-        // console.log(groupInfo.teamanager.name); 
-
-       
-        // setComponentLoadder(false);
+    teamApiCall
+      .viewApplicationUserByTeamId(userGroupId)
+      .then((teamInfo) => {
+        setViewTeamDetails(teamInfo);
       })
       .catch((error) => {
         console.log(error);
@@ -104,8 +100,6 @@ function ViewTeam(props) {
     rowsPerPage: 5,
   };
 
-  
-
   const columns = [
     {
       name: "name",
@@ -115,7 +109,6 @@ function ViewTeam(props) {
         sort: true,
       },
     },
-    
   ];
 
   function BreadcrumbNavigation(getRoute) {
@@ -142,7 +135,7 @@ function ViewTeam(props) {
           Teams
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-        {ViewTeamDetails.name}
+          {ViewTeamDetails.name}
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper">
@@ -164,7 +157,6 @@ function ViewTeam(props) {
                   </Grid>
                   <Grid item xs={9}>
                     {ViewTeamDetails.description}
-                   
                   </Grid>
                 </Grid>
                 <Grid item xs={12} container>
@@ -172,12 +164,12 @@ function ViewTeam(props) {
                     <label>Team Manager :</label>
                   </Grid>
                   <Grid item xs={8}>
-                  <label>
-                    {ViewTeamDetails.manager
-                      ? ViewTeamDetails.manager.name
-                      : ""}
-                  </label>
-                </Grid>
+                    <label>
+                      {ViewTeamDetails.manager
+                        ? ViewTeamDetails.manager.name
+                        : ""}
+                    </label>
+                  </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3} direction="column">
                   <Grid item xs={12} container>
@@ -185,23 +177,18 @@ function ViewTeam(props) {
                       Users:
                     </Grid>
                     <Grid item xs={9} className="inner-tabs">
-                     
-                     
-                        <MUIDataTable
-                          title={""}
-                          data={
-                            ViewTeamDetails.users &&
-                            ViewTeamDetails.users
-                              .length > 0
-                              ? ViewTeamDetails.users
-                              : []
-                          }
-                          columns={columns}
-                          options={options}
-                          className="global-table"
-                        />
-                     
-                      
+                      <MUIDataTable
+                        title={""}
+                        data={
+                          ViewTeamDetails.users &&
+                          ViewTeamDetails.users.length > 0
+                            ? ViewTeamDetails.users
+                            : []
+                        }
+                        columns={columns}
+                        options={options}
+                        className="global-table"
+                      />
                     </Grid>
                   </Grid>
                 </Grid>

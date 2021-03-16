@@ -82,7 +82,6 @@ function AllocateUserToSecondaryGroup(props) {
     usersApiCall
       .UpdateApplicationUserSecondaryGroup(data)
       .then((result) => {
-        console.log(result);
         setStateSnackbar(true);
         setToasterMessage("Secondary group assigned to users");
         settoasterServerity("success");

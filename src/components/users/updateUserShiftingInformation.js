@@ -116,7 +116,6 @@ function UpdateShiftingInfo(props) {
       usersApiCall
         .getShiftInfo(props.SelectedRowId)
         .then((shiftInfo) => {
-          console.log(shiftInfo);
           if (shiftInfo) {
             SetformData(shiftInfo);
           }
