@@ -110,8 +110,6 @@ function Teams(props) {
 
    
 
-  // const classes = style();
-
   const columns = [
     {
       name: "id",

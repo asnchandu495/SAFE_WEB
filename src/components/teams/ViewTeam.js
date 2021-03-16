@@ -161,7 +161,7 @@ function ViewTeam(props) {
                 </Grid>
                 <Grid item xs={12} container>
                   <Grid item xs={3}>
-                    <label>Team Manager :</label>
+                    <label> Manager :</label>
                   </Grid>
                   <Grid item xs={8}>
                     <label>
