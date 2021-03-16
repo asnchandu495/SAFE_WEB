@@ -362,6 +362,5 @@ const mapDispatchToProps = {
   
 };
 
-// export default CreateTeam;
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTeam);

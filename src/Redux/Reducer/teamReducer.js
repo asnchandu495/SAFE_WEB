@@ -1,4 +1,4 @@
-import { getInitialGridState } from "@material-ui/data-grid";
+
 import { LOAD_ALL_TEAMS,CREATE_TEAM_SUCCESS,UPDATE_TEAM_SUCCESS,DELETE_TEAM_SUCCESS } from "../utilits";
 var intialState = [];
 
@@ -13,7 +13,7 @@ export default function loadallteamsReducer(state = intialState, action) {
         updateTeamData.id === action.updateTeamData.id ? action.updateTeamData : updateTeamData
         );    
      case DELETE_TEAM_SUCCESS:
-      //  alert(state);
+    
         return state.filter((deleteTeamData) => deleteTeamData.id !== action.deleteTeamData);    
     default:
       return state;
