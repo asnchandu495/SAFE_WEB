@@ -54,7 +54,7 @@ function AddPrimaryUserTeam(props) {
   const [showLoadder, setshowLoadder] = useState(false);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedTeamInfo, setSelectedTeamInfo] = useState();
-  const [selectedUsersToGroup, setSelectedUsersToGroup] = useState([]);
+  const [selectedUsersToGroup, setSelectedUsersToTeam] = useState([]);
 
   useEffect(() => {
     if (teamId) {
@@ -84,7 +84,7 @@ function AddPrimaryUserTeam(props) {
             console.log('no');
           }
         });
-        setSelectedUsersToGroup(selectedUsersToGroupArray);
+        setSelectedUsersToTeam(selectedUsersToGroupArray);
           setComponentLoadder(false);
           
         })
@@ -118,7 +118,7 @@ function AddPrimaryUserTeam(props) {
         // console.log(user.dataIndex);
         selectedUsersToGroupArray.push(user.dataIndex);
       });
-      setSelectedUsersToGroup(selectedUsersToGroupArray);
+      setSelectedUsersToTeam(selectedUsersToGroupArray);
     },
 
     textLabels: {
