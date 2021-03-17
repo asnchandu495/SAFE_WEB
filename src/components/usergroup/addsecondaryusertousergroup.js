@@ -171,7 +171,7 @@ function AddSecondaryUserToUserGroups(props) {
     UserGroupApi.assignUserGroups(data)
       .then((result) => {
         setStateSnackbar(true);
-        setToasterMessage("Users added to group");
+        setToasterMessage("Assigned User Group as Secondary Group of users.");
         settoasterServerity("success");
         setTimeout(() => {
           props.history.push("/usergroups/allusergroups");

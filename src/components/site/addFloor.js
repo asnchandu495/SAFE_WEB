@@ -191,7 +191,7 @@ function AddFloor(props) {
         .UpdateData(formData)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Floor updated");
+          setToasterMessage("Updated Floor details.");
           settoasterServerity("success");
           setTimeout(() => {
             props.setopenaddFloorModal(false);
@@ -212,7 +212,7 @@ function AddFloor(props) {
         .AddData(formData)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Floor added");
+          setToasterMessage("Added new Floor to Site.");
           settoasterServerity("success");
           setTimeout(() => {
             setshowLoadder(false);

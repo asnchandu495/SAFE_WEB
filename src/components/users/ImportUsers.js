@@ -140,7 +140,7 @@ function ImportUsers(props) {
           .bulkUserFileUpload(finalData)
           .then((result) => {
             setStateSnackbar(true);
-            setToasterMessage("Bulk user uploaded");
+            setToasterMessage("Imported users details.");
             settoasterServerity("success");
             setTimeout(() => {
               props.history.push("/users/import-users-history");

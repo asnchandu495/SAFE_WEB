@@ -243,7 +243,7 @@ function CreateSite(props) {
         .AddData(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Site created");
+          setToasterMessage("Added new Site.");
           settoasterServerity("success");
           setshowLoadder(false);
           setisAlertBoxOpened(false);
@@ -268,7 +268,7 @@ function CreateSite(props) {
         .UpdateData(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Site update");
+          setToasterMessage("Updated Site details.");
           settoasterServerity("success");
           setshowLoadder(false);
           setisAlertBoxOpened(false);

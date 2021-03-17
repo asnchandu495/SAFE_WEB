@@ -99,7 +99,7 @@ function CreateFAQ(props) {
         .CreateFAQ(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("FAQ created");
+          setToasterMessage("Added new FAQ.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {

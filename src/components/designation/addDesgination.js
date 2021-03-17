@@ -70,7 +70,7 @@ function AddDesignation(props) {
         .UpdateData(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Designation updated");
+          setToasterMessage("Updated Designation details.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {
@@ -92,7 +92,7 @@ function AddDesignation(props) {
         .AddData(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Designation created");
+          setToasterMessage("New Designation has been added.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {

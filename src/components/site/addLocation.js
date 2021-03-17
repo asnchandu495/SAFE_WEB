@@ -328,7 +328,7 @@ function AddLocation(props) {
         .UpdateData(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Location updated");
+          setToasterMessage("Updated Location details.");
           settoasterServerity("success");
           setTimeout(() => {
             resetCovidStateFormData();
@@ -350,7 +350,7 @@ function AddLocation(props) {
         .AddData(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Location added");
+          setToasterMessage("Added new location to Floor.");
           settoasterServerity("success");
           setTimeout(() => {
             resetCovidStateFormData();

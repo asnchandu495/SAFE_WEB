@@ -158,7 +158,7 @@ function CreateNew(props) {
         .UpdateEmergencyContact(emergencyContact)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Emergency contact details updated");
+          setToasterMessage("Updated Emergency Contact details.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {
@@ -178,7 +178,7 @@ function CreateNew(props) {
         .CreateNewEmergencyContact(emergencyContact)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Emergency contact details created");
+          setToasterMessage("Added New  Emergency Contact details.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {
