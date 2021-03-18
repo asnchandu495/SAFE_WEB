@@ -125,7 +125,7 @@ function CreateCovidState(props) {
         .UpdateData(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Covid State updated");
+          setToasterMessage("Updated COVID state details.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {
@@ -146,7 +146,7 @@ function CreateCovidState(props) {
         .AddData(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Covid state created");
+          setToasterMessage("Added new COVID state.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {

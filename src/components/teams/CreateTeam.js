@@ -33,6 +33,8 @@ function CreateTeam(props) {
     "array"
   );
   const [showLoadder, setshowLoadder] = useState(false);
+  
+  const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const teamId = props.match.params.id;
 
   const teamApiCall = new teamService();
@@ -70,6 +72,7 @@ function CreateTeam(props) {
   }, []);
 
   function handleChange(e) {
+    setisAlertBoxOpened(true);
     const { name, value } = e.target;
     SetformData((formData) => ({
       ...formData,
@@ -77,6 +80,7 @@ function CreateTeam(props) {
     }));
   }
   function handleChangeTeamManagers(event, value) {
+    setisAlertBoxOpened(true);
     setSelectedTeamManager(value);
   }
 
@@ -101,6 +105,7 @@ function teamCreation(e) {
        props
         .UpdateTeamCall(teamData)
         .then((result) => {
+          setisAlertBoxOpened(false);
           setshowLoadder(false);
           setStateSnackbar(true);
           setToasterMessage("Team  Updated");
@@ -125,6 +130,7 @@ function teamCreation(e) {
       .CreateTeamCall(teamData)
       
         .then((result) => {
+          setisAlertBoxOpened(false);
           setStateSnackbar(true);
           setToasterMessage("Team  Created");
           settoasterServerity("success");
@@ -168,6 +174,7 @@ function teamCreation(e) {
 
   return (
     <div className="innerpage-container">
+        <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
         <LinkTo
           color="inherit"

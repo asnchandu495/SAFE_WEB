@@ -240,7 +240,7 @@ function UpdateCovidState(props) {
         .UpdateUserCovidState(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("User's covid state updated");
+          setToasterMessage("Updated user's COVID state.");
           settoasterServerity("success");
           setTimeout(() => {
             props.setopenCovidStateInfoModal(false);

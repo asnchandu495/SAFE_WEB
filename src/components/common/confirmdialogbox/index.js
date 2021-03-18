@@ -88,7 +88,7 @@ function CustomizedDialogs(props) {
         .DeleteUser(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("User deleted");
+          props.setToasterMessage("Deleted user.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -102,7 +102,7 @@ function CustomizedDialogs(props) {
         .DelteUserGroup(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("User group deleted");
+          props.setToasterMessage("Deleted User Group.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -133,7 +133,7 @@ function CustomizedDialogs(props) {
         .DeletEmergencyContactList(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Emergency contact  deleted");
+          props.setToasterMessage("Deleted Emergency Contacts.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -147,7 +147,7 @@ function CustomizedDialogs(props) {
         .DeletAssignEmergencyContactList(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Assign emergency contact details cancelled");
+          props.setToasterMessage("Disassociated Emergency Contacts from User Group.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -176,7 +176,7 @@ function CustomizedDialogs(props) {
         .ChangeAssignEmergencyContactStatus(thisId, changeStatus, data)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Emergency contact doc status updated");
+          props.setToasterMessage("Updated Emergency Contact assignment status to User Group.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -190,7 +190,7 @@ function CustomizedDialogs(props) {
         .DelteUserDesignation(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Designation is deleted");
+          props.setToasterMessage("Deleted Designation.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -204,7 +204,7 @@ function CustomizedDialogs(props) {
         .DelteCovidState(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Covid state is deleted");
+          props.setToasterMessage("Deleted COVID state.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -218,7 +218,7 @@ function CustomizedDialogs(props) {
         .DeleteFaq(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Faq is deleted");
+          props.setToasterMessage("Deleted FAQ.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -232,7 +232,7 @@ function CustomizedDialogs(props) {
         .DeleteSite(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Site is deleted");
+          props.setToasterMessage("Deleted Site.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -246,7 +246,7 @@ function CustomizedDialogs(props) {
         .DeleteFloor(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Floor is deleted");
+          props.setToasterMessage("Deleted Floor.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -260,7 +260,7 @@ function CustomizedDialogs(props) {
         .DeleteAssignFaq(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Faq is disassociated");
+          props.setToasterMessage("Disassociated FAQ from User Group.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -280,7 +280,7 @@ function CustomizedDialogs(props) {
         .ChangAssignFaqStatus(sendData)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Status is updated");
+          props.setToasterMessage("Updated FAQ assignment status to User Group.s");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -294,7 +294,7 @@ function CustomizedDialogs(props) {
         .DeleteLocation(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Location is deleted");
+          props.setToasterMessage("Deleted Location.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })

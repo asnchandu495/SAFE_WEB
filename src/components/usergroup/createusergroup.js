@@ -63,7 +63,7 @@ function CreateUserGroup(props) {
         .UpdateUserGroup(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("User group updated");
+          setToasterMessage("Updated User Group details.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {
@@ -84,7 +84,7 @@ function CreateUserGroup(props) {
         .AddUserGroup(data)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("User group created");
+          setToasterMessage("Added new User Group.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {

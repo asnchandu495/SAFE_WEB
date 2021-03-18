@@ -90,7 +90,7 @@ function GlobalSetting(props) {
       .createGlobalSetting(finalData)
       .then((result) => {
         setStateSnackbar(true);
-        setToasterMessage("Global setting data updated");
+        setToasterMessage("Updated Global settings.");
         settoasterServerity("success");
         setisAlertBoxOpened(false);
         setTimeout(() => {

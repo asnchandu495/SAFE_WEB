@@ -311,7 +311,7 @@ function CreateUser(props) {
         .then((result) => {
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
-          setToasterMessage("User updated");
+          setToasterMessage("Updated user details.");
           settoasterServerity("success");
           setshowLoadder(false);
         })
@@ -337,7 +337,7 @@ function CreateUser(props) {
         .then((result) => {
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
-          setToasterMessage("User added");
+          setToasterMessage("User has been added.");
           settoasterServerity("success");
           setTimeout(() => {
             props.history.push(`/users/allusers`);

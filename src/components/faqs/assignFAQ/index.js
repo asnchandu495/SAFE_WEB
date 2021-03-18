@@ -406,7 +406,7 @@ function AssignedFAQs(props) {
       .AddData(data)
       .then((result) => {
         setStateSnackbar(true);
-        setToasterMessage("Faq is assigned to group");
+        setToasterMessage("Assigned FAQ to  User Group.");
         settoasterServerity("success");
         setTimeout(() => {
           //   setshowLoadder(false);

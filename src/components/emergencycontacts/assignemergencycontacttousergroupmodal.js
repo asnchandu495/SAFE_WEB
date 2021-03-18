@@ -186,7 +186,7 @@ function AssignEmergencyContactToUserGroup(props) {
       .CreateAssignEmegencyContact(data)
       .then((result) => {
         setStateSnackbar(true);
-        setToasterMessage("Emergency contact assigned to user group");
+        setToasterMessage("Emergency Contacts assigned to User Group.");
         settoasterServerity("success");
         setTimeout(() => {
           props.setopenAssignEmergencyContactModal(false);

@@ -176,7 +176,7 @@ function FaqSections(props) {
         .UpdateSectionToFaq(sendData)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Section is updated");
+          setToasterMessage("Updated FAQ section.");
           settoasterServerity("success");
           setTimeout(() => {
             props.history.push("/faq/view-faq/" + props.match.params.id);

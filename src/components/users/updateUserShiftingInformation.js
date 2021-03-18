@@ -155,7 +155,7 @@ function UpdateShiftingInfo(props) {
       .UpdateUserShiftInfo(data)
       .then((result) => {
         setStateSnackbar(true);
-        setToasterMessage("User's shift information updated");
+        setToasterMessage("Updated user's temperature.");
         settoasterServerity("success");
         setTimeout(() => {
           props.setopenshiftInfoModal(false);

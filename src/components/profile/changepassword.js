@@ -58,7 +58,7 @@ export default function ChangePassword(props) {
       .ChangePassword(data)
       .then((res) => {
         setStateSnackbar(true);
-        setToasterMessage("Password updated. Please login again");
+        setToasterMessage("Your account password is updated. Login with your new password.");
         settoasterServerity("success");
         setTimeout(() => {
           setshowLoadder(false);

@@ -36,7 +36,7 @@ export default function ForgotPassword(props) {
       .ForgotPassword(formData)
       .then((res) => {
         localStorage.setItem("UserEmailId", formData.email);
-        setToasterMessage("An OTP sent to your email id.");
+        setToasterMessage("OTP sent to your registered email ID.");
         settoasterServerity("success");
         setStateSnackbar(true);
         setTimeout(() => {
