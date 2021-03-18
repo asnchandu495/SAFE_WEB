@@ -59,7 +59,7 @@ function AddQuestionDetails(props) {
               InputLabelProps={{ shrink: false }}
             />
           </Grid>
-          <Grid item xs={12} sm={12} className="m-top-10">
+          {/* <Grid item xs={12} sm={12} className="m-top-10">
             <TextValidator
               variant="outlined"
               validators={[
@@ -81,14 +81,14 @@ function AddQuestionDetails(props) {
               className="global-input"
               InputLabelProps={{ shrink: false }}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid item xs={12} sm={12} className="question-flags">
-          <QuestionTypeBollean
+          <QuestionTypeDate
             setAddQuestion={props.setAddQuestion}
             addQuestion={props.addQuestion}
             answerTypes={props.answerTypes}
-          ></QuestionTypeBollean>
+          ></QuestionTypeDate>
         </Grid>
       </Grid>
     </CardContent>

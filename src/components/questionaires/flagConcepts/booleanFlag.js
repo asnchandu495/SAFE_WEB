@@ -11,6 +11,10 @@ import Switch from "@material-ui/core/Switch";
 import CardContent from "@material-ui/core/CardContent";
 
 function QuestionTypeBollean(props) {
+  const [answersToSelect, setAnswersToSelect] = useState([
+    { id: "001", name: "Yes" },
+    { id: "002", name: "No" },
+  ]);
   const PurpleSwitch = withStyles({
     switchBase: {
       color: "red",
@@ -34,7 +38,7 @@ function QuestionTypeBollean(props) {
   };
 
   return (
-    <Grid item container xs={12} spacing={1}>
+    <Grid item container xs={12} spacing={1} className="flag-container">
       <Grid item xs={12} sm={6}>
         <Card className="flag-card">
           <CardContent>
@@ -78,10 +82,10 @@ function QuestionTypeBollean(props) {
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    {props.answerTypes.map((aType) => {
+                    {answersToSelect.map((ans) => {
                       return (
-                        <MenuItem value={aType.id} key={`atypered_${aType.id}`}>
-                          {aType.name}
+                        <MenuItem value={ans.id} key={`atypered_${ans.id}`}>
+                          {ans.name}
                         </MenuItem>
                       );
                     })}
@@ -135,13 +139,13 @@ function QuestionTypeBollean(props) {
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    {props.answerTypes.map((aType) => {
+                    {answersToSelect.map((ans) => {
                       return (
                         <MenuItem
-                          value={aType.id}
-                          key={`atypepositive${aType.id}`}
+                          value={ans.id}
+                          key={`atypepositive_${ans.id}`}
                         >
-                          {aType.name}
+                          {ans.name}
                         </MenuItem>
                       );
                     })}

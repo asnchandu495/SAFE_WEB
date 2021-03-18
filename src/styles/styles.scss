@@ -225,6 +225,13 @@ body,
     justify-content: center;
     width: 100%;
   }
+  .MuiOutlinedInput-adornedStart {
+    padding-left: 5px;
+    .adornment-input {
+      font-size: 12px;
+      min-width: 23px;
+    }
+  }
 }
 
 .ToasterContainer {
@@ -824,6 +831,7 @@ label.required {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      padding: 10px;
     }
     .global-form {
       width: 100%;
@@ -837,13 +845,25 @@ label.required {
         border: 1px solid #f5f5f5;
         border-radius: 2px;
         padding: 10px;
-        margin: 10px 0;
-        height: 80%;
+        height: 100%;
+        .range-input {
+          .MuiFormControl-root {
+            margin-bottom: 15px;
+          }
+        }
       }
       .chip-input {
         .MuiOutlinedInput-root {
           padding-top: 0 !important;
           padding-left: 0;
+        }
+      }
+      .flag-container {
+        padding: 10px 0;
+        .arrow-container {
+          display: inline-flex;
+          justify-content: center;
+          margin: 10px 0;
         }
       }
     }

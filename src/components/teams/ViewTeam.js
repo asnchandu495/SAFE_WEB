@@ -109,6 +109,14 @@ function ViewTeam(props) {
         sort: true,
       },
     },
+    {
+      name: "emailId",
+      label: "Emailid",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
   ];
 
   function BreadcrumbNavigation(getRoute) {
