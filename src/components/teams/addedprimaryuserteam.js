@@ -119,21 +119,23 @@ function AddPrimaryUserTeam(props) {
   };
 
   const columns = [
-    {
-      label: "Id",
-      name: "id",
-      options: {
-        display: "excluded",
-        print: false,
-        filter: false,
-      },
-    },
+    
     {
       name: "firstName",
       label: "Name",
       options: {
         filter: true,
         sort: true,
+      },
+    },
+    {
+      label: "Id",
+      name: "userId",
+      options: {
+        // display: "excluded",
+        // print: false,
+        filter: true,
+        sort:true,
       },
     },
     {
@@ -144,14 +146,14 @@ function AddPrimaryUserTeam(props) {
         sort: true,
       },
     },
-    {
-      name: "contactNumber",
-      label: "Contact Number",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
+    // {
+    //   name: "contactNumber",
+    //   label: "Contact Number",
+    //   options: {
+    //     filter: true,
+    //     sort: true,
+    //   },
+    // },
   ];
 
   function BreadcrumbNavigation(getRoute) {
