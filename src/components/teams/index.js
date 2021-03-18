@@ -183,7 +183,7 @@ function Teams(props) {
                   ></Button>
                 </Tooltip>
 
-                <Tooltip title="Assign users as primary team">
+                <Tooltip title="Assign users to team">
                   <Button
                     variant="contained"
                     color="default"

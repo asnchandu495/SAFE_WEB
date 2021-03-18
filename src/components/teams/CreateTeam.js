@@ -215,7 +215,7 @@ function teamCreation(e) {
                     ]}
                     errorMessages={[
                       "Please enter team  name",
-                      "Special charcters are not allowed",
+                      "Special characters are not allowed",
                       "Maximum 50 characters",
                     ]}
                     fullWidth
