@@ -252,6 +252,7 @@ function AssignEmergencyContacts(props) {
   };
 
   function handleClickOpenAssignEmergencyModal(value) {
+    
     setopenAssignEmergencyContactModal(true);
     setSelectedRowId(value);
   }
