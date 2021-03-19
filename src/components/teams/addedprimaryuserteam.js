@@ -14,6 +14,46 @@ import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import teamService from "../../services/teamService";
+import FilterListIcon from '@material-ui/icons/FilterList';
+import Tooltip from "@material-ui/core/Tooltip";
+
+import ConfirmationDialog from "../common/confirmdialogbox";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import TextField from '@material-ui/core/TextField';
+
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import MasterService from "../../services/masterDataService";
+import UserGroupService from '../../services/userGroupService';
+import FormControl from "@material-ui/core/FormControl";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
+import MuiDialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -32,6 +72,8 @@ function AddPrimaryUserTeam(props) {
   const teamId = props.match.params.id;
   const UserGroupApi = new UserGroupApiServices();
   const UsersApi = new UserService();
+  const masterDataCallApi = new MasterService();
+  const UserGroup=new UserGroupService();
 
   const [responsive, setResponsive] = useState("vertical");
   const [tableBodyHeight, setTableBodyHeight] = useState("300px");
@@ -52,17 +94,81 @@ function AddPrimaryUserTeam(props) {
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedTeamInfo, setSelectedTeamInfo] = useState();
   const [selectedUsersToGroup, setSelectedUsersToTeam] = useState([]);
+  const [openAssignTeamModal,setopenAssignTeamModal] = useState(false);
+  const [SelectedRowId, setSelectedRowId] = useState("");
+
+  const[designationMasterData,setdesignationMasterData]=useState();
+  const[userGroupList,setuserGroupList]=useState();
+  
+  const [Modalopen, setModalOpen] = useState(false);
+
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [
+    ConfirmationDialogContextText,
+    setConfirmationDialogContextText,
+  ] = useState("");
+  const [
+    openAssignEmergencyContactModal,
+    setopenAssignEmergencyContactModal,
+  ] = useState(false);
+  const [
+    ConfirmationModalActionType,
+    setConfirmationModalActionType,
+  ] = useState("");
+  
+
+
+  const[selectedUserData,setselectedUserData]=useState();
+  const[selectedUserDesignation,setselectedUserDesignation]=useState();
+  const[searchformData,setsearchformData]=useState({
+    "primaryGroupId": "",
+  "designationId": "",
+  "covidStateId": "",
+  "roleIds": [],
+  "siteId": []
+  });
+  
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
+
 
   useEffect(() => {
     if (teamId) {
       Promise.all([
         teamApiCall.viewApplicationUserByTeamId(teamId),
-        UsersApi.ListApplicationUsers(),
+        UsersApi.ListApplicationUsersForTeams(searchformData),
+        masterDataCallApi.getDesignations(),
+        UserGroup.loadUserGroup(),
+
       ])
-        .then(([teamInfo, applicationUsers]) => {
+        .then(([teamInfo,applicationUsers,getDesignations,getUserList]) => {
           let primaryUsers = teamInfo.users;
           setApplicationUsers(applicationUsers);
           setSelectedTeamInfo(teamInfo);
+          // console.log('getUserList');
+          // console.log(getUserList);
+          setdesignationMasterData(getDesignations);
+          setuserGroupList(getUserList);
           setComponentLoadder(false);
           var selectedUsersToGroupArray = [];
 
@@ -71,7 +177,7 @@ function AddPrimaryUserTeam(props) {
             if (found) {
               selectedUsersToGroupArray.push(i);
             } else {
-              console.log("no");
+              console.log("error");
             }
           });
           setSelectedUsersToTeam(selectedUsersToGroupArray);
@@ -116,6 +222,25 @@ function AddPrimaryUserTeam(props) {
     },
 
     customToolbarSelect: (value, tableMeta, updateValue) => {},
+
+    customToolbar: () => {
+      return (
+        <div className={`maingrid-actions`}>
+          <Tooltip title="Filter By User">
+            <Button
+              variant="contained"
+              startIcon={<FilterListIcon />}
+              className={`add-icon`}
+              onClick={handleClickOpenModal}
+            ></Button>
+          </Tooltip>
+        </div>
+      );
+    },
+
+
+
+
   };
 
   const columns = [
@@ -129,11 +254,9 @@ function AddPrimaryUserTeam(props) {
       },
     },
     {
-      label: "Id",
+      label: "User Id",
       name: "userId",
       options: {
-        // display: "excluded",
-        // print: false,
         filter: true,
         sort:true,
       },
@@ -146,19 +269,27 @@ function AddPrimaryUserTeam(props) {
         sort: true,
       },
     },
-    // {
-    //   name: "contactNumber",
-    //   label: "Contact Number",
-    //   options: {
-    //     filter: true,
-    //     sort: true,
-    //   },
-    // },
+   
+    
   ];
 
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
+
+
+
+
+  const handleClickOpenModal = () => {
+ 
+   setModalOpen(true);
+      
+  };
+
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
 
   function assignUsers() {
     setshowLoadder(true);
@@ -192,8 +323,144 @@ function AddPrimaryUserTeam(props) {
       });
   }
 
+
+  function selectedUser(e,value) {
+    setselectedUserData(value);
+  }
+
+ function selectedDesignation(e,value){
+   setselectedUserDesignation(value);
+ }
+
+ function AssignFiltersForm() {
+  if (searchformData) {
+    console.log(searchformData);
+    submitAssignTeams();
+  } else {
+    submitAssignTeams(false);
+    return false;
+  }
+}
+
+
+function submitAssignTeams() {
+  var teamData = searchformData;
+  teamData.designationId = selectedUserDesignation.id;
+  teamData.primaryGroupId=selectedUserData.id;
+  setshowLoadder(true);
+ UsersApi.ListApplicationUsersForTeams(teamData)
+    .then((result) => {
+     setApplicationUsers(result);
+      setshowLoadder(false);
+      setModalOpen(false);
+      })
+    .catch((err) => {
+      console.log(err);
+      setToasterMessage(err.data.errors);
+      settoasterServerity("error");
+      setStateSnackbar(true);
+      setshowLoadder(false);
+    });
+}
+
+
+
   return (
     <div className="innerpage-container">
+       {/* <Dialog open={Modalopen} onClose={handleClose} aria-labelledby="form-dialog-title"> */}
+       <Dialog onClose={handleClose} aria-labelledby="form-dialog-title" open={Modalopen}>
+        <DialogTitle id="form-dialog-title" onClose={handleClose}>Filters</DialogTitle>
+        <ValidatorForm
+          className={`global-form`}
+          onSubmit={AssignFiltersForm}
+        >
+        <DialogContent dividers>
+            {!componentLoadder ? (
+              <Grid container spacing={3}>
+                <Grid item xs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">Designation</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                  <FormControl variant="outlined" fullWidth>
+                    <Autocomplete
+                      id="tags-outlined"
+                      options={
+                        designationMasterData &&
+                        designationMasterData.length > 0
+                          ? designationMasterData
+                          : []
+                      }
+                      getOptionLabel={(option) => option.name}
+                      defaultValue="#"
+                      onChange={selectedDesignation}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select designation"
+                        />
+                      )}
+                    /> </FormControl>
+                    
+                 
+                   
+                  </Grid>
+                </Grid>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">Group Name</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <FormControl variant="outlined" fullWidth>
+                    <Autocomplete
+                      id="tags-outlined"
+                      options={
+                        userGroupList &&
+                        userGroupList.length > 0
+                          ? userGroupList
+                          : []
+                      }
+                      getOptionLabel={(option) => option.groupName}
+                      defaultValue="#"
+                      onChange={selectedUser}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select usergroup"
+                        />
+                      )}
+                    />  </FormControl>
+                    
+                  </Grid>
+                  
+                  
+                  </Grid></Grid>
+           ) : null}
+         </DialogContent>
+         <DialogActions>
+            <Button
+              variant="contained"
+              type="submit"
+              className="global-submit-btn"
+              disabled={showLoadder}
+            >
+              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+            </Button>
+            <Button onClick={handleClose} className="global-cancel-btn">
+              Cancel
+            </Button>
+          </DialogActions>
+         </ValidatorForm>
+      </Dialog>
+                      
+
+
       {componentLoadder ? (
         <ComponentLoadderComponent />
       ) : (
@@ -232,6 +499,7 @@ function AddPrimaryUserTeam(props) {
               className="global-table table-wo-action"
             />
           </MuiThemeProvider>
+          
 
           <Grid container>
             <Grid item xs={12} className={`global-form inner-table-buttons`}>
@@ -260,6 +528,8 @@ function AddPrimaryUserTeam(props) {
           </Grid>
         </>
       )}
+
+     
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}

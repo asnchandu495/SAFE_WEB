@@ -132,7 +132,7 @@ function App(props) {
         ></Route>
         <Route path="/setting/global-setting" component={GlobalSetting}></Route>
         <Route
-          path="/setting/tempearture-range"
+          path="/setting/temperature-range"
           component={TemperatureRange}
         ></Route>
         <Route path="/usergroups/allusergroups" component={UserGroup}></Route>
@@ -283,7 +283,7 @@ function App(props) {
           component={AdminContainer}
         ></Route>
         <Route
-          path="/setting/tempearture-range"
+          path="/setting/temperature-range"
           component={AdminContainer}
         ></Route>
         <Route
