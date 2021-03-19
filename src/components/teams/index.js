@@ -17,20 +17,8 @@ import * as teamAction from "../../Redux/Action/teamAction";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import propTypes from "prop-types";
-
 import ToasterMessageComponent from "../common/toaster";
-const style = makeStyles({
-  titleItemRight: {
-    color: "white",
-    backgroundColor: "blue",
-    top: "50%",
-    height: 30,
-    float: "right",
-    position: "relative",
-    transform: "translateY(-50%)",
-  },
-  aligndiv: {},
-});
+
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -42,6 +30,7 @@ const theme1 = createMuiTheme({
     },
   },
 });
+
 function Teams(props) {
   const teamApiCall = new teamService();
   const [teamList, setTeamList] = useState([]);
@@ -54,7 +43,6 @@ function Teams(props) {
     setConfirmationDialogContextText,
   ] = useState("");
 
-  
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   // const [SelectedRowId, setSelectedRowId] = useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -88,7 +76,6 @@ function Teams(props) {
   }
 
   function handleClickOpenConfirmationModal(value) {
-    
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteTeams");
@@ -107,8 +94,6 @@ function Teams(props) {
     var teamId = value[0];
     props.history.push("/teams/view-team/" + teamId);
   }
-
-   
 
   const columns = [
     {
@@ -179,7 +164,9 @@ function Teams(props) {
                     color="default"
                     startIcon={<DeleteIcon />}
                     className={`delete-icon`}
-                    onClick={() => handleClickOpenConfirmationModal(thisRowData)}
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
                   ></Button>
                 </Tooltip>
 
@@ -275,7 +262,7 @@ function Teams(props) {
         ConfirmationModalActionType={ConfirmationModalActionType}
         SelectedRowDetails={SelectedRowDetails}
       />
-       <ToasterMessageComponent
+      <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
         toasterMessage={toasterMessage}
