@@ -20,6 +20,17 @@ import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import * as globalSettingAction from "../../../Redux/Action/globalSettingAction";
 import GlobalSettingApiServices from "../../../services/globalSettingService";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import 'date-fns';
+import Checkbox from '@material-ui/core/Checkbox';
+import InputAdornment from "@material-ui/core/InputAdornment";
+
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -54,6 +65,54 @@ function GlobalSetting(props) {
   const [componentLoadder, setcomponentLoadder] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date('2014-08-18T21:11:54'));
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const fileFormat=[{id:"1",format:"xls"},
+                    {id:"2",format:"csv"},
+                  ];
+  const selfReminder=[{
+              id:"1",
+              selfvalue:"Minute"
+            },
+            {
+              id:"2",
+              selfvalue:"Hours"
+            },
+
+];   
+const uomTemp=[{
+              id:"1",
+              uomTempvalue:"Farenheit"
+              },
+            {
+                id:"2",
+                uomTempvalue:"Celsius"
+            },
+            ];
+const datesFormat=[{
+              id:"1",
+              "formatvalue":"dd/mm/yyyy"
+            },
+            {
+              id:"2",
+              "formatvalue":"mm/dd/yyyy"
+            },
+
+];      
+const timeFormat=[{
+              id:"1",
+              value:"12 Hours"
+                  },
+                  {
+              id:"2",
+              value:"24 Hours"
+                  },
+]      
+const [checkedwfhApproval, setCheckedwfhApproval] =useState(true);
+const [checkselfieApproval, setcheckselfieApproval]=useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -294,7 +353,8 @@ function GlobalSetting(props) {
                 container
                 spacing={1}
               >
-                <Grid item xs={3}>
+
+            <Grid item xs={3}>
                   <label className="required">
                     Social distancing tolerance
                   </label>
@@ -404,11 +464,432 @@ function GlobalSetting(props) {
                     InputLabelProps={{ shrink: false }}
                   />
                 </Grid>
-              </Grid>
-              <Grid item container xs={12}>
+                 </Grid>
+
+              <Grid
+                item
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
                 <Grid item xs={3}>
-                  <label>&nbsp;</label>
+                  <label className="required">Date Format</label>
                 </Grid>
+                
+                <Grid item xs={2}>
+                  <FormControl variant="outlined" fullWidth>
+                   
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value="#"
+                      name="dateformat"
+                      onChange={handleChange}
+                      placeholder="Select"
+                      required
+                      InputLabelProps={{ shrink: false }}
+                      className="global-input single-select"
+                    >
+                      <MenuItem value="">
+                        <em>Select</em>
+                      </MenuItem>
+                      {datesFormat.length > 0
+                        ? datesFormat.map((datevalue) => {
+                            return (
+                              <MenuItem
+                                key={datevalue.id}
+                                value={datevalue.formatvalue}
+                              >
+                                {datevalue.formatvalue}
+                              </MenuItem>
+                            );
+                          })
+                        : ""}
+                    </Select>
+                  </FormControl>
+                  {isFormSubmit && !formData.geoFencingToleranceUnit ? (
+                    <FormHelperText className={classes.errorSpanMsg}>
+                      Please select value{" "}
+                    </FormHelperText>
+                  ) : (
+                    ""
+                  )}
+                </Grid>
+              </Grid>
+  
+
+          <Grid
+                item
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
+                <Grid item xs={3}>
+                  <label className="required">Times Format</label>
+                </Grid>
+                
+                <Grid item xs={2}>
+                  <FormControl variant="outlined" fullWidth>
+                   
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value="#"
+                      name="timesformat"
+                      onChange={handleChange}
+                      placeholder="Select"
+                      required
+                      InputLabelProps={{ shrink: false }}
+                      className="global-input single-select"
+                    >
+                      <MenuItem value="">
+                        <em>Select</em>
+                      </MenuItem>
+                      {timeFormat.length > 0
+                        ? timeFormat.map((timevalue) => {
+                            return (
+                              <MenuItem
+                                key={timevalue.id}
+                                value={timevalue.value}
+                              >
+                                {timevalue.value}
+                              </MenuItem>
+                            );
+                          })
+                        : ""}
+                    </Select>
+                  </FormControl>
+                  {isFormSubmit && !formData.geoFencingToleranceUnit ? (
+                    <FormHelperText className={classes.errorSpanMsg}>
+                      Please select value{" "}
+                    </FormHelperText>
+                  ) : (
+                    ""
+                  )}
+                </Grid>
+              </Grid>
+
+                <Grid
+                item
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
+                <Grid item xs={3}>
+                  <label className="required">File format to import users details:</label>
+                </Grid>
+                
+                <Grid item xs={2}>
+                  <FormControl variant="outlined" fullWidth>
+                   
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={formData.geoFencingToleranceUnit}
+                      name="geoFencingToleranceUnit"
+                      onChange={handleChange}
+                      placeholder="Select"
+                      required
+                      InputLabelProps={{ shrink: false }}
+                      className="global-input single-select"
+                    >
+                      <MenuItem value="">
+                        <em>Select</em>
+                      </MenuItem>
+                      {fileFormat.length > 0
+                        ? fileFormat.map((fol) => {
+                            return (
+                              <MenuItem
+                                key={fol.id}
+                                value={fol.format}
+                              >
+                                {fol.format}
+                              </MenuItem>
+                            );
+                          })
+                        : ""}
+                    </Select>
+                  </FormControl>
+                  {isFormSubmit && !formData.geoFencingToleranceUnit ? (
+                    <FormHelperText className={classes.errorSpanMsg}>
+                      Please select value{" "}
+                    </FormHelperText>
+                  ) : (
+                    ""
+                  )}
+                </Grid>
+              </Grid>
+
+
+              
+              <Grid item container xs={12}>
+                  <Grid item xs={3}>
+                    <label>Duration to lock user account on Maximum unsuccessfull login attempts:</label>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <FormControl variant="outlined">
+                      <OutlinedInput
+                        id="outlined-adornment-weight"
+                        name="loginattempts"
+                        type={"text"}
+                        value={
+                          formData.attendanceGracetime
+                            ? formData.attendanceGracetime
+                            : ""
+                        }
+                        onChange={handleChange}
+                        endAdornment={
+                          <InputAdornment position="end">Minutes</InputAdornment>
+                        }
+                        aria-describedby="outlined-weight-helper-text"
+                        labelWidth={0}
+                        className="global-input"
+                        InputLabelProps={{ shrink: false }}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={2}></Grid>
+                </Grid>
+
+
+                
+
+                 <Grid item container xs={12}>
+                  <Grid item xs={3}>
+                    <label className="required">Automated checked out time</label>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <FormControl variant="outlined">
+                      <OutlinedInput
+                        id="outlined-adornment-weight"
+                        name="checkedout"
+                        type={"text"}
+                        value={
+                          formData.attendanceGracetime
+                            ? formData.attendanceGracetime
+                            : ""
+                        }
+                        onChange={handleChange}
+                        endAdornment={
+                          <InputAdornment position="end">Hours</InputAdornment>
+                        }
+                        aria-describedby="outlined-weight-helper-text"
+                        labelWidth={0}
+                        className="global-input"
+                        InputLabelProps={{ shrink: false }}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={2}></Grid>
+                </Grid>
+
+
+              <Grid item container xs={12}>
+                  <Grid item xs={3}>
+                    <label className="required">Minimum password length</label>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <FormControl variant="outlined">
+                      <OutlinedInput
+                        id="outlined-adornment-weight"
+                        name="passwordlength"
+                        type={"text"}
+                        value={
+                          formData.attendanceGracetime
+                            ? formData.attendanceGracetime
+                            : ""
+                        }
+                        onChange={handleChange}
+                        endAdornment={
+                          <InputAdornment position="end">Characters</InputAdornment>
+                        }
+                        aria-describedby="outlined-weight-helper-text"
+                        labelWidth={0}
+                        className="global-input"
+                        InputLabelProps={{ shrink: false }}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={2}></Grid>
+                </Grid>
+
+
+
+                 
+
+
+
+            <Grid
+                item
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
+
+            <Grid item xs={3}>
+                  <label className="required">
+                    Self health check reminder
+                  </label>
+                </Grid>
+                
+                <Grid item xs={2}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel
+                      id="demo-simple-select-outlined-label"
+                      shrink={false}
+                      className="select-label"
+                    >
+                      {formData.socialDistanceToleranceUnit == ""
+                        ? "Select"
+                        : ""}
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={formData.socialDistanceToleranceUnit}
+                      name="selfhealth"
+                      onChange={handleChange}
+                      placeholder="Select"
+                      required
+                      InputLabelProps={{ shrink: false }}
+                      className="global-input single-select"
+                    >
+                      <MenuItem value="">
+                        <em>Select</em>
+                      </MenuItem>
+                      {selfReminder.length > 0
+                        ? selfReminder.map((tol) => {
+                            return (
+                              <MenuItem
+                                key={tol.id}
+                                value={tol.selfvalue}
+                              >
+                                {tol.selfvalue}
+                              </MenuItem>
+                            );
+                          })
+                        : ""}
+                    </Select>
+                  </FormControl>
+                  {isFormSubmit && !formData.socialDistanceToleranceUnit ? (
+                    <FormHelperText className={classes.errorSpanMsg}>
+                      Please select value{" "}
+                    </FormHelperText>
+                  ) : (
+                    ""
+                  )}
+                </Grid>
+              </Grid>
+
+
+              <Grid
+                item
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
+
+            <Grid item xs={3}>
+                  <label>
+                   Allow check-in without WFH location approval
+                  </label>
+                </Grid>
+                
+                <Grid item xs={2}>
+                  
+                  <Checkbox  checked={checkedwfhApproval} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                  
+                 </Grid>
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
+
+            <Grid item xs={3}>
+                  <label>
+                  Allow check-in without profile selfie approval
+                  </label>
+                </Grid>
+                
+                <Grid item xs={2}>
+                  
+                  <Checkbox  checked={checkselfieApproval} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                  
+                 </Grid>
+              </Grid>
+          
+
+          <Grid
+                item
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
+                <Grid item xs={3}>
+                  <label className="required">UoM for temperature</label>
+                </Grid>
+                
+                <Grid item xs={2}>
+                  <FormControl variant="outlined" fullWidth>
+                   
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={formData.geoFencingToleranceUnit}
+                      name="geoFencingToleranceUnit"
+                      onChange={handleChange}
+                      placeholder="Select"
+                      required
+                      InputLabelProps={{ shrink: false }}
+                      className="global-input single-select"
+                    >
+                      <MenuItem value="">
+                        <em>Select</em>
+                      </MenuItem>
+                      {uomTemp.length > 0
+                        ? uomTemp.map((tempvalue) => {
+                            return (
+                              <MenuItem
+                                key={tempvalue.id}
+                                value={tempvalue.uomTempvalue}
+                              >
+                                {tempvalue.uomTempvalue}
+                              </MenuItem>
+                            );
+                          })
+                        : ""}
+                    </Select>
+                  </FormControl>
+                  {isFormSubmit && !formData.geoFencingToleranceUnit ? (
+                    <FormHelperText className={classes.errorSpanMsg}>
+                      Please select value{" "}
+                    </FormHelperText>
+                  ) : (
+                    ""
+                  )}
+                </Grid>
+              </Grid>
+  
+
+
+
+              
+
+
+
+              <Grid item container xs={12}>
+                
                 <Grid item xs={9}>
                   <div className={`form-buttons-container`}>
                     <Button
