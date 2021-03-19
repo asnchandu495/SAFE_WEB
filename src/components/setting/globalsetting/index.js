@@ -816,7 +816,7 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
               >
 
             <Grid item xs={3}>
-                  <label>
+                  <label >
                   Allow check-in without profile selfie approval
                   </label>
                 </Grid>

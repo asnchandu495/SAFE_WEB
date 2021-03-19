@@ -740,6 +740,19 @@ function AdminLayout(props) {
                     </ListItemIcon>
                     <ListItemText primary="Global Setting" />
                   </ListItem>
+
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/setting/temperature-range"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Temperature Range" />
+                  </ListItem>
                 </List>
               </Collapse>
               <Divider></Divider>
