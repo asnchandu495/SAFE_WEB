@@ -7,7 +7,6 @@ import { ValidatorForm } from "react-material-ui-form-validator";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
-
 import ListofQuestions from "./listofQuestions";
 import QuestionType from "./selectQuestionType";
 import AddQuestionDetails from "./addQuestionDetails";
@@ -31,14 +30,16 @@ function AddQuestion(props) {
     { id: "006", name: "Range" },
   ]);
   const [gotoAddQuestion, setGotoAddQuestion] = useState(false);
+  const [questionTypeForm, setQuestionTypeForm] = useState({
+    questionType: "",
+  });
+
   const [addQuestion, setAddQuestion] = useState({
     id: "",
-    questionType: "",
     questionName: "",
     questionDescription: "",
     questionOptions: "",
     isRedFlagEnaled: false,
-    isPositiveConfirmity: false,
     redFlagAnswerType: "",
     positiveFlagAnswerType: "",
   });
@@ -96,6 +97,8 @@ function AddQuestion(props) {
                         setGotoAddQuestion={setGotoAddQuestion}
                         addQuestion={addQuestion}
                         setAddQuestion={setAddQuestion}
+                        setQuestionTypeForm={setQuestionTypeForm}
+                        questionTypeForm={questionTypeForm}
                       ></QuestionType>
                     </Grid>
                   ) : (
@@ -109,6 +112,8 @@ function AddQuestion(props) {
                             setAddQuestion={setAddQuestion}
                             answerTypes={answerTypes}
                             setAnswerTypes={setAnswerTypes}
+                            setQuestionTypeForm={setQuestionTypeForm}
+                            questionTypeForm={questionTypeForm}
                           ></AddQuestionDetails>
                           <CardActions className="action-container">
                             <Button

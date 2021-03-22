@@ -20,8 +20,8 @@ function QuestionType(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    props.setAddQuestion((addQuestion) => ({
-      ...props.addQuestion,
+    props.setQuestionTypeForm((questionTypeForm) => ({
+      ...props.questionTypeForm,
       [name]: value,
     }));
   };
@@ -39,12 +39,12 @@ function QuestionType(props) {
               shrink={false}
               className="select-label"
             >
-              {props.addQuestion.questionType != "" ? "" : "Question type"}
+              {props.questionTypeForm.questionType != "" ? "" : "Question type"}
             </InputLabel>
             <Select
               labelId="demo-simple-select-outlined-label"
               id="demo-simple-select-outlined"
-              value={props.addQuestion.questionType}
+              value={props.questionTypeForm.questionType}
               name="questionType"
               onChange={handleChange}
               placeholder="Question type"
