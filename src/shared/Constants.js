@@ -4,6 +4,6 @@ const Constants = {
 
   baseURL: "https://ssap-api.azurewebsites.net/api",
   authURL: "https://ssap-auth.azurewebsites.net",
-  quentionaireURL: "http://ssapsurvey.azurewebsites.net/api",
+  quentionaireURL: "https://ssapsurvey.azurewebsites.net/api",
 };
 export default Constants;

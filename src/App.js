@@ -44,14 +44,13 @@ import ImportUsers from "./components/users/ImportUsers";
 import ImportUsersHistory from "./components/users/ImportUserHistory";
 import ViewUser from "./components/users/viewUsers";
 import UserProfie from "./components/profile";
-import AddedPrimaryUserTeam from "./components/teams/addedprimaryuserteam"
+import AddedPrimaryUserTeam from "./components/teams/addedprimaryuserteam";
 import Questionaire from "./components/questionaires";
 import CreateQuestionarie from "./components/questionaires/createQuestionaire";
 import AddQuestion from "./components/questionaires/addQuestion";
+import ViewQuestions from "./components/questionaires/viewQuestions";
 import InternalServer from "./components/common/ErrorPage/InternalServerError/index";
 import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
-
-
 import Teams from "./components/teams";
 import CreateTeam from "./components/teams/CreateTeam";
 import ViewTeam from "./components/teams/ViewTeam";
@@ -196,12 +195,7 @@ function App(props) {
           path="/teams/add-primary-user-teams/:id"
           component={AddedPrimaryUserTeam}
         ></Route>
-
-       <Route path="/teams/view-team/:id" component={ViewTeam}></Route>
-
-
-
-
+        <Route path="/teams/view-team/:id" component={ViewTeam}></Route>
         <Route
           path="/questionaires/allquestionaires"
           component={Questionaire}
@@ -213,6 +207,10 @@ function App(props) {
         <Route
           path="/questionaires/add-questions/:id/:qid"
           component={AddQuestion}
+        ></Route>
+        <Route
+          path="/questionaires/view-questions/:id"
+          component={ViewQuestions}
         ></Route>
       </AdminLayout>
     );
@@ -353,12 +351,11 @@ function App(props) {
         <Route path="/user/view-profile" component={AdminContainer}></Route>
         <Route path="/teams/allteams" component={AdminContainer}></Route>
         <Route path="/teams/add-teams/:id" component={AdminContainer}></Route>
-        <Route path="/teams/add-primary-user-teams/:id"  component={AdminContainer}
-        ></Route>
         <Route
-          path="/teams/view-team/:id"
+          path="/teams/add-primary-user-teams/:id"
           component={AdminContainer}
         ></Route>
+        <Route path="/teams/view-team/:id" component={AdminContainer}></Route>
         <Route
           path="/questionaires/allquestionaires"
           component={AdminContainer}
@@ -369,6 +366,10 @@ function App(props) {
         ></Route>
         <Route
           path="/questionaires/add-questions/:id/:qid"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/questionaires/view-questions/:id"
           component={AdminContainer}
         ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />

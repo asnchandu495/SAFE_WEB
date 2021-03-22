@@ -14,25 +14,56 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 function QuestionTypeDate(props) {
+  const [answerTypes, setAnswerTypes] = useState([
+    { id: "001", name: "=" },
+    { id: "002", name: ">" },
+    { id: "003", name: ">=" },
+    { id: "004", name: "<" },
+    { id: "005", name: "<=" },
+    { id: "006", name: "Range" },
+  ]);
+
   const PurpleSwitch = withStyles({
     switchBase: {
-      color: "red",
+      color: "#be1d56",
       "&$checked": {
-        color: "red",
+        color: "#26235d",
       },
       "&$checked + $track": {
-        backgroundColor: "red",
+        backgroundColor: "#26235d",
       },
     },
     checked: {},
     track: {},
   })(Switch);
 
-  const handleChange = (e) => {
+  const handleChangeFlagR = (e) => {
     const { name, value } = e.target;
-    props.setAddQuestion((addQuestion) => ({
-      ...props.addQuestion,
-      [name]: value,
+    props.setDatetimeFlag((prevState) => ({
+      ...prevState,
+      redFlagForDate: {
+        ...prevState.redFlagForDate,
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleChangeFlagP = (e) => {
+    const { name, value } = e.target;
+    props.setDatetimeFlag((prevState) => ({
+      ...prevState,
+      positiveConformityForDate: {
+        ...prevState.positiveConformityForDate,
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleChangeRedFlagSwitch = (e) => {
+    const { name, value } = e.target;
+    props.setDatetimeFlag((booleanFlag) => ({
+      ...props.datetimeFlag,
+      [name]: e.target.checked,
     }));
   };
 
@@ -42,36 +73,47 @@ function QuestionTypeDate(props) {
         <Card className="flag-card">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label className="required">Red Flag</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <FormControlLabel
-                  control={<PurpleSwitch checked={true} name="checkedA" />}
+                  control={
+                    <PurpleSwitch
+                      checked={props.datetimeFlag.isPositiveConfirmityRedFlag}
+                      name="isPositiveConfirmityRedFlag"
+                      onChange={handleChangeRedFlagSwitch}
+                    />
+                  }
                 />
               </Grid>
             </Grid>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label className="required">Red Flag Answer</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel
                     id="demo-simple-select-outlined-label"
                     shrink={false}
                     className="select-label"
                   >
-                    {props.addQuestion.redFlagAnswerType != ""
+                    {props.datetimeFlag.redFlagForDate.expressionType &&
+                    props.datetimeFlag.redFlagForDate.expressionType != ""
                       ? ""
                       : "Answer type"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
-                    value={props.addQuestion.redFlagAnswerType}
-                    name="redFlagAnswerType"
-                    onChange={handleChange}
+                    value={
+                      props.datetimeFlag.redFlagForDate.expressionType
+                        ? props.datetimeFlag.redFlagForDate.expressionType
+                        : ""
+                    }
+                    name="expressionType"
+                    onChange={handleChangeFlagR}
                     placeholder="Answer type"
                     InputLabelProps={{
                       shrink: false,
@@ -81,7 +123,7 @@ function QuestionTypeDate(props) {
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    {props.answerTypes.map((aType) => {
+                    {answerTypes.map((aType) => {
                       return (
                         <MenuItem value={aType.id} key={`atypered_${aType.id}`}>
                           {aType.name}
@@ -93,18 +135,18 @@ function QuestionTypeDate(props) {
               </Grid>
             </Grid>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label>&nbsp;</label>
               </Grid>
-              <Grid item xs={7} className="arrow-container">
+              <Grid item xs={6} className="arrow-container">
                 <ArrowDownwardIcon></ArrowDownwardIcon>
               </Grid>
             </Grid>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label>&nbsp;</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <TextValidator
                   variant="outlined"
                   validators={[
@@ -135,36 +177,35 @@ function QuestionTypeDate(props) {
         <Card className="flag-card">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
-                <label className="required">Red Flag</label>
-              </Grid>
-              <Grid item xs={7}>
-                <FormControlLabel
-                  control={<PurpleSwitch checked={true} name="checkedA" />}
-                />
-              </Grid>
-            </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label className="required">Positive Confirmity</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel
-                    id="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined-label1"
                     shrink={false}
                     className="select-label"
                   >
-                    {props.addQuestion.positiveFlagAnswerType != ""
+                    {props.datetimeFlag.positiveConformityForDate
+                      .expressionType &&
+                    props.datetimeFlag.positiveConformityForDate
+                      .expressionType != ""
                       ? ""
                       : "Answer type"}
                   </InputLabel>
                   <Select
-                    labelId="demo-simple-select-outlined-label"
+                    labelId="demo-simple-select-outlined-label1"
                     id="demo-simple-select-outlined"
-                    value={props.addQuestion.positiveFlagAnswerType}
-                    name="positiveFlagAnswerType"
-                    onChange={handleChange}
+                    value={
+                      props.datetimeFlag.positiveConformityForDate
+                        .expressionType
+                        ? props.datetimeFlag.positiveConformityForDate
+                            .expressionType
+                        : ""
+                    }
+                    name="expressionType"
+                    onChange={handleChangeFlagP}
                     placeholder="Answer type"
                     InputLabelProps={{
                       shrink: false,
@@ -174,7 +215,7 @@ function QuestionTypeDate(props) {
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    {props.answerTypes.map((aType) => {
+                    {answerTypes.map((aType) => {
                       return (
                         <MenuItem
                           value={aType.id}
@@ -189,18 +230,18 @@ function QuestionTypeDate(props) {
               </Grid>
             </Grid>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label>&nbsp;</label>
               </Grid>
-              <Grid item xs={7} className="arrow-container">
+              <Grid item xs={6} className="arrow-container">
                 <ArrowDownwardIcon></ArrowDownwardIcon>
               </Grid>
             </Grid>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label>&nbsp;</label>
               </Grid>
-              <Grid item xs={7} className="range-input">
+              <Grid item xs={6} className="range-input">
                 <TextValidator
                   variant="outlined"
                   validators={[

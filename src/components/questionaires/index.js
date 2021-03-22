@@ -150,7 +150,7 @@ function Questionaire(props) {
                     color="default"
                     startIcon={<QuestionAnswerOutlinedIcon />}
                     className={`edit-icon`}
-                    onClick={() => gotoAddQuestion(thisRowData)}
+                    onClick={() => gotoViewQuestion(thisRowData)}
                   ></Button>
                 </Tooltip>
               </div>
@@ -186,6 +186,10 @@ function Questionaire(props) {
 
   function gotoAddQuestion(getRowData) {
     props.history.push(`/questionaires/add-questions/${getRowData[0]}/0`);
+  }
+
+  function gotoViewQuestion(getRowData) {
+    props.history.push(`/questionaires/view-questions/${getRowData[0]}`);
   }
 
   return (

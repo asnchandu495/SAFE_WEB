@@ -3,56 +3,40 @@ import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { Link as LinkTo } from "react-router-dom";
-import { ValidatorForm } from "react-material-ui-form-validator";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
 import ListofQuestions from "./listofQuestions";
 import QuestionType from "./selectQuestionType";
 import AddQuestionDetails from "./addQuestionDetails";
 
 function AddQuestion(props) {
   const [questionTypes, setQuestionTypes] = useState([
-    { id: "001", name: "Yes / No" },
-    { id: "002", name: "Number" },
-    { id: "003", name: "Date" },
-    { id: "004", name: "Time" },
-    { id: "005", name: "Short text" },
-    { id: "006", name: "Single select" },
-    { id: "007", name: "Multi select" },
-  ]);
-  const [answerTypes, setAnswerTypes] = useState([
-    { id: "001", name: "=" },
-    { id: "002", name: ">" },
-    { id: "003", name: ">=" },
-    { id: "004", name: "<" },
-    { id: "005", name: "<=" },
-    { id: "006", name: "Range" },
+    {
+      inputType: "Boolean",
+    },
+    {
+      inputType: "DateTime",
+    },
+    {
+      inputType: "FreeText",
+    },
+    {
+      inputType: "MultiChoice",
+    },
+    {
+      inputType: "Numeric",
+    },
+    {
+      inputType: "SingleChoice",
+    },
+    {
+      inputType: "Time",
+    },
   ]);
   const [gotoAddQuestion, setGotoAddQuestion] = useState(false);
   const [questionTypeForm, setQuestionTypeForm] = useState({
     questionType: "",
   });
 
-  const [addQuestionBoolean, setAddQuestionBoolean] = useState({
-    id: "",
-    questionType: "",
-    question: "",
-    description: "",
-    positiveRedFlagResponse: "",
-    redFlagResponse: "",
-    isPositiveConfirmity: true,
-    isPositiveConfirmityRedFlag: false,
-    isMandatory: false,
-  });
-
   useEffect(() => {}, []);
-
-  const navigateToQuestionType = () => {
-    setTimeout(() => {
-      setGotoAddQuestion(false);
-    }, 2000);
-  };
 
   return (
     <div className="innerpage-container">
@@ -77,19 +61,14 @@ function AddQuestion(props) {
           Selected questionaire name
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          Add questions
+          Add question
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper main-paper-add-question">
         <Grid container spacing={0}>
-          <Grid item xs={12} sm={3}>
-            <Paper className="list-questions">
-              <ListofQuestions></ListofQuestions>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={9}>
+          <Grid item xs={12} sm={12}>
             <Paper className="add-new-question">
-              <ValidatorForm className={`global-form`}>
+              <div className={`global-form`}>
                 <Grid container spacing={0}>
                   {!gotoAddQuestion ? (
                     <Grid item xs={12} sm={12} className="center-align">
@@ -103,37 +82,18 @@ function AddQuestion(props) {
                     </Grid>
                   ) : (
                     <Grid item xs={12} sm={12} className="center-align">
-                      <Grid item xs={11} sm={11}>
-                        <Card className="question-card">
-                          <AddQuestionDetails
-                            gotoAddQuestion={gotoAddQuestion}
-                            setGotoAddQuestion={setGotoAddQuestion}
-                            answerTypes={answerTypes}
-                            setAnswerTypes={setAnswerTypes}
-                            setQuestionTypeForm={setQuestionTypeForm}
-                            questionTypeForm={questionTypeForm}
-                            setAddQuestionBoolean={setAddQuestionBoolean}
-                            addQuestionBoolean={addQuestionBoolean}
-                          ></AddQuestionDetails>
-                          <CardActions className="action-container">
-                            <Button
-                              size="small"
-                              color="primary"
-                              type="button"
-                              onClick={navigateToQuestionType}
-                            >
-                              Back
-                            </Button>
-                            <Button size="small" color="primary">
-                              Save
-                            </Button>
-                          </CardActions>
-                        </Card>
+                      <Grid item xs={12} sm={12}>
+                        <AddQuestionDetails
+                          gotoAddQuestion={gotoAddQuestion}
+                          setGotoAddQuestion={setGotoAddQuestion}
+                          setQuestionTypeForm={setQuestionTypeForm}
+                          questionTypeForm={questionTypeForm}
+                        ></AddQuestionDetails>
                       </Grid>
                     </Grid>
                   )}
                 </Grid>
-              </ValidatorForm>
+              </div>
             </Paper>
           </Grid>
         </Grid>
