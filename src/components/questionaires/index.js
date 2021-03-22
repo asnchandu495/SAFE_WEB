@@ -87,6 +87,33 @@ function Questionaire(props) {
     });
   }, []);
 
+  // function handleClickOpenConfirmationModal(value) {
+  function handleClickOpenConfirmationModal() {
+    // setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteQuestionaire");
+    setConfirmationHeaderTittle("Delete Questions");
+    setConfirmationDialogContextText(
+      `are u sure`
+      // `Are you sure you want to delete ${value[1]} ?`
+    );
+  }
+  // function handleClickViewQuestion(value) {
+  function handleClickViewQuestion() {
+    alert('fsdd');
+      // var questionId = value[0];
+    // props.history.push("/questionaires/view-team/" + questionId);
+    props.history.push("/questionaires/view-questionaire/1");
+    
+  }
+
+  function handleClickUpdateQuestions(value) {
+    // var userId = value[0];
+    // props.history.push(`/teams/add-teams/${userId}`);
+    props.history.push("/questionaires/create-questionaire/1");
+  }
+
+
   const columns = [
     {
       name: "id",
@@ -99,11 +126,20 @@ function Questionaire(props) {
     },
     {
       name: "name",
-      label: "Name ",
+      label: "Questionaire Title ",
       options: {
         filter: false,
         sort: true,
       },
+    },
+    {
+      name:"languageId",
+      label:"Language",
+      options:{
+        filter:false,
+        sort:true,
+      }
+   
     },
     {
       label: "Action",
@@ -122,7 +158,8 @@ function Questionaire(props) {
                     color="default"
                     startIcon={<VisibilityIcon />}
                     className={`view-icon`}
-                    // onClick={() => handleClickViewTeams(thisRowData)}
+                    // onClick={() => handleClickViewQuestions(thisRowData)}
+                    onClick={()=>handleClickViewQuestion()}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Edit">
@@ -132,6 +169,7 @@ function Questionaire(props) {
                     startIcon={<EditIcon />}
                     className={`edit-icon`}
                     // onClick={() => handleClickUpdateTeams(thisRowData)}
+                    onClick={()=>handleClickUpdateQuestions()}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Delete">
@@ -143,6 +181,7 @@ function Questionaire(props) {
                     // onClick={() =>
                     //   handleClickOpenConfirmationModal(thisRowData)
                     // }
+                    onClick={()=>handleClickOpenConfirmationModal()}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Add questions">

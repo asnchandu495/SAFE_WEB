@@ -55,6 +55,8 @@ import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
 import Teams from "./components/teams";
 import CreateTeam from "./components/teams/CreateTeam";
 import ViewTeam from "./components/teams/ViewTeam";
+import ListofQuestions  from "./components/questionaires/listofQuestions";
+import viewQuestionaire from "./components/questionaires/viewQuestionaire";
 
 function App(props) {
   const AuthContainer = () => {
@@ -199,8 +201,8 @@ function App(props) {
 
        <Route path="/teams/view-team/:id" component={ViewTeam}></Route>
 
-
-
+       
+      
 
         <Route
           path="/questionaires/allquestionaires"
@@ -214,6 +216,8 @@ function App(props) {
           path="/questionaires/add-questions/:id/:qid"
           component={AddQuestion}
         ></Route>
+
+        <Route path="/questionaires/view-questionaire/:id" component={viewQuestionaire}></Route>
       </AdminLayout>
     );
   };
@@ -369,6 +373,11 @@ function App(props) {
         ></Route>
         <Route
           path="/questionaires/add-questions/:id/:qid"
+          component={AdminContainer}
+        ></Route>
+       
+        <Route
+          path="/questionaires/view-questionaire/:id"
           component={AdminContainer}
         ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />

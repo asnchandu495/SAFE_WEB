@@ -26,6 +26,7 @@ import FaqService from "../../../services/faqService";
 import teamService from "../../../services/teamService";
 
 import * as TeamAction from "../../../Redux/Action/teamAction";
+import * as QuestionaireAction from "../../../Redux/Action/questionaireAction";
 
 const styles = (theme) => ({
   root: {
@@ -127,7 +128,23 @@ function CustomizedDialogs(props) {
           console.log(error);
           toasterErrorMessage(error);
         });
-    } else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
+    }
+    else if(props.ConfirmationModalActionType=="DeleteQuestionaire"){
+      var thisId=props.SelectedRowDetails[0];
+      props
+      .DeleteQuestion(thisId)
+      .then((result)=>{
+        props.setToasterMessage("Question is deleted");
+        props.setStateSnackbar(true);
+        props.settoasterServerity("success");
+        props.setOpenConfirmationModal(false);
+       })
+      .catch((error)=>{
+        console.log(error);
+        toasterErrorMessage(error);
+      })
+    }
+     else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
       var thisId = props.SelectedRowDetails[0];
       props
         .DeletEmergencyContactList(thisId)
@@ -350,6 +367,7 @@ CustomizedDialogs.propTypes = {
   DelteUserGroup: PropTypes.func.isRequired,
   ChangeAssignEmergencyContactStatus: PropTypes.func.isRequired,
   DeleteTeam:PropTypes.func.isRequired,
+  DeleteQuestion:PropTypes.func.isRequired,
 };
 function mapStateToProps(state, ownProps) {}
 
@@ -371,6 +389,7 @@ const mapDispatchToProps = {
   DeleteFloor: AddFloorAction.DeleteFloor,
   DeleteSiteFloor: SiteAction.deleteSiteFloor,
   DeleteTeam: TeamAction.deleteTeamData,
+  DeleteQuestion: QuestionaireAction.deleteQuestionaireData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomizedDialogs);

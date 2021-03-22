@@ -353,8 +353,8 @@ function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
   const teamData =
-    id && state.usergroup.length > 0
-      ? getTeamById(state.usergroup, id)
+    id && state.team.length > 0
+      ? getTeamById(state.team, id)
       : emptyObject;
   return {
     teamData,
