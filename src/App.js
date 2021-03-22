@@ -46,10 +46,11 @@ import ViewUser from "./components/users/viewUsers";
 import UserProfie from "./components/profile";
 import AddedPrimaryUserTeam from "./components/teams/addedprimaryuserteam"
 import Questionaire from "./components/questionaires";
-import ConfigureQuestionaire from "./components/questionaires/create";
+import CreateQuestionarie from "./components/questionaires/createQuestionaire";
 import AddQuestion from "./components/questionaires/addQuestion";
 import InternalServer from "./components/common/ErrorPage/InternalServerError/index";
 import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
+
 
 import Teams from "./components/teams";
 import CreateTeam from "./components/teams/CreateTeam";
@@ -207,7 +208,7 @@ function App(props) {
         ></Route>
         <Route
           path="/questionaires/create-questionaire/:id"
-          component={ConfigureQuestionaire}
+          component={CreateQuestionarie}
         ></Route>
         <Route
           path="/questionaires/add-questions/:id/:qid"

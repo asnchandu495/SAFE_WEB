@@ -14,7 +14,9 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
-import * as teamAction from "../../Redux/Action/teamAction";
+import questionaireService from "../../services/questionaireService";
+import * as questionaireAction from "../../Redux/Action/questionaireAction";
+import prototypes from "prop-types";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -29,6 +31,7 @@ const theme1 = createMuiTheme({
 });
 
 function Questionaire(props) {
+  const questionaireApiCall = new questionaireService();
   const [questionaireList, setQuestionaireList] = useState([
     {
       id: "001",
@@ -70,7 +73,18 @@ function Questionaire(props) {
   ] = useState("");
 
   useEffect(() => {
+    
     setcomponentLoadder(false);
+    // questionaireApiCall.GetAllQuestionarie()
+    props
+    .LoadData()
+    .then((res) => {
+      console.log(res);
+      setcomponentLoadder(false);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }, []);
 
   const columns = [
@@ -238,4 +252,18 @@ function Questionaire(props) {
   );
 }
 
-export default Questionaire;
+Questionaire.propTypes={
+  LoadData:propTypes.func.isRequired,
+};
+
+function mapStateToProps(state,ownProps){
+      return{
+ QuestionaireData:state.questionaireState,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadData: questionaireAction.loadquestions,
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(Questionaire);

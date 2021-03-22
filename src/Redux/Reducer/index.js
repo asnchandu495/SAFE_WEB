@@ -12,6 +12,7 @@ import loadFloorState from "./addFloorReducer";
 import loadLocationState from "./addLocationReducer";
 import loadAssignFaq from "./assignFaqReducer";
 import teamState from "./teamReducer";
+import questionaireStates from "./questionaireReducer";
 
 const rootReducer = combineReducers({
   user: userState,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   LocationState: loadLocationState,
   AssignFaqState: loadAssignFaq,
   team:teamState,
+  questionaireState:questionaireStates,
   
 });
 
