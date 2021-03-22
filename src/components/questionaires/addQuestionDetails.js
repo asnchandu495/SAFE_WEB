@@ -13,6 +13,14 @@ import QuestionTypeTime from "./flagConcepts/timeFlag";
 function AddQuestionDetails(props) {
   useEffect(() => {}, []);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    props.setAddQuestionBoolean((addQuestionBoolean) => ({
+      ...props.addQuestionBoolean,
+      [name]: value,
+    }));
+  };
+
   return (
     <CardContent>
       <Typography gutterBottom variant="h6" component="h6">
@@ -29,15 +37,16 @@ function AddQuestionDetails(props) {
                 "matchRegexp:^.{0,50}$",
               ]}
               errorMessages={[
-                "Please enter first name",
+                "Please enter question",
                 "Only alphabets are allowed",
                 "Maximum 50 characters",
               ]}
               fullWidth
-              id="firstName"
+              id="question"
               placeholder="Question..."
-              name="firstName"
-              value=""
+              name="question"
+              value={props.addQuestionBoolean.question}
+              onChange={handleChange}
               autoFocus
               className="global-input"
               InputLabelProps={{ shrink: false }}
@@ -54,7 +63,8 @@ function AddQuestionDetails(props) {
               name="description"
               multiline
               rows={2}
-              value=""
+              value={props.addQuestionBoolean.description}
+              onChange={handleChange}
               className="global-input global-input-multiline"
               InputLabelProps={{ shrink: false }}
             />
@@ -84,11 +94,11 @@ function AddQuestionDetails(props) {
           </Grid> */}
         </Grid>
         <Grid item xs={12} sm={12} className="question-flags">
-          <QuestionTypeDate
-            setAddQuestion={props.setAddQuestion}
-            addQuestion={props.addQuestion}
+          <QuestionTypeBollean
+            setAddQuestionBoolean={props.setAddQuestionBoolean}
+            addQuestionBoolean={props.addQuestionBoolean}
             answerTypes={props.answerTypes}
-          ></QuestionTypeDate>
+          ></QuestionTypeBollean>
         </Grid>
       </Grid>
     </CardContent>

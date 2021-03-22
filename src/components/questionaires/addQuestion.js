@@ -34,14 +34,16 @@ function AddQuestion(props) {
     questionType: "",
   });
 
-  const [addQuestion, setAddQuestion] = useState({
+  const [addQuestionBoolean, setAddQuestionBoolean] = useState({
     id: "",
-    questionName: "",
-    questionDescription: "",
-    questionOptions: "",
-    isRedFlagEnaled: false,
-    redFlagAnswerType: "",
-    positiveFlagAnswerType: "",
+    questionType: "",
+    question: "",
+    description: "",
+    positiveRedFlagResponse: "",
+    redFlagResponse: "",
+    isPositiveConfirmity: true,
+    isPositiveConfirmityRedFlag: false,
+    isMandatory: false,
   });
 
   useEffect(() => {}, []);
@@ -95,8 +97,6 @@ function AddQuestion(props) {
                         questionTypes={questionTypes}
                         gotoAddQuestion={gotoAddQuestion}
                         setGotoAddQuestion={setGotoAddQuestion}
-                        addQuestion={addQuestion}
-                        setAddQuestion={setAddQuestion}
                         setQuestionTypeForm={setQuestionTypeForm}
                         questionTypeForm={questionTypeForm}
                       ></QuestionType>
@@ -108,12 +108,12 @@ function AddQuestion(props) {
                           <AddQuestionDetails
                             gotoAddQuestion={gotoAddQuestion}
                             setGotoAddQuestion={setGotoAddQuestion}
-                            addQuestion={addQuestion}
-                            setAddQuestion={setAddQuestion}
                             answerTypes={answerTypes}
                             setAnswerTypes={setAnswerTypes}
                             setQuestionTypeForm={setQuestionTypeForm}
                             questionTypeForm={questionTypeForm}
+                            setAddQuestionBoolean={setAddQuestionBoolean}
+                            addQuestionBoolean={addQuestionBoolean}
                           ></AddQuestionDetails>
                           <CardActions className="action-container">
                             <Button

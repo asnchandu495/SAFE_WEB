@@ -73,18 +73,17 @@ function Questionaire(props) {
   ] = useState("");
 
   useEffect(() => {
-    
     setcomponentLoadder(false);
     // questionaireApiCall.GetAllQuestionarie()
     props
-    .LoadData()
-    .then((res) => {
-      console.log(res);
-      setcomponentLoadder(false);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .LoadData()
+      .then((res) => {
+        console.log(res);
+        setcomponentLoadder(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const columns = [
@@ -252,13 +251,13 @@ function Questionaire(props) {
   );
 }
 
-Questionaire.propTypes={
-  LoadData:propTypes.func.isRequired,
+Questionaire.propTypes = {
+  LoadData: propTypes.func.isRequired,
 };
 
-function mapStateToProps(state,ownProps){
-      return{
- QuestionaireData:state.questionaireState,
+function mapStateToProps(state, ownProps) {
+  return {
+    QuestionaireData: state.questionaireState,
   };
 }
 
@@ -266,4 +265,4 @@ const mapDispatchToProps = {
   LoadData: questionaireAction.loadquestions,
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(Questionaire);
+export default connect(mapStateToProps, mapDispatchToProps)(Questionaire);
