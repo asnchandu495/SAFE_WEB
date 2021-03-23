@@ -42,6 +42,34 @@ function AddQuestionDetails(props) {
     isPositiveConfirmity: true,
     isPositiveConfirmityRedFlag: false,
   });
+  const [timeFlag, setTimeFlag] = useState({
+    positiveConformityForTime: {
+      expressionType: "",
+      forAnswer: "",
+      forRangeEnd: "",
+    },
+    redFlagForTime: {
+      expressionType: "",
+      forAnswer: "",
+      forRangeEnd: "",
+    },
+    isPositiveConfirmity: true,
+    isPositiveConfirmityRedFlag: false,
+  });
+  const [numericFlag, setNumericFlag] = useState({
+    positiveConformityForNumber: {
+      expressionType: "",
+      forAnswer: "",
+      forRangeEnd: "",
+    },
+    redFlagForNumber: {
+      expressionType: "",
+      forAnswer: "",
+      forRangeEnd: "",
+    },
+    isPositiveConfirmity: true,
+    isPositiveConfirmityRedFlag: false,
+  });
 
   useEffect(() => {}, []);
 
@@ -90,6 +118,42 @@ function AddQuestionDetails(props) {
               setDatetimeFlag={setDatetimeFlag}
               datetimeFlag={datetimeFlag}
             ></QuestionTypeDate>
+          </Grid>
+        );
+      case "Time":
+        return (
+          <Grid item xs={12} sm={12} className="question-flags">
+            <QuestionTypeTime
+              questionTypeForm={props.questionTypeForm}
+              setAddQuestion={setAddQuestion}
+              addQuestion={addQuestion}
+              setTimeFlag={setTimeFlag}
+              timeFlag={timeFlag}
+            ></QuestionTypeTime>
+          </Grid>
+        );
+      case "Numeric":
+        return (
+          <Grid item xs={12} sm={12} className="question-flags">
+            <QuestionTypeNumber
+              questionTypeForm={props.questionTypeForm}
+              setAddQuestion={setAddQuestion}
+              addQuestion={addQuestion}
+              setNumericFlag={setNumericFlag}
+              numericFlag={numericFlag}
+            ></QuestionTypeNumber>
+          </Grid>
+        );
+      case "SingleChoice":
+        return (
+          <Grid item xs={12} sm={12} className="question-flags">
+            <QuestionTypeSingleSelect
+              questionTypeForm={props.questionTypeForm}
+              setAddQuestion={setAddQuestion}
+              addQuestion={addQuestion}
+              setNumericFlag={setNumericFlag}
+              numericFlag={numericFlag}
+            ></QuestionTypeSingleSelect>
           </Grid>
         );
       default:
