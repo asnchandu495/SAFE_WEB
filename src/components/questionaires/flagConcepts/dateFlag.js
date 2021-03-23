@@ -15,12 +15,12 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 
 function QuestionTypeDate(props) {
   const [answerTypes, setAnswerTypes] = useState([
-    { id: "001", name: "=" },
-    { id: "002", name: ">" },
-    { id: "003", name: ">=" },
-    { id: "004", name: "<" },
-    { id: "005", name: "<=" },
-    { id: "006", name: "Range" },
+    { id: "=", name: "=" },
+    { id: ">", name: ">" },
+    { id: ">=", name: ">=" },
+    { id: "<", name: "<" },
+    { id: "<=", name: "<=" },
+    { id: "Range", name: "Range" },
   ]);
 
   const PurpleSwitch = withStyles({
@@ -142,34 +142,79 @@ function QuestionTypeDate(props) {
                 <ArrowDownwardIcon></ArrowDownwardIcon>
               </Grid>
             </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={6}>
-                <label>&nbsp;</label>
+            {props.datetimeFlag.redFlagForDate.expressionType == "Range" ? (
+              <>
+                <Grid item container xs={12}>
+                  <Grid item xs={6}>
+                    <label>&nbsp;</label>
+                  </Grid>
+                  <Grid item xs={6} className="range-input">
+                    <TextValidator
+                      variant="outlined"
+                      fullWidth
+                      id="forAnswerR"
+                      placeholder="Your answer"
+                      name="forAnswer"
+                      value={props.datetimeFlag.redFlagForDate.forAnswer}
+                      onChange={handleChangeFlagR}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment
+                            position="start"
+                            className="adornment-input"
+                          >
+                            From{" "}
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <TextValidator
+                      variant="outlined"
+                      fullWidth
+                      id="forRangeEndR"
+                      placeholder="Your answer"
+                      name="forRangeEnd"
+                      value={props.datetimeFlag.redFlagForDate.forRangeEnd}
+                      onChange={handleChangeFlagR}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment
+                            position="start"
+                            className="adornment-input"
+                          >
+                            To{" "}
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                </Grid>{" "}
+              </>
+            ) : (
+              <Grid item container xs={12}>
+                <Grid item xs={6}>
+                  <label>&nbsp;</label>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextValidator
+                    variant="outlined"
+                    fullWidth
+                    id="forAnswerR"
+                    placeholder="Your answer"
+                    name="forAnswer"
+                    value={props.datetimeFlag.redFlagForDate.forAnswer}
+                    onChange={handleChangeFlagR}
+                    autoFocus
+                    className="global-input"
+                    InputLabelProps={{ shrink: false }}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <TextValidator
-                  variant="outlined"
-                  validators={[
-                    "required",
-                    "matchRegexp:^[a-zA-Z ]*$",
-                    "matchRegexp:^.{0,50}$",
-                  ]}
-                  errorMessages={[
-                    "Please enter first name",
-                    "Only alphabets are allowed",
-                    "Maximum 50 characters",
-                  ]}
-                  fullWidth
-                  id="firstName"
-                  placeholder="Your answer"
-                  name="firstName"
-                  value=""
-                  autoFocus
-                  className="global-input"
-                  InputLabelProps={{ shrink: false }}
-                />
-              </Grid>
-            </Grid>
+            )}
           </CardContent>
         </Card>
       </Grid>
@@ -237,75 +282,86 @@ function QuestionTypeDate(props) {
                 <ArrowDownwardIcon></ArrowDownwardIcon>
               </Grid>
             </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={6}>
-                <label>&nbsp;</label>
+            {props.datetimeFlag.positiveConformityForDate.expressionType ==
+            "Range" ? (
+              <>
+                <Grid item container xs={12}>
+                  <Grid item xs={6}>
+                    <label>&nbsp;</label>
+                  </Grid>
+                  <Grid item xs={6} className="range-input">
+                    <TextValidator
+                      variant="outlined"
+                      fullWidth
+                      id="forAnswerP"
+                      placeholder="Your answer"
+                      name="forAnswer"
+                      value={
+                        props.datetimeFlag.positiveConformityForDate.forAnswer
+                      }
+                      onChange={handleChangeFlagP}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment
+                            position="start"
+                            className="adornment-input"
+                          >
+                            From{" "}
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <TextValidator
+                      variant="outlined"
+                      fullWidth
+                      id="forAnswerP"
+                      placeholder="Your answer"
+                      name="forRangeEnd"
+                      value={
+                        props.datetimeFlag.positiveConformityForDate.forRangeEnd
+                      }
+                      onChange={handleChangeFlagP}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment
+                            position="start"
+                            className="adornment-input"
+                          >
+                            To{" "}
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                </Grid>{" "}
+              </>
+            ) : (
+              <Grid item container xs={12}>
+                <Grid item xs={6}>
+                  <label>&nbsp;</label>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextValidator
+                    variant="outlined"
+                    fullWidth
+                    id="forAnswerP"
+                    placeholder="Your answer"
+                    name="forAnswer"
+                    value={
+                      props.datetimeFlag.positiveConformityForDate.forAnswer
+                    }
+                    onChange={handleChangeFlagP}
+                    autoFocus
+                    className="global-input"
+                    InputLabelProps={{ shrink: false }}
+                  />
+                </Grid>
               </Grid>
-              <Grid item xs={6} className="range-input">
-                <TextValidator
-                  variant="outlined"
-                  validators={[
-                    "required",
-                    "matchRegexp:^[a-zA-Z ]*$",
-                    "matchRegexp:^.{0,50}$",
-                  ]}
-                  errorMessages={[
-                    "Please enter first name",
-                    "Only alphabets are allowed",
-                    "Maximum 50 characters",
-                  ]}
-                  fullWidth
-                  id="firstName"
-                  placeholder="Your answer"
-                  name="firstName"
-                  value=""
-                  autoFocus
-                  className="global-input"
-                  InputLabelProps={{ shrink: false }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment
-                        position="start"
-                        className="adornment-input"
-                      >
-                        From{" "}
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <TextValidator
-                  variant="outlined"
-                  validators={[
-                    "required",
-                    "matchRegexp:^[a-zA-Z ]*$",
-                    "matchRegexp:^.{0,50}$",
-                  ]}
-                  errorMessages={[
-                    "Please enter first name",
-                    "Only alphabets are allowed",
-                    "Maximum 50 characters",
-                  ]}
-                  fullWidth
-                  id="firstName"
-                  placeholder="Your answer"
-                  name="firstName"
-                  value=""
-                  autoFocus
-                  className="global-input"
-                  InputLabelProps={{ shrink: false }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment
-                        position="start"
-                        className="adornment-input"
-                      >
-                        To{" "}
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-            </Grid>
+            )}
           </CardContent>
         </Card>
       </Grid>
