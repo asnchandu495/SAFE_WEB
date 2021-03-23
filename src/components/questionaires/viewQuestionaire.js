@@ -15,11 +15,8 @@ import Box from "@material-ui/core/Box";
 import UserGroupApiServices from "../../services/userGroupService";
 import questionaireService from "../../services/questionaireService";
 
-
-
-
 function ViewQuestionaire(props) {
-  var userGroupId = props.match.params.id;
+  var questionId = props.match.params.id;
   const UserGroupApi = new UserGroupApiServices();
   const [activeStep, setActiveStep] = React.useState(0);
   const [responsive, setResponsive] = useState("vertical");
@@ -33,14 +30,15 @@ function ViewQuestionaire(props) {
   const questionaireApiCall = new questionaireService();
 
   useEffect(() => {
-    // questionaireApiCall
-    //   .getSurveyById
-    //   .then((questionaireInfo) => {
-    //     setViewQuestionaireDetails(questionaireInfo);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    questionaireApiCall
+      .getSurveyById(questionId)
+      .then((questionaireInfo) => {
+        console.log("success");
+        setViewQuestionaireDetails(questionaireInfo);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const handleTabChange = (event, newValue) => {
@@ -69,25 +67,24 @@ function ViewQuestionaire(props) {
     rowsPerPage: 5,
   };
 
-//   const columns = [
-//     {
-//     //   name: "name",
-//       label: "Name",
-//       options: {
-//         filter: true,
-//         sort: true,
-//       },
-//     },
-//     {
-//     //   name: "emailId",
-//       label: "Emailid",
-//       options: {
-//         filter: true,
-//         sort: true,
-//       },
-//     },
-//   ];
-
+  //   const columns = [
+  //     {
+  //     //   name: "name",
+  //       label: "Name",
+  //       options: {
+  //         filter: true,
+  //         sort: true,
+  //       },
+  //     },
+  //     {
+  //     //   name: "emailId",
+  //       label: "Emailid",
+  //       options: {
+  //         filter: true,
+  //         sort: true,
+  //       },
+  //     },
+  //   ];
 
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
@@ -104,13 +101,8 @@ function ViewQuestionaire(props) {
         >
           Home
         </LinkTo>
-        <LinkTo
-          color="textPrimary"
-          href="#"
-          to="#"
-          className="inactive"
-        >
-           Questionaire
+        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+          Questionaire
         </LinkTo>
         <LinkTo
           color="textPrimary"
@@ -118,7 +110,7 @@ function ViewQuestionaire(props) {
           to={`/questionaires/allquestionaires`}
           className="inactive"
         >
-           view Questionaire
+          view Questionaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           {/* {ViewTeamDetails.name} */}
@@ -131,36 +123,18 @@ function ViewQuestionaire(props) {
               <Grid container item xs={12} spacing={3} direction="column">
                 <Grid item xs={12} container>
                   <Grid item xs={3}>
-                    <label>language :</label>
-                  </Grid>
-                  <Grid item xs={9}>
-                  language
-                    {/* <label>{ViewTeamDetails.name}</label> */}
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} container>
-                  <Grid item xs={3}>
-                    <label>Description :</label>
-                  </Grid>
-                  <Grid item xs={9}>
-                  Description
-                    {/* {ViewTeamDetails.description} */}
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} container>
-                  <Grid item xs={3}>
-                    <label> Title :</label>
+                    <label> Name :</label>
                   </Grid>
                   <Grid item xs={8}>
                     <label>
-                        title
-                      {/* {ViewTeamDetails.manager
-                        ? ViewTeamDetails.manager.name
-                        : ""} */}
+                      title
+                      {ViewQuestionaireDetails.name
+                        ? ViewQuestionaireDetails.name
+                        : ""}
                     </label>
                   </Grid>
                 </Grid>
-                
+
                 <Grid
                   item
                   xs={12}

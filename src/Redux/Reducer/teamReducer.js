@@ -9,6 +9,8 @@ var intialState = [];
 export default function loadallteamsReducer(state = intialState, action) {
   switch (action.type) {
     case LOAD_ALL_TEAMS:
+      // console.log('statae');
+      // console.log(action.loadTeam);
       return action.loadTeam;
     case CREATE_TEAM_SUCCESS:
       return [{ ...action.createTeamData }, ...state];

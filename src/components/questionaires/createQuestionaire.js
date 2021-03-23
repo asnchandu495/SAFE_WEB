@@ -24,7 +24,7 @@ function CreateQuestionarie(props) {
   const paramsId = props.match.params.id;
   const questionaireApiCall = new questionaireService();
   const masterApiCall = new MasterDataService();
-  
+
   // const [componentLoadder,setComponentLoadder]=useState(falsse);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -34,132 +34,126 @@ function CreateQuestionarie(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
-  const [allLanguages,setAllLanguages]=useState([]);
+  const [allLanguages, setAllLanguages] = useState([]);
   const [showLoadder, setshowLoadder] = useState(false);
   const [formData, setformData] = useState({
-      id:"",
-      languageId: "",
-      questionnaire: ""
-    
+    // id: "",
+    name: "",
   });
 
-useEffect(()=>{
-  // Promise.all([
-    masterApiCall.getAllLanguages()
-    
-  // ])
-  .then((res)=>{
-    // console.log(res);
-    setAllLanguages(res);
-    setComponentLoadder(false);
-  //   if (paramsId != 0) {
-  //     alert("fds");
-  //     questionaireApiCall
-  //       .getSurveyById(paramsId)
-  //       .then((questionaireData) => {
-  //         setformData(questionaireData);
-  //         setAllLanguages(questionaireData.languageId);
-  //         setComponentLoadder(false);
-  //       })
-  //       .catch((error) => {
-  //         alert("error");
-  //         console.log(error);
-  //       });
-  //   } else {
-  //     setComponentLoadder(false);
-  //   }
+  useEffect(() => {
+    // Promise.all([
+    masterApiCall
+      .getAllLanguages()
 
-  })
-  .catch((error)=>{
-    console.log(error);
-  });
+      // ])
+      .then((res) => {
+        // console.log(res);
+        setAllLanguages(res);
+        setComponentLoadder(false);
+        if (paramsId != 0) {
+          alert("fds");
+          questionaireApiCall
+            .getSurveyById(paramsId)
+            .then((questionaireData) => {
+              setformData(questionaireData);
+              // setAllLanguages(questionaireData.languageId);
+              setComponentLoadder(false);
+            })
+            .catch((error) => {
+              alert("error");
+              console.log(error);
+            });
+        } else {
+          setComponentLoadder(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-},[]);
+  function handleChange(e) {
+    // setisAlertBoxOpened(true);
+    const { name, value } = e.target;
+    console.log(formData);
+    setformData((formData) => ({
+      ...formData,
+      [name]: value,
+    }));
+  }
+  function submitForm() {
+    // setshowLoadder(true);
 
-function handleChange(e) {
-  // setisAlertBoxOpened(true);
-  const { name, value } = e.target;
-  console.log(formData);
-  setformData((formData) => ({
-    ...formData,
-    [name]: value,
-  }));
-}
-function submitForm(){
-  // setshowLoadder(true);
-  
-  var data = formData;
-  console.log('result');
-  console.log(data);
-  if (paramsId != 0) {
-    // teamData.manager = selectedTeamManager;s
+    var data = formData;
+    console.log("result");
+    console.log(data);
+    if (paramsId != 0) {
+      console.log("questionaire data");
+      console.log(data);
+      // teamData.manager = selectedTeamManager;
       props
-       .UpdateQuestionaireCall(data)
-       .then((result) => {
-         setisAlertBoxOpened(false);
-         setshowLoadder(false);
-         setStateSnackbar(true);
-         setToasterMessage("questionaires  Updated");
-         settoasterServerity("success");
-         setTimeout(() => {
-           props.history.push("/questionaires/allquestionaires");
-           setshowLoadder(false);
-         }, 3000);
-       })
-       .catch((err) => {
-         console.log(err);
-        setToasterMessage(err.data.errors);
-
-         settoasterServerity("error");
-         setStateSnackbar(true);
-         setshowLoadder(false);
-       });
-   }else{
-  props.CreateQuestionaireCall(data)
- .then((result) => {
-   console.log(result);
-    setStateSnackbar(true);
-    setToasterMessage("Added new questionaires.");
-    // settoasterServerity("success");
-    // setisAlertBoxOpened(false);
-    // setTimeout(() => {
-    //   setshowLoadder(false);
-    //   // setformData({
-    //   //   languageId :"",
-    //   //   questionnaire: "",
-        
-    //   // });
-      
-    // }, 6000);
-  })
-  .catch((err) => {
-    setToasterMessage(err.data.errors);
-    settoasterServerity("error");
-    setStateSnackbar(true);
-    setshowLoadder(false);
-  });
-}
-}
-
-
+        .UpdateQuestionaireCall(data)
+        .then((result) => {
+          setisAlertBoxOpened(false);
+          setshowLoadder(false);
+          setStateSnackbar(true);
+          setToasterMessage("questionaires  Updated");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.history.push("/questionaires/allquestionaires");
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          // console.log(err);
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    } else {
+      props
+        .CreateQuestionaireCall(data)
+        .then((result) => {
+          console.log(result);
+          setStateSnackbar(true);
+          setToasterMessage("Added new questionaires.");
+          settoasterServerity("success");
+          setisAlertBoxOpened(false);
+          setTimeout(() => {
+            props.history.push("/questionaires/allquestionaires");
+            setshowLoadder(false);
+          }, 6000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
+  }
 
   return (
     <div className="innerpage-container">
       <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
         <LinkTo
-        color="inherit"
-        href="#"
-        to={`home/dashboard`}
-        className="inactive"
-        >Home
+          color="inherit"
+          href="#"
+          to={`home/dashboard`}
+          className="inactive"
+        >
+          Home
         </LinkTo>
         <LinkTo
-        color="textPrimary"
-        href="#"
-        to={`/questionaires/allquestionaires`}
-        className="inactive">
-           Questionarie
+          color="textPrimary"
+          href="#"
+          to={`/questionaires/allquestionaires`}
+          className="inactive"
+        >
+          Questionarie
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           {paramsId != 0 ? "Update Questionaire" : "Create Questionaire"}
@@ -167,22 +161,21 @@ function submitForm(){
       </Breadcrumbs>
       {!componentLoadder ? (
         <>
-      <Paper className={`main-paper`}>
+          <Paper className={`main-paper`}>
             <ValidatorForm className={`global-form`} onSubmit={submitForm}>
               <Grid container spacing={3}>
-
-              <Grid item container xs={12}>
+                {/* <Grid item container xs={12}>
                   <Grid item xs={3}>
                     <label className="required">Language</label>
-                  </Grid>
-                  <Grid item xs={3}>
+                  </Grid> */}
+                {/* <Grid item xs={3}>
                     <FormControl variant="outlined" fullWidth>
                       <InputLabel
                         id="demo-simple-select-outlined-label"
                         shrink={false}
                         className="select-label"
                       >
-                        {formData.languageId == "" ? " Select language" : ""}
+                        {formData.id == "" ? " Select language" : ""}
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-outlined-label"
@@ -205,10 +198,8 @@ function submitForm(){
                           : ""}
                       </Select>
                     </FormControl>
-                  </Grid>
-                </Grid>
-
-
+                  </Grid> */}
+                {/* </Grid> */}
 
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
@@ -230,15 +221,15 @@ function submitForm(){
                       fullWidth
                       id="title"
                       placeholder="Title"
-                      name="questionnaire"
+                      name="name"
                       onChange={handleChange}
-                      value={formData.questionnaire}
+                      value={formData.name}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
                     />
                   </Grid>
                 </Grid>
-                
+
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
                     <label>&nbsp;</label>
@@ -267,12 +258,12 @@ function submitForm(){
               </Grid>
             </ValidatorForm>
           </Paper>
-          </>
-          ) : (
-            <ComponentLoadderComponent />
-          )}
-  
-       <ToasterMessageComponent
+        </>
+      ) : (
+        <ComponentLoadderComponent />
+      )}
+
+      <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
         toasterMessage={toasterMessage}
@@ -282,7 +273,6 @@ function submitForm(){
     </div>
   );
 }
-
 
 export function getQuestionaireById(users, id) {
   return users.find((user) => user.id === id) || null;
@@ -296,12 +286,11 @@ CreateQuestionarie.propTypes = {
   UpdateQuestionaireCall: PropTypes.func.isRequired,
 };
 
-
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
   const questionaireData =
-    id && state.questionaireState.length > 0
+    id && state.questionaireState
       ? getQuestionaireById(state.questionaireState, id)
       : emptyObject;
   return {
@@ -314,9 +303,7 @@ const mapDispatchToProps = {
   // LoadAllUserGroup: QuestionaireAction.GetAllQuestionarie,
   CreateQuestionaireCall: QuestionaireAction.createQuestionaireData,
   UpdateQuestionaireCall: QuestionaireAction.UpdateQuestionaireData,
-  
 };
 // export default CreateQuestionarie;
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateQuestionarie);
-

@@ -25,8 +25,8 @@ export default class questionaireService {
     });
   }
 
-   deleteQuestionaire(data) {
-    return this.fetch(`${this.questionaireURL}/Survey/DeleteSurvey/${data}` , {
+  deleteQuestionaire(data) {
+    return this.fetch(`${this.questionaireURL}/Survey/DeleteSurvey/${data}`, {
       method: "DELETE",
     }).then((res) => {
       return Promise.resolve(res);
@@ -43,18 +43,14 @@ export default class questionaireService {
     });
   }
 
-  
-
-  getSurveyById(id){
-    return this.fetch(`${this.questionaireURL}/Survey/GetSurveyById?Id=${id}`, {
+  getSurveyById(id) {
+    return this.fetch(`${this.questionaireURL}/Survey/GetSurveyById/${id}`, {
       method: "GET",
     }).then((res) => {
       return Promise.resolve(res);
     });
   }
 
-
-      
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

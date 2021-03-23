@@ -54,8 +54,8 @@ import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
 import Teams from "./components/teams";
 import CreateTeam from "./components/teams/CreateTeam";
 import ViewTeam from "./components/teams/ViewTeam";
-import ListofQuestions  from "./components/questionaires/listofQuestions";
-import viewQuestionaire from "./components/questionaires/viewQuestionaire";
+import ListofQuestions from "./components/questionaires/listofQuestions";
+import ViewQuestionaire from "./components/questionaires/viewQuestionaire";
 
 function App(props) {
   const AuthContainer = () => {
@@ -205,6 +205,10 @@ function App(props) {
         <Route
           path="/questionaires/create-questionaire/:id"
           component={CreateQuestionarie}
+        ></Route>
+        <Route
+          path="/questionaires/view-questionaire/:id"
+          component={ViewQuestionaire}
         ></Route>
         <Route
           path="/questionaires/add-questions/:id/:qid"
@@ -364,6 +368,11 @@ function App(props) {
         ></Route>
         <Route
           path="/questionaires/create-questionaire/:id"
+          component={AdminContainer}
+        ></Route>
+
+        <Route
+          path="/questionaires/view-questionaire/:id"
           component={AdminContainer}
         ></Route>
         <Route

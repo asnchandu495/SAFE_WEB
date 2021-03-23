@@ -32,26 +32,7 @@ const theme1 = createMuiTheme({
 
 function Questionaire(props) {
   const questionaireApiCall = new questionaireService();
-  const [questionaireList, setQuestionaireList] = useState([
-    {
-      id: "001",
-      languageId: "string",
-      name: "Questionaire one",
-      description: "string",
-    },
-    {
-      id: "002",
-      languageId: "string",
-      name: "Questionaire two",
-      description: "string",
-    },
-    {
-      id: "oo3",
-      languageId: "string",
-      name: "Questionaire three",
-      description: "string",
-    },
-  ]);
+  const [questionaireList, setQuestionaireList] = useState([]);
 
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
@@ -72,46 +53,43 @@ function Questionaire(props) {
     setConfirmationModalActionType,
   ] = useState("");
 
+  const [reloadPage, setReloadPage] = useState("NO");
   useEffect(() => {
     setcomponentLoadder(false);
     // questionaireApiCall.GetAllQuestionarie()
+
     props
       .LoadData()
       .then((res) => {
-        console.log(res);
+        // console.log('result');
+        // console.log(res);
+        // setQuestionaireList(res);
         setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reloadPage]);
 
-  // function handleClickOpenConfirmationModal(value) {
-  function handleClickOpenConfirmationModal() {
-    // setSelectedRowDetails(value);
+  function handleClickOpenConfirmationModal(value) {
+    setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteQuestionaire");
     setConfirmationHeaderTittle("Delete Questions");
     setConfirmationDialogContextText(
-      `are u sure`
-      // `Are you sure you want to delete ${value[1]} ?`
+      `Are you sure you want to delete ${value[1]} ?`
     );
   }
-  // function handleClickViewQuestion(value) {
-  function handleClickViewQuestion() {
-    alert('fsdd');
-      // var questionId = value[0];
-    // props.history.push("/questionaires/view-team/" + questionId);
-    props.history.push("/questionaires/view-questionaire/1");
-    
+  function handleClickViewQuestion(value) {
+    alert("fsdd");
+    var questionId = value[0];
+    props.history.push("/questionaires/view-questionaire/" + questionId);
   }
 
   function handleClickUpdateQuestions(value) {
-    // var userId = value[0];
-    // props.history.push(`/teams/add-teams/${userId}`);
-    props.history.push("/questionaires/create-questionaire/1");
+    var userId = value[0];
+    props.history.push(`/questionaires/create-questionaire/${userId}`);
   }
-
 
   const columns = [
     {
@@ -125,21 +103,13 @@ function Questionaire(props) {
     },
     {
       name: "name",
-      label: "Questionaire Title ",
+      label: " Name ",
       options: {
         filter: false,
         sort: true,
       },
     },
-    {
-      name:"languageId",
-      label:"Language",
-      options:{
-        filter:false,
-        sort:true,
-      }
-   
-    },
+
     {
       label: "Action",
       name: "",
@@ -157,8 +127,9 @@ function Questionaire(props) {
                     color="default"
                     startIcon={<VisibilityIcon />}
                     className={`view-icon`}
-                    // onClick={() => handleClickViewQuestions(thisRowData)}
-                    onClick={()=>handleClickViewQuestion()}
+                    onClick={() => handleClickViewQuestion(thisRowData)}
+
+                    // onClick={() => handleClickViewQuestion()}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Edit">
@@ -168,7 +139,7 @@ function Questionaire(props) {
                     startIcon={<EditIcon />}
                     className={`edit-icon`}
                     // onClick={() => handleClickUpdateTeams(thisRowData)}
-                    onClick={()=>handleClickUpdateQuestions()}
+                    onClick={() => handleClickUpdateQuestions(thisRowData)}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Delete">
@@ -177,10 +148,9 @@ function Questionaire(props) {
                     color="default"
                     startIcon={<DeleteIcon />}
                     className={`delete-icon`}
-                    // onClick={() =>
-                    //   handleClickOpenConfirmationModal(thisRowData)
-                    // }
-                    onClick={()=>handleClickOpenConfirmationModal()}
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Add questions">
@@ -259,11 +229,7 @@ function Questionaire(props) {
           <MuiThemeProvider theme={theme1}>
             {" "}
             <MUIDataTable
-              data={
-                questionaireList && questionaireList.length > 0
-                  ? questionaireList
-                  : []
-              }
+              data={props.QuestionaireData ? props.QuestionaireData : []}
               columns={columns}
               options={options}
               className="global-table"
@@ -295,6 +261,7 @@ function Questionaire(props) {
 }
 
 Questionaire.propTypes = {
+  QuestionaireData: propTypes.array.isRequired,
   LoadData: propTypes.func.isRequired,
 };
 

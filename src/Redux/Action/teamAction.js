@@ -23,8 +23,8 @@ export function loadTeam() {
   return function (dispatch) {
     return teamApiCall
       .getTeamList()
-      .then((response) => {
-        dispatch(LoadAllTeams(response));
+      .then((data) => {
+        dispatch(LoadAllTeams(data));
       })
       .catch((error) => {
         throw error;
