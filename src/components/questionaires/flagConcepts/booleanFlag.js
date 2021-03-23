@@ -12,17 +12,17 @@ import CardContent from "@material-ui/core/CardContent";
 
 function QuestionTypeBollean(props) {
   const [answersToSelect, setAnswersToSelect] = useState([
-    { id: "001", name: "Yes" },
-    { id: "002", name: "No" },
+    { id: "001", name: "TRUE" },
+    { id: "002", name: "FALSE" },
   ]);
   const PurpleSwitch = withStyles({
     switchBase: {
-      color: "red",
+      color: "#be1d56",
       "&$checked": {
-        color: "red",
+        color: "#26235d",
       },
       "&$checked + $track": {
-        backgroundColor: "red",
+        backgroundColor: "#26235d",
       },
     },
     checked: {},
@@ -31,9 +31,17 @@ function QuestionTypeBollean(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    props.setAddQuestion((addQuestion) => ({
-      ...props.addQuestion,
+    props.setBooleanFlag((booleanFlag) => ({
+      ...props.booleanFlag,
       [name]: value,
+    }));
+  };
+
+  const handleChangeRedFlagSwitch = (e) => {
+    const { name, value } = e.target;
+    props.setBooleanFlag((booleanFlag) => ({
+      ...props.booleanFlag,
+      [name]: e.target.checked,
     }));
   };
 
@@ -43,35 +51,41 @@ function QuestionTypeBollean(props) {
         <Card className="flag-card">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label className="required">Red Flag</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <FormControlLabel
-                  control={<PurpleSwitch checked={true} name="checkedA" />}
+                  control={
+                    <PurpleSwitch
+                      checked={props.booleanFlag.isPositiveConfirmityRedFlag}
+                      name="isPositiveConfirmityRedFlag"
+                      onChange={handleChangeRedFlagSwitch}
+                    />
+                  }
                 />
               </Grid>
             </Grid>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label className="required">Red Flag Answer</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel
                     id="demo-simple-select-outlined-label"
                     shrink={false}
                     className="select-label"
                   >
-                    {props.addQuestion.redFlagAnswerType != ""
+                    {props.booleanFlag.redFlagResponse != ""
                       ? ""
                       : "Answer type"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
-                    value={props.addQuestion.redFlagAnswerType}
-                    name="redFlagAnswerType"
+                    value={props.booleanFlag.redFlagResponse}
+                    name="redFlagResponse"
                     onChange={handleChange}
                     placeholder="Answer type"
                     InputLabelProps={{
@@ -100,35 +114,25 @@ function QuestionTypeBollean(props) {
         <Card className="flag-card">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
-                <label className="required">Red Flag</label>
-              </Grid>
-              <Grid item xs={7}>
-                <FormControlLabel
-                  control={<PurpleSwitch checked={true} name="checkedA" />}
-                />
-              </Grid>
-            </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label className="required">Positive Confirmity Answer</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel
                     id="demo-simple-select-outlined-label"
                     shrink={false}
                     className="select-label"
                   >
-                    {props.addQuestion.positiveFlagAnswerType != ""
+                    {props.booleanFlag.positiveRedFlagResponse != ""
                       ? ""
                       : "Answer type"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
-                    value={props.addQuestion.positiveFlagAnswerType}
-                    name="positiveFlagAnswerType"
+                    value={props.booleanFlag.positiveRedFlagResponse}
+                    name="positiveRedFlagResponse"
                     onChange={handleChange}
                     placeholder="Answer type"
                     InputLabelProps={{

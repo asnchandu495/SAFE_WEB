@@ -8,6 +8,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import Grid from "@material-ui/core/Grid";
 
 function QuestionType(props) {
   useEffect(() => {}, []);
@@ -15,7 +16,7 @@ function QuestionType(props) {
   const navigateToQuestionDetails = () => {
     setTimeout(() => {
       props.setGotoAddQuestion(true);
-    }, 2000);
+    }, 1000);
   };
 
   const handleChange = (e) => {
@@ -33,36 +34,50 @@ function QuestionType(props) {
           Question type
         </Typography>
         <div className="card-form">
-          <FormControl variant="outlined" fullWidth>
-            <InputLabel
-              id="demo-simple-select-outlined-label"
-              shrink={false}
-              className="select-label"
-            >
-              {props.questionTypeForm.questionType != "" ? "" : "Question type"}
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              value={props.questionTypeForm.questionType}
-              name="questionType"
-              onChange={handleChange}
-              placeholder="Question type"
-              InputLabelProps={{ shrink: false }}
-              className="global-input single-select"
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-              {props.questionTypes.map((qType) => {
-                return (
-                  <MenuItem value={qType.id} key={`qtype_${qType.id}`}>
-                    {qType.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
+          <Grid container item xs={12} spacing={3} direction="column">
+            <Grid item xs={12} container>
+              <Grid item xs={3}>
+                <label className="required">Question type</label>
+              </Grid>
+              <Grid item xs={3}>
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel
+                    id="demo-simple-select-outlined-label"
+                    shrink={false}
+                    className="select-label"
+                  >
+                    {props.questionTypeForm.questionType != ""
+                      ? ""
+                      : "Question type"}
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={props.questionTypeForm.questionType}
+                    name="questionType"
+                    onChange={handleChange}
+                    placeholder="Question type"
+                    InputLabelProps={{ shrink: false }}
+                    className="global-input single-select"
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {props.questionTypes.map((qType) => {
+                      return (
+                        <MenuItem
+                          value={qType.inputType}
+                          key={`qtype_${qType.inputType}`}
+                        >
+                          {qType.inputType}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Grid>
         </div>
       </CardContent>
       <CardActions className="action-container">

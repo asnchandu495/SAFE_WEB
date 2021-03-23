@@ -152,9 +152,14 @@ body,
         border: none;
       }
     }
-
     .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
       border: none !important;
+    }
+    .MuiInputBase-inputAdornedStart {
+      &:focus {
+        border: none;
+        padding: 9.5px 14px;
+      }
     }
   }
   .global-input-multiline {
@@ -776,12 +781,12 @@ label.required {
     height: 100%;
     overflow-y: auto;
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     width: 100%;
     .question-type-card {
-      max-width: 300px;
-      min-width: 300px;
+      // max-width: 300px;
+      // min-width: 300px;
       width: 100%;
       box-shadow: none;
       border: 1px solid #f5f5f5;
@@ -796,6 +801,35 @@ label.required {
       }
       .card-form {
         padding: 10px;
+      }
+      .question-actions {
+        float: right;
+        margin-top: -5px;
+        button {
+          min-width: 20px;
+          border-radius: 2px;
+          margin: 5px 8px;
+          height: 26px;
+          min-height: 25px;
+          width: 20px;
+          padding: 6px 13px;
+          .MuiButton-startIcon {
+            margin: 0;
+            .MuiSvgIcon-root {
+              font-size: 13px;
+              color: #fff;
+            }
+          }
+        }
+        .view-icon {
+          background: var(--primary-26235d) 0% 0% no-repeat padding-box;
+        }
+        .edit-icon {
+          background: var(--info-17a2b8) 0% 0% no-repeat padding-box;
+        }
+        .delete-icon {
+          background: var(--danger-de1b54) 0% 0% no-repeat padding-box;
+        }
       }
     }
     .question-card {
@@ -869,6 +903,23 @@ label.required {
     }
     .question-details {
       padding: 10px;
+      width: 100%;
+    }
+    .add-question-speeddial {
+      position: absolute;
+      right: 25px;
+      bottom: 25px;
+      .MuiFab-root {
+        width: 40px;
+        height: 40px;
+        background: transparent
+          linear-gradient(180deg, #7be495 0%, #329d9c 100%) 0% 0% no-repeat
+          padding-box !important;
+      }
+    }
+    .scrollable-card {
+      max-height: calc(100vh - 234px);
+      overflow-y: auto;
     }
   }
 }

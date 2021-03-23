@@ -6,7 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import { connect } from "react-redux";
-
 import * as TeamAction from "../../Redux/Action/teamAction";
 import PropTypes from "prop-types";
 import AlertBoxComponent from "../common/alert";
@@ -21,7 +20,6 @@ import teamService from "../../services/teamService";
 function CreateTeam(props) {
   const [formFieldValidation, setformFieldValidation] = useState({
     manager: false,
-    
   });
   const [teamManagers, setTeamManagers] = useState([]);
   const [selectedTeamManager, setSelectedTeamManager] = useState();
@@ -33,7 +31,7 @@ function CreateTeam(props) {
     "array"
   );
   const [showLoadder, setshowLoadder] = useState(false);
-  
+
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const teamId = props.match.params.id;
 
@@ -84,25 +82,24 @@ function CreateTeam(props) {
     setSelectedTeamManager(value);
   }
 
-//validation
+  //validation
 
-function teamCreation(e) {
-  e.preventDefault();
-   SelectManagerValidation();
-    if(selectedTeamManager) {
+  function teamCreation(e) {
+    e.preventDefault();
+    SelectManagerValidation();
+    if (selectedTeamManager) {
       SubmitUserForm();
     } else {
       return false;
     }
-  
-}
+  }
 
- function SubmitUserForm() {
+  function SubmitUserForm() {
     setshowLoadder(true);
     var teamData = formData;
     if (teamId != 0) {
-     teamData.manager = selectedTeamManager;
-       props
+      teamData.manager = selectedTeamManager;
+      props
         .UpdateTeamCall(teamData)
         .then((result) => {
           setisAlertBoxOpened(false);
@@ -117,7 +114,7 @@ function teamCreation(e) {
         })
         .catch((err) => {
           console.log(err);
-         setToasterMessage(err.data.errors);
+          setToasterMessage(err.data.errors);
 
           settoasterServerity("error");
           setStateSnackbar(true);
@@ -125,10 +122,10 @@ function teamCreation(e) {
         });
     } else {
       teamData.manager = selectedTeamManager;
-      
+
       props
-      .CreateTeamCall(teamData)
-      
+        .CreateTeamCall(teamData)
+
         .then((result) => {
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
@@ -148,21 +145,17 @@ function teamCreation(e) {
     }
   }
 
-
-
   function redirectToAllTeam() {
     props.history.push("/teams/allteams");
   }
 
   function SelectManagerValidation() {
     if (selectedTeamManager) {
-      
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["manager"]: false,
       }));
     } else {
-      
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["manager"]: true,
@@ -170,11 +163,9 @@ function teamCreation(e) {
     }
   }
 
-
-
   return (
     <div className="innerpage-container">
-        <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
+      <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
         <LinkTo
           color="inherit"
@@ -197,7 +188,6 @@ function teamCreation(e) {
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (
-        
         <Paper className="main-paper">
           <ValidatorForm className={`global-form`} onSubmit={teamCreation}>
             <Grid container spacing={3}>
@@ -255,17 +245,16 @@ function teamCreation(e) {
               </Grid>
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                <label htmlFor="password" className="input-label required">
-                      Manager
-                    </label>
+                  <label htmlFor="password" className="input-label required">
+                    Manager
+                  </label>
                 </Grid>
                 <Grid item xs={5}>
                   <Autocomplete
                     id="tags-outlined"
                     // /options={teamManagers}
-                options={
-                    teamManagers &&
-                      teamManagers.length > 0
+                    options={
+                      teamManagers && teamManagers.length > 0
                         ? teamManagers
                         : []
                     }
@@ -320,9 +309,9 @@ function teamCreation(e) {
             </Grid>
           </ValidatorForm>
         </Paper>
-        ) : (
-          <ComponentLoadderComponent />
-        )}
+      ) : (
+        <ComponentLoadderComponent />
+      )}
 
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
@@ -338,8 +327,6 @@ function teamCreation(e) {
 export function getTeamById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
-
-
 
 CreateTeam.propTypes = {
   teamDatas: PropTypes.array.isRequired,
@@ -366,8 +353,6 @@ const mapDispatchToProps = {
   LoadAllUserGroup: TeamAction.loadTeam,
   CreateTeamCall: TeamAction.createTeamData,
   UpdateTeamCall: TeamAction.updateTeamData,
-  
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTeam);

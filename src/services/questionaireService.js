@@ -1,29 +1,29 @@
-import Environment from  "../shared/Constants";
+import Environment from "../shared/Constants";
 
-export  default class questionaireService{
-    constructor(){
+export default class questionaireService {
+  constructor() {
     this.baseURL = Environment.baseURL;
     this.authURL = Environment.authURL;
-    this.questionaireURL=Environment.quentionaireURL
+    this.questionaireURL = Environment.quentionaireURL;
     this.fetch = this.fetch.bind(this);
-    }
+  }
 
-    AddQuestionarie(getData) {
-        var finalData = JSON.stringify(getData);
-        return this.fetch(`${this.questionaireURL}/Survey/AddSurvey`, {
-          method: "POST",
-          body: finalData,
-        }).then((res) => {
-          return Promise.resolve(res);
-        });
-      }
-   GetAllQuestionarie(){
+  AddQuestionarie(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(`${this.questionaireURL}/Survey/AddSurvey`, {
+      method: "POST",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+  GetAllQuestionarie() {
     return this.fetch(`${this.questionaireURL}/Survey/GetAllSurvey`, {
-        method: "GET",
-      }).then((res) => {
-        return Promise.resolve(res);
-      });
-   }
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
 
    deleteQuestionaire(data) {
     return this.fetch(`${this.questionaireURL}/Survey/DeleteSurvey/${data}` , {

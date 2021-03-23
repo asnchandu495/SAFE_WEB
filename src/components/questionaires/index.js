@@ -73,18 +73,17 @@ function Questionaire(props) {
   ] = useState("");
 
   useEffect(() => {
-    
     setcomponentLoadder(false);
     // questionaireApiCall.GetAllQuestionarie()
     props
-    .LoadData()
-    .then((res) => {
-      console.log(res);
-      setcomponentLoadder(false);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .LoadData()
+      .then((res) => {
+        console.log(res);
+        setcomponentLoadder(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   // function handleClickOpenConfirmationModal(value) {
@@ -190,7 +189,7 @@ function Questionaire(props) {
                     color="default"
                     startIcon={<QuestionAnswerOutlinedIcon />}
                     className={`edit-icon`}
-                    onClick={() => gotoAddQuestion(thisRowData)}
+                    onClick={() => gotoViewQuestion(thisRowData)}
                   ></Button>
                 </Tooltip>
               </div>
@@ -226,6 +225,10 @@ function Questionaire(props) {
 
   function gotoAddQuestion(getRowData) {
     props.history.push(`/questionaires/add-questions/${getRowData[0]}/0`);
+  }
+
+  function gotoViewQuestion(getRowData) {
+    props.history.push(`/questionaires/view-questions/${getRowData[0]}`);
   }
 
   return (
@@ -291,13 +294,13 @@ function Questionaire(props) {
   );
 }
 
-Questionaire.propTypes={
-  LoadData:propTypes.func.isRequired,
+Questionaire.propTypes = {
+  LoadData: propTypes.func.isRequired,
 };
 
-function mapStateToProps(state,ownProps){
-      return{
- QuestionaireData:state.questionaireState,
+function mapStateToProps(state, ownProps) {
+  return {
+    QuestionaireData: state.questionaireState,
   };
 }
 
@@ -305,4 +308,4 @@ const mapDispatchToProps = {
   LoadData: questionaireAction.loadquestions,
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(Questionaire);
+export default connect(mapStateToProps, mapDispatchToProps)(Questionaire);
