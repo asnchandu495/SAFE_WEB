@@ -25,6 +25,36 @@ export default class questionaireService {
     });
   }
 
+   deleteQuestionaire(data) {
+    return this.fetch(`${this.questionaireURL}/Survey/DeleteSurvey/${data}` , {
+      method: "DELETE",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  updateQuestionaire(data) {
+    var finalData = JSON.stringify(data);
+    return this.fetch(`${this.questionaireURL}/Survey/UpdateSurvey`, {
+      method: "PUT",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  
+
+  getSurveyById(id){
+    return this.fetch(`${this.questionaireURL}/Survey/GetSurveyById?Id=${id}`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+
+      
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

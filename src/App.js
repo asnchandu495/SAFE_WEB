@@ -54,6 +54,8 @@ import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
 import Teams from "./components/teams";
 import CreateTeam from "./components/teams/CreateTeam";
 import ViewTeam from "./components/teams/ViewTeam";
+import ListofQuestions  from "./components/questionaires/listofQuestions";
+import viewQuestionaire from "./components/questionaires/viewQuestionaire";
 
 function App(props) {
   const AuthContainer = () => {
