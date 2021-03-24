@@ -25,6 +25,14 @@ export default class questionaireService {
     });
   }
 
+  GetALLTypes() {
+    return this.fetch(`${this.questionaireURL}/Survey/GetAllTypes`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   deleteQuestionaire(data) {
     return this.fetch(`${this.questionaireURL}/Survey/DeleteSurvey/${data}`, {
       method: "DELETE",
@@ -47,6 +55,42 @@ export default class questionaireService {
     return this.fetch(`${this.questionaireURL}/Survey/GetSurveyById/${id}`, {
       method: "GET",
     }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetAllQuestionsBySurveyId(id) {
+    return this.fetch(
+      `${this.questionaireURL}/Survey/GetAllQuestionsBySurveyId?SurveyId=${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  AddBoolenQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/BooleanQuestion/AddBooleanQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+  AddFreeTextQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/FreeTextQuestion/AddFreeTextQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
       return Promise.resolve(res);
     });
   }

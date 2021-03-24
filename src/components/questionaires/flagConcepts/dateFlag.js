@@ -248,7 +248,7 @@ function QuestionTypeDate(props) {
                     props.datetimeFlag.positiveConformityForDate
                       .expressionType != ""
                       ? ""
-                      : "Answer type"}
+                      : "Positive Confirmity Answer"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label1"
@@ -262,7 +262,7 @@ function QuestionTypeDate(props) {
                     }
                     name="expressionType"
                     onChange={handleChangeFlagP}
-                    placeholder="Answer type"
+                    placeholder="Positive Confirmity Answer"
                     InputLabelProps={{
                       shrink: false,
                     }}

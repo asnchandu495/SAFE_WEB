@@ -6,37 +6,27 @@ import { Link as LinkTo } from "react-router-dom";
 import ListofQuestions from "./listofQuestions";
 import QuestionType from "./selectQuestionType";
 import AddQuestionDetails from "./addQuestionDetails";
+import questionaireService from "../../services/questionaireService";
 
 function AddQuestion(props) {
-  const [questionTypes, setQuestionTypes] = useState([
-    {
-      inputType: "Boolean",
-    },
-    {
-      inputType: "DateTime",
-    },
-    {
-      inputType: "FreeText",
-    },
-    {
-      inputType: "MultiChoice",
-    },
-    {
-      inputType: "Numeric",
-    },
-    {
-      inputType: "SingleChoice",
-    },
-    {
-      inputType: "Time",
-    },
-  ]);
+  const questionaireApiCall = new questionaireService();
+  const [questionTypes, setQuestionTypes] = useState([]);
   const [gotoAddQuestion, setGotoAddQuestion] = useState(false);
   const [questionTypeForm, setQuestionTypeForm] = useState({
     questionType: "",
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    questionaireApiCall
+      .GetALLTypes()
+      .then((res) => {
+        setQuestionTypes(res);
+        console.log(res);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  }, []);
 
   return (
     <div className="innerpage-container">

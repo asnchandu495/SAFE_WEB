@@ -71,7 +71,7 @@ function QuestionTypeMultiSelect(props) {
                   >
                     {props.addQuestion.redFlagAnswerType != ""
                       ? ""
-                      : "Answer type"}
+                      : "Red Flag Answer Type"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -79,7 +79,7 @@ function QuestionTypeMultiSelect(props) {
                     value={personName}
                     name="redFlagAnswerType"
                     onChange={handleChange}
-                    placeholder="Answer type"
+                    placeholder="Red Flag Answer Type"
                     InputLabelProps={{
                       shrink: false,
                     }}

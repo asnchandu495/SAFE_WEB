@@ -75,13 +75,13 @@ function Questionaire(props) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteQuestionaire");
-    setConfirmationHeaderTittle("Delete Questions");
+    setConfirmationHeaderTittle("Delete Questionnaire");
     setConfirmationDialogContextText(
       `Are you sure you want to delete ${value[1]} ?`
     );
   }
   function handleClickViewQuestion(value) {
-    alert("fsdd");
+    // alert("fsdd");
     var questionId = value[0];
     props.history.push("/questionaires/view-questionaire/" + questionId);
   }
@@ -103,7 +103,7 @@ function Questionaire(props) {
     },
     {
       name: "name",
-      label: " Name ",
+      label: "  Questionnaire ",
       options: {
         filter: false,
         sort: true,
@@ -222,7 +222,7 @@ function Questionaire(props) {
               aria-current="page"
               className="active"
             >
-              Questionaires
+              Questionnaires
             </LinkTo>
           </Breadcrumbs>
 

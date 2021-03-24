@@ -12,8 +12,8 @@ import CardContent from "@material-ui/core/CardContent";
 
 function QuestionTypeBollean(props) {
   const [answersToSelect, setAnswersToSelect] = useState([
-    { id: "001", name: "TRUE" },
-    { id: "002", name: "FALSE" },
+    { id: "TRUE", name: "TRUE" },
+    { id: "FALSE", name: "FALSE" },
   ]);
   const PurpleSwitch = withStyles({
     switchBase: {
@@ -77,15 +77,15 @@ function QuestionTypeBollean(props) {
                     shrink={false}
                     className="select-label"
                   >
-                    {props.booleanFlag.redFlagResponse != ""
+                    {props.booleanFlag.positiveResponse != ""
                       ? ""
-                      : "Answer type"}
+                      : "Red Flag Answer Type"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
-                    value={props.booleanFlag.redFlagResponse}
-                    name="redFlagResponse"
+                    value={props.booleanFlag.positiveResponse}
+                    name="positiveResponse"
                     onChange={handleChange}
                     placeholder="Answer type"
                     InputLabelProps={{
@@ -124,15 +124,15 @@ function QuestionTypeBollean(props) {
                     shrink={false}
                     className="select-label"
                   >
-                    {props.booleanFlag.positiveRedFlagResponse != ""
+                    {props.booleanFlag.negativeResponse != ""
                       ? ""
-                      : "Answer type"}
+                      : "Positive Confirmity Answer"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
-                    value={props.booleanFlag.positiveRedFlagResponse}
-                    name="positiveRedFlagResponse"
+                    value={props.booleanFlag.negativeResponse}
+                    name="negativeResponse"
                     onChange={handleChange}
                     placeholder="Answer type"
                     InputLabelProps={{

@@ -112,14 +112,12 @@ function CustomizedDialogs(props) {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteTeams") {
-    
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteTeam(thisId)
         .then((result) => {
-          
           props.setStateSnackbar(true);
-          // props.setStateSnackbar(true);s
+          // props.setStateSnackbar(true);
           props.setToasterMessage("Team is deleted");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
@@ -128,23 +126,21 @@ function CustomizedDialogs(props) {
           console.log(error);
           toasterErrorMessage(error);
         });
-    }
-    else if(props.ConfirmationModalActionType=="DeleteQuestionaire"){
-      var thisId=props.SelectedRowDetails[0];
+    } else if (props.ConfirmationModalActionType == "DeleteQuestionaire") {
+      var thisId = props.SelectedRowDetails[0];
       props
-      .DeleteQuestion(thisId)
-      .then((result)=>{
-        props.setToasterMessage("Question is deleted");
-        props.setStateSnackbar(true);
-        props.settoasterServerity("success");
-        props.setOpenConfirmationModal(false);
-       })
-      .catch((error)=>{
-        console.log(error);
-        toasterErrorMessage(error);
-      })
-    }
-     else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
+        .DeleteQuestion(thisId)
+        .then((result) => {
+          props.setToasterMessage("Questionaire is deleted");
+          props.setStateSnackbar(true);
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
+    } else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
       var thisId = props.SelectedRowDetails[0];
       props
         .DeletEmergencyContactList(thisId)
@@ -164,7 +160,9 @@ function CustomizedDialogs(props) {
         .DeletAssignEmergencyContactList(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Disassociated Emergency Contacts from User Group.");
+          props.setToasterMessage(
+            "Disassociated Emergency Contacts from User Group."
+          );
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -193,7 +191,9 @@ function CustomizedDialogs(props) {
         .ChangeAssignEmergencyContactStatus(thisId, changeStatus, data)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Updated Emergency Contact assignment status to User Group.");
+          props.setToasterMessage(
+            "Updated Emergency Contact assignment status to User Group."
+          );
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -297,7 +297,9 @@ function CustomizedDialogs(props) {
         .ChangAssignFaqStatus(sendData)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Updated FAQ assignment status to User Group.s");
+          props.setToasterMessage(
+            "Updated FAQ assignment status to User Group.s"
+          );
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -366,8 +368,8 @@ CustomizedDialogs.propTypes = {
   DeleteUser: PropTypes.func.isRequired,
   DelteUserGroup: PropTypes.func.isRequired,
   ChangeAssignEmergencyContactStatus: PropTypes.func.isRequired,
-  DeleteTeam:PropTypes.func.isRequired,
-  DeleteQuestion:PropTypes.func.isRequired,
+  DeleteTeam: PropTypes.func.isRequired,
+  DeleteQuestion: PropTypes.func.isRequired,
 };
 function mapStateToProps(state, ownProps) {}
 
