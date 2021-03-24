@@ -927,3 +927,21 @@ label.required {
 .m-top-10 {
   margin-top: 10px !important;
 }
+
+.square-icon-save {
+  background: var(--primary-26235d) 0% 0% no-repeat padding-box !important;
+  min-width: 20px !important;
+  border-radius: 2px !important;
+  margin: 5px 8px !important;
+  height: 26px !important;
+  min-height: 25px !important;
+  width: 20px !important;
+  padding: 6px 13px !important;
+  .MuiButton-startIcon {
+    margin: 0 !important;
+    .MuiSvgIcon-root {
+      font-size: 13px !important;
+      color: #fff !important;
+    }
+  }
+}

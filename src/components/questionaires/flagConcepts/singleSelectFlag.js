@@ -11,10 +11,7 @@ import Switch from "@material-ui/core/Switch";
 import CardContent from "@material-ui/core/CardContent";
 
 function QuestionTypeSingleSelect(props) {
-  const [answersToSelect, setAnswersToSelect] = useState([
-    { id: "001", name: "Yes" },
-    { id: "002", name: "No" },
-  ]);
+  const [answersToSelect, setAnswersToSelect] = useState(props.surveyChoices);
   const PurpleSwitch = withStyles({
     switchBase: {
       color: "red",
@@ -43,20 +40,20 @@ function QuestionTypeSingleSelect(props) {
         <Card className="flag-card">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label className="required">Red Flag</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <FormControlLabel
                   control={<PurpleSwitch checked={true} name="checkedA" />}
                 />
               </Grid>
             </Grid>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label className="required">Red Flag Answer</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel
                     id="demo-simple-select-outlined-label"
@@ -84,8 +81,8 @@ function QuestionTypeSingleSelect(props) {
                     </MenuItem>
                     {answersToSelect.map((ans) => {
                       return (
-                        <MenuItem value={ans.id} key={`atypered_${ans.id}`}>
-                          {ans.name}
+                        <MenuItem value={ans} key={`atypered_${ans}`}>
+                          {ans}
                         </MenuItem>
                       );
                     })}
@@ -100,20 +97,10 @@ function QuestionTypeSingleSelect(props) {
         <Card className="flag-card">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={5}>
-                <label className="required">Red Flag</label>
-              </Grid>
-              <Grid item xs={7}>
-                <FormControlLabel
-                  control={<PurpleSwitch checked={true} name="checkedA" />}
-                />
-              </Grid>
-            </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={5}>
+              <Grid item xs={6}>
                 <label className="required">Positive Confirmity Answer</label>
               </Grid>
-              <Grid item xs={7}>
+              <Grid item xs={6}>
                 <FormControl variant="outlined" fullWidth>
                   <InputLabel
                     id="demo-simple-select-outlined-label"
@@ -141,11 +128,8 @@ function QuestionTypeSingleSelect(props) {
                     </MenuItem>
                     {answersToSelect.map((ans) => {
                       return (
-                        <MenuItem
-                          value={ans.id}
-                          key={`atypepositive_${ans.id}`}
-                        >
-                          {ans.name}
+                        <MenuItem value={ans} key={`atypepositive_${ans}`}>
+                          {ans}
                         </MenuItem>
                       );
                     })}

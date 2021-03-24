@@ -6,6 +6,8 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
+import CheckIcon from "@material-ui/icons/Check";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import QuestionTypeBollean from "./flagConcepts/booleanFlag";
 import QuestionTypeDate from "./flagConcepts/dateFlag";
@@ -21,6 +23,7 @@ function AddQuestionDetails(props) {
     question: "",
     description: "",
     isMandatory: false,
+    surveyResponseChoices: "",
   });
   const [booleanFlag, setBooleanFlag] = useState({
     positiveRedFlagResponse: "",
@@ -70,6 +73,14 @@ function AddQuestionDetails(props) {
     isPositiveConfirmity: true,
     isPositiveConfirmityRedFlag: false,
   });
+  const [singleChoiceFlag, setSingleChoiceFlag] = useState({
+    questionId: "",
+    isPositiveConfirmity: true,
+    isPositiveConfirmityRedFlag: true,
+    positiveConformitySingleChoice: [],
+    redFlagForSingleChoice: [],
+  });
+  const [surveyChoices, setSurveyChoices] = useState([]);
 
   useEffect(() => {}, []);
 
@@ -90,6 +101,12 @@ function AddQuestionDetails(props) {
   function submitQuestionForm(e) {
     e.preventDefault();
     console.log(addQuestion);
+  }
+
+  function saveChoices() {
+    console.log(addQuestion.surveyResponseChoices);
+    let array = addQuestion.surveyResponseChoices.split(",");
+    setSurveyChoices(array);
   }
 
   function RenderFlagComponent(props) {
@@ -151,8 +168,9 @@ function AddQuestionDetails(props) {
               questionTypeForm={props.questionTypeForm}
               setAddQuestion={setAddQuestion}
               addQuestion={addQuestion}
-              setNumericFlag={setNumericFlag}
-              numericFlag={numericFlag}
+              setSingleChoiceFlag={setSingleChoiceFlag}
+              singleChoiceFlag={singleChoiceFlag}
+              surveyChoices={surveyChoices}
             ></QuestionTypeSingleSelect>
           </Grid>
         );
@@ -221,6 +239,43 @@ function AddQuestionDetails(props) {
                   />
                 </Grid>
               </Grid>
+              {props.questionTypeForm.questionType == "SingleChoice" ? (
+                <Grid item sm={12} container>
+                  <Grid item sm={3}>
+                    <label>Answers</label>
+                  </Grid>
+                  <Grid item sm={8}>
+                    <Grid item sm={12} container>
+                      <Grid item sm={10}>
+                        <TextValidator
+                          variant="outlined"
+                          fullWidth
+                          id="surveyResponseChoices"
+                          placeholder="Your answers. Comma separated"
+                          name="surveyResponseChoices"
+                          value={addQuestion.surveyResponseChoices}
+                          onChange={handleChange}
+                          className="global-input"
+                          InputLabelProps={{ shrink: false }}
+                        />
+                      </Grid>
+                      <Grid item sm={2}>
+                        <Tooltip title="Save">
+                          <Button
+                            variant="contained"
+                            color="default"
+                            startIcon={<CheckIcon />}
+                            className={`square-icon-save`}
+                            onClick={saveChoices}
+                          ></Button>
+                        </Tooltip>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              ) : (
+                ""
+              )}
             </Grid>
             <RenderFlagComponent
               currentQuestionType={props.questionTypeForm.questionType}
