@@ -155,6 +155,8 @@ function QuestionTypeTime(props) {
                       id="forAnswerR"
                       placeholder="Your answer"
                       name="forAnswer"
+                      type="time"
+                      step="300"
                       value={props.timeFlag.redFlagForTime.forAnswer}
                       onChange={handleChangeFlagR}
                       className="global-input"
@@ -176,6 +178,8 @@ function QuestionTypeTime(props) {
                       id="forRangeEndR"
                       placeholder="Your answer"
                       name="forRangeEnd"
+                      type="time"
+                      step="300"
                       value={props.timeFlag.redFlagForTime.forRangeEnd}
                       onChange={handleChangeFlagR}
                       className="global-input"
@@ -206,6 +210,8 @@ function QuestionTypeTime(props) {
                     id="forAnswerR"
                     placeholder="Your answer"
                     name="forAnswer"
+                    type="time"
+                    step="300"
                     value={props.timeFlag.redFlagForTime.forAnswer}
                     onChange={handleChangeFlagR}
                     className="global-input"
@@ -293,6 +299,7 @@ function QuestionTypeTime(props) {
                       id="forAnswerP"
                       placeholder="Your answer"
                       name="forAnswer"
+                      type="time"
                       value={props.timeFlag.positiveConformityForTime.forAnswer}
                       onChange={handleChangeFlagP}
                       className="global-input"
@@ -314,6 +321,7 @@ function QuestionTypeTime(props) {
                       id="forAnswerP"
                       placeholder="Your answer"
                       name="forRangeEnd"
+                      type="time"
                       value={
                         props.timeFlag.positiveConformityForTime.forRangeEnd
                       }
@@ -346,6 +354,7 @@ function QuestionTypeTime(props) {
                     id="forAnswerP"
                     placeholder="Your answer"
                     name="forAnswer"
+                    type="time"
                     value={props.timeFlag.positiveConformityForTime.forAnswer}
                     onChange={handleChangeFlagP}
                     className="global-input"

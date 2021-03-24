@@ -204,7 +204,7 @@ function AddQuestionDetails(props) {
           <Grid item xs={12} sm={12}>
             <Grid spacing={3} container className="question-details">
               <Grid item container sm={12}>
-                <Grid item sm={3}>
+                <Grid item sm={2}>
                   <label className="required">Question</label>
                 </Grid>
                 <Grid item sm={6}>
@@ -233,7 +233,7 @@ function AddQuestionDetails(props) {
                 </Grid>
               </Grid>
               <Grid item sm={12} container>
-                <Grid item sm={3}>
+                <Grid item sm={2}>
                   <label>Description</label>
                 </Grid>
                 <Grid item sm={6}>

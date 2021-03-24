@@ -918,7 +918,8 @@ label.required {
       }
     }
     .scrollable-card {
-      min-height: calc(100vh - 235px);
+      min-height: calc(100vh - 240px);
+      height: calc(100vh - 240px);
       overflow-y: auto;
     }
   }
