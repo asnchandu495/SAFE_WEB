@@ -15,11 +15,15 @@ import QuestionTypeMultiSelect from "./flagConcepts/multiSelectFlag";
 import QuestionTypeNumber from "./flagConcepts/numberFlag";
 import QuestionTypeSingleSelect from "./flagConcepts/singleSelectFlag";
 import QuestionTypeTime from "./flagConcepts/timeFlag";
+import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
 
 function AddQuestionDetails(props) {
+  const { id } = useParams();
+
   const [showLoadder, setshowLoadder] = useState(false);
   const [addQuestion, setAddQuestion] = useState({
-    surveyId: "",
+    surveyId: id,
     question: "",
     description: "",
     isMandatory: false,
@@ -82,7 +86,10 @@ function AddQuestionDetails(props) {
   });
   const [surveyChoices, setSurveyChoices] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("result");
+    console.log(id);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

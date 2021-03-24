@@ -25,6 +25,14 @@ export default class questionaireService {
     });
   }
 
+  GetALLTypes() {
+    return this.fetch(`${this.questionaireURL}/Survey/GetAllTypes`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   deleteQuestionaire(data) {
     return this.fetch(`${this.questionaireURL}/Survey/DeleteSurvey/${data}`, {
       method: "DELETE",
