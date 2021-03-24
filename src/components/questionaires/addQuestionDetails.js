@@ -101,6 +101,8 @@ function AddQuestionDetails(props) {
   function submitQuestionForm(e) {
     e.preventDefault();
     console.log(addQuestion);
+    console.log(props.questionTypeForm);
+    console.log(booleanFlag);
   }
 
   function saveChoices() {
