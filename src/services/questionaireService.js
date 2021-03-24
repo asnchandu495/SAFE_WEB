@@ -59,6 +59,42 @@ export default class questionaireService {
     });
   }
 
+  GetAllQuestionsBySurveyId(id) {
+    return this.fetch(
+      `${this.questionaireURL}/Survey/GetAllQuestionsBySurveyId?SurveyId=${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  AddBoolenQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/BooleanQuestion/AddBooleanQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+  AddFreeTextQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/FreeTextQuestion/AddFreeTextQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

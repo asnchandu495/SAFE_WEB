@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -6,60 +6,34 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
+import { useParams } from "react-router-dom";
+import questionaireService from "../../services/questionaireService";
 
 function ListofQuestions(props) {
+  const { id } = useParams();
+  const questionaireApiCall = new questionaireService();
+
   const [selectedIndex, setSelectedIndex] = useState("001");
 
-  const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([
-    {
-      survey: "001",
-      surveyId: "001",
-      questionType: "Boolean",
-      question: "This is a test boolean question to be displayed in the list.",
-    },
-    {
-      survey: "001",
-      surveyId: "002",
-      questionType: "DateTime",
-      question: "This is a test DateTime question to be displayed in the list.",
-    },
-    {
-      survey: "001",
-      surveyId: "003",
-      questionType: "FreeText",
-      question: "This is a test FreeText question to be displayed in the list.",
-    },
-    {
-      survey: "001",
-      surveyId: "004",
-      questionType: "MultiChoice",
-      question:
-        "This is a test MultiChoice question to be displayed in the list.",
-    },
-    {
-      survey: "001",
-      surveyId: "005",
-      questionType: "Numeric",
-      question: "This is a test Numeric question to be displayed in the list.",
-    },
-    {
-      survey: "001",
-      surveyId: "006",
-      questionType: "SingleChoice",
-      question:
-        "This is a test SingleChoice question to be displayed in the list.",
-    },
-    {
-      survey: "001",
-      surveyId: "007",
-      questionType: "Time",
-      question: "This is a test Time question to be displayed in the list.",
-    },
-  ]);
+  const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
+
+  useEffect(() => {
+    questionaireApiCall
+      .GetAllQuestionsBySurveyId(id)
+      .then((res) => {
+        // console.log("listall");
+        // console.log(res);
+        setSelectedSurveyQuestions(res);
+        console.log(selectedSurveyQuestions);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <List component="nav">
@@ -70,6 +44,7 @@ function ListofQuestions(props) {
               button
               selected={selectedIndex == ques.surveyId}
               onClick={(event) => handleListItemClick(event, ques.surveyId)}
+              onClick="#"
               alignItems="flex-start"
             >
               <ListItemAvatar>

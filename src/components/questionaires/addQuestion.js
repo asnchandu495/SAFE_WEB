@@ -10,29 +10,7 @@ import questionaireService from "../../services/questionaireService";
 
 function AddQuestion(props) {
   const questionaireApiCall = new questionaireService();
-  const [questionTypes, setQuestionTypes] = useState([
-    // {
-    //   inputType: "Boolean",
-    // },
-    // {
-    //   inputType: "DateTime",
-    // },
-    // {
-    //   inputType: "FreeText",
-    // },
-    // {
-    //   inputType: "MultiChoice",
-    // },
-    // {
-    //   inputType: "Numeric",
-    // },
-    // {
-    //   inputType: "SingleChoice",
-    // },
-    // {
-    //   inputType: "Time",
-    // },
-  ]);
+  const [questionTypes, setQuestionTypes] = useState([]);
   const [gotoAddQuestion, setGotoAddQuestion] = useState(false);
   const [questionTypeForm, setQuestionTypeForm] = useState({
     questionType: "",

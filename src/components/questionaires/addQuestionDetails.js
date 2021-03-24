@@ -17,21 +17,22 @@ import QuestionTypeSingleSelect from "./flagConcepts/singleSelectFlag";
 import QuestionTypeTime from "./flagConcepts/timeFlag";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
+import questionaireService from "../../services/questionaireService";
 
 function AddQuestionDetails(props) {
   const { id } = useParams();
-
+  const questionaireApiCall = new questionaireService();
   const [showLoadder, setshowLoadder] = useState(false);
   const [addQuestion, setAddQuestion] = useState({
     surveyId: id,
     question: "",
     description: "",
-    isMandatory: false,
+    isMandatory: true,
     surveyResponseChoices: "",
   });
   const [booleanFlag, setBooleanFlag] = useState({
-    positiveRedFlagResponse: "",
-    redFlagResponse: "",
+    negativeResponse: "",
+    positiveResponse: "",
     isPositiveConfirmity: true,
     isPositiveConfirmityRedFlag: false,
   });
@@ -107,9 +108,41 @@ function AddQuestionDetails(props) {
 
   function submitQuestionForm(e) {
     e.preventDefault();
-    console.log(addQuestion);
+    // console.log(addQuestion);
     console.log(props.questionTypeForm);
-    console.log(booleanFlag);
+    // console.log(booleanFlag);
+    // console.log("result");
+    const object3 = {
+      ...addQuestion,
+      ...props.questionTypeForm,
+      ...booleanFlag,
+    };
+    console.log(JSON.stringify(object3));
+    // console.log("questiontype");
+    // console.log(props.currentQuestionType);
+    if (props.questionTypeForm.questionType == "Boolean") {
+      questionaireApiCall
+        .AddBoolenQuestion(object3)
+        .then((res) => {
+          console.log("addq");
+          console.log(res);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    } else if (props.questionTypeForm.questionType == "FreeText") {
+      questionaireApiCall
+        .AddFreeTextQuestion(object3)
+        .then((res) => {
+          console.log("restext");
+          console.log(res);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    } else {
+      console.log("fdsf");
+    }
   }
 
   function saveChoices() {
