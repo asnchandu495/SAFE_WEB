@@ -112,9 +112,6 @@ function ViewQuestionaire(props) {
         >
           view Questionaire
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="active">
-          {/* {ViewTeamDetails.name} */}
-        </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper">
         <form className={`global-form`}>
@@ -123,11 +120,10 @@ function ViewQuestionaire(props) {
               <Grid container item xs={12} spacing={3} direction="column">
                 <Grid item xs={12} container>
                   <Grid item xs={3}>
-                    <label> Name :</label>
+                    <label> Title :</label>
                   </Grid>
                   <Grid item xs={8}>
                     <label>
-                      title
                       {ViewQuestionaireDetails.name
                         ? ViewQuestionaireDetails.name
                         : ""}

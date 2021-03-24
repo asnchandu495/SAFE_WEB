@@ -42,22 +42,18 @@ function CreateQuestionarie(props) {
   });
 
   useEffect(() => {
-    // Promise.all([
     masterApiCall
       .getAllLanguages()
 
-      // ])
       .then((res) => {
-        // console.log(res);
         setAllLanguages(res);
         setComponentLoadder(false);
         if (paramsId != 0) {
-          alert("fds");
           questionaireApiCall
             .getSurveyById(paramsId)
             .then((questionaireData) => {
               setformData(questionaireData);
-              // setAllLanguages(questionaireData.languageId);
+
               setComponentLoadder(false);
             })
             .catch((error) => {
@@ -74,20 +70,25 @@ function CreateQuestionarie(props) {
   }, []);
 
   function handleChange(e) {
-    // setisAlertBoxOpened(true);
+    setisAlertBoxOpened(true);
+    // e.preventDefault();
     const { name, value } = e.target;
-    console.log(formData);
+    // console.log(formData);
     setformData((formData) => ({
       ...formData,
       [name]: value,
     }));
   }
+  function handleClickGoBack() {
+    props.history.push("/questionaires/allquestionaires");
+  }
+
   function submitForm() {
-    // setshowLoadder(true);
+    setshowLoadder(true);
 
     var data = formData;
-    console.log("result");
-    console.log(data);
+    // console.log("result");
+    // console.log(data);
     if (paramsId != 0) {
       console.log("questionaire data");
       console.log(data);
@@ -98,7 +99,7 @@ function CreateQuestionarie(props) {
           setisAlertBoxOpened(false);
           setshowLoadder(false);
           setStateSnackbar(true);
-          setToasterMessage("questionaires  Updated");
+          setToasterMessage("questionaire  Updated");
           settoasterServerity("success");
           setTimeout(() => {
             props.history.push("/questionaires/allquestionaires");
@@ -116,11 +117,13 @@ function CreateQuestionarie(props) {
       props
         .CreateQuestionaireCall(data)
         .then((result) => {
-          console.log(result);
-          setStateSnackbar(true);
-          setToasterMessage("Added new questionaires.");
-          settoasterServerity("success");
           setisAlertBoxOpened(false);
+
+          // console.log(result);
+          setStateSnackbar(true);
+          setToasterMessage("Added new questionaire.");
+          settoasterServerity("success");
+          // setisAlertBoxOpened(false);
           setTimeout(() => {
             props.history.push("/questionaires/allquestionaires");
             setshowLoadder(false);
@@ -247,7 +250,7 @@ function CreateQuestionarie(props) {
                       <Button
                         variant="contained"
                         type="reset"
-                        onClick="#"
+                        onClick={handleClickGoBack}
                         className="global-cancel-btn"
                       >
                         Cancel
