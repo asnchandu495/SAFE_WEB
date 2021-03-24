@@ -208,7 +208,6 @@ function QuestionTypeDate(props) {
                     name="forAnswer"
                     value={props.datetimeFlag.redFlagForDate.forAnswer}
                     onChange={handleChangeFlagR}
-                    autoFocus
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
                   />
@@ -355,7 +354,6 @@ function QuestionTypeDate(props) {
                       props.datetimeFlag.positiveConformityForDate.forAnswer
                     }
                     onChange={handleChangeFlagP}
-                    autoFocus
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
                   />
