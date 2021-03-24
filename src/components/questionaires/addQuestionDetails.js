@@ -174,6 +174,19 @@ function AddQuestionDetails(props) {
             ></QuestionTypeSingleSelect>
           </Grid>
         );
+      case "MultiChoice":
+        return (
+          <Grid item xs={12} sm={12} className="question-flags">
+            <QuestionTypeMultiSelect
+              questionTypeForm={props.questionTypeForm}
+              setAddQuestion={setAddQuestion}
+              addQuestion={addQuestion}
+              setSingleChoiceFlag={setSingleChoiceFlag}
+              singleChoiceFlag={singleChoiceFlag}
+              surveyChoices={surveyChoices}
+            ></QuestionTypeMultiSelect>
+          </Grid>
+        );
       default:
         return <h4>Not found</h4>;
     }
@@ -239,7 +252,8 @@ function AddQuestionDetails(props) {
                   />
                 </Grid>
               </Grid>
-              {props.questionTypeForm.questionType == "SingleChoice" ? (
+              {props.questionTypeForm.questionType == "SingleChoice" ||
+              props.questionTypeForm.questionType == "MultiChoice" ? (
                 <Grid item sm={12} container>
                   <Grid item sm={3}>
                     <label>Answers</label>
