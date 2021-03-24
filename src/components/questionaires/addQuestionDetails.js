@@ -207,7 +207,7 @@ function AddQuestionDetails(props) {
                     ]}
                     fullWidth
                     id="question"
-                    placeholder="Question..."
+                    placeholder="Enter Question"
                     name="question"
                     value={addQuestion.question}
                     onChange={handleChange}
@@ -226,7 +226,7 @@ function AddQuestionDetails(props) {
                     variant="outlined"
                     fullWidth
                     id="description"
-                    placeholder="Add description"
+                    placeholder="Enter Description"
                     validators={["matchRegexp:^.{0,150}$"]}
                     errorMessages={["Maximum 150 characters"]}
                     name="description"

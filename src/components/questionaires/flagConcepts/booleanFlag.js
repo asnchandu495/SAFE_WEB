@@ -79,7 +79,7 @@ function QuestionTypeBollean(props) {
                   >
                     {props.booleanFlag.redFlagResponse != ""
                       ? ""
-                      : "Answer type"}
+                      : "Red Flag Answer Type"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -126,7 +126,7 @@ function QuestionTypeBollean(props) {
                   >
                     {props.booleanFlag.positiveRedFlagResponse != ""
                       ? ""
-                      : "Answer type"}
+                      : "Positive Confirmity Answer"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"

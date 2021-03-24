@@ -102,7 +102,7 @@ function QuestionTypeNumber(props) {
                     {props.numericFlag.redFlagForNumber.expressionType &&
                     props.numericFlag.redFlagForNumber.expressionType != ""
                       ? ""
-                      : "Answer type"}
+                      : "Red Flag Answer Type"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -114,7 +114,7 @@ function QuestionTypeNumber(props) {
                     }
                     name="expressionType"
                     onChange={handleChangeFlagR}
-                    placeholder="Answer type"
+                    placeholder="Red Flag Answer Type"
                     InputLabelProps={{
                       shrink: false,
                     }}
@@ -237,7 +237,7 @@ function QuestionTypeNumber(props) {
                     props.numericFlag.positiveConformityForNumber
                       .expressionType != ""
                       ? ""
-                      : "Answer type"}
+                      : "Positive Confirmity Answer"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label1"
@@ -251,7 +251,7 @@ function QuestionTypeNumber(props) {
                     }
                     name="expressionType"
                     onChange={handleChangeFlagP}
-                    placeholder="Answer type"
+                    placeholder="Positive Confirmity Answer"
                     InputLabelProps={{
                       shrink: false,
                     }}

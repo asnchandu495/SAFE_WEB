@@ -102,7 +102,7 @@ function QuestionTypeTime(props) {
                     {props.timeFlag.redFlagForTime.expressionType &&
                     props.timeFlag.redFlagForTime.expressionType != ""
                       ? ""
-                      : "Answer type"}
+                      : "Red Flag Answer Type"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
@@ -114,7 +114,7 @@ function QuestionTypeTime(props) {
                     }
                     name="expressionType"
                     onChange={handleChangeFlagR}
-                    placeholder="Answer type"
+                    placeholder="Red Flag Answer Type"
                     InputLabelProps={{
                       shrink: false,
                     }}
@@ -236,7 +236,7 @@ function QuestionTypeTime(props) {
                     props.timeFlag.positiveConformityForTime.expressionType !=
                       ""
                       ? ""
-                      : "Answer type"}
+                      : "Positive Confirmity Answer"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label1"
@@ -249,7 +249,7 @@ function QuestionTypeTime(props) {
                     }
                     name="expressionType"
                     onChange={handleChangeFlagP}
-                    placeholder="Answer type"
+                    placeholder="Positive Confirmity Answer"
                     InputLabelProps={{
                       shrink: false,
                     }}
