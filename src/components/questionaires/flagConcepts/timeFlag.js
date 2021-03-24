@@ -208,7 +208,6 @@ function QuestionTypeTime(props) {
                     name="forAnswer"
                     value={props.timeFlag.redFlagForTime.forAnswer}
                     onChange={handleChangeFlagR}
-                    autoFocus
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
                   />
@@ -349,7 +348,6 @@ function QuestionTypeTime(props) {
                     name="forAnswer"
                     value={props.timeFlag.positiveConformityForTime.forAnswer}
                     onChange={handleChangeFlagP}
-                    autoFocus
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
                   />

@@ -12,6 +12,12 @@ import CardContent from "@material-ui/core/CardContent";
 import { TextValidator } from "react-material-ui-form-validator";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 function QuestionTypeDate(props) {
   const [answerTypes, setAnswerTypes] = useState([
@@ -154,6 +160,7 @@ function QuestionTypeDate(props) {
                       fullWidth
                       id="forAnswerR"
                       placeholder="Your answer"
+                      type="date"
                       name="forAnswer"
                       value={props.datetimeFlag.redFlagForDate.forAnswer}
                       onChange={handleChangeFlagR}
@@ -175,6 +182,7 @@ function QuestionTypeDate(props) {
                       fullWidth
                       id="forRangeEndR"
                       placeholder="Your answer"
+                      type="date"
                       name="forRangeEnd"
                       value={props.datetimeFlag.redFlagForDate.forRangeEnd}
                       onChange={handleChangeFlagR}
@@ -205,10 +213,10 @@ function QuestionTypeDate(props) {
                     fullWidth
                     id="forAnswerR"
                     placeholder="Your answer"
+                    type="date"
                     name="forAnswer"
                     value={props.datetimeFlag.redFlagForDate.forAnswer}
                     onChange={handleChangeFlagR}
-                    autoFocus
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
                   />
@@ -295,6 +303,7 @@ function QuestionTypeDate(props) {
                       fullWidth
                       id="forAnswerP"
                       placeholder="Your answer"
+                      type="date"
                       name="forAnswer"
                       value={
                         props.datetimeFlag.positiveConformityForDate.forAnswer
@@ -318,6 +327,7 @@ function QuestionTypeDate(props) {
                       fullWidth
                       id="forAnswerP"
                       placeholder="Your answer"
+                      type="date"
                       name="forRangeEnd"
                       value={
                         props.datetimeFlag.positiveConformityForDate.forRangeEnd
@@ -350,12 +360,12 @@ function QuestionTypeDate(props) {
                     fullWidth
                     id="forAnswerP"
                     placeholder="Your answer"
+                    type="date"
                     name="forAnswer"
                     value={
                       props.datetimeFlag.positiveConformityForDate.forAnswer
                     }
                     onChange={handleChangeFlagP}
-                    autoFocus
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
                   />

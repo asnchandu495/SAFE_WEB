@@ -208,7 +208,6 @@ function QuestionTypeNumber(props) {
                     name="forAnswer"
                     value={props.numericFlag.redFlagForNumber.forAnswer}
                     onChange={handleChangeFlagR}
-                    autoFocus
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
                   />
@@ -356,7 +355,6 @@ function QuestionTypeNumber(props) {
                       props.numericFlag.positiveConformityForNumber.forAnswer
                     }
                     onChange={handleChangeFlagP}
-                    autoFocus
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
                   />
