@@ -14,6 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+// import { createHashHistory } from "history";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -24,6 +25,7 @@ function CreateQuestionarie(props) {
   const paramsId = props.match.params.id;
   const questionaireApiCall = new questionaireService();
   const masterApiCall = new MasterDataService();
+  // const history = createHashHistory();
 
   // const [componentLoadder,setComponentLoadder]=useState(falsse);
   const [stateSnackbar, setStateSnackbar] = useState(false);

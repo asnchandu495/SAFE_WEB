@@ -219,6 +219,7 @@ function Questionaire(props) {
             <LinkTo
               color="textPrimary"
               href="#"
+              to={`/questionaires/allquestionaires`}
               aria-current="page"
               className="active"
             >

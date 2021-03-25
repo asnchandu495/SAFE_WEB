@@ -13,10 +13,11 @@ import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import ListofQuestions from "./listofQuestions";
 import QuestionType from "./selectQuestionType";
 import QuestionDetails from "./questionDetails";
+import questionaireService from "../../services/questionaireService";
 
 function ViewQuestions(props) {
   const questionaireId = props.match.params.id;
-
+  const questionaireApiCall = new questionaireService();
   const [questionTypes, setQuestionTypes] = useState([
     { id: "001", name: "Yes / No" },
     { id: "002", name: "Number" },
@@ -38,6 +39,8 @@ function ViewQuestions(props) {
     questionType: "",
   });
 
+  const [ViewQuestionaireDetails, setViewQuestionaireDetails] = useState([]);
+
   const [addQuestionBoolean, setAddQuestionBoolean] = useState({
     id: "",
     questionType: "",
@@ -50,7 +53,16 @@ function ViewQuestions(props) {
     isMandatory: false,
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    questionaireApiCall
+      .getSurveyById(questionaireId)
+      .then((questionaireInfo) => {
+        setViewQuestionaireDetails(questionaireInfo);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   function gotoAddQuestion() {
     props.history.push(`/questionaires/add-questions/${questionaireId}/0`);
@@ -70,13 +82,13 @@ function ViewQuestions(props) {
         <LinkTo
           color="textPrimary"
           href="#"
-          to={`questionaires/allquestionaires`}
+          to={`/questionaires/allquestionaires`}
           className="inactive"
         >
-          Questionaires
+          Questionaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="inactive">
-          Selected questionaire name
+          {ViewQuestionaireDetails.name}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Questions

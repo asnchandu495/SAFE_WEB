@@ -7,24 +7,33 @@ import ListofQuestions from "./listofQuestions";
 import QuestionType from "./selectQuestionType";
 import AddQuestionDetails from "./addQuestionDetails";
 import questionaireService from "../../services/questionaireService";
+import ComponentLoadderComponent from "../common/loadder/componentloadder";
 
 function AddQuestion(props) {
   const questionaireApiCall = new questionaireService();
+
+  const questionaireId = props.match.params.id;
   const [questionTypes, setQuestionTypes] = useState([]);
+
+  const [componentLoadder, setComponentLoadder] = useState(true);
+  const [ViewQuestionaireDetails, setViewQuestionaireDetails] = useState([]);
   const [gotoAddQuestion, setGotoAddQuestion] = useState(false);
   const [questionTypeForm, setQuestionTypeForm] = useState({
     questionType: "",
   });
 
   useEffect(() => {
-    questionaireApiCall
-      .GetALLTypes()
-      .then((res) => {
+    Promise.all([
+      questionaireApiCall.GetALLTypes(),
+      questionaireApiCall.getSurveyById(questionaireId),
+    ])
+      .then(([res, questionaireInfo]) => {
         setQuestionTypes(res);
-        console.log(res);
+        setComponentLoadder(false);
+        setViewQuestionaireDetails(questionaireInfo);
       })
-      .catch((res) => {
-        console.log(res);
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
 
@@ -41,53 +50,59 @@ function AddQuestion(props) {
         </LinkTo>
         <LinkTo
           color="textPrimary"
-          href="#"
-          to={`questionaires/allquestionaires`}
+          href={"/questionaires/allquestionaires"}
+          to={`/questionaires/allquestionaires`}
           className="inactive"
         >
           Questionaires
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="inactive">
-          Selected questionaire name
+          {ViewQuestionaireDetails.name}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Add question
         </LinkTo>
       </Breadcrumbs>
-      <Paper className="main-paper main-paper-add-question">
-        <Grid container spacing={0}>
-          <Grid item xs={12} sm={12}>
-            <Paper className="add-new-question">
-              <div className={`global-form`}>
-                <Grid container spacing={0}>
-                  {!gotoAddQuestion ? (
-                    <Grid item xs={12} sm={12} className="center-align">
-                      <QuestionType
-                        questionTypes={questionTypes}
-                        gotoAddQuestion={gotoAddQuestion}
-                        setGotoAddQuestion={setGotoAddQuestion}
-                        setQuestionTypeForm={setQuestionTypeForm}
-                        questionTypeForm={questionTypeForm}
-                      ></QuestionType>
+      {!componentLoadder ? (
+        <>
+          <Paper className="main-paper main-paper-add-question">
+            <Grid container spacing={0}>
+              <Grid item xs={12} sm={12}>
+                <Paper className="add-new-question">
+                  <div className={`global-form`}>
+                    <Grid container spacing={0}>
+                      {!gotoAddQuestion ? (
+                        <Grid item xs={12} sm={12} className="center-align">
+                          <QuestionType
+                            questionTypes={questionTypes}
+                            gotoAddQuestion={gotoAddQuestion}
+                            setGotoAddQuestion={setGotoAddQuestion}
+                            setQuestionTypeForm={setQuestionTypeForm}
+                            questionTypeForm={questionTypeForm}
+                          ></QuestionType>
+                        </Grid>
+                      ) : (
+                        <Grid item xs={12} sm={12} className="center-align">
+                          <Grid item xs={12} sm={12}>
+                            <AddQuestionDetails
+                              gotoAddQuestion={gotoAddQuestion}
+                              setGotoAddQuestion={setGotoAddQuestion}
+                              setQuestionTypeForm={setQuestionTypeForm}
+                              questionTypeForm={questionTypeForm}
+                            ></AddQuestionDetails>
+                          </Grid>
+                        </Grid>
+                      )}
                     </Grid>
-                  ) : (
-                    <Grid item xs={12} sm={12} className="center-align">
-                      <Grid item xs={12} sm={12}>
-                        <AddQuestionDetails
-                          gotoAddQuestion={gotoAddQuestion}
-                          setGotoAddQuestion={setGotoAddQuestion}
-                          setQuestionTypeForm={setQuestionTypeForm}
-                          questionTypeForm={questionTypeForm}
-                        ></AddQuestionDetails>
-                      </Grid>
-                    </Grid>
-                  )}
-                </Grid>
-              </div>
-            </Paper>
-          </Grid>
-        </Grid>
-      </Paper>
+                  </div>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Paper>
+        </>
+      ) : (
+        <ComponentLoadderComponent />
+      )}
     </div>
   );
 }
