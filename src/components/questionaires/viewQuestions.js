@@ -38,9 +38,7 @@ function ViewQuestions(props) {
   const [questionTypeForm, setQuestionTypeForm] = useState({
     questionType: "",
   });
-
   const [ViewQuestionaireDetails, setViewQuestionaireDetails] = useState([]);
-
   const [addQuestionBoolean, setAddQuestionBoolean] = useState({
     id: "",
     questionType: "",
@@ -52,6 +50,7 @@ function ViewQuestions(props) {
     isPositiveConfirmityRedFlag: false,
     isMandatory: false,
   });
+  const [selectedQuestionDetails, setSelectedQuestionDetails] = useState();
 
   useEffect(() => {
     questionaireApiCall
@@ -98,7 +97,9 @@ function ViewQuestions(props) {
         <Grid container spacing={0}>
           <Grid item xs={12} sm={3}>
             <Paper className="list-questions">
-              <ListofQuestions></ListofQuestions>
+              <ListofQuestions
+                setSelectedQuestionDetails={setSelectedQuestionDetails}
+              ></ListofQuestions>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={9}>
@@ -106,7 +107,9 @@ function ViewQuestions(props) {
               <ValidatorForm className={`global-form`}>
                 <Grid container spacing={0}>
                   <Grid item xs={11} sm={11} className="center-align">
-                    <QuestionDetails></QuestionDetails>
+                    <QuestionDetails
+                      selectedQuestionDetails={selectedQuestionDetails}
+                    ></QuestionDetails>
                   </Grid>
                 </Grid>
               </ValidatorForm>

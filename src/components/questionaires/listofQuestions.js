@@ -33,8 +33,8 @@ function ListofQuestions(props) {
     if (questionType == "Boolean") {
       questionaireApiCall
         .GetBooleanQuestionById(quesId)
-        .then((res) => {
-          console.log(res);
+        .then((booleanQuestionResponse) => {
+          props.setSelectedQuestionDetails(booleanQuestionResponse);
         })
         .catch((err) => {
           console.log("error");
