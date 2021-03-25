@@ -46,31 +46,35 @@ function QuestionTypeDate(props) {
     track: {},
   })(Switch);
 
-  const handleChangeFlagR = (e) => {
+  const handleChangeFlagR = (e, index) => {
     const { name, value } = e.target;
-    props.setDatetimeFlag((prevState) => ({
-      ...prevState,
-      redFlagForDate: {
-        ...prevState.redFlagForDate,
-        [name]: value,
-      },
-    }));
+    const list = {
+      ...props.datetimeFlag,
+      redFlagForDate: [
+        ...props.datetimeFlag.redFlagForDate.map((con, conIndex) =>
+          conIndex == index ? { ...con, [name]: value } : con
+        ),
+      ],
+    };
+    props.setDatetimeFlag(list);
   };
 
-  const handleChangeFlagP = (e) => {
+  const handleChangeFlagP = (e, index) => {
     const { name, value } = e.target;
-    props.setDatetimeFlag((prevState) => ({
-      ...prevState,
-      positiveConformityForDate: {
-        ...prevState.positiveConformityForDate,
-        [name]: value,
-      },
-    }));
+    const list = {
+      ...props.datetimeFlag,
+      positiveConformityForDate: [
+        ...props.datetimeFlag.positiveConformityForDate.map((con, conIndex) =>
+          conIndex == index ? { ...con, [name]: value } : con
+        ),
+      ],
+    };
+    props.setDatetimeFlag(list);
   };
 
   const handleChangeRedFlagSwitch = (e) => {
     const { name, value } = e.target;
-    props.setDatetimeFlag((booleanFlag) => ({
+    props.setDatetimeFlag((datetimeFlag) => ({
       ...props.datetimeFlag,
       [name]: e.target.checked,
     }));
@@ -88,6 +92,33 @@ function QuestionTypeDate(props) {
         forRangeEnd: "",
       },
     ];
+    props.setDatetimeFlag(list);
+  };
+
+  const handleRemoveClickRedFlag = (j) => {
+    const list = { ...props.datetimeFlag };
+    list.redFlagForDate.splice(j, 1);
+    props.setDatetimeFlag(list);
+  };
+
+  const handleAddClickPositiveFlag = (index, j) => {
+    const list = { ...props.datetimeFlag };
+    const thisPositiveFlagDate = list.positiveConformityForDate;
+    list.positiveConformityForDate = [
+      ...thisPositiveFlagDate,
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: "",
+        forRangeEnd: "",
+      },
+    ];
+    props.setDatetimeFlag(list);
+  };
+
+  const handleRemoveClickPositiveFlag = (j) => {
+    const list = { ...props.datetimeFlag };
+    list.positiveConformityForDate.splice(j, 1);
     props.setDatetimeFlag(list);
   };
 
@@ -136,8 +167,7 @@ function QuestionTypeDate(props) {
                                 shrink={false}
                                 className="select-label"
                               >
-                                {x.expressionType &&
-                                XMLHttpRequestUpload.expressionType != ""
+                                {x.expressionType && x.expressionType != ""
                                   ? ""
                                   : "Answer type"}
                               </InputLabel>
@@ -242,7 +272,7 @@ function QuestionTypeDate(props) {
                               <Tooltip title="Remove">
                                 <CancelIcon
                                   className={`delete-row-icon`}
-                                  // onClick={() => handleRemoveClickContacts(i)}
+                                  onClick={() => handleRemoveClickRedFlag(i)}
                                 ></CancelIcon>
                               </Tooltip>
                             )}
@@ -265,155 +295,166 @@ function QuestionTypeDate(props) {
           </CardContent>
         </Card>
       </Grid>
-      {/* <Grid item xs={12} sm={12}>
-        <Card className="flag-card">
+      <Grid item xs={12} sm={12}>
+        <Card className="flag-card flag-card-dynamic">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={6}>
+              <Grid item xs={2}>
                 <label className="required">Positive Confirmity</label>
               </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel
-                    id="demo-simple-select-outlined-label1"
-                    shrink={false}
-                    className="select-label"
-                  >
-                    {props.datetimeFlag.positiveConformityForDate
-                      .expressionType &&
-                    props.datetimeFlag.positiveConformityForDate
-                      .expressionType != ""
-                      ? ""
-                      : "Positive Confirmity Answer"}
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label1"
-                    id="demo-simple-select-outlined"
-                    value={
-                      props.datetimeFlag.positiveConformityForDate
-                        .expressionType
-                        ? props.datetimeFlag.positiveConformityForDate
-                            .expressionType
-                        : ""
-                    }
-                    name="expressionType"
-                    onChange={handleChangeFlagP}
-                    placeholder="Positive Confirmity Answer"
-                    InputLabelProps={{
-                      shrink: false,
-                    }}
-                    className="global-input single-select"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {answerTypes.map((aType) => {
+              <Grid item xs={10}>
+                {props.datetimeFlag.positiveConformityForDate &&
+                props.datetimeFlag.positiveConformityForDate.length > 0
+                  ? props.datetimeFlag.positiveConformityForDate.map((x, i) => {
                       return (
-                        <MenuItem
-                          value={aType.id}
-                          key={`atypepositive${aType.id}`}
+                        <Grid
+                          item
+                          container
+                          xs={12}
+                          spacing={1}
+                          key={`redflag-container${i}`}
+                          className="dynamic-flag-container"
                         >
-                          {aType.name}
-                        </MenuItem>
+                          <Grid item xs={2}>
+                            <FormControl variant="outlined" fullWidth>
+                              <InputLabel
+                                id={`demo-simple-select-outlined-label${i}`}
+                                shrink={false}
+                                className="select-label"
+                              >
+                                {x.expressionType && x.expressionType != ""
+                                  ? ""
+                                  : "Answer type"}
+                              </InputLabel>
+                              <Select
+                                labelId={`demo-simple-select-outlined-label${i}`}
+                                id={`demo-simple-select-outlined${i}`}
+                                value={x.expressionType ? x.expressionType : ""}
+                                name="expressionType"
+                                onChange={(e) => handleChangeFlagP(e, i)}
+                                placeholder="Answer type"
+                                InputLabelProps={{
+                                  shrink: false,
+                                }}
+                                className="global-input single-select"
+                              >
+                                <MenuItem value="">
+                                  <em>None</em>
+                                </MenuItem>
+                                {answerTypes.map((aType) => {
+                                  return (
+                                    <MenuItem
+                                      value={aType.id}
+                                      key={`atypered_${aType.id}`}
+                                    >
+                                      {aType.name}
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                          {props.datetimeFlag.positiveConformityForDate[i]
+                            .expressionType == "Range" ? (
+                            <>
+                              <Grid item xs={3}>
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id={`forAnswerR${i}`}
+                                  placeholder="Your answer"
+                                  type="date"
+                                  name="forAnswer"
+                                  value={x.forAnswer}
+                                  onChange={(e) => handleChangeFlagP(e, i)}
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment
+                                        position="start"
+                                        className="adornment-input"
+                                      >
+                                        From{" "}
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item xs={3}>
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id={`forRangeEndR${i}`}
+                                  placeholder="Your answer"
+                                  type="date"
+                                  name="forRangeEnd"
+                                  value={x.forRangeEnd}
+                                  onChange={(e) => handleChangeFlagP(e, i)}
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment
+                                        position="start"
+                                        className="adornment-input"
+                                      >
+                                        To{" "}
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                />
+                              </Grid>
+                            </>
+                          ) : (
+                            <Grid item xs={3}>
+                              <TextValidator
+                                variant="outlined"
+                                fullWidth
+                                id={`forAnswerR${i}`}
+                                placeholder="Your answer"
+                                type="date"
+                                name="forAnswer"
+                                value={x.forAnswer}
+                                onChange={(e) => handleChangeFlagP(e, i)}
+                                className="global-input"
+                                InputLabelProps={{ shrink: false }}
+                              />
+                            </Grid>
+                          )}
+                          <Grid item xs={2} className="row-icons-container">
+                            {props.datetimeFlag.positiveConformityForDate
+                              .length !== 1 && (
+                              <Tooltip title="Remove">
+                                <CancelIcon
+                                  className={`delete-row-icon`}
+                                  onClick={() =>
+                                    handleRemoveClickPositiveFlag(i)
+                                  }
+                                ></CancelIcon>
+                              </Tooltip>
+                            )}
+                            {props.datetimeFlag.positiveConformityForDate
+                              .length -
+                              1 ===
+                              i && (
+                              <Tooltip title="Add">
+                                <AddCircleIcon
+                                  className={`add-row-icon`}
+                                  onClick={handleAddClickPositiveFlag}
+                                ></AddCircleIcon>
+                              </Tooltip>
+                            )}
+                          </Grid>
+                        </Grid>
                       );
-                    })}
-                  </Select>
-                </FormControl>
+                    })
+                  : ""}
               </Grid>
             </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={6}>
-                <label>&nbsp;</label>
-              </Grid>
-              <Grid item xs={6} className="arrow-container">
-                <ArrowDownwardIcon></ArrowDownwardIcon>
-              </Grid>
-            </Grid>
-            {props.datetimeFlag.positiveConformityForDate.expressionType ==
-            "Range" ? (
-              <>
-                <Grid item container xs={12}>
-                  <Grid item xs={6}>
-                    <label>&nbsp;</label>
-                  </Grid>
-                  <Grid item xs={6} className="range-input">
-                    <TextValidator
-                      variant="outlined"
-                      fullWidth
-                      id="forAnswerP"
-                      placeholder="Your answer"
-                      type="date"
-                      name="forAnswer"
-                      value={
-                        props.datetimeFlag.positiveConformityForDate.forAnswer
-                      }
-                      onChange={handleChangeFlagP}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className="adornment-input"
-                          >
-                            From{" "}
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <TextValidator
-                      variant="outlined"
-                      fullWidth
-                      id="forAnswerP"
-                      placeholder="Your answer"
-                      type="date"
-                      name="forRangeEnd"
-                      value={
-                        props.datetimeFlag.positiveConformityForDate.forRangeEnd
-                      }
-                      onChange={handleChangeFlagP}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className="adornment-input"
-                          >
-                            To{" "}
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                </Grid>{" "}
-              </>
-            ) : (
-              <Grid item container xs={12}>
-                <Grid item xs={6}>
-                  <label>&nbsp;</label>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextValidator
-                    variant="outlined"
-                    fullWidth
-                    id="forAnswerP"
-                    placeholder="Your answer"
-                    type="date"
-                    name="forAnswer"
-                    value={
-                      props.datetimeFlag.positiveConformityForDate.forAnswer
-                    }
-                    onChange={handleChangeFlagP}
-                    className="global-input"
-                    InputLabelProps={{ shrink: false }}
-                  />
-                </Grid>
-              </Grid>
-            )}
           </CardContent>
         </Card>
-      </Grid> */}
+      </Grid>
     </Grid>
   );
 }
