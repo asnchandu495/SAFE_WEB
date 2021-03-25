@@ -19,7 +19,6 @@ function ListofQuestions(props) {
     questionaireApiCall
       .GetAllQuestionsBySurveyId(id)
       .then((res) => {
-        console.log(res);
         setSelectedSurveyQuestions(res);
         console.log(selectedSurveyQuestions);
       })
@@ -33,8 +32,8 @@ function ListofQuestions(props) {
     if (questionType == "Boolean") {
       questionaireApiCall
         .GetBooleanQuestionById(quesId)
-        .then((booleanQuestionResponse) => {
-          props.setSelectedQuestionDetails(booleanQuestionResponse);
+        .then((res) => {
+          console.log(res);
         })
         .catch((err) => {
           console.log("error");
