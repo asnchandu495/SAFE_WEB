@@ -14,7 +14,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
-// import { createHashHistory } from "history";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -25,9 +24,6 @@ function CreateQuestionarie(props) {
   const paramsId = props.match.params.id;
   const questionaireApiCall = new questionaireService();
   const masterApiCall = new MasterDataService();
-  // const history = createHashHistory();
-
-  // const [componentLoadder,setComponentLoadder]=useState(falsse);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
@@ -73,9 +69,8 @@ function CreateQuestionarie(props) {
 
   function handleChange(e) {
     setisAlertBoxOpened(true);
-    // e.preventDefault();
     const { name, value } = e.target;
-    // console.log(formData);
+
     setformData((formData) => ({
       ...formData,
       [name]: value,
@@ -89,12 +84,11 @@ function CreateQuestionarie(props) {
     setshowLoadder(true);
 
     var data = formData;
-    // console.log("result");
-    // console.log(data);
+
     if (paramsId != 0) {
       console.log("questionaire data");
       console.log(data);
-      // teamData.manager = selectedTeamManager;
+
       props
         .UpdateQuestionaireCall(data)
         .then((result) => {
@@ -121,11 +115,10 @@ function CreateQuestionarie(props) {
         .then((result) => {
           setisAlertBoxOpened(false);
 
-          // console.log(result);
           setStateSnackbar(true);
           setToasterMessage("Added new questionaire.");
           settoasterServerity("success");
-          // setisAlertBoxOpened(false);
+
           setTimeout(() => {
             props.history.push("/questionaires/allquestionaires");
             setshowLoadder(false);
@@ -169,43 +162,6 @@ function CreateQuestionarie(props) {
           <Paper className={`main-paper`}>
             <ValidatorForm className={`global-form`} onSubmit={submitForm}>
               <Grid container spacing={3}>
-                {/* <Grid item container xs={12}>
-                  <Grid item xs={3}>
-                    <label className="required">Language</label>
-                  </Grid> */}
-                {/* <Grid item xs={3}>
-                    <FormControl variant="outlined" fullWidth>
-                      <InputLabel
-                        id="demo-simple-select-outlined-label"
-                        shrink={false}
-                        className="select-label"
-                      >
-                        {formData.id == "" ? " Select language" : ""}
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        placeholder="Select language"
-                        name="languageId"
-                        // value={formData.languageId ? formData.languageId : ""}s
-                        onChange={handleChange}
-                        required
-                        InputLabelProps={{ shrink: false }}
-                        className="global-input single-select"
-                      >
-                        <MenuItem value="">None</MenuItem>
-                        {allLanguages.length > 0
-                          ? allLanguages.map((lan) => {
-                              return (
-                                <MenuItem value={lan.id}>{lan.name}</MenuItem>
-                              );
-                            })
-                          : ""}
-                      </Select>
-                    </FormControl>
-                  </Grid> */}
-                {/* </Grid> */}
-
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
                     <label className="required">Questionnarie Title</label>
@@ -284,9 +240,6 @@ export function getQuestionaireById(users, id) {
 }
 
 CreateQuestionarie.propTypes = {
-  // teamDatas: PropTypes.array.isRequired,
-  // teamData: PropTypes.array.isRequired,
-  // LoadAllUserGroup: PropTypes.func.isRequired,
   CreateQuestionaireCall: PropTypes.func.isRequired,
   UpdateQuestionaireCall: PropTypes.func.isRequired,
 };
@@ -305,10 +258,8 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  // LoadAllUserGroup: QuestionaireAction.GetAllQuestionarie,
   CreateQuestionaireCall: QuestionaireAction.createQuestionaireData,
   UpdateQuestionaireCall: QuestionaireAction.UpdateQuestionaireData,
 };
-// export default CreateQuestionarie;
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateQuestionarie);
