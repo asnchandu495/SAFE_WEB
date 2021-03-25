@@ -158,6 +158,7 @@ function AddQuestionDetails(props) {
   }
 
   function RenderFlagComponent(props) {
+    console.log(props.currentQuestionType);
     switch (props.currentQuestionType) {
       case "Boolean":
         return (
@@ -173,7 +174,7 @@ function AddQuestionDetails(props) {
         );
       case "FreeText":
         return <></>;
-      case "DateTime":
+      case "Date":
         return (
           <Grid item xs={12} sm={12} className="question-flags">
             <QuestionTypeDate

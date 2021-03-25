@@ -76,10 +76,25 @@ function QuestionTypeDate(props) {
     }));
   };
 
+  const handleAddClickRedFlag = (index, j) => {
+    const list = { ...props.datetimeFlag };
+    const thisRedFlagDate = list.redFlagForDate;
+    list.redFlagForDate = [
+      ...thisRedFlagDate,
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: "",
+        forRangeEnd: "",
+      },
+    ];
+    props.setDatetimeFlag(list);
+  };
+
   return (
     <Grid item container xs={12} spacing={1} className="flag-container">
       <Grid item xs={12} sm={12}>
-        <Card className="flag-card">
+        <Card className="flag-card flag-card-dynamic">
           <CardContent>
             <Grid item container xs={12}>
               <Grid item xs={2}>
@@ -106,33 +121,32 @@ function QuestionTypeDate(props) {
                 props.datetimeFlag.redFlagForDate.length > 0
                   ? props.datetimeFlag.redFlagForDate.map((x, i) => {
                       return (
-                        <Grid item container xs={12} spacing={1}>
+                        <Grid
+                          item
+                          container
+                          xs={12}
+                          spacing={1}
+                          key={`redflag-container${i}`}
+                          className="dynamic-flag-container"
+                        >
                           <Grid item xs={2}>
                             <FormControl variant="outlined" fullWidth>
                               <InputLabel
-                                id="demo-simple-select-outlined-label"
+                                id={`demo-simple-select-outlined-label${i}`}
                                 shrink={false}
                                 className="select-label"
                               >
-                                {props.datetimeFlag.redFlagForDate
-                                  .expressionType &&
-                                props.datetimeFlag.redFlagForDate
-                                  .expressionType != ""
+                                {x.expressionType &&
+                                XMLHttpRequestUpload.expressionType != ""
                                   ? ""
                                   : "Answer type"}
                               </InputLabel>
                               <Select
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={
-                                  props.datetimeFlag.redFlagForDate
-                                    .expressionType
-                                    ? props.datetimeFlag.redFlagForDate
-                                        .expressionType
-                                    : ""
-                                }
+                                labelId={`demo-simple-select-outlined-label${i}`}
+                                id={`demo-simple-select-outlined${i}`}
+                                value={x.expressionType ? x.expressionType : ""}
                                 name="expressionType"
-                                onChange={handleChangeFlagR}
+                                onChange={(e) => handleChangeFlagR(e, i)}
                                 placeholder="Answer type"
                                 InputLabelProps={{
                                   shrink: false,
@@ -155,21 +169,19 @@ function QuestionTypeDate(props) {
                               </Select>
                             </FormControl>
                           </Grid>
-                          {props.datetimeFlag.redFlagForDate.expressionType ==
-                          "Range" ? (
+                          {props.datetimeFlag.redFlagForDate[i]
+                            .expressionType == "Range" ? (
                             <>
                               <Grid item xs={3}>
                                 <TextValidator
                                   variant="outlined"
                                   fullWidth
-                                  id="forAnswerR"
+                                  id={`forAnswerR${i}`}
                                   placeholder="Your answer"
                                   type="date"
                                   name="forAnswer"
-                                  value={
-                                    props.datetimeFlag.redFlagForDate.forAnswer
-                                  }
-                                  onChange={handleChangeFlagR}
+                                  value={x.forAnswer}
+                                  onChange={(e) => handleChangeFlagR(e, i)}
                                   className="global-input"
                                   InputLabelProps={{ shrink: false }}
                                   InputProps={{
@@ -188,15 +200,12 @@ function QuestionTypeDate(props) {
                                 <TextValidator
                                   variant="outlined"
                                   fullWidth
-                                  id="forRangeEndR"
+                                  id={`forRangeEndR${i}`}
                                   placeholder="Your answer"
                                   type="date"
                                   name="forRangeEnd"
-                                  value={
-                                    props.datetimeFlag.redFlagForDate
-                                      .forRangeEnd
-                                  }
-                                  onChange={handleChangeFlagR}
+                                  value={x.forRangeEnd}
+                                  onChange={(e) => handleChangeFlagR(e, i)}
                                   className="global-input"
                                   InputLabelProps={{ shrink: false }}
                                   InputProps={{
@@ -217,26 +226,35 @@ function QuestionTypeDate(props) {
                               <TextValidator
                                 variant="outlined"
                                 fullWidth
-                                id="forAnswerR"
+                                id={`forAnswerR${i}`}
                                 placeholder="Your answer"
                                 type="date"
                                 name="forAnswer"
-                                value={
-                                  props.datetimeFlag.redFlagForDate.forAnswer
-                                }
-                                onChange={handleChangeFlagR}
+                                value={x.forAnswer}
+                                onChange={(e) => handleChangeFlagR(e, i)}
                                 className="global-input"
                                 InputLabelProps={{ shrink: false }}
                               />
                             </Grid>
                           )}
                           <Grid item xs={2} className="row-icons-container">
-                            <Tooltip title="Add">
-                              <AddCircleIcon
-                                className={`add-row-icon`}
-                                // onClick={handleAddClickContacts}
-                              ></AddCircleIcon>
-                            </Tooltip>
+                            {props.datetimeFlag.redFlagForDate.length !== 1 && (
+                              <Tooltip title="Remove">
+                                <CancelIcon
+                                  className={`delete-row-icon`}
+                                  // onClick={() => handleRemoveClickContacts(i)}
+                                ></CancelIcon>
+                              </Tooltip>
+                            )}
+                            {props.datetimeFlag.redFlagForDate.length - 1 ===
+                              i && (
+                              <Tooltip title="Add">
+                                <AddCircleIcon
+                                  className={`add-row-icon`}
+                                  onClick={handleAddClickRedFlag}
+                                ></AddCircleIcon>
+                              </Tooltip>
+                            )}
                           </Grid>
                         </Grid>
                       );

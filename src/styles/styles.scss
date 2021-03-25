@@ -734,6 +734,14 @@ label.required {
   height: calc(100vh - 160px);
   .MuiGrid-container {
     height: 100%;
+    .flag-card-dynamic {
+      .MuiGrid-item {
+        height: auto;
+      }
+      .dynamic-flag-container {
+        margin-bottom: 15px;
+      }
+    }
   }
   .list-questions {
     box-shadow: none;
@@ -885,6 +893,9 @@ label.required {
             margin-bottom: 15px;
           }
         }
+      }
+      .flag-card-dynamic {
+        display: initial;
       }
       .chip-input {
         .MuiOutlinedInput-root {
