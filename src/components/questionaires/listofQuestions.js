@@ -12,32 +12,8 @@ import questionaireService from "../../services/questionaireService";
 function ListofQuestions(props) {
   const { id } = useParams();
   const questionaireApiCall = new questionaireService();
-
   const [selectedIndex, setSelectedIndex] = useState("001");
-
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
-
-  const handleListItemClick = (event, index, questionType) => {
-    alert(event);
-    console.log("event");
-    console.log(event);
-    console.log("index");
-    console.log(index);
-    setSelectedIndex(index);
-    console.log("questiontype");
-    console.log(questionType);
-
-    if (questionType == "Boolean") {
-      questionaireApiCall
-        .GetBooleanQuestionById(id)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log("error");
-        });
-    }
-  };
 
   useEffect(() => {
     questionaireApiCall
@@ -52,6 +28,20 @@ function ListofQuestions(props) {
       });
   }, []);
 
+  const handleListItemClick = (quesId, questionType) => {
+    setSelectedIndex(quesId);
+    if (questionType == "Boolean") {
+      questionaireApiCall
+        .GetBooleanQuestionById(quesId)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+    }
+  };
+
   return (
     <List component="nav">
       {selectedSurveyQuestions.map((ques, index) => {
@@ -59,11 +49,8 @@ function ListofQuestions(props) {
           <Fragment>
             <ListItem
               button
-              selected={selectedIndex == ques.surveyId}
-              onClick={(event) =>
-                handleListItemClick(event, ques.surveyId, ques.questionType)
-              }
-              // onClick="#"
+              selected={selectedIndex == ques.id}
+              onClick={() => handleListItemClick(ques.id, ques.questionType)}
               alignItems="flex-start"
             >
               <ListItemAvatar>
