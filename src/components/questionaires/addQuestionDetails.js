@@ -124,34 +124,26 @@ function AddQuestionDetails(props) {
     }, 1000);
   };
 
-  function submitQuestionForm() {
-    // e.preventDefault();
+  function submitQuestionForm(e) {
+    e.preventDefault();
     setshowLoadder(true);
-    // console.log(addQuestion);
     console.log(props.questionTypeForm);
-    // console.log(booleanFlag);
-    // console.log("result");
     const object3 = {
       ...addQuestion,
       ...props.questionTypeForm,
       ...booleanFlag,
     };
     console.log(JSON.stringify(object3));
-    // console.log("questiontype");
-    // console.log(props.currentQuestionType);
     if (props.questionTypeForm.questionType == "Boolean") {
       questionaireApiCall
         .AddBoolenQuestion(object3)
         .then((res) => {
           setisAlertBoxOpened(false);
-          // console.log(result);
           setStateSnackbar(true);
           setToasterMessage("Added new question.");
           settoasterServerity("success");
-          // setisAlertBoxOpened(false);
           setTimeout(() => {
             props.history.push(`/questionaires/allquestionaires`);
-
             setshowLoadder(false);
           }, 6000);
         })
