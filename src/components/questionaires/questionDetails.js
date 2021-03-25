@@ -15,6 +15,12 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import Grid from "@material-ui/core/Grid";
 
 function QuestionDetails(props) {
+  useEffect(() => {
+    if (props.selectedQuestionDetails) {
+      console.log(props.selectedQuestionDetails);
+    }
+  }, []);
+
   return (
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
@@ -54,7 +60,11 @@ function QuestionDetails(props) {
                 <label>Question type :</label>
               </Grid>
               <Grid item xs={9}>
-                <label>Boolean</label>
+                <label>
+                  {props.selectedQuestionDetails
+                    ? props.selectedQuestionDetails.questionType
+                    : ""}
+                </label>
               </Grid>
             </Grid>
             <Grid item xs={12} container>
@@ -63,7 +73,9 @@ function QuestionDetails(props) {
               </Grid>
               <Grid item xs={9}>
                 <label>
-                  This is a test boolean question to be displayed in the list.
+                  {props.selectedQuestionDetails
+                    ? props.selectedQuestionDetails.question
+                    : ""}
                 </label>
               </Grid>
             </Grid>
