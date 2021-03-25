@@ -157,11 +157,20 @@ function AddQuestionDetails(props) {
       questionaireApiCall
         .AddFreeTextQuestion(object3)
         .then((res) => {
-          console.log("restext");
-          console.log(res);
+          setisAlertBoxOpened(false);
+          setStateSnackbar(true);
+          setToasterMessage("Added new freetext question.");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.history.push(`/questionaires/allquestionaires`);
+            setshowLoadder(false);
+          }, 6000);
         })
-        .catch((res) => {
-          console.log(res);
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
         });
     } else {
       console.log("fdsf");

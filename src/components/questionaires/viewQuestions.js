@@ -13,6 +13,8 @@ import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import ListofQuestions from "./listofQuestions";
 import QuestionType from "./selectQuestionType";
 import QuestionDetails from "./questionDetails";
+import FreetextDetails from "./selectedQuestionDetails/freetextDetails";
+import BooleanDetails from "./selectedQuestionDetails/booleanDetails";
 import questionaireService from "../../services/questionaireService";
 
 function ViewQuestions(props) {
@@ -51,6 +53,7 @@ function ViewQuestions(props) {
     isMandatory: false,
   });
   const [selectedQuestionDetails, setSelectedQuestionDetails] = useState();
+  // const [selectedfreetextDetails, setSelectedfreetextDetails] = useState();
 
   useEffect(() => {
     questionaireApiCall
@@ -65,6 +68,37 @@ function ViewQuestions(props) {
 
   function gotoAddQuestion() {
     props.history.push(`/questionaires/add-questions/${questionaireId}/0`);
+  }
+
+  function RenderFlagComponent(props) {
+    // console.log("text");
+    // console.log(props.currentQuestionsType);
+    switch (props.currentQuestionsType) {
+      case "Boolean":
+        return (
+          <Grid container spacing={0}>
+            <Grid item xs={11} sm={11} className="center-align">
+              <BooleanDetails
+                selectedQuestionDetails={selectedQuestionDetails}
+              ></BooleanDetails>
+            </Grid>
+          </Grid>
+        );
+
+      case "FreeText":
+        return (
+          <Grid container spacing={0}>
+            <Grid item xs={11} sm={11} className="center-align">
+              <FreetextDetails
+                selectedQuestionDetails={selectedQuestionDetails}
+              ></FreetextDetails>{" "}
+            </Grid>
+          </Grid>
+        );
+
+      default:
+        return <h4>Not found</h4>;
+    }
   }
 
   return (
@@ -99,19 +133,31 @@ function ViewQuestions(props) {
             <Paper className="list-questions">
               <ListofQuestions
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
+                // setSelectedfreetextDetails={setSelectedfreetextDetails}
               ></ListofQuestions>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={9}>
             <Paper className="add-new-question">
               <ValidatorForm className={`global-form`}>
-                <Grid container spacing={0}>
-                  <Grid item xs={11} sm={11} className="center-align">
-                    <QuestionDetails
+                {/* <Grid container spacing={0}> */}
+                {/* <Grid item xs={11} sm={11} className="center-align"> */}
+                <RenderFlagComponent
+                  currentQuestionsType={
+                    selectedQuestionDetails
+                      ? selectedQuestionDetails.questionType
+                      : ""
+                  }
+                ></RenderFlagComponent>
+
+                {/* <QuestionDetails
                       selectedQuestionDetails={selectedQuestionDetails}
                     ></QuestionDetails>
-                  </Grid>
-                </Grid>
+                    <FreetextDetails
+                      selectedfreetextDetails={selectedfreetextDetails}
+                    ></FreetextDetails> */}
+                {/* </Grid> */}
+                {/* </Grid> */}
               </ValidatorForm>
               <SpeedDial
                 ariaLabel="SpeedDial example"

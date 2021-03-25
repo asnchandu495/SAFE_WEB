@@ -34,11 +34,25 @@ function ListofQuestions(props) {
       questionaireApiCall
         .GetBooleanQuestionById(quesId)
         .then((booleanQuestionResponse) => {
+          // console.log(booleanQuestionResponse);
           props.setSelectedQuestionDetails(booleanQuestionResponse);
         })
         .catch((err) => {
           console.log("error");
         });
+    } else if (questionType == "FreeText") {
+      // props.setSelectedfreetextDetails(questionType);
+      console.log(questionType);
+      questionaireApiCall
+        .GetFreeTextQuestion(quesId)
+        .then((freetextQuestionResponse) => {
+          props.setSelectedQuestionDetails(freetextQuestionResponse);
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+    } else {
+      console.log("response");
     }
   };
 

@@ -70,6 +70,17 @@ export default class questionaireService {
     });
   }
 
+  GetFreeTextQuestion(id) {
+    return this.fetch(
+      `${this.questionaireURL}/FreeTextQuestion/GetFreeTextQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   GetAllQuestionsBySurveyId(id) {
     return this.fetch(
       `${this.questionaireURL}/Survey/GetAllQuestionsBySurveyId?SurveyId=${id}`,
