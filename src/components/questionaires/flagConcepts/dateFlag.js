@@ -102,134 +102,152 @@ function QuestionTypeDate(props) {
                 <label className="required">Red Flag Answer</label>
               </Grid>
               <Grid item xs={10}>
-                <Grid item container xs={12} spacing={1}>
-                  <Grid item xs={2}>
-                    <FormControl variant="outlined" fullWidth>
-                      <InputLabel
-                        id="demo-simple-select-outlined-label"
-                        shrink={false}
-                        className="select-label"
-                      >
-                        {props.datetimeFlag.redFlagForDate.expressionType &&
-                        props.datetimeFlag.redFlagForDate.expressionType != ""
-                          ? ""
-                          : "Answer type"}
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        value={
-                          props.datetimeFlag.redFlagForDate.expressionType
-                            ? props.datetimeFlag.redFlagForDate.expressionType
-                            : ""
-                        }
-                        name="expressionType"
-                        onChange={handleChangeFlagR}
-                        placeholder="Answer type"
-                        InputLabelProps={{
-                          shrink: false,
-                        }}
-                        className="global-input single-select"
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        {answerTypes.map((aType) => {
-                          return (
-                            <MenuItem
-                              value={aType.id}
-                              key={`atypered_${aType.id}`}
-                            >
-                              {aType.name}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-                  {props.datetimeFlag.redFlagForDate.expressionType ==
-                  "Range" ? (
-                    <>
-                      <Grid item xs={3}>
-                        <TextValidator
-                          variant="outlined"
-                          fullWidth
-                          id="forAnswerR"
-                          placeholder="Your answer"
-                          type="date"
-                          name="forAnswer"
-                          value={props.datetimeFlag.redFlagForDate.forAnswer}
-                          onChange={handleChangeFlagR}
-                          className="global-input"
-                          InputLabelProps={{ shrink: false }}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment
-                                position="start"
-                                className="adornment-input"
+                {props.datetimeFlag.redFlagForDate &&
+                props.datetimeFlag.redFlagForDate.length > 0
+                  ? props.datetimeFlag.redFlagForDate.map((x, i) => {
+                      return (
+                        <Grid item container xs={12} spacing={1}>
+                          <Grid item xs={2}>
+                            <FormControl variant="outlined" fullWidth>
+                              <InputLabel
+                                id="demo-simple-select-outlined-label"
+                                shrink={false}
+                                className="select-label"
                               >
-                                From{" "}
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={3}>
-                        <TextValidator
-                          variant="outlined"
-                          fullWidth
-                          id="forRangeEndR"
-                          placeholder="Your answer"
-                          type="date"
-                          name="forRangeEnd"
-                          value={props.datetimeFlag.redFlagForDate.forRangeEnd}
-                          onChange={handleChangeFlagR}
-                          className="global-input"
-                          InputLabelProps={{ shrink: false }}
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment
-                                position="start"
-                                className="adornment-input"
+                                {props.datetimeFlag.redFlagForDate
+                                  .expressionType &&
+                                props.datetimeFlag.redFlagForDate
+                                  .expressionType != ""
+                                  ? ""
+                                  : "Answer type"}
+                              </InputLabel>
+                              <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={
+                                  props.datetimeFlag.redFlagForDate
+                                    .expressionType
+                                    ? props.datetimeFlag.redFlagForDate
+                                        .expressionType
+                                    : ""
+                                }
+                                name="expressionType"
+                                onChange={handleChangeFlagR}
+                                placeholder="Answer type"
+                                InputLabelProps={{
+                                  shrink: false,
+                                }}
+                                className="global-input single-select"
                               >
-                                To{" "}
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                      </Grid>
-                    </>
-                  ) : (
-                    <Grid item xs={3}>
-                      <TextValidator
-                        variant="outlined"
-                        fullWidth
-                        id="forAnswerR"
-                        placeholder="Your answer"
-                        type="date"
-                        name="forAnswer"
-                        value={props.datetimeFlag.redFlagForDate.forAnswer}
-                        onChange={handleChangeFlagR}
-                        className="global-input"
-                        InputLabelProps={{ shrink: false }}
-                      />
-                    </Grid>
-                  )}
-                  <Grid item xs={2} className="row-icons-container">
-                    <Tooltip title="Add">
-                      <AddCircleIcon
-                        className={`add-row-icon`}
-                        // onClick={handleAddClickContacts}
-                      ></AddCircleIcon>
-                    </Tooltip>
-                  </Grid>
-                </Grid>
+                                <MenuItem value="">
+                                  <em>None</em>
+                                </MenuItem>
+                                {answerTypes.map((aType) => {
+                                  return (
+                                    <MenuItem
+                                      value={aType.id}
+                                      key={`atypered_${aType.id}`}
+                                    >
+                                      {aType.name}
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                          {props.datetimeFlag.redFlagForDate.expressionType ==
+                          "Range" ? (
+                            <>
+                              <Grid item xs={3}>
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id="forAnswerR"
+                                  placeholder="Your answer"
+                                  type="date"
+                                  name="forAnswer"
+                                  value={
+                                    props.datetimeFlag.redFlagForDate.forAnswer
+                                  }
+                                  onChange={handleChangeFlagR}
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment
+                                        position="start"
+                                        className="adornment-input"
+                                      >
+                                        From{" "}
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item xs={3}>
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id="forRangeEndR"
+                                  placeholder="Your answer"
+                                  type="date"
+                                  name="forRangeEnd"
+                                  value={
+                                    props.datetimeFlag.redFlagForDate
+                                      .forRangeEnd
+                                  }
+                                  onChange={handleChangeFlagR}
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment
+                                        position="start"
+                                        className="adornment-input"
+                                      >
+                                        To{" "}
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                />
+                              </Grid>
+                            </>
+                          ) : (
+                            <Grid item xs={3}>
+                              <TextValidator
+                                variant="outlined"
+                                fullWidth
+                                id="forAnswerR"
+                                placeholder="Your answer"
+                                type="date"
+                                name="forAnswer"
+                                value={
+                                  props.datetimeFlag.redFlagForDate.forAnswer
+                                }
+                                onChange={handleChangeFlagR}
+                                className="global-input"
+                                InputLabelProps={{ shrink: false }}
+                              />
+                            </Grid>
+                          )}
+                          <Grid item xs={2} className="row-icons-container">
+                            <Tooltip title="Add">
+                              <AddCircleIcon
+                                className={`add-row-icon`}
+                                // onClick={handleAddClickContacts}
+                              ></AddCircleIcon>
+                            </Tooltip>
+                          </Grid>
+                        </Grid>
+                      );
+                    })
+                  : ""}
               </Grid>
             </Grid>
           </CardContent>
         </Card>
       </Grid>
-      <Grid item xs={12} sm={12}>
+      {/* <Grid item xs={12} sm={12}>
         <Card className="flag-card">
           <CardContent>
             <Grid item container xs={12}>
@@ -377,7 +395,7 @@ function QuestionTypeDate(props) {
             )}
           </CardContent>
         </Card>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

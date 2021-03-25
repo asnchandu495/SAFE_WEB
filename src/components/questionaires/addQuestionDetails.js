@@ -37,16 +37,22 @@ function AddQuestionDetails(props) {
     isPositiveConfirmityRedFlag: false,
   });
   const [datetimeFlag, setDatetimeFlag] = useState({
-    positiveConformityForDate: {
-      expressionType: "",
-      forAnswer: "",
-      forRangeEnd: "",
-    },
-    redFlagForDate: {
-      expressionType: "",
-      forAnswer: "",
-      forRangeEnd: "",
-    },
+    positiveConformityForDate: [
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: "",
+        forRangeEnd: "",
+      },
+    ],
+    redFlagForDate: [
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: "",
+        forRangeEnd: "",
+      },
+    ],
     isPositiveConfirmity: true,
     isPositiveConfirmityRedFlag: false,
   });
