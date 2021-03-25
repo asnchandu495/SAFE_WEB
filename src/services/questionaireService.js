@@ -59,6 +59,17 @@ export default class questionaireService {
     });
   }
 
+  GetBooleanQuestionById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/BooleanQuestion/GetBooleanQuestionById/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   GetAllQuestionsBySurveyId(id) {
     return this.fetch(
       `${this.questionaireURL}/Survey/GetAllQuestionsBySurveyId?SurveyId=${id}`,

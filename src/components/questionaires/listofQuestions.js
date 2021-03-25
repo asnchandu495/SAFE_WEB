@@ -17,16 +17,33 @@ function ListofQuestions(props) {
 
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
 
-  const handleListItemClick = (event, index) => {
+  const handleListItemClick = (event, index, questionType) => {
+    alert(event);
+    console.log("event");
+    console.log(event);
+    console.log("index");
+    console.log(index);
     setSelectedIndex(index);
+    console.log("questiontype");
+    console.log(questionType);
+
+    if (questionType == "Boolean") {
+      questionaireApiCall
+        .GetBooleanQuestionById(id)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+    }
   };
 
   useEffect(() => {
     questionaireApiCall
       .GetAllQuestionsBySurveyId(id)
       .then((res) => {
-        // console.log("listall");
-        // console.log(res);
+        console.log(res);
         setSelectedSurveyQuestions(res);
         console.log(selectedSurveyQuestions);
       })
@@ -43,8 +60,10 @@ function ListofQuestions(props) {
             <ListItem
               button
               selected={selectedIndex == ques.surveyId}
-              onClick={(event) => handleListItemClick(event, ques.surveyId)}
-              onClick="#"
+              onClick={(event) =>
+                handleListItemClick(event, ques.surveyId, ques.questionType)
+              }
+              // onClick="#"
               alignItems="flex-start"
             >
               <ListItemAvatar>
