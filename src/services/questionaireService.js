@@ -93,6 +93,7 @@ export default class questionaireService {
       return Promise.resolve(res);
     });
   }
+
   AddFreeTextQuestion(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(
@@ -102,6 +103,16 @@ export default class questionaireService {
         body: finalData,
       }
     ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  AddDateQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(`${this.questionaireURL}/QuestionDate/AddDateQuestion`, {
+      method: "POST",
+      body: finalData,
+    }).then((res) => {
       return Promise.resolve(res);
     });
   }

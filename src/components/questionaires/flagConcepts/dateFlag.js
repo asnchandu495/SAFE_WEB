@@ -15,6 +15,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
+import moment from "moment";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -24,12 +25,27 @@ import {
 
 function QuestionTypeDate(props) {
   const [answerTypes, setAnswerTypes] = useState([
-    { id: "=", name: "=" },
-    { id: ">", name: ">" },
-    { id: ">=", name: ">=" },
-    { id: "<", name: "<" },
-    { id: "<=", name: "<=" },
-    { id: "Range", name: "Range" },
+    {
+      id: "EQ",
+    },
+    {
+      id: "GE",
+    },
+    {
+      id: "GT",
+    },
+    {
+      id: "LE",
+    },
+    {
+      id: "LT",
+    },
+    {
+      id: "NE",
+    },
+    {
+      id: "RANGE",
+    },
   ]);
 
   const PurpleSwitch = withStyles({
@@ -48,11 +64,17 @@ function QuestionTypeDate(props) {
 
   const handleChangeFlagR = (e, index) => {
     const { name, value } = e.target;
+    let thisVal = "";
+    if (name == "expressionType") {
+      thisVal = value;
+    } else {
+      thisVal = moment(value).toISOString();
+    }
     const list = {
       ...props.datetimeFlag,
       redFlagForDate: [
         ...props.datetimeFlag.redFlagForDate.map((con, conIndex) =>
-          conIndex == index ? { ...con, [name]: value } : con
+          conIndex == index ? { ...con, [name]: thisVal } : con
         ),
       ],
     };
@@ -61,11 +83,17 @@ function QuestionTypeDate(props) {
 
   const handleChangeFlagP = (e, index) => {
     const { name, value } = e.target;
+    let thisVal = "";
+    if (name == "expressionType") {
+      thisVal = value;
+    } else {
+      thisVal = moment(value).toISOString();
+    }
     const list = {
       ...props.datetimeFlag,
       positiveConformityForDate: [
         ...props.datetimeFlag.positiveConformityForDate.map((con, conIndex) =>
-          conIndex == index ? { ...con, [name]: value } : con
+          conIndex == index ? { ...con, [name]: thisVal } : con
         ),
       ],
     };
@@ -192,7 +220,7 @@ function QuestionTypeDate(props) {
                                       value={aType.id}
                                       key={`atypered_${aType.id}`}
                                     >
-                                      {aType.name}
+                                      {aType.id}
                                     </MenuItem>
                                   );
                                 })}
@@ -200,7 +228,7 @@ function QuestionTypeDate(props) {
                             </FormControl>
                           </Grid>
                           {props.datetimeFlag.redFlagForDate[i]
-                            .expressionType == "Range" ? (
+                            .expressionType == "RANGE" ? (
                             <>
                               <Grid item xs={3}>
                                 <TextValidator
@@ -347,7 +375,7 @@ function QuestionTypeDate(props) {
                                       value={aType.id}
                                       key={`atypered_${aType.id}`}
                                     >
-                                      {aType.name}
+                                      {aType.id}
                                     </MenuItem>
                                   );
                                 })}
@@ -355,7 +383,7 @@ function QuestionTypeDate(props) {
                             </FormControl>
                           </Grid>
                           {props.datetimeFlag.positiveConformityForDate[i]
-                            .expressionType == "Range" ? (
+                            .expressionType == "RANGE" ? (
                             <>
                               <Grid item xs={3}>
                                 <TextValidator
