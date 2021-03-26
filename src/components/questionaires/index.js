@@ -77,7 +77,6 @@ function Questionaire(props) {
     );
   }
   function handleClickViewQuestion(value) {
-    // alert("fsdd");
     var questionId = value[0];
     props.history.push("/questionaires/view-questionaire/" + questionId);
   }

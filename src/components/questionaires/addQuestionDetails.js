@@ -127,16 +127,14 @@ function AddQuestionDetails(props) {
   function submitQuestionForm(e) {
     e.preventDefault();
     setshowLoadder(true);
-    console.log(props.questionTypeForm);
-    const object3 = {
-      ...addQuestion,
-      ...props.questionTypeForm,
-      ...booleanFlag,
-    };
-    console.log(JSON.stringify(object3));
     if (props.questionTypeForm.questionType == "Boolean") {
+      const finalObject = {
+        ...addQuestion,
+        ...props.questionTypeForm,
+        ...booleanFlag,
+      };
       questionaireApiCall
-        .AddBoolenQuestion(object3)
+        .AddBoolenQuestion(finalObject)
         .then((res) => {
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
@@ -154,8 +152,12 @@ function AddQuestionDetails(props) {
           setshowLoadder(false);
         });
     } else if (props.questionTypeForm.questionType == "FreeText") {
+      const finalObject = {
+        ...addQuestion,
+        ...props.questionTypeForm,
+      };
       questionaireApiCall
-        .AddFreeTextQuestion(object3)
+        .AddFreeTextQuestion(finalObject)
         .then((res) => {
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
@@ -165,6 +167,23 @@ function AddQuestionDetails(props) {
             props.history.push(`/questionaires/allquestionaires`);
             setshowLoadder(false);
           }, 6000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    } else if (props.questionTypeForm.questionType == "Date") {
+      const finalObject = {
+        ...addQuestion,
+        ...props.questionTypeForm,
+        ...datetimeFlag,
+      };
+      questionaireApiCall
+        .AddDateQuestion(finalObject)
+        .then((res) => {
+          console.log(res);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
