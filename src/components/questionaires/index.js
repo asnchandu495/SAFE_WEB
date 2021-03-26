@@ -55,15 +55,11 @@ function Questionaire(props) {
 
   const [reloadPage, setReloadPage] = useState("NO");
   useEffect(() => {
-    setcomponentLoadder(false);
-    // questionaireApiCall.GetAllQuestionarie()
+    setcomponentLoadder(true);
 
     props
       .LoadData()
       .then((res) => {
-        // console.log('result');
-        // console.log(res);
-        // setQuestionaireList(res);
         setcomponentLoadder(false);
       })
       .catch((error) => {
@@ -127,8 +123,6 @@ function Questionaire(props) {
                     startIcon={<VisibilityIcon />}
                     className={`view-icon`}
                     onClick={() => handleClickViewQuestion(thisRowData)}
-
-                    // onClick={() => handleClickViewQuestion()}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Edit">
@@ -137,7 +131,6 @@ function Questionaire(props) {
                     color="default"
                     startIcon={<EditIcon />}
                     className={`edit-icon`}
-                    // onClick={() => handleClickUpdateTeams(thisRowData)}
                     onClick={() => handleClickUpdateQuestions(thisRowData)}
                   ></Button>
                 </Tooltip>

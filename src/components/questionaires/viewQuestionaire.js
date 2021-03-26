@@ -67,25 +67,6 @@ function ViewQuestionaire(props) {
     rowsPerPage: 5,
   };
 
-  //   const columns = [
-  //     {
-  //     //   name: "name",
-  //       label: "Name",
-  //       options: {
-  //         filter: true,
-  //         sort: true,
-  //       },
-  //     },
-  //     {
-  //     //   name: "emailId",
-  //       label: "Emailid",
-  //       options: {
-  //         filter: true,
-  //         sort: true,
-  //       },
-  //     },
-  //   ];
-
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
