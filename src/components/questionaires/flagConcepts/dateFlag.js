@@ -117,7 +117,7 @@ function QuestionTypeDate(props) {
         id: "",
         expressionType: "",
         forAnswer: "",
-        forRangeEnd: "",
+        forRangeEnd: moment().toISOString(),
       },
     ];
     props.setDatetimeFlag(list);
@@ -138,7 +138,7 @@ function QuestionTypeDate(props) {
         id: "",
         expressionType: "",
         forAnswer: "",
-        forRangeEnd: "",
+        forRangeEnd: moment().toISOString(),
       },
     ];
     props.setDatetimeFlag(list);
@@ -238,7 +238,9 @@ function QuestionTypeDate(props) {
                                   placeholder="Your answer"
                                   type="date"
                                   name="forAnswer"
-                                  value={x.forAnswer}
+                                  value={moment(x.forAnswer).format(
+                                    "yyyy-MM-DD"
+                                  )}
                                   onChange={(e) => handleChangeFlagR(e, i)}
                                   className="global-input"
                                   InputLabelProps={{ shrink: false }}
@@ -262,7 +264,9 @@ function QuestionTypeDate(props) {
                                   placeholder="Your answer"
                                   type="date"
                                   name="forRangeEnd"
-                                  value={x.forRangeEnd}
+                                  value={moment(x.forRangeEnd).format(
+                                    "yyyy-MM-DD"
+                                  )}
                                   onChange={(e) => handleChangeFlagR(e, i)}
                                   className="global-input"
                                   InputLabelProps={{ shrink: false }}
@@ -288,7 +292,7 @@ function QuestionTypeDate(props) {
                                 placeholder="Your answer"
                                 type="date"
                                 name="forAnswer"
-                                value={x.forAnswer}
+                                value={moment(x.forAnswer).format("yyyy-MM-DD")}
                                 onChange={(e) => handleChangeFlagR(e, i)}
                                 className="global-input"
                                 InputLabelProps={{ shrink: false }}
@@ -393,7 +397,9 @@ function QuestionTypeDate(props) {
                                   placeholder="Your answer"
                                   type="date"
                                   name="forAnswer"
-                                  value={x.forAnswer}
+                                  value={moment(x.forAnswer).format(
+                                    "yyyy-MM-DD"
+                                  )}
                                   onChange={(e) => handleChangeFlagP(e, i)}
                                   className="global-input"
                                   InputLabelProps={{ shrink: false }}
@@ -417,7 +423,9 @@ function QuestionTypeDate(props) {
                                   placeholder="Your answer"
                                   type="date"
                                   name="forRangeEnd"
-                                  value={x.forRangeEnd}
+                                  value={moment(x.forRangeEnd).format(
+                                    "yyyy-MM-DD"
+                                  )}
                                   onChange={(e) => handleChangeFlagP(e, i)}
                                   className="global-input"
                                   InputLabelProps={{ shrink: false }}
@@ -443,7 +451,7 @@ function QuestionTypeDate(props) {
                                 placeholder="Your answer"
                                 type="date"
                                 name="forAnswer"
-                                value={x.forAnswer}
+                                value={moment(x.forAnswer).format("yyyy-MM-DD")}
                                 onChange={(e) => handleChangeFlagP(e, i)}
                                 className="global-input"
                                 InputLabelProps={{ shrink: false }}

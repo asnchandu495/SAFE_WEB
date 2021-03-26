@@ -12,15 +12,40 @@ import CardContent from "@material-ui/core/CardContent";
 import { TextValidator } from "react-material-ui-form-validator";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Tooltip from "@material-ui/core/Tooltip";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import CancelIcon from "@material-ui/icons/Cancel";
+import moment from "moment";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 function QuestionTypeTime(props) {
   const [answerTypes, setAnswerTypes] = useState([
-    { id: "=", name: "=" },
-    { id: ">", name: ">" },
-    { id: ">=", name: ">=" },
-    { id: "<", name: "<" },
-    { id: "<=", name: "<=" },
-    { id: "Range", name: "Range" },
+    {
+      id: "EQ",
+    },
+    {
+      id: "GE",
+    },
+    {
+      id: "GT",
+    },
+    {
+      id: "LE",
+    },
+    {
+      id: "LT",
+    },
+    {
+      id: "NE",
+    },
+    {
+      id: "RANGE",
+    },
   ]);
 
   const PurpleSwitch = withStyles({
@@ -37,43 +62,105 @@ function QuestionTypeTime(props) {
     track: {},
   })(Switch);
 
-  const handleChangeFlagR = (e) => {
+  const handleChangeFlagR = (e, index) => {
     const { name, value } = e.target;
-    props.setTimeFlag((prevState) => ({
-      ...prevState,
-      redFlagForTime: {
-        ...prevState.redFlagForTime,
-        [name]: value,
-      },
-    }));
+    let thisVal = "";
+    if (name == "expressionType") {
+      thisVal = value;
+    } else {
+      let getTime = value;
+      let formatedTime = moment(getTime, "HH:mm");
+      thisVal = moment(formatedTime.toDate()).toISOString();
+    }
+    const list = {
+      ...props.timeFlag,
+      redFlagForTime: [
+        ...props.timeFlag.redFlagForTime.map((con, conIndex) =>
+          conIndex == index ? { ...con, [name]: thisVal } : con
+        ),
+      ],
+    };
+    props.setTimeFlag(list);
   };
 
-  const handleChangeFlagP = (e) => {
+  const handleChangeFlagP = (e, index) => {
     const { name, value } = e.target;
-    props.setTimeFlag((prevState) => ({
-      ...prevState,
-      positiveConformityForTime: {
-        ...prevState.positiveConformityForTime,
-        [name]: value,
-      },
-    }));
+    let thisVal = "";
+    if (name == "expressionType") {
+      thisVal = value;
+    } else {
+      let getTime = value;
+      let formatedTime = moment(getTime, "HH:mm");
+      thisVal = moment(formatedTime.toDate()).toISOString();
+    }
+    const list = {
+      ...props.timeFlag,
+      positiveConformityForTime: [
+        ...props.timeFlag.positiveConformityForTime.map((con, conIndex) =>
+          conIndex == index ? { ...con, [name]: thisVal } : con
+        ),
+      ],
+    };
+    props.setTimeFlag(list);
   };
 
   const handleChangeRedFlagSwitch = (e) => {
     const { name, value } = e.target;
-    props.setTimeFlag((booleanFlag) => ({
+    props.setTimeFlag((timeFlag) => ({
       ...props.timeFlag,
       [name]: e.target.checked,
     }));
   };
 
+  const handleAddClickRedFlag = (index, j) => {
+    const list = { ...props.timeFlag };
+    const thisRedFlagDate = list.redFlagForTime;
+    list.redFlagForTime = [
+      ...thisRedFlagDate,
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: "",
+        forRangeEnd: moment().toISOString(),
+      },
+    ];
+    props.setTimeFlag(list);
+  };
+
+  const handleRemoveClickRedFlag = (j) => {
+    const list = { ...props.timeFlag };
+    list.redFlagForTime.splice(j, 1);
+    props.setTimeFlag(list);
+  };
+
+  const handleAddClickPositiveFlag = (index, j) => {
+    const list = { ...props.timeFlag };
+    const thisPositiveFlagDate = list.positiveConformityForTime;
+    list.positiveConformityForTime = [
+      ...thisPositiveFlagDate,
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: "",
+        forRangeEnd: moment().toISOString(),
+      },
+    ];
+    props.setTimeFlag(list);
+  };
+
+  const handleRemoveClickPositiveFlag = (j) => {
+    const list = { ...props.timeFlag };
+    list.positiveConformityForTime.splice(j, 1);
+    props.setTimeFlag(list);
+  };
+
   return (
     <Grid item container xs={12} spacing={1} className="flag-container">
-      <Grid item xs={12} sm={6}>
-        <Card className="flag-card">
+      <Grid item xs={12} sm={12}>
+        <Card className="flag-card flag-card-dynamic">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={6}>
+              <Grid item xs={2}>
                 <label className="required">Red Flag</label>
               </Grid>
               <Grid item xs={6}>
@@ -89,280 +176,312 @@ function QuestionTypeTime(props) {
               </Grid>
             </Grid>
             <Grid item container xs={12}>
-              <Grid item xs={6}>
+              <Grid item xs={2}>
                 <label className="required">Red Flag Answer</label>
               </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel
-                    id="demo-simple-select-outlined-label"
-                    shrink={false}
-                    className="select-label"
-                  >
-                    {props.timeFlag.redFlagForTime.expressionType &&
-                    props.timeFlag.redFlagForTime.expressionType != ""
-                      ? ""
-                      : "Red Flag Answer Type"}
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={
-                      props.timeFlag.redFlagForTime.expressionType
-                        ? props.timeFlag.redFlagForTime.expressionType
-                        : ""
-                    }
-                    name="expressionType"
-                    onChange={handleChangeFlagR}
-                    placeholder="Red Flag Answer Type"
-                    InputLabelProps={{
-                      shrink: false,
-                    }}
-                    className="global-input single-select"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {answerTypes.map((aType) => {
+              <Grid item xs={10}>
+                {props.timeFlag.redFlagForTime &&
+                props.timeFlag.redFlagForTime.length > 0
+                  ? props.timeFlag.redFlagForTime.map((x, i) => {
                       return (
-                        <MenuItem value={aType.id} key={`atypered_${aType.id}`}>
-                          {aType.name}
-                        </MenuItem>
+                        <Grid
+                          item
+                          container
+                          xs={12}
+                          spacing={1}
+                          key={`redflag-container${i}`}
+                          className="dynamic-flag-container"
+                        >
+                          <Grid item xs={2}>
+                            <FormControl variant="outlined" fullWidth>
+                              <InputLabel
+                                id={`demo-simple-select-outlined-label${i}`}
+                                shrink={false}
+                                className="select-label"
+                              >
+                                {x.expressionType && x.expressionType != ""
+                                  ? ""
+                                  : "Answer type"}
+                              </InputLabel>
+                              <Select
+                                labelId={`demo-simple-select-outlined-label${i}`}
+                                id={`demo-simple-select-outlined${i}`}
+                                value={x.expressionType ? x.expressionType : ""}
+                                name="expressionType"
+                                onChange={(e) => handleChangeFlagR(e, i)}
+                                placeholder="Answer type"
+                                InputLabelProps={{
+                                  shrink: false,
+                                }}
+                                className="global-input single-select"
+                              >
+                                <MenuItem value="">
+                                  <em>None</em>
+                                </MenuItem>
+                                {answerTypes.map((aType) => {
+                                  return (
+                                    <MenuItem
+                                      value={aType.id}
+                                      key={`atypered_${aType.id}`}
+                                    >
+                                      {aType.id}
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                          {props.timeFlag.redFlagForTime[i].expressionType ==
+                          "RANGE" ? (
+                            <>
+                              <Grid item xs={3}>
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id={`forAnswerR${i}`}
+                                  placeholder="Your answer"
+                                  type="time"
+                                  name="forAnswer"
+                                  value={moment(x.forAnswer).format("HH:mm")}
+                                  onChange={(e) => handleChangeFlagR(e, i)}
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment
+                                        position="start"
+                                        className="adornment-input"
+                                      >
+                                        From{" "}
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item xs={3}>
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id={`forRangeEndR${i}`}
+                                  placeholder="Your answer"
+                                  type="time"
+                                  name="forRangeEnd"
+                                  value={moment(x.forRangeEnd).format("HH:mm")}
+                                  onChange={(e) => handleChangeFlagR(e, i)}
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment
+                                        position="start"
+                                        className="adornment-input"
+                                      >
+                                        To{" "}
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                />
+                              </Grid>
+                            </>
+                          ) : (
+                            <Grid item xs={3}>
+                              <TextValidator
+                                variant="outlined"
+                                fullWidth
+                                id={`forAnswerR${i}`}
+                                placeholder="Your answer"
+                                type="time"
+                                name="forAnswer"
+                                value={moment(x.forAnswer).format("HH:mm")}
+                                onChange={(e) => handleChangeFlagR(e, i)}
+                                className="global-input"
+                                InputLabelProps={{ shrink: false }}
+                              />
+                            </Grid>
+                          )}
+                          <Grid item xs={2} className="row-icons-container">
+                            {props.timeFlag.redFlagForTime.length !== 1 && (
+                              <Tooltip title="Remove">
+                                <CancelIcon
+                                  className={`delete-row-icon`}
+                                  onClick={() => handleRemoveClickRedFlag(i)}
+                                ></CancelIcon>
+                              </Tooltip>
+                            )}
+                            {props.timeFlag.redFlagForTime.length - 1 === i && (
+                              <Tooltip title="Add">
+                                <AddCircleIcon
+                                  className={`add-row-icon`}
+                                  onClick={handleAddClickRedFlag}
+                                ></AddCircleIcon>
+                              </Tooltip>
+                            )}
+                          </Grid>
+                        </Grid>
                       );
-                    })}
-                  </Select>
-                </FormControl>
+                    })
+                  : ""}
               </Grid>
             </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={6}>
-                <label>&nbsp;</label>
-              </Grid>
-              <Grid item xs={6} className="arrow-container">
-                <ArrowDownwardIcon></ArrowDownwardIcon>
-              </Grid>
-            </Grid>
-            {props.timeFlag.redFlagForTime.expressionType == "Range" ? (
-              <>
-                <Grid item container xs={12}>
-                  <Grid item xs={6}>
-                    <label>&nbsp;</label>
-                  </Grid>
-                  <Grid item xs={6} className="range-input">
-                    <TextValidator
-                      variant="outlined"
-                      fullWidth
-                      id="forAnswerR"
-                      placeholder="Your answer"
-                      name="forAnswer"
-                      type="time"
-                      step="300"
-                      value={props.timeFlag.redFlagForTime.forAnswer}
-                      onChange={handleChangeFlagR}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className="adornment-input"
-                          >
-                            From{" "}
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <TextValidator
-                      variant="outlined"
-                      fullWidth
-                      id="forRangeEndR"
-                      placeholder="Your answer"
-                      name="forRangeEnd"
-                      type="time"
-                      step="300"
-                      value={props.timeFlag.redFlagForTime.forRangeEnd}
-                      onChange={handleChangeFlagR}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className="adornment-input"
-                          >
-                            To{" "}
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                </Grid>{" "}
-              </>
-            ) : (
-              <Grid item container xs={12}>
-                <Grid item xs={6}>
-                  <label>&nbsp;</label>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextValidator
-                    variant="outlined"
-                    fullWidth
-                    id="forAnswerR"
-                    placeholder="Your answer"
-                    name="forAnswer"
-                    type="time"
-                    step="300"
-                    value={props.timeFlag.redFlagForTime.forAnswer}
-                    onChange={handleChangeFlagR}
-                    className="global-input"
-                    InputLabelProps={{ shrink: false }}
-                  />
-                </Grid>
-              </Grid>
-            )}
           </CardContent>
         </Card>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <Card className="flag-card">
+      <Grid item xs={12} sm={12}>
+        <Card className="flag-card flag-card-dynamic">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={6}>
+              <Grid item xs={2}>
                 <label className="required">Positive Confirmity</label>
               </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel
-                    id="demo-simple-select-outlined-label1"
-                    shrink={false}
-                    className="select-label"
-                  >
-                    {props.timeFlag.positiveConformityForTime.expressionType &&
-                    props.timeFlag.positiveConformityForTime.expressionType !=
-                      ""
-                      ? ""
-                      : "Positive Confirmity Answer"}
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label1"
-                    id="demo-simple-select-outlined"
-                    value={
-                      props.timeFlag.positiveConformityForTime.expressionType
-                        ? props.timeFlag.positiveConformityForTime
-                            .expressionType
-                        : ""
-                    }
-                    name="expressionType"
-                    onChange={handleChangeFlagP}
-                    placeholder="Positive Confirmity Answer"
-                    InputLabelProps={{
-                      shrink: false,
-                    }}
-                    className="global-input single-select"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {answerTypes.map((aType) => {
+              <Grid item xs={10}>
+                {props.timeFlag.positiveConformityForTime &&
+                props.timeFlag.positiveConformityForTime.length > 0
+                  ? props.timeFlag.positiveConformityForTime.map((x, i) => {
                       return (
-                        <MenuItem
-                          value={aType.id}
-                          key={`atypepositive${aType.id}`}
+                        <Grid
+                          item
+                          container
+                          xs={12}
+                          spacing={1}
+                          key={`redflag-container${i}`}
+                          className="dynamic-flag-container"
                         >
-                          {aType.name}
-                        </MenuItem>
+                          <Grid item xs={2}>
+                            <FormControl variant="outlined" fullWidth>
+                              <InputLabel
+                                id={`demo-simple-select-outlined-label${i}`}
+                                shrink={false}
+                                className="select-label"
+                              >
+                                {x.expressionType && x.expressionType != ""
+                                  ? ""
+                                  : "Answer type"}
+                              </InputLabel>
+                              <Select
+                                labelId={`demo-simple-select-outlined-label${i}`}
+                                id={`demo-simple-select-outlined${i}`}
+                                value={x.expressionType ? x.expressionType : ""}
+                                name="expressionType"
+                                onChange={(e) => handleChangeFlagP(e, i)}
+                                placeholder="Answer type"
+                                InputLabelProps={{
+                                  shrink: false,
+                                }}
+                                className="global-input single-select"
+                              >
+                                <MenuItem value="">
+                                  <em>None</em>
+                                </MenuItem>
+                                {answerTypes.map((aType) => {
+                                  return (
+                                    <MenuItem
+                                      value={aType.id}
+                                      key={`atypered_${aType.id}`}
+                                    >
+                                      {aType.id}
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                          {props.timeFlag.positiveConformityForTime[i]
+                            .expressionType == "RANGE" ? (
+                            <>
+                              <Grid item xs={3}>
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id={`forAnswerR${i}`}
+                                  placeholder="Your answer"
+                                  type="time"
+                                  name="forAnswer"
+                                  value={moment(x.forAnswer).format("HH:mm")}
+                                  onChange={(e) => handleChangeFlagP(e, i)}
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment
+                                        position="start"
+                                        className="adornment-input"
+                                      >
+                                        From{" "}
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item xs={3}>
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id={`forRangeEndR${i}`}
+                                  placeholder="Your answer"
+                                  type="time"
+                                  name="forRangeEnd"
+                                  value={moment(x.forRangeEnd).format("HH:mm")}
+                                  onChange={(e) => handleChangeFlagP(e, i)}
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                  InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment
+                                        position="start"
+                                        className="adornment-input"
+                                      >
+                                        To{" "}
+                                      </InputAdornment>
+                                    ),
+                                  }}
+                                />
+                              </Grid>
+                            </>
+                          ) : (
+                            <Grid item xs={3}>
+                              <TextValidator
+                                variant="outlined"
+                                fullWidth
+                                id={`forAnswerR${i}`}
+                                placeholder="Your answer"
+                                type="time"
+                                name="forAnswer"
+                                value={moment(x.forAnswer).format("HH:mm")}
+                                onChange={(e) => handleChangeFlagP(e, i)}
+                                className="global-input"
+                                InputLabelProps={{ shrink: false }}
+                              />
+                            </Grid>
+                          )}
+                          <Grid item xs={2} className="row-icons-container">
+                            {props.timeFlag.positiveConformityForTime.length !==
+                              1 && (
+                              <Tooltip title="Remove">
+                                <CancelIcon
+                                  className={`delete-row-icon`}
+                                  onClick={() =>
+                                    handleRemoveClickPositiveFlag(i)
+                                  }
+                                ></CancelIcon>
+                              </Tooltip>
+                            )}
+                            {props.timeFlag.positiveConformityForTime.length -
+                              1 ===
+                              i && (
+                              <Tooltip title="Add">
+                                <AddCircleIcon
+                                  className={`add-row-icon`}
+                                  onClick={handleAddClickPositiveFlag}
+                                ></AddCircleIcon>
+                              </Tooltip>
+                            )}
+                          </Grid>
+                        </Grid>
                       );
-                    })}
-                  </Select>
-                </FormControl>
+                    })
+                  : ""}
               </Grid>
             </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={6}>
-                <label>&nbsp;</label>
-              </Grid>
-              <Grid item xs={6} className="arrow-container">
-                <ArrowDownwardIcon></ArrowDownwardIcon>
-              </Grid>
-            </Grid>
-            {props.timeFlag.positiveConformityForTime.expressionType ==
-            "Range" ? (
-              <>
-                <Grid item container xs={12}>
-                  <Grid item xs={6}>
-                    <label>&nbsp;</label>
-                  </Grid>
-                  <Grid item xs={6} className="range-input">
-                    <TextValidator
-                      variant="outlined"
-                      fullWidth
-                      id="forAnswerP"
-                      placeholder="Your answer"
-                      name="forAnswer"
-                      type="time"
-                      value={props.timeFlag.positiveConformityForTime.forAnswer}
-                      onChange={handleChangeFlagP}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className="adornment-input"
-                          >
-                            From{" "}
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <TextValidator
-                      variant="outlined"
-                      fullWidth
-                      id="forAnswerP"
-                      placeholder="Your answer"
-                      name="forRangeEnd"
-                      type="time"
-                      value={
-                        props.timeFlag.positiveConformityForTime.forRangeEnd
-                      }
-                      onChange={handleChangeFlagP}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment
-                            position="start"
-                            className="adornment-input"
-                          >
-                            To{" "}
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                </Grid>{" "}
-              </>
-            ) : (
-              <Grid item container xs={12}>
-                <Grid item xs={6}>
-                  <label>&nbsp;</label>
-                </Grid>
-                <Grid item xs={6}>
-                  <TextValidator
-                    variant="outlined"
-                    fullWidth
-                    id="forAnswerP"
-                    placeholder="Your answer"
-                    name="forAnswer"
-                    type="time"
-                    value={props.timeFlag.positiveConformityForTime.forAnswer}
-                    onChange={handleChangeFlagP}
-                    className="global-input"
-                    InputLabelProps={{ shrink: false }}
-                  />
-                </Grid>
-              </Grid>
-            )}
           </CardContent>
         </Card>
       </Grid>

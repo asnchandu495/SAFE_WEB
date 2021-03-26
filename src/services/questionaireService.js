@@ -128,6 +128,29 @@ export default class questionaireService {
     });
   }
 
+  AddTimeQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(`${this.questionaireURL}/QuestionTime/AddTimeQuestion`, {
+      method: "POST",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  AddNumericQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/NumericQuestion/AddNumericQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

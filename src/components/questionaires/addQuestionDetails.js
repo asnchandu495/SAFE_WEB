@@ -20,6 +20,7 @@ import { useParams } from "react-router-dom";
 import questionaireService from "../../services/questionaireService";
 import ToasterMessageComponent from "../common/toaster";
 import Paper from "@material-ui/core/Paper";
+import moment from "moment";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 
 function AddQuestionDetails(props) {
@@ -52,11 +53,43 @@ function AddQuestionDetails(props) {
       {
         id: "",
         expressionType: "",
-        forAnswer: "",
-        forRangeEnd: "",
+        forAnswer: moment().toISOString(),
+        forRangeEnd: moment().toISOString(),
       },
     ],
     redFlagForDate: [
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: moment().toISOString(),
+        forRangeEnd: moment().toISOString(),
+      },
+    ],
+    isPositiveConfirmity: true,
+    isPositiveConfirmityRedFlag: false,
+  });
+  const [timeFlag, setTimeFlag] = useState({
+    positiveConformityForTime: [
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: moment().toISOString(),
+        forRangeEnd: moment().toISOString(),
+      },
+    ],
+    redFlagForTime: [
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: moment().toISOString(),
+        forRangeEnd: moment().toISOString(),
+      },
+    ],
+    isPositiveConfirmity: true,
+    isPositiveConfirmityRedFlag: false,
+  });
+  const [numericFlag, setNumericFlag] = useState({
+    positiveConformityForNumber: [
       {
         id: "",
         expressionType: "",
@@ -64,34 +97,14 @@ function AddQuestionDetails(props) {
         forRangeEnd: "",
       },
     ],
-    isPositiveConfirmity: true,
-    isPositiveConfirmityRedFlag: false,
-  });
-  const [timeFlag, setTimeFlag] = useState({
-    positiveConformityForTime: {
-      expressionType: "",
-      forAnswer: "",
-      forRangeEnd: "",
-    },
-    redFlagForTime: {
-      expressionType: "",
-      forAnswer: "",
-      forRangeEnd: "",
-    },
-    isPositiveConfirmity: true,
-    isPositiveConfirmityRedFlag: false,
-  });
-  const [numericFlag, setNumericFlag] = useState({
-    positiveConformityForNumber: {
-      expressionType: "",
-      forAnswer: "",
-      forRangeEnd: "",
-    },
-    redFlagForNumber: {
-      expressionType: "",
-      forAnswer: "",
-      forRangeEnd: "",
-    },
+    redFlagForNumber: [
+      {
+        id: "",
+        expressionType: "",
+        forAnswer: "",
+        forRangeEnd: "",
+      },
+    ],
     isPositiveConfirmity: true,
     isPositiveConfirmityRedFlag: false,
   });
@@ -104,10 +117,7 @@ function AddQuestionDetails(props) {
   });
   const [surveyChoices, setSurveyChoices] = useState([]);
 
-  useEffect(() => {
-    console.log("result");
-    console.log(id);
-  }, []);
+  useEffect(() => {}, []);
 
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
@@ -136,6 +146,7 @@ function AddQuestionDetails(props) {
       questionaireApiCall
         .AddBoolenQuestion(finalObject)
         .then((res) => {
+          setshowLoadder(false);
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
           setToasterMessage("Added new question.");
@@ -159,8 +170,11 @@ function AddQuestionDetails(props) {
       questionaireApiCall
         .AddFreeTextQuestion(finalObject)
         .then((res) => {
-          console.log("restext");
-          console.log(res);
+          setshowLoadder(false);
+          setisAlertBoxOpened(false);
+          setStateSnackbar(true);
+          setToasterMessage("Added new question.");
+          settoasterServerity("success");
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -177,7 +191,53 @@ function AddQuestionDetails(props) {
       questionaireApiCall
         .AddDateQuestion(finalObject)
         .then((res) => {
-          console.log(res);
+          setshowLoadder(false);
+          setisAlertBoxOpened(false);
+          setStateSnackbar(true);
+          setToasterMessage("Added new question.");
+          settoasterServerity("success");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    } else if (props.questionTypeForm.questionType == "Time") {
+      const finalObject = {
+        ...addQuestion,
+        ...props.questionTypeForm,
+        ...timeFlag,
+      };
+      questionaireApiCall
+        .AddTimeQuestion(finalObject)
+        .then((res) => {
+          setshowLoadder(false);
+          setisAlertBoxOpened(false);
+          setStateSnackbar(true);
+          setToasterMessage("Added new question.");
+          settoasterServerity("success");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    } else if (props.questionTypeForm.questionType == "Numeric") {
+      const finalObject = {
+        ...addQuestion,
+        ...props.questionTypeForm,
+        ...numericFlag,
+      };
+      questionaireApiCall
+        .AddNumericQuestion(finalObject)
+        .then((res) => {
+          setshowLoadder(false);
+          setisAlertBoxOpened(false);
+          setStateSnackbar(true);
+          setToasterMessage("Added new question.");
+          settoasterServerity("success");
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -191,13 +251,11 @@ function AddQuestionDetails(props) {
   }
 
   function saveChoices() {
-    console.log(addQuestion.surveyResponseChoices);
     let array = addQuestion.surveyResponseChoices.split(",");
     setSurveyChoices(array);
   }
 
   function RenderFlagComponent(props) {
-    console.log(props.currentQuestionType);
     switch (props.currentQuestionType) {
       case "Boolean":
         return (
