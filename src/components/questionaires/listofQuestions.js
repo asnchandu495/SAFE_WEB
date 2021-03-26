@@ -42,10 +42,10 @@ function ListofQuestions(props) {
         });
     } else if (questionType == "FreeText") {
       // props.setSelectedfreetextDetails(questionType);
-      console.log(questionType);
       questionaireApiCall
         .GetFreeTextQuestion(quesId)
         .then((freetextQuestionResponse) => {
+          // console.log(freetextQuestionResponse);
           props.setSelectedQuestionDetails(freetextQuestionResponse);
         })
         .catch((err) => {

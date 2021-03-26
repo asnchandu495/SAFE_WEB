@@ -13,13 +13,46 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Grid from "@material-ui/core/Grid";
+import ComponentLoadderComponent from "../../common/loadder/componentloadder";
+import ToasterMessageComponent from "../../common/toaster";
+
+import ConfirmationDialog from "../../common/confirmdialogbox";
 
 function BooleanDetails(props) {
+  const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [
+    ConfirmationDialogContextText,
+    setConfirmationDialogContextText,
+  ] = useState("");
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
+  const [
+    ConfirmationModalActionType,
+    setConfirmationModalActionType,
+  ] = useState("");
   useEffect(() => {
     if (props.selectedQuestionDetails) {
       console.log(props.selectedQuestionDetails);
     }
   }, []);
+
+  function handleClickOpenConfirmationModal(value) {
+    console.log(value);
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteBooleanQuestion");
+    setConfirmationHeaderTittle("Delete Question");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${value.question} ?`
+    );
+  }
 
   return (
     <Card className="question-type-card">
@@ -43,12 +76,18 @@ function BooleanDetails(props) {
                 className={`view-icon`}
               ></Button>
             </Tooltip>
+
             <Tooltip title="Delete">
               <Button
                 variant="contained"
                 color="default"
                 startIcon={<DeleteIcon />}
                 className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModal(
+                    props.selectedQuestionDetails
+                  )
+                }
               ></Button>
             </Tooltip>
           </div>
@@ -111,6 +150,24 @@ function BooleanDetails(props) {
           Close
         </Button>
       </CardActions> */}
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        SelectedRowDetails={SelectedRowDetails}
+      />
+      <ToasterMessageComponent
+        stateSnackbar={stateSnackbar}
+        setStateSnackbar={setStateSnackbar}
+        toasterMessage={toasterMessage}
+        toasterServerity={toasterServerity}
+        toasterErrorMessageType={toasterErrorMessageType}
+      />
     </Card>
   );
 }

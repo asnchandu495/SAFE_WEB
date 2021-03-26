@@ -27,6 +27,7 @@ import teamService from "../../../services/teamService";
 
 import * as TeamAction from "../../../Redux/Action/teamAction";
 import * as QuestionaireAction from "../../../Redux/Action/questionaireAction";
+import questionaireService from "../../../services/questionaireService";
 
 const styles = (theme) => ({
   root: {
@@ -75,6 +76,7 @@ const DialogActions = withStyles((theme) => ({
 function CustomizedDialogs(props) {
   const faqApiCall = new FaqService();
   const teamApiCall = new teamService();
+  const questionaireApiCall = new questionaireService();
 
   const handleClickYes = () => {
     if (props.ConfirmationModalActionType == "RemoveProfilePhoto") {
@@ -314,6 +316,38 @@ function CustomizedDialogs(props) {
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted Location.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
+    } else if (props.ConfirmationModalActionType == "DeleteBooleanQuestion") {
+      var thisId = props.SelectedRowDetails.id;
+      console.log("gettheid");
+      console.log(props.SelectedRowDetails.id);
+      questionaireApiCall
+        .DeleteBooleanQuestion(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted Boolean Question.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
+    } else if (props.ConfirmationModalActionType == "DeleteFreeQuestion") {
+      var thisId = props.SelectedRowDetails.id;
+      console.log("gettheid");
+      console.log(props.SelectedRowDetails.id);
+      questionaireApiCall
+        .DeleteFreeTextQuestion(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted Freetext Question.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })

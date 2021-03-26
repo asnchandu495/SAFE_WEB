@@ -13,13 +13,57 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Grid from "@material-ui/core/Grid";
+import { useHistory } from "react-router-dom";
+
+import ComponentLoadderComponent from "../../common/loadder/componentloadder";
+import ToasterMessageComponent from "../../common/toaster";
+
+import { useParams } from "react-router-dom";
+import ConfirmationDialog from "../../common/confirmdialogbox";
 
 function FreetextDetails(props) {
+  const history = useHistory();
+  const { id } = useParams();
+  const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [
+    ConfirmationDialogContextText,
+    setConfirmationDialogContextText,
+  ] = useState("");
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
+  const [
+    ConfirmationModalActionType,
+    setConfirmationModalActionType,
+  ] = useState("");
   useEffect(() => {
     if (props.setSelectedfreetextDetails) {
       console.log(props.setSelectedfreetextDetails);
     }
   }, []);
+  function handleClickOpenConfirmationModal(value) {
+    console.log(value);
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteFreeQuestion");
+    setConfirmationHeaderTittle("Delete Freetext Question");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${value.question} ?`
+    );
+  }
+  function handleClickUpdateQuestions(value) {
+    console.log(value.id);
+    // var userId = value[0];
+
+    // history.push(`/questionaires/add-questions/${id}/${value.id}`);
+    history.push(`/questionaires/add-questions/${value.id}/1`);
+  }
 
   return (
     <Card className="question-type-card">
@@ -33,6 +77,9 @@ function FreetextDetails(props) {
                 color="default"
                 startIcon={<EditIcon />}
                 className={`edit-icon`}
+                onClick={() =>
+                  handleClickUpdateQuestions(props.selectedQuestionDetails)
+                }
               ></Button>
             </Tooltip>
             <Tooltip title="Conditional jump">
@@ -49,6 +96,11 @@ function FreetextDetails(props) {
                 color="default"
                 startIcon={<DeleteIcon />}
                 className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModal(
+                    props.selectedQuestionDetails
+                  )
+                }
               ></Button>
             </Tooltip>
           </div>
@@ -61,8 +113,8 @@ function FreetextDetails(props) {
               </Grid>
               <Grid item xs={9}>
                 <label>
-                  {props.setSelectedfreetextDetails
-                    ? props.setSelectedfreetextDetails.questionType
+                  {props.selectedQuestionDetails
+                    ? props.selectedQuestionDetails.questionType
                     : ""}
                 </label>
               </Grid>
@@ -73,8 +125,8 @@ function FreetextDetails(props) {
               </Grid>
               <Grid item xs={9}>
                 <label>
-                  {props.setSelectedfreetextDetails
-                    ? props.setSelectedfreetextDetails.question
+                  {props.selectedQuestionDetails
+                    ? props.selectedQuestionDetails.question
                     : ""}
                 </label>
               </Grid>
@@ -85,16 +137,10 @@ function FreetextDetails(props) {
               </Grid>
               <Grid item xs={9}>
                 <label>
-                  This is a test boolean question to be displayed in the list.
+                  {props.selectedQuestionDetails
+                    ? props.selectedQuestionDetails.description
+                    : ""}
                 </label>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Red flag answer :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>True</label>
               </Grid>
             </Grid>
           </Grid>
@@ -105,6 +151,24 @@ function FreetextDetails(props) {
           Close
         </Button>
       </CardActions> */}
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        SelectedRowDetails={SelectedRowDetails}
+      />
+      <ToasterMessageComponent
+        stateSnackbar={stateSnackbar}
+        setStateSnackbar={setStateSnackbar}
+        toasterMessage={toasterMessage}
+        toasterServerity={toasterServerity}
+        toasterErrorMessageType={toasterErrorMessageType}
+      />
     </Card>
   );
 }

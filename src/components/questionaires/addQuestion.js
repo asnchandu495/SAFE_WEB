@@ -13,6 +13,7 @@ function AddQuestion(props) {
   const questionaireApiCall = new questionaireService();
 
   const questionaireId = props.match.params.id;
+  const editquestionaireId = props.match.params.qid;
   const [questionTypes, setQuestionTypes] = useState([]);
 
   const [componentLoadder, setComponentLoadder] = useState(true);
@@ -23,18 +24,40 @@ function AddQuestion(props) {
   });
 
   useEffect(() => {
-    Promise.all([
-      questionaireApiCall.GetALLTypes(),
-      questionaireApiCall.getSurveyById(questionaireId),
-    ])
-      .then(([res, questionaireInfo]) => {
-        setQuestionTypes(res);
-        setComponentLoadder(false);
-        setViewQuestionaireDetails(questionaireInfo);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (editquestionaireId == 1) {
+      console.log("edit");
+      const editbooleanId = props.match.params.id;
+      questionaireApiCall
+        .GetFreeTextQuestion(editbooleanId)
+        .then((booleanres) => {
+          console.log("editbyid");
+          setQuestionTypeForm(booleanres);
+          // setQuestionTypes(booleanres);
+          setComponentLoadder(false);
+          // setGotoAddQuestion(booleanres);
+          console.log("ressss");
+          console.log(booleanres);
+        })
+        .catch((err) => {
+          console.log("error");
+        });
+    } else {
+      Promise.all([
+        questionaireApiCall.GetALLTypes(),
+        questionaireApiCall.getSurveyById(questionaireId),
+
+        // questionaireApiCall.GetFreeTextQuestion();
+        //questionaireApiCall.UpdateFreeTextQuestion()
+      ])
+        .then(([res, questionaireInfo]) => {
+          setQuestionTypes(res);
+          setComponentLoadder(false);
+          setViewQuestionaireDetails(questionaireInfo);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
 
   return (
@@ -57,7 +80,7 @@ function AddQuestion(props) {
           Questionaires
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="inactive">
-          {ViewQuestionaireDetails.name}
+          {ViewQuestionaireDetails ? ViewQuestionaireDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Add question
@@ -79,6 +102,7 @@ function AddQuestion(props) {
                             setGotoAddQuestion={setGotoAddQuestion}
                             setQuestionTypeForm={setQuestionTypeForm}
                             questionTypeForm={questionTypeForm}
+                            // questionTypeForm={ViewQuestionaireDetails.questionType}
                           ></QuestionType>
                         </Grid>
                       ) : (
