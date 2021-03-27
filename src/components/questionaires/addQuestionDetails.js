@@ -120,17 +120,7 @@ function AddQuestionDetails(props) {
   });
   const [surveyChoices, setSurveyChoices] = useState([]);
 
-<<<<<<< HEAD
   useEffect(() => {}, []);
-=======
-  useEffect(() => {
-    // console.log(props);
-    // console.log(props.questionTypeForm);
-    if (qid != 0) {
-      setAddQuestion(props.questionTypeForm);
-    }
-  }, []);
->>>>>>> origin/itr2/hajira
 
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
