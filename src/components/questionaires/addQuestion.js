@@ -12,8 +12,11 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 function AddQuestion(props) {
   const questionaireApiCall = new questionaireService();
 
-  const questionaireId = props.match.params.id;
-  const editquestionaireId = props.match.params.qid;
+  const query = new URLSearchParams(props.location.search);
+  const editQuestionType = query.get("type");
+
+  const surveyIdURL = props.match.params.id;
+  const questionIdURL = props.match.params.qid;
   const [questionTypes, setQuestionTypes] = useState([]);
 
   const [componentLoadder, setComponentLoadder] = useState(true);
@@ -22,43 +25,46 @@ function AddQuestion(props) {
   const [questionTypeForm, setQuestionTypeForm] = useState({
     questionType: "",
   });
+  const [selectedQuestionDetails, setSelectedQuestionDetails] = useState();
 
   useEffect(() => {
-    if (editquestionaireId == 1) {
-      console.log("edit");
-      const editbooleanId = props.match.params.id;
-      questionaireApiCall
-        .GetFreeTextQuestion(editbooleanId)
-        .then((booleanres) => {
-          console.log("editbyid");
-          setQuestionTypeForm(booleanres);
-          // setQuestionTypes(booleanres);
-          setComponentLoadder(false);
-          // setGotoAddQuestion(booleanres);
-          console.log("ressss");
-          console.log(booleanres);
-        })
-        .catch((err) => {
-          console.log("error");
-        });
-    } else {
-      Promise.all([
-        questionaireApiCall.GetALLTypes(),
-        questionaireApiCall.getSurveyById(questionaireId),
-
-        // questionaireApiCall.GetFreeTextQuestion();
-        //questionaireApiCall.UpdateFreeTextQuestion()
-      ])
-        .then(([res, questionaireInfo]) => {
+    Promise.all([questionaireApiCall.GetALLTypes()])
+      .then(([res]) => {
+        if (questionIdURL != 0) {
+          setQuestionTypes(res);
+          callQuestionDetailsAPI(questionIdURL, editQuestionType);
+        } else {
           setQuestionTypes(res);
           setComponentLoadder(false);
-          setViewQuestionaireDetails(questionaireInfo);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [surveyIdURL, questionIdURL]);
+
+  function callQuestionDetailsAPI(getQuesId, editQuestionType) {
+    switch (editQuestionType) {
+      case "Boolean":
+        break;
+      case "FreeText":
+        questionaireApiCall
+          .GetFreeTextQuestion(getQuesId)
+          .then((freetextQuestionResponse) => {
+            setSelectedQuestionDetails(freetextQuestionResponse);
+            setQuestionTypeForm({
+              questionType: freetextQuestionResponse.questionType,
+            });
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      default:
+        return <h4>Not found</h4>;
     }
-  }, []);
+  }
 
   return (
     <div className="innerpage-container">
@@ -102,7 +108,9 @@ function AddQuestion(props) {
                             setGotoAddQuestion={setGotoAddQuestion}
                             setQuestionTypeForm={setQuestionTypeForm}
                             questionTypeForm={questionTypeForm}
-                            // questionTypeForm={ViewQuestionaireDetails.questionType}
+                            surveyIdURL={surveyIdURL}
+                            questionIdURL={questionIdURL}
+                            selectedQuestionDetails={selectedQuestionDetails}
                           ></QuestionType>
                         </Grid>
                       ) : (
@@ -113,6 +121,9 @@ function AddQuestion(props) {
                               setGotoAddQuestion={setGotoAddQuestion}
                               setQuestionTypeForm={setQuestionTypeForm}
                               questionTypeForm={questionTypeForm}
+                              surveyIdURL={surveyIdURL}
+                              questionIdURL={questionIdURL}
+                              selectedQuestionDetails={selectedQuestionDetails}
                             ></AddQuestionDetails>
                           </Grid>
                         </Grid>

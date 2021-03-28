@@ -186,6 +186,19 @@ export default class questionaireService {
     });
   }
 
+  UpdateFreeTextQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/FreeTextQuestion/UpdateFreeTextQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

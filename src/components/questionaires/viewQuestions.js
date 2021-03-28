@@ -71,8 +71,6 @@ function ViewQuestions(props) {
   }
 
   function RenderFlagComponent(props) {
-    // console.log("text");
-    // console.log(props.currentQuestionsType);
     switch (props.currentQuestionsType) {
       case "Boolean":
         return (

@@ -42,13 +42,8 @@ function FreetextDetails(props) {
     ConfirmationModalActionType,
     setConfirmationModalActionType,
   ] = useState("");
-  useEffect(() => {
-    if (props.setSelectedfreetextDetails) {
-      console.log(props.setSelectedfreetextDetails);
-    }
-  }, []);
+  useEffect(() => {}, []);
   function handleClickOpenConfirmationModal(value) {
-    console.log(value);
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteFreeQuestion");
@@ -57,12 +52,11 @@ function FreetextDetails(props) {
       `Are you sure you want to delete ${value.question} ?`
     );
   }
-  function handleClickUpdateQuestions(value) {
-    console.log(value.id);
-    // var userId = value[0];
 
-    // history.push(`/questionaires/add-questions/${id}/${value.id}`);
-    history.push(`/questionaires/add-questions/${value.id}/1`);
+  function handleClickUpdateQuestions(getQueDetails) {
+    history.push(
+      `/questionaires/add-questions/${getQueDetails.surveyId}/${getQueDetails.id}?type=${getQueDetails.questionType}`
+    );
   }
 
   return (

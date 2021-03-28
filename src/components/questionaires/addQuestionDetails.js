@@ -24,10 +24,6 @@ import moment from "moment";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 
 function AddQuestionDetails(props) {
-  const { id } = useParams();
-  const { qid } = useParams();
-  console.log("id");
-  console.log(qid);
   const questionaireApiCall = new questionaireService();
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -39,7 +35,8 @@ function AddQuestionDetails(props) {
   );
   const [showLoadder, setshowLoadder] = useState(false);
   const [addQuestion, setAddQuestion] = useState({
-    surveyId: id,
+    id: "",
+    surveyId: props.surveyIdURL,
     question: "",
     description: "",
     isMandatory: true,
@@ -120,7 +117,16 @@ function AddQuestionDetails(props) {
   });
   const [surveyChoices, setSurveyChoices] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setAddQuestion({
+      id: props.selectedQuestionDetails.id,
+      surveyId: props.selectedQuestionDetails.surveyId,
+      question: props.selectedQuestionDetails.question,
+      description: props.selectedQuestionDetails.questionDescription,
+      isMandatory: props.selectedQuestionDetails.isMandatory,
+      surveyResponseChoices: "",
+    });
+  }, []);
 
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
@@ -140,48 +146,44 @@ function AddQuestionDetails(props) {
   function submitQuestionForm(e) {
     e.preventDefault();
     setshowLoadder(true);
-    if (qid == 1) {
-      const editdata = addQuestion;
-      // if (props.questionTypeForm.questionType == "FreeText") {
-      questionaireApiCall
-        .UpdateFreeTextQuestion(editdata)
-        .then((res) => {
-          setshowLoadder(false);
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Updated new question.");
-          settoasterServerity("success");
-          setTimeout(() => {
-            props.history.push(`/questionaires/allquestionaires`);
-            setshowLoadder(false);
-          }, 6000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
-    } else if (props.questionTypeForm.questionType == "FreeText") {
+    if (props.questionTypeForm.questionType == "FreeText") {
       const finalObject = {
         ...addQuestion,
         ...props.questionTypeForm,
       };
-      questionaireApiCall
-        .AddFreeTextQuestion(finalObject)
-        .then((res) => {
-          setshowLoadder(false);
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Added new question.");
-          settoasterServerity("success");
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+      if (finalObject.id != 0) {
+        questionaireApiCall
+          .UpdateFreeTextQuestion(finalObject)
+          .then((res) => {
+            setshowLoadder(false);
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Question details updated");
+            settoasterServerity("success");
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      } else {
+        questionaireApiCall
+          .AddFreeTextQuestion(finalObject)
+          .then((res) => {
+            setshowLoadder(false);
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Added new question.");
+            settoasterServerity("success");
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      }
     } else if (props.questionTypeForm.questionType == "Date") {
       const finalObject = {
         ...addQuestion,
@@ -301,9 +303,7 @@ function AddQuestionDetails(props) {
         };
         questionaireApiCall
           .AddDateQuestion(finalObject)
-          .then((res) => {
-            console.log(res);
-          })
+          .then((res) => {})
           .catch((err) => {
             setToasterMessage(err.data.errors);
             settoasterServerity("error");
