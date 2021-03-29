@@ -40,7 +40,7 @@ function AddQuestionDetails(props) {
     question: "",
     description: "",
     isMandatory: true,
-    surveyResponseChoices: "",
+    surveyResponseChoices: [],
   });
   const [booleanFlag, setBooleanFlag] = useState({
     negativeResponse: "",
@@ -118,14 +118,16 @@ function AddQuestionDetails(props) {
   const [surveyChoices, setSurveyChoices] = useState([]);
 
   useEffect(() => {
-    setAddQuestion({
-      id: props.selectedQuestionDetails.id,
-      surveyId: props.selectedQuestionDetails.surveyId,
-      question: props.selectedQuestionDetails.question,
-      description: props.selectedQuestionDetails.questionDescription,
-      isMandatory: props.selectedQuestionDetails.isMandatory,
-      surveyResponseChoices: "",
-    });
+    if (props.selectedQuestionDetails) {
+      setAddQuestion({
+        id: props.selectedQuestionDetails.id,
+        surveyId: props.selectedQuestionDetails.surveyId,
+        question: props.selectedQuestionDetails.question,
+        description: props.selectedQuestionDetails.questionDescription,
+        isMandatory: props.selectedQuestionDetails.isMandatory,
+        surveyResponseChoices: "",
+      });
+    }
   }, []);
 
   const handleChange = (e) => {
@@ -469,7 +471,7 @@ function AddQuestionDetails(props) {
                   {props.questionTypeForm.questionType == "SingleChoice" ||
                   props.questionTypeForm.questionType == "MultiChoice" ? (
                     <Grid item sm={12} container>
-                      <Grid item sm={3}>
+                      <Grid item sm={2}>
                         <label>Answers</label>
                       </Grid>
                       <Grid item sm={8}>
