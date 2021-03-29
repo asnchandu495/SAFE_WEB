@@ -933,6 +933,14 @@ label.required {
       height: calc(100vh - 240px);
       overflow-y: auto;
     }
+    .scrollable-card-choices {
+      min-height: calc(100vh - 350px);
+      overflow-y: initial !important;
+      height: auto;
+    }
+  }
+  .list-questions-container {
+    height: 100%;
   }
 }
 

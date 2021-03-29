@@ -199,6 +199,32 @@ export default class questionaireService {
     });
   }
 
+  AddSingleChoiceQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/SingleChoiceQuestion/AddSingleChoiceQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  AddMultiChoiceQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/MultipleChoiceQuestion/AddMultipleChoiceQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

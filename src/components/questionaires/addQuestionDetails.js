@@ -22,6 +22,7 @@ import ToasterMessageComponent from "../common/toaster";
 import Paper from "@material-ui/core/Paper";
 import moment from "moment";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import AddChoiceQuestionDetails from "./addChoiceQuestionDetails";
 
 function AddQuestionDetails(props) {
   const questionaireApiCall = new questionaireService();
@@ -40,7 +41,6 @@ function AddQuestionDetails(props) {
     question: "",
     description: "",
     isMandatory: true,
-    surveyResponseChoices: [],
   });
   const [booleanFlag, setBooleanFlag] = useState({
     negativeResponse: "",
@@ -108,14 +108,6 @@ function AddQuestionDetails(props) {
     isPositiveConfirmity: true,
     isPositiveConfirmityRedFlag: false,
   });
-  const [singleChoiceFlag, setSingleChoiceFlag] = useState({
-    questionId: "",
-    isPositiveConfirmity: true,
-    isPositiveConfirmityRedFlag: true,
-    positiveConformitySingleChoice: [],
-    redFlagForSingleChoice: [],
-  });
-  const [surveyChoices, setSurveyChoices] = useState([]);
 
   useEffect(() => {
     if (props.selectedQuestionDetails) {
@@ -318,11 +310,6 @@ function AddQuestionDetails(props) {
     }
   }
 
-  function saveChoices() {
-    let array = addQuestion.surveyResponseChoices.split(",");
-    setSurveyChoices(array);
-  }
-
   function RenderFlagComponent(props) {
     switch (props.currentQuestionType) {
       case "Boolean":
@@ -375,32 +362,6 @@ function AddQuestionDetails(props) {
             ></QuestionTypeNumber>
           </Grid>
         );
-      case "SingleChoice":
-        return (
-          <Grid item xs={12} sm={12} className="question-flags">
-            <QuestionTypeSingleSelect
-              questionTypeForm={props.questionTypeForm}
-              setAddQuestion={setAddQuestion}
-              addQuestion={addQuestion}
-              setSingleChoiceFlag={setSingleChoiceFlag}
-              singleChoiceFlag={singleChoiceFlag}
-              surveyChoices={surveyChoices}
-            ></QuestionTypeSingleSelect>
-          </Grid>
-        );
-      case "MultiChoice":
-        return (
-          <Grid item xs={12} sm={12} className="question-flags">
-            <QuestionTypeMultiSelect
-              questionTypeForm={props.questionTypeForm}
-              setAddQuestion={setAddQuestion}
-              addQuestion={addQuestion}
-              setSingleChoiceFlag={setSingleChoiceFlag}
-              singleChoiceFlag={singleChoiceFlag}
-              surveyChoices={surveyChoices}
-            ></QuestionTypeMultiSelect>
-          </Grid>
-        );
       default:
         return <h4>Not found</h4>;
     }
@@ -408,131 +369,102 @@ function AddQuestionDetails(props) {
 
   return (
     <div className="innerpage-container">
+      {props.questionTypeForm.questionType}
       <Paper className={`main-paper`}>
-        <ValidatorForm onSubmit={submitQuestionForm}>
-          <Card className="question-card">
-            <CardContent className="scrollable-card">
-              <Typography gutterBottom variant="h6" component="h6">
-                Question details
-              </Typography>
-              <Grid item xs={12} sm={12}>
-                <Grid spacing={3} container className="question-details">
-                  <Grid item container sm={12}>
-                    <Grid item sm={2}>
-                      <label className="required">Question</label>
+        {props.questionTypeForm.questionType == "SingleChoice" ||
+        props.questionTypeForm.questionType == "MultiChoice" ? (
+          <AddChoiceQuestionDetails
+            questionTypeForm={props.questionTypeForm}
+            surveyIdURL={props.surveyIdURL}
+          ></AddChoiceQuestionDetails>
+        ) : (
+          <ValidatorForm onSubmit={submitQuestionForm}>
+            <Card className="question-card">
+              <CardContent className="scrollable-card">
+                <Typography gutterBottom variant="h6" component="h6">
+                  Question details
+                </Typography>
+                <Grid item xs={12} sm={12}>
+                  <Grid spacing={3} container className="question-details">
+                    <Grid item container sm={12}>
+                      <Grid item sm={2}>
+                        <label className="required">Question</label>
+                      </Grid>
+                      <Grid item sm={6}>
+                        <TextValidator
+                          variant="outlined"
+                          validators={[
+                            "required",
+                            "matchRegexp:^[a-zA-Z ]*$",
+                            "matchRegexp:^.{0,50}$",
+                          ]}
+                          errorMessages={[
+                            "Please enter question",
+                            "Only alphabets are allowed",
+                            "Maximum 50 characters",
+                          ]}
+                          fullWidth
+                          id="question"
+                          placeholder="Enter Question"
+                          name="question"
+                          value={addQuestion.question}
+                          onChange={handleChange}
+                          autoFocus
+                          className="global-input"
+                          InputLabelProps={{ shrink: false }}
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item sm={6}>
-                      <TextValidator
-                        variant="outlined"
-                        validators={[
-                          "required",
-                          "matchRegexp:^[a-zA-Z ]*$",
-                          "matchRegexp:^.{0,50}$",
-                        ]}
-                        errorMessages={[
-                          "Please enter question",
-                          "Only alphabets are allowed",
-                          "Maximum 50 characters",
-                        ]}
-                        fullWidth
-                        id="question"
-                        placeholder="Enter Question"
-                        name="question"
-                        value={addQuestion.question}
-                        onChange={handleChange}
-                        autoFocus
-                        className="global-input"
-                        InputLabelProps={{ shrink: false }}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item sm={12} container>
-                    <Grid item sm={2}>
-                      <label>Description</label>
-                    </Grid>
-                    <Grid item sm={6}>
-                      <TextValidator
-                        variant="outlined"
-                        fullWidth
-                        id="description"
-                        placeholder="Enter Description"
-                        validators={["matchRegexp:^.{0,150}$"]}
-                        errorMessages={["Maximum 150 characters"]}
-                        name="description"
-                        multiline
-                        rows={2}
-                        value={addQuestion.description}
-                        onChange={handleChange}
-                        className="global-input global-input-multiline"
-                        InputLabelProps={{ shrink: false }}
-                      />
-                    </Grid>
-                  </Grid>
-                  {props.questionTypeForm.questionType == "SingleChoice" ||
-                  props.questionTypeForm.questionType == "MultiChoice" ? (
                     <Grid item sm={12} container>
                       <Grid item sm={2}>
-                        <label>Answers</label>
+                        <label>Description</label>
                       </Grid>
-                      <Grid item sm={8}>
-                        <Grid item sm={12} container>
-                          <Grid item sm={10}>
-                            <TextValidator
-                              variant="outlined"
-                              fullWidth
-                              id="surveyResponseChoices"
-                              placeholder="Your answers. Comma separated"
-                              name="surveyResponseChoices"
-                              value={addQuestion.surveyResponseChoices}
-                              onChange={handleChange}
-                              className="global-input"
-                              InputLabelProps={{ shrink: false }}
-                            />
-                          </Grid>
-                          <Grid item sm={2}>
-                            <Tooltip title="Save">
-                              <Button
-                                variant="contained"
-                                color="default"
-                                startIcon={<CheckIcon />}
-                                className={`square-icon-save`}
-                                onClick={saveChoices}
-                              ></Button>
-                            </Tooltip>
-                          </Grid>
-                        </Grid>
+                      <Grid item sm={6}>
+                        <TextValidator
+                          variant="outlined"
+                          fullWidth
+                          id="description"
+                          placeholder="Enter Description"
+                          validators={["matchRegexp:^.{0,150}$"]}
+                          errorMessages={["Maximum 150 characters"]}
+                          name="description"
+                          multiline
+                          rows={2}
+                          value={addQuestion.description}
+                          onChange={handleChange}
+                          className="global-input global-input-multiline"
+                          InputLabelProps={{ shrink: false }}
+                        />
                       </Grid>
                     </Grid>
-                  ) : (
-                    ""
-                  )}
+                  </Grid>
+                  <RenderFlagComponent
+                    currentQuestionType={props.questionTypeForm.questionType}
+                  ></RenderFlagComponent>
                 </Grid>
-                <RenderFlagComponent
-                  currentQuestionType={props.questionTypeForm.questionType}
-                ></RenderFlagComponent>
-              </Grid>
-            </CardContent>
-            <CardActions className="action-container">
-              <Button
-                size="small"
-                type="button"
-                onClick={navigateToQuestionType}
-                className="global-cancel-btn"
-                variant="contained"
-              >
-                Back
-              </Button>
-              <Button
-                variant="contained"
-                type="submit"
-                className="global-submit-btn"
-                disabled={showLoadder}
-              >
-                {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-              </Button>
-            </CardActions>
-          </Card>
-        </ValidatorForm>
+              </CardContent>
+              <CardActions className="action-container">
+                <Button
+                  size="small"
+                  type="button"
+                  onClick={navigateToQuestionType}
+                  className="global-cancel-btn"
+                  variant="contained"
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  className="global-submit-btn"
+                  disabled={showLoadder}
+                >
+                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                </Button>
+              </CardActions>
+            </Card>
+          </ValidatorForm>
+        )}
       </Paper>
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}

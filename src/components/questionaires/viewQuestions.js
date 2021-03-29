@@ -127,7 +127,7 @@ function ViewQuestions(props) {
       </Breadcrumbs>
       <Paper className="main-paper main-paper-add-question">
         <Grid container spacing={0}>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={3} className="list-questions-container">
             <Paper className="list-questions">
               <ListofQuestions
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
