@@ -47,7 +47,7 @@ function AddQuestion(props) {
     switch (editQuestionType) {
       case "Boolean":
         questionaireApiCall
-          .GetBooleanQuestion(getQuesId)
+          .GetBooleanQuestionById(getQuesId)
           .then((booleanQuestionResponse) => {
             setSelectedQuestionDetails(booleanQuestionResponse);
             setQuestionTypeForm({
@@ -75,7 +75,7 @@ function AddQuestion(props) {
         break;
       case "Date":
         questionaireApiCall
-          .GetDateQuestion(getQuesId)
+          .GetDateTimeById(getQuesId)
           .then((freetextQuestionResponse) => {
             setSelectedQuestionDetails(freetextQuestionResponse);
             setQuestionTypeForm({
@@ -89,7 +89,7 @@ function AddQuestion(props) {
         break;
       case "Time":
         questionaireApiCall
-          .GetTimeQuestion(getQuesId)
+          .GetTimeQuestionById(getQuesId)
           .then((freetextQuestionResponse) => {
             setSelectedQuestionDetails(freetextQuestionResponse);
             setQuestionTypeForm({
@@ -103,7 +103,7 @@ function AddQuestion(props) {
         break;
       case "Numeric":
         questionaireApiCall
-          .GetNumericQuestion(getQuesId)
+          .GetNumeicQuestionById(getQuesId)
           .then((freetextQuestionResponse) => {
             setSelectedQuestionDetails(freetextQuestionResponse);
             setQuestionTypeForm({

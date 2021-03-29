@@ -124,6 +124,16 @@ function AddQuestionDetails(props) {
           isPositiveConformityRedFlag:
             props.selectedQuestionDetails.isPositiveConformityRedFlag,
         });
+      } else if (props.selectedQuestionDetails.questionType == "Date") {
+        setDatetimeFlag({
+          positiveConformityForDate:
+            props.selectedQuestionDetails.positiveConformityForDate,
+          redFlagForDate: props.selectedQuestionDetails.redFlagForDate,
+          isPositiveConformity:
+            props.selectedQuestionDetails.isPositiveConformity,
+          isPositiveConformityRedFlag:
+            props.selectedQuestionDetails.isPositiveConformityRedFlag,
+        });
       } else {
         console.log("not found");
       }
@@ -192,21 +202,39 @@ function AddQuestionDetails(props) {
         ...props.questionTypeForm,
         ...datetimeFlag,
       };
-      questionaireApiCall
-        .AddDateQuestion(finalObject)
-        .then((res) => {
-          setshowLoadder(false);
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Added new question.");
-          settoasterServerity("success");
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+      if (finalObject.id != 0) {
+        questionaireApiCall
+          .UpdateDateQuestion(finalObject)
+          .then((res) => {
+            setshowLoadder(false);
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Question details updated.");
+            settoasterServerity("success");
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      } else {
+        questionaireApiCall
+          .AddDateQuestion(finalObject)
+          .then((res) => {
+            setshowLoadder(false);
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Added new question.");
+            settoasterServerity("success");
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      }
     } else if (props.questionTypeForm.questionType == "Time") {
       const finalObject = {
         ...addQuestion,
