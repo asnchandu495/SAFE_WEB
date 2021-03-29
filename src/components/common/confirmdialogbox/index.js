@@ -355,6 +355,90 @@ function CustomizedDialogs(props) {
           console.log(error);
           toasterErrorMessage(error);
         });
+    } else if (props.ConfirmationModalActionType == "DeleteTimeQuestion") {
+      var thisId = props.SelectedRowDetails.id;
+      console.log("gettheid");
+      console.log(props.SelectedRowDetails.id);
+      questionaireApiCall
+        .DeleteTimeQuestion(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted Time Question.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
+    } else if (props.ConfirmationModalActionType == "DeleteDateQuestion") {
+      var thisId = props.SelectedRowDetails.id;
+      console.log("gettheid");
+      console.log(props.SelectedRowDetails.id);
+      questionaireApiCall
+        .DeleteDateQuestion(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted date Question.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
+    } else if (props.ConfirmationModalActionType == "DeleteNumericQuestion") {
+      var thisId = props.SelectedRowDetails.id;
+      console.log("gettheid");
+      console.log(props.SelectedRowDetails.id);
+      questionaireApiCall
+        .DeleteNumericQuestion(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted numeric Question.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
+    } else if (
+      props.ConfirmationModalActionType == "DeleteSinglechoiceQuestion"
+    ) {
+      var thisId = props.SelectedRowDetails.id;
+      console.log("gettheid");
+      console.log(props.SelectedRowDetails.id);
+      questionaireApiCall
+        .DeleteNumericQuestion(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted singlechoice Question.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
+    } else if (
+      props.ConfirmationModalActionType == "DeleteMultichoiceQuestion"
+    ) {
+      var thisId = props.SelectedRowDetails.id;
+      console.log("gettheid");
+      console.log(props.SelectedRowDetails.id);
+      questionaireApiCall
+        .DeleteNumericQuestion(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted multochoice Question.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
     }
   };
 

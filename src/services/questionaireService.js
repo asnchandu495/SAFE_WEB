@@ -63,6 +63,37 @@ export default class questionaireService {
     });
   }
 
+  DeleteTimeQuestion(data) {
+    return this.fetch(
+      `${this.questionaireURL}/QuestionTime/DeleteTimeQuestion/${data}`,
+      {
+        method: "DELETE",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+  DeleteDateQuestion(data) {
+    return this.fetch(
+      `${this.questionaireURL}/QuestionDate/DeleteDateQuestion/${data}`,
+      {
+        method: "DELETE",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+  DeleteNumericQuestion(data) {
+    return this.fetch(
+      `${this.questionaireURL}/NumericQuestion/DeleteNumericQuestion/${data}`,
+      {
+        method: "DELETE",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   updateQuestionaire(data) {
     var finalData = JSON.stringify(data);
     return this.fetch(`${this.questionaireURL}/Survey/UpdateSurvey`, {
@@ -95,6 +126,59 @@ export default class questionaireService {
   GetFreeTextQuestion(id) {
     return this.fetch(
       `${this.questionaireURL}/FreeTextQuestion/GetFreeTextQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetDateTimeById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/QuestionDate/GetDateTimeById/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetTimeQuestionById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/QuestionTime/GetTimeQuestionById/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetNumeicQuestionById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/NumericQuestion/GetNumeicQuestionById/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+  GetSingleChoiceQuestion(id) {
+    return this.fetch(
+      `${this.questionaireURL}/SingleChoiceQuestion/GetSingleChoiceQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+  GetMultipleChoicQuestionById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/MultipleChoiceQuestion/GetMultipleChoicQuestionById/${id}`,
       {
         method: "GET",
       }

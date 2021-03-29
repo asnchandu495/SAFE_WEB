@@ -15,6 +15,11 @@ import QuestionType from "./selectQuestionType";
 import QuestionDetails from "./questionDetails";
 import FreetextDetails from "./selectedQuestionDetails/freetextDetails";
 import BooleanDetails from "./selectedQuestionDetails/booleanDetails";
+import DateDetails from "./selectedQuestionDetails/dateDetails";
+import TimeDetails from "./selectedQuestionDetails/timeDetails";
+import NumericDetails from "./selectedQuestionDetails/numericDetails";
+import SingleChoiceDetails from "./selectedQuestionDetails/singlechoiceDetails";
+import MultiChoiceDetails from "./selectedQuestionDetails/multichoiceDetails";
 import questionaireService from "../../services/questionaireService";
 
 function ViewQuestions(props) {
@@ -90,6 +95,61 @@ function ViewQuestions(props) {
               <FreetextDetails
                 selectedQuestionDetails={selectedQuestionDetails}
               ></FreetextDetails>{" "}
+            </Grid>
+          </Grid>
+        );
+
+      case "Date":
+        return (
+          <Grid container spacing={0}>
+            <Grid item xs={11} sm={11} className="center-align">
+              <DateDetails
+                selectedQuestionDetails={selectedQuestionDetails}
+              ></DateDetails>{" "}
+            </Grid>
+          </Grid>
+        );
+
+      case "Time":
+        return (
+          <Grid container spacing={0}>
+            <Grid item xs={11} sm={11} className="center-align">
+              <TimeDetails
+                selectedQuestionDetails={selectedQuestionDetails}
+              ></TimeDetails>{" "}
+            </Grid>
+          </Grid>
+        );
+
+      case "Numeric":
+        return (
+          <Grid container spacing={0}>
+            <Grid item xs={11} sm={11} className="center-align">
+              <NumericDetails
+                selectedQuestionDetails={selectedQuestionDetails}
+              ></NumericDetails>{" "}
+            </Grid>
+          </Grid>
+        );
+
+      case "SingleChoice":
+        return (
+          <Grid container spacing={0}>
+            <Grid item xs={11} sm={11} className="center-align">
+              <SingleChoiceDetails
+                selectedQuestionDetails={selectedQuestionDetails}
+              ></SingleChoiceDetails>{" "}
+            </Grid>
+          </Grid>
+        );
+
+      case "MultiChoice":
+        return (
+          <Grid container spacing={0}>
+            <Grid item xs={11} sm={11} className="center-align">
+              <MultiChoiceDetails
+                selectedQuestionDetails={selectedQuestionDetails}
+              ></MultiChoiceDetails>{" "}
             </Grid>
           </Grid>
         );
