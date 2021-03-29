@@ -225,6 +225,113 @@ export default class questionaireService {
     });
   }
 
+  GetSingleChoiceQuestion(id) {
+    return this.fetch(
+      `${this.questionaireURL}/SingleChoiceQuestion/GetSingleChoiceQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetBooleanQuestion(id) {
+    return this.fetch(
+      `${this.questionaireURL}/BooleanQuestion/GetBooleanQuestionById/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  UpdateBoolenQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/BooleanQuestion/UpdateBooleanQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetDateQuestion(id) {
+    return this.fetch(
+      `${this.questionaireURL}/QuestionDate/GetDateTimeById/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  UpdateDateQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/QuestionDate/UpdateDateQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetTimeQuestion(id) {
+    return this.fetch(
+      `${this.questionaireURL}/QuestionTime/GetTimeQuestionById/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  UpdateTimeQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/QuestionTime/UpdateTimeQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetNumericQuestion(id) {
+    return this.fetch(
+      `${this.questionaireURL}/NumericQuestion/GetNumeicQuestionById/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  UpdateNumericQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/NumericQuestion/UpdateNumericQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

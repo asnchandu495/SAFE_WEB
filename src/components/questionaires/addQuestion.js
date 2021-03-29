@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import { Link as LinkTo } from "react-router-dom";
+import { Link as LinkTo, withRouter } from "react-router-dom";
 import ListofQuestions from "./listofQuestions";
 import QuestionType from "./selectQuestionType";
 import AddQuestionDetails from "./addQuestionDetails";
@@ -46,10 +46,64 @@ function AddQuestion(props) {
   function callQuestionDetailsAPI(getQuesId, editQuestionType) {
     switch (editQuestionType) {
       case "Boolean":
+        questionaireApiCall
+          .GetBooleanQuestion(getQuesId)
+          .then((booleanQuestionResponse) => {
+            setSelectedQuestionDetails(booleanQuestionResponse);
+            setQuestionTypeForm({
+              questionType: booleanQuestionResponse.questionType,
+            });
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
         break;
       case "FreeText":
         questionaireApiCall
           .GetFreeTextQuestion(getQuesId)
+          .then((freetextQuestionResponse) => {
+            setSelectedQuestionDetails(freetextQuestionResponse);
+            setQuestionTypeForm({
+              questionType: freetextQuestionResponse.questionType,
+            });
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "Date":
+        questionaireApiCall
+          .GetDateQuestion(getQuesId)
+          .then((freetextQuestionResponse) => {
+            setSelectedQuestionDetails(freetextQuestionResponse);
+            setQuestionTypeForm({
+              questionType: freetextQuestionResponse.questionType,
+            });
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "Time":
+        questionaireApiCall
+          .GetTimeQuestion(getQuesId)
+          .then((freetextQuestionResponse) => {
+            setSelectedQuestionDetails(freetextQuestionResponse);
+            setQuestionTypeForm({
+              questionType: freetextQuestionResponse.questionType,
+            });
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "Numeric":
+        questionaireApiCall
+          .GetNumericQuestion(getQuesId)
           .then((freetextQuestionResponse) => {
             setSelectedQuestionDetails(freetextQuestionResponse);
             setQuestionTypeForm({
@@ -142,4 +196,4 @@ function AddQuestion(props) {
   );
 }
 
-export default AddQuestion;
+export default withRouter(AddQuestion);

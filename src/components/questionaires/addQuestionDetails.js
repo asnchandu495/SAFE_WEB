@@ -6,17 +6,13 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
-import CheckIcon from "@material-ui/icons/Check";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import QuestionTypeBollean from "./flagConcepts/booleanFlag";
 import QuestionTypeDate from "./flagConcepts/dateFlag";
-import QuestionTypeMultiSelect from "./flagConcepts/multiSelectFlag";
 import QuestionTypeNumber from "./flagConcepts/numberFlag";
-import QuestionTypeSingleSelect from "./flagConcepts/singleSelectFlag";
 import QuestionTypeTime from "./flagConcepts/timeFlag";
 import PropTypes from "prop-types";
-import { useParams } from "react-router-dom";
+import { Link as LinkTo, withRouter } from "react-router-dom";
 import questionaireService from "../../services/questionaireService";
 import ToasterMessageComponent from "../common/toaster";
 import Paper from "@material-ui/core/Paper";
@@ -115,10 +111,22 @@ function AddQuestionDetails(props) {
         id: props.selectedQuestionDetails.id,
         surveyId: props.selectedQuestionDetails.surveyId,
         question: props.selectedQuestionDetails.question,
-        description: props.selectedQuestionDetails.questionDescription,
+        description: props.selectedQuestionDetails.description,
         isMandatory: props.selectedQuestionDetails.isMandatory,
-        surveyResponseChoices: "",
       });
+
+      if (props.selectedQuestionDetails.questionType == "Boolean") {
+        setBooleanFlag({
+          positiveResponse: props.selectedQuestionDetails.positiveResponse,
+          negativeResponse: props.selectedQuestionDetails.negativeResponse,
+          isPositiveConformity:
+            props.selectedQuestionDetails.isPositiveConformity,
+          isPositiveConformityRedFlag:
+            props.selectedQuestionDetails.isPositiveConformityRedFlag,
+        });
+      } else {
+        console.log("not found");
+      }
     }
   }, []);
 
@@ -248,24 +256,45 @@ function AddQuestionDetails(props) {
           ...props.questionTypeForm,
           ...booleanFlag,
         };
-        questionaireApiCall
-          .AddBoolenQuestion(finalObject)
-          .then((res) => {
-            setisAlertBoxOpened(false);
-            setStateSnackbar(true);
-            setToasterMessage("Added new question.");
-            settoasterServerity("success");
-            setTimeout(() => {
-              props.history.push(`/questionaires/allquestionaires`);
+        if (finalObject.id != 0) {
+          questionaireApiCall
+            .UpdateBoolenQuestion(finalObject)
+            .then((res) => {
+              setisAlertBoxOpened(false);
+              setStateSnackbar(true);
+              setToasterMessage("Question details updated.");
+              settoasterServerity("success");
+              setTimeout(() => {
+                props.history.push(`/questionaires/allquestionaires`);
+                setshowLoadder(false);
+              }, 6000);
+            })
+            .catch((err) => {
+              setToasterMessage(err.data.errors);
+              settoasterServerity("error");
+              setStateSnackbar(true);
               setshowLoadder(false);
-            }, 6000);
-          })
-          .catch((err) => {
-            setToasterMessage(err.data.errors);
-            settoasterServerity("error");
-            setStateSnackbar(true);
-            setshowLoadder(false);
-          });
+            });
+        } else {
+          questionaireApiCall
+            .AddBoolenQuestion(finalObject)
+            .then((res) => {
+              setisAlertBoxOpened(false);
+              setStateSnackbar(true);
+              setToasterMessage("Added new question.");
+              settoasterServerity("success");
+              setTimeout(() => {
+                props.history.push(`/questionaires/allquestionaires`);
+                setshowLoadder(false);
+              }, 6000);
+            })
+            .catch((err) => {
+              setToasterMessage(err.data.errors);
+              settoasterServerity("error");
+              setStateSnackbar(true);
+              setshowLoadder(false);
+            });
+        }
       } else if (props.questionTypeForm.questionType == "FreeText") {
         const finalObject = {
           ...addQuestion,
@@ -376,6 +405,7 @@ function AddQuestionDetails(props) {
           <AddChoiceQuestionDetails
             questionTypeForm={props.questionTypeForm}
             surveyIdURL={props.surveyIdURL}
+            questionIdURL={props.questionIdURL}
           ></AddChoiceQuestionDetails>
         ) : (
           <ValidatorForm onSubmit={submitQuestionForm}>
@@ -477,4 +507,4 @@ function AddQuestionDetails(props) {
   );
 }
 
-export default AddQuestionDetails;
+export default withRouter(AddQuestionDetails);

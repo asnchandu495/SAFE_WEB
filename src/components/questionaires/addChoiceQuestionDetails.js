@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
+import { Link as LinkTo, withRouter } from "react-router-dom";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import QuestionTypeMultiSelect from "./flagConcepts/multiSelectFlag";
 import QuestionTypeSingleSelect from "./flagConcepts/singleSelectFlag";
@@ -34,7 +35,8 @@ function AddChoiceQuestionDetails(props) {
     isMandatory: true,
     surveyResponseChoices: [
       {
-        option: "",
+        id: "",
+        name: "",
       },
     ],
   });
@@ -46,7 +48,25 @@ function AddChoiceQuestionDetails(props) {
     redFlagForSingleChoice: [],
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (props.questionIdURL != 0) {
+      questionaireApiCall
+        .GetSingleChoiceQuestion(props.questionIdURL)
+        .then((res) => {
+          console.log(res);
+          setAddQuestionWithChoices((addQuestionWithChoices) => ({
+            ...addQuestionWithChoices,
+            surveyResponseChoices: res.surveyResponseChoices,
+          }));
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
+  }, [props.questionIdURL]);
 
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
@@ -59,7 +79,9 @@ function AddChoiceQuestionDetails(props) {
 
   const navigateToQuestionType = () => {
     setTimeout(() => {
-      props.setGotoAddQuestion(false);
+      //   props.setGotoAddQuestion(false);
+      console.log(props);
+      props.history.push(`/questionaires/allquestionaires`);
     }, 1000);
   };
 
@@ -71,6 +93,8 @@ function AddChoiceQuestionDetails(props) {
         ...addQuestionWithChoices,
         ...props.questionTypeForm,
       };
+      console.log(finalObject);
+      return false;
       questionaireApiCall
         .AddSingleChoiceQuestion(finalObject)
         .then((res) => {
@@ -79,6 +103,15 @@ function AddChoiceQuestionDetails(props) {
           setStateSnackbar(true);
           setToasterMessage("Added new question.");
           settoasterServerity("success");
+          setTimeout(function () {
+            setAddQuestionWithChoices((addQuestionWithChoices) => ({
+              ...addQuestionWithChoices,
+              id: res.id,
+            }));
+            props.history.push(
+              `/questionaires/add-questions/${props.surveyIdURL}/${res.id}`
+            );
+          }, 7000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -167,7 +200,8 @@ function AddChoiceQuestionDetails(props) {
     list.surveyResponseChoices = [
       ...thisChoices,
       {
-        option: "",
+        id: "",
+        name: "",
       },
     ];
     setAddQuestionWithChoices(list);
@@ -258,10 +292,10 @@ function AddChoiceQuestionDetails(props) {
                                     validators={["required"]}
                                     errorMessages={["Please enter answer"]}
                                     fullWidth
-                                    id={`option${i}`}
+                                    id={`name${i}`}
                                     placeholder="Enter answer"
-                                    name="option"
-                                    value={x.option}
+                                    name="name"
+                                    value={x.name}
                                     onChange={(e) =>
                                       handleInputChangeChoices(e, i)
                                     }
@@ -328,7 +362,7 @@ function AddChoiceQuestionDetails(props) {
           </CardActions>
         </Card>
       </ValidatorForm>
-      <ValidatorForm onSubmit={submitQuestionForm}>
+      {/* <ValidatorForm onSubmit={submitQuestionForm}>
         <Card className="question-card">
           <CardContent className="scrollable-card scrollable-card-choices">
             <Typography gutterBottom variant="h6" component="h6">
@@ -480,7 +514,7 @@ function AddChoiceQuestionDetails(props) {
             </Button>
           </CardActions>
         </Card>
-      </ValidatorForm>
+      </ValidatorForm> */}
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
@@ -492,4 +526,4 @@ function AddChoiceQuestionDetails(props) {
   );
 }
 
-export default AddChoiceQuestionDetails;
+export default withRouter(AddChoiceQuestionDetails);
