@@ -24,10 +24,10 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
-} from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import 'date-fns';
-import Checkbox from '@material-ui/core/Checkbox';
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import "date-fns";
+import Checkbox from "@material-ui/core/Checkbox";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 import OutlinedInput from "@material-ui/core/OutlinedInput";
@@ -65,54 +65,72 @@ function GlobalSetting(props) {
   const [componentLoadder, setcomponentLoadder] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date('2014-08-18T21:11:54'));
+  const [selectedDate, setSelectedDate] = useState(
+    new Date("2014-08-18T21:11:54")
+  );
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
-  const fileFormat=[{id:"1",format:"xls"},
-                    {id:"2",format:"csv"},
-                  ];
-  const selfReminder=[{
-              id:"1",
-              selfvalue:"Minute"
-            },
-            {
-              id:"2",
-              selfvalue:"Hours"
-            },
+  const fileFormat = [
+    { id: "xls", format: "xls" },
+    { id: "csv", format: "csv" },
+  ];
 
-];   
-const uomTemp=[{
-              id:"1",
-              uomTempvalue:"Farenheit"
-              },
-            {
-                id:"2",
-                uomTempvalue:"Celsius"
-            },
-            ];
-const datesFormat=[{
-              id:"1",
-              "formatvalue":"dd/mm/yyyy"
-            },
-            {
-              id:"2",
-              "formatvalue":"mm/dd/yyyy"
-            },
-
-];      
-const timeFormat=[{
-              id:"1",
-              value:"12 Hours"
-                  },
-                  {
-              id:"2",
-              value:"24 Hours"
-                  },
-]      
-const [checkedwfhApproval, setCheckedwfhApproval] =useState(true);
-const [checkselfieApproval, setcheckselfieApproval]=useState(true);
+  const selfReminder = [
+    {
+      id: "Minute",
+      selfvalue: "Minute",
+    },
+    {
+      id: "Hours",
+      selfvalue: "Hours",
+    },
+  ];
+  const uomTemp = [
+    {
+      id: "Farenheit",
+      uomTempvalue: "Farenheit",
+    },
+    {
+      id: "Celsius",
+      uomTempvalue: "Celsius",
+    },
+  ];
+  const datesFormat = [
+    {
+      id: "MM/DD/YY",
+      formatvalue: "MM/DD/YY",
+    },
+    {
+      id: "DD/MM/YY",
+      formatvalue: "DD/MM/YY",
+    },
+    {
+      id: "YY/MM/DD",
+      formatvalue: "YY/MM/DD",
+    },
+  ];
+  const timeFormat = [
+    {
+      id: "HH:mm",
+      value: "HH:mm",
+    },
+    {
+      id: "hh:mm tt",
+      value: "hh:mm tt",
+    },
+    {
+      id: "HH:mm:ss",
+      value: "HH:mm:ss",
+    },
+    {
+      id: "hh:mm:ss tt",
+      value: "hh:mm:ss tt",
+    },
+  ];
+  const [checkedwfhApproval, setCheckedwfhApproval] = useState(true);
+  const [checkselfieApproval, setcheckselfieApproval] = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -353,8 +371,7 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 container
                 spacing={1}
               >
-
-            <Grid item xs={3}>
+                <Grid item xs={3}>
                   <label className="required">
                     Social distancing tolerance
                   </label>
@@ -464,7 +481,7 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                     InputLabelProps={{ shrink: false }}
                   />
                 </Grid>
-                 </Grid>
+              </Grid>
 
               <Grid
                 item
@@ -476,10 +493,9 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 <Grid item xs={3}>
                   <label className="required">Date Format</label>
                 </Grid>
-                
+
                 <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
-                   
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
@@ -517,9 +533,8 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                   )}
                 </Grid>
               </Grid>
-  
 
-          <Grid
+              <Grid
                 item
                 xs={12}
                 className={[classes.gridDispaly].join(" ")}
@@ -529,10 +544,9 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 <Grid item xs={3}>
                   <label className="required">Times Format</label>
                 </Grid>
-                
+
                 <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
-                   
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
@@ -571,7 +585,7 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 </Grid>
               </Grid>
 
-                <Grid
+              <Grid
                 item
                 xs={12}
                 className={[classes.gridDispaly].join(" ")}
@@ -579,12 +593,13 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 spacing={1}
               >
                 <Grid item xs={3}>
-                  <label className="required">File format to import users details:</label>
+                  <label className="required">
+                    File format to import users details:
+                  </label>
                 </Grid>
-                
+
                 <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
-                   
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
@@ -602,10 +617,7 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                       {fileFormat.length > 0
                         ? fileFormat.map((fol) => {
                             return (
-                              <MenuItem
-                                key={fol.id}
-                                value={fol.format}
-                              >
+                              <MenuItem key={fol.id} value={fol.format}>
                                 {fol.format}
                               </MenuItem>
                             );
@@ -623,119 +635,109 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 </Grid>
               </Grid>
 
-
-              
               <Grid item container xs={12}>
-                  <Grid item xs={3}>
-                    <label>Duration to lock user account on Maximum unsuccessfull login attempts:</label>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <FormControl variant="outlined">
-                      <OutlinedInput
-                        id="outlined-adornment-weight"
-                        name="loginattempts"
-                        type={"text"}
-                        value={
-                          formData.attendanceGracetime
-                            ? formData.attendanceGracetime
-                            : ""
-                        }
-                        onChange={handleChange}
-                        endAdornment={
-                          <InputAdornment position="end">Minutes</InputAdornment>
-                        }
-                        aria-describedby="outlined-weight-helper-text"
-                        labelWidth={0}
-                        className="global-input"
-                        InputLabelProps={{ shrink: false }}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={2}></Grid>
+                <Grid item xs={3}>
+                  <label>
+                    Duration to lock user account on Maximum unsuccessfull login
+                    attempts:
+                  </label>
                 </Grid>
-
-
-                
-
-                 <Grid item container xs={12}>
-                  <Grid item xs={3}>
-                    <label className="required">Automated checked out time</label>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <FormControl variant="outlined">
-                      <OutlinedInput
-                        id="outlined-adornment-weight"
-                        name="checkedout"
-                        type={"text"}
-                        value={
-                          formData.attendanceGracetime
-                            ? formData.attendanceGracetime
-                            : ""
-                        }
-                        onChange={handleChange}
-                        endAdornment={
-                          <InputAdornment position="end">Hours</InputAdornment>
-                        }
-                        aria-describedby="outlined-weight-helper-text"
-                        labelWidth={0}
-                        className="global-input"
-                        InputLabelProps={{ shrink: false }}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={2}></Grid>
+                <Grid item xs={2}>
+                  <FormControl variant="outlined">
+                    <OutlinedInput
+                      id="outlined-adornment-weight"
+                      name="loginattempts"
+                      type={"text"}
+                      value={
+                        formData.attendanceGracetime
+                          ? formData.attendanceGracetime
+                          : ""
+                      }
+                      onChange={handleChange}
+                      endAdornment={
+                        <InputAdornment position="end">Minutes</InputAdornment>
+                      }
+                      aria-describedby="outlined-weight-helper-text"
+                      labelWidth={0}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                    />
+                  </FormControl>
                 </Grid>
-
+                <Grid item xs={2}></Grid>
+              </Grid>
 
               <Grid item container xs={12}>
-                  <Grid item xs={3}>
-                    <label className="required">Minimum password length</label>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <FormControl variant="outlined">
-                      <OutlinedInput
-                        id="outlined-adornment-weight"
-                        name="passwordlength"
-                        type={"text"}
-                        value={
-                          formData.attendanceGracetime
-                            ? formData.attendanceGracetime
-                            : ""
-                        }
-                        onChange={handleChange}
-                        endAdornment={
-                          <InputAdornment position="end">Characters</InputAdornment>
-                        }
-                        aria-describedby="outlined-weight-helper-text"
-                        labelWidth={0}
-                        className="global-input"
-                        InputLabelProps={{ shrink: false }}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={2}></Grid>
+                <Grid item xs={3}>
+                  <label className="required">Automated checked out time</label>
                 </Grid>
+                <Grid item xs={2}>
+                  <FormControl variant="outlined">
+                    <OutlinedInput
+                      id="outlined-adornment-weight"
+                      name="checkedout"
+                      type={"text"}
+                      value={
+                        formData.attendanceGracetime
+                          ? formData.attendanceGracetime
+                          : ""
+                      }
+                      onChange={handleChange}
+                      endAdornment={
+                        <InputAdornment position="end">Hours</InputAdornment>
+                      }
+                      aria-describedby="outlined-weight-helper-text"
+                      labelWidth={0}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={2}></Grid>
+              </Grid>
 
+              <Grid item container xs={12}>
+                <Grid item xs={3}>
+                  <label className="required">Minimum password length</label>
+                </Grid>
+                <Grid item xs={2}>
+                  <FormControl variant="outlined">
+                    <OutlinedInput
+                      id="outlined-adornment-weight"
+                      name="passwordlength"
+                      type={"text"}
+                      value={
+                        formData.attendanceGracetime
+                          ? formData.attendanceGracetime
+                          : ""
+                      }
+                      onChange={handleChange}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          Characters
+                        </InputAdornment>
+                      }
+                      aria-describedby="outlined-weight-helper-text"
+                      labelWidth={0}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={2}></Grid>
+              </Grid>
 
-
-                 
-
-
-
-            <Grid
+              <Grid
                 item
                 xs={12}
                 className={[classes.gridDispaly].join(" ")}
                 container
                 spacing={1}
               >
-
-            <Grid item xs={3}>
-                  <label className="required">
-                    Self health check reminder
-                  </label>
+                <Grid item xs={3}>
+                  <label className="required">Self health check reminder</label>
                 </Grid>
-                
+
                 <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
                     <InputLabel
@@ -764,10 +766,7 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                       {selfReminder.length > 0
                         ? selfReminder.map((tol) => {
                             return (
-                              <MenuItem
-                                key={tol.id}
-                                value={tol.selfvalue}
-                              >
+                              <MenuItem key={tol.id} value={tol.selfvalue}>
                                 {tol.selfvalue}
                               </MenuItem>
                             );
@@ -785,7 +784,6 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 </Grid>
               </Grid>
 
-
               <Grid
                 item
                 xs={12}
@@ -793,18 +791,16 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 container
                 spacing={1}
               >
-
-            <Grid item xs={3}>
-                  <label>
-                   Allow check-in without WFH location approval
-                  </label>
+                <Grid item xs={3}>
+                  <label>Allow check-in without WFH location approval</label>
                 </Grid>
-                
+
                 <Grid item xs={2}>
-                  
-                  <Checkbox  checked={checkedwfhApproval} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
-                  
-                 </Grid>
+                  <Checkbox
+                    checked={checkedwfhApproval}
+                    inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                  />
+                </Grid>
               </Grid>
 
               <Grid
@@ -814,22 +810,19 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 container
                 spacing={1}
               >
-
-            <Grid item xs={3}>
-                  <label >
-                  Allow check-in without profile selfie approval
-                  </label>
+                <Grid item xs={3}>
+                  <label>Allow check-in without profile selfie approval</label>
                 </Grid>
-                
-                <Grid item xs={2}>
-                  
-                  <Checkbox  checked={checkselfieApproval} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
-                  
-                 </Grid>
-              </Grid>
-          
 
-          <Grid
+                <Grid item xs={2}>
+                  <Checkbox
+                    checked={checkselfieApproval}
+                    inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid
                 item
                 xs={12}
                 className={[classes.gridDispaly].join(" ")}
@@ -839,10 +832,9 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                 <Grid item xs={3}>
                   <label className="required">UoM for temperature</label>
                 </Grid>
-                
+
                 <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
-                   
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
@@ -880,16 +872,8 @@ const [checkselfieApproval, setcheckselfieApproval]=useState(true);
                   )}
                 </Grid>
               </Grid>
-  
-
-
-
-              
-
-
 
               <Grid item container xs={12}>
-                
                 <Grid item xs={9}>
                   <div className={`form-buttons-container`}>
                     <Button

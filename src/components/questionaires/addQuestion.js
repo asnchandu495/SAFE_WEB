@@ -76,10 +76,10 @@ function AddQuestion(props) {
       case "Date":
         questionaireApiCall
           .GetDateTimeById(getQuesId)
-          .then((freetextQuestionResponse) => {
-            setSelectedQuestionDetails(freetextQuestionResponse);
+          .then((dateQuestionResponse) => {
+            setSelectedQuestionDetails(dateQuestionResponse);
             setQuestionTypeForm({
-              questionType: freetextQuestionResponse.questionType,
+              questionType: dateQuestionResponse.questionType,
             });
             setComponentLoadder(false);
           })
@@ -90,10 +90,10 @@ function AddQuestion(props) {
       case "Time":
         questionaireApiCall
           .GetTimeQuestionById(getQuesId)
-          .then((freetextQuestionResponse) => {
-            setSelectedQuestionDetails(freetextQuestionResponse);
+          .then((timeQuestionResponse) => {
+            setSelectedQuestionDetails(timeQuestionResponse);
             setQuestionTypeForm({
-              questionType: freetextQuestionResponse.questionType,
+              questionType: timeQuestionResponse.questionType,
             });
             setComponentLoadder(false);
           })
@@ -104,10 +104,10 @@ function AddQuestion(props) {
       case "Numeric":
         questionaireApiCall
           .GetNumeicQuestionById(getQuesId)
-          .then((freetextQuestionResponse) => {
-            setSelectedQuestionDetails(freetextQuestionResponse);
+          .then((numericQuestionResponse) => {
+            setSelectedQuestionDetails(numericQuestionResponse);
             setQuestionTypeForm({
-              questionType: freetextQuestionResponse.questionType,
+              questionType: numericQuestionResponse.questionType,
             });
             setComponentLoadder(false);
           })

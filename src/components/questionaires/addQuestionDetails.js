@@ -134,6 +134,26 @@ function AddQuestionDetails(props) {
           isPositiveConformityRedFlag:
             props.selectedQuestionDetails.isPositiveConformityRedFlag,
         });
+      } else if (props.selectedQuestionDetails.questionType == "Time") {
+        setDatetimeFlag({
+          positiveConformityForDate:
+            props.selectedQuestionDetails.positiveConformityForDate,
+          redFlagForDate: props.selectedQuestionDetails.redFlagForDate,
+          isPositiveConformity:
+            props.selectedQuestionDetails.isPositiveConformity,
+          isPositiveConformityRedFlag:
+            props.selectedQuestionDetails.isPositiveConformityRedFlag,
+        });
+      } else if (props.selectedQuestionDetails.questionType == "Numeric") {
+        setNumericFlag({
+          positiveConformityForNumber:
+            props.selectedQuestionDetails.positiveConformityForNumber,
+          redFlagForNumber: props.selectedQuestionDetails.redFlagForNumber,
+          isPositiveConformity:
+            props.selectedQuestionDetails.isPositiveConformity,
+          isPositiveConformityRedFlag:
+            props.selectedQuestionDetails.isPositiveConformityRedFlag,
+        });
       } else {
         console.log("not found");
       }
@@ -262,21 +282,39 @@ function AddQuestionDetails(props) {
         ...props.questionTypeForm,
         ...numericFlag,
       };
-      questionaireApiCall
-        .AddNumericQuestion(finalObject)
-        .then((res) => {
-          setshowLoadder(false);
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Added new question.");
-          settoasterServerity("success");
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+      if (finalObject.id != 0) {
+        questionaireApiCall
+          .UpdateNumericQuestion(finalObject)
+          .then((res) => {
+            setshowLoadder(false);
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Question details updated.");
+            settoasterServerity("success");
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      } else {
+        questionaireApiCall
+          .AddNumericQuestion(finalObject)
+          .then((res) => {
+            setshowLoadder(false);
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Added new question.");
+            settoasterServerity("success");
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      }
     } else {
       if (props.questionTypeForm.questionType == "Boolean") {
         const finalObject = {

@@ -15,10 +15,11 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import Grid from "@material-ui/core/Grid";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import ToasterMessageComponent from "../../common/toaster";
-
+import { useHistory } from "react-router-dom";
 import ConfirmationDialog from "../../common/confirmdialogbox";
 
 function TimeDetails(props) {
+  const history = useHistory();
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
@@ -55,6 +56,12 @@ function TimeDetails(props) {
     );
   }
 
+  function handleClickUpdateQuestions(getQueDetails) {
+    history.push(
+      `/questionaires/add-questions/${getQueDetails.surveyId}/${getQueDetails.id}?type=${getQueDetails.questionType}`
+    );
+  }
+
   return (
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
@@ -67,6 +74,9 @@ function TimeDetails(props) {
                 color="default"
                 startIcon={<EditIcon />}
                 className={`edit-icon`}
+                onClick={() =>
+                  handleClickUpdateQuestions(props.selectedQuestionDetails)
+                }
               ></Button>
             </Tooltip>
             <Tooltip title="Conditional jump">
