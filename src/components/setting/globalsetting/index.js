@@ -73,60 +73,47 @@ function GlobalSetting(props) {
   };
 
   const fileFormat = [
-    { id: "xls", format: "xls" },
-    { id: "csv", format: "csv" },
+    { id: "1", format: "xls" },
+    { id: "2", format: "csv" },
   ];
-
   const selfReminder = [
     {
-      id: "Minute",
+      id: "1",
       selfvalue: "Minute",
     },
     {
-      id: "Hours",
+      id: "2",
       selfvalue: "Hours",
     },
   ];
   const uomTemp = [
     {
-      id: "Farenheit",
+      id: "1",
       uomTempvalue: "Farenheit",
     },
     {
-      id: "Celsius",
+      id: "2",
       uomTempvalue: "Celsius",
     },
   ];
   const datesFormat = [
     {
-      id: "MM/DD/YY",
-      formatvalue: "MM/DD/YY",
+      id: "1",
+      formatvalue: "dd/mm/yyyy",
     },
     {
-      id: "DD/MM/YY",
-      formatvalue: "DD/MM/YY",
-    },
-    {
-      id: "YY/MM/DD",
-      formatvalue: "YY/MM/DD",
+      id: "2",
+      formatvalue: "mm/dd/yyyy",
     },
   ];
   const timeFormat = [
     {
-      id: "HH:mm",
-      value: "HH:mm",
+      id: "1",
+      value: "12 Hours",
     },
     {
-      id: "hh:mm tt",
-      value: "hh:mm tt",
-    },
-    {
-      id: "HH:mm:ss",
-      value: "HH:mm:ss",
-    },
-    {
-      id: "hh:mm:ss tt",
-      value: "hh:mm:ss tt",
+      id: "2",
+      value: "24 Hours",
     },
   ];
   const [checkedwfhApproval, setCheckedwfhApproval] = useState(true);
