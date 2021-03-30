@@ -59,6 +59,20 @@ function GlobalSetting(props) {
     facialTolerance: 0.0,
     socialDistanceTolerance: 0,
     socialDistanceToleranceUnit: "",
+    fileFormatToImportUsers: "",
+    timeFormat: "",
+    dateFormat: "",
+
+    automatedCheckoutTime: 0,
+    selfHealthCheckReminder: 0,
+    selfHealthCheckReminderUnit: "",
+    durationToLockUserAccount: 0,
+    maxPasswordlength: 0,
+    allowCheckinWithoutWFHLocationApproval: true,
+    allowCheckinWithoutProfileSelfieApproval: true,
+    maximumFileSizeOfUserSelfieUnit: "",
+    maximumFileSizeToImportUsersUnit: "",
+    temperatureUnit: "",
   });
   const [geoUnits, setGeoUnits] = useState([]);
   const [toleranceUnits, setToleranceUnits] = useState([]);
@@ -73,64 +87,49 @@ function GlobalSetting(props) {
   };
 
   const fileFormat = [
-    { id: "xls", format: "xls" },
-    { id: "csv", format: "csv" },
+    { id: "1", format: "xls" },
+    { id: "2", format: "csv" },
   ];
-
   const selfReminder = [
     {
-      id: "Minute",
+      id: "1",
       selfvalue: "Minute",
     },
     {
-      id: "Hours",
+      id: "2",
       selfvalue: "Hours",
     },
   ];
   const uomTemp = [
     {
-      id: "Farenheit",
-      uomTempvalue: "Farenheit",
+      id: "1",
+      uomtempvalue: "Farenheit",
     },
     {
-      id: "Celsius",
-      uomTempvalue: "Celsius",
+      id: "2",
+      uomtempvalue: "Celsius",
     },
   ];
   const datesFormat = [
     {
-      id: "MM/DD/YY",
-      formatvalue: "MM/DD/YY",
+      id: "1",
+      formatvalue: "dd/mm/yyyy",
     },
     {
-      id: "DD/MM/YY",
-      formatvalue: "DD/MM/YY",
-    },
-    {
-      id: "YY/MM/DD",
-      formatvalue: "YY/MM/DD",
+      id: "2",
+      formatvalue: "mm/dd/yyyy",
     },
   ];
   const timeFormat = [
     {
-      id: "HH:mm",
-      value: "HH:mm",
+      id: "1",
+      value: "12 Hours",
     },
     {
-      id: "hh:mm tt",
-      value: "hh:mm tt",
-    },
-    {
-      id: "HH:mm:ss",
-      value: "HH:mm:ss",
-    },
-    {
-      id: "hh:mm:ss tt",
-      value: "hh:mm:ss tt",
+      id: "2",
+      value: "24 Hours",
     },
   ];
-  const [checkedwfhApproval, setCheckedwfhApproval] = useState(true);
-  const [checkselfieApproval, setcheckselfieApproval] = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -149,13 +148,37 @@ function GlobalSetting(props) {
       });
   }, []);
 
+  const handleChangecheckBox = (event) => {
+    SetformData((formData) => ({
+      ...formData,
+      ["allowCheckinWithoutWFHLocationApproval"]: event.target.checked,
+    }));
+  };
+
+  const handleChangeSelfiecheckBox = (e) => {
+    SetformData((formData) => ({
+      ...formData,
+      ["allowCheckinWithoutProfileSelfieApproval"]: e.target.checked,
+    }));
+  };
   function GlobalSettingForm(e) {
     e.preventDefault();
     setshowLoadder(true);
     setisFormSubmit(true);
+    console.log("data");
+    console.log(JSON.stringify(formData));
+    // return false;
     let finalData = formData;
     finalData.socialDistanceTolerance = parseInt(
       formData.socialDistanceTolerance
+    );
+    finalData.maxPasswordlength = parseInt(formData.maxPasswordlength);
+    finalData.durationToLockUserAccount = parseInt(
+      formData.durationToLockUserAccount
+    );
+    finalData.automatedCheckoutTime = parseInt(formData.automatedCheckoutTime);
+    finalData.selfHealthCheckReminder = parseInt(
+      formData.selfHealthCheckReminder
     );
     finalData.frequencyOfGeoLocation = parseInt(
       formData.frequencyOfGeoLocation
@@ -499,8 +522,8 @@ function GlobalSetting(props) {
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
-                      value="#"
-                      name="dateformat"
+                      value={formData.dateFormat}
+                      name="dateFormat"
                       onChange={handleChange}
                       placeholder="Select"
                       required
@@ -524,7 +547,7 @@ function GlobalSetting(props) {
                         : ""}
                     </Select>
                   </FormControl>
-                  {isFormSubmit && !formData.geoFencingToleranceUnit ? (
+                  {isFormSubmit && !formData.dateFormat ? (
                     <FormHelperText className={classes.errorSpanMsg}>
                       Please select value{" "}
                     </FormHelperText>
@@ -550,8 +573,8 @@ function GlobalSetting(props) {
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
-                      value="#"
-                      name="timesformat"
+                      value={formData.timeFormat}
+                      name="timeFormat"
                       onChange={handleChange}
                       placeholder="Select"
                       required
@@ -575,7 +598,7 @@ function GlobalSetting(props) {
                         : ""}
                     </Select>
                   </FormControl>
-                  {isFormSubmit && !formData.geoFencingToleranceUnit ? (
+                  {isFormSubmit && !formData.timeFormat ? (
                     <FormHelperText className={classes.errorSpanMsg}>
                       Please select value{" "}
                     </FormHelperText>
@@ -598,13 +621,37 @@ function GlobalSetting(props) {
                   </label>
                 </Grid>
 
+                <Grid item xs={3}>
+                  <TextValidator
+                    variant="outlined"
+                    validators={[
+                      "required",
+                      "matchRegexp:^[0-9]*$",
+                      "maxNumber:999",
+                    ]}
+                    errorMessages={[
+                      "Please enter maximumFileSizeToImportUsersUnit",
+                      "Only numbers are allowed",
+                      "Maximum allowed 3 digits",
+                    ]}
+                    fullWidth
+                    id="maximumFileSizeToImportUsersUnit"
+                    placeholder=""
+                    name="maximumFileSizeToImportUsersUnit"
+                    onChange={handleChange}
+                    value={formData.maximumFileSizeToImportUsersUnit}
+                    className="global-input"
+                    InputLabelProps={{ shrink: false }}
+                  />
+                </Grid>
+
                 <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
-                      value={formData.geoFencingToleranceUnit}
-                      name="geoFencingToleranceUnit"
+                      value={formData.fileFormatToImportUsers}
+                      name="fileFormatToImportUsers"
                       onChange={handleChange}
                       placeholder="Select"
                       required
@@ -625,10 +672,10 @@ function GlobalSetting(props) {
                         : ""}
                     </Select>
                   </FormControl>
-                  {isFormSubmit && !formData.geoFencingToleranceUnit ? (
-                    <FormHelperText className={classes.errorSpanMsg}>
-                      Please select value{" "}
-                    </FormHelperText>
+                  {isFormSubmit && !formData.fileFormatToImportUsers ? (
+                    <FormHelperText
+                      className={classes.errorSpanMsg}
+                    ></FormHelperText>
                   ) : (
                     ""
                   )}
@@ -646,11 +693,11 @@ function GlobalSetting(props) {
                   <FormControl variant="outlined">
                     <OutlinedInput
                       id="outlined-adornment-weight"
-                      name="loginattempts"
+                      name="durationToLockUserAccount"
                       type={"text"}
                       value={
-                        formData.attendanceGracetime
-                          ? formData.attendanceGracetime
+                        formData.durationToLockUserAccount
+                          ? formData.durationToLockUserAccount
                           : ""
                       }
                       onChange={handleChange}
@@ -675,11 +722,11 @@ function GlobalSetting(props) {
                   <FormControl variant="outlined">
                     <OutlinedInput
                       id="outlined-adornment-weight"
-                      name="checkedout"
+                      name="automatedCheckoutTime"
                       type={"text"}
                       value={
-                        formData.attendanceGracetime
-                          ? formData.attendanceGracetime
+                        formData.automatedCheckoutTime
+                          ? formData.automatedCheckoutTime
                           : ""
                       }
                       onChange={handleChange}
@@ -704,11 +751,11 @@ function GlobalSetting(props) {
                   <FormControl variant="outlined">
                     <OutlinedInput
                       id="outlined-adornment-weight"
-                      name="passwordlength"
+                      name="maxPasswordlength"
                       type={"text"}
                       value={
-                        formData.attendanceGracetime
-                          ? formData.attendanceGracetime
+                        formData.maxPasswordlength
+                          ? formData.maxPasswordlength
                           : ""
                       }
                       onChange={handleChange}
@@ -716,6 +763,37 @@ function GlobalSetting(props) {
                         <InputAdornment position="end">
                           Characters
                         </InputAdornment>
+                      }
+                      aria-describedby="outlined-weight-helper-text"
+                      labelWidth={0}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={2}></Grid>
+              </Grid>
+
+              <Grid item container xs={12}>
+                <Grid item xs={3}>
+                  <label className="required">
+                    Maximum filesize of userSelfie unit
+                  </label>
+                </Grid>
+                <Grid item xs={2}>
+                  <FormControl variant="outlined">
+                    <OutlinedInput
+                      id="outlined-adornment-weight"
+                      name="maximumFileSizeOfUserSelfieUnit"
+                      type={"text"}
+                      value={
+                        formData.maximumFileSizeOfUserSelfieUnit
+                          ? formData.maximumFileSizeOfUserSelfieUnit
+                          : ""
+                      }
+                      onChange={handleChange}
+                      endAdornment={
+                        <InputAdornment position="end">MB</InputAdornment>
                       }
                       aria-describedby="outlined-weight-helper-text"
                       labelWidth={0}
@@ -737,6 +815,29 @@ function GlobalSetting(props) {
                 <Grid item xs={3}>
                   <label className="required">Self health check reminder</label>
                 </Grid>
+                <Grid item xs={3}>
+                  <TextValidator
+                    variant="outlined"
+                    validators={[
+                      "required",
+                      "matchRegexp:^[0-9]*$",
+                      "maxNumber:999",
+                    ]}
+                    errorMessages={[
+                      "Please enter self healthcheck reminder",
+                      "Only numbers are allowed",
+                      "Maximum allowed 3 digits",
+                    ]}
+                    fullWidth
+                    id="selfHealthCheckReminder"
+                    placeholder=""
+                    name="selfHealthCheckReminder"
+                    onChange={handleChange}
+                    value={formData.selfHealthCheckReminder}
+                    className="global-input"
+                    InputLabelProps={{ shrink: false }}
+                  />
+                </Grid>
 
                 <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
@@ -745,17 +846,15 @@ function GlobalSetting(props) {
                       shrink={false}
                       className="select-label"
                     >
-                      {formData.socialDistanceToleranceUnit == ""
-                        ? "Select"
-                        : ""}
+                      {formData.selfHealthCheckReminder == "" ? "" : ""}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
-                      value={formData.socialDistanceToleranceUnit}
-                      name="selfhealth"
+                      value={formData.selfHealthCheckReminderUnit}
+                      name="selfHealthCheckReminderUnit"
                       onChange={handleChange}
-                      placeholder="Select"
+                      placeholder=""
                       required
                       InputLabelProps={{ shrink: false }}
                       className="global-input single-select"
@@ -774,10 +873,10 @@ function GlobalSetting(props) {
                         : ""}
                     </Select>
                   </FormControl>
-                  {isFormSubmit && !formData.socialDistanceToleranceUnit ? (
-                    <FormHelperText className={classes.errorSpanMsg}>
-                      Please select value{" "}
-                    </FormHelperText>
+                  {isFormSubmit && !formData.selfHealthCheckReminderUnit ? (
+                    <FormHelperText
+                      className={classes.errorSpanMsg}
+                    ></FormHelperText>
                   ) : (
                     ""
                   )}
@@ -797,7 +896,9 @@ function GlobalSetting(props) {
 
                 <Grid item xs={2}>
                   <Checkbox
-                    checked={checkedwfhApproval}
+                    checked={formData.allowCheckinWithoutWFHLocationApproval}
+                    onChange={handleChangecheckBox}
+                    value={formData.allowCheckinWithoutWFHLocationApproval}
                     inputProps={{ "aria-label": "uncontrolled-checkbox" }}
                   />
                 </Grid>
@@ -811,12 +912,16 @@ function GlobalSetting(props) {
                 spacing={1}
               >
                 <Grid item xs={3}>
-                  <label>Allow check-in without profile selfie approval</label>
+                  <label className="required">
+                    Allow check-in without profile selfie approval
+                  </label>
                 </Grid>
 
                 <Grid item xs={2}>
                   <Checkbox
-                    checked={checkselfieApproval}
+                    checked={formData.allowCheckinWithoutProfileSelfieApproval}
+                    onChange={handleChangeSelfiecheckBox}
+                    value={formData.allowCheckinWithoutProfileSelfieApproval}
                     inputProps={{ "aria-label": "uncontrolled-checkbox" }}
                   />
                 </Grid>
@@ -837,11 +942,11 @@ function GlobalSetting(props) {
                   <FormControl variant="outlined" fullWidth>
                     <Select
                       labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={formData.geoFencingToleranceUnit}
-                      name="geoFencingToleranceUnit"
+                      id="temperatureUnit"
+                      value={formData.temperatureUnit}
+                      name="temperatureUnit"
                       onChange={handleChange}
-                      placeholder="Select"
+                      placeholder=""
                       required
                       InputLabelProps={{ shrink: false }}
                       className="global-input single-select"
@@ -854,19 +959,19 @@ function GlobalSetting(props) {
                             return (
                               <MenuItem
                                 key={tempvalue.id}
-                                value={tempvalue.uomTempvalue}
+                                value={tempvalue.uomtempvalue}
                               >
-                                {tempvalue.uomTempvalue}
+                                {tempvalue.uomtempvalue}
                               </MenuItem>
                             );
                           })
                         : ""}
                     </Select>
                   </FormControl>
-                  {isFormSubmit && !formData.geoFencingToleranceUnit ? (
-                    <FormHelperText className={classes.errorSpanMsg}>
-                      Please select value{" "}
-                    </FormHelperText>
+                  {isFormSubmit && !formData.temperatureUnit ? (
+                    <FormHelperText
+                      className={classes.errorSpanMsg}
+                    ></FormHelperText>
                   ) : (
                     ""
                   )}
