@@ -115,6 +115,34 @@ function AddQuestion(props) {
             console.log("error");
           });
         break;
+      case "SingleChoice":
+        questionaireApiCall
+          .GetSingleChoiceQuestion(getQuesId)
+          .then((singleChoiceQuestionResponse) => {
+            setSelectedQuestionDetails(singleChoiceQuestionResponse);
+            setQuestionTypeForm({
+              questionType: singleChoiceQuestionResponse.questionType,
+            });
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "MultiChoice":
+        questionaireApiCall
+          .GetMultipleChoicQuestionById(getQuesId)
+          .then((mulltiChoiceQuestionResponse) => {
+            setSelectedQuestionDetails(mulltiChoiceQuestionResponse);
+            setQuestionTypeForm({
+              questionType: mulltiChoiceQuestionResponse.questionType,
+            });
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
       default:
         return <h4>Not found</h4>;
     }

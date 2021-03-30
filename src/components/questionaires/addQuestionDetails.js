@@ -89,16 +89,16 @@ function AddQuestionDetails(props) {
       {
         id: "",
         expressionType: "",
-        forAnswer: "",
-        forRangeEnd: "",
+        forAnswer: 0,
+        forRangeEnd: 0,
       },
     ],
     redFlagForNumber: [
       {
         id: "",
         expressionType: "",
-        forAnswer: "",
-        forRangeEnd: "",
+        forAnswer: 0,
+        forRangeEnd: 0,
       },
     ],
     isPositiveConfirmity: true,
@@ -463,105 +463,103 @@ function AddQuestionDetails(props) {
   }
 
   return (
-    <div className="innerpage-container">
-      {props.questionTypeForm.questionType}
-      <Paper className={`main-paper`}>
-        {props.questionTypeForm.questionType == "SingleChoice" ||
-        props.questionTypeForm.questionType == "MultiChoice" ? (
-          <AddChoiceQuestionDetails
-            questionTypeForm={props.questionTypeForm}
-            surveyIdURL={props.surveyIdURL}
-            questionIdURL={props.questionIdURL}
-          ></AddChoiceQuestionDetails>
-        ) : (
-          <ValidatorForm onSubmit={submitQuestionForm}>
-            <Card className="question-card">
-              <CardContent className="scrollable-card">
-                <Typography gutterBottom variant="h6" component="h6">
-                  Question details
-                </Typography>
-                <Grid item xs={12} sm={12}>
-                  <Grid spacing={3} container className="question-details">
-                    <Grid item container sm={12}>
-                      <Grid item sm={2}>
-                        <label className="required">Question</label>
-                      </Grid>
-                      <Grid item sm={6}>
-                        <TextValidator
-                          variant="outlined"
-                          validators={[
-                            "required",
-                            "matchRegexp:^[a-zA-Z ]*$",
-                            "matchRegexp:^.{0,50}$",
-                          ]}
-                          errorMessages={[
-                            "Please enter question",
-                            "Only alphabets are allowed",
-                            "Maximum 50 characters",
-                          ]}
-                          fullWidth
-                          id="question"
-                          placeholder="Enter Question"
-                          name="question"
-                          value={addQuestion.question}
-                          onChange={handleChange}
-                          autoFocus
-                          className="global-input"
-                          InputLabelProps={{ shrink: false }}
-                        />
-                      </Grid>
+    <>
+      {props.questionTypeForm.questionType == "SingleChoice" ||
+      props.questionTypeForm.questionType == "MultiChoice" ? (
+        <AddChoiceQuestionDetails
+          questionTypeForm={props.questionTypeForm}
+          surveyIdURL={props.surveyIdURL}
+          questionIdURL={props.questionIdURL}
+          setGotoAddQuestion={props.setGotoAddQuestion}
+        ></AddChoiceQuestionDetails>
+      ) : (
+        <ValidatorForm onSubmit={submitQuestionForm}>
+          <Card className="question-card">
+            <CardContent className="scrollable-card">
+              <Typography gutterBottom variant="h6" component="h6">
+                Question details
+              </Typography>
+              <Grid item xs={12} sm={12}>
+                <Grid spacing={3} container className="question-details">
+                  <Grid item container sm={12}>
+                    <Grid item sm={2}>
+                      <label className="required">Question</label>
                     </Grid>
-                    <Grid item sm={12} container>
-                      <Grid item sm={2}>
-                        <label>Description</label>
-                      </Grid>
-                      <Grid item sm={6}>
-                        <TextValidator
-                          variant="outlined"
-                          fullWidth
-                          id="description"
-                          placeholder="Enter Description"
-                          validators={["matchRegexp:^.{0,150}$"]}
-                          errorMessages={["Maximum 150 characters"]}
-                          name="description"
-                          multiline
-                          rows={2}
-                          value={addQuestion.description}
-                          onChange={handleChange}
-                          className="global-input global-input-multiline"
-                          InputLabelProps={{ shrink: false }}
-                        />
-                      </Grid>
+                    <Grid item sm={6}>
+                      <TextValidator
+                        variant="outlined"
+                        validators={[
+                          "required",
+                          "matchRegexp:^[a-zA-Z ]*$",
+                          "matchRegexp:^.{0,50}$",
+                        ]}
+                        errorMessages={[
+                          "Please enter question",
+                          "Only alphabets are allowed",
+                          "Maximum 50 characters",
+                        ]}
+                        fullWidth
+                        id="question"
+                        placeholder="Enter Question"
+                        name="question"
+                        value={addQuestion.question}
+                        onChange={handleChange}
+                        autoFocus
+                        className="global-input"
+                        InputLabelProps={{ shrink: false }}
+                      />
                     </Grid>
                   </Grid>
-                  <RenderFlagComponent
-                    currentQuestionType={props.questionTypeForm.questionType}
-                  ></RenderFlagComponent>
+                  <Grid item sm={12} container>
+                    <Grid item sm={2}>
+                      <label>Description</label>
+                    </Grid>
+                    <Grid item sm={6}>
+                      <TextValidator
+                        variant="outlined"
+                        fullWidth
+                        id="description"
+                        placeholder="Enter Description"
+                        validators={["matchRegexp:^.{0,150}$"]}
+                        errorMessages={["Maximum 150 characters"]}
+                        name="description"
+                        multiline
+                        rows={2}
+                        value={addQuestion.description}
+                        onChange={handleChange}
+                        className="global-input global-input-multiline"
+                        InputLabelProps={{ shrink: false }}
+                      />
+                    </Grid>
+                  </Grid>
                 </Grid>
-              </CardContent>
-              <CardActions className="action-container">
-                <Button
-                  size="small"
-                  type="button"
-                  onClick={navigateToQuestionType}
-                  className="global-cancel-btn"
-                  variant="contained"
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className="global-submit-btn"
-                  disabled={showLoadder}
-                >
-                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                </Button>
-              </CardActions>
-            </Card>
-          </ValidatorForm>
-        )}
-      </Paper>
+                <RenderFlagComponent
+                  currentQuestionType={props.questionTypeForm.questionType}
+                ></RenderFlagComponent>
+              </Grid>
+            </CardContent>
+            <CardActions className="action-container">
+              <Button
+                size="small"
+                type="button"
+                onClick={navigateToQuestionType}
+                className="global-cancel-btn"
+                variant="contained"
+              >
+                Back
+              </Button>
+              <Button
+                variant="contained"
+                type="submit"
+                className="global-submit-btn"
+                disabled={showLoadder}
+              >
+                {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+              </Button>
+            </CardActions>
+          </Card>
+        </ValidatorForm>
+      )}
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
@@ -569,7 +567,7 @@ function AddQuestionDetails(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />{" "}
-    </div>
+    </>
   );
 }
 

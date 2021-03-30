@@ -152,6 +152,32 @@ function BooleanDetails(props) {
                 </label>
               </Grid>
             </Grid>
+            <Grid item xs={12} container>
+              <Grid item xs={3}>
+                <label>Positive flag answer :</label>
+              </Grid>
+              <Grid item xs={9}>
+                <label>
+                  {props.selectedQuestionDetails
+                    ? props.selectedQuestionDetails.negativeResponse
+                    : ""}
+                </label>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} container>
+              <Grid item xs={3}>
+                <label>Is mandatory :</label>
+              </Grid>
+              <Grid item xs={9}>
+                <label>
+                  {props.selectedQuestionDetails
+                    ? props.selectedQuestionDetails.isMandatory
+                      ? "Yes"
+                      : "No"
+                    : ""}
+                </label>
+              </Grid>
+            </Grid>
           </Grid>
         </div>
       </CardContent>

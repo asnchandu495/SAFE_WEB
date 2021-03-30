@@ -16,6 +16,12 @@ import Grid from "@material-ui/core/Grid";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import ToasterMessageComponent from "../../common/toaster";
 import { useHistory } from "react-router-dom";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import ConfirmationDialog from "../../common/confirmdialogbox";
 
 function DateDetails(props) {
@@ -142,94 +148,72 @@ function DateDetails(props) {
             </Grid>
             <Grid item xs={12} container>
               <Grid item xs={3}>
-                <label>expressionType :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.positiveConformityForDate
-                    .length > 0
-                    ? props.selectedQuestionDetails.positiveConformityForDate[0]
-                        .expressionType
-                    : "no"}
-                </label>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>forAnswer :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.positiveConformityForDate
-                    .length > 0
-                    ? props.selectedQuestionDetails.positiveConformityForDate[0]
-                        .forAnswer
-                    : "no"}
-                </label>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>forRangeEnd :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.positiveConformityForDate
-                    .length > 0
-                    ? props.selectedQuestionDetails.positiveConformityForDate[0]
-                        .forRangeEnd
-                    : "no"}
-                </label>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>expressionType :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.redFlagForDate.length > 0
-                    ? props.selectedQuestionDetails.redFlagForDate[0]
-                        .expressionType
-                    : "no"}
-                </label>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>forAnswer :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.redFlagForDate.length > 0
-                    ? props.selectedQuestionDetails.redFlagForDate[0].forAnswer
-                    : "no"}
-                </label>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>forRangeEnd :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.redFlagForDate.length > 0
-                    ? props.selectedQuestionDetails.redFlagForDate[0]
-                        .forRangeEnd
-                    : "no"}
-                </label>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>isMandatory :</label>
+                <label>Is mandatory :</label>
               </Grid>
               <Grid item xs={9}>
                 <label>
                   {props.selectedQuestionDetails
                     ? props.selectedQuestionDetails.isMandatory
+                      ? "Yes"
+                      : "No"
                     : ""}
                 </label>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} container>
+              <Grid item xs={3}>
+                <label>Red flag :</label>
+              </Grid>
+              <Grid item xs={9}>
+                <Table aria-label="simple table" className="flag-details-table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Expression type</TableCell>
+                      <TableCell>From</TableCell>
+                      <TableCell>To</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {props.selectedQuestionDetails.redFlagForDate.map((row) => (
+                      <TableRow key={row.expressionType}>
+                        <TableCell component="th" scope="row">
+                          {row.expressionType}
+                        </TableCell>
+                        <TableCell>{row.forAnswer}</TableCell>
+                        <TableCell>{row.forRangeEnd}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} container>
+              <Grid item xs={3}>
+                <label>Positive flag :</label>
+              </Grid>
+              <Grid item xs={9}>
+                <Table aria-label="simple table" className="flag-details-table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Expression type</TableCell>
+                      <TableCell>From</TableCell>
+                      <TableCell>To</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {props.selectedQuestionDetails.positiveConformityForDate.map(
+                      (row) => (
+                        <TableRow key={row.expressionType}>
+                          <TableCell component="th" scope="row">
+                            {row.expressionType}
+                          </TableCell>
+                          <TableCell>{row.forAnswer}</TableCell>
+                          <TableCell>{row.forRangeEnd}</TableCell>
+                        </TableRow>
+                      )
+                    )}
+                  </TableBody>
+                </Table>
               </Grid>
             </Grid>
           </Grid>
