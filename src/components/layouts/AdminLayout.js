@@ -741,7 +741,6 @@ function AdminLayout(props) {
                     <ListItemText primary="Global Setting" />
                   </ListItem>
 
-
                   <ListItem
                     button
                     className={classes.nested}
@@ -961,6 +960,17 @@ function AdminLayout(props) {
                       <ArrowForwardIcon />
                     </ListItemIcon>
                     <ListItemText primary="Create" />
+                  </ListItem>
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/questionaires/assign"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Assign" />
                   </ListItem>
                 </List>
               </Collapse>

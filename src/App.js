@@ -56,6 +56,7 @@ import CreateTeam from "./components/teams/CreateTeam";
 import ViewTeam from "./components/teams/ViewTeam";
 import ListofQuestions from "./components/questionaires/listofQuestions";
 import ViewQuestionaire from "./components/questionaires/viewQuestionaire";
+import AssignQuestionaires from "./components/questionaires/AssignQuestionaires";
 
 function App(props) {
   const AuthContainer = () => {
@@ -217,6 +218,10 @@ function App(props) {
         <Route
           path="/questionaires/view-questions/:id"
           component={ViewQuestions}
+        ></Route>
+        <Route
+          path="/questionaires/assign"
+          component={AssignQuestionaires}
         ></Route>
       </AdminLayout>
     );
@@ -383,6 +388,7 @@ function App(props) {
           path="/questionaires/view-questions/:id"
           component={AdminContainer}
         ></Route>
+        <Route path="/questionaires/assign" component={AdminContainer}></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />
         <Route path="/Unauthorized" component={ErrorPageContainer} />
       </Switch>

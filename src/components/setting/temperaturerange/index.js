@@ -22,11 +22,14 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import { Link as LinkTo } from "react-router-dom";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 
+import GlobalSettingApiServices from "../../../services/globalSettingService";
+
+const GlobalSettingApi = new GlobalSettingApiServices();
+
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
     display: "inline-flex",
   },
-  
 }));
 
 function TemperatureRange(props) {
@@ -36,8 +39,13 @@ function TemperatureRange(props) {
     {
       id: "",
       covidState: "",
-      lowerLimit: "",
-      upperLimit: "",
+      lowerLimit: 0,
+      upperLimit: 0,
+      globalSettingsId: "",
+      covidState: {
+        id: "",
+        state: "",
+      },
     },
   ]);
   const [covidStates, setCovidState] = useState([
@@ -54,18 +62,23 @@ function TemperatureRange(props) {
       stateName: "Confirmed",
     },
   ]);
-  const uomTemp=[{
-    id:"1",
-    uomTempvalue:"Farenheit"
+  const uomTemp = [
+    {
+      id: "1",
+      uomTempvalue: "Farenheit",
     },
-  {
-      id:"2",
-      uomTempvalue:"Celsius"
-  },
+    {
+      id: "2",
+      uomTempvalue: "Celsius",
+    },
   ];
 
   function submitForm(e) {
     e.preventDefault();
+    console.log("hfdjsdh");
+    var formData = temperatureConfigForm;
+    console.log(formData);
+    GlobalSettingApi.UpdateCovidStateTemperature(formData);
   }
 
   // handle input change
@@ -98,9 +111,8 @@ function TemperatureRange(props) {
 
   return (
     <div className="innerpage-container">
-      
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
-      <LinkTo
+        <LinkTo
           color="inherit"
           href="#"
           to={`/home/dashboard`}
@@ -109,207 +121,209 @@ function TemperatureRange(props) {
           Home
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-        Temperature range for covid state
+          Temperature range for covid state
         </LinkTo>
-       
       </Breadcrumbs>
       <Paper className={`main-paper`}>
-        <ValidatorForm
-          className={`global-form`}
-          onSubmit={submitForm}
-        > <Grid container spacing={3}>
-          <Grid
-                item
-                xs={12}
-                className={[classes.gridDispaly].join(" ")}
-                container
-                spacing={1}
-              >
-                <Grid item xs={3}>
-                  <label className="required">UoM for temperature</label>
-                </Grid>
-                
-                <Grid item xs={2}>
-                  <FormControl variant="outlined" fullWidth>
-                   
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value="#"
-                      name="uomtemp"
-                      onChange="#"
-                      placeholder="Select"
-                      required
-                      InputLabelProps={{ shrink: false }}
-                      className="global-input single-select"
-                    >
-                      <MenuItem value="">
-                        <em>Select</em>
-                      </MenuItem>
-                      {uomTemp.length > 0
-                        ? uomTemp.map((tempvalue) => {
-                            return (
-                              <MenuItem
-                                key={tempvalue.id}
-                                value={tempvalue.uomTempvalue}
-                              >
-                                {tempvalue.uomTempvalue}
-                              </MenuItem>
-                            );
-                          })
-                        : ""}
-                    </Select>
-                  </FormControl>
-                  {/* {isFormSubmit && !formData.geoFencingToleranceUnit ? (
+        <ValidatorForm className={`global-form`} onSubmit={submitForm}>
+          {" "}
+          <Grid container spacing={3}>
+            <Grid
+              item
+              xs={12}
+              className={[classes.gridDispaly].join(" ")}
+              container
+              spacing={1}
+            >
+              <Grid item xs={3}>
+                <label className="required">UoM for temperature</label>
+              </Grid>
+
+              <Grid item xs={2}>
+                <FormControl variant="outlined" fullWidth>
+                  <Select
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value="#"
+                    name="uomtemp"
+                    onChange="#"
+                    placeholder="Select"
+                    required
+                    InputLabelProps={{ shrink: false }}
+                    className="global-input single-select"
+                  >
+                    <MenuItem value="">
+                      <em>Select</em>
+                    </MenuItem>
+                    {uomTemp.length > 0
+                      ? uomTemp.map((tempvalue) => {
+                          return (
+                            <MenuItem
+                              key={tempvalue.id}
+                              value={tempvalue.uomTempvalue}
+                            >
+                              {tempvalue.uomTempvalue}
+                            </MenuItem>
+                          );
+                        })
+                      : ""}
+                  </Select>
+                </FormControl>
+                {/* {isFormSubmit && !formData.geoFencingToleranceUnit ? (
                     <FormHelperText className={classes.errorSpanMsg}>
                       Please select value{" "}
                     </FormHelperText>
                   ) : (
                     ""
                   )} */}
-                </Grid>
               </Grid>
-              </Grid>
+            </Grid>
+          </Grid>
           {temperatureConfigForm.map((x, i) => {
             return (
               <Grid container spacing={3}>
-                 <Grid
-                item
-                xs={12}
-                className={[classes.gridDispaly].join(" ")}
-                container
-                spacing={1}
-              ><Grid item xs={3}>
-              <label className="required">Please select</label>
-            </Grid>
-                <Grid item xs={2}>
-                  
-                <FormControl variant="outlined" fullWidth>
-                    <InputLabel id="demo-simple-select-outlined-label"  shrink={false} className="select-label">
-                      {" "}
-                      Select state
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      label="Select state"
-                      name="covidState"
-                      className="global-input single-select"
-                       InputLabelProps={{ shrink: false }}
-                      value={x.covidState}
+                <Grid
+                  item
+                  xs={12}
+                  className={[classes.gridDispaly].join(" ")}
+                  container
+                  spacing={1}
+                >
+                  <Grid item xs={3}>
+                    <label className="required">Please select</label>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel
+                        id="demo-simple-select-outlined-label"
+                        shrink={false}
+                        className="select-label"
+                      >
+                        {" "}
+                        Select state
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        label="Select state"
+                        name="covidState"
+                        className="global-input single-select"
+                        InputLabelProps={{ shrink: false }}
+                        value={x.covidState}
+                        onChange={(e) => handleInputChange(e, i)}
+                      >
+                        <MenuItem value="">None</MenuItem>
+                        {covidStates.length > 0
+                          ? covidStates.map((cState) => {
+                              return (
+                                <MenuItem value={cState.id}>
+                                  {cState.stateName}
+                                </MenuItem>
+                              );
+                            })
+                          : ""}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextValidator
+                      variant="outlined"
+                      validators={["required"]}
+                      errorMessages={["Please enter lower limit"]}
+                      fullWidth
+                      id={`lowerLimit_${i}`}
+                      placeholder="Lower Limit"
+                      name="lowerLimit"
+                      value={x.lowerLimit}
+                      className="global-input"
                       onChange={(e) => handleInputChange(e, i)}
-                    >
-                      <MenuItem value="">None</MenuItem>
-                      {covidStates.length > 0
-                        ? covidStates.map((cState) => {
-                            return (
-                              <MenuItem value={cState.id}>
-                                {cState.stateName}
-                              </MenuItem>
-                            );
-                          })
-                        : ""}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={2}>
-                  <TextValidator
-                    variant="outlined"
-                    validators={["required"]}
-                    errorMessages={["Please enter lower limit"]}
-                   
-                    fullWidth
-                    id={`lowerLimit_${i}`}
-                    placeholder="Lower Limit"
-                    name="lowerLimit"
-                    value={x.lowerLimit}
-                    className="global-input"
-                    onChange={(e) => handleInputChange(e, i)}
-                    InputLabelProps={{ shrink: false }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">F</InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={2}>
-                  
-                  <TextValidator
-                    variant="outlined"
-                    validators={["required"]}
-                    errorMessages={["Please enter upper limit"]}
-                   
-                    fullWidth
-                    id={`upperLimit_${i}`}
-                    placeholder="Upper Limit"
-                    name="upperLimit"
-                    value={x.upperLimit}
-                    className="global-input"
-                    onChange={(e) => handleInputChange(e, i)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">F</InputAdornment>
-                      ),
-                    }}
-                  />
-                 
-                </Grid><Grid item xs={2} className="row-icons-container">
-                {(
-                    
-                    <FormControlLabel 
-                      control={<Checkbox name="checkedA" />}
-                      label="No limit"
+                      InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">F</InputAdornment>
+                        ),
+                      }}
                     />
-                  )}
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextValidator
+                      variant="outlined"
+                      validators={["required"]}
+                      errorMessages={["Please enter upper limit"]}
+                      fullWidth
+                      id={`upperLimit_${i}`}
+                      placeholder="Upper Limit"
+                      name="upperLimit"
+                      value={x.upperLimit}
+                      className="global-input"
+                      onChange={(e) => handleInputChange(e, i)}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">F</InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={2} className="row-icons-container">
+                    {
+                      <FormControlLabel
+                        control={<Checkbox name="checkedA" />}
+                        label="No limit"
+                      />
+                    }
+                  </Grid>
+                  <Grid item xs={1} className="row-icons-container">
+                    {temperatureConfigForm.length !== 1 && (
+                      <Tooltip title="Remove">
+                        <CancelIcon
+                          className={`delete-row-icon`}
+                          onClick={() => handleRemoveClick(i)}
+                        ></CancelIcon>
+                      </Tooltip>
+                    )}
+                    {temperatureConfigForm.length - 1 === i && (
+                      <Tooltip title="Add">
+                        <AddCircleIcon
+                          className={`add-row-icon`}
+                          onClick={handleAddClick}
+                        ></AddCircleIcon>
+                      </Tooltip>
+                    )}
+                  </Grid>
                 </Grid>
-                <Grid item xs={1} className="row-icons-container">
-                  {temperatureConfigForm.length !== 1 && (
-                    <Tooltip title="Remove">
-                      <CancelIcon
-                        className={`delete-row-icon`}
-                        onClick={() => handleRemoveClick(i)}
-                      ></CancelIcon>
-                    </Tooltip>
-                  )}
-                  {temperatureConfigForm.length - 1 === i && (
-                    <Tooltip title="Add">
-                      <AddCircleIcon
-                        className={`add-row-icon`}
-                        onClick={handleAddClick}
-                      ></AddCircleIcon>
-                    </Tooltip>
-                  )}
-                </Grid></Grid>
               </Grid>
             );
           })}
-          <br/>
+          <br />
           <Grid item container xs={12}>
-                <Grid item xs={3}>
-                  <label>&nbsp;</label>
-                </Grid>
-                <Grid item xs={9}>
-                  <div className={`form-buttons-container`} style={{marginBottom: "9px"}}>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      className="global-submit-btn"
-                      disabled={showLoadder}
-                    >
-                      {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      type="reset"
-                      // onClick={redirectToViewUsersGroup}
-                      className="global-cancel-btn"
-                    >
-                      Cancel
-                    </Button>&nbsp;
-                  </div>
-                </Grid>
-              </Grid>
+            <Grid item xs={3}>
+              <label>&nbsp;</label>
+            </Grid>
+            <Grid item xs={9}>
+              <div
+                className={`form-buttons-container`}
+                style={{ marginBottom: "9px" }}
+              >
+                <Button
+                  variant="contained"
+                  type="submit"
+                  className="global-submit-btn"
+                  disabled={showLoadder}
+                >
+                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                </Button>
+                <Button
+                  variant="contained"
+                  type="reset"
+                  // onClick={redirectToViewUsersGroup}
+                  className="global-cancel-btn"
+                >
+                  Cancel
+                </Button>
+                &nbsp;
+              </div>
+            </Grid>
+          </Grid>
         </ValidatorForm>
       </Paper>
     </div>

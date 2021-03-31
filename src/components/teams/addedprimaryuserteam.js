@@ -14,33 +14,32 @@ import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import teamService from "../../services/teamService";
-import FilterListIcon from '@material-ui/icons/FilterList';
+import FilterListIcon from "@material-ui/icons/FilterList";
 import Tooltip from "@material-ui/core/Tooltip";
 
 import ConfirmationDialog from "../common/confirmdialogbox";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import TextField from '@material-ui/core/TextField';
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import TextField from "@material-ui/core/TextField";
 
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import MasterService from "../../services/masterDataService";
-import UserGroupService from '../../services/userGroupService';
+import UserGroupService from "../../services/userGroupService";
 import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
-
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
 
 const styles = (theme) => ({
   root: {
@@ -48,7 +47,7 @@ const styles = (theme) => ({
     padding: theme.spacing(2),
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
@@ -73,7 +72,7 @@ function AddPrimaryUserTeam(props) {
   const UserGroupApi = new UserGroupApiServices();
   const UsersApi = new UserService();
   const masterDataCallApi = new MasterService();
-  const UserGroup=new UserGroupService();
+  const UserGroup = new UserGroupService();
 
   const [responsive, setResponsive] = useState("vertical");
   const [tableBodyHeight, setTableBodyHeight] = useState("300px");
@@ -94,12 +93,12 @@ function AddPrimaryUserTeam(props) {
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedTeamInfo, setSelectedTeamInfo] = useState();
   const [selectedUsersToGroup, setSelectedUsersToTeam] = useState([]);
-  const [openAssignTeamModal,setopenAssignTeamModal] = useState(false);
+  const [openAssignTeamModal, setopenAssignTeamModal] = useState(false);
   const [SelectedRowId, setSelectedRowId] = useState("");
 
-  const[designationMasterData,setdesignationMasterData]=useState();
-  const[userGroupList,setuserGroupList]=useState();
-  
+  const [designationMasterData, setdesignationMasterData] = useState();
+  const [userGroupList, setuserGroupList] = useState();
+
   const [Modalopen, setModalOpen] = useState(false);
 
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
@@ -116,19 +115,17 @@ function AddPrimaryUserTeam(props) {
     ConfirmationModalActionType,
     setConfirmationModalActionType,
   ] = useState("");
-  
 
-
-  const[selectedUserData,setselectedUserData]=useState();
-  const[selectedUserDesignation,setselectedUserDesignation]=useState();
-  const[searchformData,setsearchformData]=useState({
-    "primaryGroupId": "",
-  "designationId": "",
-  "covidStateId": "",
-  "roleIds": [],
-  "siteId": []
+  const [selectedUserData, setselectedUserData] = useState();
+  const [selectedUserDesignation, setselectedUserDesignation] = useState();
+  const [searchformData, setsearchformData] = useState({
+    primaryGroupId: "",
+    designationId: "",
+    covidStateId: "",
+    roleIds: [],
+    siteId: [],
   });
-  
+
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
@@ -136,7 +133,11 @@ function AddPrimaryUserTeam(props) {
       <MuiDialogTitle disableTypography className={classes.root} {...other}>
         <Typography variant="h6">{children}</Typography>
         {onClose ? (
-          <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
             <CloseIcon />
           </IconButton>
         ) : null}
@@ -151,7 +152,6 @@ function AddPrimaryUserTeam(props) {
     },
   }))(MuiDialogActions);
 
-
   useEffect(() => {
     if (teamId) {
       Promise.all([
@@ -159,9 +159,8 @@ function AddPrimaryUserTeam(props) {
         UsersApi.ListApplicationUsersForTeams(searchformData),
         masterDataCallApi.getDesignations(),
         UserGroup.loadUserGroup(),
-
       ])
-        .then(([teamInfo,applicationUsers,getDesignations,getUserList]) => {
+        .then(([teamInfo, applicationUsers, getDesignations, getUserList]) => {
           let primaryUsers = teamInfo.users;
           setApplicationUsers(applicationUsers);
           setSelectedTeamInfo(teamInfo);
@@ -237,14 +236,9 @@ function AddPrimaryUserTeam(props) {
         </div>
       );
     },
-
-
-
-
   };
 
   const columns = [
-    
     {
       name: "firstName",
       label: "Name",
@@ -258,7 +252,7 @@ function AddPrimaryUserTeam(props) {
       name: "userId",
       options: {
         filter: true,
-        sort:true,
+        sort: true,
       },
     },
     {
@@ -269,23 +263,15 @@ function AddPrimaryUserTeam(props) {
         sort: true,
       },
     },
-   
-    
   ];
 
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
 
-
-
-
   const handleClickOpenModal = () => {
- 
-   setModalOpen(true);
-      
+    setModalOpen(true);
   };
-
 
   const handleClose = () => {
     setModalOpen(false);
@@ -323,58 +309,57 @@ function AddPrimaryUserTeam(props) {
       });
   }
 
-
-  function selectedUser(e,value) {
+  function selectedUser(e, value) {
     setselectedUserData(value);
   }
 
- function selectedDesignation(e,value){
-   setselectedUserDesignation(value);
- }
-
- function AssignFiltersForm() {
-  if (searchformData) {
-    console.log(searchformData);
-    submitAssignTeams();
-  } else {
-    submitAssignTeams(false);
-    return false;
+  function selectedDesignation(e, value) {
+    setselectedUserDesignation(value);
   }
-}
 
+  function AssignFiltersForm() {
+    if (searchformData) {
+      console.log(searchformData);
+      submitAssignTeams();
+    } else {
+      submitAssignTeams(false);
+      return false;
+    }
+  }
 
-function submitAssignTeams() {
-  var teamData = searchformData;
-  teamData.designationId = selectedUserDesignation.id;
-  teamData.primaryGroupId=selectedUserData.id;
-  setshowLoadder(true);
- UsersApi.ListApplicationUsersForTeams(teamData)
-    .then((result) => {
-     setApplicationUsers(result);
-      setshowLoadder(false);
-      setModalOpen(false);
+  function submitAssignTeams() {
+    var teamData = searchformData;
+    teamData.designationId = selectedUserDesignation.id;
+    teamData.primaryGroupId = selectedUserData.id;
+    setshowLoadder(true);
+    UsersApi.ListApplicationUsersForTeams(teamData)
+      .then((result) => {
+        setApplicationUsers(result);
+        setshowLoadder(false);
+        setModalOpen(false);
       })
-    .catch((err) => {
-      console.log(err);
-      setToasterMessage(err.data.errors);
-      settoasterServerity("error");
-      setStateSnackbar(true);
-      setshowLoadder(false);
-    });
-}
-
-
+      .catch((err) => {
+        console.log(err);
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
+  }
 
   return (
     <div className="innerpage-container">
-       {/* <Dialog open={Modalopen} onClose={handleClose} aria-labelledby="form-dialog-title"> */}
-       <Dialog onClose={handleClose} aria-labelledby="form-dialog-title" open={Modalopen}>
-        <DialogTitle id="form-dialog-title" onClose={handleClose}>Filters</DialogTitle>
-        <ValidatorForm
-          className={`global-form`}
-          onSubmit={AssignFiltersForm}
-        >
-        <DialogContent dividers>
+      {/* <Dialog open={Modalopen} onClose={handleClose} aria-labelledby="form-dialog-title"> */}
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+        open={Modalopen}
+      >
+        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+          Filters
+        </DialogTitle>
+        <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
+          <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
                 <Grid item xs={12} container>
@@ -382,31 +367,29 @@ function submitAssignTeams() {
                     <label className="">Designation</label>
                   </Grid>
                   <Grid item xs={8}>
-                  <FormControl variant="outlined" fullWidth>
-                    <Autocomplete
-                      id="tags-outlined"
-                      options={
-                        designationMasterData &&
-                        designationMasterData.length > 0
-                          ? designationMasterData
-                          : []
-                      }
-                      getOptionLabel={(option) => option.name}
-                      defaultValue="#"
-                      onChange={selectedDesignation}
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select designation"
-                        />
-                      )}
-                    /> </FormControl>
-                    
-                 
-                   
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          designationMasterData &&
+                          designationMasterData.length > 0
+                            ? designationMasterData
+                            : []
+                        }
+                        getOptionLabel={(option) => option.name}
+                        defaultValue="#"
+                        onChange={selectedDesignation}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select designation"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
                   </Grid>
                 </Grid>
                 <Grid item cs={12} container>
@@ -415,35 +398,33 @@ function submitAssignTeams() {
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
-                    <Autocomplete
-                      id="tags-outlined"
-                      options={
-                        userGroupList &&
-                        userGroupList.length > 0
-                          ? userGroupList
-                          : []
-                      }
-                      getOptionLabel={(option) => option.groupName}
-                      defaultValue="#"
-                      onChange={selectedUser}
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select usergroup"
-                        />
-                      )}
-                    />  </FormControl>
-                    
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          userGroupList && userGroupList.length > 0
+                            ? userGroupList
+                            : []
+                        }
+                        getOptionLabel={(option) => option.groupName}
+                        defaultValue="#"
+                        onChange={selectedUser}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select usergroup"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
                   </Grid>
-                  
-                  
-                  </Grid></Grid>
-           ) : null}
-         </DialogContent>
-         <DialogActions>
+                </Grid>
+              </Grid>
+            ) : null}
+          </DialogContent>
+          <DialogActions>
             <Button
               variant="contained"
               type="submit"
@@ -456,10 +437,8 @@ function submitAssignTeams() {
               Cancel
             </Button>
           </DialogActions>
-         </ValidatorForm>
+        </ValidatorForm>
       </Dialog>
-                      
-
 
       {componentLoadder ? (
         <ComponentLoadderComponent />
@@ -499,7 +478,6 @@ function submitAssignTeams() {
               className="global-table table-wo-action"
             />
           </MuiThemeProvider>
-          
 
           <Grid container>
             <Grid item xs={12} className={`global-form inner-table-buttons`}>
@@ -516,9 +494,7 @@ function submitAssignTeams() {
                 <Button
                   variant="contained"
                   type="reset"
-                  onClick={() =>
-                    BreadcrumbNavigation("/teams/allteams")
-                  }
+                  onClick={() => BreadcrumbNavigation("/teams/allteams")}
                   className="global-cancel-btn"
                 >
                   Cancel
@@ -529,7 +505,6 @@ function submitAssignTeams() {
         </>
       )}
 
-     
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}

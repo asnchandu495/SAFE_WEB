@@ -33,6 +33,16 @@ export default class questionaireService {
     });
   }
 
+  ListAllAssignedQuestionnaires() {
+    return this.fetch(
+      `${this.questionaireURL}/AssignQuestionnaire/ListAllAssignedQuestionnaires`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
   deleteQuestionaire(data) {
     return this.fetch(`${this.questionaireURL}/Survey/DeleteSurvey/${data}`, {
       method: "DELETE",
