@@ -63,7 +63,6 @@ function Teams(props) {
     props
       .LoadAllTeams()
       .then((res) => {
-        
         setcomponentLoadder(false);
       })
       .catch((error) => {

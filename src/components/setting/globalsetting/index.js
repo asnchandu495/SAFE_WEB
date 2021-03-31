@@ -165,8 +165,8 @@ function GlobalSetting(props) {
     e.preventDefault();
     setshowLoadder(true);
     setisFormSubmit(true);
-    console.log("data");
-    console.log(JSON.stringify(formData));
+    // console.log("data");
+    // console.log(JSON.stringify(formData));
     // return false;
     let finalData = formData;
     finalData.socialDistanceTolerance = parseInt(
