@@ -410,7 +410,7 @@ function CustomizedDialogs(props) {
       console.log("gettheid");
       console.log(props.SelectedRowDetails.id);
       questionaireApiCall
-        .DeleteNumericQuestion(thisId)
+        .DeleteSinglechoiceQuestion(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted singlechoice Question.");
@@ -428,7 +428,7 @@ function CustomizedDialogs(props) {
       console.log("gettheid");
       console.log(props.SelectedRowDetails.id);
       questionaireApiCall
-        .DeleteNumericQuestion(thisId)
+        .DeleteMultichoiceQuestion(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted multochoice Question.");

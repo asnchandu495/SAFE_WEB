@@ -61,6 +61,12 @@ function BooleanDetails(props) {
     );
   }
 
+  function handleClickConditional(getQueDetails) {
+    history.push(
+      `/questionaires/${getQueDetails.surveyId}/conditional/boolean/${getQueDetails.id}`
+    );
+  }
+
   return (
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
@@ -84,6 +90,9 @@ function BooleanDetails(props) {
                 color="default"
                 startIcon={<SettingsIcon />}
                 className={`view-icon`}
+                onClick={() =>
+                  handleClickConditional(props.selectedQuestionDetails)
+                }
               ></Button>
             </Tooltip>
 

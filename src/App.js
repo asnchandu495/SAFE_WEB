@@ -57,6 +57,7 @@ import ViewTeam from "./components/teams/ViewTeam";
 import ListofQuestions from "./components/questionaires/listofQuestions";
 import ViewQuestionaire from "./components/questionaires/viewQuestionaire";
 import AssignQuestionaires from "./components/questionaires/AssignQuestionaires";
+import BooleanJump from "./components/questionaires/conditionalJump/booleanJumb";
 
 function App(props) {
   const AuthContainer = () => {
@@ -222,6 +223,10 @@ function App(props) {
         <Route
           path="/questionaires/assign"
           component={AssignQuestionaires}
+        ></Route>
+        <Route
+          path="/questionaires/:id/conditional/boolean/:qid"
+          component={BooleanJump}
         ></Route>
       </AdminLayout>
     );
@@ -389,6 +394,10 @@ function App(props) {
           component={AdminContainer}
         ></Route>
         <Route path="/questionaires/assign" component={AdminContainer}></Route>
+        <Route
+          path="/questionaires/:id/conditional/boolean/:qid"
+          component={AdminContainer}
+        ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />
         <Route path="/Unauthorized" component={ErrorPageContainer} />
       </Switch>
