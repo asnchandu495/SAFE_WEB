@@ -17,6 +17,19 @@ export default class questionaireService {
       return Promise.resolve(res);
     });
   }
+
+  AssignQuestionnaireToUserGroup(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/AssignQuestionnaire/AssignQuestionnaireToUserGroup`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
   GetAllQuestionarie() {
     return this.fetch(`${this.questionaireURL}/Survey/GetAllSurvey`, {
       method: "GET",

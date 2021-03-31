@@ -11,6 +11,8 @@ import ToasterMessageComponent from "../common/toaster";
 import UserGroupApiServices from "../../services/userGroupService";
 import UserService from "../../services/usersService";
 
+import ChangeStatusIcon from "@material-ui/icons/SyncAlt";
+
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -47,12 +49,25 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import questionaireService from "../../services/questionaireService";
-
 const QuestionaireApicall = new QuestionaireService();
 const userStatusData = [
-  { id: true, name: "Active" },
-  { id: false, name: "Inactive" },
+  { id: "true", name: "Active" },
+  { id: "false", name: "Inactive" },
 ];
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -71,18 +86,49 @@ function AssignQuestionaires(props) {
   const UserGroup = new UserGroupService();
 
   const UsersApi = new UserService();
+
   const [responsive, setResponsive] = useState("vertical");
   const [tableBodyHeight, setTableBodyHeight] = useState("400px");
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
 
   const [selectedUserData, setselectedUserData] = useState();
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUserQuestionnaire, setselectedUserQuestionnaire] = useState();
 
   const [showLoadder, setshowLoadder] = useState(false);
   const [userGroupList, setuserGroupList] = useState();
   const [QuestionaireList, setQuestionaireList] = useState();
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
 
-  const [formData, SetformData] = useState({});
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [
+    ConfirmationModalActionType,
+    setConfirmationModalActionType,
+  ] = useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [
+    ConfirmationDialogContextText,
+    setConfirmationDialogContextText,
+  ] = useState("");
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [componentLoadder, setComponentLoadder] = useState(true);
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
+
+  const [formData, SetformData] = useState({
+    groupdetails: {
+      id: "",
+      name: "",
+    },
+    questionnairedetails: {
+      id: "",
+      name: "",
+    },
+    status: "",
+  });
 
   const [Modalopen, setModalOpen] = useState(false);
   const handleClickOpenModal = () => {
@@ -92,9 +138,95 @@ function AssignQuestionaires(props) {
   const handleClose = () => {
     setModalOpen(false);
   };
-  function selectedUser(e, value) {
+
+  function handleChangeGroup(e, value) {
+    console.log(value);
     setselectedUserData(value);
   }
+  function handleChangeQuestionnaire(e, value) {
+    console.log(value);
+    setselectedUserQuestionnaire(value);
+  }
+
+  const handleClickOpenChangeStatusModal = (value) => {
+    console.log("value");
+    console.log(value);
+    setSelectedRowDetails();
+    setOpenConfirmationModal();
+    setConfirmationModalActionType("ChangeDocStatus");
+    setConfirmationHeaderTittle("Change emergency contact doc status");
+    // if (userStatus == true) {
+    setConfirmationDialogContextText(
+      `By changing the status to “Inactive”, users of the user group  will not be able to access any Emergency Contact documents. Are you sure you want to change status ?`
+    );
+    // } else {
+    setConfirmationDialogContextText(
+      `By changing the assignment status to “Active” the Emergency Contact document  will be available on mobile app for all users of the user group. Are you sure you want to change the status ?`
+    );
+    // }
+  };
+
+  function AssignFiltersForm() {
+    // console.log("data");
+
+    let selectedData = formData;
+    // console.log(selectedData.groupdetails);
+    // console.log(selectedData.questionnairedetails);
+    // console.log(selectedUserData);
+    // console.log(selectedUserQuestionnaire);
+    // console.log(selectedData.groupdetails.id);
+    selectedData.groupdetails.id = selectedUserData.id;
+    selectedData.groupdetails.name = selectedUserData.groupName;
+    selectedData.questionnairedetails.id = selectedUserQuestionnaire.id;
+    selectedData.questionnairedetails.name = selectedUserQuestionnaire.name;
+    console.log("formdata");
+    console.log(selectedData);
+    questionaireApiCall
+      .AssignQuestionnaireToUserGroup(selectedData)
+      .then((assignedres) => {
+        console.log(assignedres);
+      })
+      .catch((err) => {
+        console.log("error");
+        console.log("Only one questionnaire can be active for a user group");
+        console.log(err.data.errors);
+      });
+  }
+  function handleChange(e) {
+    // let selectedText = e.nativeEvent.target.childNodes[0].data;
+    const { name, value } = e.target;
+    SetformData((logInForm) => ({
+      ...logInForm,
+      [name]: value,
+    }));
+  }
+  function BreadcrumbNavigation(getRoute) {
+    props.history.push(getRoute);
+  }
+
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
 
   useEffect(() => {
     Promise.all([
@@ -103,8 +235,10 @@ function AssignQuestionaires(props) {
     ])
       .then(([getUserList, getQuestionaireList]) => {
         setuserGroupList(getUserList);
-        console.log(getUserList);
-        console.log(getQuestionaireList);
+        setQuestionaireList(getQuestionaireList);
+        // console.log(getUserList);
+        // console.log(getQuestionaireList);
+        setComponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
@@ -119,27 +253,13 @@ function AssignQuestionaires(props) {
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
     print: false,
+    // search: true,
     viewColumns: false,
     download: false,
-    disableToolbarSelect: true,
-    selectableRows: "multiple",
-    // rowsSelected: selectedUsersToGroup,
-    onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
-      setSelectedUsers(allRowsSelected);
-      console.log(allRowsSelected);
-      //   var selectedUsersToGroupArray = [];
-      //   allRowsSelected.map((user, i) => {
-      //     selectedUsersToGroupArray.push(user.dataIndex);
-      //   });
-      //   setSelectedUsersToTeam(selectedUsersToGroupArray);
-    },
-
+    selectableRows: false,
     textLabels: {
-      selectedRows: {
-        text: "user(s) added to team",
-      },
       body: {
-        noMatch: "There are no users",
+        noMatch: "There are no emergency contact assigned",
       },
     },
 
@@ -161,25 +281,68 @@ function AssignQuestionaires(props) {
     },
   };
 
-  const columns = ["Name", "Title", "Location"];
+  const columns = [
+    "Group Name",
+    "Questionnaire",
+    "Status",
+
+    {
+      label: "Action",
+      name: "",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          var isActive = thisRowData[5];
+          if (thisRowData) {
+            return (
+              <div className={`action-buttons-container`}>
+                <Tooltip title="Cancel assignement emergency contacts">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<CloseIcon />}
+                    className={[
+                      "delete-icon",
+                      isActive ? "HiddenButton" : "showButton",
+                    ].join(" ")}
+                    onClick="#"
+                  ></Button>
+                </Tooltip>
+
+                <Tooltip title="Change doc status">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<ChangeStatusIcon />}
+                    className={`edit-icon`}
+                    onClick={() =>
+                      handleClickOpenChangeStatusModal(thisRowData)
+                    }
+                  ></Button>
+                </Tooltip>
+              </div>
+            );
+          }
+        },
+        setCellProps: (value) => {
+          return {
+            style: { width: "250px", minWidth: "250px", textAlign: "center" },
+          };
+        },
+      },
+    },
+  ];
 
   const data = [
-    ["Gabby George", "Business Analyst", "Minneapolis"],
-    [
-      "Aiden Lloyd",
-      "Business Consultant for an International Company and CEO of Tony's Burger Palace",
-      "Dallas",
-    ],
-    ["Jaden Collins", "Attorney", "Santa Ana"],
-    ["Franky Rees", "Business Analyst", "St. Petersburg"],
-    ["Aaren Rose", null, "Toledo"],
-    ["Johnny Jones", "Business Analyst", "St. Petersburg"],
-    ["Jimmy Johns", "Business Analyst", "Baltimore"],
-    ["Jack Jackson", "Business Analyst", "El Paso"],
-    ["Joe Jones", "Computer Programmer", "El Paso"],
-    ["Jacky Jackson", "Business Consultant", "Baltimore"],
-    ["Jo Jo", "Software Developer", "Washington DC"],
-    ["Donna Marie", "Business Manager", "Annapolis"],
+    ["Admin", "Questionnaire One", "Active"],
+    ["Dev", "SSAPSurvey", "Inactive"],
+    ["group name", "SSAP Questionnaire Integration", "Active"],
+    ["HR", "Test Questionnaire", "Active"],
+    ["Infra", "Reactjs", "Active"],
+    ["Sumeru Bangalore", "Business Analyst", "Active"],
+    ["Test user group", "Business Analyst", "Active"],
   ];
 
   return (
@@ -192,115 +355,105 @@ function AssignQuestionaires(props) {
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Filters
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit="#">
+        <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
           <DialogContent dividers>
-            <Grid container spacing={3}>
-              <Grid item cs={12} container>
-                <Grid item xs={4}>
-                  <label className="">Group Name</label>
+            {!componentLoadder ? (
+              <Grid container spacing={3}>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="required">Group </label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          userGroupList && userGroupList.length > 0
+                            ? userGroupList
+                            : []
+                        }
+                        getOptionLabel={(option) => option.groupName}
+                        defaultValue="#"
+                        onChange={handleChangeGroup}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select usergroup"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
+                  </Grid>
                 </Grid>
-                <Grid item xs={8}>
-                  <FormControl variant="outlined" fullWidth>
-                    <Autocomplete
-                      id="tags-outlined"
-                      options={
-                        userGroupList && userGroupList.length > 0
-                          ? userGroupList
-                          : []
-                      }
-                      getOptionLabel={(option) => option.groupName}
-                      defaultValue="#"
-                      onChange="#"
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select usergroup"
-                        />
-                      )}
-                    />{" "}
-                  </FormControl>
-                </Grid>
-              </Grid>
 
-              <Grid item cs={12} container>
-                <Grid item xs={4}>
-                  <label className="required">Questionaire</label>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="required">Questionaire</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          QuestionaireList && QuestionaireList.length > 0
+                            ? QuestionaireList
+                            : []
+                        }
+                        getOptionLabel={(option) => option.name}
+                        defaultValue="#"
+                        onChange={handleChangeQuestionnaire}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select usergroup"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
+                  </Grid>
                 </Grid>
-                <Grid item xs={8}>
-                  <FormControl variant="outlined" fullWidth>
-                    <InputLabel
-                      id="demo-simple-select-outlined-label"
-                      shrink={false}
-                      className="select-label"
-                    >
-                      {formData.emergencyContactId == ""
-                        ? "Select emergency contact"
-                        : ""}
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      placeholder="Select emergency contact"
-                      name="emergencyContactId"
-                      value="#"
-                      onChange="#"
-                      className="global-input single-select"
-                    >
-                      <MenuItem value="">None</MenuItem>
-                      {QuestionaireList
-                        ? QuestionaireList.map((userGroup) => {
-                            return (
-                              <MenuItem key={userGroup.id} value={userGroup.id}>
-                                {userGroup.groupName}
-                              </MenuItem>
-                            );
-                          })
-                        : "no"}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <Grid item cs={12} container>
-                <Grid item xs={4}>
-                  <label className="required">Status</label>
-                </Grid>
-                <Grid item xs={8}>
-                  <FormControl variant="outlined" fullWidth>
-                    <InputLabel
-                      id="demo-simple-select-outlined-label"
-                      shrink={false}
-                      className="select-label"
-                    >
-                      {formData.isActive != "" ? "Select status" : ""}
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      placeholder="Select status"
-                      name="isActive"
-                      value={formData.isActive}
-                      onChange="#"
-                      className="global-input single-select"
-                    >
-                      <MenuItem value="">None</MenuItem>
-                      {userStatusData.length > 0
-                        ? userStatusData.map((UserStatus) => {
-                            return (
-                              <MenuItem value={UserStatus.id}>
-                                {UserStatus.name}
-                              </MenuItem>
-                            );
-                          })
-                        : ""}
-                    </Select>
-                  </FormControl>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="required">Status</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel
+                        id="demo-simple-select-outlined-label"
+                        shrink={false}
+                        className="select-label"
+                      ></InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        placeholder="Select status"
+                        name="status"
+                        value={formData.status}
+                        onChange={handleChange}
+                        className="global-input single-select"
+                      >
+                        <MenuItem value="">None</MenuItem>
+                        {userStatusData.length > 0
+                          ? userStatusData.map((UserStatus) => {
+                              return (
+                                <MenuItem value={UserStatus.id}>
+                                  {UserStatus.name}
+                                </MenuItem>
+                              );
+                            })
+                          : ""}
+                      </Select>
+                    </FormControl>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            {/* ) : null} */}
+            ) : null}
           </DialogContent>
           <DialogActions>
             <Button
@@ -308,48 +461,61 @@ function AssignQuestionaires(props) {
               type="submit"
               className="global-submit-btn"
               disabled={showLoadder}
-            ></Button>
+            >
+              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+            </Button>
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
             </Button>
           </DialogActions>
         </ValidatorForm>
       </Dialog>
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <>
+          <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
+            <LinkTo
+              color="inherit"
+              href="#"
+              to={`/home/dashboard`}
+              className="inactive"
+            >
+              Home
+            </LinkTo>
+            <LinkTo
+              color="textPrimary"
+              href="#"
+              to={`/teams/allteams`}
+              className="inactive"
+            >
+              Questionaire
+            </LinkTo>
 
-      <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
-        <LinkTo
-          color="inherit"
-          href="#"
-          to={`/home/dashboard`}
-          className="inactive"
-        >
-          Home
-        </LinkTo>
-        <LinkTo
-          color="textPrimary"
-          href="#"
-          to={`/teams/allteams`}
-          className="inactive"
-        >
-          Teams
-        </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
-          {/* {selectedTeamInfo.name} */}
-        </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="active">
-          Assign Users
-        </LinkTo>
-      </Breadcrumbs>
-      <MuiThemeProvider theme={theme1}>
-        {" "}
-        <MUIDataTable
-          title={""}
-          data={data}
-          columns={columns}
-          options={options}
-          className="global-table table-wo-action"
-        />
-      </MuiThemeProvider>
+            <LinkTo color="textPrimary" href="#" className="active">
+              Assign users to group
+            </LinkTo>
+          </Breadcrumbs>
+          <MuiThemeProvider theme={theme1}>
+            {" "}
+            <MUIDataTable
+              title={""}
+              data={data}
+              columns={columns}
+              options={options}
+              className="global-table"
+            />
+          </MuiThemeProvider>
+        </>
+      )}
+
+      <ToasterMessageComponent
+        stateSnackbar={stateSnackbar}
+        setStateSnackbar={setStateSnackbar}
+        toasterMessage={toasterMessage}
+        toasterServerity={toasterServerity}
+        toasterErrorMessageType={toasterErrorMessageType}
+      />
     </div>
   );
 }
