@@ -117,6 +117,28 @@ export default class questionaireService {
     });
   }
 
+  DeleteSinglechoiceQuestion(data) {
+    return this.fetch(
+      `${this.questionaireURL}/SingleChoiceQuestion/DeleteSingleChoiceQuestion/${data}`,
+      {
+        method: "DELETE",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  DeleteMultichoiceQuestion(data) {
+    return this.fetch(
+      `${this.questionaireURL}/MultipleChoiceQuestion/DeleteMultiChoiceQuestion/${data}`,
+      {
+        method: "DELETE",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   updateQuestionaire(data) {
     var finalData = JSON.stringify(data);
     return this.fetch(`${this.questionaireURL}/Survey/UpdateSurvey`, {
