@@ -15,10 +15,11 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import Grid from "@material-ui/core/Grid";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import ToasterMessageComponent from "../../common/toaster";
-
+import { useHistory } from "react-router-dom";
 import ConfirmationDialog from "../../common/confirmdialogbox";
 
 function SingleChoiceDetails(props) {
+  const history = useHistory();
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
@@ -55,6 +56,12 @@ function SingleChoiceDetails(props) {
     );
   }
 
+  function handleClickUpdateQuestions(getQueDetails) {
+    history.push(
+      `/questionaires/add-questions/${getQueDetails.surveyId}/${getQueDetails.id}?type=${getQueDetails.questionType}`
+    );
+  }
+
   return (
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
@@ -67,6 +74,9 @@ function SingleChoiceDetails(props) {
                 color="default"
                 startIcon={<EditIcon />}
                 className={`edit-icon`}
+                onClick={() =>
+                  handleClickUpdateQuestions(props.selectedQuestionDetails)
+                }
               ></Button>
             </Tooltip>
             <Tooltip title="Conditional jump">
@@ -133,30 +143,68 @@ function SingleChoiceDetails(props) {
             </Grid>
             <Grid item xs={12} container>
               <Grid item xs={3}>
-                <label>Red flag answer :</label>
+                <label>Is mandatory :</label>
               </Grid>
               <Grid item xs={9}>
                 <label>
                   {props.selectedQuestionDetails
-                    ? props.selectedQuestionDetails.positiveResponse
+                    ? props.selectedQuestionDetails.isMandatory
+                      ? "Yes"
+                      : "No"
                     : ""}
                 </label>
               </Grid>
             </Grid>
-
             <Grid item xs={12} container>
               <Grid item xs={3}>
-                <label>positiveConformityForNumbers:</label>
+                <label>Choices :</label>
               </Grid>
               <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.positiveConformityForNumber &&
-                  props.selectedQuestionDetails.positiveConformityForNumber
+                <ul className="question_choices_list">
+                  {props.selectedQuestionDetails.surveyResponseChoices.map(
+                    (opt) => {
+                      return <li key={`choices_${opt.id}`}>{opt.option}</li>;
+                    }
+                  )}
+                </ul>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} container>
+              <Grid item xs={3}>
+                <label>Red flag :</label>
+              </Grid>
+              <Grid item xs={9}>
+                <ul className="question_choices_list">
+                  {props.selectedQuestionDetails.redFlagForSingleChoice.length >
+                  0
+                    ? props.selectedQuestionDetails.redFlagForSingleChoice.map(
+                        (opt) => {
+                          return (
+                            <li key={`choicesR_${opt.id}`}>{opt.option}</li>
+                          );
+                        }
+                      )
+                    : ""}
+                </ul>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} container>
+              <Grid item xs={3}>
+                <label>Positive flag:</label>
+              </Grid>
+              <Grid item xs={9}>
+                <ul className="question_choices_list">
+                  {props.selectedQuestionDetails.positiveConformitySingleChoice
                     .length > 0
-                    ? props.selectedQuestionDetails.positiveConformityForNumber
-                        .numericExpressionType
-                    : []}
-                </label>
+                    ? props.selectedQuestionDetails.positiveConformitySingleChoice.map(
+                        (opt) => {
+                          return (
+                            <li key={`choicesP_${opt.id}`}>{opt.option}</li>
+                          );
+                        }
+                      )
+                    : ""}
+                </ul>
               </Grid>
             </Grid>
           </Grid>

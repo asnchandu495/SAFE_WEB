@@ -16,6 +16,12 @@ import Grid from "@material-ui/core/Grid";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import ToasterMessageComponent from "../../common/toaster";
 import { useHistory } from "react-router-dom";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import ConfirmationDialog from "../../common/confirmdialogbox";
 
 function NumericDetails(props) {
@@ -142,87 +148,74 @@ function NumericDetails(props) {
             </Grid>
             <Grid item xs={12} container>
               <Grid item xs={3}>
-                <label>numericExpressionType :</label>
+                <label>Is mandatory :</label>
               </Grid>
               <Grid item xs={9}>
                 <label>
-                  {props.selectedQuestionDetails.positiveConformityForNumber
-                    .length > 0
-                    ? props.selectedQuestionDetails
-                        .positiveConformityForNumber[0].numericExpressionType
+                  {props.selectedQuestionDetails
+                    ? props.selectedQuestionDetails.isMandatory
+                      ? "Yes"
+                      : "No"
                     : ""}
                 </label>
               </Grid>
             </Grid>
             <Grid item xs={12} container>
               <Grid item xs={3}>
-                <label>forAnswer :</label>
+                <label>Red flag :</label>
               </Grid>
               <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.positiveConformityForNumber
-                    .length > 0
-                    ? props.selectedQuestionDetails
-                        .positiveConformityForNumber[0].forAnswer
-                    : ""}
-                </label>
+                <Table aria-label="simple table" className="flag-details-table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Expression type</TableCell>
+                      <TableCell>From</TableCell>
+                      <TableCell>To</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {props.selectedQuestionDetails.redFlagForNumber.map(
+                      (row) => (
+                        <TableRow key={row.expressionType}>
+                          <TableCell component="th" scope="row">
+                            {row.expressionType}
+                          </TableCell>
+                          <TableCell>{row.forAnswer}</TableCell>
+                          <TableCell>{row.forRangeEnd}</TableCell>
+                        </TableRow>
+                      )
+                    )}
+                  </TableBody>
+                </Table>
               </Grid>
             </Grid>
-
             <Grid item xs={12} container>
               <Grid item xs={3}>
-                <label>forRangeEnd :</label>
+                <label>Positive flag :</label>
               </Grid>
               <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.positiveConformityForNumber
-                    .length > 0
-                    ? props.selectedQuestionDetails
-                        .positiveConformityForNumber[0].forRangeEnd
-                    : ""}
-                </label>
-              </Grid>
-            </Grid>
-
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>numericExpressionType :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.redFlagForNumber.length > 0
-                    ? props.selectedQuestionDetails.redFlagForNumber[0]
-                        .numericExpressionType
-                    : ""}
-                </label>
-              </Grid>
-            </Grid>
-
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>forAnswer :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.redFlagForNumber.length > 0
-                    ? props.selectedQuestionDetails.redFlagForNumber[0]
-                        .forAnswer
-                    : ""}
-                </label>
-              </Grid>
-            </Grid>
-
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>forRangeEnd :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails.redFlagForNumber.length > 0
-                    ? props.selectedQuestionDetails.redFlagForNumber[0]
-                        .forRangeEnd
-                    : ""}
-                </label>
+                <Table aria-label="simple table" className="flag-details-table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Expression type</TableCell>
+                      <TableCell>From</TableCell>
+                      <TableCell>To</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {props.selectedQuestionDetails.positiveConformityForNumber.map(
+                      (row) => (
+                        <TableRow key={row.expressionType}>
+                          <TableCell component="th" scope="row">
+                            {row.expressionType}
+                          </TableCell>
+                          <TableCell>{row.forAnswer}</TableCell>
+                          <TableCell>{row.forRangeEnd}</TableCell>
+                        </TableRow>
+                      )
+                    )}
+                  </TableBody>
+                </Table>
               </Grid>
             </Grid>
           </Grid>

@@ -863,6 +863,9 @@ label.required {
         height: 48px;
       }
     }
+    .question-card-choice-flag {
+      margin-top: 15px;
+    }
     .action-container {
       display: inline-flex !important;
       justify-content: flex-end;
@@ -963,5 +966,41 @@ label.required {
       font-size: 13px !important;
       color: #fff !important;
     }
+  }
+}
+
+.flag-card-dynamic-choices {
+  box-shadow: none !important;
+  padding: 5px 15px;
+}
+
+.flag-details-table {
+  border: 1px solid #ccc;
+  .MuiTableCell-root {
+    padding: 8px;
+  }
+}
+
+.question_choices_list {
+  padding-left: 0;
+  margin-top: 0;
+  list-style: none;
+  counter-reset: item;
+  li {
+    counter-increment: item;
+    margin-bottom: 5px;
+  }
+  li:before {
+    margin-right: 10px;
+    content: counter(item);
+    background: var(--info-17a2b8) 0% 0% no-repeat padding-box;
+    border-radius: 100%;
+    color: white;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    font-size: 12px;
+    align-items: center;
+    justify-content: center;
   }
 }

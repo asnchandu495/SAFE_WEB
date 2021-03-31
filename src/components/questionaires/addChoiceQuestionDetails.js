@@ -35,36 +35,143 @@ function AddChoiceQuestionDetails(props) {
     isMandatory: true,
     surveyResponseChoices: [
       {
-        id: "",
-        name: "",
+        optionId: "",
+        option: "",
       },
     ],
   });
   const [singleChoiceFlag, setSingleChoiceFlag] = useState({
-    questionId: "",
+    questionId: props.questionIdURL,
     isPositiveConfirmity: true,
     isPositiveConfirmityRedFlag: true,
-    positiveConformitySingleChoice: [],
-    redFlagForSingleChoice: [],
+    positiveConformitySingleChoice: [
+      {
+        optionId: "",
+        option: "",
+      },
+    ],
+    redFlagForSingleChoice: [
+      {
+        optionId: "",
+        option: "",
+      },
+    ],
   });
+  const [multiChoiceFlag, setMultiChoiceFlag] = useState({
+    questionId: props.questionIdURL,
+    isPositiveConfirmity: true,
+    isPositiveConfirmityRedFlag: true,
+    positiveConformityMultiChoice: [
+      {
+        options: [
+          {
+            optionId: "",
+            option: "",
+          },
+        ],
+      },
+    ],
+    redFlagForMultipleChoice: [
+      {
+        options: [
+          {
+            optionId: "",
+            option: "",
+          },
+        ],
+      },
+    ],
+  });
+  const [showFlags, setShowFlags] = useState(false);
 
   useEffect(() => {
     if (props.questionIdURL != 0) {
-      questionaireApiCall
-        .GetSingleChoiceQuestion(props.questionIdURL)
-        .then((res) => {
-          console.log(res);
-          setAddQuestionWithChoices((addQuestionWithChoices) => ({
-            ...addQuestionWithChoices,
-            surveyResponseChoices: res.surveyResponseChoices,
-          }));
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+      if (props.questionTypeForm.questionType == "SingleChoice") {
+        questionaireApiCall
+          .GetSingleChoiceQuestion(props.questionIdURL)
+          .then((res) => {
+            setAddQuestionWithChoices(res);
+            setAddQuestionWithChoices(res);
+            let newSingleChoiceFlag = {
+              questionId: res.id,
+              isPositiveConfirmity: res.isPositiveConfirmity,
+              isPositiveConfirmityRedFlag: res.isPositiveConfirmity,
+              positiveConformitySingleChoice:
+                res.positiveConformitySingleChoice.length > 0
+                  ? res.positiveConformitySingleChoice
+                  : [
+                      {
+                        optionId: "",
+                        option: "",
+                      },
+                    ],
+              redFlagForSingleChoice:
+                res.redFlagForSingleChoice.length > 0
+                  ? res.redFlagForSingleChoice
+                  : [
+                      {
+                        optionId: "",
+                        option: "",
+                      },
+                    ],
+            };
+            setSingleChoiceFlag(newSingleChoiceFlag);
+            setShowFlags(true);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      } else {
+        questionaireApiCall
+          .GetMultipleChoicQuestionById(props.questionIdURL)
+          .then((res) => {
+            setAddQuestionWithChoices(res);
+            let newMultiChoiceFlag = {
+              questionId: res.id,
+              isPositiveConfirmity: res.isPositiveConfirmity,
+              isPositiveConfirmityRedFlag: res.isPositiveConfirmity,
+              positiveConformityMultiChoice:
+                res.positiveConformityMultiChoice.length > 0
+                  ? res.positiveConformityMultiChoice
+                  : [
+                      {
+                        options: [
+                          {
+                            optionId: "",
+                            option: "",
+                          },
+                        ],
+                      },
+                    ],
+              redFlagForMultipleChoice:
+                res.redFlagForMultipleChoice.length > 0
+                  ? res.redFlagForMultipleChoice
+                  : [
+                      {
+                        options: [
+                          {
+                            optionId: "",
+                            option: "",
+                          },
+                        ],
+                      },
+                    ],
+            };
+            setMultiChoiceFlag(newMultiChoiceFlag);
+            setShowFlags(true);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      }
+    } else {
+      setShowFlags(true);
     }
   }, [props.questionIdURL]);
 
@@ -79,9 +186,7 @@ function AddChoiceQuestionDetails(props) {
 
   const navigateToQuestionType = () => {
     setTimeout(() => {
-      //   props.setGotoAddQuestion(false);
-      console.log(props);
-      props.history.push(`/questionaires/allquestionaires`);
+      props.setGotoAddQuestion(false);
     }, 1000);
   };
 
@@ -93,32 +198,57 @@ function AddChoiceQuestionDetails(props) {
         ...addQuestionWithChoices,
         ...props.questionTypeForm,
       };
-      console.log(finalObject);
-      return false;
-      questionaireApiCall
-        .AddSingleChoiceQuestion(finalObject)
-        .then((res) => {
-          setshowLoadder(false);
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Added new question.");
-          settoasterServerity("success");
-          setTimeout(function () {
-            setAddQuestionWithChoices((addQuestionWithChoices) => ({
-              ...addQuestionWithChoices,
-              id: res.id,
-            }));
-            props.history.push(
-              `/questionaires/add-questions/${props.surveyIdURL}/${res.id}`
-            );
-          }, 7000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+      if (finalObject.id != 0) {
+        questionaireApiCall
+          .UpdateSingleChoiceQuestion(finalObject)
+          .then((res) => {
+            setshowLoadder(false);
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Selected question updated.");
+            settoasterServerity("success");
+            setTimeout(function () {
+              setAddQuestionWithChoices((addQuestionWithChoices) => ({
+                ...addQuestionWithChoices,
+                id: res.id,
+              }));
+              props.history.push(
+                `/questionaires/add-questions/${props.surveyIdURL}/${res.id}?type=SingleChoice`
+              );
+            }, 10000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      } else {
+        questionaireApiCall
+          .AddSingleChoiceQuestion(finalObject)
+          .then((res) => {
+            setshowLoadder(false);
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Added new question.");
+            settoasterServerity("success");
+            setTimeout(function () {
+              setAddQuestionWithChoices((addQuestionWithChoices) => ({
+                ...addQuestionWithChoices,
+                id: res.id,
+              }));
+              props.history.push(
+                `/questionaires/add-questions/${props.surveyIdURL}/${res.id}?type=SingleChoice`
+              );
+            }, 10000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      }
     } else if (props.questionTypeForm.questionType == "MultiChoice") {
       const finalObject = {
         ...addQuestionWithChoices,
@@ -132,6 +262,15 @@ function AddChoiceQuestionDetails(props) {
           setStateSnackbar(true);
           setToasterMessage("Added new question.");
           settoasterServerity("success");
+          setTimeout(function () {
+            setAddQuestionWithChoices((addQuestionWithChoices) => ({
+              ...addQuestionWithChoices,
+              id: res.id,
+            }));
+            props.history.push(
+              `/questionaires/add-questions/${props.surveyIdURL}/${res.id}?type=SingleChoice`
+            );
+          }, 10000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -165,8 +304,8 @@ function AddChoiceQuestionDetails(props) {
               questionTypeForm={props.questionTypeForm}
               setAddQuestionWithChoices={setAddQuestionWithChoices}
               addQuestionWithChoices={addQuestionWithChoices}
-              setSingleChoiceFlag={setSingleChoiceFlag}
-              singleChoiceFlag={singleChoiceFlag}
+              setMultiChoiceFlag={setMultiChoiceFlag}
+              multiChoiceFlag={multiChoiceFlag}
             ></QuestionTypeMultiSelect>
           </Grid>
         );
@@ -200,169 +339,54 @@ function AddChoiceQuestionDetails(props) {
     list.surveyResponseChoices = [
       ...thisChoices,
       {
-        id: "",
-        name: "",
+        optionId: "",
+        option: "",
       },
     ];
     setAddQuestionWithChoices(list);
   };
 
+  function submitQuestionFormFlags(e) {
+    e.preventDefault();
+    if (props.questionTypeForm.questionType == "SingleChoice") {
+      questionaireApiCall
+        .UpdateSingleChoiceFlags(singleChoiceFlag)
+        .then((res) => {
+          setshowLoadder(false);
+          setisAlertBoxOpened(false);
+          setStateSnackbar(true);
+          setToasterMessage("Added new question.");
+          settoasterServerity("success");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    } else {
+      console.log(JSON.stringify(multiChoiceFlag));
+      questionaireApiCall
+        .UpdateMultiChoiceFlags(multiChoiceFlag)
+        .then((res) => {
+          setshowLoadder(false);
+          setisAlertBoxOpened(false);
+          setStateSnackbar(true);
+          setToasterMessage("Added new question.");
+          settoasterServerity("success");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
+  }
+
   return (
     <>
       <ValidatorForm onSubmit={submitQuestionForm}>
-        <Card className="question-card">
-          <CardContent className="scrollable-card scrollable-card-choices">
-            <Typography gutterBottom variant="h6" component="h6">
-              Question details
-            </Typography>
-            <Grid item xs={12} sm={12}>
-              <Grid spacing={3} container className="question-details">
-                <Grid item container sm={12}>
-                  <Grid item sm={2}>
-                    <label className="required">Question</label>
-                  </Grid>
-                  <Grid item sm={10}>
-                    <TextValidator
-                      variant="outlined"
-                      validators={[
-                        "required",
-                        "matchRegexp:^[a-zA-Z ]*$",
-                        "matchRegexp:^.{0,50}$",
-                      ]}
-                      errorMessages={[
-                        "Please enter question",
-                        "Only alphabets are allowed",
-                        "Maximum 50 characters",
-                      ]}
-                      fullWidth
-                      id="question"
-                      placeholder="Enter Question"
-                      name="question"
-                      value={addQuestionWithChoices.question}
-                      onChange={handleChange}
-                      autoFocus
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid item sm={12} container>
-                  <Grid item sm={2}>
-                    <label>Description</label>
-                  </Grid>
-                  <Grid item sm={10}>
-                    <TextValidator
-                      variant="outlined"
-                      fullWidth
-                      id="description"
-                      placeholder="Enter Description"
-                      validators={["matchRegexp:^.{0,150}$"]}
-                      errorMessages={["Maximum 150 characters"]}
-                      name="description"
-                      multiline
-                      rows={2}
-                      value={addQuestionWithChoices.description}
-                      onChange={handleChange}
-                      className="global-input global-input-multiline"
-                      InputLabelProps={{ shrink: false }}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid item container sm={12} className="flag-card-dynamic">
-                  <Grid item sm={2}>
-                    <label className="required">Answers</label>
-                  </Grid>
-                  <Grid item sm={10}>
-                    {addQuestionWithChoices.surveyResponseChoices &&
-                    addQuestionWithChoices.surveyResponseChoices.length > 0
-                      ? addQuestionWithChoices.surveyResponseChoices.map(
-                          (x, i) => {
-                            return (
-                              <Grid
-                                container
-                                spacing={1}
-                                item
-                                xs={12}
-                                className="dynamic-rows-bottom"
-                                key={`choice-container${i}`}
-                              >
-                                <Grid item xs={6}>
-                                  <TextValidator
-                                    variant="outlined"
-                                    validators={["required"]}
-                                    errorMessages={["Please enter answer"]}
-                                    fullWidth
-                                    id={`name${i}`}
-                                    placeholder="Enter answer"
-                                    name="name"
-                                    value={x.name}
-                                    onChange={(e) =>
-                                      handleInputChangeChoices(e, i)
-                                    }
-                                    className="global-input"
-                                    InputLabelProps={{ shrink: false }}
-                                  />
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={2}
-                                  className="row-icons-container"
-                                >
-                                  {addQuestionWithChoices.surveyResponseChoices
-                                    .length !== 1 && (
-                                    <Tooltip title="Remove">
-                                      <CancelIcon
-                                        className={`delete-row-icon`}
-                                        onClick={() =>
-                                          handleRemoveClickChoices(i)
-                                        }
-                                      ></CancelIcon>
-                                    </Tooltip>
-                                  )}
-                                  {addQuestionWithChoices.surveyResponseChoices
-                                    .length -
-                                    1 ===
-                                    i && (
-                                    <Tooltip title="Add">
-                                      <AddCircleIcon
-                                        className={`add-row-icon`}
-                                        onClick={handleAddClickChoices}
-                                      ></AddCircleIcon>
-                                    </Tooltip>
-                                  )}
-                                </Grid>
-                              </Grid>
-                            );
-                          }
-                        )
-                      : ""}
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </CardContent>
-          <CardActions className="action-container">
-            <Button
-              size="small"
-              type="button"
-              onClick={navigateToQuestionType}
-              className="global-cancel-btn"
-              variant="contained"
-            >
-              Back
-            </Button>
-            <Button
-              variant="contained"
-              type="submit"
-              className="global-submit-btn"
-              disabled={showLoadder}
-            >
-              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-            </Button>
-          </CardActions>
-        </Card>
-      </ValidatorForm>
-      {/* <ValidatorForm onSubmit={submitQuestionForm}>
         <Card className="question-card">
           <CardContent className="scrollable-card scrollable-card-choices">
             <Typography gutterBottom variant="h6" component="h6">
@@ -514,7 +538,45 @@ function AddChoiceQuestionDetails(props) {
             </Button>
           </CardActions>
         </Card>
-      </ValidatorForm> */}
+      </ValidatorForm>
+      {showFlags ? (
+        <ValidatorForm
+          onSubmit={submitQuestionFormFlags}
+          className="flag-container"
+        >
+          <Card className="question-card question-card-choice-flag flag-card">
+            <CardContent className="scrollable-card scrollable-card-choices">
+              {props.questionTypeForm.questionType == "SingleChoice" ? (
+                <QuestionTypeSingleSelect
+                  questionTypeForm={props.questionTypeForm}
+                  singleChoiceFlag={singleChoiceFlag}
+                  setSingleChoiceFlag={setSingleChoiceFlag}
+                  addQuestionWithChoices={addQuestionWithChoices}
+                ></QuestionTypeSingleSelect>
+              ) : (
+                <QuestionTypeMultiSelect
+                  questionTypeForm={props.questionTypeForm}
+                  multiChoiceFlag={multiChoiceFlag}
+                  setMultiChoiceFlag={setMultiChoiceFlag}
+                  addQuestionWithChoices={addQuestionWithChoices}
+                ></QuestionTypeMultiSelect>
+              )}
+            </CardContent>
+            <CardActions className="action-container">
+              <Button
+                variant="contained"
+                type="submit"
+                className="global-submit-btn"
+                disabled={showLoadder}
+              >
+                {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+              </Button>
+            </CardActions>
+          </Card>
+        </ValidatorForm>
+      ) : (
+        ""
+      )}
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}

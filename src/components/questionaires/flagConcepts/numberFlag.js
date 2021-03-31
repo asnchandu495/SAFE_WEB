@@ -56,23 +56,13 @@ function QuestionTypeNumber(props) {
   })(Switch);
 
   const handleChangeFlagR = (e, index) => {
+    console.log(index);
     const { name, value } = e.target;
-    let thisVal = "";
-    if (name == "expressionType") {
-      thisVal = value;
-    } else {
-      let getValue = value;
-      if (getValue != "") {
-        thisVal = parseInt(getValue);
-      } else {
-        thisVal = 0;
-      }
-    }
     const list = {
       ...props.numericFlag,
       redFlagForNumber: [
         ...props.numericFlag.redFlagForNumber.map((con, conIndex) =>
-          conIndex == index ? { ...con, [name]: thisVal } : con
+          conIndex == index ? { ...con, [name]: value } : con
         ),
       ],
     };
@@ -88,8 +78,6 @@ function QuestionTypeNumber(props) {
       let getValue = value;
       if (getValue != "") {
         thisVal = parseInt(getValue);
-      } else {
-        thisVal = 0;
       }
     }
     const list = {
@@ -119,8 +107,8 @@ function QuestionTypeNumber(props) {
       {
         id: "",
         expressionType: "",
-        forAnswer: "",
-        forRangeEnd: "",
+        forAnswer: 0,
+        forRangeEnd: 0,
       },
     ];
     props.setNumericFlag(list);
@@ -140,8 +128,8 @@ function QuestionTypeNumber(props) {
       {
         id: "",
         expressionType: "",
-        forAnswer: "",
-        forRangeEnd: "",
+        forAnswer: 0,
+        forRangeEnd: 0,
       },
     ];
     props.setNumericFlag(list);
@@ -285,7 +273,7 @@ function QuestionTypeNumber(props) {
                               <TextValidator
                                 variant="outlined"
                                 fullWidth
-                                id={`forAnswerR${i}`}
+                                id={`forAnswerRR${i}`}
                                 placeholder="Your answer"
                                 name="forAnswer"
                                 value={x.forAnswer}
@@ -393,7 +381,7 @@ function QuestionTypeNumber(props) {
                                   <TextValidator
                                     variant="outlined"
                                     fullWidth
-                                    id={`forAnswerR${i}`}
+                                    id={`forAnswerP${i}`}
                                     placeholder="Your answer"
                                     name="forAnswer"
                                     value={x.forAnswer}
@@ -416,7 +404,7 @@ function QuestionTypeNumber(props) {
                                   <TextValidator
                                     variant="outlined"
                                     fullWidth
-                                    id={`forRangeEndR${i}`}
+                                    id={`forRangeEndP${i}`}
                                     placeholder="Your answer"
                                     name="forRangeEnd"
                                     value={x.forRangeEnd}
@@ -441,7 +429,7 @@ function QuestionTypeNumber(props) {
                                 <TextValidator
                                   variant="outlined"
                                   fullWidth
-                                  id={`forAnswerR${i}`}
+                                  id={`forAnswerPP${i}`}
                                   placeholder="Your answer"
                                   name="forAnswer"
                                   value={x.forAnswer}
