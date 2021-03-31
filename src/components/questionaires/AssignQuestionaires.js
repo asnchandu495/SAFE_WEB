@@ -151,8 +151,8 @@ function AssignQuestionaires(props) {
   const handleClickOpenChangeStatusModal = (value) => {
     console.log("value");
     console.log(value);
-    setSelectedRowDetails();
-    setOpenConfirmationModal();
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(value);
     setConfirmationModalActionType("ChangeDocStatus");
     setConfirmationHeaderTittle("Change emergency contact doc status");
     // if (userStatus == true) {
