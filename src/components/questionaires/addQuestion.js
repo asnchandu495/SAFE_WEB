@@ -165,7 +165,7 @@ function AddQuestion(props) {
           to={`/questionaires/allquestionaires`}
           className="inactive"
         >
-          Questionaires
+          Questionnaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="inactive">
           {ViewQuestionaireDetails ? ViewQuestionaireDetails.name : ""}

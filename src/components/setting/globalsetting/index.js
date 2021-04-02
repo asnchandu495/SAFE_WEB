@@ -684,10 +684,7 @@ function GlobalSetting(props) {
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label>
-                    Duration to lock user account on Maximum unsuccessfull login
-                    attempts:
-                  </label>
+                  <label>Unlock duration of user account</label>
                 </Grid>
                 <Grid item xs={2}>
                   <FormControl variant="outlined">
@@ -716,7 +713,7 @@ function GlobalSetting(props) {
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label className="required">Automated checked out time</label>
+                  <label className="required">Automated check-out time</label>
                 </Grid>
                 <Grid item xs={2}>
                   <FormControl variant="outlined">
@@ -891,7 +888,10 @@ function GlobalSetting(props) {
                 spacing={1}
               >
                 <Grid item xs={3}>
-                  <label>Allow check-in without WFH location approval</label>
+                  <label>
+                    Allow exceptional check-in when WFHL request is in pending
+                    status
+                  </label>
                 </Grid>
 
                 <Grid item xs={2}>
@@ -913,7 +913,8 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">
-                    Allow check-in without profile selfie approval
+                    Allow exceptional check-in when Profile selfie request is in
+                    pending status
                   </label>
                 </Grid>
 
@@ -979,8 +980,14 @@ function GlobalSetting(props) {
               </Grid>
 
               <Grid item container xs={12}>
+                <Grid item xs={3}>
+                  <label>&nbsp;</label>
+                </Grid>
                 <Grid item xs={9}>
-                  <div className={`form-buttons-container`}>
+                  <div
+                    className={`form-buttons-container`}
+                    style={{ marginBottom: "9px" }}
+                  >
                     <Button
                       variant="contained"
                       type="submit"
@@ -992,10 +999,12 @@ function GlobalSetting(props) {
                     <Button
                       variant="contained"
                       type="reset"
+                      // onClick={redirectToViewUsersGroup}
                       className="global-cancel-btn"
                     >
                       Cancel
                     </Button>
+                    &nbsp;
                   </div>
                 </Grid>
               </Grid>

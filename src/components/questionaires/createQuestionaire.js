@@ -151,10 +151,10 @@ function CreateQuestionarie(props) {
           to={`/questionaires/allquestionaires`}
           className="inactive"
         >
-          Questionarie
+          Questionnaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          {paramsId != 0 ? "Update Questionaire" : "Create Questionaire"}
+          {paramsId != 0 ? "Update Questionnaire" : "Create Questionnaire"}
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (

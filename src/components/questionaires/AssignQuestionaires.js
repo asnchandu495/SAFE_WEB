@@ -13,6 +13,7 @@ import UserService from "../../services/usersService";
 
 import ChangeStatusIcon from "@material-ui/icons/SyncAlt";
 
+import * as QuestionaireAction from "../../Redux/Action/questionaireAction";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -94,11 +95,14 @@ function AssignQuestionaires(props) {
   const [selectedUserData, setselectedUserData] = useState();
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedUserQuestionnaire, setselectedUserQuestionnaire] = useState();
+  const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
 
   const [showLoadder, setshowLoadder] = useState(false);
   const [userGroupList, setuserGroupList] = useState();
   const [QuestionaireList, setQuestionaireList] = useState();
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+
+  const [SelectedRowId, setSelectedRowId] = useState("");
 
   const [assignedqList, setassignedqList] = useState([]);
 
@@ -131,15 +135,32 @@ function AssignQuestionaires(props) {
     },
     status: "",
   });
+  const [resetformData, SetresetformData] = useState({
+    groupdetails: {
+      id: "",
+      name: "",
+    },
+    questionnairedetails: {
+      id: "",
+      name: "",
+    },
+    status: "",
+  });
 
   const [Modalopen, setModalOpen] = useState(false);
   const handleClickOpenModal = () => {
     setModalOpen(true);
+    // setSelectedRowId(value);
   };
 
   const handleClose = () => {
     setModalOpen(false);
+    resetData();
   };
+
+  function resetData() {
+    SetformData(resetformData);
+  }
 
   function handleChangeGroup(e, value) {
     console.log(value);
@@ -178,31 +199,40 @@ function AssignQuestionaires(props) {
   };
   function AssignFiltersForm() {
     // console.log("data");
-    let selectedData = formData;
-    // console.log(selectedData.groupdetails);
-    // console.log(selectedData.questionnairedetails);
-    // console.log(selectedUserData);
-    // console.log(selectedUserQuestionnaire);
-    // console.log(selectedData.groupdetails.id);
+    setshowLoadder(true);
+    var selectedData = formData;
+
     selectedData.groupdetails.id = selectedUserData.id;
     selectedData.groupdetails.name = selectedUserData.groupName;
     selectedData.questionnairedetails.id = selectedUserQuestionnaire.id;
     selectedData.questionnairedetails.name = selectedUserQuestionnaire.name;
     console.log("formdata");
     console.log(selectedData);
-    questionaireApiCall
-      .AssignQuestionnaireToUserGroup(selectedData)
-      .then((assignedres) => {
-        console.log(assignedres);
+    props
+      .AssignQuestionairetoGroup(selectedData)
+      .then((result) => {
+        console.log("true");
+        setStateSnackbar(true);
+        setToasterMessage("Questionnaire assigned to User Group.");
+        settoasterServerity("success");
+        setTimeout(() => {
+          setModalOpen(false);
+          resetData();
+          setshowLoadder(false);
+        }, 3000);
       })
       .catch((err) => {
-        console.log("error");
-        console.log("Only one questionnaire can be active for a user group");
-        console.log(err.data.errors);
+        console.log("false");
+        console.log(err);
+        setToasterMessage(err.data);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
       });
   }
   function handleChange(e) {
     // let selectedText = e.nativeEvent.target.childNodes[0].data;
+    setisAlertBoxOpened(true);
     const { name, value } = e.target;
     SetformData((logInForm) => ({
       ...logInForm,
@@ -239,14 +269,16 @@ function AssignQuestionaires(props) {
 
   useEffect(() => {
     Promise.all([
-      QuestionaireApicall.ListAllAssignedQuestionnaires(),
+      props.LoadAllAssignQuestionire(),
+      // QuestionaireApicall.ListAllAssignedQuestionnaires(),
       UserGroup.loadUserGroup(),
       QuestionaireApicall.GetAllQuestionarie(),
     ])
       .then(([getassignedQuestionaire, getUserList, getQuestionaireList]) => {
+        console.log("redux");
         console.log(getassignedQuestionaire);
-        setassignedqList(getassignedQuestionaire);
-        console.log(formData);
+        // setassignedqList(getassignedQuestionaire);
+        // console.log(assignedqList);
         setuserGroupList(getUserList);
         setQuestionaireList(getQuestionaireList);
         // console.log(getUserList);
@@ -272,7 +304,7 @@ function AssignQuestionaires(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no emergency contact assigned",
+        noMatch: "There are no  assigned users",
       },
     },
 
@@ -304,10 +336,36 @@ function AssignQuestionaires(props) {
         filter: false,
       },
     },
-
-    "Group Name",
-    "Questionnaire",
-    "Status",
+    {
+      name: "groupDetails",
+      label: "User Group",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return <div>{value && value.name}</div>;
+        },
+      },
+    },
+    {
+      name: "questionnaireDetails",
+      label: "questionnaire",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return <div>{value && value.name}</div>;
+        },
+      },
+    },
+    {
+      name: "status",
+      label: "Status",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
 
     {
       label: "Action",
@@ -360,37 +418,14 @@ function AssignQuestionaires(props) {
     },
   ];
 
-  const data = [
-    [
-      "39faff67733241ce4914fb289f4be333",
-      "Admin",
-      "Questionnaire One",
-      "Active",
-    ],
-    ["01", "Dev", "SSAPSurvey", "Inactive"],
-    [
-      "39fb483814e8aa8f61233fd98c0f67c4",
-      "group name",
-      "SSAP Questionnaire Integration",
-      "Active",
-    ],
-    ["02", "HR", "Test Questionnaire", "Active"],
-    ["39fb08236ef55c92cc584c03875a6007", "Infra", "Reactjs", "Active"],
-    [
-      "39fb288a659be3beaa742bbb9214fae7",
-      "Sumeru Bangalore",
-      "Business Analyst",
-      "Active",
-    ],
-    ["Test user group", "Business Analyst", "Active"],
-  ];
-
   return (
     <div className="innerpage-container">
       <Dialog
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
         open={Modalopen}
+        className="global-dialog"
+        // open={props.Modalopen}
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Filters
@@ -431,7 +466,7 @@ function AssignQuestionaires(props) {
 
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="required">Questionaire</label>
+                    <label className="required">Questionnaire</label>
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
@@ -529,7 +564,7 @@ function AssignQuestionaires(props) {
               to={`/teams/allteams`}
               className="inactive"
             >
-              Questionaire
+              Questionnaire
             </LinkTo>
 
             <LinkTo color="textPrimary" href="#" className="active">
@@ -540,7 +575,12 @@ function AssignQuestionaires(props) {
             {" "}
             <MUIDataTable
               title={""}
-              data={data}
+              // data={assignedqList ? assignedqList : []}
+              data={
+                props.AssignQuestionairesData
+                  ? props.AssignQuestionairesData
+                  : []
+              }
               columns={columns}
               options={options}
               className="global-table"
@@ -571,4 +611,28 @@ function AssignQuestionaires(props) {
   );
 }
 
-export default AssignQuestionaires;
+AssignQuestionaires.propTypes = {
+  AssignQuestionairesData: PropTypes.array.isRequired,
+  LoadAllAssignQuestionire: PropTypes.func.isRequired,
+  AssignQuestionairetoGroup: PropTypes.func.isRequired,
+  ChangeQuestionnaireStatus: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    AssignQuestionairesData: state.questionaireState,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadAllAssignQuestionire: QuestionaireAction.loadAssignQuestionnaire,
+  AssignQuestionairetoGroup: QuestionaireAction.assignQuestionaire,
+  ChangeQuestionnaireStatus: QuestionaireAction.ChangeQuestionnaireStatus,
+};
+
+// export default AssignQuestionaires;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AssignQuestionaires);

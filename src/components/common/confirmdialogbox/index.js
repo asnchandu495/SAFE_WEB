@@ -158,11 +158,12 @@ function CustomizedDialogs(props) {
         });
     } else if (props.ConfirmationModalActionType == "CancelQuestionaire") {
       var thisId = props.SelectedRowDetails[0];
+
       props
-        .DeletEmergencyContactList1(thisId)
+        .DeleteQuestionaireUsergroup(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Deleted Emergency Contacts.");
+          props.setToasterMessage("Deleted Questionaire.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -221,29 +222,26 @@ function CustomizedDialogs(props) {
       props.ConfirmationModalActionType == "ChangeQuestionnaireStatus"
     ) {
       let thisId = props.SelectedRowDetails[0];
-      console.log("id");
-      console.log(thisId);
-      console.log(props.SelectedRowDetails);
-      // return false;
+      // console.log("id");
+      // console.log(thisId);
+      // console.log(props.SelectedRowDetails);
       let data = {
         id: props.SelectedRowDetails[0],
-        // emergencyContactId: props.SelectedRowDetails[1],
-        // userGroupId: props.SelectedRowDetails[2],
         status: props.SelectedRowDetails[3],
       };
-
       console.log(data);
       if (data.status == "Active") {
         data.status = "Inactive";
       } else {
         data.status = "Active";
       }
-
-      questionaireApiCall
-        .ChangeQuestionnaireStatus(data)
+      // questionaireApiCall
+      //   .ChangeQuestionnaireStatus(data)
+      props
+        .ChangeQuestionnaireUserStatus(data)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Updated questionnaire.");
+          props.setToasterMessage("Updated");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
@@ -541,10 +539,13 @@ function mapStateToProps(state, ownProps) {}
 
 const mapDispatchToProps = {
   DeletEmergencyContactList: EmergencyContactAction.DeletEmergencyContactList,
+  DeleteQuestionaireUsergroup:
+    QuestionaireAction.deleteQuestionaireUsergroupData,
   DeletAssignEmergencyContactList:
     AssignEmergencyContactAction.DeletAssignEmergencyContactList,
   ChangeAssignEmergencyContactStatus:
     AssignEmergencyContactAction.UpdateAssignEmergencyContact,
+  ChangeQuestionnaireUserStatus: QuestionaireAction.ChangeQuestionnaireStatus,
   DeleteUser: UserAction.deleteUser,
 
   DelteUserDesignation: DesignationAction.deleteUserDesignation,
