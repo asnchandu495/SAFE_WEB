@@ -67,6 +67,12 @@ function DateDetails(props) {
     );
   }
 
+  function handleClickConditional(getQueDetails) {
+    history.push(
+      `/questionaires/${getQueDetails.surveyId}/conditional/date/${getQueDetails.id}`
+    );
+  }
+
   return (
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
