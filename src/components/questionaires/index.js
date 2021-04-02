@@ -203,7 +203,7 @@ function Questionaire(props) {
     props.history.push(`/questionaires/view-questions/${getRowData[0]}`);
   }
 
-  function questionaireEvaluation() {
+  function questionaireEvaluation(getRowData) {
     props.history.push(
       `/questionaires/questionnaire-evaluation/${getRowData[0]}`
     );
