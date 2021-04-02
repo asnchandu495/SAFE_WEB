@@ -139,6 +139,16 @@ export default class questionaireService {
     });
   }
 
+  RemoveQuestionnaireFromUserGroup(data) {
+    return this.fetch(
+      `${this.questionaireURL}/RemoveQuestionnaire/RemoveQuestionnaireFromUserGroup/${data}`,
+      {
+        method: "DELETE",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
   updateQuestionaire(data) {
     var finalData = JSON.stringify(data);
     return this.fetch(`${this.questionaireURL}/Survey/UpdateSurvey`, {

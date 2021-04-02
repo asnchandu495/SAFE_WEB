@@ -920,7 +920,7 @@ function AdminLayout(props) {
                   <ListAltIcon />
                 </ListItemIcon>
                 <ListItemText
-                  primary="questionaires"
+                  primary="Questionnaire"
                   className={clsx({
                     [classes.hide]: !openDrawer,
                   })}

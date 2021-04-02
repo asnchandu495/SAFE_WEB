@@ -83,7 +83,7 @@ function ViewQuestionaire(props) {
           Home
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Questionaire
+          Questionnaire
         </LinkTo>
         <LinkTo
           color="textPrimary"
@@ -91,7 +91,7 @@ function ViewQuestionaire(props) {
           to={`/questionaires/allquestionaires`}
           className="inactive"
         >
-          view Questionaire
+          view Questionnaire
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper">

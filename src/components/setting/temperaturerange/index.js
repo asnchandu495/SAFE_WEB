@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import HomeIcon from "@material-ui/icons/Home";
@@ -23,8 +23,10 @@ import { Link as LinkTo } from "react-router-dom";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 
 import GlobalSettingApiServices from "../../../services/globalSettingService";
+import CovidStateApiServices from "../../../services/masterDataService";
 
 const GlobalSettingApi = new GlobalSettingApiServices();
+const CovidStateApi = new CovidStateApiServices();
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -35,6 +37,18 @@ const useStyles = makeStyles((theme) => ({
 function TemperatureRange(props) {
   const classes = useStyles();
   const [showLoadder, setshowLoadder] = useState(false);
+  const [covidStatelist, setcovidStatelist] = useState([]);
+  const [formData, SetformData] = useState({
+    id: "",
+    lowerLimit: 0,
+    upperLimit: 0,
+    globalSettingsId: "",
+    covidState: {
+      id: "",
+      state: "",
+    },
+  });
+  const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [temperatureConfigForm, setTemperatureConfigForm] = useState([
     {
       id: "",
@@ -73,6 +87,19 @@ function TemperatureRange(props) {
     },
   ];
 
+  useEffect(() => {
+    CovidStateApi.getCOVIDStates()
+      .then((result) => {
+        // setcomponentLoadder(false);
+        console.log("yes");
+        console.log(result);
+        setcovidStatelist(result);
+      })
+      .catch((err) => {
+        console.log("eror");
+        console.log(err);
+      });
+  }, []);
   function submitForm(e) {
     e.preventDefault();
     console.log("hfdjsdh");
@@ -81,6 +108,24 @@ function TemperatureRange(props) {
     GlobalSettingApi.UpdateCovidStateTemperature(formData);
   }
 
+  // function handleChange(e) {
+  //   setisAlertBoxOpened(true);
+  //   const { name, value } = e.target;
+  //   SetformData((logInForm) => ({
+  //     ...logInForm,
+  //     [name]: value,
+  //   }));
+  // }
+
+  function handleChange(e) {
+    setisAlertBoxOpened(true);
+    const { name, value } = e.target;
+
+    SetformData((emergencyContact) => ({
+      ...emergencyContact,
+      [name]: value,
+    }));
+  }
   // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -141,13 +186,22 @@ function TemperatureRange(props) {
 
               <Grid item xs={2}>
                 <FormControl variant="outlined" fullWidth>
+                  <InputLabel
+                    id="demo-simple-select-outlined-label"
+                    shrink={false}
+                    className="select-label"
+                  >
+                    {formData.globalSettingsId == ""
+                      ? "Select temperatures"
+                      : ""}
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"
                     id="demo-simple-select-outlined"
-                    value="#"
-                    name="uomtemp"
-                    onChange="#"
-                    placeholder="Select"
+                    value={formData.globalSettingsId}
+                    name="globalSettingsId"
+                    onChange={handleChange}
+                    placeholder=""
                     required
                     InputLabelProps={{ shrink: false }}
                     className="global-input single-select"
@@ -190,7 +244,7 @@ function TemperatureRange(props) {
                   spacing={1}
                 >
                   <Grid item xs={3}>
-                    <label className="required">Please select</label>
+                    <label className="required">Select COVID state</label>
                   </Grid>
                   <Grid item xs={2}>
                     <FormControl variant="outlined" fullWidth>
@@ -199,22 +253,21 @@ function TemperatureRange(props) {
                         shrink={false}
                         className="select-label"
                       >
-                        {" "}
-                        Select state
+                        {formData.covidState == "" ? "Select covid state" : ""}
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
-                        label="Select state"
                         name="covidState"
+                        placeholder=""
                         className="global-input single-select"
                         InputLabelProps={{ shrink: false }}
                         value={x.covidState}
                         onChange={(e) => handleInputChange(e, i)}
                       >
                         <MenuItem value="">None</MenuItem>
-                        {covidStates.length > 0
-                          ? covidStates.map((cState) => {
+                        {covidStatelist
+                          ? covidStatelist.map((cState) => {
                               return (
                                 <MenuItem value={cState.id}>
                                   {cState.stateName}

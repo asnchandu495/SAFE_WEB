@@ -180,7 +180,7 @@ function Questionaire(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no questionaires",
+        noMatch: "There are no questionnaire",
       },
     },
   };
@@ -215,7 +215,7 @@ function Questionaire(props) {
               aria-current="page"
               className="active"
             >
-              Questionnaires
+              Questionnaire
             </LinkTo>
           </Breadcrumbs>
 
