@@ -161,6 +161,19 @@ export default class questionaireService {
     });
   }
 
+  ChangeQuestionnaireStatus(data) {
+    var finalData = JSON.stringify(data);
+    return this.fetch(
+      `${this.questionaireURL}/AssignQuestionnaire/ChangeQuestionnaireStatus`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getSurveyById(id) {
     return this.fetch(`${this.questionaireURL}/Survey/GetSurveyById/${id}`, {
       method: "GET",

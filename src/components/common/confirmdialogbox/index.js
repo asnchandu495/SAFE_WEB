@@ -156,6 +156,20 @@ function CustomizedDialogs(props) {
           console.log(error);
           toasterErrorMessage(error);
         });
+    } else if (props.ConfirmationModalActionType == "CancelQuestionaire") {
+      var thisId = props.SelectedRowDetails[0];
+      props
+        .DeletEmergencyContactList1(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted Emergency Contacts.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
     } else if (props.ConfirmationModalActionType == "EmergencyContactCancel") {
       var thisId = props.SelectedRowDetails;
       props
@@ -196,6 +210,40 @@ function CustomizedDialogs(props) {
           props.setToasterMessage(
             "Updated Emergency Contact assignment status to User Group."
           );
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          toasterErrorMessage(error);
+        });
+    } else if (
+      props.ConfirmationModalActionType == "ChangeQuestionnaireStatus"
+    ) {
+      let thisId = props.SelectedRowDetails[0];
+      console.log("id");
+      console.log(thisId);
+      console.log(props.SelectedRowDetails);
+      // return false;
+      let data = {
+        id: props.SelectedRowDetails[0],
+        // emergencyContactId: props.SelectedRowDetails[1],
+        // userGroupId: props.SelectedRowDetails[2],
+        status: props.SelectedRowDetails[3],
+      };
+
+      console.log(data);
+      if (data.status == "Active") {
+        data.status = "Inactive";
+      } else {
+        data.status = "Active";
+      }
+
+      questionaireApiCall
+        .ChangeQuestionnaireStatus(data)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Updated questionnaire.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })

@@ -51,8 +51,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import questionaireService from "../../services/questionaireService";
 const QuestionaireApicall = new QuestionaireService();
 const userStatusData = [
-  { id: "true", name: "Active" },
-  { id: "false", name: "Inactive" },
+  { id: "Active", name: "Active" },
+  { id: "Inactive", name: "Inactive" },
 ];
 
 const styles = (theme) => ({
@@ -99,6 +99,8 @@ function AssignQuestionaires(props) {
   const [userGroupList, setuserGroupList] = useState();
   const [QuestionaireList, setQuestionaireList] = useState();
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+
+  const [assignedqList, setassignedqList] = useState([]);
 
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [
@@ -149,26 +151,33 @@ function AssignQuestionaires(props) {
   }
 
   const handleClickOpenChangeStatusModal = (value) => {
-    console.log("value");
+    var userStatus = value[3];
     console.log(value);
-    setSelectedRowDetails();
-    setOpenConfirmationModal();
-    setConfirmationModalActionType("ChangeDocStatus");
-    setConfirmationHeaderTittle("Change emergency contact doc status");
-    // if (userStatus == true) {
-    setConfirmationDialogContextText(
-      `By changing the status to “Inactive”, users of the user group  will not be able to access any Emergency Contact documents. Are you sure you want to change status ?`
-    );
-    // } else {
-    setConfirmationDialogContextText(
-      `By changing the assignment status to “Active” the Emergency Contact document  will be available on mobile app for all users of the user group. Are you sure you want to change the status ?`
-    );
-    // }
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("ChangeQuestionnaireStatus");
+    setConfirmationHeaderTittle("Change questionaire status");
+    if (userStatus == "Active") {
+      setConfirmationDialogContextText(
+        `By changing the status to “Inactive”, users of the user group ${value[3]} will not be able to access any  documents. Are you sure you want to change status ?`
+      );
+    } else {
+      setConfirmationDialogContextText(
+        `By changing the assignment status to “Active” the  Contact document  will be available on mobile app for all users of the user group. Are you sure you want to change the status ?`
+      );
+    }
   };
-
+  const handleClickOpenConfirmationModal = (value) => {
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("CancelQuestionaire");
+    setConfirmationHeaderTittle("Cancel assigned ");
+    setConfirmationDialogContextText(
+      `Are you sure you want to cancel assignment  to user group `
+    );
+  };
   function AssignFiltersForm() {
     // console.log("data");
-
     let selectedData = formData;
     // console.log(selectedData.groupdetails);
     // console.log(selectedData.questionnairedetails);
@@ -230,10 +239,14 @@ function AssignQuestionaires(props) {
 
   useEffect(() => {
     Promise.all([
+      QuestionaireApicall.ListAllAssignedQuestionnaires(),
       UserGroup.loadUserGroup(),
       QuestionaireApicall.GetAllQuestionarie(),
     ])
-      .then(([getUserList, getQuestionaireList]) => {
+      .then(([getassignedQuestionaire, getUserList, getQuestionaireList]) => {
+        console.log(getassignedQuestionaire);
+        setassignedqList(getassignedQuestionaire);
+        console.log(formData);
         setuserGroupList(getUserList);
         setQuestionaireList(getQuestionaireList);
         // console.log(getUserList);
@@ -282,6 +295,16 @@ function AssignQuestionaires(props) {
   };
 
   const columns = [
+    {
+      name: "id",
+      label: "Id",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+
     "Group Name",
     "Questionnaire",
     "Status",
@@ -298,7 +321,7 @@ function AssignQuestionaires(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="Cancel assignement emergency contacts">
+                <Tooltip title="Cancel ">
                   <Button
                     variant="contained"
                     color="default"
@@ -307,7 +330,9 @@ function AssignQuestionaires(props) {
                       "delete-icon",
                       isActive ? "HiddenButton" : "showButton",
                     ].join(" ")}
-                    onClick="#"
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
                   ></Button>
                 </Tooltip>
 
@@ -336,12 +361,27 @@ function AssignQuestionaires(props) {
   ];
 
   const data = [
-    ["Admin", "Questionnaire One", "Active"],
-    ["Dev", "SSAPSurvey", "Inactive"],
-    ["group name", "SSAP Questionnaire Integration", "Active"],
-    ["HR", "Test Questionnaire", "Active"],
-    ["Infra", "Reactjs", "Active"],
-    ["Sumeru Bangalore", "Business Analyst", "Active"],
+    [
+      "39faff67733241ce4914fb289f4be333",
+      "Admin",
+      "Questionnaire One",
+      "Active",
+    ],
+    ["01", "Dev", "SSAPSurvey", "Inactive"],
+    [
+      "39fb483814e8aa8f61233fd98c0f67c4",
+      "group name",
+      "SSAP Questionnaire Integration",
+      "Active",
+    ],
+    ["02", "HR", "Test Questionnaire", "Active"],
+    ["39fb08236ef55c92cc584c03875a6007", "Infra", "Reactjs", "Active"],
+    [
+      "39fb288a659be3beaa742bbb9214fae7",
+      "Sumeru Bangalore",
+      "Business Analyst",
+      "Active",
+    ],
     ["Test user group", "Business Analyst", "Active"],
   ];
 
@@ -509,6 +549,17 @@ function AssignQuestionaires(props) {
         </>
       )}
 
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        SelectedRowDetails={SelectedRowDetails}
+      />
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
