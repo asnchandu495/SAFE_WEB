@@ -161,7 +161,7 @@ function Questionaire(props) {
                     color="default"
                     startIcon={<QuestionAnswerOutlinedIcon />}
                     className={`edit-icon`}
-                    onClick={() => gotoViewQuestion(thisRowData)}
+                    onClick={() => questionaireEvaluation(thisRowData)}
                   ></Button>
                 </Tooltip>
               </div>
