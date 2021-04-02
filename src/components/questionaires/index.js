@@ -154,6 +154,16 @@ function Questionaire(props) {
                     onClick={() => gotoViewQuestion(thisRowData)}
                   ></Button>
                 </Tooltip>
+
+                <Tooltip title="Questionnaire Evaluation">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<QuestionAnswerOutlinedIcon />}
+                    className={`edit-icon`}
+                    onClick={() => gotoViewQuestion(thisRowData)}
+                  ></Button>
+                </Tooltip>
               </div>
             );
           }
@@ -191,6 +201,12 @@ function Questionaire(props) {
 
   function gotoViewQuestion(getRowData) {
     props.history.push(`/questionaires/view-questions/${getRowData[0]}`);
+  }
+
+  function questionaireEvaluation() {
+    props.history.push(
+      `/questionaires/questionnaire-evaluation/${getRowData[0]}`
+    );
   }
 
   return (

@@ -49,6 +49,7 @@ import Questionaire from "./components/questionaires";
 import CreateQuestionarie from "./components/questionaires/createQuestionaire";
 import AddQuestion from "./components/questionaires/addQuestion";
 import ViewQuestions from "./components/questionaires/viewQuestions";
+import QuestionnaireEvaluation from "./components/questionaires/questionnaireEvaluation";
 import InternalServer from "./components/common/ErrorPage/InternalServerError/index";
 import Unauthorized from "./components/common/ErrorPage/Unauthorized/index";
 import Teams from "./components/teams";
@@ -220,6 +221,10 @@ function App(props) {
         <Route
           path="/questionaires/view-questions/:id"
           component={ViewQuestions}
+        ></Route>
+        <Route
+          path="/questionaires/questionnaire-evaluation/:id"
+          component={QuestionnaireEvaluation}
         ></Route>
         <Route
           path="/questionaires/assign"
@@ -396,6 +401,10 @@ function App(props) {
         ></Route>
         <Route
           path="/questionaires/view-questions/:id"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/questionaires/questionnaire-evaluation/:id"
           component={AdminContainer}
         ></Route>
         <Route path="/questionaires/assign" component={AdminContainer}></Route>
