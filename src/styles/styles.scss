@@ -1006,7 +1006,7 @@ label.required {
 }
 
 .jump-form-content {
-  padding: 10px;
+  padding: 25px 10px;
 }
 
 .center-align-w-padding-v {
@@ -1020,5 +1020,30 @@ label.required {
   }
   .MuiGrid-item {
     height: auto i !important;
+  }
+}
+
+.answer-logic-container {
+  margin-bottom: 15px !important;
+}
+
+.checkbox-grid {
+  .MuiCheckbox-root {
+    padding: 9px 0;
+  }
+}
+
+.global-input-outlined {
+  .MuiInputLabel-outlined {
+    z-index: 1;
+    transform: translate(14px, 14px) scale(1);
+    pointer-events: none;
+    font-size: 12px;
+  }
+  .MuiInputLabel-outlined.MuiInputLabel-shrink {
+    transform: translate(14px, -5px) scale(0.75);
+    background-color: #fff;
+    font-size: 14px;
+    padding: 0 5px;
   }
 }

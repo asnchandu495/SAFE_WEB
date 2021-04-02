@@ -8,74 +8,47 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
-import { withStyles } from "@material-ui/core/styles";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import InputLabel from "@material-ui/core/InputLabel";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import questionaireService from "../../../services/questionaireService";
+import ToasterMessageComponent from "../../common/toaster";
+import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 
 function BooleanJump(props) {
   const surveyId = props.match.params.id;
   const questionId = props.match.params.qid;
   const questionaireApiCall = new questionaireService();
 
+  const [componentLoadder, setcomponentLoadder] = useState(true);
   const [showLoadder, setshowLoadder] = useState(false);
   const [conditionalJump, setConditionalJump] = useState({
+    id: "",
     surveyQuestionId: questionId,
-    isConditionalJump: false,
-    // booleanConditionalQuestions: [
-    //   {
-    //     id: "",
-    //     answer: "",
-    //     goToSurveyQuestionId: "string",
-    //   },
-    // ],
-    positiveResponseQuestionId: { id: "", question: "" },
-    negativeResponseQuestionId: { id: "", question: "" },
+    positiveResponseQuestionId: "",
+    negativeResponseQuestionId: "",
   });
-  const [answersToSelect, setAnswersToSelect] = useState([
-    { id: "TRUE", name: "TRUE" },
-    { id: "FALSE", name: "FALSE" },
-  ]);
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
 
   useEffect(() => {
     questionaireApiCall
       .GetAllQuestionsBySurveyId(surveyId)
       .then((res) => {
         setSelectedSurveyQuestions(res);
+        setcomponentLoadder(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
-  const PurpleSwitch = withStyles({
-    switchBase: {
-      color: "#be1d56",
-      "&$checked": {
-        color: "#26235d",
-      },
-      "&$checked + $track": {
-        backgroundColor: "#26235d",
-      },
-    },
-    checked: {},
-    track: {},
-  })(Switch);
-
-  const handleChangeRedFlagSwitch = (e) => {
-    const { name, value } = e.target;
-    setConditionalJump((conditionalJump) => ({
-      ...conditionalJump,
-      [name]: e.target.checked,
-    }));
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -85,23 +58,29 @@ function BooleanJump(props) {
     }));
   };
 
-  const handleChangePositiveQuestion = (getSelectedVal, index) => {
-    setConditionalJump((conditionalJump) => ({
-      ...conditionalJump,
-      ["positiveResponseQuestionId"]: getSelectedVal,
-    }));
-  };
-
-  const handleChangeNegativeQuestion = (getSelectedVal, index) => {
-    setConditionalJump((conditionalJump) => ({
-      ...conditionalJump,
-      ["negativeResponseQuestionId"]: getSelectedVal,
-    }));
-  };
-
   function submitForm(e) {
     e.preventDefault();
-    console.log(conditionalJump);
+    setshowLoadder(true);
+    questionaireApiCall
+      .addBooleanConditionalJump(conditionalJump)
+      .then((result) => {
+        setStateSnackbar(true);
+        setToasterMessage("Conditional jump is added.");
+        settoasterServerity("success");
+        setshowLoadder(false);
+        setConditionalJump({
+          id: "",
+          surveyQuestionId: questionId,
+          positiveResponseQuestionId: "",
+          negativeResponseQuestionId: "",
+        });
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
 
   return (
@@ -132,164 +111,163 @@ function BooleanJump(props) {
       </Breadcrumbs>
       <div className="main-paper-add-question">
         <div className="add-new-question">
-          <Card className="question-card auto-height-card">
-            <ValidatorForm className={`global-form`} onSubmit={submitForm}>
-              <CardContent>
-                <Typography gutterBottom variant="h6" component="h6">
-                  Conditional jump
-                </Typography>
-                <Grid
-                  container
-                  xs={12}
-                  sm={12}
-                  className="jump-form-content"
-                  spacing={1}
-                >
-                  <Grid item container xs={12}>
-                    <Grid item xs={4}>
-                      <label className="required">Conditional switch</label>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <FormControlLabel
-                        control={
-                          <PurpleSwitch
-                            checked={conditionalJump.isConditionalJump}
-                            name="isConditionalJump"
-                            onChange={handleChangeRedFlagSwitch}
-                          />
-                        }
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item container xs={12}>
-                    <Grid item xs={4}>
-                      <label className="required">Select question</label>
-                    </Grid>
-                    <Grid container xs={8} spacing={2}>
-                      <Grid item container xs={12}>
-                        {/* <Grid item xs={4}>
-                          <FormControl variant="outlined" fullWidth>
-                            <Select
-                              labelId="demo-simple-select-outlined-label"
-                              id="demo-simple-select-outlined"
-                              value={conditionalJump.positiveResponseQuestionId}
-                              name="positiveResponseQuestionId"
-                              onChange={handleChange}
-                              placeholder="Answer type"
-                              InputLabelProps={{
-                                shrink: false,
-                              }}
-                              className="global-input single-select"
-                            >
-                              <MenuItem value="">
-                                <em>None</em>
-                              </MenuItem>
-                              {answersToSelect.map((ans) => {
-                                return (
-                                  <MenuItem
-                                    value={ans.id}
-                                    key={`atypered_${ans.id}`}
-                                  >
-                                    {ans.name}
-                                  </MenuItem>
-                                );
-                              })}
-                            </Select>
-                          </FormControl>
-                        </Grid> */}
-                        <Grid item xs={4} className="center-align-w-padding-v">
-                          If answer is YES
-                        </Grid>
-                        <Grid item xs={8}>
-                          <FormControl variant="outlined" fullWidth>
-                            <Autocomplete
-                              id="tags-outlined"
-                              options={
-                                selectedSurveyQuestions &&
-                                selectedSurveyQuestions.length > 0
-                                  ? selectedSurveyQuestions
-                                  : []
-                              }
-                              getOptionLabel={(opt) => opt.question}
-                              defaultValue={
-                                conditionalJump.positiveResponseQuestionId
-                              }
-                              onChange={(e, v) =>
-                                handleChangePositiveQuestion(v)
-                              }
-                              filterSelectedOptions
-                              className="global-input autocomplete-select"
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  variant="outlined"
-                                  placeholder="Select answer"
-                                />
-                              )}
-                            />
-                          </FormControl>
-                        </Grid>
+          {!componentLoadder ? (
+            <Card className="question-card auto-height-card">
+              <ValidatorForm className={`global-form`} onSubmit={submitForm}>
+                <CardContent>
+                  <Typography gutterBottom variant="h6" component="h6">
+                    Conditional jump
+                  </Typography>
+                  <Grid
+                    container
+                    xs={12}
+                    sm={12}
+                    className="jump-form-content"
+                    spacing={1}
+                  >
+                    <Grid item container xs={12}>
+                      <Grid item xs={2}>
+                        <label className="required">Select question</label>
                       </Grid>
-                      <Grid item container xs={12}>
-                        <Grid item xs={4} className="center-align-w-padding-v">
-                          If answer is NO
+                      <Grid container xs={8} spacing={2}>
+                        <Grid item container xs={12}>
+                          <Grid
+                            item
+                            xs={4}
+                            className="center-align-w-padding-v"
+                          >
+                            If answer is YES
+                          </Grid>
+                          <Grid item xs={8}>
+                            <FormControl variant="outlined" fullWidth>
+                              <InputLabel
+                                id="demo-simple-select-outlined-label"
+                                shrink={false}
+                                className="select-label"
+                              >
+                                {conditionalJump.positiveResponseQuestionId ==
+                                ""
+                                  ? "Select question"
+                                  : ""}
+                              </InputLabel>
+                              <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={
+                                  conditionalJump.positiveResponseQuestionId
+                                }
+                                name="positiveResponseQuestionId"
+                                onChange={handleChange}
+                                placeholder="Select question"
+                                InputLabelProps={{
+                                  shrink: false,
+                                }}
+                                className="global-input single-select"
+                              >
+                                <MenuItem value="">
+                                  <em>None</em>
+                                </MenuItem>
+                                {selectedSurveyQuestions.map((ans) => {
+                                  return (
+                                    <MenuItem
+                                      value={ans.id}
+                                      key={`atypered_${ans.id}`}
+                                    >
+                                      {ans.question}
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Select>
+                            </FormControl>
+                          </Grid>
                         </Grid>
-                        <Grid item xs={8}>
-                          <FormControl variant="outlined" fullWidth>
-                            <Autocomplete
-                              id="tags-outlined"
-                              options={
-                                selectedSurveyQuestions &&
-                                selectedSurveyQuestions.length > 0
-                                  ? selectedSurveyQuestions
-                                  : []
-                              }
-                              getOptionLabel={(opt) => opt.question}
-                              defaultValue={
-                                conditionalJump.negativeResponseQuestionId
-                              }
-                              onChange={(e, v) =>
-                                handleChangeNegativeQuestion(v)
-                              }
-                              filterSelectedOptions
-                              className="global-input autocomplete-select"
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  variant="outlined"
-                                  placeholder="Select answer"
-                                />
-                              )}
-                            />
-                          </FormControl>
+                        <Grid item container xs={12}>
+                          <Grid
+                            item
+                            xs={4}
+                            className="center-align-w-padding-v"
+                          >
+                            If answer is NO
+                          </Grid>
+                          <Grid item xs={8}>
+                            <FormControl variant="outlined" fullWidth>
+                              <InputLabel
+                                id="demo-simple-select-outlined-label"
+                                shrink={false}
+                                className="select-label"
+                              >
+                                {conditionalJump.negativeResponseQuestionId ==
+                                ""
+                                  ? "Select question"
+                                  : ""}
+                              </InputLabel>
+                              <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={
+                                  conditionalJump.negativeResponseQuestionId
+                                }
+                                name="negativeResponseQuestionId"
+                                onChange={handleChange}
+                                placeholder="Select question"
+                                InputLabelProps={{
+                                  shrink: false,
+                                }}
+                                className="global-input single-select"
+                              >
+                                <MenuItem value="">
+                                  <em>None</em>
+                                </MenuItem>
+                                {selectedSurveyQuestions.map((ans) => {
+                                  return (
+                                    <MenuItem
+                                      value={ans.id}
+                                      key={`atypered_${ans.id}`}
+                                    >
+                                      {ans.question}
+                                    </MenuItem>
+                                  );
+                                })}
+                              </Select>
+                            </FormControl>
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              </CardContent>
-              <CardActions className="action-container">
-                <Button
-                  size="small"
-                  type="button"
-                  className="global-cancel-btn"
-                  variant="contained"
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className="global-submit-btn"
-                  disabled={showLoadder}
-                >
-                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                </Button>
-              </CardActions>
-            </ValidatorForm>
-          </Card>
+                </CardContent>
+                <CardActions className="action-container">
+                  <Button
+                    size="small"
+                    type="button"
+                    className="global-cancel-btn"
+                    variant="contained"
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className="global-submit-btn"
+                    disabled={showLoadder}
+                  >
+                    {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                  </Button>
+                </CardActions>
+              </ValidatorForm>
+            </Card>
+          ) : (
+            <ComponentLoadderComponent />
+          )}
         </div>
       </div>
+      <ToasterMessageComponent
+        stateSnackbar={stateSnackbar}
+        setStateSnackbar={setStateSnackbar}
+        toasterMessage={toasterMessage}
+        toasterServerity={toasterServerity}
+        toasterErrorMessageType={toasterErrorMessageType}
+      />
     </div>
   );
 }

@@ -67,6 +67,12 @@ function NumericDetails(props) {
     );
   }
 
+  function handleClickConditional(getQueDetails) {
+    history.push(
+      `/questionaires/${getQueDetails.surveyId}/conditional/numeric/${getQueDetails.id}`
+    );
+  }
+
   return (
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
@@ -90,6 +96,9 @@ function NumericDetails(props) {
                 color="default"
                 startIcon={<SettingsIcon />}
                 className={`view-icon`}
+                onClick={() =>
+                  handleClickConditional(props.selectedQuestionDetails)
+                }
               ></Button>
             </Tooltip>
 

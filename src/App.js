@@ -58,6 +58,7 @@ import ListofQuestions from "./components/questionaires/listofQuestions";
 import ViewQuestionaire from "./components/questionaires/viewQuestionaire";
 import AssignQuestionaires from "./components/questionaires/AssignQuestionaires";
 import BooleanJump from "./components/questionaires/conditionalJump/booleanJumb";
+import NumericJump from "./components/questionaires/conditionalJump/numericJump";
 
 function App(props) {
   const AuthContainer = () => {
@@ -228,6 +229,10 @@ function App(props) {
           path="/questionaires/:id/conditional/boolean/:qid"
           component={BooleanJump}
         ></Route>
+        <Route
+          path="/questionaires/:id/conditional/numeric/:qid"
+          component={NumericJump}
+        ></Route>
       </AdminLayout>
     );
   };
@@ -396,6 +401,10 @@ function App(props) {
         <Route path="/questionaires/assign" component={AdminContainer}></Route>
         <Route
           path="/questionaires/:id/conditional/boolean/:qid"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/questionaires/:id/conditional/numeric/:qid"
           component={AdminContainer}
         ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />

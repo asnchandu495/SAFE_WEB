@@ -30,6 +30,7 @@ export default class questionaireService {
       return Promise.resolve(res);
     });
   }
+
   GetAllQuestionarie() {
     return this.fetch(`${this.questionaireURL}/Survey/GetAllSurvey`, {
       method: "GET",
@@ -56,9 +57,18 @@ export default class questionaireService {
       return Promise.resolve(res);
     });
   }
+
   deleteQuestionaire(data) {
     return this.fetch(`${this.questionaireURL}/Survey/DeleteSurvey/${data}`, {
       method: "DELETE",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  getAllExpressions() {
+    return this.fetch(`${this.questionaireURL}/Survey/GetAllExpression`, {
+      method: "GET",
     }).then((res) => {
       return Promise.resolve(res);
     });
@@ -96,6 +106,7 @@ export default class questionaireService {
       return Promise.resolve(res);
     });
   }
+
   DeleteDateQuestion(data) {
     return this.fetch(
       `${this.questionaireURL}/QuestionDate/DeleteDateQuestion/${data}`,
@@ -106,6 +117,7 @@ export default class questionaireService {
       return Promise.resolve(res);
     });
   }
+
   DeleteNumericQuestion(data) {
     return this.fetch(
       `${this.questionaireURL}/NumericQuestion/DeleteNumericQuestion/${data}`,
@@ -438,6 +450,32 @@ export default class questionaireService {
     var finalData = JSON.stringify(getData);
     return this.fetch(
       `${this.questionaireURL}/MultipleChoiceQuestion/AddPositiveConformityForMultipleChoice`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  addBooleanConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/BooleanQuestion/CreateBooleanConditionalQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  addNumericConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/NumericQuestion/AddConditionalNumericQuestion`,
       {
         method: "POST",
         body: finalData,
