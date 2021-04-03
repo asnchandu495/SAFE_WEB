@@ -67,10 +67,8 @@ function TemperatureRange(props) {
   );
   const [showLoadder, setshowLoadder] = useState(false);
   const [componentLoadder, setComponentLoadder] = useState(true);
-  const [faqTittle, setfaqTittle] = useState("");
   const [tempsections, settempsections] = useState({
-    // id: "",
-    // faqId: "",
+    id: "",
     globalSettingsId: globalsettings,
     temperatureUnit: "",
     covidStates: [
@@ -80,11 +78,12 @@ function TemperatureRange(props) {
         upperLimit: 0,
         covidState: {
           id: "",
-          state: "",
+          stateName: "",
         },
       },
     ],
   });
+
   useEffect(() => {
     Promise.all([
       CovidStateApi.getCOVIDStates(),
@@ -101,35 +100,8 @@ function TemperatureRange(props) {
         console.log(err);
       });
     setComponentLoadder(false);
-    //   if (getFaqIdSecId != 0) {
-    //     faqApiCall
-    //       .getFaqById(props.match.params.id)
-    //       .then((faqDetails) => {
-    //         setfaqTittle(faqDetails.title);
-    //         let allSections = faqDetails.sections;
-    //         let selectedSection = allSections.filter((sec) => {
-    //           return sec.id == getFaqIdSecId;
-    //         });
-    //         if (selectedSection.length > 0) {
-    //           settempsections(selectedSection[0]);
-    //         }
-    //         setComponentLoadder(false);
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //       });
-    //   } else {
-    //     faqApiCall
-    //       .getFaqById(props.match.params.id)
-    //       .then((faqDetails) => {
-    //         setfaqTittle(faqDetails.title);
-    //         setComponentLoadder(false);
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //       });
-    //   }
   }, []);
+
   function handleChangeInput(e) {
     const { name, value } = e.target;
     settempsections((tempsections) => ({
@@ -137,7 +109,9 @@ function TemperatureRange(props) {
       [name]: value,
     }));
   }
+
   const handleInputChangeContacts = (e, index) => {
+    console.log(e);
     const { name, value } = e.target;
     const list = {
       ...tempsections,
@@ -149,49 +123,69 @@ function TemperatureRange(props) {
     };
     settempsections(list);
   };
+
+  function handleChangeCovidState(e, value, index) {
+    let thisValue = { id: value.id, stateName: value.stateName };
+    const list = {
+      ...tempsections,
+      covidStates: [
+        ...tempsections.covidStates.map((con, conIndex) =>
+          conIndex == index
+            ? {
+                ...con,
+                ["covidState"]: thisValue,
+              }
+            : con
+        ),
+      ],
+    };
+    settempsections(list);
+  }
+
   const handleRemoveClickContacts = (j) => {
     const list = { ...tempsections };
     list.covidStates.splice(j, 1);
     settempsections(list);
   };
+
   const handleAddClickContacts = (index, j) => {
     const list = { ...tempsections };
     const thistempsections = list.covidStates;
     list.covidStates = [
       ...thistempsections,
-      // {
-      //   questionNameId: "",
-      //   questionName: "",
-      //   answer: "",
-      // },
       {
         id: "",
         lowerLimit: 0,
         upperLimit: 0,
         covidState: {
           id: "",
-          state: "",
+          stateName: "",
         },
       },
     ];
     settempsections(list);
   };
+
   function handleClickGoBackToPage() {
     // props.history.push("/emergencycontacts/view");
   }
+
   function submitForm(e) {
     e.preventDefault();
     let sendData = tempsections;
     console.log(JSON.stringify(sendData));
     // ValidateSubmitForm();
   }
+
   function ValidateSubmitForm() {
     setshowLoadder(true);
     let sendData = tempsections;
   }
+
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
+
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -248,10 +242,7 @@ function TemperatureRange(props) {
                       {uomTemp.length > 0
                         ? uomTemp.map((tempvalue) => {
                             return (
-                              <MenuItem
-                                key={tempvalue.id}
-                                value={tempvalue.uomTempvalue}
-                              >
+                              <MenuItem key={tempvalue.id} value={tempvalue.id}>
                                 {tempvalue.uomTempvalue}
                               </MenuItem>
                             );
@@ -289,8 +280,11 @@ function TemperatureRange(props) {
                                   : []
                               }
                               getOptionLabel={(option) => option.stateName}
-                              onChange={(e) => handleInputChangeContacts(e, i)}
+                              onChange={(e, v) =>
+                                handleChangeCovidState(e, v, i)
+                              }
                               // defaultValue={formData.manager ? formData.manager : {}}
+                              name="covidState"
                               defaultValue={x.covidState}
                               filterSelectedOptions
                               className="global-input autocomplete-select"
