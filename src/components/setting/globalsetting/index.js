@@ -71,8 +71,8 @@ function GlobalSetting(props) {
     allowCheckinWithoutWFHLocationApproval: true,
     allowCheckinWithoutProfileSelfieApproval: true,
     maximumFileSizeOfUserSelfieUnit: "",
-    maximumFileSizeToImportUsersUnit: "",
-    temperatureUnit: "",
+    // maximumFileSizeToImportUsersUnit: "",
+    // temperatureUnit: "",
   });
   const [geoUnits, setGeoUnits] = useState([]);
   const [toleranceUnits, setToleranceUnits] = useState([]);
@@ -621,7 +621,7 @@ function GlobalSetting(props) {
                   </label>
                 </Grid>
 
-                <Grid item xs={3}>
+                {/* <Grid item xs={3}>
                   <TextValidator
                     variant="outlined"
                     validators={[
@@ -643,7 +643,7 @@ function GlobalSetting(props) {
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
                   />
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
@@ -928,7 +928,7 @@ function GlobalSetting(props) {
                 </Grid>
               </Grid>
 
-              <Grid
+              {/* <Grid
                 item
                 xs={12}
                 className={[classes.gridDispaly].join(" ")}
@@ -977,7 +977,7 @@ function GlobalSetting(props) {
                     ""
                   )}
                 </Grid>
-              </Grid>
+              </Grid> */}
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
