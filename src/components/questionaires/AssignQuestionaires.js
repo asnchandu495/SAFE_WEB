@@ -13,7 +13,7 @@ import UserService from "../../services/usersService";
 
 import ChangeStatusIcon from "@material-ui/icons/SyncAlt";
 
-import * as QuestionaireAction from "../../Redux/Action/questionaireAction";
+import * as QuestionaireAction from "../../Redux/Action/assignquestionaireAction";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -620,7 +620,7 @@ AssignQuestionaires.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    AssignQuestionairesData: state.questionaireState,
+    AssignQuestionairesData: state.assignquestionaireState,
   };
 }
 
