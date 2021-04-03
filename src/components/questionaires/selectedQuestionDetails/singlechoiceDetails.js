@@ -62,6 +62,12 @@ function SingleChoiceDetails(props) {
     );
   }
 
+  function handleClickConditional(getQueDetails) {
+    history.push(
+      `/questionaires/${getQueDetails.surveyId}/conditional/single/${getQueDetails.id}`
+    );
+  }
+
   return (
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
@@ -85,6 +91,9 @@ function SingleChoiceDetails(props) {
                 color="default"
                 startIcon={<SettingsIcon />}
                 className={`view-icon`}
+                onClick={() =>
+                  handleClickConditional(props.selectedQuestionDetails)
+                }
               ></Button>
             </Tooltip>
 

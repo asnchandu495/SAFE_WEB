@@ -68,6 +68,12 @@ function TimeDetails(props) {
     );
   }
 
+  function handleClickConditional(getQueDetails) {
+    history.push(
+      `/questionaires/${getQueDetails.surveyId}/conditional/time/${getQueDetails.id}`
+    );
+  }
+
   return (
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
@@ -91,6 +97,9 @@ function TimeDetails(props) {
                 color="default"
                 startIcon={<SettingsIcon />}
                 className={`view-icon`}
+                onClick={() =>
+                  handleClickConditional(props.selectedQuestionDetails)
+                }
               ></Button>
             </Tooltip>
 

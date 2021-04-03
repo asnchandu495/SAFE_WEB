@@ -508,6 +508,45 @@ export default class questionaireService {
     });
   }
 
+  addDateConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/QuestionDate/AddConditionalDateQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  addTimeConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/QuestionTime/AddConditionalTimeQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  addSingleChoiceConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/SingleChoiceQuestion/AddConditionalSingleChoiceQuestion`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

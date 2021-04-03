@@ -31,7 +31,7 @@ import questionaireService from "../../../services/questionaireService";
 import ToasterMessageComponent from "../../common/toaster";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 
-function DateJump(props) {
+function TimeJump(props) {
   const surveyId = props.match.params.id;
   const questionId = props.match.params.qid;
   const questionaireApiCall = new questionaireService();
@@ -41,10 +41,10 @@ function DateJump(props) {
   const [conditionalJump, setConditionalJump] = useState({
     id: "",
     surveyQuestionId: questionId,
-    dateTimeConditionalQuestions: [
+    timeConditionalQuestions: [
       {
         id: "",
-        dateTimeConditionalOrderId: "",
+        numericConditionalOrderId: "",
         numericExpressionType: "",
         forAnswer: moment().toISOString(),
         forRangeEnd: moment().toISOString(),
@@ -108,8 +108,8 @@ function DateJump(props) {
     if (key != null) {
       const list = {
         ...conditionalJump,
-        dateTimeConditionalQuestions: [
-          ...conditionalJump.dateTimeConditionalQuestions.map((con, conIndex) =>
+        timeConditionalQuestions: [
+          ...conditionalJump.timeConditionalQuestions.map((con, conIndex) =>
             conIndex == index ? { ...con, [key]: date } : con
           ),
         ],
@@ -119,8 +119,8 @@ function DateJump(props) {
       const { name, value } = e.target;
       const list = {
         ...conditionalJump,
-        dateTimeConditionalQuestions: [
-          ...conditionalJump.dateTimeConditionalQuestions.map((con, conIndex) =>
+        timeConditionalQuestions: [
+          ...conditionalJump.timeConditionalQuestions.map((con, conIndex) =>
             conIndex == index ? { ...con, [name]: value } : con
           ),
         ],
@@ -131,12 +131,12 @@ function DateJump(props) {
 
   const handleAddClickLogicAnswer = (index, j) => {
     const list = { ...conditionalJump };
-    const thisconditionalJumpAnswers = list.dateTimeConditionalQuestions;
-    list.dateTimeConditionalQuestions = [
+    const thisconditionalJumpAnswers = list.timeConditionalQuestions;
+    list.timeConditionalQuestions = [
       ...thisconditionalJumpAnswers,
       {
         id: "",
-        dateTimeConditionalOrderId: "",
+        numericConditionalOrderId: "",
         numericExpressionType: "",
         forAnswer: moment().toISOString(),
         forRangeEnd: moment().toISOString(),
@@ -148,7 +148,7 @@ function DateJump(props) {
 
   const handleRemoveClickLogicAnswer = (j) => {
     const list = { ...conditionalJump };
-    list.dateTimeConditionalQuestions.splice(j, 1);
+    list.timeConditionalQuestions.splice(j, 1);
     setConditionalJump(list);
   };
 
@@ -156,7 +156,7 @@ function DateJump(props) {
     e.preventDefault();
     setshowLoadder(true);
     questionaireApiCall
-      .addDateConditionalJump(conditionalJump)
+      .addTimeConditionalJump(conditionalJump)
       .then((result) => {
         setStateSnackbar(true);
         setToasterMessage("Conditional jump is added.");
@@ -165,10 +165,10 @@ function DateJump(props) {
         setConditionalJump({
           id: "",
           surveyQuestionId: questionId,
-          dateTimeConditionalQuestions: [
+          timeConditionalQuestions: [
             {
               id: "",
-              dateTimeConditionalOrderId: "",
+              numericConditionalOrderId: "",
               numericExpressionType: "",
               forAnswer: moment().toISOString(),
               forRangeEnd: moment().toISOString(),
@@ -235,9 +235,8 @@ function DateJump(props) {
                           <label className="required">Config logic</label>
                         </Grid>
                         <Grid container sm={10} spacing={2}>
-                          {conditionalJump.dateTimeConditionalQuestions.length >
-                          0
-                            ? conditionalJump.dateTimeConditionalQuestions.map(
+                          {conditionalJump.timeConditionalQuestions.length > 0
+                            ? conditionalJump.timeConditionalQuestions.map(
                                 (x, i) => {
                                   return (
                                     <Grid
@@ -312,15 +311,15 @@ function DateJump(props) {
                                         xs={2}
                                         className="date-time-pickers"
                                       >
-                                        <KeyboardDatePicker
-                                          format="MM/dd/yyyy"
+                                        <KeyboardTimePicker
+                                          format="hh:mm a"
                                           fullWidth
                                           id={`forAnswerR${i}`}
                                           placeholder="Your answer"
                                           name="forAnswer"
                                           label={
                                             conditionalJump
-                                              .dateTimeConditionalQuestions[i]
+                                              .timeConditionalQuestions[i]
                                               .numericExpressionType == "RANGE"
                                               ? "From"
                                               : "Answer"
@@ -340,17 +339,17 @@ function DateJump(props) {
                                           }}
                                         />
                                       </Grid>
-                                      {conditionalJump
-                                        .dateTimeConditionalQuestions[i]
-                                        .numericExpressionType == "RANGE" ? (
+                                      {conditionalJump.timeConditionalQuestions[
+                                        i
+                                      ].numericExpressionType == "RANGE" ? (
                                         <>
                                           <Grid
                                             item
                                             xs={2}
                                             className="date-time-pickers"
                                           >
-                                            <KeyboardDatePicker
-                                              format="MM/dd/yyyy"
+                                            <KeyboardTimePicker
+                                              format="hh:mm a"
                                               fullWidth
                                               id={`forRangeEndR${i}`}
                                               placeholder="Your answer"
@@ -432,8 +431,8 @@ function DateJump(props) {
                                         className="row-icons-container"
                                       >
                                         {conditionalJump
-                                          .dateTimeConditionalQuestions
-                                          .length !== 1 && (
+                                          .timeConditionalQuestions.length !==
+                                          1 && (
                                           <Tooltip title="Remove">
                                             <CancelIcon
                                               className={`delete-row-icon`}
@@ -444,7 +443,7 @@ function DateJump(props) {
                                           </Tooltip>
                                         )}
                                         {conditionalJump
-                                          .dateTimeConditionalQuestions.length -
+                                          .timeConditionalQuestions.length -
                                           1 ===
                                           i && (
                                           <Tooltip title="Add">
@@ -567,4 +566,4 @@ function DateJump(props) {
   );
 }
 
-export default DateJump;
+export default TimeJump;

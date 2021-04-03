@@ -1047,3 +1047,51 @@ label.required {
     padding: 0 5px;
   }
 }
+
+.date-time-pickers {
+  .MuiInput-underline:before {
+    border: none;
+  }
+  .MuiInput-underline:after {
+    border: none;
+  }
+  .MuiInput-underline:hover:not(.Mui-disabled)::before {
+    border-bottom: none;
+  }
+  label + .MuiInput-formControl {
+    margin-top: 5px;
+  }
+  .MuiInputLabel-shrink {
+    transform: translate(0, 6px) scale(0.75);
+    transform-origin: top left;
+    background-color: #fff;
+    padding: 0 5px;
+    margin-left: 5px;
+  }
+  .MuiInputBase-input {
+    padding: 6px 0 7px 10px;
+    font-size: 14px;
+  }
+  .MuiInputBase-input:focus {
+    border: none !important;
+    padding: 6px 10px !important;
+  }
+  .MuiInputLabel-formControl {
+    top: -12px;
+    left: 10px;
+    font-size: 14px;
+  }
+  .MuiIconButton-root {
+    padding: 5px;
+  }
+  .MuiSvgIcon-root {
+    width: 20px;
+    height: 20px;
+  }
+  .MuiInputAdornment-root {
+    margin-bottom: -1px !important;
+  }
+  .MuiInputBase-input:focus .MuiInputAdornment-root {
+    margin-bottom: -5px !important;
+  }
+}

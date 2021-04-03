@@ -96,9 +96,11 @@ function DateDetails(props) {
                 color="default"
                 startIcon={<SettingsIcon />}
                 className={`view-icon`}
+                onClick={() =>
+                  handleClickConditional(props.selectedQuestionDetails)
+                }
               ></Button>
             </Tooltip>
-
             <Tooltip title="Delete">
               <Button
                 variant="contained"
