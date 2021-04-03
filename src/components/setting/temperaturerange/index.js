@@ -16,7 +16,7 @@ import FaqService from "../../../services/faqService";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Prompt } from "react-router-dom";
-import * as globalSettingAction from "../../../Redux/Action/globalSettingAction";
+import * as temperaturerangeAction from "../../../Redux/Action/temperaturerangeAction";
 
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -139,7 +139,7 @@ function TemperatureRange(props) {
   };
 
   function handleChangeCovidState(e, value, index) {
-    let thisValue = { id: value.id, stateName: value.stateName };
+    let thisValue = { id: value.id, state: value.stateName };
     const list = {
       ...tempsections,
       covidStates: [
@@ -208,12 +208,11 @@ function TemperatureRange(props) {
         }, 6000);
       })
       .catch((err) => {
-        console.log("error");
-        console.log(err.data);
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
         setshowLoadder(false);
+        throw err;
       });
     // ValidateSubmitForm();
   }
@@ -239,12 +238,7 @@ function TemperatureRange(props) {
         >
           Home
         </LinkTo>
-        <LinkTo
-          color="textPrimary"
-          href="#"
-          to={`/faq/allfaqs`}
-          className="inactive"
-        >
+        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
           Temperature Range
         </LinkTo>
       </Breadcrumbs>
@@ -252,9 +246,16 @@ function TemperatureRange(props) {
         <Paper className="main-paper">
           <ValidatorForm className={`global-form`} onSubmit={submitForm}>
             <Grid container spacing={3}>
-              <Grid item container xs={12}>
-                <Grid item xs={3}>
-                  <label className="required">Temperature Unit</label>
+              <Grid
+                item
+                container
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
+                <Grid container item xs={3}>
+                  <label className="required">UoM for temperature</label>
                 </Grid>
                 <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
@@ -294,159 +295,152 @@ function TemperatureRange(props) {
                   </FormControl>
                 </Grid>
               </Grid>
-
-              {tempsections.covidStates && tempsections.covidStates.length > 0
-                ? tempsections.covidStates.map((x, i) => {
-                    return (
-                      <Grid container spacing={3}>
-                        <Grid
-                          container
-                          spacing={1}
-                          item
-                          xs={12}
-                          className={[classes.gridDispaly].join(" ")}
-                          key={`section-container${i}`}
-                        >
-                          <Grid item xs={3}>
-                            <label className="required">
-                              Select COVID state
-                            </label>
-                          </Grid>
-                          <Grid item xs={2}>
-                            <Autocomplete
-                              id="tags-outlined"
-                              // /options={teamManagers}
-                              options={
-                                covidStatelist && covidStatelist.length > 0
-                                  ? covidStatelist
-                                  : []
-                              }
-                              getOptionLabel={(option) => option.stateName}
-                              onChange={(e, v) =>
-                                handleChangeCovidState(e, v, i)
-                              }
-                              defaultValue={
-                                tempsections.covidStates
-                                  ? tempsections.covidStates
-                                  : []
-                              }
-                              name="covidState"
-                              defaultValue={x.covidState}
-                              filterSelectedOptions
-                              className="global-input autocomplete-select"
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  variant="outlined"
-                                  placeholder="Select  covid state"
-                                />
-                              )}
-                            />
-                          </Grid>
-                          <Grid item xs={2}>
-                            <TextValidator
-                              variant="outlined"
-                              validators={["required", "matchRegexp:^.{0,60}$"]}
-                              errorMessages={[
-                                "Please enter upperLimit",
-                                "Maximum 60 characters",
-                              ]}
-                              fullWidth
-                              id={`upperLimit_${i}`}
-                              placeholder="upperLimit name *"
-                              name="upperLimit"
-                              value={x.upperLimit}
-                              onChange={(e) => handleInputChangeContacts(e, i)}
-                              className="global-input"
-                              InputLabelProps={{ shrink: false }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    F
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </Grid>
-                          <Grid item xs={2}>
-                            <TextValidator
-                              variant="outlined"
-                              validators={["required"]}
-                              errorMessages={["Please enter lowerLimit"]}
-                              fullWidth
-                              id={`lowerLimit_${i}`}
-                              placeholder="lowerLimit *"
-                              name="lowerLimit"
-                              value={x.lowerLimit}
-                              onChange={(e) => handleInputChangeContacts(e, i)}
-                              className="global-input"
-                              InputLabelProps={{ shrink: false }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    F
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </Grid>
-                          <Grid item xs={2} className="row-icons-container">
-                            {
-                              <FormControlLabel
-                                control={<Checkbox name="checkedA" />}
-                                label="No limit"
-                              />
+            </Grid>
+            {tempsections.covidStates && tempsections.covidStates.length > 0
+              ? tempsections.covidStates.map((x, i) => {
+                  return (
+                    <Grid container spacing={3}>
+                      <Grid
+                        container
+                        spacing={1}
+                        item
+                        xs={12}
+                        className={[classes.gridDispaly].join(" ")}
+                        key={`section-container${i}`}
+                      >
+                        <Grid item xs={3}>
+                          <label className="required">Select COVID state</label>
+                        </Grid>
+                        <Grid item xs={2}>
+                          <Autocomplete
+                            id="tags-outlined"
+                            // /options={teamManagers}
+                            options={
+                              covidStatelist && covidStatelist.length > 0
+                                ? covidStatelist
+                                : []
                             }
-                          </Grid>
+                            getOptionLabel={(option) => option.stateName}
+                            onChange={(e, v) => handleChangeCovidState(e, v, i)}
+                            defaultValue={
+                              tempsections.covidStates
+                                ? tempsections.covidStates
+                                : []
+                            }
+                            name="covidState"
+                            defaultValue={x.covidState}
+                            filterSelectedOptions
+                            className="global-input autocomplete-select"
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="outlined"
+                                placeholder="Select  covid state"
+                              />
+                            )}
+                          />
+                        </Grid>
 
-                          <Grid item xs={1} className="row-icons-container">
-                            {tempsections.covidStates.length !== 1 && (
-                              <Tooltip title="Remove">
-                                <CancelIcon
-                                  className={`delete-row-icon`}
-                                  onClick={() => handleRemoveClickContacts(i)}
-                                ></CancelIcon>
-                              </Tooltip>
-                            )}
-                            {tempsections.covidStates.length - 1 === i && (
-                              <Tooltip title="Add">
-                                <AddCircleIcon
-                                  className={`add-row-icon`}
-                                  onClick={handleAddClickContacts}
-                                ></AddCircleIcon>
-                              </Tooltip>
-                            )}
-                          </Grid>
+                        <Grid item xs={2}>
+                          <TextValidator
+                            variant="outlined"
+                            validators={["required"]}
+                            errorMessages={["Please enter lowerLimit"]}
+                            fullWidth
+                            id={`lowerLimit_${i}`}
+                            placeholder="Lower Limit"
+                            name="lowerLimit"
+                            value={x.lowerLimit}
+                            onChange={(e) => handleInputChangeContacts(e, i)}
+                            className="global-input"
+                            InputLabelProps={{ shrink: false }}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  F
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={2}>
+                          <TextValidator
+                            variant="outlined"
+                            validators={["required", "matchRegexp:^.{0,60}$"]}
+                            errorMessages={["Please enter upper limit"]}
+                            fullWidth
+                            id={`upperLimit_${i}`}
+                            placeholder="Upper Limit"
+                            name="upperLimit"
+                            value={x.upperLimit}
+                            onChange={(e) => handleInputChangeContacts(e, i)}
+                            className="global-input"
+                            InputLabelProps={{ shrink: false }}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  F
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={2} className="row-icons-container">
+                          {
+                            <FormControlLabel
+                              control={<Checkbox name="checkedA" />}
+                              label="No limit"
+                            />
+                          }
+                        </Grid>
+
+                        <Grid item xs={1} className="row-icons-container">
+                          {tempsections.covidStates.length !== 1 && (
+                            <Tooltip title="Remove">
+                              <CancelIcon
+                                className={`delete-row-icon`}
+                                onClick={() => handleRemoveClickContacts(i)}
+                              ></CancelIcon>
+                            </Tooltip>
+                          )}
+                          {tempsections.covidStates.length - 1 === i && (
+                            <Tooltip title="Add">
+                              <AddCircleIcon
+                                className={`add-row-icon`}
+                                onClick={handleAddClickContacts}
+                              ></AddCircleIcon>
+                            </Tooltip>
+                          )}
                         </Grid>
                       </Grid>
-                    );
-                  })
-                : ""}
+                    </Grid>
+                  );
+                })
+              : ""}
 
-              <Grid item container xs={12}>
-                <Grid item xs={3}>
-                  <label>&nbsp;</label>
-                </Grid>
-                <Grid item xs={9}>
-                  <div className={`form-buttons-container`}>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      className="global-submit-btn"
-                      disabled={showLoadder}
-                    >
-                      {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      type="reset"
-                      onClick={handleClickGoBackToPage}
-                      className="global-cancel-btn"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </Grid>
+            <Grid item container xs={12}>
+              <Grid item xs={3}>
+                <label>&nbsp;</label>
+              </Grid>
+              <Grid item xs={9}>
+                <div className={`form-buttons-container`}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className="global-submit-btn"
+                    disabled={showLoadder}
+                  >
+                    {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="reset"
+                    onClick={handleClickGoBackToPage}
+                    className="global-cancel-btn"
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </Grid>
             </Grid>
           </ValidatorForm>
@@ -471,12 +465,12 @@ TemperatureRange.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    loadGlobalSettingsData: state.loadGlobalSettingsData,
+    loadGlobalSettingsData: state.temperaturerangeState,
   };
 }
 
 const mapDispatchToProps = {
-  updateTemprangeSetting: globalSettingAction.updateTemp,
+  updateTemprangeSetting: temperaturerangeAction.updateTemp,
 };
 
 // export default TemperatureRange;
