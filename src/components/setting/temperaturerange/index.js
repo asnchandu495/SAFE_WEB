@@ -98,6 +98,9 @@ function TemperatureRange(props) {
       .then(([result, globalSettings]) => {
         // setcomponentLoadder(false);
         setcovidStatelist(result);
+        console.log(globalSettings.covidStateTemperatures);
+        console.log(tempsections.covidStates);
+        tempsections.covidStates = globalSettings.covidStateTemperatures;
         console.log(globalSettings.id);
         tempsections.globalSettingsId = globalSettings.id;
       })
@@ -117,14 +120,19 @@ function TemperatureRange(props) {
   }
 
   const handleInputChangeContacts = (e, index) => {
-    console.log(e);
     const { name, value } = e.target;
     const list = {
       ...tempsections,
       covidStates: [
-        ...tempsections.covidStates.map((con, conIndex) =>
-          conIndex == index ? { ...con, [name]: value } : con
-        ),
+        ...tempsections.covidStates.map((con, conIndex) => {
+          if (name == "upperLimit" || name == "lowerLimit") {
+            return conIndex == index
+              ? { ...con, [name]: parseInt(value) }
+              : con;
+          } else {
+            return conIndex == index ? { ...con, [name]: value } : con;
+          }
+        }),
       ],
     };
     settempsections(list);
@@ -190,6 +198,7 @@ function TemperatureRange(props) {
     props
       .updateTemprangeSetting(sendData)
       .then((result) => {
+        console.log("success");
         setStateSnackbar(true);
         setToasterMessage("Updated Global settings.");
         settoasterServerity("success");
@@ -199,6 +208,8 @@ function TemperatureRange(props) {
         }, 6000);
       })
       .catch((err) => {
+        console.log("error");
+        console.log(err.data);
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
