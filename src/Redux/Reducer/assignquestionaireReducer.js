@@ -10,29 +10,25 @@ export default function loadQuestionaireReducer(state = intialState, action) {
   switch (action.type) {
     case ASSIGN_USERGROUP_QUESTIONAIRE:
       return action.loadAssignQuestionnaire;
-    case ASSIGN_QUESTIONAIRE_USERGROUP:
-      return [{ ...action.assignQuestionaire }, ...state];
 
-    // case CHANGE_QUESTIONAIRE_STATUS:
-    //   return state.map((changeQuestionaireStatus) =>
-    //     changeQuestionaireStatus.id === action.changeQuestionaireStatus.id
-    //       ? action.changeQuestionaireStatus
-    //       : changeQuestionaireStatus
-    //   );
+    case ASSIGN_QUESTIONAIRE_USERGROUP:
+      console.log(action.assignQuestionaire);
+      return [{ ...action.assignQuestionaire }, ...state];
 
     case CHANGE_QUESTIONAIRE_STATUS:
       return state.map((changeQuestionaireStatus) =>
-        changeQuestionaireStatus.id === action.ChangeQuestionnaireStatus
+        changeQuestionaireStatus.id == action.ChangeQuestionnaireStatus.id
           ? {
               ...changeQuestionaireStatus,
-              Active: action.status,
+              status: action.ChangeQuestionnaireStatus.status,
             }
           : changeQuestionaireStatus
       );
+
     case DELETE_QUESTIONAIRE_USERGROUP:
       return state.filter(
         (deleteQuestionaire) =>
-          deleteQuestionaire.id !== action.deleteQuestionaireUsergroupData
+          deleteQuestionaire.id != action.deleteQuestionaireUsergroupData.id
       );
     default:
       return state;

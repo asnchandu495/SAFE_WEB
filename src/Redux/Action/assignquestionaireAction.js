@@ -33,6 +33,8 @@ export function assignQuestionaire(data) {
       .AssignQuestionnaireToUserGroup(data)
       .then((response) => {
         data.id = response.id;
+        data.groupDetails = data.groupdetails;
+        data.questionnaireDetails = data.questionnairedetails;
         dispatch(AssignQuestionaireUsergroup(data));
       })
       .catch((error) => {
