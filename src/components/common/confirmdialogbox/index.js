@@ -27,6 +27,7 @@ import teamService from "../../../services/teamService";
 
 import * as TeamAction from "../../../Redux/Action/teamAction";
 import * as QuestionaireAction from "../../../Redux/Action/questionaireAction";
+import * as AssignquestionaireAction from "../../../Redux/Action/assignquestionaireAction";
 import questionaireService from "../../../services/questionaireService";
 
 const styles = (theme) => ({
@@ -532,6 +533,7 @@ CustomizedDialogs.propTypes = {
   DeleteUser: PropTypes.func.isRequired,
   DelteUserGroup: PropTypes.func.isRequired,
   ChangeAssignEmergencyContactStatus: PropTypes.func.isRequired,
+  ChangeQuestionnaireUserStatus: PropTypes.func.isRequired,
   DeleteTeam: PropTypes.func.isRequired,
   DeleteQuestion: PropTypes.func.isRequired,
 };
@@ -540,12 +542,13 @@ function mapStateToProps(state, ownProps) {}
 const mapDispatchToProps = {
   DeletEmergencyContactList: EmergencyContactAction.DeletEmergencyContactList,
   DeleteQuestionaireUsergroup:
-    QuestionaireAction.deleteQuestionaireUsergroupData,
+    AssignquestionaireAction.deleteQuestionaireUsergroupData,
   DeletAssignEmergencyContactList:
     AssignEmergencyContactAction.DeletAssignEmergencyContactList,
   ChangeAssignEmergencyContactStatus:
     AssignEmergencyContactAction.UpdateAssignEmergencyContact,
-  ChangeQuestionnaireUserStatus: QuestionaireAction.ChangeQuestionnaireStatus,
+  ChangeQuestionnaireUserStatus:
+    AssignquestionaireAction.ChangeQuestionnaireStatus,
   DeleteUser: UserAction.deleteUser,
 
   DelteUserDesignation: DesignationAction.deleteUserDesignation,

@@ -13,6 +13,10 @@ import ToasterMessageComponent from "../../common/toaster";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import FaqService from "../../../services/faqService";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Prompt } from "react-router-dom";
+import * as globalSettingAction from "../../../Redux/Action/globalSettingAction";
 
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -26,6 +30,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import GlobalSettingApiServices from "../../../services/globalSettingService";
+import AlertBoxComponent from "../../common/alert";
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -45,11 +50,11 @@ function TemperatureRange(props) {
 
   const uomTemp = [
     {
-      id: "1",
+      id: "Farenheit",
       uomTempvalue: "Farenheit",
     },
     {
-      id: "2",
+      id: "Celsius",
       uomTempvalue: "Celsius",
     },
   ];
@@ -61,7 +66,8 @@ function TemperatureRange(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [covidStatelist, setcovidStatelist] = useState([]);
-  const [globalsettings, setglobalsettingsId] = useState();
+  const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
+  const [globalsettingsId, setglobalsettingsId] = useState();
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
@@ -69,7 +75,7 @@ function TemperatureRange(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [tempsections, settempsections] = useState({
     id: "",
-    globalSettingsId: globalsettings,
+    globalSettingsId: globalsettingsId,
     temperatureUnit: "",
     covidStates: [
       {
@@ -172,8 +178,32 @@ function TemperatureRange(props) {
 
   function submitForm(e) {
     e.preventDefault();
+    console.log("tempsections");
+    console.log(tempsections.covidStates[0].lowerLimit);
     let sendData = tempsections;
     console.log(JSON.stringify(sendData));
+
+    // sendData.lowerLimit = parseInt(tempsections.lowerLimit);
+    // sendData.upperLimit = parseInt(tempsections.upperLimit);
+
+    // GlobalSettingApi.UpdateCovidStateTemperature(sendData)
+    props
+      .updateTemprangeSetting(sendData)
+      .then((result) => {
+        setStateSnackbar(true);
+        setToasterMessage("Updated Global settings.");
+        settoasterServerity("success");
+        setisAlertBoxOpened(false);
+        setTimeout(() => {
+          setshowLoadder(false);
+        }, 6000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
     // ValidateSubmitForm();
   }
 
@@ -188,6 +218,7 @@ function TemperatureRange(props) {
 
   return (
     <div className="innerpage-container">
+      <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
         <LinkTo
           color="inherit"
@@ -283,7 +314,11 @@ function TemperatureRange(props) {
                               onChange={(e, v) =>
                                 handleChangeCovidState(e, v, i)
                               }
-                              // defaultValue={formData.manager ? formData.manager : {}}
+                              defaultValue={
+                                tempsections.covidStates
+                                  ? tempsections.covidStates
+                                  : []
+                              }
                               name="covidState"
                               defaultValue={x.covidState}
                               filterSelectedOptions
@@ -419,4 +454,19 @@ function TemperatureRange(props) {
   );
 }
 
-export default TemperatureRange;
+TemperatureRange.propTypes = {
+  updateTemprangeSetting: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  updateTemprangeSetting: globalSettingAction.updateTemp,
+};
+
+// export default TemperatureRange;
+export default connect(mapStateToProps, mapDispatchToProps)(TemperatureRange);
