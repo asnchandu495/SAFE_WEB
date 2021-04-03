@@ -18,6 +18,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import { withStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import TextField from "@material-ui/core/TextField";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import questionaireService from "../../../services/questionaireService";
 import ToasterMessageComponent from "../../common/toaster";
@@ -33,11 +35,16 @@ function MultipleJump(props) {
   const [conditionalJump, setConditionalJump] = useState({
     id: "",
     surveyQuestionId: questionId,
-    singleChoiceConditionalQuestions: [
+    multiChoiceConditionalQuestions: [
       {
         id: "",
-        singleChoiceConditionalOrderId: "",
-        answerChoiceId: "",
+        multiChoiceConditionalOrderId: "",
+        answerChoices: [
+          {
+            optionId: "",
+            option: "",
+          },
+        ],
         goToSurveyQuestionId: "",
       },
     ],
@@ -103,8 +110,8 @@ function MultipleJump(props) {
     const { name, value } = e.target;
     const list = {
       ...conditionalJump,
-      singleChoiceConditionalQuestions: [
-        ...conditionalJump.singleChoiceConditionalQuestions.map(
+      multiChoiceConditionalQuestions: [
+        ...conditionalJump.multiChoiceConditionalQuestions.map(
           (con, conIndex) =>
             conIndex == index ? { ...con, [name]: value } : con
         ),
@@ -115,13 +122,18 @@ function MultipleJump(props) {
 
   const handleAddClickLogicAnswer = (index, j) => {
     const list = { ...conditionalJump };
-    const thisconditionalJumpAnswers = list.singleChoiceConditionalQuestions;
-    list.singleChoiceConditionalQuestions = [
+    const thisconditionalJumpAnswers = list.multiChoiceConditionalQuestions;
+    list.multiChoiceConditionalQuestions = [
       ...thisconditionalJumpAnswers,
       {
         id: "",
-        singleChoiceConditionalOrderId: "",
-        answerChoiceId: "",
+        multiChoiceConditionalOrderId: "",
+        answerChoices: [
+          {
+            optionId: "",
+            option: "",
+          },
+        ],
         goToSurveyQuestionId: "",
       },
     ];
@@ -130,15 +142,58 @@ function MultipleJump(props) {
 
   const handleRemoveClickLogicAnswer = (j) => {
     const list = { ...conditionalJump };
-    list.singleChoiceConditionalQuestions.splice(j, 1);
+    list.multiChoiceConditionalQuestions.splice(j, 1);
+    setConditionalJump(list);
+  };
+
+  const handleChangeMultiSelectChoices = (getSelectedVal, index) => {
+    const list = {
+      ...conditionalJump,
+      multiChoiceConditionalQuestions: [
+        ...conditionalJump.multiChoiceConditionalQuestions.map(
+          (con, conIndex) =>
+            conIndex == index
+              ? {
+                  answerChoices: getSelectedVal,
+                  ["goToSurveyQuestionId"]: con.goToSurveyQuestionId,
+                  ["id"]: con.id,
+                  ["multiChoiceConditionalOrderId"]:
+                    con.multiChoiceConditionalOrderId,
+                }
+              : con
+        ),
+      ],
+    };
     setConditionalJump(list);
   };
 
   function submitForm(e) {
     e.preventDefault();
+    let newConditionalJumpData = conditionalJump;
+    let getSelectedChoicesArray =
+      newConditionalJumpData.multiChoiceConditionalQuestions;
+    let newChoicesArray = [];
+    getSelectedChoicesArray.forEach((element) => {
+      console.log(element);
+      let selectedAnswerChoice = element.answerChoices;
+      let newAnswerChoices = [];
+      selectedAnswerChoice.forEach((ch) => {
+        newAnswerChoices.push({
+          surveyQuestionId: questionId,
+          option: ch.optionId,
+        });
+      });
+      newChoicesArray.push({
+        id: element.id,
+        multiChoiceConditionalOrderId: element.multiChoiceConditionalOrderId,
+        answerChoices: newAnswerChoices,
+        goToSurveyQuestionId: element.goToSurveyQuestionId,
+      });
+    });
+    newConditionalJumpData.multiChoiceConditionalQuestions = newChoicesArray;
     setshowLoadder(true);
     questionaireApiCall
-      .addSingleChoiceConditionalJump(conditionalJump)
+      .addMultiChoiceConditionalJump(newConditionalJumpData)
       .then((result) => {
         setStateSnackbar(true);
         setToasterMessage("Conditional jump is added.");
@@ -147,11 +202,16 @@ function MultipleJump(props) {
         setConditionalJump({
           id: "",
           surveyQuestionId: questionId,
-          singleChoiceConditionalQuestions: [
+          multiChoiceConditionalQuestions: [
             {
               id: "",
-              singleChoiceConditionalOrderId: "",
-              answerChoiceId: "",
+              multiChoiceConditionalOrderId: "",
+              answerChoices: [
+                {
+                  optionId: "",
+                  option: "",
+                },
+              ],
               goToSurveyQuestionId: "",
             },
           ],
@@ -214,9 +274,9 @@ function MultipleJump(props) {
                         <label className="required">Config logic</label>
                       </Grid>
                       <Grid container sm={10} spacing={2}>
-                        {conditionalJump.singleChoiceConditionalQuestions
+                        {conditionalJump.multiChoiceConditionalQuestions
                           .length > 0
-                          ? conditionalJump.singleChoiceConditionalQuestions.map(
+                          ? conditionalJump.multiChoiceConditionalQuestions.map(
                               (x, i) => {
                                 return (
                                   <Grid
@@ -228,48 +288,30 @@ function MultipleJump(props) {
                                   >
                                     <Grid item xs={5}>
                                       <FormControl variant="outlined" fullWidth>
-                                        <InputLabel
-                                          id={`demo-simple-select-outlined-label${i}`}
-                                          shrink={false}
-                                          className="select-label"
-                                        >
-                                          {x.answerChoiceId &&
-                                          x.answerChoiceId != ""
-                                            ? ""
-                                            : "Select answer"}
-                                        </InputLabel>
-                                        <Select
-                                          labelId={`demo-simple-select-outlined-label${i}`}
-                                          id={`demo-simple-select-outlined${i}`}
-                                          value={
-                                            x.answerChoiceId
-                                              ? x.answerChoiceId
-                                              : ""
+                                        <Autocomplete
+                                          id={`tags-outlinedP${i}`}
+                                          multiple
+                                          options={
+                                            answerChoices &&
+                                            answerChoices.length > 0
+                                              ? answerChoices
+                                              : []
                                           }
-                                          name="answerChoiceId"
-                                          onChange={(e) =>
-                                            handleChangeLogicAnswer(e, i)
+                                          getOptionLabel={(opt) => opt.option}
+                                          defaultValue={x.answerChoices}
+                                          onChange={(e, v) =>
+                                            handleChangeMultiSelectChoices(v, i)
                                           }
-                                          placeholder="Select expression"
-                                          InputLabelProps={{
-                                            shrink: false,
-                                          }}
-                                          className="global-input single-select"
-                                        >
-                                          <MenuItem value="">
-                                            <em>None</em>
-                                          </MenuItem>
-                                          {answerChoices.map((aType) => {
-                                            return (
-                                              <MenuItem
-                                                value={aType.optionId}
-                                                key={`atypered_${aType.optionId}`}
-                                              >
-                                                {aType.option}
-                                              </MenuItem>
-                                            );
-                                          })}
-                                        </Select>
+                                          filterSelectedOptions
+                                          className="global-input autocomplete-select"
+                                          renderInput={(params) => (
+                                            <TextField
+                                              {...params}
+                                              variant="outlined"
+                                              placeholder="Select answer"
+                                            />
+                                          )}
+                                        />
                                       </FormControl>
                                     </Grid>
                                     <Grid item xs={6}>
@@ -321,7 +363,7 @@ function MultipleJump(props) {
                                       className="row-icons-container"
                                     >
                                       {conditionalJump
-                                        .singleChoiceConditionalQuestions
+                                        .multiChoiceConditionalQuestions
                                         .length !== 1 && (
                                         <Tooltip title="Remove">
                                           <CancelIcon
@@ -333,7 +375,7 @@ function MultipleJump(props) {
                                         </Tooltip>
                                       )}
                                       {conditionalJump
-                                        .singleChoiceConditionalQuestions
+                                        .multiChoiceConditionalQuestions
                                         .length -
                                         1 ===
                                         i && (
