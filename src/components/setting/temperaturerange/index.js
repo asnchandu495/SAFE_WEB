@@ -20,7 +20,7 @@ import * as temperaturerangeAction from "../../../Redux/Action/temperaturerangeA
 
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
-
+import FormHelperText from "@material-ui/core/FormHelperText";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -61,6 +61,7 @@ function TemperatureRange(props) {
 
   // const [faqId, setFaqId] = useState(getFaqId);
   // const [faqIdSecId, setFaqIdSecId] = useState(getFaqIdSecId);
+  const [isFormSubmit, setisFormSubmit] = useState(false);
   const [muivalidatorForm, setmuivalidatorForm] = useState(false);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -181,11 +182,13 @@ function TemperatureRange(props) {
   };
 
   function handleClickGoBackToPage() {
-    // props.history.push("/emergencycontacts/view");
+    props.history.push("/");
   }
 
   function submitForm(e) {
     e.preventDefault();
+    setshowLoadder(true);
+    setisFormSubmit(true);
     console.log("tempsections");
     console.log(tempsections.covidStates[0].lowerLimit);
     let sendData = tempsections;
@@ -212,7 +215,7 @@ function TemperatureRange(props) {
         settoasterServerity("error");
         setStateSnackbar(true);
         setshowLoadder(false);
-        throw err;
+        // throw err;
       });
     // ValidateSubmitForm();
   }
@@ -242,7 +245,9 @@ function TemperatureRange(props) {
           Temperature Range
         </LinkTo>
       </Breadcrumbs>
-      {!componentLoadder ? (
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
         <Paper className="main-paper">
           <ValidatorForm className={`global-form`} onSubmit={submitForm}>
             <Grid container spacing={3}>
@@ -417,7 +422,13 @@ function TemperatureRange(props) {
                   );
                 })
               : ""}
-
+            {isFormSubmit && !tempsections.covidStates ? (
+              <FormHelperText className={classes.errorSpanMsg}>
+                Please select value{" "}
+              </FormHelperText>
+            ) : (
+              ""
+            )}
             <Grid item container xs={12}>
               <Grid item xs={3}>
                 <label>&nbsp;</label>
@@ -445,8 +456,6 @@ function TemperatureRange(props) {
             </Grid>
           </ValidatorForm>
         </Paper>
-      ) : (
-        <ComponentLoadderComponent />
       )}
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
