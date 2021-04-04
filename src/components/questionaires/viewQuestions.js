@@ -155,7 +155,13 @@ function ViewQuestions(props) {
         );
 
       default:
-        return <h4>Not found</h4>;
+        return (
+          <Grid container spacing={0}>
+            <Grid item xs={11} sm={11} className="center-align-full-height">
+              <h4>Not found</h4>
+            </Grid>
+          </Grid>
+        );
     }
   }
 
@@ -197,7 +203,7 @@ function ViewQuestions(props) {
           </Grid>
           <Grid item xs={12} sm={9}>
             <Paper className="add-new-question">
-              <ValidatorForm className={`global-form`}>
+              <ValidatorForm className={`global-form full-height`}>
                 {/* <Grid container spacing={0}> */}
                 {/* <Grid item xs={11} sm={11} className="center-align"> */}
                 <RenderFlagComponent

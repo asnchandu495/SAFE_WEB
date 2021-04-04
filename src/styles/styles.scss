@@ -1014,6 +1014,17 @@ label.required {
   align-items: center;
 }
 
+.center-align-full-height {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
 .auto-height-card {
   .MuiGrid-container {
     height: auto;
