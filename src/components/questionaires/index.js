@@ -9,6 +9,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import QuestionAnswerOutlinedIcon from "@material-ui/icons/QuestionAnswerOutlined";
+import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
+import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -82,8 +84,13 @@ function Questionaire(props) {
   }
 
   function handleClickUpdateQuestions(value) {
-    var userId = value[0];
-    props.history.push(`/questionaires/create-questionaire/${userId}`);
+    var questionId = value[0];
+    props.history.push(`/questionaires/create-questionaire/${questionId}`);
+  }
+
+  function handleClickOrderofExecution(value) {
+    var questionId = value[0];
+    props.history.push(`/questionaires/order-of-execution/${questionId}`);
   }
 
   const columns = [
@@ -154,13 +161,21 @@ function Questionaire(props) {
                     onClick={() => gotoViewQuestion(thisRowData)}
                   ></Button>
                 </Tooltip>
-
+                <Tooltip title="Order of execution">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<UnfoldMoreIcon />}
+                    className={`delete-icon`}
+                    onClick={() => handleClickOrderofExecution(thisRowData)}
+                  ></Button>
+                </Tooltip>
                 <Tooltip title="Questionnaire Evaluation">
                   <Button
                     variant="contained"
                     color="default"
-                    startIcon={<QuestionAnswerOutlinedIcon />}
-                    className={`edit-icon`}
+                    startIcon={<PlaylistAddCheckIcon />}
+                    className={`view-icon`}
                     onClick={() => questionaireEvaluation(thisRowData)}
                   ></Button>
                 </Tooltip>
@@ -170,7 +185,7 @@ function Questionaire(props) {
         },
         setCellProps: (value) => {
           return {
-            style: { width: "250px", minWidth: "250px", textAlign: "center" },
+            style: { width: "300px", minWidth: "300px", textAlign: "center" },
           };
         },
       },
