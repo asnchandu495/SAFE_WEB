@@ -30,6 +30,8 @@ function BooleanJump(props) {
     positiveResponseQuestionId: "",
     negativeResponseQuestionId: "",
   });
+  const [surveyDetails, setsurveyDetails] = useState();
+  const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -39,10 +41,15 @@ function BooleanJump(props) {
   );
 
   useEffect(() => {
-    questionaireApiCall
-      .GetAllQuestionsBySurveyId(surveyId)
-      .then((res) => {
+    Promise.all([
+      questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
+      questionaireApiCall.GetBooleanQuestionById(questionId),
+      questionaireApiCall.getSurveyById(surveyId),
+    ])
+      .then(([res, getBooleanDetails, getsurveyDetails]) => {
         setSelectedSurveyQuestions(res);
+        setselectedQuestionDetails(getBooleanDetails);
+        setsurveyDetails(getsurveyDetails);
         setcomponentLoadder(false);
       })
       .catch((err) => {
@@ -102,8 +109,13 @@ function BooleanJump(props) {
         >
           Questionaires
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
-          Selected question name
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          className="inactive"
+          to={`/questionaires/view-questions/` + surveyId}
+        >
+          {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Conditional Jumb

@@ -44,6 +44,7 @@ function SingleJump(props) {
     elseGoToQuestionId: "",
     goToNormalSequence: false,
   });
+  const [surveyDetails, setsurveyDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
   const [allAnswerExpressions, setAllAnswerExpressions] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -70,14 +71,23 @@ function SingleJump(props) {
       questionaireApiCall.getAllExpressions(),
       questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
       questionaireApiCall.GetSingleChoiceQuestion(questionId),
+      questionaireApiCall.getSurveyById(surveyId),
     ])
-      .then(([allExpressions, allSurveyQuestions, choiceQuestionDetails]) => {
-        setAllAnswerExpressions(allExpressions);
-        setSelectedSurveyQuestions(allSurveyQuestions);
-        setselectedQuestionDetails(choiceQuestionDetails);
-        setAnswerChoices(choiceQuestionDetails.surveyResponseChoices);
-        setcomponentLoadder(false);
-      })
+      .then(
+        ([
+          allExpressions,
+          allSurveyQuestions,
+          choiceQuestionDetails,
+          getsurveyDetails,
+        ]) => {
+          setAllAnswerExpressions(allExpressions);
+          setSelectedSurveyQuestions(allSurveyQuestions);
+          setselectedQuestionDetails(choiceQuestionDetails);
+          setAnswerChoices(choiceQuestionDetails.surveyResponseChoices);
+          setsurveyDetails(getsurveyDetails);
+          setcomponentLoadder(false);
+        }
+      )
       .catch((error) => {
         console.log(error);
       });
@@ -186,8 +196,13 @@ function SingleJump(props) {
         >
           Questionaires
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
-          Selected question name
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          className="inactive"
+          to={`/questionaires/view-questions/` + surveyId}
+        >
+          {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Conditional Jumb

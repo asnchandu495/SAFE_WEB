@@ -97,19 +97,19 @@ function TemperatureRange(props) {
       GlobalSettingApi.getLoadGlobalSetting(),
     ])
       .then(([result, globalSettings]) => {
-        // setcomponentLoadder(false);
         setcovidStatelist(result);
         console.log(globalSettings.covidStateTemperatures);
         console.log(tempsections.covidStates);
         tempsections.covidStates = globalSettings.covidStateTemperatures;
         console.log(globalSettings.id);
         tempsections.globalSettingsId = globalSettings.id;
+        setComponentLoadder(false);
       })
       .catch((err) => {
         console.log("eror");
         console.log(err);
       });
-    setComponentLoadder(false);
+    // setComponentLoadder(false);
   }, []);
 
   function handleChangeInput(e) {
@@ -245,9 +245,7 @@ function TemperatureRange(props) {
           Temperature Range
         </LinkTo>
       </Breadcrumbs>
-      {componentLoadder ? (
-        <ComponentLoadderComponent />
-      ) : (
+      {!componentLoadder ? (
         <Paper className="main-paper">
           <ValidatorForm className={`global-form`} onSubmit={submitForm}>
             <Grid container spacing={3}>
@@ -456,6 +454,8 @@ function TemperatureRange(props) {
             </Grid>
           </ValidatorForm>
         </Paper>
+      ) : (
+        <ComponentLoadderComponent />
       )}
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}

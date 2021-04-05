@@ -30,6 +30,8 @@ function NumericJump(props) {
   const questionId = props.match.params.qid;
   const questionaireApiCall = new questionaireService();
 
+  const [surveyDetails, setsurveyDetails] = useState();
+  const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [showLoadder, setshowLoadder] = useState(false);
   const [conditionalJump, setConditionalJump] = useState({
@@ -71,12 +73,23 @@ function NumericJump(props) {
     Promise.all([
       questionaireApiCall.getAllExpressions(),
       questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
+      questionaireApiCall.GetNumeicQuestionById(questionId),
+      questionaireApiCall.getSurveyById(surveyId),
     ])
-      .then(([allExpressions, allSurveyQuestions]) => {
-        setAllAnswerExpressions(allExpressions);
-        setSelectedSurveyQuestions(allSurveyQuestions);
-        setcomponentLoadder(false);
-      })
+      .then(
+        ([
+          allExpressions,
+          allSurveyQuestions,
+          getNumeicDetails,
+          getsurveyDetails,
+        ]) => {
+          setAllAnswerExpressions(allExpressions);
+          setSelectedSurveyQuestions(allSurveyQuestions);
+          setselectedQuestionDetails(getNumeicDetails);
+          setsurveyDetails(getsurveyDetails);
+          setcomponentLoadder(false);
+        }
+      )
       .catch((error) => {
         console.log(error);
       });
@@ -197,8 +210,13 @@ function NumericJump(props) {
         >
           Questionaires
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
-          Selected question name
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          className="inactive"
+          to={`/questionaires/view-questions/` + surveyId}
+        >
+          {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Conditional Jumb

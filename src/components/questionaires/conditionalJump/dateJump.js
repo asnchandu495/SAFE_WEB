@@ -54,6 +54,8 @@ function DateJump(props) {
     elseGoToQuestionId: "",
     goToNormalSequence: false,
   });
+  const [surveyDetails, setsurveyDetails] = useState();
+  const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
   const [allAnswerExpressions, setAllAnswerExpressions] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -77,12 +79,23 @@ function DateJump(props) {
     Promise.all([
       questionaireApiCall.getAllExpressions(),
       questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
+      questionaireApiCall.GetDateTimeById(questionId),
+      questionaireApiCall.getSurveyById(surveyId),
     ])
-      .then(([allExpressions, allSurveyQuestions]) => {
-        setAllAnswerExpressions(allExpressions);
-        setSelectedSurveyQuestions(allSurveyQuestions);
-        setcomponentLoadder(false);
-      })
+      .then(
+        ([
+          allExpressions,
+          allSurveyQuestions,
+          getBooleanDetails,
+          getsurveyDetails,
+        ]) => {
+          setAllAnswerExpressions(allExpressions);
+          setSelectedSurveyQuestions(allSurveyQuestions);
+          setselectedQuestionDetails(getBooleanDetails);
+          setsurveyDetails(getsurveyDetails);
+          setcomponentLoadder(false);
+        }
+      )
       .catch((error) => {
         console.log(error);
       });
@@ -206,8 +219,13 @@ function DateJump(props) {
         >
           Questionaires
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
-          Selected question name
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          className="inactive"
+          to={`/questionaires/view-questions/` + surveyId}
+        >
+          {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Conditional Jumb

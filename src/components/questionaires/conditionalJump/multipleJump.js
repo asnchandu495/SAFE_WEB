@@ -51,6 +51,7 @@ function MultipleJump(props) {
     elseGoToQuestionId: "",
     goToNormalSequence: false,
   });
+  const [surveyDetails, setsurveyDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
   const [allAnswerExpressions, setAllAnswerExpressions] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -77,14 +78,23 @@ function MultipleJump(props) {
       questionaireApiCall.getAllExpressions(),
       questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
       questionaireApiCall.GetMultipleChoicQuestionById(questionId),
+      questionaireApiCall.getSurveyById(surveyId),
     ])
-      .then(([allExpressions, allSurveyQuestions, choiceQuestionDetails]) => {
-        setAllAnswerExpressions(allExpressions);
-        setSelectedSurveyQuestions(allSurveyQuestions);
-        setselectedQuestionDetails(choiceQuestionDetails);
-        setAnswerChoices(choiceQuestionDetails.surveyResponseChoices);
-        setcomponentLoadder(false);
-      })
+      .then(
+        ([
+          allExpressions,
+          allSurveyQuestions,
+          choiceQuestionDetails,
+          getsurveyDetails,
+        ]) => {
+          setAllAnswerExpressions(allExpressions);
+          setSelectedSurveyQuestions(allSurveyQuestions);
+          setselectedQuestionDetails(choiceQuestionDetails);
+          setAnswerChoices(choiceQuestionDetails.surveyResponseChoices);
+          setsurveyDetails(getsurveyDetails);
+          setcomponentLoadder(false);
+        }
+      )
       .catch((error) => {
         console.log(error);
       });
@@ -241,13 +251,18 @@ function MultipleJump(props) {
         <LinkTo
           color="textPrimary"
           href={"/questionaires/allquestionaires"}
-          to={`/questionaires/allquestionaires`}
+          to={`/questionaires/view-questions/`}
           className="inactive"
         >
           Questionaires
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
-          Selected question name
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/questionaires/view-questions/` + surveyId}
+          className="inactive"
+        >
+          {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Conditional Jumb

@@ -26,10 +26,14 @@ function AddQuestion(props) {
     questionType: "",
   });
   const [selectedQuestionDetails, setSelectedQuestionDetails] = useState();
-
+  const [surveyDetails, setsurveyDetails] = useState();
   useEffect(() => {
-    Promise.all([questionaireApiCall.GetALLTypes()])
-      .then(([res]) => {
+    Promise.all([
+      questionaireApiCall.GetALLTypes(),
+      questionaireApiCall.getSurveyById(surveyIdURL),
+    ])
+      .then(([res, getsurveyDetails]) => {
+        setsurveyDetails(getsurveyDetails);
         if (questionIdURL != 0) {
           setQuestionTypes(res);
           callQuestionDetailsAPI(questionIdURL, editQuestionType);
@@ -167,11 +171,16 @@ function AddQuestion(props) {
         >
           Questionnaire
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
-          {ViewQuestionaireDetails ? ViewQuestionaireDetails.name : ""}
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          className="inactive"
+          to={`/questionaires/view-questions/` + surveyIdURL}
+        >
+          {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          Add question
+          {questionIdURL != 0 ? "Update questions " : " Add questions"}
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (
