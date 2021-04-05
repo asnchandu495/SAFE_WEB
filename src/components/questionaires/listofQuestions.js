@@ -5,10 +5,11 @@ import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from "@material-ui/icons/Search";
 import { useParams } from "react-router-dom";
 import questionaireService from "../../services/questionaireService";
-import QuestionType from "./selectQuestionType";
 
 function ListofQuestions(props) {
   const { id } = useParams();
@@ -106,6 +107,25 @@ function ListofQuestions(props) {
 
   return (
     <List component="nav">
+      <ListItem className="search-list-input">
+        <TextField
+          variant="outlined"
+          fullWidth
+          id="groupName"
+          placeholder="Search by question..."
+          name="groupName"
+          // onChange={handleChange}
+          // value={formData.groupName}
+          InputLabelProps={{ shrink: false }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </ListItem>
       {selectedSurveyQuestions.map((ques, index) => {
         return (
           <Fragment>
