@@ -18,6 +18,10 @@ import ToasterMessageComponent from "../../common/toaster";
 import { useHistory } from "react-router-dom";
 import ConfirmationDialog from "../../common/confirmdialogbox";
 
+import * as QuestionAction from "../../../Redux/Action/questionAction";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
 function BooleanDetails(props) {
   const history = useHistory();
   const [componentLoadder, setcomponentLoadder] = useState(true);
@@ -217,4 +221,21 @@ function BooleanDetails(props) {
   );
 }
 
-export default BooleanDetails;
+// export default BooleanDetails;
+
+BooleanDetails.propTypes = {
+  ListofQuestionsData: PropTypes.array.isRequired,
+  DeleteBooleanQuestion: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ListofQuestionsData: state.questionState,
+  };
+}
+
+const mapDispatchToProps = {
+  DeleteBooleanQuestion: QuestionAction.DeleteBooleanQuestion,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BooleanDetails);

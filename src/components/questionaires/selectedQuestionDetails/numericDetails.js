@@ -23,6 +23,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import ConfirmationDialog from "../../common/confirmdialogbox";
+import * as QuestionAction from "../../../Redux/Action/questionAction";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 function NumericDetails(props) {
   const history = useHistory();
@@ -257,4 +260,21 @@ function NumericDetails(props) {
   );
 }
 
-export default NumericDetails;
+// export default NumericDetails;
+
+NumericDetails.propTypes = {
+  ListofQuestionsData: PropTypes.array.isRequired,
+  DeleteNumericQuestion: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ListofQuestionsData: state.questionState,
+  };
+}
+
+const mapDispatchToProps = {
+  DeleteNumericQuestion: QuestionAction.DeleteNumericQuestion,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NumericDetails);

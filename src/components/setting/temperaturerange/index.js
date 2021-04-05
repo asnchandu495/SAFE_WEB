@@ -103,6 +103,7 @@ function TemperatureRange(props) {
         tempsections.covidStates = globalSettings.covidStateTemperatures;
         console.log(globalSettings.id);
         tempsections.globalSettingsId = globalSettings.id;
+        tempsections.temperatureUnit = globalSettings.temperatureUnit;
         setComponentLoadder(false);
       })
       .catch((err) => {

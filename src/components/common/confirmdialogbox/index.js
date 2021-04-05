@@ -27,6 +27,7 @@ import teamService from "../../../services/teamService";
 
 import * as TeamAction from "../../../Redux/Action/teamAction";
 import * as QuestionaireAction from "../../../Redux/Action/questionaireAction";
+import * as QuestionAction from "../../../Redux/Action/questionAction";
 import * as AssignquestionaireAction from "../../../Redux/Action/assignquestionaireAction";
 import questionaireService from "../../../services/questionaireService";
 
@@ -374,8 +375,10 @@ function CustomizedDialogs(props) {
       var thisId = props.SelectedRowDetails.id;
       console.log("gettheid");
       console.log(props.SelectedRowDetails.id);
-      questionaireApiCall
-        .DeleteBooleanQuestion(thisId)
+      // questionaireApiCall
+      //   .DeleteBooleanQuestion(thisId)
+      props
+        .DeleteSelectedQuestion(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted Boolean Question.");
@@ -390,8 +393,11 @@ function CustomizedDialogs(props) {
       var thisId = props.SelectedRowDetails.id;
       console.log("gettheid");
       console.log(props.SelectedRowDetails.id);
-      questionaireApiCall
-        .DeleteFreeTextQuestion(thisId)
+      // questionaireApiCall
+      //   .DeleteFreeTextQuestion(thisId)
+      props
+        .DeleteFreetextQuestionData(thisId)
+
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted Freetext Question.");
@@ -422,8 +428,11 @@ function CustomizedDialogs(props) {
       var thisId = props.SelectedRowDetails.id;
       console.log("gettheid");
       console.log(props.SelectedRowDetails.id);
+
       questionaireApiCall
         .DeleteDateQuestion(thisId)
+        // props
+        //   .DeleteDateQuestionData(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted date Question.");
@@ -438,8 +447,10 @@ function CustomizedDialogs(props) {
       var thisId = props.SelectedRowDetails.id;
       console.log("gettheid");
       console.log(props.SelectedRowDetails.id);
-      questionaireApiCall
-        .DeleteNumericQuestion(thisId)
+      // questionaireApiCall
+      // .DeleteNumericQuestion(thisId)
+      props
+        .DeleteNumericQuestionData(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted numeric Question.");
@@ -456,8 +467,10 @@ function CustomizedDialogs(props) {
       var thisId = props.SelectedRowDetails.id;
       console.log("gettheid");
       console.log(props.SelectedRowDetails.id);
-      questionaireApiCall
-        .DeleteSinglechoiceQuestion(thisId)
+      // questionaireApiCall
+      // .DeleteSinglechoiceQuestion(thisId)
+      props
+        .DeleteSinglechoiceQuestionData(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted singlechoice Question.");
@@ -474,8 +487,9 @@ function CustomizedDialogs(props) {
       var thisId = props.SelectedRowDetails.id;
       console.log("gettheid");
       console.log(props.SelectedRowDetails.id);
-      questionaireApiCall
-        .DeleteMultichoiceQuestion(thisId)
+      // questionaireApiCall
+      props
+        .DeleteMultiQuestionData(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted multochoice Question.");
@@ -536,6 +550,8 @@ CustomizedDialogs.propTypes = {
   ChangeQuestionnaireUserStatus: PropTypes.func.isRequired,
   DeleteTeam: PropTypes.func.isRequired,
   DeleteQuestion: PropTypes.func.isRequired,
+  DeleteSelectedQuestion: PropTypes.func.isRequired,
+  DeleteDateQuestionData: PropTypes.func.isRequired,
 };
 function mapStateToProps(state, ownProps) {}
 
@@ -562,6 +578,12 @@ const mapDispatchToProps = {
   DeleteSiteFloor: SiteAction.deleteSiteFloor,
   DeleteTeam: TeamAction.deleteTeamData,
   DeleteQuestion: QuestionaireAction.deleteQuestionaireData,
+  DeleteSelectedQuestion: QuestionAction.DeleteBooleanQuestion,
+  DeleteDateQuestionData: QuestionAction.DeleteDateQuestion,
+  DeleteFreetextQuestionData: QuestionAction.DeleteFreeQuestion,
+  DeleteMultiQuestionData: QuestionAction.DeleteMultichoiceQuestion,
+  DeleteNumericQuestionData: QuestionAction.DeleteNumericQuestion,
+  DeleteSinglechoiceQuestionData: QuestionAction.DeleteSinglechoiceQuestion,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomizedDialogs);

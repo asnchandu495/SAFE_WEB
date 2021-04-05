@@ -23,6 +23,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import ConfirmationDialog from "../../common/confirmdialogbox";
+import * as QuestionAction from "../../../Redux/Action/questionAction";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 function DateDetails(props) {
   const history = useHistory();
@@ -254,4 +257,20 @@ function DateDetails(props) {
   );
 }
 
-export default DateDetails;
+// export default DateDetails;
+DateDetails.propTypes = {
+  ListofQuestionsData: PropTypes.array.isRequired,
+  DeleteDateQuestion: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ListofQuestionsData: state.questionState,
+  };
+}
+
+const mapDispatchToProps = {
+  DeleteDateQuestion: QuestionAction.DeleteDateQuestion,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DateDetails);
