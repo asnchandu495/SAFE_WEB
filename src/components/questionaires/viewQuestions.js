@@ -158,7 +158,10 @@ function ViewQuestions(props) {
         return (
           <Grid container spacing={0}>
             <Grid item xs={11} sm={11} className="center-align-full-height">
-              <h4>Not found</h4>
+              <h4 className="title-padding">
+                Please select a question to see the details or else add a new
+                question by clicking the plus button at bottom
+              </h4>
             </Grid>
           </Grid>
         );

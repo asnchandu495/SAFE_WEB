@@ -751,11 +751,12 @@ label.required {
     overflow-y: auto;
     .MuiListItemAvatar-root {
       margin-top: 0;
-      min-width: 45px;
+      min-width: 30px;
       .MuiAvatar-root {
-        height: 30px;
-        width: 45px;
-        font-size: 14px;
+        background: var(--primary-26235d) 0% 0% no-repeat padding-box;
+        height: 28px;
+        width: 30px;
+        font-size: 12px;
         border-radius: 0;
       }
     }
@@ -763,6 +764,7 @@ label.required {
       padding: 0;
       .MuiListItem-gutters {
         padding: 10px;
+        align-items: center;
       }
     }
     .question-name {
@@ -772,7 +774,7 @@ label.required {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: normal;
-      margin-left: 10px;
+      margin-left: 5px;
       margin-top: 0;
       margin-bottom: 0;
       font-size: 12px;
@@ -1104,5 +1106,39 @@ label.required {
   }
   .MuiInputBase-input:focus .MuiInputAdornment-root {
     margin-bottom: -5px !important;
+  }
+}
+
+.title-padding {
+  padding: 25px;
+}
+
+.search-list-input {
+  padding: 0 !important;
+  .MuiOutlinedInput-root {
+    border-radius: 0;
+  }
+  .MuiOutlinedInput-input {
+    padding: 10px !important;
+    height: 25px;
+    font-size: 14px;
+  }
+  .MuiOutlinedInput-notchedOutline {
+    border-color: transparent;
+    border-bottom: 1px solid #ccc;
+  }
+  .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: transparent;
+    border-bottom: 1px solid #ccc;
+  }
+  .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: transparent;
+    border-bottom: 1px solid #ccc;
+  }
+  .MuiOutlinedInput-adornedStart {
+    padding-left: 10px;
+  }
+  .MuiInputAdornment-positionStart {
+    margin-right: 0px;
   }
 }
