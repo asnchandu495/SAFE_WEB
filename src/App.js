@@ -64,6 +64,7 @@ import DateJump from "./components/questionaires/conditionalJump/dateJump";
 import TimeJump from "./components/questionaires/conditionalJump/timeJump";
 import SingleJump from "./components/questionaires/conditionalJump/singleJump";
 import MultipleJump from "./components/questionaires/conditionalJump/multipleJump";
+import OrderofExecution from "./components/questionaires/orderofExecution";
 
 function App(props) {
   const AuthContainer = () => {
@@ -258,6 +259,10 @@ function App(props) {
           path="/questionaires/:id/conditional/multiple/:qid"
           component={MultipleJump}
         ></Route>
+        <Route
+          path="/questionaires/order-of-execution/:id"
+          component={OrderofExecution}
+        ></Route>
       </AdminLayout>
     );
   };
@@ -450,6 +455,10 @@ function App(props) {
         ></Route>
         <Route
           path="/questionaires/:id/conditional/multiple/:qid"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/questionaires/order-of-execution/:id"
           component={AdminContainer}
         ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />

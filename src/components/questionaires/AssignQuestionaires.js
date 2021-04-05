@@ -49,6 +49,7 @@ import { withStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import PostAddIcon from "@material-ui/icons/PostAdd";
 import questionaireService from "../../services/questionaireService";
 const QuestionaireApicall = new QuestionaireService();
 const userStatusData = [
@@ -316,7 +317,7 @@ function AssignQuestionaires(props) {
           <Tooltip title="Filter By User">
             <Button
               variant="contained"
-              startIcon={<FilterListIcon />}
+              startIcon={<PostAddIcon />}
               className={`add-icon`}
               onClick={handleClickOpenModal}
             ></Button>

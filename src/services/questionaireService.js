@@ -560,6 +560,19 @@ export default class questionaireService {
     });
   }
 
+  ChangeQuestionOrder(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/OrderOfExecution/AddOrderOfExecution`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

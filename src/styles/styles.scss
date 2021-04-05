@@ -1142,3 +1142,27 @@ label.required {
     margin-right: 0px;
   }
 }
+
+.order-change {
+  .MuiAvatar-root {
+    background: var(--primary-26235d) 0% 0% no-repeat padding-box;
+    height: 28px;
+    width: 30px;
+    font-size: 12px;
+    border-radius: 0;
+  }
+  .MuiListItem-root {
+    border-bottom: 1px solid #ccc;
+    cursor: move;
+    .MuiGrid-container {
+      align-items: center;
+    }
+  }
+  .question-name {
+    margin-left: 15px !important;
+  }
+  .question-container-full {
+    display: inline-flex;
+    align-items: center;
+  }
+}
