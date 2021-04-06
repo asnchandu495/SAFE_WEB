@@ -342,6 +342,19 @@ export default class questionaireService {
     });
   }
 
+  updateEvaluationResultForQuestionnaire(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/Evaluation/UpdateEvaluationResultForQuestionnaire`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   AddTimeQuestion(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(`${this.questionaireURL}/QuestionTime/AddTimeQuestion`, {
