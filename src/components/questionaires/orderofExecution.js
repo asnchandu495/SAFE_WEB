@@ -13,41 +13,112 @@ import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import questionaireService from "../../services/questionaireService";
+import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import ToasterMessageComponent from "../common/toaster";
 
 function OrderofExecution(props) {
   const { id } = useParams();
   const questionaireApiCall = new questionaireService();
+  const [componentLoadder, setcomponentLoadder] = useState(true);
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
+  const [
+    selectedSurveyOrderofExecution,
+    setSelectedSurveyOrderofExecution,
+  ] = useState([]);
+  const [surveyDetails, setSurveyDetails] = useState();
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
+  const [reloadPage, setReloadPage] = useState("NO");
 
   useEffect(() => {
-    questionaireApiCall
-      .GetAllQuestionsBySurveyId(id)
-      .then((res) => {
-        setSelectedSurveyQuestions(res);
+    Promise.all([
+      questionaireApiCall.getAllOrderofExecution(id),
+      questionaireApiCall.GetAllQuestionsBySurveyId(id),
+      questionaireApiCall.getSurveyById(id),
+    ])
+      .then(([orderofExecutions, allSurveyQuestions, getsurveyDetails]) => {
+        allSurveyQuestions.map((item, i) => {
+          let checkExists = orderofExecutions.find(
+            (t2) => t2.surveyQuestionId === item.id
+          );
+          if (checkExists) {
+            item.order = checkExists.order;
+            item.existId = checkExists.id;
+          } else {
+            item.order = null;
+            item.existId = null;
+          }
+        });
+
+        allSurveyQuestions.sort((a, b) => {
+          return (b.order != null) - (a.order != null) || a.order - b.order;
+        });
+
+        setSelectedSurveyOrderofExecution(orderofExecutions);
+        setSelectedSurveyQuestions(allSurveyQuestions);
+        setSurveyDetails(getsurveyDetails);
+        setReloadPage("NO");
+        setcomponentLoadder(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
-  }, []);
+  }, [reloadPage]);
 
   const dragProps = {
     onDragEnd(fromIndex, toIndex) {
+      setcomponentLoadder(false);
       const data = [...selectedSurveyQuestions];
       const item = data.splice(fromIndex, 1)[0];
       data.splice(toIndex, 0, item);
-      let sendData = {
-        surveryId: item.surveyId,
-        surveyQuestionId: item.id,
-        order: parseInt(toIndex + 1),
-      };
-      questionaireApiCall
-        .ChangeQuestionOrder(sendData)
-        .then((res) => {
-          setSelectedSurveyQuestions(data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (item.order != null) {
+        let sendData = {
+          id: item.existId,
+          surveryId: item.surveyId,
+          surveyQuestionId: item.id,
+          order: parseInt(toIndex + 1),
+        };
+        questionaireApiCall
+          .ChangeQuestionOrderUpdate(sendData)
+          .then((res) => {
+            setSelectedSurveyQuestions(data);
+            setStateSnackbar(true);
+            setToasterMessage("Order is updated.");
+            settoasterServerity("success");
+            setReloadPage("YES");
+          })
+          .catch((err) => {
+            setcomponentLoadder(false);
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+          });
+      } else {
+        let sendData = {
+          surveryId: item.surveyId,
+          surveyQuestionId: item.id,
+          order: parseInt(toIndex + 1),
+        };
+        questionaireApiCall
+          .ChangeQuestionOrder(sendData)
+          .then((res) => {
+            setSelectedSurveyQuestions(data);
+            setStateSnackbar(true);
+            setToasterMessage("Order is updated.");
+            settoasterServerity("success");
+            setReloadPage("YES");
+          })
+          .catch((err) => {
+            setcomponentLoadder(false);
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+          });
+      }
     },
     nodeSelector: "li",
     handleSelector: "li",
@@ -84,24 +155,41 @@ function OrderofExecution(props) {
         <Grid container spacing={0}>
           <Grid item xs={12} sm={12} className="list-questions-container">
             <Paper className="list-questions order-change">
-              <List component="nav">
-                <ReactDragListView {...dragProps}>
-                  {selectedSurveyQuestions.map((ques, index) => {
-                    return (
-                      <ListItem alignItems="flex-start" key={index}>
-                        <Grid item xs={12} className="question-container-full">
-                          <Avatar>{index + 1}</Avatar>
-                          <p className="question-name">{ques.question}</p>
-                        </Grid>
-                      </ListItem>
-                    );
-                  })}
-                </ReactDragListView>
-              </List>
+              {componentLoadder ? (
+                <ComponentLoadderComponent />
+              ) : (
+                <List component="nav">
+                  <ReactDragListView {...dragProps}>
+                    {selectedSurveyQuestions.map((ques, index = index + 1) => {
+                      return (
+                        <ListItem alignItems="flex-start" key={index}>
+                          <Grid
+                            item
+                            xs={12}
+                            className="question-container-full"
+                          >
+                            <Avatar>
+                              {ques.order != null ? ques.order : 0}
+                            </Avatar>
+                            <p className="question-name">{ques.question}</p>
+                          </Grid>
+                        </ListItem>
+                      );
+                    })}
+                  </ReactDragListView>
+                </List>
+              )}
             </Paper>
           </Grid>
         </Grid>
       </Paper>
+      <ToasterMessageComponent
+        stateSnackbar={stateSnackbar}
+        setStateSnackbar={setStateSnackbar}
+        toasterMessage={toasterMessage}
+        toasterServerity={toasterServerity}
+        toasterErrorMessageType={toasterErrorMessageType}
+      />
     </div>
   );
 }

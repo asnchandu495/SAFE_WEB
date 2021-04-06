@@ -584,12 +584,36 @@ export default class questionaireService {
     });
   }
 
+  getAllOrderofExecution(id) {
+    return this.fetch(
+      `${this.questionaireURL}/OrderOfExecution/GetAllOrderOfExecution?SurveyId=${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   ChangeQuestionOrder(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(
       `${this.questionaireURL}/OrderOfExecution/AddOrderOfExecution`,
       {
         method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  ChangeQuestionOrderUpdate(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/OrderOfExecution/EditOrderOfExecution`,
+      {
+        method: "PUT",
         body: finalData,
       }
     ).then((res) => {
