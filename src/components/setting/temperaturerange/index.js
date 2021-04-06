@@ -128,18 +128,18 @@ function TemperatureRange(props) {
       covidStates: [
         ...tempsections.covidStates.map((con, conIndex) => {
           if (name == "upperLimit" || name == "lowerLimit") {
+            // return conIndex == index ? { ...con, [name]: value } : con;
             return conIndex == index
-              ? { ...con, [name]: parseFloat(value) }
+              ? { ...con, [name]: parseInt(value) }
               : con;
           } else {
-            return conIndex == index
-              ? { ...con, [name]: parseFloat(value) }
-              : con;
+            return conIndex == index ? { ...con, [name]: value } : con;
           }
         }),
       ],
     };
 
+    // parseFloat(settempsections(list));
     settempsections(list);
   };
 
