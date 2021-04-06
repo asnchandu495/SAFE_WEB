@@ -45,13 +45,24 @@ function BooleanJump(props) {
       questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
       questionaireApiCall.GetBooleanQuestionById(questionId),
       questionaireApiCall.getSurveyById(surveyId),
+      questionaireApiCall.GetBooleanConditionQuestionById(questionId),
     ])
-      .then(([res, getBooleanDetails, getsurveyDetails]) => {
-        setSelectedSurveyQuestions(res);
-        setselectedQuestionDetails(getBooleanDetails);
-        setsurveyDetails(getsurveyDetails);
-        setcomponentLoadder(false);
-      })
+      .then(
+        ([
+          res,
+          getBooleanDetails,
+          getsurveyDetails,
+          getBooleanConditionDetails,
+        ]) => {
+          setSelectedSurveyQuestions(res);
+          setselectedQuestionDetails(getBooleanDetails);
+          setsurveyDetails(getsurveyDetails);
+          if (getBooleanConditionDetails) {
+            setConditionalJump(getBooleanConditionDetails);
+          }
+          setcomponentLoadder(false);
+        }
+      )
       .catch((err) => {
         console.log(err);
       });
@@ -68,26 +79,41 @@ function BooleanJump(props) {
   function submitForm(e) {
     e.preventDefault();
     setshowLoadder(true);
-    questionaireApiCall
-      .addBooleanConditionalJump(conditionalJump)
-      .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("Conditional jump is added.");
-        settoasterServerity("success");
-        setshowLoadder(false);
-        setConditionalJump({
-          id: "",
-          surveyQuestionId: questionId,
-          positiveResponseQuestionId: "",
-          negativeResponseQuestionId: "",
+    if (conditionalJump.id != "") {
+      questionaireApiCall
+        .updateBooleanConditionalJump(conditionalJump)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is updated.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
         });
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
-      });
+    } else {
+      questionaireApiCall
+        .addBooleanConditionalJump(conditionalJump)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is added.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+          setConditionalJump((conditionalJump) => ({
+            ...conditionalJump,
+            ["id"]: result.id,
+          }));
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
   }
 
   return (

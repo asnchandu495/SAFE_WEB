@@ -597,6 +597,150 @@ export default class questionaireService {
     });
   }
 
+  GetBooleanConditionQuestionById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/BooleanQuestion/GetBooleanConditionalQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  updateBooleanConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/BooleanQuestion/UpdateBooleanConditionalQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetDateTimeBooleanById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/QuestionDate/GetConditionalDateQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  updateDateConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/QuestionDate/UpdateConditionalDateQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetTimeQuestionBooleanById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/QuestionTime/GetConditionalTimeQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  updateTimeConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/QuestionTime/UpdateConditionalTimeQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetNumeicQuestionBoooleanById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/NumericQuestion/GetNumericConditionalQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  updateNumericConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/NumericQuestion/UpdateConditionalNumericQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetSingleChoiceBooleanQuestion(id) {
+    return this.fetch(
+      `${this.questionaireURL}/SingleChoiceQuestion/GetSingleChoiceConditionalQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  updateSingleChoiceConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/SingleChoiceQuestion/UpdateSingleChoiceConditionalQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetMultipleChoicQuestionBooleanById(id) {
+    return this.fetch(
+      `${this.questionaireURL}/MultipleChoiceQuestion/GetConditionalMultipleChoiceQuestion/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  updateMultiChoiceConditionalJump(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/MultipleChoiceQuestion/UpdateConditionalMultiChoiceQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

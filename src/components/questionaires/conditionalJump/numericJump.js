@@ -58,6 +58,7 @@ function NumericJump(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
+  const [reloadPage, setReloadPage] = useState("false");
 
   const GreenCheckbox = withStyles({
     root: {
@@ -75,6 +76,7 @@ function NumericJump(props) {
       questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
       questionaireApiCall.GetNumeicQuestionById(questionId),
       questionaireApiCall.getSurveyById(surveyId),
+      questionaireApiCall.GetNumeicQuestionBoooleanById(questionId),
     ])
       .then(
         ([
@@ -82,18 +84,23 @@ function NumericJump(props) {
           allSurveyQuestions,
           getNumeicDetails,
           getsurveyDetails,
+          getNumeicBooleanDetails,
         ]) => {
           setAllAnswerExpressions(allExpressions);
           setSelectedSurveyQuestions(allSurveyQuestions);
           setselectedQuestionDetails(getNumeicDetails);
           setsurveyDetails(getsurveyDetails);
+          if (getNumeicBooleanDetails) {
+            setConditionalJump(getNumeicBooleanDetails);
+          }
+          setReloadPage("false");
           setcomponentLoadder(false);
         }
       )
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reloadPage]);
 
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
@@ -159,36 +166,39 @@ function NumericJump(props) {
   function submitForm(e) {
     e.preventDefault();
     setshowLoadder(true);
-    questionaireApiCall
-      .addNumericConditionalJump(conditionalJump)
-      .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("Conditional jump is added.");
-        settoasterServerity("success");
-        setshowLoadder(false);
-        setConditionalJump({
-          id: "",
-          surveyQuestionId: questionId,
-          numericConditionalQuestions: [
-            {
-              id: "",
-              numericConditionalOrderId: "",
-              numericExpressionType: "",
-              forAnswer: 0,
-              forRangeEnd: 0,
-              goToSurveyQuestionId: "",
-            },
-          ],
-          elseGoToQuestionId: "",
-          goToNormalSequence: false,
+    if (conditionalJump.id != "") {
+      questionaireApiCall
+        .updateNumericConditionalJump(conditionalJump)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is updated.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+          setReloadPage("true");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
         });
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
-      });
+    } else {
+      questionaireApiCall
+        .addNumericConditionalJump(conditionalJump)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is added.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+          setReloadPage("true");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
   }
 
   return (

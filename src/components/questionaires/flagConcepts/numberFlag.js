@@ -58,11 +58,20 @@ function QuestionTypeNumber(props) {
   const handleChangeFlagR = (e, index) => {
     console.log(index);
     const { name, value } = e.target;
+    let thisVal = "";
+    if (name == "expressionType") {
+      thisVal = value;
+    } else {
+      let getValue = value;
+      if (getValue != "") {
+        thisVal = parseInt(getValue);
+      }
+    }
     const list = {
       ...props.numericFlag,
       redFlagForNumber: [
         ...props.numericFlag.redFlagForNumber.map((con, conIndex) =>
-          conIndex == index ? { ...con, [name]: value } : con
+          conIndex == index ? { ...con, [name]: thisVal } : con
         ),
       ],
     };

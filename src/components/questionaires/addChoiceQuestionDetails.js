@@ -116,6 +116,7 @@ function AddChoiceQuestionDetails(props) {
                     ],
             };
             setSingleChoiceFlag(newSingleChoiceFlag);
+            setshowLoadder(false);
             setShowFlags(true);
           })
           .catch((err) => {
@@ -161,6 +162,7 @@ function AddChoiceQuestionDetails(props) {
                     ],
             };
             setMultiChoiceFlag(newMultiChoiceFlag);
+            setshowLoadder(false);
             setShowFlags(true);
           })
           .catch((err) => {
@@ -208,10 +210,6 @@ function AddChoiceQuestionDetails(props) {
             setToasterMessage("Selected question updated.");
             settoasterServerity("success");
             setTimeout(function () {
-              setAddQuestionWithChoices((addQuestionWithChoices) => ({
-                ...addQuestionWithChoices,
-                id: res.id,
-              }));
               props.history.push(
                 `/questionaires/add-questions/${props.surveyIdURL}/${res.id}?type=SingleChoice`
               );

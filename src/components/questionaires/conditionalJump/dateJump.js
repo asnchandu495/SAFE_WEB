@@ -64,6 +64,7 @@ function DateJump(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
+  const [reloadPage, setReloadPage] = useState("false");
 
   const GreenCheckbox = withStyles({
     root: {
@@ -81,6 +82,7 @@ function DateJump(props) {
       questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
       questionaireApiCall.GetDateTimeById(questionId),
       questionaireApiCall.getSurveyById(surveyId),
+      questionaireApiCall.GetDateTimeBooleanById(questionId),
     ])
       .then(
         ([
@@ -88,18 +90,23 @@ function DateJump(props) {
           allSurveyQuestions,
           getBooleanDetails,
           getsurveyDetails,
+          getBooleanConditionDetails,
         ]) => {
           setAllAnswerExpressions(allExpressions);
           setSelectedSurveyQuestions(allSurveyQuestions);
           setselectedQuestionDetails(getBooleanDetails);
           setsurveyDetails(getsurveyDetails);
+          if (getBooleanConditionDetails) {
+            setConditionalJump(getBooleanConditionDetails);
+          }
+          setReloadPage("false");
           setcomponentLoadder(false);
         }
       )
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reloadPage]);
 
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
@@ -168,36 +175,39 @@ function DateJump(props) {
   function submitForm(e) {
     e.preventDefault();
     setshowLoadder(true);
-    questionaireApiCall
-      .addDateConditionalJump(conditionalJump)
-      .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("Conditional jump is added.");
-        settoasterServerity("success");
-        setshowLoadder(false);
-        setConditionalJump({
-          id: "",
-          surveyQuestionId: questionId,
-          dateTimeConditionalQuestions: [
-            {
-              id: "",
-              dateTimeConditionalOrderId: "",
-              numericExpressionType: "",
-              forAnswer: moment().toISOString(),
-              forRangeEnd: moment().toISOString(),
-              goToSurveyQuestionId: "",
-            },
-          ],
-          elseGoToQuestionId: "",
-          goToNormalSequence: false,
+    if (conditionalJump.id != "") {
+      questionaireApiCall
+        .updateDateConditionalJump(conditionalJump)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is updated.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+          setReloadPage("true");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
         });
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
-      });
+    } else {
+      questionaireApiCall
+        .addDateConditionalJump(conditionalJump)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is added.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+          setReloadPage("true");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
   }
 
   return (

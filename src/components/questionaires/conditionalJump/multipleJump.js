@@ -39,12 +39,7 @@ function MultipleJump(props) {
       {
         id: "",
         multiChoiceConditionalOrderId: "",
-        answerChoices: [
-          {
-            optionId: "",
-            option: "",
-          },
-        ],
+        answerChoices: [],
         goToSurveyQuestionId: "",
       },
     ],
@@ -62,6 +57,7 @@ function MultipleJump(props) {
   );
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [answerChoices, setAnswerChoices] = useState([]);
+  const [reloadPage, setReloadPage] = useState("false");
 
   const GreenCheckbox = withStyles({
     root: {
@@ -79,6 +75,7 @@ function MultipleJump(props) {
       questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
       questionaireApiCall.GetMultipleChoicQuestionById(questionId),
       questionaireApiCall.getSurveyById(surveyId),
+      questionaireApiCall.GetMultipleChoicQuestionBooleanById(questionId),
     ])
       .then(
         ([
@@ -86,19 +83,25 @@ function MultipleJump(props) {
           allSurveyQuestions,
           choiceQuestionDetails,
           getsurveyDetails,
+          choiceQuestionBooleanDetails,
         ]) => {
           setAllAnswerExpressions(allExpressions);
           setSelectedSurveyQuestions(allSurveyQuestions);
           setselectedQuestionDetails(choiceQuestionDetails);
           setAnswerChoices(choiceQuestionDetails.surveyResponseChoices);
           setsurveyDetails(getsurveyDetails);
+          if (choiceQuestionBooleanDetails) {
+            console.log(choiceQuestionBooleanDetails);
+            // setConditionalJump();
+          }
+          setReloadPage("false");
           setcomponentLoadder(false);
         }
       )
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reloadPage]);
 
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
@@ -202,39 +205,39 @@ function MultipleJump(props) {
     });
     newConditionalJumpData.multiChoiceConditionalQuestions = newChoicesArray;
     setshowLoadder(true);
-    questionaireApiCall
-      .addMultiChoiceConditionalJump(newConditionalJumpData)
-      .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("Conditional jump is added.");
-        settoasterServerity("success");
-        setshowLoadder(false);
-        setConditionalJump({
-          id: "",
-          surveyQuestionId: questionId,
-          multiChoiceConditionalQuestions: [
-            {
-              id: "",
-              multiChoiceConditionalOrderId: "",
-              answerChoices: [
-                {
-                  optionId: "",
-                  option: "",
-                },
-              ],
-              goToSurveyQuestionId: "",
-            },
-          ],
-          elseGoToQuestionId: "",
-          goToNormalSequence: false,
+    if (conditionalJump.id != "") {
+      questionaireApiCall
+        .updateMultiChoiceConditionalJump(newConditionalJumpData)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is updated.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+          setReloadPage("true");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
         });
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
-      });
+    } else {
+      questionaireApiCall
+        .addMultiChoiceConditionalJump(newConditionalJumpData)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is added.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+          setReloadPage("true");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
   }
 
   return (

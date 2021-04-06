@@ -55,6 +55,7 @@ function SingleJump(props) {
   );
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [answerChoices, setAnswerChoices] = useState([]);
+  const [reloadPage, setReloadPage] = useState("false");
 
   const GreenCheckbox = withStyles({
     root: {
@@ -72,6 +73,7 @@ function SingleJump(props) {
       questionaireApiCall.GetAllQuestionsBySurveyId(surveyId),
       questionaireApiCall.GetSingleChoiceQuestion(questionId),
       questionaireApiCall.getSurveyById(surveyId),
+      questionaireApiCall.GetSingleChoiceBooleanQuestion(questionId),
     ])
       .then(
         ([
@@ -79,19 +81,24 @@ function SingleJump(props) {
           allSurveyQuestions,
           choiceQuestionDetails,
           getsurveyDetails,
+          choiceQuestionBooleanDetails,
         ]) => {
           setAllAnswerExpressions(allExpressions);
           setSelectedSurveyQuestions(allSurveyQuestions);
           setselectedQuestionDetails(choiceQuestionDetails);
           setAnswerChoices(choiceQuestionDetails.surveyResponseChoices);
           setsurveyDetails(getsurveyDetails);
+          if (choiceQuestionBooleanDetails) {
+            setConditionalJump(choiceQuestionBooleanDetails);
+          }
+          setReloadPage("false");
           setcomponentLoadder(false);
         }
       )
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reloadPage]);
 
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
@@ -147,34 +154,39 @@ function SingleJump(props) {
   function submitForm(e) {
     e.preventDefault();
     setshowLoadder(true);
-    questionaireApiCall
-      .addSingleChoiceConditionalJump(conditionalJump)
-      .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("Conditional jump is added.");
-        settoasterServerity("success");
-        setshowLoadder(false);
-        setConditionalJump({
-          id: "",
-          surveyQuestionId: questionId,
-          singleChoiceConditionalQuestions: [
-            {
-              id: "",
-              singleChoiceConditionalOrderId: "",
-              answerChoiceId: "",
-              goToSurveyQuestionId: "",
-            },
-          ],
-          elseGoToQuestionId: "",
-          goToNormalSequence: false,
+    if (conditionalJump.id != "") {
+      questionaireApiCall
+        .updateSingleChoiceConditionalJump(conditionalJump)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is updated.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+          setReloadPage("true");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
         });
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
-      });
+    } else {
+      questionaireApiCall
+        .addSingleChoiceConditionalJump(conditionalJump)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Conditional jump is added.");
+          settoasterServerity("success");
+          setshowLoadder(false);
+          setReloadPage("true");
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
   }
 
   return (
