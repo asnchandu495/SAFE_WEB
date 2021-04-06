@@ -83,6 +83,7 @@ function ViewQuestions(props) {
             <Grid item xs={11} sm={11} className="center-align">
               <BooleanDetails
                 selectedQuestionDetails={selectedQuestionDetails}
+                setSelectedQuestionDetails={setSelectedQuestionDetails}
               ></BooleanDetails>
             </Grid>
           </Grid>
@@ -94,6 +95,7 @@ function ViewQuestions(props) {
             <Grid item xs={11} sm={11} className="center-align">
               <FreetextDetails
                 selectedQuestionDetails={selectedQuestionDetails}
+                setSelectedQuestionDetails={setSelectedQuestionDetails}
               ></FreetextDetails>{" "}
             </Grid>
           </Grid>
@@ -105,6 +107,7 @@ function ViewQuestions(props) {
             <Grid item xs={11} sm={11} className="center-align">
               <DateDetails
                 selectedQuestionDetails={selectedQuestionDetails}
+                setSelectedQuestionDetails={setSelectedQuestionDetails}
               ></DateDetails>{" "}
             </Grid>
           </Grid>
@@ -116,6 +119,7 @@ function ViewQuestions(props) {
             <Grid item xs={11} sm={11} className="center-align">
               <TimeDetails
                 selectedQuestionDetails={selectedQuestionDetails}
+                setSelectedQuestionDetails={setSelectedQuestionDetails}
               ></TimeDetails>{" "}
             </Grid>
           </Grid>
@@ -127,6 +131,7 @@ function ViewQuestions(props) {
             <Grid item xs={11} sm={11} className="center-align">
               <NumericDetails
                 selectedQuestionDetails={selectedQuestionDetails}
+                setSelectedQuestionDetails={setSelectedQuestionDetails}
               ></NumericDetails>{" "}
             </Grid>
           </Grid>
@@ -138,6 +143,7 @@ function ViewQuestions(props) {
             <Grid item xs={11} sm={11} className="center-align">
               <SingleChoiceDetails
                 selectedQuestionDetails={selectedQuestionDetails}
+                setSelectedQuestionDetails={setSelectedQuestionDetails}
               ></SingleChoiceDetails>{" "}
             </Grid>
           </Grid>
@@ -149,6 +155,7 @@ function ViewQuestions(props) {
             <Grid item xs={11} sm={11} className="center-align">
               <MultiChoiceDetails
                 selectedQuestionDetails={selectedQuestionDetails}
+                setSelectedQuestionDetails={setSelectedQuestionDetails}
               ></MultiChoiceDetails>{" "}
             </Grid>
           </Grid>

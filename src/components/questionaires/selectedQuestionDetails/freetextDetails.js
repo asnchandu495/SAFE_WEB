@@ -21,6 +21,10 @@ import ToasterMessageComponent from "../../common/toaster";
 import { useParams } from "react-router-dom";
 import ConfirmationDialog from "../../common/confirmdialogbox";
 
+import * as QuestionAction from "../../../Redux/Action/questionAction";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
 function FreetextDetails(props) {
   const history = useHistory();
   const { id } = useParams();
@@ -167,4 +171,21 @@ function FreetextDetails(props) {
   );
 }
 
-export default FreetextDetails;
+// export default FreetextDetails;
+
+FreetextDetails.propTypes = {
+  ListofQuestionsData: PropTypes.array.isRequired,
+  DeleteFreeQuestion: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ListofQuestionsData: state.questionState,
+  };
+}
+
+const mapDispatchToProps = {
+  DeleteFreeQuestion: QuestionAction.DeleteFreeQuestion,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FreetextDetails);

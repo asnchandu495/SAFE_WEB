@@ -16,6 +16,9 @@ import Grid from "@material-ui/core/Grid";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import ToasterMessageComponent from "../../common/toaster";
 import { useHistory } from "react-router-dom";
+import * as QuestionAction from "../../../Redux/Action/questionAction";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import ConfirmationDialog from "../../common/confirmdialogbox";
 
 function SingleChoiceDetails(props) {
@@ -246,4 +249,24 @@ function SingleChoiceDetails(props) {
   );
 }
 
-export default SingleChoiceDetails;
+// export default SingleChoiceDetails;
+
+SingleChoiceDetails.propTypes = {
+  ListofQuestionsData: PropTypes.array.isRequired,
+  DeleteSingleQuestion: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ListofQuestionsData: state.questionState,
+  };
+}
+
+const mapDispatchToProps = {
+  DeleteSingleQuestion: QuestionAction.DeleteSinglechoiceQuestion,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SingleChoiceDetails);

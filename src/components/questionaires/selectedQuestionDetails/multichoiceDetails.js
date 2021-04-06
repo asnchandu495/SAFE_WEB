@@ -17,6 +17,9 @@ import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import ToasterMessageComponent from "../../common/toaster";
 import { useHistory } from "react-router-dom";
 import ConfirmationDialog from "../../common/confirmdialogbox";
+import * as QuestionAction from "../../../Redux/Action/questionAction";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 function MultiChoiceDetails(props) {
   const history = useHistory();
@@ -260,4 +263,21 @@ function MultiChoiceDetails(props) {
   );
 }
 
-export default MultiChoiceDetails;
+// export default MultiChoiceDetails;
+
+MultiChoiceDetails.propTypes = {
+  ListofQuestionsData: PropTypes.array.isRequired,
+  DeleteMultiQuestion: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ListofQuestionsData: state.questionState,
+  };
+}
+
+const mapDispatchToProps = {
+  DeleteMultiQuestion: QuestionAction.DeleteMultichoiceQuestion,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MultiChoiceDetails);

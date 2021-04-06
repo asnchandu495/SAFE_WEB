@@ -10,20 +10,27 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import { useParams } from "react-router-dom";
 import questionaireService from "../../services/questionaireService";
+import { connect } from "react-redux";
+import * as QuestionAction from "../../Redux/Action/questionAction";
+import PropTypes from "prop-types";
+import ComponentLoadderComponent from "../common/loadder/componentloadder";
 
 function ListofQuestions(props) {
   const { id } = useParams();
   const questionaireApiCall = new questionaireService();
   const [selectedIndex, setSelectedIndex] = useState("001");
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
-
+  const [componentLoadder, setComponentLoadder] = useState(true);
   useEffect(() => {
-    questionaireApiCall
-      .GetAllQuestionsBySurveyId(id)
+    // questionaireApiCall
+    //   .GetAllQuestionsBySurveyId(id)
+    props
+      .LoadAllQuestions(id)
       .then((res) => {
         console.log(res);
         setSelectedSurveyQuestions(res);
         console.log(selectedSurveyQuestions);
+        setComponentLoadder(false);
       })
       .catch((err) => {
         console.log(err);
@@ -126,7 +133,9 @@ function ListofQuestions(props) {
           }}
         />
       </ListItem>
-      {selectedSurveyQuestions.map((ques, index) => {
+
+      {/* {selectedSurveyQuestions.map((ques, index) => { */}
+      {props.ListofQuestionsData.map((ques, index) => {
         return (
           <Fragment>
             <ListItem
@@ -150,4 +159,19 @@ function ListofQuestions(props) {
   );
 }
 
-export default ListofQuestions;
+ListofQuestions.propTypes = {
+  ListofQuestionsData: PropTypes.array.isRequired,
+  LoadAllQuestions: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    ListofQuestionsData: state.questionState,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadAllQuestions: QuestionAction.listallquestions,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListofQuestions);
