@@ -202,7 +202,7 @@ function CreateQuestionarie(props) {
                     />
                   </Grid>
                 </Grid>
-                <Grid item cs={12} container>
+                {/* <Grid item cs={12} container>
                   <Grid item xs={3}>
                     <label className="required">Questionnaire</label>
                   </Grid>
@@ -262,7 +262,7 @@ function CreateQuestionarie(props) {
                       </RadioGroup>
                     </FormControl>
                   </Grid>
-                </Grid>
+                </Grid> */}
 
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
@@ -286,14 +286,14 @@ function CreateQuestionarie(props) {
                       >
                         Cancel
                       </Button>
-                      <Button
+                      {/* <Button
                         variant="contained"
                         type="submit"
                         onClick={handleClickGoBack}
                         className="global-cancel-btn"
                       >
                         Adopt Existing
-                      </Button>
+                      </Button> */}
                     </div>
                   </Grid>
                 </Grid>

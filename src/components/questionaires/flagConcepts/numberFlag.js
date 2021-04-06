@@ -15,31 +15,22 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
+import questionaireService from "../../../services/questionaireService";
 
 function QuestionTypeNumber(props) {
-  const [answerTypes, setAnswerTypes] = useState([
-    {
-      id: "EQ",
-    },
-    {
-      id: "GE",
-    },
-    {
-      id: "GT",
-    },
-    {
-      id: "LE",
-    },
-    {
-      id: "LT",
-    },
-    {
-      id: "NE",
-    },
-    {
-      id: "RANGE",
-    },
-  ]);
+  const questionaireApiCall = new questionaireService();
+
+  const [answerTypes, setAnswerTypes] = useState([]);
+
+  useEffect(() => {
+    Promise.all([questionaireApiCall.getAllExpressions()])
+      .then(([allExpressions]) => {
+        setAnswerTypes(allExpressions);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const PurpleSwitch = withStyles({
     switchBase: {
@@ -157,7 +148,7 @@ function QuestionTypeNumber(props) {
           <CardContent>
             <Grid item container xs={12}>
               <Grid item xs={2}>
-                <label className="required">Red Flag</label>
+                <label>Red Flag</label>
               </Grid>
               <Grid item xs={6}>
                 <FormControlLabel
@@ -171,153 +162,171 @@ function QuestionTypeNumber(props) {
                 />
               </Grid>
             </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={2}>
-                <label className="required">Red Flag Answer</label>
-              </Grid>
-              <Grid item xs={10}>
-                {props.numericFlag.redFlagForNumber &&
-                props.numericFlag.redFlagForNumber.length > 0
-                  ? props.numericFlag.redFlagForNumber.map((x, i) => {
-                      return (
-                        <Grid
-                          item
-                          container
-                          xs={12}
-                          spacing={1}
-                          key={`redflag-container${i}`}
-                          className="dynamic-flag-container"
-                        >
-                          <Grid item xs={2}>
-                            <FormControl variant="outlined" fullWidth>
-                              <InputLabel
-                                id={`demo-simple-select-outlined-label${i}`}
-                                shrink={false}
-                                className="select-label"
-                              >
-                                {x.expressionType && x.expressionType != ""
-                                  ? ""
-                                  : "Answer type"}
-                              </InputLabel>
-                              <Select
-                                labelId={`demo-simple-select-outlined-label${i}`}
-                                id={`demo-simple-select-outlined${i}`}
-                                value={x.expressionType ? x.expressionType : ""}
-                                name="expressionType"
-                                onChange={(e) => handleChangeFlagR(e, i)}
-                                placeholder="Answer type"
-                                InputLabelProps={{
-                                  shrink: false,
-                                }}
-                                className="global-input single-select"
-                              >
-                                <MenuItem value="">
-                                  <em>None</em>
-                                </MenuItem>
-                                {answerTypes.map((aType) => {
-                                  return (
-                                    <MenuItem
-                                      value={aType.id}
-                                      key={`atypered_${aType.id}`}
-                                    >
-                                      {aType.id}
-                                    </MenuItem>
-                                  );
-                                })}
-                              </Select>
-                            </FormControl>
-                          </Grid>
-                          {props.numericFlag.redFlagForNumber[i]
-                            .expressionType == "RANGE" ? (
-                            <>
+            {props.numericFlag.isPositiveConfirmityRedFlag ? (
+              <Grid item container xs={12}>
+                <Grid item xs={2}>
+                  <label
+                    className={
+                      props.numericFlag.isPositiveConfirmityRedFlag
+                        ? "required"
+                        : ""
+                    }
+                  >
+                    Red Flag Answer
+                  </label>
+                </Grid>
+                <Grid item xs={10}>
+                  {props.numericFlag.redFlagForNumber &&
+                  props.numericFlag.redFlagForNumber.length > 0
+                    ? props.numericFlag.redFlagForNumber.map((x, i) => {
+                        return (
+                          <Grid
+                            item
+                            container
+                            xs={12}
+                            spacing={1}
+                            key={`redflag-container${i}`}
+                            className="dynamic-flag-container"
+                          >
+                            <Grid item xs={2}>
+                              <FormControl variant="outlined" fullWidth>
+                                <InputLabel
+                                  id={`demo-simple-select-outlined-label${i}`}
+                                  shrink={false}
+                                  className="select-label"
+                                >
+                                  {x.expressionType && x.expressionType != ""
+                                    ? ""
+                                    : "Answer type"}
+                                </InputLabel>
+                                <Select
+                                  labelId={`demo-simple-select-outlined-label${i}`}
+                                  id={`demo-simple-select-outlined${i}`}
+                                  value={
+                                    x.expressionType ? x.expressionType : ""
+                                  }
+                                  name="expressionType"
+                                  onChange={(e) => handleChangeFlagR(e, i)}
+                                  placeholder="Answer type"
+                                  InputLabelProps={{
+                                    shrink: false,
+                                  }}
+                                  className="global-input single-select"
+                                  required={
+                                    props.numericFlag
+                                      .isPositiveConfirmityRedFlag
+                                  }
+                                >
+                                  <MenuItem value="">
+                                    <em>None</em>
+                                  </MenuItem>
+                                  {answerTypes.map((aType) => {
+                                    return (
+                                      <MenuItem
+                                        value={aType.id}
+                                        key={`atypered_${aType.id}`}
+                                      >
+                                        {aType.name}
+                                      </MenuItem>
+                                    );
+                                  })}
+                                </Select>
+                              </FormControl>
+                            </Grid>
+                            {props.numericFlag.redFlagForNumber[i]
+                              .expressionType == "RANGE" ? (
+                              <>
+                                <Grid item xs={3}>
+                                  <TextValidator
+                                    variant="outlined"
+                                    fullWidth
+                                    id={`forAnswerR${i}`}
+                                    placeholder="Your answer"
+                                    name="forAnswer"
+                                    value={x.forAnswer}
+                                    onChange={(e) => handleChangeFlagR(e, i)}
+                                    className="global-input"
+                                    InputLabelProps={{ shrink: false }}
+                                    InputProps={{
+                                      startAdornment: (
+                                        <InputAdornment
+                                          position="start"
+                                          className="adornment-input"
+                                        >
+                                          From{" "}
+                                        </InputAdornment>
+                                      ),
+                                    }}
+                                  />
+                                </Grid>
+                                <Grid item xs={3}>
+                                  <TextValidator
+                                    variant="outlined"
+                                    fullWidth
+                                    id={`forRangeEndR${i}`}
+                                    placeholder="Your answer"
+                                    name="forRangeEnd"
+                                    value={x.forRangeEnd}
+                                    onChange={(e) => handleChangeFlagR(e, i)}
+                                    className="global-input"
+                                    InputLabelProps={{ shrink: false }}
+                                    InputProps={{
+                                      startAdornment: (
+                                        <InputAdornment
+                                          position="start"
+                                          className="adornment-input"
+                                        >
+                                          To{" "}
+                                        </InputAdornment>
+                                      ),
+                                    }}
+                                  />
+                                </Grid>
+                              </>
+                            ) : (
                               <Grid item xs={3}>
                                 <TextValidator
                                   variant="outlined"
                                   fullWidth
-                                  id={`forAnswerR${i}`}
+                                  id={`forAnswerRR${i}`}
                                   placeholder="Your answer"
                                   name="forAnswer"
                                   value={x.forAnswer}
                                   onChange={(e) => handleChangeFlagR(e, i)}
                                   className="global-input"
                                   InputLabelProps={{ shrink: false }}
-                                  InputProps={{
-                                    startAdornment: (
-                                      <InputAdornment
-                                        position="start"
-                                        className="adornment-input"
-                                      >
-                                        From{" "}
-                                      </InputAdornment>
-                                    ),
-                                  }}
                                 />
                               </Grid>
-                              <Grid item xs={3}>
-                                <TextValidator
-                                  variant="outlined"
-                                  fullWidth
-                                  id={`forRangeEndR${i}`}
-                                  placeholder="Your answer"
-                                  name="forRangeEnd"
-                                  value={x.forRangeEnd}
-                                  onChange={(e) => handleChangeFlagR(e, i)}
-                                  className="global-input"
-                                  InputLabelProps={{ shrink: false }}
-                                  InputProps={{
-                                    startAdornment: (
-                                      <InputAdornment
-                                        position="start"
-                                        className="adornment-input"
-                                      >
-                                        To{" "}
-                                      </InputAdornment>
-                                    ),
-                                  }}
-                                />
-                              </Grid>
-                            </>
-                          ) : (
-                            <Grid item xs={3}>
-                              <TextValidator
-                                variant="outlined"
-                                fullWidth
-                                id={`forAnswerRR${i}`}
-                                placeholder="Your answer"
-                                name="forAnswer"
-                                value={x.forAnswer}
-                                onChange={(e) => handleChangeFlagR(e, i)}
-                                className="global-input"
-                                InputLabelProps={{ shrink: false }}
-                              />
+                            )}
+                            <Grid item xs={2} className="row-icons-container">
+                              {props.numericFlag.redFlagForNumber.length !==
+                                1 && (
+                                <Tooltip title="Remove">
+                                  <CancelIcon
+                                    className={`delete-row-icon`}
+                                    onClick={() => handleRemoveClickRedFlag(i)}
+                                  ></CancelIcon>
+                                </Tooltip>
+                              )}
+                              {props.numericFlag.redFlagForNumber.length - 1 ===
+                                i && (
+                                <Tooltip title="Add">
+                                  <AddCircleIcon
+                                    className={`add-row-icon`}
+                                    onClick={handleAddClickRedFlag}
+                                  ></AddCircleIcon>
+                                </Tooltip>
+                              )}
                             </Grid>
-                          )}
-                          <Grid item xs={2} className="row-icons-container">
-                            {props.numericFlag.redFlagForNumber.length !==
-                              1 && (
-                              <Tooltip title="Remove">
-                                <CancelIcon
-                                  className={`delete-row-icon`}
-                                  onClick={() => handleRemoveClickRedFlag(i)}
-                                ></CancelIcon>
-                              </Tooltip>
-                            )}
-                            {props.numericFlag.redFlagForNumber.length - 1 ===
-                              i && (
-                              <Tooltip title="Add">
-                                <AddCircleIcon
-                                  className={`add-row-icon`}
-                                  onClick={handleAddClickRedFlag}
-                                ></AddCircleIcon>
-                              </Tooltip>
-                            )}
                           </Grid>
-                        </Grid>
-                      );
-                    })
-                  : ""}
+                        );
+                      })
+                    : ""}
+                </Grid>
               </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
           </CardContent>
         </Card>
       </Grid>

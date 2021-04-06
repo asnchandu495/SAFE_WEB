@@ -128,10 +128,7 @@ function TemperatureRange(props) {
       covidStates: [
         ...tempsections.covidStates.map((con, conIndex) => {
           if (name == "upperLimit" || name == "lowerLimit") {
-            // return conIndex == index ? { ...con, [name]: value } : con;
-            return conIndex == index
-              ? { ...con, [name]: parseInt(value) }
-              : con;
+            return conIndex == index ? { ...con, [name]: value } : con;
           } else {
             return conIndex == index ? { ...con, [name]: value } : con;
           }
@@ -196,6 +193,14 @@ function TemperatureRange(props) {
     console.log("tempsections");
     console.log(tempsections.covidStates[0].lowerLimit);
     let sendData = tempsections;
+
+    let getCovidStates = sendData.covidStates;
+    getCovidStates.forEach((item) => {
+      item.upperLimit = parseFloat(item.upperLimit);
+      item.lowerLimit = parseFloat(item.lowerLimit);
+    });
+    sendData.covidStates = getCovidStates;
+
     console.log(JSON.stringify(sendData));
 
     // sendData.lowerLimit = parseInt(tempsections.lowerLimit);

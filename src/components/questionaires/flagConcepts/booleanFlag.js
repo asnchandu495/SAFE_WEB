@@ -52,7 +52,7 @@ function QuestionTypeBollean(props) {
           <CardContent>
             <Grid item container xs={12}>
               <Grid item xs={6}>
-                <label className="required">Red Flag</label>
+                <label>Red Flag</label>
               </Grid>
               <Grid item xs={6}>
                 <FormControlLabel
@@ -66,47 +66,60 @@ function QuestionTypeBollean(props) {
                 />
               </Grid>
             </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={6}>
-                <label className="required">Red Flag Answer</label>
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl variant="outlined" fullWidth>
-                  <InputLabel
-                    id="demo-simple-select-outlined-label"
-                    shrink={false}
-                    className="select-label"
+            {props.booleanFlag.isPositiveConfirmityRedFlag ? (
+              <Grid item container xs={12}>
+                <Grid item xs={6}>
+                  <label
+                    className={
+                      props.booleanFlag.isPositiveConfirmityRedFlag
+                        ? "required"
+                        : ""
+                    }
                   >
-                    {props.booleanFlag.positiveResponse != ""
-                      ? ""
-                      : "Red Flag Answer Type"}
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-outlined-label"
-                    id="demo-simple-select-outlined"
-                    value={props.booleanFlag.positiveResponse}
-                    name="positiveResponse"
-                    onChange={handleChange}
-                    placeholder="Answer type"
-                    InputLabelProps={{
-                      shrink: false,
-                    }}
-                    className="global-input single-select"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {answersToSelect.map((ans) => {
-                      return (
-                        <MenuItem value={ans.id} key={`atypered_${ans.id}`}>
-                          {ans.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
+                    Red Flag Answer
+                  </label>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormControl variant="outlined" fullWidth>
+                    <InputLabel
+                      id="demo-simple-select-outlined-label"
+                      shrink={false}
+                      className="select-label"
+                    >
+                      {props.booleanFlag.positiveResponse != ""
+                        ? ""
+                        : "Red Flag Answer Type"}
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={props.booleanFlag.positiveResponse}
+                      name="positiveResponse"
+                      onChange={handleChange}
+                      placeholder="Answer type"
+                      InputLabelProps={{
+                        shrink: false,
+                      }}
+                      className="global-input single-select"
+                      required={props.booleanFlag.isPositiveConfirmityRedFlag}
+                    >
+                      <MenuItem value="">
+                        <em>None</em>
+                      </MenuItem>
+                      {answersToSelect.map((ans) => {
+                        return (
+                          <MenuItem value={ans.id} key={`atypered_${ans.id}`}>
+                            {ans.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
           </CardContent>
         </Card>
       </Grid>
@@ -139,6 +152,7 @@ function QuestionTypeBollean(props) {
                       shrink: false,
                     }}
                     className="global-input single-select"
+                    required
                   >
                     <MenuItem value="">
                       <em>None</em>

@@ -16,6 +16,7 @@ import { Link as LinkTo, useParams } from "react-router-dom";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
+import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
 import CovidStateApiServices from "../../services/masterDataService";
 import questionaireService from "../../services/questionaireService";
@@ -71,6 +72,7 @@ function QuestionnaireEvaluation(props) {
       },
     ],
   });
+  const [componentLoadder, setcomponentLoadder] = useState(true);
 
   const uomTemp = [
     {
@@ -90,9 +92,10 @@ function QuestionnaireEvaluation(props) {
     ])
       .then(([covidstateRes, getEvaluationDetails]) => {
         setcovidStatelist(covidstateRes);
-        if (getEvaluationDetails) {
+        if (getEvaluationDetails && getEvaluationDetails.id) {
           setTemperatureConfigForm(getEvaluationDetails);
         }
+        setcomponentLoadder(false);
       })
       .catch((err) => {
         console.log(err);
@@ -101,9 +104,15 @@ function QuestionnaireEvaluation(props) {
 
   function handleChangeInput(e) {
     const { name, value } = e.target;
+    let thisValue = "";
+    if (value != "") {
+      thisValue = parseInt(value);
+    } else {
+      thisValue = "";
+    }
     setTemperatureConfigForm((temperatureConfigForm) => ({
       ...temperatureConfigForm,
-      [name]: parseInt(value),
+      [name]: thisValue,
     }));
   }
 
@@ -143,9 +152,7 @@ function QuestionnaireEvaluation(props) {
       positiveResponses: [
         ...temperatureConfigForm.positiveResponses.map((con, conIndex) => {
           if (name == "upperLimit" || name == "lowerLimit") {
-            return conIndex == index
-              ? { ...con, [name]: parseInt(value) }
-              : con;
+            return conIndex == index ? { ...con, [name]: value } : con;
           } else {
             return conIndex == index ? { ...con, [name]: value } : con;
           }
@@ -190,8 +197,13 @@ function QuestionnaireEvaluation(props) {
 
   function submitForm(e) {
     e.preventDefault();
-    console.log("data");
     var formData = temperatureConfigForm;
+    let getPositiveResponses = formData.positiveResponses;
+    getPositiveResponses.forEach((item) => {
+      item.upperLimit = parseFloat(item.upperLimit);
+      item.lowerLimit = parseFloat(item.lowerLimit);
+    });
+    formData.positiveResponses = getPositiveResponses;
     if (temperatureConfigForm.id != "") {
       questionaireApiCall
         .updateEvaluationResultForQuestionnaire(formData)
@@ -236,245 +248,264 @@ function QuestionnaireEvaluation(props) {
         >
           Home
         </LinkTo>
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/questionaires/allquestionaires`}
+          className="inactive"
+        >
+          Questionaire
+        </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Questionnaire Evaluation
         </LinkTo>
       </Breadcrumbs>
       <Paper className={`main-paper`}>
-        <ValidatorForm className={`global-form`} onSubmit={submitForm}>
-          <Grid container spacing={3}>
-            <Grid
-              item
-              xs={12}
-              className={[classes.gridDispaly].join(" ")}
-              container
-              spacing={1}
-            >
-              <Grid item xs={3}>
-                <label className="required">
-                  Score for positive conformity response
-                </label>
-              </Grid>
+        {componentLoadder ? (
+          <ComponentLoadderComponent />
+        ) : (
+          <ValidatorForm className={`global-form`} onSubmit={submitForm}>
+            <Grid container spacing={3}>
+              <Grid
+                item
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
+                <Grid item xs={3}>
+                  <label className="required">
+                    Score for positive conformity response
+                  </label>
+                </Grid>
 
-              <Grid item xs={3}>
-                <TextValidator
-                  variant="outlined"
-                  validators={[
-                    "required",
-                    "matchRegexp:^[a-zA-Z0-9 ]*$",
-                    "matchRegexp:^.{0,50}$",
-                  ]}
-                  errorMessages={[
-                    "Please positive conformity score",
-                    "Special charcters are not allowed",
-                    "Maximum 50 characters",
-                  ]}
-                  fullWidth
-                  id="positiveConformityScore"
-                  placeholder="Positive conformity score"
-                  name="positiveConformityScore"
-                  onChange={handleChangeInput}
-                  value={temperatureConfigForm.positiveConformityScore}
-                  InputLabelProps={{ shrink: false }}
-                  className="global-input"
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid container spacing={3}>
-            <Grid
-              item
-              xs={12}
-              className={[classes.gridDispaly].join(" ")}
-              container
-              spacing={1}
-            >
-              <Grid item xs={3}>
-                <label className="required">
-                  Covid state if one or more red flag responses
-                </label>
-              </Grid>
-              <Grid item xs={3}>
-                <FormControl variant="outlined" fullWidth>
-                  <Autocomplete
-                    id="tags-outlined"
-                    options={
-                      covidStatelist && covidStatelist.length > 0
-                        ? covidStatelist
-                        : []
-                    }
-                    getOptionLabel={(option) => option.stateName}
-                    onChange={(e, v) => handleChangeCovidStateMain(e, v)}
-                    defaultValue={
-                      temperatureConfigForm.covidState
-                        ? temperatureConfigForm.covidState
-                        : ""
-                    }
-                    filterSelectedOptions
-                    className="global-input autocomplete-select"
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        variant="outlined"
-                        placeholder="Select  covid state"
-                      />
-                    )}
+                <Grid item xs={3}>
+                  <TextValidator
+                    variant="outlined"
+                    validators={[
+                      "required",
+                      "matchRegexp:^[a-zA-Z0-9 ]*$",
+                      "matchRegexp:^.{0,50}$",
+                    ]}
+                    errorMessages={[
+                      "Please positive conformity score",
+                      "Special charcters are not allowed",
+                      "Maximum 50 characters",
+                    ]}
+                    fullWidth
+                    id="positiveConformityScore"
+                    placeholder="Positive conformity score"
+                    name="positiveConformityScore"
+                    onChange={handleChangeInput}
+                    value={temperatureConfigForm.positiveConformityScore}
+                    InputLabelProps={{ shrink: false }}
+                    className="global-input"
                   />
-                </FormControl>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-          {temperatureConfigForm.positiveResponses &&
-          temperatureConfigForm.positiveResponses.length > 0
-            ? temperatureConfigForm.positiveResponses.map((x, i) => {
-                return (
-                  <Grid container spacing={3}>
-                    <Grid
-                      item
-                      xs={12}
-                      className={[classes.gridDispaly].join(" ")}
-                      container
-                      spacing={1}
-                    >
-                      <Grid item xs={3}>
-                        <label className="required">
-                          {" "}
-                          Covid state based on positive conformity score
-                        </label>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <FormControl variant="outlined" fullWidth>
-                          <Autocomplete
-                            id="tags-outlined"
-                            options={
-                              covidStatelist && covidStatelist.length > 0
-                                ? covidStatelist
-                                : []
-                            }
-                            getOptionLabel={(option) => option.stateName}
-                            onChange={(e, v) => handleChangeCovidState(e, v, i)}
-                            defaultValue={
-                              temperatureConfigForm.positiveResponses
-                                ? temperatureConfigForm.positiveResponses
-                                : []
-                            }
-                            name="covidState"
-                            defaultValue={x.covidState}
-                            filterSelectedOptions
-                            className="global-input autocomplete-select"
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                variant="outlined"
-                                placeholder="Select  covid state"
-                              />
-                            )}
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <TextValidator
+            <Grid container spacing={3}>
+              <Grid
+                item
+                xs={12}
+                className={[classes.gridDispaly].join(" ")}
+                container
+                spacing={1}
+              >
+                <Grid item xs={3}>
+                  <label className="required">
+                    Covid state if one or more red flag responses
+                  </label>
+                </Grid>
+                <Grid item xs={3}>
+                  <FormControl variant="outlined" fullWidth>
+                    <Autocomplete
+                      id="tags-outlined"
+                      options={
+                        covidStatelist && covidStatelist.length > 0
+                          ? covidStatelist
+                          : []
+                      }
+                      getOptionLabel={(option) => option.stateName}
+                      onChange={(e, v) => handleChangeCovidStateMain(e, v)}
+                      defaultValue={
+                        temperatureConfigForm.covidState
+                          ? temperatureConfigForm.covidState
+                          : ""
+                      }
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
                           variant="outlined"
-                          validators={["required"]}
-                          errorMessages={["Please enter lower limit"]}
-                          fullWidth
-                          id={`lowerLimit_${i}`}
-                          placeholder="Lower Limit"
-                          name="lowerLimit"
-                          value={x.lowerLimit}
-                          className="global-input"
-                          onChange={(e) => handleInputChangeContacts(e, i)}
-                          InputLabelProps={{ shrink: false }}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">F</InputAdornment>
-                            ),
-                          }}
+                          placeholder="Select  covid state"
                         />
-                      </Grid>
-                      <Grid item xs={2}>
-                        <TextValidator
-                          variant="outlined"
-                          validators={["required"]}
-                          errorMessages={["Please enter upper limit"]}
-                          fullWidth
-                          id={`upperLimit_${i}`}
-                          placeholder="Upper Limit"
-                          name="upperLimit"
-                          value={x.upperLimit}
-                          className="global-input"
-                          onChange={(e) => handleInputChangeContacts(e, i)}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">F</InputAdornment>
-                            ),
-                          }}
-                        />
-                      </Grid>
-                      <Grid item xs={2} className="row-icons-container">
-                        {
-                          <FormControlLabel
-                            control={<Checkbox name="checkedA" />}
-                            label="No limit"
+                      )}
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Grid>
+            {temperatureConfigForm.positiveResponses &&
+            temperatureConfigForm.positiveResponses.length > 0
+              ? temperatureConfigForm.positiveResponses.map((x, i) => {
+                  return (
+                    <Grid container spacing={3}>
+                      <Grid
+                        item
+                        xs={12}
+                        className={[classes.gridDispaly].join(" ")}
+                        container
+                        spacing={1}
+                      >
+                        <Grid item xs={3}>
+                          <label className="required">
+                            {" "}
+                            Covid state based on positive conformity score
+                          </label>
+                        </Grid>
+                        <Grid item xs={2}>
+                          <FormControl variant="outlined" fullWidth>
+                            <Autocomplete
+                              id="tags-outlined"
+                              options={
+                                covidStatelist && covidStatelist.length > 0
+                                  ? covidStatelist
+                                  : []
+                              }
+                              getOptionLabel={(option) => option.stateName}
+                              onChange={(e, v) =>
+                                handleChangeCovidState(e, v, i)
+                              }
+                              defaultValue={
+                                temperatureConfigForm.positiveResponses
+                                  ? temperatureConfigForm.positiveResponses
+                                  : ""
+                              }
+                              name="covidState"
+                              defaultValue={x.covidState}
+                              filterSelectedOptions
+                              className="global-input autocomplete-select"
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  variant="outlined"
+                                  placeholder="Select  covid state"
+                                />
+                              )}
+                            />
+                          </FormControl>
+                        </Grid>
+                        <Grid item xs={2}>
+                          <TextValidator
+                            variant="outlined"
+                            validators={["required"]}
+                            errorMessages={["Please enter lower limit"]}
+                            fullWidth
+                            id={`lowerLimit_${i}`}
+                            placeholder="Lower Limit"
+                            name="lowerLimit"
+                            value={x.lowerLimit}
+                            className="global-input"
+                            onChange={(e) => handleInputChangeContacts(e, i)}
+                            InputLabelProps={{ shrink: false }}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  F
+                                </InputAdornment>
+                              ),
+                            }}
                           />
-                        }
-                      </Grid>
-                      <Grid item xs={1} className="row-icons-container">
-                        {temperatureConfigForm.positiveResponses.length !==
-                          1 && (
-                          <Tooltip title="Remove">
-                            <CancelIcon
-                              className={`delete-row-icon`}
-                              onClick={() => handleRemoveClick(i)}
-                            ></CancelIcon>
-                          </Tooltip>
-                        )}
-                        {temperatureConfigForm.positiveResponses.length - 1 ===
-                          i && (
-                          <Tooltip title="Add">
-                            <AddCircleIcon
-                              className={`add-row-icon`}
-                              onClick={handleAddClick}
-                            ></AddCircleIcon>
-                          </Tooltip>
-                        )}
+                        </Grid>
+                        <Grid item xs={2}>
+                          <TextValidator
+                            variant="outlined"
+                            validators={["required"]}
+                            errorMessages={["Please enter upper limit"]}
+                            fullWidth
+                            id={`upperLimit_${i}`}
+                            placeholder="Upper Limit"
+                            name="upperLimit"
+                            value={x.upperLimit}
+                            className="global-input"
+                            onChange={(e) => handleInputChangeContacts(e, i)}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  F
+                                </InputAdornment>
+                              ),
+                            }}
+                          />
+                        </Grid>
+                        <Grid item xs={2} className="row-icons-container">
+                          {
+                            <FormControlLabel
+                              control={<Checkbox name="checkedA" />}
+                              label="No limit"
+                            />
+                          }
+                        </Grid>
+                        <Grid item xs={1} className="row-icons-container">
+                          {temperatureConfigForm.positiveResponses.length !==
+                            1 && (
+                            <Tooltip title="Remove">
+                              <CancelIcon
+                                className={`delete-row-icon`}
+                                onClick={() => handleRemoveClick(i)}
+                              ></CancelIcon>
+                            </Tooltip>
+                          )}
+                          {temperatureConfigForm.positiveResponses.length -
+                            1 ===
+                            i && (
+                            <Tooltip title="Add">
+                              <AddCircleIcon
+                                className={`add-row-icon`}
+                                onClick={handleAddClick}
+                              ></AddCircleIcon>
+                            </Tooltip>
+                          )}
+                        </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                );
-              })
-            : ""}
-          <br />
-          <Grid item container xs={12}>
-            <Grid item xs={3}>
-              <label>&nbsp;</label>
-            </Grid>
-            <Grid item xs={9}>
-              <div
-                className={`form-buttons-container`}
-                style={{ marginBottom: "9px" }}
-              >
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className="global-submit-btn"
-                  disabled={showLoadder}
+                  );
+                })
+              : ""}
+            <br />
+            <Grid item container xs={12}>
+              <Grid item xs={3}>
+                <label>&nbsp;</label>
+              </Grid>
+              <Grid item xs={9}>
+                <div
+                  className={`form-buttons-container`}
+                  style={{ marginBottom: "9px" }}
                 >
-                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                </Button>
-                <Button
-                  variant="contained"
-                  type="reset"
-                  // onClick={redirectToViewUsersGroup}
-                  className="global-cancel-btn"
-                >
-                  Cancel
-                </Button>
-                &nbsp;
-              </div>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className="global-submit-btn"
+                    disabled={showLoadder}
+                  >
+                    {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="reset"
+                    // onClick={redirectToViewUsersGroup}
+                    className="global-cancel-btn"
+                  >
+                    Cancel
+                  </Button>
+                  &nbsp;
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-        </ValidatorForm>
+          </ValidatorForm>
+        )}
       </Paper>
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}

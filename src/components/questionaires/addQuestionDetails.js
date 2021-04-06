@@ -187,11 +187,16 @@ function AddQuestionDetails(props) {
         questionaireApiCall
           .UpdateFreeTextQuestion(finalObject)
           .then((res) => {
-            setshowLoadder(false);
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
             setToasterMessage("Question details updated");
             settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 6000);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -203,11 +208,16 @@ function AddQuestionDetails(props) {
         questionaireApiCall
           .AddFreeTextQuestion(finalObject)
           .then((res) => {
-            setshowLoadder(false);
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
             setToasterMessage("Added new question.");
             settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 6000);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -226,11 +236,16 @@ function AddQuestionDetails(props) {
         questionaireApiCall
           .UpdateDateQuestion(finalObject)
           .then((res) => {
-            setshowLoadder(false);
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
             setToasterMessage("Question details updated.");
             settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 6000);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -242,11 +257,16 @@ function AddQuestionDetails(props) {
         questionaireApiCall
           .AddDateQuestion(finalObject)
           .then((res) => {
-            setshowLoadder(false);
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
             setToasterMessage("Added new question.");
             settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 6000);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -264,11 +284,16 @@ function AddQuestionDetails(props) {
       questionaireApiCall
         .AddTimeQuestion(finalObject)
         .then((res) => {
-          setshowLoadder(false);
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
           setToasterMessage("Added new question.");
           settoasterServerity("success");
+          setTimeout(() => {
+            props.history.push(
+              `/questionaires/view-questions/${props.surveyIdURL}`
+            );
+            setshowLoadder(false);
+          }, 6000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -286,11 +311,16 @@ function AddQuestionDetails(props) {
         questionaireApiCall
           .UpdateNumericQuestion(finalObject)
           .then((res) => {
-            setshowLoadder(false);
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
             setToasterMessage("Question details updated.");
             settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 6000);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -302,11 +332,16 @@ function AddQuestionDetails(props) {
         questionaireApiCall
           .AddNumericQuestion(finalObject)
           .then((res) => {
-            setshowLoadder(false);
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
             setToasterMessage("Added new question.");
             settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 6000);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -331,7 +366,9 @@ function AddQuestionDetails(props) {
               setToasterMessage("Question details updated.");
               settoasterServerity("success");
               setTimeout(() => {
-                props.history.push(`/questionaires/allquestionaires`);
+                props.history.push(
+                  `/questionaires/view-questions/${props.surveyIdURL}`
+                );
                 setshowLoadder(false);
               }, 6000);
             })
@@ -350,7 +387,9 @@ function AddQuestionDetails(props) {
               setToasterMessage("Added new question.");
               settoasterServerity("success");
               setTimeout(() => {
-                props.history.push(`/questionaires/allquestionaires`);
+                props.history.push(
+                  `/questionaires/view-questions/${props.surveyIdURL}`
+                );
                 setshowLoadder(false);
               }, 6000);
             })
@@ -361,44 +400,6 @@ function AddQuestionDetails(props) {
               setshowLoadder(false);
             });
         }
-      } else if (props.questionTypeForm.questionType == "FreeText") {
-        const finalObject = {
-          ...addQuestion,
-          ...props.questionTypeForm,
-        };
-        questionaireApiCall
-          .AddFreeTextQuestion(finalObject)
-          .then((res) => {
-            setisAlertBoxOpened(false);
-            setStateSnackbar(true);
-            setToasterMessage("Added new freetext question.");
-            settoasterServerity("success");
-            setTimeout(() => {
-              props.history.push(`/questionaires/allquestionaires`);
-              setshowLoadder(false);
-            }, 6000);
-          })
-          .catch((err) => {
-            setToasterMessage(err.data.errors);
-            settoasterServerity("error");
-            setStateSnackbar(true);
-            setshowLoadder(false);
-          });
-      } else if (props.questionTypeForm.questionType == "Date") {
-        const finalObject = {
-          ...addQuestion,
-          ...props.questionTypeForm,
-          ...datetimeFlag,
-        };
-        questionaireApiCall
-          .AddDateQuestion(finalObject)
-          .then((res) => {})
-          .catch((err) => {
-            setToasterMessage(err.data.errors);
-            settoasterServerity("error");
-            setStateSnackbar(true);
-            setshowLoadder(false);
-          });
       } else {
         console.log("fdsf");
       }
