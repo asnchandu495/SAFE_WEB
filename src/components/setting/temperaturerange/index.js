@@ -129,14 +129,17 @@ function TemperatureRange(props) {
         ...tempsections.covidStates.map((con, conIndex) => {
           if (name == "upperLimit" || name == "lowerLimit") {
             return conIndex == index
-              ? { ...con, [name]: parseInt(value) }
+              ? { ...con, [name]: parseFloat(value) }
               : con;
           } else {
-            return conIndex == index ? { ...con, [name]: value } : con;
+            return conIndex == index
+              ? { ...con, [name]: parseFloat(value) }
+              : con;
           }
         }),
       ],
     };
+
     settempsections(list);
   };
 
@@ -349,8 +352,15 @@ function TemperatureRange(props) {
                           <TextValidator
                             variant="outlined"
                             validators={["required"]}
-                            errorMessages={["Please enter lowerLimit"]}
-                            fullWidth
+                            errorMessages={["Please enter lower limit"]}
+                            validators={[
+                              "required",
+                              "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                            ]}
+                            errorMessages={[
+                              "Please enter lower limit",
+                              "Entered numbers are not valid",
+                            ]}
                             id={`lowerLimit_${i}`}
                             placeholder="Lower Limit"
                             name="lowerLimit"
@@ -370,9 +380,16 @@ function TemperatureRange(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
-                            validators={["required", "matchRegexp:^.{0,60}$"]}
+                            validators={["required"]}
                             errorMessages={["Please enter upper limit"]}
-                            fullWidth
+                            validators={[
+                              "required",
+                              "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                            ]}
+                            errorMessages={[
+                              "Please enter upper limit",
+                              "Entered numbers are not valid",
+                            ]}
                             id={`upperLimit_${i}`}
                             placeholder="Upper Limit"
                             name="upperLimit"

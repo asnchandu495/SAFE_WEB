@@ -51,7 +51,7 @@ function QuestionnaireEvaluation(props) {
     globalSettingsId: "",
     covidState: {
       id: "",
-      state: "",
+      stateName: "",
     },
   });
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
@@ -124,7 +124,7 @@ function QuestionnaireEvaluation(props) {
   }
 
   function handleChangeCovidState(e, value, index) {
-    let thisValue = { id: value.id, state: value.name };
+    let thisValue = { id: value.id, state: value.stateName };
     const list = {
       ...temperatureConfigForm,
       positiveResponses: [
