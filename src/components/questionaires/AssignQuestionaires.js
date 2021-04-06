@@ -487,7 +487,7 @@ function AssignQuestionaires(props) {
                           <TextField
                             {...params}
                             variant="outlined"
-                            placeholder="Select usergroup"
+                            placeholder="Select questionnaire"
                           />
                         )}
                       />{" "}

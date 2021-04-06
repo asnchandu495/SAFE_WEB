@@ -14,21 +14,26 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
-
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
+import TextField from "@material-ui/core/TextField";
 import AlertBoxComponent from "../common/alert";
 import * as QuestionaireAction from "../../Redux/Action/questionaireAction";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 function CreateQuestionarie(props) {
   const paramsId = props.match.params.id;
   const questionaireApiCall = new questionaireService();
   const masterApiCall = new MasterDataService();
   const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [selectedUserQuestionnaire, setselectedUserQuestionnaire] = useState();
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
+  const [QuestionaireList, setQuestionaireList] = useState();
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
@@ -40,11 +45,13 @@ function CreateQuestionarie(props) {
   });
 
   useEffect(() => {
-    masterApiCall
-      .getAllLanguages()
-
-      .then((res) => {
+    Promise.all([
+      masterApiCall.getAllLanguages(),
+      questionaireApiCall.GetAllQuestionarie(),
+    ])
+      .then(([res, getQuestionaireList]) => {
         setAllLanguages(res);
+        setQuestionaireList(getQuestionaireList);
         setComponentLoadder(false);
         if (paramsId != 0) {
           questionaireApiCall
@@ -78,6 +85,11 @@ function CreateQuestionarie(props) {
   }
   function handleClickGoBack() {
     props.history.push("/questionaires/allquestionaires");
+  }
+
+  function handleChangeQuestionnaire(e, value) {
+    console.log(value);
+    setselectedUserQuestionnaire(value);
   }
 
   function submitForm() {
@@ -190,6 +202,67 @@ function CreateQuestionarie(props) {
                     />
                   </Grid>
                 </Grid>
+                <Grid item cs={12} container>
+                  <Grid item xs={3}>
+                    <label className="required">Questionnaire</label>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          QuestionaireList && QuestionaireList
+                            ? QuestionaireList
+                            : []
+                        }
+                        getOptionLabel={(option) => option.name}
+                        defaultValue="#"
+                        onChange={handleChangeQuestionnaire}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select questionnaire"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
+                  </Grid>
+                </Grid>
+
+                <Grid item cs={12} container>
+                  <Grid item xs={3}>
+                    <label className="required">Configure Questionnaire</label>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <FormControl variant="outlined" fullWidth>
+                      <RadioGroup
+                        aria-label="gender"
+                        name="gender1"
+                        // value={value}
+                        onChange={handleChange}
+                      >
+                        <FormControlLabel
+                          value="female"
+                          control={<Radio />}
+                          label="Adopt only questions"
+                        />
+                        <FormControlLabel
+                          value="male"
+                          control={<Radio />}
+                          label="Adopt questions with order of execution"
+                        />
+                        <FormControlLabel
+                          value="other"
+                          control={<Radio />}
+                          label="Adopt questions with order of execution and evaluation result"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                </Grid>
 
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
@@ -212,6 +285,14 @@ function CreateQuestionarie(props) {
                         className="global-cancel-btn"
                       >
                         Cancel
+                      </Button>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        onClick={handleClickGoBack}
+                        className="global-cancel-btn"
+                      >
+                        Adopt Existing
                       </Button>
                     </div>
                   </Grid>
