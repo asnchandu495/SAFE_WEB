@@ -282,6 +282,17 @@ export default class questionaireService {
     });
   }
 
+  GetEvaluationId(id) {
+    return this.fetch(
+      `${this.questionaireURL}/Evaluation/GetEvaluation/${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   AddBoolenQuestion(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(
@@ -314,6 +325,19 @@ export default class questionaireService {
       method: "POST",
       body: finalData,
     }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  AddEvaluationResultForQuestionnaire(data) {
+    var finalData = JSON.stringify(data);
+    return this.fetch(
+      `${this.questionaireURL}/Evaluation/AddEvaluationResultForQuestionnaire`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
       return Promise.resolve(res);
     });
   }

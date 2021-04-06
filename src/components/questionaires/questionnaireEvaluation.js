@@ -19,13 +19,15 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import { Link as LinkTo } from "react-router-dom";
+import { Link as LinkTo, useParams } from "react-router-dom";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
+import ToasterMessageComponent from "../common/toaster";
 
 import GlobalSettingApiServices from "../../services/globalSettingService";
 import CovidStateApiServices from "../../services/masterDataService";
+import questionaireService from "../../services/questionaireService";
 
 const CovidStateApi = new CovidStateApiServices();
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +37,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 function QuestionnaireEvaluation(props) {
   const classes = useStyles();
+  const questionaireApiCall = new questionaireService();
+  const { id } = useParams();
   const [showLoadder, setshowLoadder] = useState(false);
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
   const [covidStatelist, setcovidStatelist] = useState([]);
   const [formData, SetformData] = useState({
     id: "",
@@ -48,27 +55,30 @@ function QuestionnaireEvaluation(props) {
     },
   });
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
   const [selectedcovidState, setSelectedCovidState] = useState();
-  const [temperatureConfigForm, setTemperatureConfigForm] = useState([
-    {
-      surveyId: "string",
-      positiveConformityScore: 0,
-      covidState: {
-        id: "string",
-        name: "string",
-      },
-      positiveResponses: [
-        {
-          upperLimit: 0,
-          lowerLimit: 0,
-          covidState: {
-            id: "string",
-            name: "string",
-          },
-        },
-      ],
+  const [temperatureConfigForm, setTemperatureConfigForm] = useState({
+    id: "",
+    surveyId: id,
+    positiveConformityScore: 0,
+    covidState: {
+      id: "",
+      stateName: "",
     },
-  ]);
+    positiveResponses: [
+      {
+        id: "",
+        upperLimit: 0,
+        lowerLimit: 0,
+        covidState: {
+          id: "",
+          stateName: "",
+        },
+      },
+    ],
+  });
 
   const uomTemp = [
     {
@@ -81,12 +91,21 @@ function QuestionnaireEvaluation(props) {
     },
   ];
   useEffect(() => {
-    CovidStateApi.getCOVIDStates()
-      .then((covidstateRes) => {
+    Promise.all([
+      CovidStateApi.getCOVIDStates(),
+      questionaireApiCall.GetEvaluationId(id),
+    ])
+
+      .then(([covidstateRes, getEvaluationDetails]) => {
+        // .then((covidstateRes) => {
+        console.log(getEvaluationDetails);
         setcovidStatelist(covidstateRes);
+        temperatureConfigForm.positiveConformityScore =
+          getEvaluationDetails.positiveConformityScore;
       })
       .catch((err) => {
         console.log(err);
+        // throw err;
       });
   }, []);
   const handleInputChange = (e, index) => {
@@ -95,9 +114,59 @@ function QuestionnaireEvaluation(props) {
     list[index][name] = value;
     setTemperatureConfigForm(list);
   };
-  const handleRemoveClick = (index) => {
-    const list = [...temperatureConfigForm];
-    list.splice(index, 1);
+
+  function handleChangeInput(e) {
+    const { name, value } = e.target;
+    setTemperatureConfigForm((tempsections) => ({
+      ...tempsections,
+      [name]: value,
+    }));
+  }
+
+  function handleChangeCovidState(e, value, index) {
+    let thisValue = { id: value.id, state: value.name };
+    const list = {
+      ...temperatureConfigForm,
+      positiveResponses: [
+        ...temperatureConfigForm.positiveResponses.map((con, conIndex) =>
+          conIndex == index
+            ? {
+                ...con,
+                ["covidState"]: thisValue,
+              }
+            : con
+        ),
+      ],
+    };
+    setTemperatureConfigForm(list);
+  }
+
+  const handleInputChangeContacts = (e, index) => {
+    const { name, value } = e.target;
+    const list = {
+      ...temperatureConfigForm,
+      positiveResponses: [
+        ...temperatureConfigForm.positiveResponses.map((con, conIndex) => {
+          if (name == "upperLimit" || name == "lowerLimit") {
+            return conIndex == index
+              ? { ...con, [name]: parseInt(value) }
+              : con;
+          } else {
+            return conIndex == index ? { ...con, [name]: value } : con;
+          }
+        }),
+      ],
+    };
+    setTemperatureConfigForm(list);
+  };
+  // const handleRemoveClick = (index) => {
+  //   const list = [...temperatureConfigForm];
+  //   list.splice(index, 1);
+  //   setTemperatureConfigForm(list);
+  // };
+  const handleRemoveClick = (j) => {
+    const list = { ...temperatureConfigForm };
+    list.positiveResponses.splice(j, 1);
     setTemperatureConfigForm(list);
   };
   function handleChange(e) {
@@ -110,23 +179,56 @@ function QuestionnaireEvaluation(props) {
     }));
   }
   // handle click event of the Add button
-  const handleAddClick = () => {
-    setTemperatureConfigForm([
-      ...temperatureConfigForm,
+  // const handleAddClick = () => {
+  //   setTemperatureConfigForm([
+  //     ...temperatureConfigForm,
+  //     {
+  //       id: Math.random().toString(36).substring(7),
+  //       covidState: "",
+  //       lowerLimit: "",
+  //       upperLimit: "",
+  //     },
+  //   ]);
+  // };
+
+  const handleAddClick = (index, j) => {
+    const list = { ...temperatureConfigForm };
+    const thistempsections = list.positiveResponses;
+    list.positiveResponses = [
+      ...thistempsections,
       {
-        id: Math.random().toString(36).substring(7),
-        covidState: "",
-        lowerLimit: "",
-        upperLimit: "",
+        id: "",
+        upperLimit: 0,
+        lowerLimit: 0,
+        covidState: {
+          id: "",
+          stateName: "",
+        },
       },
-    ]);
+    ];
+    setTemperatureConfigForm(list);
   };
+
   function submitForm(e) {
     e.preventDefault();
     console.log("data");
     var formData = temperatureConfigForm;
-    console.log(formData);
-    // GlobalSettingApi.UpdateCovidStateTemperature(formData);
+    console.log(JSON.stringify(formData));
+    questionaireApiCall
+      .AddEvaluationResultForQuestionnaire(formData)
+      .then((response) => {
+        console.log("success");
+        setStateSnackbar(true);
+        setToasterMessage("created evalauation settings.");
+        settoasterServerity("success");
+        setisAlertBoxOpened(false);
+        setTimeout(() => {
+          setshowLoadder(false);
+        }, 6000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   return (
     <div className="innerpage-container">
@@ -176,8 +278,8 @@ function QuestionnaireEvaluation(props) {
                   id="positiveConformityScore"
                   placeholder="Positive conformity score"
                   name="positiveConformityScore"
-                  onChange={handleChange}
-                  value={formData.positiveConformityScore}
+                  onChange={handleChangeInput}
+                  value={temperatureConfigForm.positiveConformityScore}
                   InputLabelProps={{ shrink: false }}
                   className="global-input"
                 />
@@ -209,9 +311,9 @@ function QuestionnaireEvaluation(props) {
                         : []
                     }
                     getOptionLabel={(option) => option.stateName}
-                    // onChange={(e) => handleInputChange(e, i)}
+                    onChange={(e, v) => handleChangeCovidState(e, v)}
                     // defaultValue={formData.manager ? formData.manager : {}}
-                    defaultValue={formData.covidState}
+                    // defaultValue={formData.covidState}
                     filterSelectedOptions
                     className="global-input autocomplete-select"
                     renderInput={(params) => (
@@ -226,25 +328,27 @@ function QuestionnaireEvaluation(props) {
               </Grid>
             </Grid>
           </Grid>
-          {temperatureConfigForm.map((x, i) => {
-            return (
-              <Grid container spacing={3}>
-                <Grid
-                  item
-                  xs={12}
-                  className={[classes.gridDispaly].join(" ")}
-                  container
-                  spacing={1}
-                >
-                  <Grid item xs={3}>
-                    <label className="required">
-                      {" "}
-                      Covid state based on positive conformity score
-                    </label>
-                  </Grid>
-                  <Grid item xs={2}>
-                    <FormControl variant="outlined" fullWidth>
-                      {/* <InputLabel
+          {temperatureConfigForm.positiveResponses &&
+          temperatureConfigForm.positiveResponses.length > 0
+            ? temperatureConfigForm.positiveResponses.map((x, i) => {
+                return (
+                  <Grid container spacing={3}>
+                    <Grid
+                      item
+                      xs={12}
+                      className={[classes.gridDispaly].join(" ")}
+                      container
+                      spacing={1}
+                    >
+                      <Grid item xs={3}>
+                        <label className="required">
+                          {" "}
+                          Covid state based on positive conformity score
+                        </label>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <FormControl variant="outlined" fullWidth>
+                          {/* <InputLabel
                         id="demo-simple-select-outlined-label"
                         shrink={false}
                         className="select-label"
@@ -272,99 +376,109 @@ function QuestionnaireEvaluation(props) {
                             })
                           : ""}
                       </Select> */}
-                      <Autocomplete
-                        id="tags-outlined"
-                        // /options={teamManagers}
-                        options={
-                          covidStatelist && covidStatelist.length > 0
-                            ? covidStatelist
-                            : []
-                        }
-                        getOptionLabel={(option) => option.stateName}
-                        onChange={(e) => handleInputChange(e, i)}
-                        // defaultValue={formData.manager ? formData.manager : {}}
-                        defaultValue={x.covidState}
-                        filterSelectedOptions
-                        className="global-input autocomplete-select"
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            variant="outlined"
-                            placeholder="Select  covid state"
+                          <Autocomplete
+                            id="tags-outlined"
+                            // /options={teamManagers}
+                            options={
+                              covidStatelist && covidStatelist.length > 0
+                                ? covidStatelist
+                                : []
+                            }
+                            getOptionLabel={(option) => option.stateName}
+                            // onChange={(e) => handleInputChange(e, i)}
+                            onChange={(e, v) => handleChangeCovidState(e, v, i)}
+                            defaultValue={
+                              temperatureConfigForm.positiveResponses
+                                ? temperatureConfigForm.positiveResponses
+                                : []
+                            }
+                            // defaultValue={formData.manager ? formData.manager : {}}
+                            name="covidState"
+                            defaultValue={x.covidState}
+                            filterSelectedOptions
+                            className="global-input autocomplete-select"
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                variant="outlined"
+                                placeholder="Select  covid state"
+                              />
+                            )}
                           />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextValidator
+                          variant="outlined"
+                          validators={["required"]}
+                          errorMessages={["Please enter lower limit"]}
+                          fullWidth
+                          id={`lowerLimit_${i}`}
+                          placeholder="Lower Limit"
+                          name="lowerLimit"
+                          value={x.lowerLimit}
+                          className="global-input"
+                          onChange={(e) => handleInputChangeContacts(e, i)}
+                          InputLabelProps={{ shrink: false }}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">F</InputAdornment>
+                            ),
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextValidator
+                          variant="outlined"
+                          validators={["required"]}
+                          errorMessages={["Please enter upper limit"]}
+                          fullWidth
+                          id={`upperLimit_${i}`}
+                          placeholder="Upper Limit"
+                          name="upperLimit"
+                          value={x.upperLimit}
+                          className="global-input"
+                          onChange={(e) => handleInputChangeContacts(e, i)}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment position="end">F</InputAdornment>
+                            ),
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={2} className="row-icons-container">
+                        {
+                          <FormControlLabel
+                            control={<Checkbox name="checkedA" />}
+                            label="No limit"
+                          />
+                        }
+                      </Grid>
+                      <Grid item xs={1} className="row-icons-container">
+                        {temperatureConfigForm.positiveResponses.length !==
+                          1 && (
+                          <Tooltip title="Remove">
+                            <CancelIcon
+                              className={`delete-row-icon`}
+                              onClick={() => handleRemoveClick(i)}
+                            ></CancelIcon>
+                          </Tooltip>
                         )}
-                      />
-                    </FormControl>
+                        {temperatureConfigForm.positiveResponses.length - 1 ===
+                          i && (
+                          <Tooltip title="Add">
+                            <AddCircleIcon
+                              className={`add-row-icon`}
+                              onClick={handleAddClick}
+                            ></AddCircleIcon>
+                          </Tooltip>
+                        )}
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={2}>
-                    <TextValidator
-                      variant="outlined"
-                      validators={["required"]}
-                      errorMessages={["Please enter lower limit"]}
-                      fullWidth
-                      id={`lowerLimit_${i}`}
-                      placeholder="Lower Limit"
-                      name="lowerLimit"
-                      value={x.lowerLimit}
-                      className="global-input"
-                      onChange={(e) => handleInputChange(e, i)}
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">F</InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={2}>
-                    <TextValidator
-                      variant="outlined"
-                      validators={["required"]}
-                      errorMessages={["Please enter upper limit"]}
-                      fullWidth
-                      id={`upperLimit_${i}`}
-                      placeholder="Upper Limit"
-                      name="upperLimit"
-                      value={x.upperLimit}
-                      className="global-input"
-                      onChange={(e) => handleInputChange(e, i)}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">F</InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={2} className="row-icons-container">
-                    {
-                      <FormControlLabel
-                        control={<Checkbox name="checkedA" />}
-                        label="No limit"
-                      />
-                    }
-                  </Grid>
-                  <Grid item xs={1} className="row-icons-container">
-                    {temperatureConfigForm.length !== 1 && (
-                      <Tooltip title="Remove">
-                        <CancelIcon
-                          className={`delete-row-icon`}
-                          onClick={() => handleRemoveClick(i)}
-                        ></CancelIcon>
-                      </Tooltip>
-                    )}
-                    {temperatureConfigForm.length - 1 === i && (
-                      <Tooltip title="Add">
-                        <AddCircleIcon
-                          className={`add-row-icon`}
-                          onClick={handleAddClick}
-                        ></AddCircleIcon>
-                      </Tooltip>
-                    )}
-                  </Grid>
-                </Grid>
-              </Grid>
-            );
-          })}
+                );
+              })
+            : ""}
           <br />
           <Grid item container xs={12}>
             <Grid item xs={3}>
@@ -397,6 +511,13 @@ function QuestionnaireEvaluation(props) {
           </Grid>
         </ValidatorForm>
       </Paper>
+      <ToasterMessageComponent
+        stateSnackbar={stateSnackbar}
+        setStateSnackbar={setStateSnackbar}
+        toasterMessage={toasterMessage}
+        toasterServerity={toasterServerity}
+        toasterErrorMessageType={toasterErrorMessageType}
+      />
     </div>
   );
 }
