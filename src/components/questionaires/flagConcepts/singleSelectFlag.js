@@ -136,81 +136,95 @@ function QuestionTypeSingleSelect(props) {
                 />
               </Grid>
             </Grid>
-            <Grid item container xs={12}>
-              <Grid item xs={2}>
-                <label className="required">Red Flag Answer</label>
-              </Grid>
-              <Grid item xs={10}>
-                {props.singleChoiceFlag.redFlagForSingleChoice &&
-                props.singleChoiceFlag.redFlagForSingleChoice.length > 0
-                  ? props.singleChoiceFlag.redFlagForSingleChoice.map(
-                      (x, i) => {
-                        return (
-                          <Grid
-                            item
-                            container
-                            xs={12}
-                            spacing={1}
-                            key={`redflag-container${i}`}
-                            className="dynamic-flag-container"
-                          >
-                            <Grid item xs={5}>
-                              <FormControl variant="outlined" fullWidth>
-                                <Autocomplete
-                                  id="tags-outlined"
-                                  options={
-                                    props.addQuestionWithChoices
-                                      .surveyResponseChoices &&
-                                    props.addQuestionWithChoices
-                                      .surveyResponseChoices.length > 0
-                                      ? props.addQuestionWithChoices
-                                          .surveyResponseChoices
-                                      : []
-                                  }
-                                  getOptionLabel={(opt) => opt.option}
-                                  defaultValue={x}
-                                  onChange={(e, v) => handleChangeFlagR(v, i)}
-                                  filterSelectedOptions
-                                  className="global-input autocomplete-select"
-                                  renderInput={(params) => (
-                                    <TextField
-                                      {...params}
-                                      variant="outlined"
-                                      placeholder="Select answer"
-                                    />
-                                  )}
-                                />
-                              </FormControl>
+            {props.singleChoiceFlag.isPositiveConfirmityRedFlag ? (
+              <Grid item container xs={12}>
+                <Grid item xs={2}>
+                  <label
+                    className={
+                      props.singleChoiceFlag.isPositiveConfirmityRedFlag
+                        ? "required"
+                        : ""
+                    }
+                  >
+                    Red Flag Answer
+                  </label>
+                </Grid>
+                <Grid item xs={10}>
+                  {props.singleChoiceFlag.redFlagForSingleChoice &&
+                  props.singleChoiceFlag.redFlagForSingleChoice.length > 0
+                    ? props.singleChoiceFlag.redFlagForSingleChoice.map(
+                        (x, i) => {
+                          return (
+                            <Grid
+                              item
+                              container
+                              xs={12}
+                              spacing={1}
+                              key={`redflag-container${i}`}
+                              className="dynamic-flag-container"
+                            >
+                              <Grid item xs={5}>
+                                <FormControl variant="outlined" fullWidth>
+                                  <Autocomplete
+                                    id="tags-outlined"
+                                    options={
+                                      props.addQuestionWithChoices
+                                        .surveyResponseChoices &&
+                                      props.addQuestionWithChoices
+                                        .surveyResponseChoices.length > 0
+                                        ? props.addQuestionWithChoices
+                                            .surveyResponseChoices
+                                        : []
+                                    }
+                                    getOptionLabel={(opt) => opt.option}
+                                    defaultValue={x}
+                                    onChange={(e, v) => handleChangeFlagR(v, i)}
+                                    filterSelectedOptions
+                                    className="global-input autocomplete-select"
+                                    renderInput={(params) => (
+                                      <TextField
+                                        {...params}
+                                        variant="outlined"
+                                        placeholder="Select answer"
+                                      />
+                                    )}
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <Grid item xs={2} className="row-icons-container">
+                                {props.singleChoiceFlag.redFlagForSingleChoice
+                                  .length !== 1 && (
+                                  <Tooltip title="Remove">
+                                    <CancelIcon
+                                      className={`delete-row-icon`}
+                                      onClick={() =>
+                                        handleRemoveClickRedFlag(i)
+                                      }
+                                    ></CancelIcon>
+                                  </Tooltip>
+                                )}
+                                {props.singleChoiceFlag.redFlagForSingleChoice
+                                  .length -
+                                  1 ===
+                                  i && (
+                                  <Tooltip title="Add">
+                                    <AddCircleIcon
+                                      className={`add-row-icon`}
+                                      onClick={handleAddClickRedFlag}
+                                    ></AddCircleIcon>
+                                  </Tooltip>
+                                )}
+                              </Grid>
                             </Grid>
-                            <Grid item xs={2} className="row-icons-container">
-                              {props.singleChoiceFlag.redFlagForSingleChoice
-                                .length !== 1 && (
-                                <Tooltip title="Remove">
-                                  <CancelIcon
-                                    className={`delete-row-icon`}
-                                    onClick={() => handleRemoveClickRedFlag(i)}
-                                  ></CancelIcon>
-                                </Tooltip>
-                              )}
-                              {props.singleChoiceFlag.redFlagForSingleChoice
-                                .length -
-                                1 ===
-                                i && (
-                                <Tooltip title="Add">
-                                  <AddCircleIcon
-                                    className={`add-row-icon`}
-                                    onClick={handleAddClickRedFlag}
-                                  ></AddCircleIcon>
-                                </Tooltip>
-                              )}
-                            </Grid>
-                          </Grid>
-                        );
-                      }
-                    )
-                  : ""}
+                          );
+                        }
+                      )
+                    : ""}
+                </Grid>
               </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
           </CardContent>
         </Card>
       </Grid>

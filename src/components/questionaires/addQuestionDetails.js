@@ -88,7 +88,7 @@ function AddQuestionDetails(props) {
     positiveConformityForNumber: [
       {
         id: "",
-        expressionType: "",
+        numericExpressionType: "",
         forAnswer: 0,
         forRangeEnd: 0,
       },
@@ -96,7 +96,7 @@ function AddQuestionDetails(props) {
     redFlagForNumber: [
       {
         id: "",
-        expressionType: "",
+        numericExpressionType: "",
         forAnswer: 0,
         forRangeEnd: 0,
       },
@@ -281,26 +281,49 @@ function AddQuestionDetails(props) {
         ...props.questionTypeForm,
         ...timeFlag,
       };
-      questionaireApiCall
-        .AddTimeQuestion(finalObject)
-        .then((res) => {
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Added new question.");
-          settoasterServerity("success");
-          setTimeout(() => {
-            props.history.push(
-              `/questionaires/view-questions/${props.surveyIdURL}`
-            );
+      if (finalObject.id != 0) {
+        questionaireApiCall
+          .UpdateTimeQuestion(finalObject)
+          .then((res) => {
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Question is updated.");
+            settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 6000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
             setshowLoadder(false);
-          }, 6000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+          });
+      } else {
+        questionaireApiCall
+          .AddTimeQuestion(finalObject)
+          .then((res) => {
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Added new question.");
+            settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 6000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      }
     } else if (props.questionTypeForm.questionType == "Numeric") {
       const finalObject = {
         ...addQuestion,
@@ -431,6 +454,7 @@ function AddQuestionDetails(props) {
               addQuestion={addQuestion}
               setDatetimeFlag={setDatetimeFlag}
               datetimeFlag={datetimeFlag}
+              answerTypes={props.answerTypes}
             ></QuestionTypeDate>
           </Grid>
         );
@@ -443,6 +467,7 @@ function AddQuestionDetails(props) {
               addQuestion={addQuestion}
               setTimeFlag={setTimeFlag}
               timeFlag={timeFlag}
+              answerTypes={props.answerTypes}
             ></QuestionTypeTime>
           </Grid>
         );
@@ -455,6 +480,7 @@ function AddQuestionDetails(props) {
               addQuestion={addQuestion}
               setNumericFlag={setNumericFlag}
               numericFlag={numericFlag}
+              answerTypes={props.answerTypes}
             ></QuestionTypeNumber>
           </Grid>
         );
@@ -472,6 +498,7 @@ function AddQuestionDetails(props) {
           surveyIdURL={props.surveyIdURL}
           questionIdURL={props.questionIdURL}
           setGotoAddQuestion={props.setGotoAddQuestion}
+          answerTypes={props.answerTypes}
         ></AddChoiceQuestionDetails>
       ) : (
         <ValidatorForm onSubmit={submitQuestionForm}>
@@ -491,13 +518,13 @@ function AddQuestionDetails(props) {
                         variant="outlined"
                         validators={[
                           "required",
-                          "matchRegexp:^[a-zA-Z ]*$",
-                          "matchRegexp:^.{0,50}$",
+                          // "matchRegexp:^[a-zA-Z ]*$",
+                          "matchRegexp:^.{0,200}$",
                         ]}
                         errorMessages={[
                           "Please enter question",
-                          "Only alphabets are allowed",
-                          "Maximum 50 characters",
+                          // "Only alphabets are allowed",
+                          "Maximum 200 characters",
                         ]}
                         fullWidth
                         id="question"
@@ -536,6 +563,7 @@ function AddQuestionDetails(props) {
                 </Grid>
                 <RenderFlagComponent
                   currentQuestionType={props.questionTypeForm.questionType}
+                  answerTypes={props.answerTypes}
                 ></RenderFlagComponent>
               </Grid>
             </CardContent>

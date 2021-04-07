@@ -83,19 +83,45 @@ function MultipleJump(props) {
           allSurveyQuestions,
           choiceQuestionDetails,
           getsurveyDetails,
-          choiceQuestionBooleanDetails,
+          choiceQuestionMultipleDetails,
         ]) => {
           setAllAnswerExpressions(allExpressions);
           setSelectedSurveyQuestions(allSurveyQuestions);
           setselectedQuestionDetails(choiceQuestionDetails);
           setAnswerChoices(choiceQuestionDetails.surveyResponseChoices);
           setsurveyDetails(getsurveyDetails);
-          if (choiceQuestionBooleanDetails) {
-            console.log(choiceQuestionBooleanDetails);
-            // setConditionalJump();
+          if (choiceQuestionMultipleDetails) {
+            let getMultichoiceConditionalQuestions =
+              choiceQuestionMultipleDetails.multiChoiceConditionalQuestions;
+            let newChoicesArray = [];
+            getMultichoiceConditionalQuestions.forEach((element) => {
+              let selectedAnswerChoice = element.answerChoices;
+              let newAnswerChoices = [];
+              selectedAnswerChoice.forEach((ch) => {
+                let selectedMainChoiceInfo = choiceQuestionDetails.surveyResponseChoices.find(
+                  (cho) => cho.optionId == ch.option
+                );
+                newAnswerChoices.push({
+                  option: selectedMainChoiceInfo.option,
+                  optionId: ch.option,
+                });
+              });
+              newChoicesArray.push({
+                id: "",
+                multiChoiceConditionalOrderId:
+                  element.multiChoiceConditionalOrderId,
+                answerChoices: newAnswerChoices,
+                goToSurveyQuestionId: element.goToSurveyQuestionId,
+              });
+            });
+            choiceQuestionMultipleDetails.multiChoiceConditionalQuestions = newChoicesArray;
+            setConditionalJump(choiceQuestionMultipleDetails);
+            setReloadPage("false");
+            setcomponentLoadder(false);
+          } else {
+            setReloadPage("false");
+            setcomponentLoadder(false);
           }
-          setReloadPage("false");
-          setcomponentLoadder(false);
         }
       )
       .catch((error) => {
@@ -105,7 +131,6 @@ function MultipleJump(props) {
 
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
-    console.log(checked);
     if (name == "goToNormalSequence") {
       setConditionalJump((conditionalJump) => ({
         ...conditionalJump,
@@ -141,12 +166,7 @@ function MultipleJump(props) {
       {
         id: "",
         multiChoiceConditionalOrderId: "",
-        answerChoices: [
-          {
-            optionId: "",
-            option: "",
-          },
-        ],
+        answerChoices: [],
         goToSurveyQuestionId: "",
       },
     ];
@@ -187,7 +207,6 @@ function MultipleJump(props) {
       newConditionalJumpData.multiChoiceConditionalQuestions;
     let newChoicesArray = [];
     getSelectedChoicesArray.forEach((element) => {
-      console.log(element);
       let selectedAnswerChoice = element.answerChoices;
       let newAnswerChoices = [];
       selectedAnswerChoice.forEach((ch) => {
@@ -212,8 +231,11 @@ function MultipleJump(props) {
           setStateSnackbar(true);
           setToasterMessage("Conditional jump is updated.");
           settoasterServerity("success");
-          setshowLoadder(false);
-          setReloadPage("true");
+
+          setTimeout(function () {
+            setshowLoadder(false);
+            setReloadPage("true");
+          }, 5000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -228,8 +250,10 @@ function MultipleJump(props) {
           setStateSnackbar(true);
           setToasterMessage("Conditional jump is added.");
           settoasterServerity("success");
-          setshowLoadder(false);
-          setReloadPage("true");
+          setTimeout(function () {
+            setshowLoadder(false);
+            setReloadPage("true");
+          }, 5000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);

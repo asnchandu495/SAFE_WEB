@@ -27,13 +27,17 @@ function AddQuestion(props) {
   });
   const [selectedQuestionDetails, setSelectedQuestionDetails] = useState();
   const [surveyDetails, setsurveyDetails] = useState();
+  const [answerTypes, setAnswerTypes] = useState([]);
+
   useEffect(() => {
     Promise.all([
       questionaireApiCall.GetALLTypes(),
       questionaireApiCall.getSurveyById(surveyIdURL),
+      questionaireApiCall.getAllExpressions(),
     ])
-      .then(([res, getsurveyDetails]) => {
+      .then(([res, getsurveyDetails, allExpressions]) => {
         setsurveyDetails(getsurveyDetails);
+        setAnswerTypes(allExpressions);
         if (questionIdURL != 0) {
           setQuestionTypes(res);
           callQuestionDetailsAPI(questionIdURL, editQuestionType);
@@ -202,6 +206,7 @@ function AddQuestion(props) {
                             surveyIdURL={surveyIdURL}
                             questionIdURL={questionIdURL}
                             selectedQuestionDetails={selectedQuestionDetails}
+                            answerTypes={answerTypes}
                           ></QuestionType>
                         </Grid>
                       ) : (
@@ -215,6 +220,7 @@ function AddQuestion(props) {
                               surveyIdURL={surveyIdURL}
                               questionIdURL={questionIdURL}
                               selectedQuestionDetails={selectedQuestionDetails}
+                              answerTypes={answerTypes}
                             ></AddQuestionDetails>
                           </Grid>
                         </Grid>

@@ -15,23 +15,15 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
-import questionaireService from "../../../services/questionaireService";
+import moment from "moment";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 
 function QuestionTypeNumber(props) {
-  const questionaireApiCall = new questionaireService();
-
-  const [answerTypes, setAnswerTypes] = useState([]);
-
-  useEffect(() => {
-    Promise.all([questionaireApiCall.getAllExpressions()])
-      .then(([allExpressions]) => {
-        setAnswerTypes(allExpressions);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   const PurpleSwitch = withStyles({
     switchBase: {
       color: "#be1d56",
@@ -47,15 +39,13 @@ function QuestionTypeNumber(props) {
   })(Switch);
 
   const handleChangeFlagR = (e, index) => {
-    console.log(index);
     const { name, value } = e.target;
     let thisVal = "";
-    if (name == "expressionType") {
+    if (name == "numericExpressionType") {
       thisVal = value;
     } else {
-      let getValue = value;
-      if (getValue != "") {
-        thisVal = parseInt(getValue);
+      if (value != "") {
+        thisVal = parseInt(value);
       }
     }
     const list = {
@@ -72,12 +62,11 @@ function QuestionTypeNumber(props) {
   const handleChangeFlagP = (e, index) => {
     const { name, value } = e.target;
     let thisVal = "";
-    if (name == "expressionType") {
+    if (name == "numericExpressionType") {
       thisVal = value;
     } else {
-      let getValue = value;
-      if (getValue != "") {
-        thisVal = parseInt(getValue);
+      if (value != "") {
+        thisVal = parseInt(value);
       }
     }
     const list = {
@@ -101,12 +90,12 @@ function QuestionTypeNumber(props) {
 
   const handleAddClickRedFlag = (index, j) => {
     const list = { ...props.numericFlag };
-    const thisRedFlagDate = list.redFlagForNumber;
+    const thisRedFlagNumber = list.redFlagForNumber;
     list.redFlagForNumber = [
-      ...thisRedFlagDate,
+      ...thisRedFlagNumber,
       {
         id: "",
-        expressionType: "",
+        numericExpressionType: "",
         forAnswer: 0,
         forRangeEnd: 0,
       },
@@ -122,12 +111,12 @@ function QuestionTypeNumber(props) {
 
   const handleAddClickPositiveFlag = (index, j) => {
     const list = { ...props.numericFlag };
-    const thisPositiveFlagDate = list.positiveConformityForNumber;
+    const thisPositiveFlagNumber = list.positiveConformityForNumber;
     list.positiveConformityForNumber = [
-      ...thisPositiveFlagDate,
+      ...thisPositiveFlagNumber,
       {
         id: "",
-        expressionType: "",
+        numericExpressionType: "",
         forAnswer: 0,
         forRangeEnd: 0,
       },
@@ -148,7 +137,7 @@ function QuestionTypeNumber(props) {
           <CardContent>
             <Grid item container xs={12}>
               <Grid item xs={2}>
-                <label>Red Flag</label>
+                <label className="required">Red Flag</label>
               </Grid>
               <Grid item xs={6}>
                 <FormControlLabel
@@ -195,7 +184,8 @@ function QuestionTypeNumber(props) {
                                   shrink={false}
                                   className="select-label"
                                 >
-                                  {x.expressionType && x.expressionType != ""
+                                  {x.numericExpressionType &&
+                                  x.numericExpressionType != ""
                                     ? ""
                                     : "Answer type"}
                                 </InputLabel>
@@ -203,9 +193,11 @@ function QuestionTypeNumber(props) {
                                   labelId={`demo-simple-select-outlined-label${i}`}
                                   id={`demo-simple-select-outlined${i}`}
                                   value={
-                                    x.expressionType ? x.expressionType : ""
+                                    x.numericExpressionType
+                                      ? x.numericExpressionType
+                                      : ""
                                   }
-                                  name="expressionType"
+                                  name="numericExpressionType"
                                   onChange={(e) => handleChangeFlagR(e, i)}
                                   placeholder="Answer type"
                                   InputLabelProps={{
@@ -220,7 +212,7 @@ function QuestionTypeNumber(props) {
                                   <MenuItem value="">
                                     <em>None</em>
                                   </MenuItem>
-                                  {answerTypes.map((aType) => {
+                                  {props.answerTypes.map((aType) => {
                                     return (
                                       <MenuItem
                                         value={aType.id}
@@ -233,70 +225,49 @@ function QuestionTypeNumber(props) {
                                 </Select>
                               </FormControl>
                             </Grid>
+                            <Grid item xs={3} key={`redflag-containerF${i}`}>
+                              <TextValidator
+                                variant="outlined"
+                                fullWidth
+                                id={`forAnswerR${i}`}
+                                key={`forAnswerR${i}`}
+                                placeholder={
+                                  props.numericFlag.redFlagForNumber[i]
+                                    .numericExpressionType == "RANGE"
+                                    ? "From"
+                                    : "Your answer"
+                                }
+                                name="forAnswer"
+                                value={x.forAnswer}
+                                onChange={(e) => handleChangeFlagR(e, i)}
+                                className="global-input"
+                                InputLabelProps={{ shrink: false }}
+                              />
+                            </Grid>
                             {props.numericFlag.redFlagForNumber[i]
-                              .expressionType == "RANGE" ? (
+                              .numericExpressionType == "RANGE" ? (
                               <>
-                                <Grid item xs={3}>
-                                  <TextValidator
-                                    variant="outlined"
-                                    fullWidth
-                                    id={`forAnswerR${i}`}
-                                    placeholder="Your answer"
-                                    name="forAnswer"
-                                    value={x.forAnswer}
-                                    onChange={(e) => handleChangeFlagR(e, i)}
-                                    className="global-input"
-                                    InputLabelProps={{ shrink: false }}
-                                    InputProps={{
-                                      startAdornment: (
-                                        <InputAdornment
-                                          position="start"
-                                          className="adornment-input"
-                                        >
-                                          From{" "}
-                                        </InputAdornment>
-                                      ),
-                                    }}
-                                  />
-                                </Grid>
-                                <Grid item xs={3}>
+                                <Grid
+                                  item
+                                  xs={3}
+                                  key={`redflag-containerT${i}`}
+                                >
                                   <TextValidator
                                     variant="outlined"
                                     fullWidth
                                     id={`forRangeEndR${i}`}
-                                    placeholder="Your answer"
+                                    key={`forRangeEndR${i}`}
+                                    placeholder="To"
                                     name="forRangeEnd"
                                     value={x.forRangeEnd}
                                     onChange={(e) => handleChangeFlagR(e, i)}
                                     className="global-input"
                                     InputLabelProps={{ shrink: false }}
-                                    InputProps={{
-                                      startAdornment: (
-                                        <InputAdornment
-                                          position="start"
-                                          className="adornment-input"
-                                        >
-                                          To{" "}
-                                        </InputAdornment>
-                                      ),
-                                    }}
                                   />
                                 </Grid>
                               </>
                             ) : (
-                              <Grid item xs={3}>
-                                <TextValidator
-                                  variant="outlined"
-                                  fullWidth
-                                  id={`forAnswerRR${i}`}
-                                  placeholder="Your answer"
-                                  name="forAnswer"
-                                  value={x.forAnswer}
-                                  onChange={(e) => handleChangeFlagR(e, i)}
-                                  className="global-input"
-                                  InputLabelProps={{ shrink: false }}
-                                />
-                              </Grid>
+                              ""
                             )}
                             <Grid item xs={2} className="row-icons-container">
                               {props.numericFlag.redFlagForNumber.length !==
@@ -348,7 +319,7 @@ function QuestionTypeNumber(props) {
                             container
                             xs={12}
                             spacing={1}
-                            key={`redflag-container${i}`}
+                            key={`positiveflag-container${i}`}
                             className="dynamic-flag-container"
                           >
                             <Grid item xs={2}>
@@ -358,7 +329,8 @@ function QuestionTypeNumber(props) {
                                   shrink={false}
                                   className="select-label"
                                 >
-                                  {x.expressionType && x.expressionType != ""
+                                  {x.numericExpressionType &&
+                                  x.numericExpressionType != ""
                                     ? ""
                                     : "Answer type"}
                                 </InputLabel>
@@ -366,9 +338,11 @@ function QuestionTypeNumber(props) {
                                   labelId={`demo-simple-select-outlined-label${i}`}
                                   id={`demo-simple-select-outlined${i}`}
                                   value={
-                                    x.expressionType ? x.expressionType : ""
+                                    x.numericExpressionType
+                                      ? x.numericExpressionType
+                                      : ""
                                   }
-                                  name="expressionType"
+                                  name="numericExpressionType"
                                   onChange={(e) => handleChangeFlagP(e, i)}
                                   placeholder="Answer type"
                                   InputLabelProps={{
@@ -379,83 +353,67 @@ function QuestionTypeNumber(props) {
                                   <MenuItem value="">
                                     <em>None</em>
                                   </MenuItem>
-                                  {answerTypes.map((aType) => {
+                                  {props.answerTypes.map((aType) => {
                                     return (
                                       <MenuItem
                                         value={aType.id}
                                         key={`atypered_${aType.id}`}
                                       >
-                                        {aType.id}
+                                        {aType.name}
                                       </MenuItem>
                                     );
                                   })}
                                 </Select>
                               </FormControl>
                             </Grid>
+                            <Grid
+                              item
+                              xs={3}
+                              key={`positiveflag-containerF${i}`}
+                            >
+                              <TextValidator
+                                variant="outlined"
+                                fullWidth
+                                id={`forAnswerP${i}`}
+                                key={`forAnswerP${i}`}
+                                placeholder={
+                                  props.numericFlag.positiveConformityForNumber[
+                                    i
+                                  ].numericExpressionType == "RANGE"
+                                    ? "From"
+                                    : "Your answer"
+                                }
+                                name="forAnswer"
+                                value={x.forAnswer}
+                                onChange={(e) => handleChangeFlagP(e, i)}
+                                className="global-input"
+                                InputLabelProps={{ shrink: false }}
+                              />
+                            </Grid>
                             {props.numericFlag.positiveConformityForNumber[i]
-                              .expressionType == "RANGE" ? (
+                              .numericExpressionType == "RANGE" ? (
                               <>
-                                <Grid item xs={3}>
-                                  <TextValidator
-                                    variant="outlined"
-                                    fullWidth
-                                    id={`forAnswerP${i}`}
-                                    placeholder="Your answer"
-                                    name="forAnswer"
-                                    value={x.forAnswer}
-                                    onChange={(e) => handleChangeFlagP(e, i)}
-                                    className="global-input"
-                                    InputLabelProps={{ shrink: false }}
-                                    InputProps={{
-                                      startAdornment: (
-                                        <InputAdornment
-                                          position="start"
-                                          className="adornment-input"
-                                        >
-                                          From{" "}
-                                        </InputAdornment>
-                                      ),
-                                    }}
-                                  />
-                                </Grid>
-                                <Grid item xs={3}>
+                                <Grid
+                                  item
+                                  xs={3}
+                                  key={`positiveflag-containerT${i}`}
+                                >
                                   <TextValidator
                                     variant="outlined"
                                     fullWidth
                                     id={`forRangeEndP${i}`}
-                                    placeholder="Your answer"
+                                    key={`forRangeEndP${i}`}
+                                    placeholder="To"
                                     name="forRangeEnd"
                                     value={x.forRangeEnd}
                                     onChange={(e) => handleChangeFlagP(e, i)}
                                     className="global-input"
                                     InputLabelProps={{ shrink: false }}
-                                    InputProps={{
-                                      startAdornment: (
-                                        <InputAdornment
-                                          position="start"
-                                          className="adornment-input"
-                                        >
-                                          To{" "}
-                                        </InputAdornment>
-                                      ),
-                                    }}
                                   />
                                 </Grid>
                               </>
                             ) : (
-                              <Grid item xs={3}>
-                                <TextValidator
-                                  variant="outlined"
-                                  fullWidth
-                                  id={`forAnswerPP${i}`}
-                                  placeholder="Your answer"
-                                  name="forAnswer"
-                                  value={x.forAnswer}
-                                  onChange={(e) => handleChangeFlagP(e, i)}
-                                  className="global-input"
-                                  InputLabelProps={{ shrink: false }}
-                                />
-                              </Grid>
+                              ""
                             )}
                             <Grid item xs={2} className="row-icons-container">
                               {props.numericFlag.positiveConformityForNumber

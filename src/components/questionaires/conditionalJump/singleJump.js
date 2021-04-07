@@ -161,8 +161,10 @@ function SingleJump(props) {
           setStateSnackbar(true);
           setToasterMessage("Conditional jump is updated.");
           settoasterServerity("success");
-          setshowLoadder(false);
-          setReloadPage("true");
+          setTimeout(function () {
+            setshowLoadder(false);
+            setReloadPage("true");
+          }, 5000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -177,8 +179,10 @@ function SingleJump(props) {
           setStateSnackbar(true);
           setToasterMessage("Conditional jump is added.");
           settoasterServerity("success");
-          setshowLoadder(false);
-          setReloadPage("true");
+          setTimeout(function () {
+            setshowLoadder(false);
+            setReloadPage("true");
+          }, 5000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);

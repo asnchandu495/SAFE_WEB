@@ -365,6 +365,19 @@ export default class questionaireService {
     });
   }
 
+  UpdateTimeQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/QuestionTime/UpdateTimeQuestion`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   AddNumericQuestion(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(
@@ -410,6 +423,19 @@ export default class questionaireService {
       `${this.questionaireURL}/MultipleChoiceQuestion/AddMultipleChoiceQuestion`,
       {
         method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  UpdateMultiChoiceQuestion(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/MultipleChoiceQuestion/UpdateMultipleChoiceQuestion`,
+      {
+        method: "PUT",
         body: finalData,
       }
     ).then((res) => {

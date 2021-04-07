@@ -27,6 +27,7 @@ function AddChoiceQuestionDetails(props) {
     "array"
   );
   const [showLoadder, setshowLoadder] = useState(false);
+  const [showLoadderFlag, setshowLoadderFlag] = useState(false);
   const [addQuestionWithChoices, setAddQuestionWithChoices] = useState({
     id: "",
     surveyId: props.surveyIdURL,
@@ -43,7 +44,7 @@ function AddChoiceQuestionDetails(props) {
   const [singleChoiceFlag, setSingleChoiceFlag] = useState({
     questionId: props.questionIdURL,
     isPositiveConfirmity: true,
-    isPositiveConfirmityRedFlag: true,
+    isPositiveConfirmityRedFlag: false,
     positiveConformitySingleChoice: [
       {
         optionId: "",
@@ -60,7 +61,7 @@ function AddChoiceQuestionDetails(props) {
   const [multiChoiceFlag, setMultiChoiceFlag] = useState({
     questionId: props.questionIdURL,
     isPositiveConfirmity: true,
-    isPositiveConfirmityRedFlag: true,
+    isPositiveConfirmityRedFlag: false,
     positiveConformityMultiChoice: [
       {
         options: [
@@ -83,6 +84,7 @@ function AddChoiceQuestionDetails(props) {
     ],
   });
   const [showFlags, setShowFlags] = useState(false);
+  const [reloadPage, setReloadPage] = useState(false);
 
   useEffect(() => {
     if (props.questionIdURL != 0) {
@@ -118,6 +120,7 @@ function AddChoiceQuestionDetails(props) {
             setSingleChoiceFlag(newSingleChoiceFlag);
             setshowLoadder(false);
             setShowFlags(true);
+            setReloadPage(false);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -164,6 +167,7 @@ function AddChoiceQuestionDetails(props) {
             setMultiChoiceFlag(newMultiChoiceFlag);
             setshowLoadder(false);
             setShowFlags(true);
+            setReloadPage(false);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -175,7 +179,7 @@ function AddChoiceQuestionDetails(props) {
     } else {
       setShowFlags(true);
     }
-  }, [props.questionIdURL]);
+  }, [reloadPage]);
 
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
@@ -204,14 +208,15 @@ function AddChoiceQuestionDetails(props) {
         questionaireApiCall
           .UpdateSingleChoiceQuestion(finalObject)
           .then((res) => {
-            setshowLoadder(false);
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
             setToasterMessage("Selected question updated.");
             settoasterServerity("success");
             setTimeout(function () {
+              setshowLoadder(false);
+              setReloadPage(true);
               props.history.push(
-                `/questionaires/add-questions/${props.surveyIdURL}/${res.id}?type=SingleChoice`
+                `/questionaires/add-questions/${props.surveyIdURL}/${finalObject.id}?type=SingleChoice`
               );
             }, 10000);
           })
@@ -225,7 +230,6 @@ function AddChoiceQuestionDetails(props) {
         questionaireApiCall
           .AddSingleChoiceQuestion(finalObject)
           .then((res) => {
-            setshowLoadder(false);
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
             setToasterMessage("Added new question.");
@@ -235,6 +239,8 @@ function AddChoiceQuestionDetails(props) {
                 ...addQuestionWithChoices,
                 id: res.id,
               }));
+              setshowLoadder(false);
+              setReloadPage(true);
               props.history.push(
                 `/questionaires/add-questions/${props.surveyIdURL}/${res.id}?type=SingleChoice`
               );
@@ -252,30 +258,55 @@ function AddChoiceQuestionDetails(props) {
         ...addQuestionWithChoices,
         ...props.questionTypeForm,
       };
-      questionaireApiCall
-        .AddMultiChoiceQuestion(finalObject)
-        .then((res) => {
-          setshowLoadder(false);
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Added new question.");
-          settoasterServerity("success");
-          setTimeout(function () {
-            setAddQuestionWithChoices((addQuestionWithChoices) => ({
-              ...addQuestionWithChoices,
-              id: res.id,
-            }));
-            props.history.push(
-              `/questionaires/add-questions/${props.surveyIdURL}/${res.id}?type=SingleChoice`
-            );
-          }, 10000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+      if (finalObject.id != 0) {
+        questionaireApiCall
+          .UpdateMultiChoiceQuestion(finalObject)
+          .then((res) => {
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Question details updated.");
+            settoasterServerity("success");
+            setTimeout(function () {
+              setshowLoadder(false);
+              setReloadPage(true);
+              props.history.push(
+                `/questionaires/add-questions/${props.surveyIdURL}/${finalObject.id}?type=MultiChoice`
+              );
+            }, 10000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      } else {
+        questionaireApiCall
+          .AddMultiChoiceQuestion(finalObject)
+          .then((res) => {
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Added new question.");
+            settoasterServerity("success");
+            setTimeout(function () {
+              setAddQuestionWithChoices((addQuestionWithChoices) => ({
+                ...addQuestionWithChoices,
+                id: res.id,
+              }));
+              setshowLoadder(false);
+              setReloadPage(true);
+              props.history.push(
+                `/questionaires/add-questions/${props.surveyIdURL}/${res.id}?type=MultiChoice`
+              );
+            }, 10000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      }
     } else {
       console.log("fdsf");
     }
@@ -346,11 +377,12 @@ function AddChoiceQuestionDetails(props) {
 
   function submitQuestionFormFlags(e) {
     e.preventDefault();
+    setshowLoadderFlag(true);
     if (props.questionTypeForm.questionType == "SingleChoice") {
       questionaireApiCall
         .UpdateSingleChoiceFlags(singleChoiceFlag)
         .then((res) => {
-          setshowLoadder(false);
+          setshowLoadderFlag(false);
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
           setToasterMessage("Added new question.");
@@ -360,14 +392,13 @@ function AddChoiceQuestionDetails(props) {
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
-          setshowLoadder(false);
+          setshowLoadderFlag(false);
         });
     } else {
-      console.log(JSON.stringify(multiChoiceFlag));
       questionaireApiCall
         .UpdateMultiChoiceFlags(multiChoiceFlag)
         .then((res) => {
-          setshowLoadder(false);
+          setshowLoadderFlag(false);
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
           setToasterMessage("Added new question.");
@@ -377,7 +408,7 @@ function AddChoiceQuestionDetails(props) {
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
-          setshowLoadder(false);
+          setshowLoadderFlag(false);
         });
     }
   }
@@ -401,13 +432,13 @@ function AddChoiceQuestionDetails(props) {
                       variant="outlined"
                       validators={[
                         "required",
-                        "matchRegexp:^[a-zA-Z ]*$",
-                        "matchRegexp:^.{0,50}$",
+                        // "matchRegexp:^[a-zA-Z ]*$",
+                        "matchRegexp:^.{0,200}$",
                       ]}
                       errorMessages={[
                         "Please enter question",
-                        "Only alphabets are allowed",
-                        "Maximum 50 characters",
+                        // "Only alphabets are allowed",
+                        "Maximum 200 characters",
                       ]}
                       fullWidth
                       id="question"
@@ -545,19 +576,25 @@ function AddChoiceQuestionDetails(props) {
           <Card className="question-card question-card-choice-flag flag-card">
             <CardContent className="scrollable-card scrollable-card-choices">
               {props.questionTypeForm.questionType == "SingleChoice" ? (
-                <QuestionTypeSingleSelect
-                  questionTypeForm={props.questionTypeForm}
-                  singleChoiceFlag={singleChoiceFlag}
-                  setSingleChoiceFlag={setSingleChoiceFlag}
-                  addQuestionWithChoices={addQuestionWithChoices}
-                ></QuestionTypeSingleSelect>
-              ) : (
+                props.questionIdURL != 0 ? (
+                  <QuestionTypeSingleSelect
+                    questionTypeForm={props.questionTypeForm}
+                    singleChoiceFlag={singleChoiceFlag}
+                    setSingleChoiceFlag={setSingleChoiceFlag}
+                    addQuestionWithChoices={addQuestionWithChoices}
+                  ></QuestionTypeSingleSelect>
+                ) : (
+                  ""
+                )
+              ) : props.questionIdURL != 0 ? (
                 <QuestionTypeMultiSelect
                   questionTypeForm={props.questionTypeForm}
                   multiChoiceFlag={multiChoiceFlag}
                   setMultiChoiceFlag={setMultiChoiceFlag}
                   addQuestionWithChoices={addQuestionWithChoices}
                 ></QuestionTypeMultiSelect>
+              ) : (
+                ""
               )}
             </CardContent>
             <CardActions className="action-container">
@@ -565,9 +602,9 @@ function AddChoiceQuestionDetails(props) {
                 variant="contained"
                 type="submit"
                 className="global-submit-btn"
-                disabled={showLoadder}
+                disabled={showLoadderFlag}
               >
-                {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                {showLoadderFlag ? <ButtonLoadderComponent /> : "Submit"}
               </Button>
             </CardActions>
           </Card>

@@ -170,14 +170,65 @@ function TimeDetails(props) {
                 </label>
               </Grid>
             </Grid>
+            <Grid item xs={12} container>
+              <Grid item xs={3}>
+                <label>Red flag :</label>
+              </Grid>
+              <Grid item xs={9}>
+                <Table aria-label="simple table" className="flag-details-table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Expression type</TableCell>
+                      <TableCell>From</TableCell>
+                      <TableCell>To</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {props.selectedQuestionDetails.redFlagForTime.map((row) => (
+                      <TableRow key={row.expressionType}>
+                        <TableCell component="th" scope="row">
+                          {row.expressionType}
+                        </TableCell>
+                        <TableCell>{row.forAnswerDate}</TableCell>
+                        <TableCell>{row.forRangeEndDate}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} container>
+              <Grid item xs={3}>
+                <label>Positive flag :</label>
+              </Grid>
+              <Grid item xs={9}>
+                <Table aria-label="simple table" className="flag-details-table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Expression type</TableCell>
+                      <TableCell>From</TableCell>
+                      <TableCell>To</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {props.selectedQuestionDetails.positiveConformityForTime.map(
+                      (row) => (
+                        <TableRow key={row.expressionType}>
+                          <TableCell component="th" scope="row">
+                            {row.expressionType}
+                          </TableCell>
+                          <TableCell>{row.forAnswerDate}</TableCell>
+                          <TableCell>{row.forRangeEndDate}</TableCell>
+                        </TableRow>
+                      )
+                    )}
+                  </TableBody>
+                </Table>
+              </Grid>
+            </Grid>
           </Grid>
         </div>
       </CardContent>
-      {/* <CardActions className="action-container">
-        <Button type="button" size="small" color="primary">
-          Close
-        </Button>
-      </CardActions> */}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
         ConfirmationHeaderTittle={ConfirmationHeaderTittle}

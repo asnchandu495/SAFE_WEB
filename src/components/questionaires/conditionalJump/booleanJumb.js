@@ -39,6 +39,7 @@ function BooleanJump(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
+  const [reloadPage, setReloadPage] = useState("false");
 
   useEffect(() => {
     Promise.all([
@@ -60,13 +61,14 @@ function BooleanJump(props) {
           if (getBooleanConditionDetails) {
             setConditionalJump(getBooleanConditionDetails);
           }
+          setReloadPage("false");
           setcomponentLoadder(false);
         }
       )
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [reloadPage]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,7 +88,10 @@ function BooleanJump(props) {
           setStateSnackbar(true);
           setToasterMessage("Conditional jump is updated.");
           settoasterServerity("success");
-          setshowLoadder(false);
+          setTimeout(function () {
+            setshowLoadder(false);
+            setReloadPage("true");
+          }, 5000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -101,11 +106,10 @@ function BooleanJump(props) {
           setStateSnackbar(true);
           setToasterMessage("Conditional jump is added.");
           settoasterServerity("success");
-          setshowLoadder(false);
-          setConditionalJump((conditionalJump) => ({
-            ...conditionalJump,
-            ["id"]: result.id,
-          }));
+          setTimeout(function () {
+            setshowLoadder(false);
+            setReloadPage("true");
+          }, 5000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
