@@ -87,46 +87,54 @@ function GlobalSetting(props) {
   };
 
   const fileFormat = [
-    { id: "1", format: "xls" },
-    { id: "2", format: "csv" },
+    { id: "xls", format: "xls" },
+    { id: "csv", format: "csv" },
   ];
+
   const selfReminder = [
     {
-      id: "1",
+      id: "Minute",
       selfvalue: "Minute",
     },
     {
-      id: "2",
+      id: "Hours",
       selfvalue: "Hours",
     },
   ];
-  const uomTemp = [
-    {
-      id: "1",
-      uomtempvalue: "Farenheit",
-    },
-    {
-      id: "2",
-      uomtempvalue: "Celsius",
-    },
-  ];
+
   const datesFormat = [
     {
-      id: "1",
+      id: "dd/mm/yyyy",
       formatvalue: "dd/mm/yyyy",
     },
     {
-      id: "2",
+      id: "mm/dd/yyyy",
       formatvalue: "mm/dd/yyyy",
+    },
+    {
+      id: "dddd/mmmm/yyyy",
+      formatvalue: "dddd/mmmm/yyyy",
+    },
+    {
+      id: "mmmm/dddd/yyyy",
+      formatvalue: "mmmm/dddd/yyyy",
+    },
+    {
+      id: "ddd/mmm/yyyy",
+      formatvalue: "ddd/mmm/yyyy",
+    },
+    {
+      id: "mmm/ddd/yyyy",
+      formatvalue: "mmm/ddd/yyyy",
     },
   ];
   const timeFormat = [
     {
-      id: "1",
+      id: "hh:mm a",
       value: "12 Hours",
     },
     {
-      id: "2",
+      id: "hh:mm",
       value: "24 Hours",
     },
   ];

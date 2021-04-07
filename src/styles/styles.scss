@@ -72,6 +72,10 @@ body,
       background: var(--info-17a2b8) 0% 0% no-repeat padding-box;
     }
   }
+  .global-filter-btn {
+    border-radius: 0 !important;
+    height: 38px !important;
+  }
   .save-icon {
     font: var(--unnamed-font-style-normal) normal bold
       var(--unnamed-font-size-13) / var(--unnamed-line-spacing-19)
@@ -1165,4 +1169,12 @@ label.required {
     display: inline-flex;
     align-items: center;
   }
+}
+
+.search-form-top-paper {
+  border-radius: 0 !important;
+  margin-bottom: 25px;
+  box-shadow: none !important;
+  border: 1px solid #ccc;
+  padding: 15px;
 }

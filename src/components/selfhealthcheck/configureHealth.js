@@ -4,9 +4,6 @@ import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Button } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import { connect } from "react-redux";
-import * as UserAction from "../../Redux/Action/userAction";
-import PropTypes from "prop-types";
 import ToasterMessageComponent from "../common/toaster";
 import Tooltip from "@material-ui/core/Tooltip";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -15,10 +12,19 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import Paper from "@material-ui/core/Paper";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import userService from "../../services/usersService";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
+import "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import moment from "moment";
+import userService from "../../services/usersService";
+import healthCheckService from "../../services/healthCheckService";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -34,54 +40,40 @@ const theme1 = createMuiTheme({
 
 function ConfigureHealth(props) {
   const UserApiCall = new userService();
+  const HealthCheckApiCall = new healthCheckService();
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [showLoadder, setshowLoadder] = useState(false);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [SupervisorId, setSupervisorId] = useState();
-  const [UserList, setUserList] = useState();
-  const [AllUsers, setAllUsers] = useState();
+  const [UserList, setUserList] = useState([]);
+  const [selfHealthChecks, setSelfHealthChecks] = useState([]);
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
-  //   const columns = [
-  //     { name: "Name" },
-  //     { name: "Contact Number" },
-  //     { name: "Email Id" },
-  //     { name: "Date" },
-  //     {
-  //       label: "Actions",
-  //       name: "",
-  //       options: {
-  //         filter: false,
-  //         sort: false,
-  //         customBodyRender: (value, tableMeta, updateValue) => {
-  //           var thisRowData = tableMeta.rowData;
-  //           if (thisRowData) {
-  //             return (
-  //               <div className={`action-buttons-container`}>
-  //                 <Tooltip title="View">
-  //                   <Button
-  //                     variant="contained"
-  //                     color="default"
-  //                     startIcon={<VisibilityIcon />}
-  //                     className={`view-icon`}
-  //                     onClick={() => handleClickView()}
-  //                   ></Button>
-  //                 </Tooltip>
-  //               </div>
-  //             );
-  //           }
-  //         },
-  //         setCellProps: (value) => {
-  //           return {
-  //             style: { width: "250px", minWidth: "250px" },
-  //           };
-  //         },
-  //       },
-  //     },
-  //   ];
+  const [searchForm, setSearchForm] = useState({
+    userId: "",
+    fromDate: moment().toISOString(),
+    toDate: moment().toISOString(),
+  });
+  const [selectedUserDetails, setSelectedUserDetails] = useState();
+
+  useEffect(() => {
+    UserApiCall.getProfileDetails()
+      .then((loggedinUserDetails) => {
+        UserApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id)
+          .then((getUsers) => {
+            setUserList(getUsers);
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const columns = [
     {
@@ -94,62 +86,39 @@ function ConfigureHealth(props) {
       },
     },
     {
-      name: "primaryGroup",
-      label: "Group",
-      options: {
-        display: "excluded",
-        print: false,
-        filter: true,
-      },
-    },
-
-    {
-      name: "site",
-      label: "Site",
-      options: {
-        display: "excluded",
-        print: false,
-        filter: true,
-      },
-    },
-
-    {
-      name: "firstName",
+      name: "userName",
       label: "Name",
       options: {
-        filter: false,
-        sort: true,
+        print: false,
+        filter: true,
       },
     },
-
     {
-      name: "contactNumber",
+      name: "contactNummber",
       label: "Contact Number",
       options: {
-        filter: false,
-        sort: true,
+        print: false,
+        filter: true,
       },
     },
     {
-      name: "emailID",
+      name: "emailId",
       label: "Email ID",
       options: {
         filter: false,
         sort: true,
       },
     },
-
     {
-      name: "",
+      name: "createdDate",
       label: "Date",
       options: {
         filter: false,
         sort: true,
       },
     },
-
     {
-      label: "Actions",
+      label: "Action",
       name: "",
       options: {
         filter: false,
@@ -165,7 +134,7 @@ function ConfigureHealth(props) {
                     color="default"
                     startIcon={<VisibilityIcon />}
                     className={`view-icon`}
-                    onClick={() => handleClickView()}
+                    onClick={() => handleClickView(thisRowData[0])}
                   ></Button>
                 </Tooltip>
               </div>
@@ -181,21 +150,6 @@ function ConfigureHealth(props) {
     },
   ];
 
-  const data = [
-    ["Gabby George", "0987654321", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Aiden Lloyd", "1234567890", "Dallas", "1/7/2020", "1"],
-    ["Jaden Collins", "7890654321", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Franky Rees", "2314567890", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Aaren Rose", "876543210", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Johnny Jones", "0987654321", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Jimmy Johns", "9876543210", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Jack Jackson", "9087654211", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Joe Jones", "0987654321", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Jacky Jackson", "7890654321", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Jo Jo", "9876543210", "Rahul@sutherland.com", "1/7/2020", "1"],
-    ["Donna Marie", "876543210", "Rahul@sutherland.com", "1/7/2020", "1"],
-  ];
-
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -209,43 +163,66 @@ function ConfigureHealth(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no questionnaire",
+        noMatch: "There are no self health checks",
       },
     },
   };
 
-  useEffect(() => {
-    Promise.all([
-      UserApiCall.getProfileDetails(),
-      UserApiCall.ListApplicationUsers(),
-    ])
-      .then(([userprofileDetails, loadUsersList]) => {
-        setSupervisorId(userprofileDetails.id);
-        setAllUsers(loadUsersList);
-        UserApiCall.GetAllUsersForSupervisor(SupervisorId)
-          .then((getUsers) => {
-            setUserList(getUsers);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        setComponentLoadder(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  const handleChangeSearchForm = (getSelectedVal, name) => {
+    let thisValue = "";
+    if (name == "userId") {
+      if (getSelectedVal) {
+        thisValue = getSelectedVal.id;
+        setSelectedUserDetails(getSelectedVal);
+      } else {
+        thisValue = "";
+      }
+    } else {
+      thisValue = moment(getSelectedVal).toISOString();
+    }
+    setSearchForm((searchForm) => ({
+      ...searchForm,
+      [name]: thisValue,
+    }));
+  };
 
   function submitForm(e) {
     e.preventDefault();
-    // ValidateSubmitForm();
+    setComponentLoadder(true);
+    console.log(searchForm);
+    HealthCheckApiCall.getUserHealthChecks(searchForm)
+      .then((healthChecks) => {
+        if (healthChecks.length > 0) {
+          let newHealthCheck = [];
+          healthChecks.forEach((chk) => {
+            newHealthCheck.push({
+              id: chk.id,
+              userName:
+                selectedUserDetails.firstName +
+                " " +
+                selectedUserDetails.lastName,
+              contactNummber: selectedUserDetails.contactNumber,
+              emailId: selectedUserDetails.emailID,
+              createdDate: chk.createdDate,
+            });
+          });
+          setSelfHealthChecks(newHealthCheck);
+          setComponentLoadder(false);
+        } else {
+          setSelfHealthChecks([]);
+          setComponentLoadder(false);
+        }
+      })
+      .catch((err) => {
+        setComponentLoadder(false);
+        console.log(err);
+      });
   }
-  function handleClickGoBackToPage() {
-    props.history.push("/emergencycontacts/view");
+
+  function handleClickView(getId) {
+    props.history.push(`/selfhealth/heath-declarations/${getId}`);
   }
-  function handleClickView() {
-    props.history.push("/selfhealth/heath-declarations/1");
-  }
+
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -270,80 +247,103 @@ function ConfigureHealth(props) {
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (
-        <Paper className="main-paper">
-          <ValidatorForm className={`global-form`} onSubmit={submitForm}>
-            <Grid container spacing={3}>
-              <Grid item container xs={12}>
-                <Grid item xs={1}>
-                  <label className="">Filters:</label>
+        <>
+          <Paper className="search-form-top-paper">
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <ValidatorForm className={`global-form`} onSubmit={submitForm}>
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        label=""
+                        options={
+                          UserList && UserList.length > 0 ? UserList : []
+                        }
+                        getOptionLabel={(option) => option.firstName}
+                        defaultValue="#"
+                        name="userId"
+                        onChange={(e, v) => handleChangeSearchForm(v, "userId")}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        required
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="User"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={3} className="date-time-pickers">
+                    <KeyboardDatePicker
+                      format="MM/dd/yyyy"
+                      fullWidth
+                      id="from"
+                      label="From"
+                      name="fromDate"
+                      required
+                      value={searchForm.fromDate}
+                      className="global-input"
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                      onChange={(date, event, e) =>
+                        handleChangeSearchForm(date, "fromDate")
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={3} className="date-time-pickers">
+                    <KeyboardDatePicker
+                      format="MM/dd/yyyy"
+                      fullWidth
+                      id="to"
+                      label="To"
+                      name="toDate"
+                      required
+                      value={searchForm.toDate}
+                      className="global-input"
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                      onChange={(date, event, e) =>
+                        handleChangeSearchForm(date, "toDate")
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <div className={`form-buttons-container`}>
+                      <Button
+                        variant="contained"
+                        type="submit"
+                        className="global-submit-btn global-filter-btn"
+                        disabled={showLoadder}
+                      >
+                        {" "}
+                        {showLoadder ? <ButtonLoadderComponent /> : "Apply"}
+                      </Button>
+                    </div>
+                  </Grid>
                 </Grid>
-                <Grid item xs={2}>
-                  <FormControl variant="outlined" fullWidth>
-                    <Autocomplete
-                      id="tags-outlined"
-                      label=""
-                      options={UserList && UserList.length > 0 ? UserList : []}
-                      getOptionLabel={(option) => option.firstName}
-                      defaultValue="#"
-                      // onChange={selectedfirstName}
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="User"
-                        />
-                      )}
-                    />{" "}
-                  </FormControl>
-                </Grid>
-                &nbsp; &nbsp;
-                <Grid item xs={2}>
-                  <TextField
-                    id="from"
-                    type="date"
-                    label="From"
-                    defaultValue="2017-05-24"
-                    className=""
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                &nbsp; &nbsp;
-                <Grid item xs={2}>
-                  <TextField
-                    id="to"
-                    label="To"
-                    type="date"
-                    defaultValue="2017-05-24"
-                    className=""
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={1}></Grid>
-                <Grid item xs={2}>
-                  <div className={`form-buttons-container`}>
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      className="global-submit-btn"
-                      disabled={showLoadder}
-                    >
-                      {" "}
-                      {showLoadder ? <ButtonLoadderComponent /> : "Apply"}
-                    </Button>
-                  </div>
-                </Grid>
-              </Grid>
-
-              <Grid item container xs={12}></Grid>
-            </Grid>
-          </ValidatorForm>
-        </Paper>
+              </ValidatorForm>
+            </MuiPickersUtilsProvider>
+          </Paper>
+          <MuiThemeProvider theme={theme1}>
+            {" "}
+            <MUIDataTable
+              data={
+                selfHealthChecks && selfHealthChecks.length > 0
+                  ? selfHealthChecks
+                  : []
+              }
+              columns={columns}
+              options={options}
+              className="global-table"
+            />{" "}
+          </MuiThemeProvider>
+        </>
       ) : (
         <ComponentLoadderComponent />
       )}
@@ -354,15 +354,6 @@ function ConfigureHealth(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
-      <MuiThemeProvider theme={theme1}>
-        {" "}
-        <MUIDataTable
-          data={AllUsers && AllUsers.length > 0 ? AllUsers : []}
-          columns={columns}
-          options={options}
-          className="global-table"
-        />{" "}
-      </MuiThemeProvider>
     </div>
   );
 }

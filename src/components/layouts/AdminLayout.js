@@ -339,6 +339,19 @@ function AdminLayout(props) {
     setOpenDrawer(false);
   };
 
+  function collapseAllMenu() {
+    setopenEmergencyContact(false);
+    setOpenUsers(false);
+    setopenUserManagment(false);
+    setopenDesiginationMenu(false);
+    setopenCovidStateMenu(false);
+    setopenSetting(false);
+    setopenSiteMenu(false);
+    setopenFAQMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
+  }
+
   return (
     <div className={`${classes.root} top-header`}>
       <CssBaseline />
@@ -416,7 +429,12 @@ function AdminLayout(props) {
           <Toolbar />
           <div className={`${classes.drawerContainer} side-menu`}>
             <List>
-              <ListItem button component={Link} to="/home/dashboard">
+              <ListItem
+                button
+                component={Link}
+                to="/home/dashboard"
+                onClick={collapseAllMenu}
+              >
                 <ListItemIcon>
                   <HomeIcon />
                 </ListItemIcon>
@@ -966,6 +984,17 @@ function AdminLayout(props) {
                     button
                     className={classes.nested}
                     component={Link}
+                    to="/questionaires/adopt-questionaire"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Adopt from Existing" />
+                  </ListItem>
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
                     to="/questionaires/assign"
                   >
                     <ListItemIcon>
@@ -980,6 +1009,7 @@ function AdminLayout(props) {
                 button
                 component={Link}
                 to="/selfhealthcheck/configurehealth"
+                onClick={collapseAllMenu}
               >
                 <ListItemIcon>
                   <HealingIcon />

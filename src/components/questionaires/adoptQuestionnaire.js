@@ -23,7 +23,8 @@ import * as QuestionaireAction from "../../Redux/Action/questionaireAction";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-function CreateQuestionarie(props) {
+
+function AdoptQuestionnaire(props) {
   const paramsId = props.match.params.id;
   const questionaireApiCall = new questionaireService();
   const masterApiCall = new MasterDataService();
@@ -53,21 +54,6 @@ function CreateQuestionarie(props) {
         setAllLanguages(res);
         setQuestionaireList(getQuestionaireList);
         setComponentLoadder(false);
-        if (paramsId != 0) {
-          questionaireApiCall
-            .getSurveyById(paramsId)
-            .then((questionaireData) => {
-              setformData(questionaireData);
-
-              setComponentLoadder(false);
-            })
-            .catch((error) => {
-              alert("error");
-              console.log(error);
-            });
-        } else {
-          setComponentLoadder(false);
-        }
       })
       .catch((error) => {
         console.log(error);
@@ -83,66 +69,19 @@ function CreateQuestionarie(props) {
       [name]: value,
     }));
   }
+
   function handleClickGoBack() {
     props.history.push("/questionaires/allquestionaires");
   }
 
   function handleChangeQuestionnaire(e, value) {
-    console.log(value);
     setselectedUserQuestionnaire(value);
   }
 
   function submitForm() {
     setshowLoadder(true);
-
     var data = formData;
-
-    if (paramsId != 0) {
-      console.log("questionaire data");
-      console.log(data);
-
-      props
-        .UpdateQuestionaireCall(data)
-        .then((result) => {
-          setisAlertBoxOpened(false);
-          setshowLoadder(false);
-          setStateSnackbar(true);
-          setToasterMessage("questionaire  Updated");
-          settoasterServerity("success");
-          setTimeout(() => {
-            props.history.push("/questionaires/allquestionaires");
-            setshowLoadder(false);
-          }, 3000);
-        })
-        .catch((err) => {
-          // console.log(err);
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
-    } else {
-      props
-        .CreateQuestionaireCall(data)
-        .then((result) => {
-          setisAlertBoxOpened(false);
-
-          setStateSnackbar(true);
-          setToasterMessage("Added new questionaire.");
-          settoasterServerity("success");
-
-          setTimeout(() => {
-            props.history.push("/questionaires/allquestionaires");
-            setshowLoadder(false);
-          }, 6000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
-    }
+    setshowLoadder(false);
   }
 
   return (
@@ -166,7 +105,7 @@ function CreateQuestionarie(props) {
           Questionnaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          {paramsId != 0 ? "Update Questionnaire" : "Create Questionnaire"}
+          Adopt from existing Questionnaire
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (
@@ -202,7 +141,66 @@ function CreateQuestionarie(props) {
                     />
                   </Grid>
                 </Grid>
-
+                <Grid item cs={12} container>
+                  <Grid item xs={3}>
+                    <label className="required">Questionnaire</label>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          QuestionaireList && QuestionaireList
+                            ? QuestionaireList
+                            : []
+                        }
+                        getOptionLabel={(option) => option.name}
+                        defaultValue="#"
+                        onChange={handleChangeQuestionnaire}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select questionnaire"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <Grid item cs={12} container>
+                  <Grid item xs={3}>
+                    <label className="required">Configure Questionnaire</label>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <FormControl variant="outlined" fullWidth>
+                      <RadioGroup
+                        aria-label="gender"
+                        name="gender1"
+                        // value={value}
+                        onChange={handleChange}
+                      >
+                        <FormControlLabel
+                          value="female"
+                          control={<Radio />}
+                          label="Adopt only questions"
+                        />
+                        <FormControlLabel
+                          value="male"
+                          control={<Radio />}
+                          label="Adopt questions with order of execution"
+                        />
+                        <FormControlLabel
+                          value="other"
+                          control={<Radio />}
+                          label="Adopt questions with order of execution and evaluation result"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                </Grid>
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
                     <label>&nbsp;</label>
@@ -247,31 +245,4 @@ function CreateQuestionarie(props) {
   );
 }
 
-export function getQuestionaireById(users, id) {
-  return users.find((user) => user.id === id) || null;
-}
-
-CreateQuestionarie.propTypes = {
-  CreateQuestionaireCall: PropTypes.func.isRequired,
-  UpdateQuestionaireCall: PropTypes.func.isRequired,
-};
-
-function mapStateToProps(state, ownProps) {
-  const id = ownProps.match.params.id;
-  const emptyObject = {};
-  const questionaireData =
-    id && state.questionaireState
-      ? getQuestionaireById(state.questionaireState, id)
-      : emptyObject;
-  return {
-    questionaireData,
-    questionaireDatas: state.questionaireState,
-  };
-}
-
-const mapDispatchToProps = {
-  CreateQuestionaireCall: QuestionaireAction.createQuestionaireData,
-  UpdateQuestionaireCall: QuestionaireAction.UpdateQuestionaireData,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateQuestionarie);
+export default AdoptQuestionnaire;

@@ -64,6 +64,7 @@ import DateJump from "./components/questionaires/conditionalJump/dateJump";
 import TimeJump from "./components/questionaires/conditionalJump/timeJump";
 import SingleJump from "./components/questionaires/conditionalJump/singleJump";
 import MultipleJump from "./components/questionaires/conditionalJump/multipleJump";
+import AdoptQuestionnaire from "./components/questionaires/adoptQuestionnaire";
 import OrderofExecution from "./components/questionaires/orderofExecution";
 import configureHealth from "./components/selfhealthcheck/configureHealth";
 import ViewHealthDeclaration from "./components/selfhealthcheck/viewHealthDeclaration";
@@ -265,12 +266,14 @@ function App(props) {
           path="/questionaires/order-of-execution/:id"
           component={OrderofExecution}
         ></Route>
-
+        <Route
+          path="/questionaires/adopt-questionaire"
+          component={AdoptQuestionnaire}
+        ></Route>
         <Route
           path="/selfhealthcheck/configurehealth"
           component={configureHealth}
         ></Route>
-
         <Route
           path="/selfhealth/heath-declarations/:id"
           component={ViewHealthDeclaration}
@@ -473,7 +476,10 @@ function App(props) {
           path="/questionaires/order-of-execution/:id"
           component={AdminContainer}
         ></Route>
-
+        <Route
+          path="/questionaires/adopt-questionaire"
+          component={AdminContainer}
+        ></Route>
         <Route
           path="/selfhealthcheck/configurehealth"
           component={AdminContainer}
