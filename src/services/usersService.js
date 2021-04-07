@@ -151,6 +151,18 @@ export default class UserService {
     });
   }
 
+  GetAllUsersForSupervisor(id) {
+    return this.fetch(
+      `${this.baseURL}/ApplicationUser/GetAllUsersForSupervisor?ApplicationSupervisorId=` +
+        id,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   UpdateUserCovidState(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(`${this.baseURL}/ApplicationUser/UpdateUserCOVIDStatus`, {
