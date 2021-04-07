@@ -39,6 +39,7 @@ import GroupWorkIcon from "@material-ui/icons/GroupWork";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import Logo from "../assets/Logo-dashboard.svg";
 import "./AdminLayout.scss";
+import HealingIcon from "@material-ui/icons/Healing";
 
 const drawerWidth = 240;
 
@@ -974,6 +975,22 @@ function AdminLayout(props) {
                   </ListItem>
                 </List>
               </Collapse>
+              <Divider></Divider>
+              <ListItem
+                button
+                component={Link}
+                to="/selfhealthcheck/configurehealth"
+              >
+                <ListItemIcon>
+                  <HealingIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Health check"
+                  className={clsx({
+                    [classes.hide]: !openDrawer,
+                  })}
+                />
+              </ListItem>
               <Divider></Divider>
             </List>
           </div>
