@@ -23,9 +23,26 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EditIcon from "@material-ui/icons/Edit";
 import HelpIcon from "@material-ui/icons/Help";
 import InfoIcon from "@material-ui/icons/Info";
+import healthCheckService from "../../services/healthCheckService";
 
 function ViewHealthDeclaration(props) {
+  var ResponseId = props.match.params.id;
+  const HealthCheckApiCall = new healthCheckService();
+
   const [expandedFaq, setExpandedFaq] = useState("panel0");
+  const [allAnswersbyResponseId, getAllAnswersbyResponseId] = useState([]);
+  const [componentLoadder, setComponentLoadder] = useState(true);
+
+  useEffect(() => {
+    HealthCheckApiCall.getAllResponsesbyId(ResponseId)
+      .then((response) => {
+        getAllAnswersbyResponseId(response);
+        setComponentLoadder(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className="innerpage-container">
@@ -47,108 +64,131 @@ function ViewHealthDeclaration(props) {
           Health
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          Health Declarations
+          View responses
         </LinkTo>
       </Breadcrumbs>
-
-      <Grid container spacing={3} className="view-faq">
-        <Grid item xs={12} className="faq-basic-info">
-          <Paper className="main-paper">
-            <Grid container spacing={3}>
-              <Grid item xs={12} className="faq-title">
-                Info{" "}
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container spacing={3}>
-                  <Grid item container xs={12}>
-                    <Grid item xs={3}>
-                      <label>Title</label>
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <Grid container spacing={3} className="view-faq">
+          <Grid item xs={12} className="faq-basic-info">
+            <Paper className="main-paper">
+              <Grid container spacing={3}>
+                <Grid item xs={12} className="faq-title">
+                  Info{" "}
+                </Grid>
+                <Grid item xs={12}>
+                  <Grid container spacing={3}>
+                    <Grid item container xs={12}>
+                      <Grid item xs={3}>
+                        <label>Title</label>
+                      </Grid>
+                      <Grid item xs={5}>
+                        <span>
+                          Self health result of user Gabby George on 1/7/2020
+                        </span>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={5}>
-                      <span>
-                        Self health result of user Gabby George on 1/7/2020
-                      </span>
-                    </Grid>
-                  </Grid>
-                  <Grid item container xs={12}>
-                    <Grid item xs={3}>
-                      <label>Result</label>
-                    </Grid>
-                    <Grid item xs={5}>
-                      <span>Suspected</span>
+                    <Grid item container xs={12}>
+                      <Grid item xs={3}>
+                        <label>Result</label>
+                      </Grid>
+                      <Grid item xs={5}>
+                        <span>Suspected</span>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </Paper>
-          <Paper className="view-faq-paper-section">
-            <Accordion defaultExpanded>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1c-content"
-              >
-                <Typography className="section-heading"></Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Grid container item xs={12}>
-                  <Grid
-                    container
-                    spacing={1}
-                    item
-                    xs={12}
-                    // key={`section-container${i}`}
-                    className="question-container"
-                  >
-                    <Grid item xs={1} className="question-icon-container">
-                      <HelpIcon></HelpIcon>
-                    </Grid>
-                    <Grid item xs={11}>
-                      <p className="question-name">
-                        Are you experiencing any of the following ?
-                      </p>
-                      <p className="question-answer">
-                        {" "}
-                        <Tooltip title="#">
-                          <Button className="edit-icon-faq" type="button">
-                            NO
-                          </Button>
-                        </Tooltip>
-                      </p>
-                    </Grid>
-                  </Grid>
-
-                  <Grid
-                    container
-                    spacing={1}
-                    item
-                    xs={12}
-                    // key={`section-container${i}`}
-                    className="question-container"
-                  >
-                    <Grid item xs={1} className="question-icon-container">
-                      <HelpIcon></HelpIcon>
-                    </Grid>
-                    <Grid item xs={11}>
-                      <p className="question-name">
-                        Did you come in contact with COVID +ve people in last 14
-                        days?
-                      </p>
-                      <p className="question-answer">
-                        <Tooltip title="Edit section">
-                          <Button className="create-icon-faq" type="button">
-                            YES
-                          </Button>
-                        </Tooltip>
-                      </p>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </AccordionDetails>
-            </Accordion>
-          </Paper>
+            </Paper>
+            <Paper className="view-faq-paper-section">
+              {allAnswersbyResponseId.length > 0
+                ? allAnswersbyResponseId.map((sec, i) => {
+                    let thisPanel = "panel" + i;
+                    return (
+                      <Accordion defaultExpanded>
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1c-content"
+                        >
+                          <Typography className="section-heading"></Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid container item xs={12}>
+                            <Grid
+                              container
+                              spacing={1}
+                              item
+                              xs={12}
+                              // key={`section-container${i}`}
+                              className="question-container"
+                            >
+                              <Grid
+                                item
+                                xs={1}
+                                className="question-icon-container"
+                              >
+                                <HelpIcon></HelpIcon>
+                              </Grid>
+                              <Grid item xs={11}>
+                                <p className="question-name">
+                                  Are you experiencing any of the following ?
+                                </p>
+                                <p className="question-answer">
+                                  {" "}
+                                  <Tooltip title="#">
+                                    <Button
+                                      className="edit-icon-faq"
+                                      type="button"
+                                    >
+                                      NO
+                                    </Button>
+                                  </Tooltip>
+                                </p>
+                              </Grid>
+                            </Grid>
+                            <Grid
+                              container
+                              spacing={1}
+                              item
+                              xs={12}
+                              // key={`section-container${i}`}
+                              className="question-container"
+                            >
+                              <Grid
+                                item
+                                xs={1}
+                                className="question-icon-container"
+                              >
+                                <HelpIcon></HelpIcon>
+                              </Grid>
+                              <Grid item xs={11}>
+                                <p className="question-name">
+                                  Did you come in contact with COVID +ve people
+                                  in last 14 days?
+                                </p>
+                                <p className="question-answer">
+                                  <Tooltip title="Edit section">
+                                    <Button
+                                      className="create-icon-faq"
+                                      type="button"
+                                    >
+                                      YES
+                                    </Button>
+                                  </Tooltip>
+                                </p>
+                              </Grid>
+                            </Grid>
+                          </Grid>
+                        </AccordionDetails>
+                      </Accordion>
+                    );
+                  })
+                : "No answers"}
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </div>
   );
 }

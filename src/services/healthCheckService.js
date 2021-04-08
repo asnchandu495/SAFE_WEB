@@ -19,47 +19,9 @@ export default class HealthCheckService {
     });
   }
 
-  createTeams(data) {
-    var finalData = JSON.stringify(data);
-    return this.fetch(`${this.baseURL}/Team/CreateTeam`, {
-      method: "POST",
-      body: finalData,
-    }).then((res) => {
-      return Promise.resolve(res);
-    });
-  }
-
-  updateTeams(data) {
-    var finalData = JSON.stringify(data);
-    return this.fetch(`${this.baseURL}/Team/UpdateTeam`, {
-      method: "PUT",
-      body: finalData,
-    }).then((res) => {
-      return Promise.resolve(res);
-    });
-  }
-
-  deleteTeam(data) {
-    return this.fetch(`${this.baseURL}/Team/DeleteTeam/${data}`, {
-      method: "DELETE",
-    }).then((res) => {
-      return Promise.resolve(res);
-    });
-  }
-
-  assignUserGroups(data) {
-    var finalData = JSON.stringify(data);
-    return this.fetch(`${this.baseURL}/Team/AssignApplicationUsersToTeam`, {
-      method: "POST",
-      body: finalData,
-    }).then((res) => {
-      return Promise.resolve(res);
-    });
-  }
-
-  viewApplicationUserByTeamId(id) {
+  getAllResponsesbyId(id) {
     return this.fetch(
-      `${this.baseURL}/Team/ViewApplicationUserByTeamId?Id=${id}`,
+      `${this.questionaireURL}/Survey/GetAllAnswers?ResponseId=${id}`,
       {
         method: "GET",
       }
@@ -67,23 +29,6 @@ export default class HealthCheckService {
       return Promise.resolve(res);
     });
   }
-  getTeamList() {
-    return this.fetch(`${this.baseURL}/Team/ListTeams`, {
-      method: "GET",
-    }).then((res) => {
-      return Promise.resolve(res);
-    });
-  }
-
-  // assignUserGroups(data) {
-  //   var finalData = JSON.stringify(data);
-  //   return this.fetch(`${this.baseURL}/Group/AssignUserGroups`, {
-  //     method: "POST",
-  //     body: finalData,
-  //   }).then((res) => {
-  //     return Promise.resolve(res);
-  //   });
-  // }
 
   getToken() {
     // Retrieves the user token from localStorage
