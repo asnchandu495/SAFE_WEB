@@ -210,7 +210,7 @@ function QuestionnaireEvaluation(props) {
         .then((response) => {
           console.log("success");
           setStateSnackbar(true);
-          setToasterMessage("created evalauation settings.");
+          setToasterMessage("Updated evaluation settings.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {
@@ -225,7 +225,7 @@ function QuestionnaireEvaluation(props) {
         .AddEvaluationResultForQuestionnaire(formData)
         .then((response) => {
           setStateSnackbar(true);
-          setToasterMessage("created evalauation settings.");
+          setToasterMessage("Created evaluation settings.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {
@@ -285,12 +285,12 @@ function QuestionnaireEvaluation(props) {
                     validators={[
                       "required",
                       "matchRegexp:^[a-zA-Z0-9 ]*$",
-                      "matchRegexp:^.{0,50}$",
+                      "maxNumber:99",
                     ]}
                     errorMessages={[
-                      "Please positive conformity score",
+                      "Please select positive conformity score",
                       "Special charcters are not allowed",
-                      "Maximum 50 characters",
+                      "Entered numbers are not valid",
                     ]}
                     fullWidth
                     id="positiveConformityScore"
@@ -400,8 +400,11 @@ function QuestionnaireEvaluation(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
-                            validators={["required"]}
-                            errorMessages={["Please enter lower limit"]}
+                            validators={["required", "maxNumber:99"]}
+                            errorMessages={[
+                              "Please enter lower limit",
+                              "Entered numbers are not valid",
+                            ]}
                             fullWidth
                             id={`lowerLimit_${i}`}
                             placeholder="Lower Limit"
@@ -422,8 +425,11 @@ function QuestionnaireEvaluation(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
-                            validators={["required"]}
-                            errorMessages={["Please enter upper limit"]}
+                            validators={["required", "maxNumber:99"]}
+                            errorMessages={[
+                              "Please enter upper limit",
+                              "Entered numbers are not valid",
+                            ]}
                             fullWidth
                             id={`upperLimit_${i}`}
                             placeholder="Upper Limit"

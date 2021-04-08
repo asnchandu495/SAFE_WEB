@@ -212,7 +212,7 @@ function TemperatureRange(props) {
       .then((result) => {
         console.log("success");
         setStateSnackbar(true);
-        setToasterMessage("Updated Global settings.");
+        setToasterMessage("Updated temperature range settings.");
         settoasterServerity("success");
         setisAlertBoxOpened(false);
         setTimeout(() => {
@@ -361,6 +361,7 @@ function TemperatureRange(props) {
                             validators={[
                               "required",
                               "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                              "maxNumber:999999",
                             ]}
                             errorMessages={[
                               "Please enter lower limit",
@@ -385,14 +386,14 @@ function TemperatureRange(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
-                            validators={["required"]}
-                            errorMessages={["Please enter upper limit"]}
+                            errorMessages={["Please enter lower limit"]}
                             validators={[
                               "required",
                               "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                              "maxNumber:999999",
                             ]}
                             errorMessages={[
-                              "Please enter upper limit",
+                              "Please enter lower limit",
                               "Entered numbers are not valid",
                             ]}
                             id={`upperLimit_${i}`}

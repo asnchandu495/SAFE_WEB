@@ -350,7 +350,7 @@ function AssignQuestionaires(props) {
     },
     {
       name: "questionnaireDetails",
-      label: "questionnaire",
+      label: "Questionnaire",
       options: {
         filter: true,
         sort: true,
