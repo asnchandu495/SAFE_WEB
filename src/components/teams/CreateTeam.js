@@ -205,7 +205,7 @@ function CreateTeam(props) {
                     ]}
                     errorMessages={[
                       "Please enter team  name",
-                      "Special characters are not allowed",
+                      "Special character  not allowed",
                       "Maximum 50 characters",
                     ]}
                     fullWidth
@@ -340,9 +340,7 @@ function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
   const teamData =
-    id && state.team.length > 0
-      ? getTeamById(state.team, id)
-      : emptyObject;
+    id && state.team.length > 0 ? getTeamById(state.team, id) : emptyObject;
   return {
     teamData,
     teamDatas: state.team,
