@@ -70,13 +70,14 @@ function GlobalSetting(props) {
     maxPasswordlength: 0,
     allowCheckinWithoutWFHLocationApproval: true,
     allowCheckinWithoutProfileSelfieApproval: true,
-    maximumFileSizeOfUserSelfieUnit: "",
+    maximumFileSizeOfUserSelfieUnit: "MB",
+    maximumFileSizeOfUserSelfie: 0,
     // maximumFileSizeToImportUsersUnit: "",
     // temperatureUnit: "",
   });
   const [geoUnits, setGeoUnits] = useState([]);
   const [toleranceUnits, setToleranceUnits] = useState([]);
-  const [componentLoadder, setcomponentLoadder] = useState(false);
+  const [componentLoadder, setcomponentLoadder] = useState(true);
   const [isDirty, setIsDirty] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
@@ -194,6 +195,11 @@ function GlobalSetting(props) {
     finalData.geoFencingTolerance = parseInt(formData.geoFencingTolerance);
     let finalFacialRecVal = parseFloat(formData.facialTolerance);
     finalData.facialTolerance = finalFacialRecVal;
+
+    finalData.maximumFileSizeOfUserSelfie = parseInt(
+      formData.maximumFileSizeOfUserSelfie
+    );
+
     props
       .createGlobalSetting(finalData)
       .then((result) => {
@@ -789,11 +795,11 @@ function GlobalSetting(props) {
                   <FormControl variant="outlined">
                     <OutlinedInput
                       id="outlined-adornment-weight"
-                      name="maximumFileSizeOfUserSelfieUnit"
+                      name="maximumFileSizeOfUserSelfie"
                       type={"text"}
                       value={
-                        formData.maximumFileSizeOfUserSelfieUnit
-                          ? formData.maximumFileSizeOfUserSelfieUnit
+                        formData.maximumFileSizeOfUserSelfie
+                          ? formData.maximumFileSizeOfUserSelfie
                           : ""
                       }
                       onChange={handleChange}
@@ -809,7 +815,6 @@ function GlobalSetting(props) {
                 </Grid>
                 <Grid item xs={2}></Grid>
               </Grid>
-
               <Grid
                 item
                 xs={12}
