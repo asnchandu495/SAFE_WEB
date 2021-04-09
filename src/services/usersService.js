@@ -32,6 +32,23 @@ export default class UserService {
     });
   }
 
+  ListPrimaryApplicationUsers() {
+    let sendData = {
+      primaryGroupId: "",
+      designationId: "",
+      covidStateId: "",
+      roleIds: [],
+      siteId: [],
+    };
+    var data = JSON.stringify(sendData);
+    return this.fetch(`${this.baseURL}/ApplicationUser/ListApplicationUsers`, {
+      method: "POST",
+      body: data,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   ListApplicationUsersForTeams(searchformData) {
     var data = JSON.stringify(searchformData);
     return this.fetch(`${this.baseURL}/ApplicationUser/ListApplicationUsers`, {

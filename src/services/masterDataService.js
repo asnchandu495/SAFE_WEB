@@ -39,6 +39,14 @@ export default class MasterDataService {
     });
   }
 
+  getUserPrimaryRoles() {
+    return this.fetch(`${this.baseURL}/Master/GetUserRoles`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getSites(id) {
     return this.fetch(`${this.baseURL}/Master/GetSites`, {
       method: "GET",
