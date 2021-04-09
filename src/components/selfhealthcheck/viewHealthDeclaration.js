@@ -44,6 +44,10 @@ function ViewHealthDeclaration(props) {
       });
   }, []);
 
+  const handleChangeAnswerSection = (panel) => (event, isExpanded) => {
+    setExpandedFaq(isExpanded ? panel : false);
+  };
+
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -75,26 +79,15 @@ function ViewHealthDeclaration(props) {
             <Paper className="main-paper">
               <Grid container spacing={3}>
                 <Grid item xs={12} className="faq-title">
-                  Info{" "}
-                </Grid>
-                <Grid item xs={12}>
                   <Grid container spacing={3}>
                     <Grid item container xs={12}>
-                      <Grid item xs={3}>
-                        <label>Title</label>
-                      </Grid>
-                      <Grid item xs={5}>
-                        <span>
+                      <Grid item xs={7}>
+                        <label>
                           Self health result of user Gabby George on 1/7/2020
-                        </span>
-                      </Grid>
-                    </Grid>
-                    <Grid item container xs={12}>
-                      <Grid item xs={3}>
-                        <label>Result</label>
+                        </label>
                       </Grid>
                       <Grid item xs={5}>
-                        <span>Suspected</span>
+                        <span>Status : Suspected</span>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -103,15 +96,21 @@ function ViewHealthDeclaration(props) {
             </Paper>
             <Paper className="view-faq-paper-section">
               {allAnswersbyResponseId.length > 0
-                ? allAnswersbyResponseId.map((sec, i) => {
+                ? allAnswersbyResponseId.map((ans, i) => {
                     let thisPanel = "panel" + i;
                     return (
-                      <Accordion defaultExpanded>
+                      <Accordion
+                        square
+                        expanded={expandedFaq === thisPanel}
+                        onChange={handleChangeAnswerSection(thisPanel)}
+                      >
                         <AccordionSummary
                           expandIcon={<ExpandMoreIcon />}
                           aria-controls="panel1c-content"
                         >
-                          <Typography className="section-heading"></Typography>
+                          <Typography className="section-heading">
+                            Question {i + 1} (Type : {ans.questionType})
+                          </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                           <Grid container item xs={12}>
@@ -120,7 +119,7 @@ function ViewHealthDeclaration(props) {
                               spacing={1}
                               item
                               xs={12}
-                              // key={`section-container${i}`}
+                              key={`ans-container${i}`}
                               className="question-container"
                             >
                               <Grid
@@ -131,51 +130,15 @@ function ViewHealthDeclaration(props) {
                                 <HelpIcon></HelpIcon>
                               </Grid>
                               <Grid item xs={11}>
-                                <p className="question-name">
-                                  Are you experiencing any of the following ?
-                                </p>
+                                <p className="question-name">{ans.question}</p>
                                 <p className="question-answer">
                                   {" "}
-                                  <Tooltip title="#">
-                                    <Button
-                                      className="edit-icon-faq"
-                                      type="button"
-                                    >
-                                      NO
-                                    </Button>
-                                  </Tooltip>
-                                </p>
-                              </Grid>
-                            </Grid>
-                            <Grid
-                              container
-                              spacing={1}
-                              item
-                              xs={12}
-                              // key={`section-container${i}`}
-                              className="question-container"
-                            >
-                              <Grid
-                                item
-                                xs={1}
-                                className="question-icon-container"
-                              >
-                                <HelpIcon></HelpIcon>
-                              </Grid>
-                              <Grid item xs={11}>
-                                <p className="question-name">
-                                  Did you come in contact with COVID +ve people
-                                  in last 14 days?
-                                </p>
-                                <p className="question-answer">
-                                  <Tooltip title="Edit section">
-                                    <Button
-                                      className="create-icon-faq"
-                                      type="button"
-                                    >
-                                      YES
-                                    </Button>
-                                  </Tooltip>
+                                  <Button
+                                    className="edit-icon-faq"
+                                    type="button"
+                                  >
+                                    {ans.forAnswerDate}
+                                  </Button>
                                 </p>
                               </Grid>
                             </Grid>
