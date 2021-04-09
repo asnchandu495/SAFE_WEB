@@ -733,6 +733,14 @@ function GlobalSetting(props) {
                   <FormControl variant="outlined">
                     <OutlinedInput
                       id="outlined-adornment-weight"
+                      validators={[
+                        "required",
+                        "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                      ]}
+                      errorMessages={[
+                        "Please enter automated check-out time",
+                        "Only numbers and decimals are allowed",
+                      ]}
                       name="automatedCheckoutTime"
                       type={"text"}
                       value={
@@ -794,6 +802,16 @@ function GlobalSetting(props) {
                 <Grid item xs={2}>
                   <FormControl variant="outlined">
                     <OutlinedInput
+                      validators={[
+                        "required",
+                        "matchRegexp:^[0-9]*$",
+                        "maxNumber:999",
+                      ]}
+                      errorMessages={[
+                        "Please enter filesize of userSelfie unit",
+                        "Only numbers are allowed",
+                        "Maximum allowed 3 digits",
+                      ]}
                       id="outlined-adornment-weight"
                       name="maximumFileSizeOfUserSelfie"
                       type={"text"}
@@ -830,13 +848,11 @@ function GlobalSetting(props) {
                     variant="outlined"
                     validators={[
                       "required",
-                      "matchRegexp:^[0-9]*$",
-                      "maxNumber:999",
+                      "matchRegexp:^\\d{1,6}(\\.\\d{1,2})?$",
                     ]}
                     errorMessages={[
                       "Please enter self healthcheck reminder",
-                      "Only numbers are allowed",
-                      "Maximum allowed 3 digits",
+                      "Only numbers and decimals are allowed",
                     ]}
                     fullWidth
                     id="selfHealthCheckReminder"

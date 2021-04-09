@@ -98,16 +98,13 @@ function CreateQuestionarie(props) {
     var data = formData;
 
     if (paramsId != 0) {
-      console.log("questionaire data");
-      console.log(data);
-
       props
         .UpdateQuestionaireCall(data)
         .then((result) => {
           setisAlertBoxOpened(false);
           setshowLoadder(false);
           setStateSnackbar(true);
-          setToasterMessage("questionaire  Updated");
+          setToasterMessage("Questionnaire  Updated");
           settoasterServerity("success");
           setTimeout(() => {
             props.history.push("/questionaires/allquestionaires");
@@ -184,12 +181,12 @@ function CreateQuestionarie(props) {
                       validators={[
                         "required",
                         "matchRegexp:^[a-zA-Z0-9 ]*$",
-                        "matchRegexp:^.{0,50}$",
+                        "matchRegexp:^.{0,100}$",
                       ]}
                       errorMessages={[
                         "Please enter questionarie",
                         "Special charcters are not allowed",
-                        "Maximum 50 characters",
+                        "Maximum 100 characters",
                       ]}
                       fullWidth
                       id="title"

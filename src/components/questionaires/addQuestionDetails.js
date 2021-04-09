@@ -548,8 +548,8 @@ function AddQuestionDetails(props) {
                         fullWidth
                         id="description"
                         placeholder="Enter Description"
-                        validators={["matchRegexp:^.{0,150}$"]}
-                        errorMessages={["Maximum 150 characters"]}
+                        validators={["matchRegexp:^.{0,200}$"]}
+                        errorMessages={["Maximum 200 characters"]}
                         name="description"
                         multiline
                         rows={2}
