@@ -14,7 +14,6 @@ import loadAssignFaq from "./assignFaqReducer";
 import teamState from "./teamReducer";
 import questionaireStates from "./questionaireReducer";
 import assignquestionaireStates from "./assignquestionaireReducer";
-import temperaturerangeStates from "./temperaturerangeReducer";
 import questionStates from "./questionReducer";
 
 const rootReducer = combineReducers({
@@ -33,7 +32,6 @@ const rootReducer = combineReducers({
   team: teamState,
   questionaireState: questionaireStates,
   assignquestionaireState: assignquestionaireStates,
-  temperaturerangeState: temperaturerangeStates,
   questionState: questionStates,
 });
 

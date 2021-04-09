@@ -129,7 +129,7 @@ function GlobalSetting(props) {
       formatvalue: "mmm/ddd/yyyy",
     },
   ];
-  const timeFormat = [
+  const timesFormat = [
     {
       id: "hh:mm a",
       value: "12 Hours",
@@ -598,13 +598,10 @@ function GlobalSetting(props) {
                       <MenuItem value="">
                         <em>Select</em>
                       </MenuItem>
-                      {timeFormat.length > 0
-                        ? timeFormat.map((timevalue) => {
+                      {timesFormat.length > 0
+                        ? timesFormat.map((timevalue) => {
                             return (
-                              <MenuItem
-                                key={timevalue.id}
-                                value={timevalue.value}
-                              >
+                              <MenuItem key={timevalue.id} value={timevalue.id}>
                                 {timevalue.value}
                               </MenuItem>
                             );

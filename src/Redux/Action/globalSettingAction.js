@@ -2,11 +2,16 @@ import {
   LOAD_GLOBAL_SETTING_SUCCESS,
   CREATE_GLOBAL_SETTING_SUCCESS,
   UPDATE_TEMPERATURE_RANGE,
+  LOAD_GLOBAL_SETTING_WITHOUT_API_SUCCESS,
 } from "../utilits";
 
 import GlobalSettingApiServices from "../../services/globalSettingService";
 
 const GlobalSettingApi = new GlobalSettingApiServices();
+
+export function LoadGlobalSettingWithoutAPISuccess(data) {
+  return { type: LOAD_GLOBAL_SETTING_WITHOUT_API_SUCCESS, data };
+}
 
 export function LoadGlobalSettingSuccess(loadGlobalSettingsData) {
   return { type: LOAD_GLOBAL_SETTING_SUCCESS, loadGlobalSettingsData };
@@ -32,6 +37,12 @@ export function loadGlobalSetting() {
   };
 }
 
+export function loadGlobalSettingWithoutAPICall() {
+  return function (dispatch) {
+    return dispatch(LoadGlobalSettingWithoutAPISuccess(null));
+  };
+}
+
 export function createGlobalSetting(data) {
   return function (dispatch) {
     return GlobalSettingApi.AddGlobalSetting(data)
@@ -48,7 +59,14 @@ export function updateTemp(data) {
   return function (dispatch) {
     return GlobalSettingApi.UpdateCovidStateTemperature(data)
       .then((response) => {
-        dispatch(UpdateTemperatureRange(data));
+        setTimeout(async function () {
+          try {
+            const data = await GlobalSettingApi.getLoadGlobalSetting();
+            dispatch(LoadGlobalSettingSuccess(data));
+          } catch (error) {
+            throw error;
+          }
+        }, 5000);
       })
       .catch((error) => {
         throw error;

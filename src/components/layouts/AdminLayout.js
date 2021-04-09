@@ -40,6 +40,9 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import Logo from "../assets/Logo-dashboard.svg";
 import "./AdminLayout.scss";
 import HealingIcon from "@material-ui/icons/Healing";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 const drawerWidth = 240;
 
@@ -147,6 +150,13 @@ function AdminLayout(props) {
   useEffect(() => {
     if (!authApiCall.loggedIn()) {
       props.history.push("/");
+    }
+    props.loadGlobalSetting();
+
+    if (window.performance) {
+      if (performance.type == 1) {
+        props.loadGlobalSetting();
+      }
     }
   }, []);
 
@@ -1036,4 +1046,21 @@ function AdminLayout(props) {
   );
 }
 
-export default withRouter(AdminLayout);
+AdminLayout.propTypes = {
+  loadGlobalSetting: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGlobalSetting: globalSettingAction.loadGlobalSetting,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(AdminLayout));

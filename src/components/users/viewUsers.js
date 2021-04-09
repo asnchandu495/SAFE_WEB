@@ -9,8 +9,10 @@ import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import moment from "moment";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import { connect } from "react-redux";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
+import moment from "moment";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,6 +73,7 @@ function ViewUser(props) {
 
   useEffect(() => {
     setcomponentLoadder(true);
+    props.loadGlobalSettingWithoutAPICall();
     apiCallUsers
       .GetApplicationUsersById(userId)
       .then((result) => {
@@ -361,9 +364,9 @@ function ViewUser(props) {
                     {viewUserDetails.covidStateInfo
                       ? viewUserDetails.covidStateInfo.temperature
                       : "-"}{" "}
-                    {viewUserDetails.covidStateInfo
-                      ? viewUserDetails.covidStateInfo.temperatureUnit
-                      : "-"}
+                    {props.loadGlobalSettingsData
+                      ? props.loadGlobalSettingsData.temperatureUnit
+                      : ""}
                   </label>
                 </Grid>
               </Grid>
@@ -387,13 +390,17 @@ function ViewUser(props) {
                   <label>
                     {viewUserDetails.userShiftInfo
                       ? moment(viewUserDetails.userShiftInfo.startTime).format(
-                          "h:mm a"
+                          props.loadGlobalSettingsData
+                            ? props.loadGlobalSettingsData.timeFormat
+                            : "hh:mm"
                         )
                       : "-"}{" "}
                     -{" "}
                     {viewUserDetails.userShiftInfo
                       ? moment(viewUserDetails.userShiftInfo.endTime).format(
-                          "h:mm a"
+                          props.loadGlobalSettingsData
+                            ? props.loadGlobalSettingsData.timeFormat
+                            : "hh:mm"
                         )
                       : ""}
                   </label>
@@ -427,19 +434,20 @@ function ViewUser(props) {
     </div>
   );
 }
-export default ViewUser;
-// ViewUser.propTypes = {
-//   UserData: PropTypes.array.isRequired,
-// };
 
-// function mapStateToProps(state, ownProps) {
-//   return {
-//     UserData: state.user,
-//   };
-// }
+ViewUser.propTypes = {
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+};
 
-// const mapDispatchToProps = {
-//   LoadAllUser: UserAction.loadUser,
-// };
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(ViewUser);
+const mapDispatchToProps = {
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewUser);

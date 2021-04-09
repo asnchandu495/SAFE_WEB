@@ -16,7 +16,7 @@ import FaqService from "../../../services/faqService";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Prompt } from "react-router-dom";
-import * as temperaturerangeAction from "../../../Redux/Action/temperaturerangeAction";
+import * as globalSettingAction from "../../../Redux/Action/globalSettingAction";
 
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -208,7 +208,7 @@ function TemperatureRange(props) {
 
     // GlobalSettingApi.UpdateCovidStateTemperature(sendData)
     props
-      .updateTemprangeSetting(sendData)
+      .updateTemp(sendData)
       .then((result) => {
         console.log("success");
         setStateSnackbar(true);
@@ -220,9 +220,10 @@ function TemperatureRange(props) {
         }, 6000);
       })
       .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
+        console.log(err);
+        // setToasterMessage(err.data.errors);
+        // settoasterServerity("error");
+        // setStateSnackbar(true);
         setshowLoadder(false);
         // throw err;
       });
@@ -493,7 +494,7 @@ function TemperatureRange(props) {
 }
 
 TemperatureRange.propTypes = {
-  updateTemprangeSetting: PropTypes.func.isRequired,
+  updateTemp: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -503,7 +504,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  updateTemprangeSetting: temperaturerangeAction.updateTemp,
+  updateTemp: globalSettingAction.updateTemp,
 };
 
 // export default TemperatureRange;
