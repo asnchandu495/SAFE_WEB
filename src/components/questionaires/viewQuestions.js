@@ -192,7 +192,7 @@ function ViewQuestions(props) {
           to={`/questionaires/allquestionaires`}
           className="inactive"
         >
-          Questionaire
+          Questionnaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="inactive">
           {ViewQuestionaireDetails.name}

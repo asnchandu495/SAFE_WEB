@@ -128,7 +128,7 @@ function QuestionTypeBollean(props) {
           <CardContent>
             <Grid item container xs={12}>
               <Grid item xs={6}>
-                <label className="required">Positive Confirmity Answer</label>
+                <label className="required">Positive Conformity Answer</label>
               </Grid>
               <Grid item xs={6}>
                 <FormControl variant="outlined" fullWidth>
@@ -139,7 +139,7 @@ function QuestionTypeBollean(props) {
                   >
                     {props.booleanFlag.negativeResponse != ""
                       ? ""
-                      : "Positive Confirmity Answer"}
+                      : "Positive Conformity Answer"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"

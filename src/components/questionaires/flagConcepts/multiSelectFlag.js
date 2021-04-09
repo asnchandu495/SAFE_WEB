@@ -241,7 +241,7 @@ function QuestionTypeMultiSelect(props) {
           <CardContent>
             <Grid item container xs={12}>
               <Grid item xs={2}>
-                <label className="required">Positive Confirmity</label>
+                <label className="required">Positive Conformity</label>
               </Grid>
               <Grid item xs={10}>
                 {props.multiChoiceFlag.positiveConformityMultiChoice &&
