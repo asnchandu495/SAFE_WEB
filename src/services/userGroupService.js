@@ -66,7 +66,6 @@ export default class userApi {
     return localStorage.getItem("id_token");
   }
 
-
   fetch(url, options) {
     // performs api calls sending the required authentication headers
     const headers = {};
