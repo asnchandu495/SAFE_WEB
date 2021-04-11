@@ -22,6 +22,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import moment from "moment";
 import ConfirmationDialog from "../../common/confirmdialogbox";
 
 function TimeDetails(props) {
@@ -189,8 +190,20 @@ function TimeDetails(props) {
                         <TableCell component="th" scope="row">
                           {row.expressionType}
                         </TableCell>
-                        <TableCell>{row.forAnswerDate}</TableCell>
-                        <TableCell>{row.forRangeEndDate}</TableCell>
+                        <TableCell>
+                          {moment(row.forAnswerDate).format(
+                            props.loadGlobalSettingsData
+                              ? props.loadGlobalSettingsData.timeFormat
+                              : "hh:mm"
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {moment(row.forRangeEndDate).format(
+                            props.loadGlobalSettingsData
+                              ? props.loadGlobalSettingsData.timeFormat
+                              : "hh:mm"
+                          )}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -217,8 +230,20 @@ function TimeDetails(props) {
                           <TableCell component="th" scope="row">
                             {row.expressionType}
                           </TableCell>
-                          <TableCell>{row.forAnswerDate}</TableCell>
-                          <TableCell>{row.forRangeEndDate}</TableCell>
+                          <TableCell>
+                            {moment(row.forAnswerDate).format(
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.timeFormat
+                                : "hh:mm"
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {moment(row.forRangeEndDate).format(
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.timeFormat
+                                : "hh:mm"
+                            )}
+                          </TableCell>
                         </TableRow>
                       )
                     )}

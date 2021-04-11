@@ -4,15 +4,9 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { Link as LinkTo } from "react-router-dom";
 import { ValidatorForm } from "react-material-ui-form-validator";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
 import SpeedDial from "@material-ui/lab/SpeedDial";
 import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
-import SpeedDialAction from "@material-ui/lab/SpeedDialAction";
 import ListofQuestions from "./listofQuestions";
-import QuestionType from "./selectQuestionType";
-import QuestionDetails from "./questionDetails";
 import FreetextDetails from "./selectedQuestionDetails/freetextDetails";
 import BooleanDetails from "./selectedQuestionDetails/booleanDetails";
 import DateDetails from "./selectedQuestionDetails/dateDetails";
@@ -20,28 +14,14 @@ import TimeDetails from "./selectedQuestionDetails/timeDetails";
 import NumericDetails from "./selectedQuestionDetails/numericDetails";
 import SingleChoiceDetails from "./selectedQuestionDetails/singlechoiceDetails";
 import MultiChoiceDetails from "./selectedQuestionDetails/multichoiceDetails";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 import questionaireService from "../../services/questionaireService";
 
 function ViewQuestions(props) {
   const questionaireId = props.match.params.id;
   const questionaireApiCall = new questionaireService();
-  const [questionTypes, setQuestionTypes] = useState([
-    { id: "001", name: "Yes / No" },
-    { id: "002", name: "Number" },
-    { id: "003", name: "Date" },
-    { id: "004", name: "Time" },
-    { id: "005", name: "Short text" },
-    { id: "006", name: "Single select" },
-    { id: "007", name: "Multi select" },
-  ]);
-  const [answerTypes, setAnswerTypes] = useState([
-    { id: "001", name: "=" },
-    { id: "002", name: ">" },
-    { id: "003", name: ">=" },
-    { id: "004", name: "<" },
-    { id: "005", name: "<=" },
-    { id: "006", name: "Range" },
-  ]);
   const [questionTypeForm, setQuestionTypeForm] = useState({
     questionType: "",
   });
@@ -61,6 +41,7 @@ function ViewQuestions(props) {
   // const [selectedfreetextDetails, setSelectedfreetextDetails] = useState();
 
   useEffect(() => {
+    props.loadGlobalSettingWithoutAPICall();
     questionaireApiCall
       .getSurveyById(questionaireId)
       .then((questionaireInfo) => {
@@ -108,6 +89,7 @@ function ViewQuestions(props) {
               <DateDetails
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
+                loadGlobalSettingsData={props.loadGlobalSettingsData}
               ></DateDetails>{" "}
             </Grid>
           </Grid>
@@ -120,6 +102,7 @@ function ViewQuestions(props) {
               <TimeDetails
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
+                loadGlobalSettingsData={props.loadGlobalSettingsData}
               ></TimeDetails>{" "}
             </Grid>
           </Grid>
@@ -222,6 +205,7 @@ function ViewQuestions(props) {
                       ? selectedQuestionDetails.questionType
                       : ""
                   }
+                  loadGlobalSettingsData={props.loadGlobalSettingsData}
                 ></RenderFlagComponent>
 
                 {/* <QuestionDetails
@@ -249,4 +233,19 @@ function ViewQuestions(props) {
   );
 }
 
-export default ViewQuestions;
+ViewQuestions.propTypes = {
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewQuestions);

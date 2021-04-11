@@ -235,7 +235,11 @@ function QuestionTypeDate(props) {
                               </Grid>
                               <Grid item xs={3} className="date-time-pickers">
                                 <KeyboardDatePicker
-                                  format="MM/dd/yyyy"
+                                  format={
+                                    props.loadGlobalSettingsData
+                                      ? props.loadGlobalSettingsData.dateFormat
+                                      : "dd/MM/yyyy"
+                                  }
                                   fullWidth
                                   id={`forAnswerR${i}`}
                                   placeholder="Answer"
@@ -270,7 +274,12 @@ function QuestionTypeDate(props) {
                                     className="date-time-pickers"
                                   >
                                     <KeyboardDatePicker
-                                      format="MM/dd/yyyy"
+                                      format={
+                                        props.loadGlobalSettingsData
+                                          ? props.loadGlobalSettingsData
+                                              .dateFormat
+                                          : "dd/MM/yyyy"
+                                      }
                                       fullWidth
                                       id={`forRangeEndR${i}`}
                                       placeholder="Answer"
@@ -397,7 +406,11 @@ function QuestionTypeDate(props) {
                               </Grid>
                               <Grid item xs={3} className="date-time-pickers">
                                 <KeyboardDatePicker
-                                  format="MM/dd/yyyy"
+                                  format={
+                                    props.loadGlobalSettingsData
+                                      ? props.loadGlobalSettingsData.dateFormat
+                                      : "dd/MM/yyyy"
+                                  }
                                   fullWidth
                                   id={`forAnswerR${i}`}
                                   placeholder="Your answer"
@@ -433,7 +446,12 @@ function QuestionTypeDate(props) {
                                     className="date-time-pickers"
                                   >
                                     <KeyboardDatePicker
-                                      format="MM/dd/yyyy"
+                                      format={
+                                        props.loadGlobalSettingsData
+                                          ? props.loadGlobalSettingsData
+                                              .dateFormat
+                                          : "dd/MM/yyyy"
+                                      }
                                       fullWidth
                                       id={`forRangeEndR${i}`}
                                       placeholder="Your answer"

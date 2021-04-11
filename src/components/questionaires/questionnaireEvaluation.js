@@ -20,6 +20,9 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
 import CovidStateApiServices from "../../services/masterDataService";
 import questionaireService from "../../services/questionaireService";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -416,7 +419,10 @@ function QuestionnaireEvaluation(props) {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  F
+                                  {props.loadGlobalSettingsData
+                                    ? props.loadGlobalSettingsData
+                                        .temperatureUnit
+                                    : ""}
                                 </InputAdornment>
                               ),
                             }}
@@ -440,7 +446,10 @@ function QuestionnaireEvaluation(props) {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  F
+                                  {props.loadGlobalSettingsData
+                                    ? props.loadGlobalSettingsData
+                                        .temperatureUnit
+                                    : ""}
                                 </InputAdornment>
                               ),
                             }}
@@ -524,4 +533,22 @@ function QuestionnaireEvaluation(props) {
   );
 }
 
-export default QuestionnaireEvaluation;
+QuestionnaireEvaluation.propTypes = {
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(QuestionnaireEvaluation);

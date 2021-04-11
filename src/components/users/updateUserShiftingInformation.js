@@ -113,6 +113,7 @@ function UpdateShiftingInfo(props) {
 
   useEffect(() => {
     if (props.SelectedRowId) {
+      props.loadGlobalSettingWithoutAPICall();
       setSelectedId(props.SelectedRowId);
       usersApiCall
         .getShiftInfo(props.SelectedRowId)
@@ -197,8 +198,20 @@ function UpdateShiftingInfo(props) {
                   <Grid item xs={6}>
                     <TimePicker
                       clearable
-                      format="hh:mm"
-                      ampm={false}
+                      format={
+                        props.loadGlobalSettingsData
+                          ? props.loadGlobalSettingsData.timeFormat
+                          : "hh:mm"
+                      }
+                      ampm={
+                        props.loadGlobalSettingsData
+                          ? props.loadGlobalSettingsData.timeFormat.includes(
+                              "HH"
+                            )
+                            ? false
+                            : true
+                          : "hh:mm"
+                      }
                       placeholder="24 hours"
                       value={formData.startTime}
                       name="startTime"
@@ -213,8 +226,20 @@ function UpdateShiftingInfo(props) {
                   <Grid item xs={6}>
                     <TimePicker
                       clearable
-                      format="hh:mm a"
-                      ampm={false}
+                      format={
+                        props.loadGlobalSettingsData
+                          ? props.loadGlobalSettingsData.timeFormat
+                          : "hh:mm"
+                      }
+                      ampm={
+                        props.loadGlobalSettingsData
+                          ? props.loadGlobalSettingsData.timeFormat.includes(
+                              "HH"
+                            )
+                            ? false
+                            : true
+                          : "hh:mm"
+                      }
                       placeholder="24 hours"
                       value={formData.endTime}
                       name="endTime"

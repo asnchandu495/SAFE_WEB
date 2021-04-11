@@ -30,6 +30,9 @@ import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import questionaireService from "../../../services/questionaireService";
 import ToasterMessageComponent from "../../common/toaster";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import * as globalSettingAction from "../../../Redux/Action/globalSettingAction";
 
 function TimeJump(props) {
   const surveyId = props.match.params.id;
@@ -93,6 +96,7 @@ function TimeJump(props) {
           getsurveyDetails,
           getTimeBooleanDetails,
         ]) => {
+          props.loadGlobalSettingWithoutAPICall();
           setAllAnswerExpressions(allExpressions);
           setSelectedSurveyQuestions(allSurveyQuestions);
           setselectedQuestionDetails(getTimeDetails);
@@ -345,7 +349,21 @@ function TimeJump(props) {
                                         className="date-time-pickers"
                                       >
                                         <KeyboardTimePicker
-                                          format="hh:mm a"
+                                          format={
+                                            props.loadGlobalSettingsData
+                                              ? props.loadGlobalSettingsData
+                                                  .timeFormat
+                                              : "hh:mm"
+                                          }
+                                          ampm={
+                                            props.loadGlobalSettingsData
+                                              ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                  "HH"
+                                                )
+                                                ? false
+                                                : true
+                                              : "hh:mm"
+                                          }
                                           fullWidth
                                           id={`forAnswerR${i}`}
                                           placeholder="Your answer"
@@ -382,7 +400,21 @@ function TimeJump(props) {
                                             className="date-time-pickers"
                                           >
                                             <KeyboardTimePicker
-                                              format="hh:mm a"
+                                              format={
+                                                props.loadGlobalSettingsData
+                                                  ? props.loadGlobalSettingsData
+                                                      .timeFormat
+                                                  : "hh:mm"
+                                              }
+                                              ampm={
+                                                props.loadGlobalSettingsData
+                                                  ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                      "HH"
+                                                    )
+                                                    ? false
+                                                    : true
+                                                  : "hh:mm"
+                                              }
                                               fullWidth
                                               id={`forRangeEndR${i}`}
                                               placeholder="Your answer"
@@ -599,4 +631,19 @@ function TimeJump(props) {
   );
 }
 
-export default TimeJump;
+TimeJump.propTypes = {
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimeJump);

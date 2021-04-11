@@ -26,6 +26,7 @@ import ConfirmationDialog from "../../common/confirmdialogbox";
 import * as QuestionAction from "../../../Redux/Action/questionAction";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import moment from "moment";
 
 function DateDetails(props) {
   const history = useHistory();
@@ -190,8 +191,20 @@ function DateDetails(props) {
                         <TableCell component="th" scope="row">
                           {row.expressionType}
                         </TableCell>
-                        <TableCell>{row.forAnswer}</TableCell>
-                        <TableCell>{row.forRangeEnd}</TableCell>
+                        <TableCell>
+                          {moment(row.forAnswer).format(
+                            props.loadGlobalSettingsData
+                              ? props.loadGlobalSettingsData.dateFormat
+                              : "dd/mm/yyyy"
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {moment(row.forRangeEnd).format(
+                            props.loadGlobalSettingsData
+                              ? props.loadGlobalSettingsData.dateFormat
+                              : "dd/mm/yyyy"
+                          )}
+                        </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -218,8 +231,20 @@ function DateDetails(props) {
                           <TableCell component="th" scope="row">
                             {row.expressionType}
                           </TableCell>
-                          <TableCell>{row.forAnswer}</TableCell>
-                          <TableCell>{row.forRangeEnd}</TableCell>
+                          <TableCell>
+                            {moment(row.forAnswer).format(
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.dateFormat
+                                : "dd/MM/yyyy"
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {moment(row.forRangeEnd).format(
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.dateFormat
+                                : "dd/MM/yyyy"
+                            )}
+                          </TableCell>
                         </TableRow>
                       )
                     )}

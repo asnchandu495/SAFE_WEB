@@ -30,6 +30,9 @@ import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import questionaireService from "../../../services/questionaireService";
 import ToasterMessageComponent from "../../common/toaster";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import * as globalSettingAction from "../../../Redux/Action/globalSettingAction";
 
 function DateJump(props) {
   const surveyId = props.match.params.id;
@@ -92,6 +95,7 @@ function DateJump(props) {
           getsurveyDetails,
           getBooleanConditionDetails,
         ]) => {
+          props.loadGlobalSettingWithoutAPICall();
           setAllAnswerExpressions(allExpressions);
           setSelectedSurveyQuestions(allSurveyQuestions);
           setselectedQuestionDetails(getBooleanDetails);
@@ -345,7 +349,12 @@ function DateJump(props) {
                                         className="date-time-pickers"
                                       >
                                         <KeyboardDatePicker
-                                          format="MM/dd/yyyy"
+                                          format={
+                                            props.loadGlobalSettingsData
+                                              ? props.loadGlobalSettingsData
+                                                  .dateFormat
+                                              : "dd/MM/yyyy"
+                                          }
                                           fullWidth
                                           id={`forAnswerR${i}`}
                                           placeholder="Your answer"
@@ -382,7 +391,12 @@ function DateJump(props) {
                                             className="date-time-pickers"
                                           >
                                             <KeyboardDatePicker
-                                              format="MM/dd/yyyy"
+                                              format={
+                                                props.loadGlobalSettingsData
+                                                  ? props.loadGlobalSettingsData
+                                                      .dateFormat
+                                                  : "dd/MM/yyyy"
+                                              }
                                               fullWidth
                                               id={`forRangeEndR${i}`}
                                               placeholder="Your answer"
@@ -599,4 +613,19 @@ function DateJump(props) {
   );
 }
 
-export default DateJump;
+DateJump.propTypes = {
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DateJump);

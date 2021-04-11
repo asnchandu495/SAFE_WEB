@@ -455,6 +455,7 @@ function AddQuestionDetails(props) {
               setDatetimeFlag={setDatetimeFlag}
               datetimeFlag={datetimeFlag}
               answerTypes={props.answerTypes}
+              loadGlobalSettingsData={props.loadGlobalSettingsData}
             ></QuestionTypeDate>
           </Grid>
         );
@@ -468,6 +469,7 @@ function AddQuestionDetails(props) {
               setTimeFlag={setTimeFlag}
               timeFlag={timeFlag}
               answerTypes={props.answerTypes}
+              loadGlobalSettingsData={props.loadGlobalSettingsData}
             ></QuestionTypeTime>
           </Grid>
         );
@@ -564,6 +566,7 @@ function AddQuestionDetails(props) {
                 <RenderFlagComponent
                   currentQuestionType={props.questionTypeForm.questionType}
                   answerTypes={props.answerTypes}
+                  loadGlobalSettingsData={props.loadGlobalSettingsData}
                 ></RenderFlagComponent>
               </Grid>
             </CardContent>

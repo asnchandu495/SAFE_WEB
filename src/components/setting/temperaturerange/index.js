@@ -50,11 +50,11 @@ function TemperatureRange(props) {
 
   const uomTemp = [
     {
-      id: "Farenheit",
+      id: "F",
       uomTempvalue: "Farenheit",
     },
     {
-      id: "Celsius",
+      id: "C",
       uomTempvalue: "Celsius",
     },
   ];
@@ -378,7 +378,9 @@ function TemperatureRange(props) {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  F
+                                  {tempsections.temperatureUnit
+                                    ? tempsections.temperatureUnit
+                                    : ""}
                                 </InputAdornment>
                               ),
                             }}
@@ -407,7 +409,9 @@ function TemperatureRange(props) {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  F
+                                  {tempsections.temperatureUnit
+                                    ? tempsections.temperatureUnit
+                                    : ""}
                                 </InputAdornment>
                               ),
                             }}

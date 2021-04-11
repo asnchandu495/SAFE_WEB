@@ -8,6 +8,9 @@ import QuestionType from "./selectQuestionType";
 import AddQuestionDetails from "./addQuestionDetails";
 import questionaireService from "../../services/questionaireService";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 function AddQuestion(props) {
   const questionaireApiCall = new questionaireService();
@@ -36,6 +39,7 @@ function AddQuestion(props) {
       questionaireApiCall.getAllExpressions(),
     ])
       .then(([res, getsurveyDetails, allExpressions]) => {
+        props.loadGlobalSettingWithoutAPICall();
         setsurveyDetails(getsurveyDetails);
         setAnswerTypes(allExpressions);
         if (questionIdURL != 0) {
@@ -221,6 +225,9 @@ function AddQuestion(props) {
                               questionIdURL={questionIdURL}
                               selectedQuestionDetails={selectedQuestionDetails}
                               answerTypes={answerTypes}
+                              loadGlobalSettingsData={
+                                props.loadGlobalSettingsData
+                              }
                             ></AddQuestionDetails>
                           </Grid>
                         </Grid>
@@ -239,4 +246,22 @@ function AddQuestion(props) {
   );
 }
 
-export default withRouter(AddQuestion);
+AddQuestion.propTypes = {
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(AddQuestion));

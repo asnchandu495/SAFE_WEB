@@ -115,6 +115,7 @@ function UpdateTempearture(props) {
 
   useEffect(() => {
     if (props.SelectedRowId) {
+      props.loadGlobalSettingWithoutAPICall();
       usersApiCall
         .getCovidStateInfo(props.SelectedRowId)
         .then((getCovidInfo) => {

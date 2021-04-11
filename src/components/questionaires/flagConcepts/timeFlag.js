@@ -234,7 +234,20 @@ function QuestionTypeTime(props) {
                               </Grid>
                               <Grid item xs={3} className="date-time-pickers">
                                 <KeyboardTimePicker
-                                  format="hh:mm a"
+                                  format={
+                                    props.loadGlobalSettingsData
+                                      ? props.loadGlobalSettingsData.timeFormat
+                                      : "hh:mm"
+                                  }
+                                  ampm={
+                                    props.loadGlobalSettingsData
+                                      ? props.loadGlobalSettingsData.timeFormat.includes(
+                                          "HH"
+                                        )
+                                        ? false
+                                        : true
+                                      : "hh:mm"
+                                  }
                                   fullWidth
                                   id={`forAnswerR${i}`}
                                   placeholder="Your answer"
@@ -269,7 +282,21 @@ function QuestionTypeTime(props) {
                                     className="date-time-pickers"
                                   >
                                     <KeyboardTimePicker
-                                      format="hh:mm a"
+                                      format={
+                                        props.loadGlobalSettingsData
+                                          ? props.loadGlobalSettingsData
+                                              .timeFormat
+                                          : "hh:mm"
+                                      }
+                                      ampm={
+                                        props.loadGlobalSettingsData
+                                          ? props.loadGlobalSettingsData.timeFormat.includes(
+                                              "HH"
+                                            )
+                                            ? false
+                                            : true
+                                          : "hh:mm"
+                                      }
                                       fullWidth
                                       id={`forRangeEndR${i}`}
                                       placeholder="Your answer"
@@ -393,7 +420,20 @@ function QuestionTypeTime(props) {
                             </Grid>
                             <Grid item xs={3} className="date-time-pickers">
                               <KeyboardTimePicker
-                                format="hh:mm a"
+                                format={
+                                  props.loadGlobalSettingsData
+                                    ? props.loadGlobalSettingsData.timeFormat
+                                    : "hh:mm"
+                                }
+                                ampm={
+                                  props.loadGlobalSettingsData
+                                    ? props.loadGlobalSettingsData.timeFormat.includes(
+                                        "HH"
+                                      )
+                                      ? false
+                                      : true
+                                    : "hh:mm"
+                                }
                                 fullWidth
                                 id={`forAnswerR${i}`}
                                 placeholder="Your answer"
@@ -419,7 +459,21 @@ function QuestionTypeTime(props) {
                               <>
                                 <Grid item xs={3} className="date-time-pickers">
                                   <KeyboardTimePicker
-                                    format="hh:mm a"
+                                    format={
+                                      props.loadGlobalSettingsData
+                                        ? props.loadGlobalSettingsData
+                                            .timeFormat
+                                        : "hh:mm"
+                                    }
+                                    ampm={
+                                      props.loadGlobalSettingsData
+                                        ? props.loadGlobalSettingsData.timeFormat.includes(
+                                            "HH"
+                                          )
+                                          ? false
+                                          : true
+                                        : "hh:mm"
+                                    }
                                     fullWidth
                                     id={`forRangeEndR${i}`}
                                     placeholder="Your answer"

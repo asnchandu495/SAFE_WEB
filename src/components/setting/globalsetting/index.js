@@ -105,28 +105,32 @@ function GlobalSetting(props) {
 
   const datesFormat = [
     {
-      id: "dd/mm/yyyy",
-      formatvalue: "dd/mm/yyyy",
+      id: "dd/MM/yyyy",
+      formatvalue: "dd/MM/yyyy",
     },
     {
-      id: "mm/dd/yyyy",
-      formatvalue: "mm/dd/yyyy",
+      id: "MM/dd/yyyy",
+      formatvalue: "MM/dd/yyyy",
     },
     {
-      id: "dddd/mmmm/yyyy",
-      formatvalue: "dddd/mmmm/yyyy",
+      id: "yyyy/MM/dd",
+      formatvalue: "yyyy/MM/dd",
     },
     {
-      id: "mmmm/dddd/yyyy",
-      formatvalue: "mmmm/dddd/yyyy",
+      id: "ddd/MM/yyyy",
+      formatvalue: "ddd/MM/yyyy",
     },
     {
-      id: "ddd/mmm/yyyy",
-      formatvalue: "ddd/mmm/yyyy",
+      id: "dddd/MM/yyyy",
+      formatvalue: "dddd/MM/yyyy",
     },
     {
-      id: "mmm/ddd/yyyy",
-      formatvalue: "mmm/ddd/yyyy",
+      id: "dd/MMM/yyyy",
+      formatvalue: "dd/MMM/yyyy",
+    },
+    {
+      id: "dd/MMMM/yyyy",
+      formatvalue: "dd/MMMM/yyyy",
     },
   ];
   const timesFormat = [
