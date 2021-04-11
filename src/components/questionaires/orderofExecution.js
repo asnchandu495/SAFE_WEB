@@ -36,29 +36,10 @@ function OrderofExecution(props) {
 
   useEffect(() => {
     Promise.all([
-      questionaireApiCall.getAllOrderofExecution(id),
-      questionaireApiCall.GetAllQuestionsBySurveyId(id),
+      questionaireApiCall.GetAllQuestionsBySurveyIdWithOrder(id),
       questionaireApiCall.getSurveyById(id),
     ])
-      .then(([orderofExecutions, allSurveyQuestions, getsurveyDetails]) => {
-        allSurveyQuestions.map((item, i) => {
-          let checkExists = orderofExecutions.find(
-            (t2) => t2.surveyQuestionId === item.id
-          );
-          if (checkExists) {
-            item.order = checkExists.order;
-            item.existId = checkExists.id;
-          } else {
-            item.order = null;
-            item.existId = null;
-          }
-        });
-
-        allSurveyQuestions.sort((a, b) => {
-          return (b.order != null) - (a.order != null) || a.order - b.order;
-        });
-
-        setSelectedSurveyOrderofExecution(orderofExecutions);
+      .then(([allSurveyQuestions, getsurveyDetails]) => {
         setSelectedSurveyQuestions(allSurveyQuestions);
         setSurveyDetails(getsurveyDetails);
         setReloadPage("NO");
@@ -71,54 +52,37 @@ function OrderofExecution(props) {
 
   const dragProps = {
     onDragEnd(fromIndex, toIndex) {
-      setcomponentLoadder(false);
+      setcomponentLoadder(true);
       const data = [...selectedSurveyQuestions];
       const item = data.splice(fromIndex, 1)[0];
       data.splice(toIndex, 0, item);
-      if (item.order != null) {
-        let sendData = {
-          id: item.existId,
-          surveryId: item.surveyId,
-          surveyQuestionId: item.id,
-          order: parseInt(toIndex + 1),
-        };
-        questionaireApiCall
-          .ChangeQuestionOrderUpdate(sendData)
-          .then((res) => {
-            setSelectedSurveyQuestions(data);
-            setStateSnackbar(true);
-            setToasterMessage("Order is updated.");
-            settoasterServerity("success");
+      setSelectedSurveyQuestions(data);
+      let orderCollectionApiModels = [];
+      data.map((d, i) => {
+        orderCollectionApiModels.push({ surveyQuestionId: d.id, order: i + 1 });
+      });
+      let sendData = {
+        surveryId: item.surveyId,
+        orderCollectionApiModels: orderCollectionApiModels,
+      };
+      questionaireApiCall
+        .ChangeQuestionOrderUpdate(sendData)
+        .then((res) => {
+          setSelectedSurveyQuestions(data);
+          setStateSnackbar(true);
+          setToasterMessage("Order is updated.");
+          settoasterServerity("success");
+          setTimeout(() => {
             setReloadPage("YES");
-          })
-          .catch((err) => {
             setcomponentLoadder(false);
-            setToasterMessage(err.data.errors);
-            settoasterServerity("error");
-            setStateSnackbar(true);
-          });
-      } else {
-        let sendData = {
-          surveryId: item.surveyId,
-          surveyQuestionId: item.id,
-          order: parseInt(toIndex + 1),
-        };
-        questionaireApiCall
-          .ChangeQuestionOrder(sendData)
-          .then((res) => {
-            setSelectedSurveyQuestions(data);
-            setStateSnackbar(true);
-            setToasterMessage("Order is updated.");
-            settoasterServerity("success");
-            setReloadPage("YES");
-          })
-          .catch((err) => {
-            setcomponentLoadder(false);
-            setToasterMessage(err.data.errors);
-            settoasterServerity("error");
-            setStateSnackbar(true);
-          });
-      }
+          }, 6000);
+        })
+        .catch((err) => {
+          setcomponentLoadder(false);
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+        });
     },
     nodeSelector: "li",
     handleSelector: "li",
@@ -168,10 +132,8 @@ function OrderofExecution(props) {
                             xs={12}
                             className="question-container-full"
                           >
-                            <Avatar>
-                              {ques.order != null ? ques.order : 0}
-                            </Avatar>
-                            <p className="question-name">{ques.question}</p>
+                            <Avatar>{ques.order}</Avatar>
+                            <p className="question-name">{ques.id}</p>
                           </Grid>
                         </ListItem>
                       );

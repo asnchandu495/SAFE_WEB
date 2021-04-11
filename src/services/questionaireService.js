@@ -292,6 +292,17 @@ export default class questionaireService {
     });
   }
 
+  GetAllQuestionsBySurveyIdWithOrder(id) {
+    return this.fetch(
+      `${this.questionaireURL}/Survey/GetQuestionsBySurveyId?SurveyId=${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   GetEvaluationId(id) {
     return this.fetch(
       `${this.questionaireURL}/Evaluation/GetEvaluation/${id}`,
