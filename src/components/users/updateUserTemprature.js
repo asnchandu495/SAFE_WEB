@@ -11,8 +11,10 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import { withStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import { connect } from "react-redux";
 import * as UserAction from "../../Redux/Action/userAction";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 import PropTypes from "prop-types";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
@@ -215,6 +217,15 @@ function UpdateTempearture(props) {
                   value={formData.temperature}
                   className="global-input"
                   InputLabelProps={{ shrink: false }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {props.loadGlobalSettingsData
+                          ? props.loadGlobalSettingsData.temperatureUnit
+                          : ""}
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
             </Grid>
@@ -249,17 +260,21 @@ UpdateTempearture.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
   UpdateUser: PropTypes.func.isRequired,
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
 
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
   UpdateUser: UserAction.UpdateUser,
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateTempearture);

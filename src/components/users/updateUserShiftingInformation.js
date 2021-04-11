@@ -13,6 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { connect } from "react-redux";
 import * as UserAction from "../../Redux/Action/userAction";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 import PropTypes from "prop-types";
 import ToasterMessageComponent from "../common/toaster";
 import UserService from "../../services/usersService";
@@ -196,6 +197,7 @@ function UpdateShiftingInfo(props) {
                   <Grid item xs={6}>
                     <TimePicker
                       clearable
+                      format="hh:mm"
                       ampm={false}
                       placeholder="24 hours"
                       value={formData.startTime}
@@ -211,6 +213,7 @@ function UpdateShiftingInfo(props) {
                   <Grid item xs={6}>
                     <TimePicker
                       clearable
+                      format="hh:mm a"
                       ampm={false}
                       placeholder="24 hours"
                       value={formData.endTime}
@@ -252,17 +255,21 @@ UpdateShiftingInfo.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
   UpdateUser: PropTypes.func.isRequired,
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
 
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
   UpdateUser: UserAction.UpdateUser,
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateShiftingInfo);

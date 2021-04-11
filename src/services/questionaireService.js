@@ -18,6 +18,16 @@ export default class questionaireService {
     });
   }
 
+  adoptExistingQuestionarie(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(`${this.questionaireURL}/Survey/AdoptOnlyQuestions`, {
+      method: "POST",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   AssignQuestionnaireToUserGroup(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(

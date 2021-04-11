@@ -135,7 +135,7 @@ function GlobalSetting(props) {
       value: "12 Hours",
     },
     {
-      id: "hh:mm",
+      id: "HH:mm",
       value: "24 Hours",
     },
   ];

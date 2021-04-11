@@ -25,7 +25,6 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 function AdoptQuestionnaire(props) {
-  const paramsId = props.match.params.id;
   const questionaireApiCall = new questionaireService();
   const masterApiCall = new MasterDataService();
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -41,9 +40,12 @@ function AdoptQuestionnaire(props) {
   const [allLanguages, setAllLanguages] = useState([]);
   const [showLoadder, setshowLoadder] = useState(false);
   const [formData, setformData] = useState({
-    // id: "",
-    name: "",
+    surveyId: "",
+    isCopyEvaluation: false,
+    isCopyOrder: false,
+    title: "",
   });
+  const [selectedQuestionOption, setSelectedQuestionOption] = useState("");
 
   useEffect(() => {
     Promise.all([
@@ -78,10 +80,40 @@ function AdoptQuestionnaire(props) {
     setselectedUserQuestionnaire(value);
   }
 
+  function handleChangeAdoptOption(e) {
+    setSelectedQuestionOption(e.target.value);
+  }
+
   function submitForm() {
     setshowLoadder(true);
-    var data = formData;
-    setshowLoadder(false);
+    let data = formData;
+    data.surveyId = selectedUserQuestionnaire.id;
+    if (selectedQuestionOption == "order") {
+      data.isCopyOrder = true;
+      data.isCopyEvaluation = false;
+    }
+    if (selectedQuestionOption == "evaluation") {
+      data.isCopyOrder = false;
+      data.isCopyEvaluation = true;
+    }
+    questionaireApiCall
+      .adoptExistingQuestionarie(data)
+      .then((res) => {
+        setisAlertBoxOpened(false);
+        setStateSnackbar(true);
+        setToasterMessage("Questionarie is adopted.");
+        settoasterServerity("success");
+        setTimeout(() => {
+          props.history.push(`/questionaires/allquestionaires`);
+          setshowLoadder(false);
+        }, 6000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
 
   return (
@@ -133,9 +165,9 @@ function AdoptQuestionnaire(props) {
                       fullWidth
                       id="title"
                       placeholder="Title"
-                      name="name"
+                      name="title"
                       onChange={handleChange}
-                      value={formData.name}
+                      value={formData.title}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
                     />
@@ -174,26 +206,21 @@ function AdoptQuestionnaire(props) {
                   <Grid item xs={3}>
                     <label className="required">Configure Questionnaire</label>
                   </Grid>
-                  <Grid item xs={5}>
+                  <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
                       <RadioGroup
                         aria-label="gender"
-                        name="gender1"
-                        // value={value}
-                        onChange={handleChange}
+                        name="adoptOption"
+                        value={selectedQuestionOption}
+                        onChange={handleChangeAdoptOption}
                       >
                         <FormControlLabel
-                          value="female"
-                          control={<Radio />}
-                          label="Adopt only questions"
-                        />
-                        <FormControlLabel
-                          value="male"
+                          value="order"
                           control={<Radio />}
                           label="Adopt questions with order of execution"
                         />
                         <FormControlLabel
-                          value="other"
+                          value="evaluation"
                           control={<Radio />}
                           label="Adopt questions with order of execution and evaluation result"
                         />
