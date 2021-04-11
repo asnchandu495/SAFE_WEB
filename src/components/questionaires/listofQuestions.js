@@ -112,6 +112,20 @@ function ListofQuestions(props) {
     }
   };
 
+  function searchQuestionnaire(e) {
+    var input = e.target.value;
+    var filter = input.toLowerCase();
+    var nodes = document.getElementsByClassName("questionnairelistitems");
+
+    for (let i = 0; i < nodes.length; i++) {
+      if (nodes[i].innerText.toLowerCase().includes(filter)) {
+        nodes[i].style.display = "block";
+      } else {
+        nodes[i].style.display = "none";
+      }
+    }
+  }
+
   return (
     <List component="nav">
       <ListItem className="search-list-input">
@@ -121,8 +135,7 @@ function ListofQuestions(props) {
           id="groupName"
           placeholder="Search by question..."
           name="groupName"
-          // onChange={handleChange}
-          // value={formData.groupName}
+          onChange={searchQuestionnaire}
           InputLabelProps={{ shrink: false }}
           InputProps={{
             startAdornment: (
@@ -137,7 +150,10 @@ function ListofQuestions(props) {
       {/* {selectedSurveyQuestions.map((ques, index) => { */}
       {props.ListofQuestionsData.map((ques, index) => {
         return (
-          <Fragment>
+          <div
+            className="questionnairelistitems"
+            key={"questionnaire=" + ques.id}
+          >
             <ListItem
               button
               selected={selectedIndex == ques.id}
@@ -152,7 +168,7 @@ function ListofQuestions(props) {
               />
             </ListItem>
             <Divider component="li" />
-          </Fragment>
+          </div>
         );
       })}
     </List>
