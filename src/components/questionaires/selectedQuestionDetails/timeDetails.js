@@ -47,7 +47,8 @@ function TimeDetails(props) {
   ] = useState("");
   useEffect(() => {
     if (props.selectedQuestionDetails) {
-      console.log(props.selectedQuestionDetails.positiveConformityForTime);
+      console.log("detauu");
+      console.log(props.selectedQuestionDetails);
     }
   }, []);
 
@@ -171,86 +172,103 @@ function TimeDetails(props) {
                 </label>
               </Grid>
             </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Red flag :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <Table aria-label="simple table" className="flag-details-table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Expression type</TableCell>
-                      <TableCell>From</TableCell>
-                      <TableCell>To</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.selectedQuestionDetails.redFlagForTime.map((row) => (
-                      <TableRow key={row.expressionType}>
-                        <TableCell component="th" scope="row">
-                          {row.expressionType}
-                        </TableCell>
-                        <TableCell>
-                          {moment(row.forAnswerDate).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.timeFormat
-                              : "hh:mm"
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {moment(row.forRangeEndDate).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.timeFormat
-                              : "hh:mm"
-                          )}
-                        </TableCell>
+            {props.selectedQuestionDetails.redFlagForTime.length > 0 ? (
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Red flag :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Table
+                    aria-label="simple table"
+                    className="flag-details-table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Expression type</TableCell>
+                        <TableCell>From</TableCell>
+                        <TableCell>To</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHead>
+                    <TableBody>
+                      {props.selectedQuestionDetails.redFlagForTime.map(
+                        (row) => (
+                          <TableRow key={row.expressionType}>
+                            <TableCell component="th" scope="row">
+                              {row.expressionType}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forAnswerDate).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.timeFormat
+                                  : "hh:mm"
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forRangeEndDate).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.timeFormat
+                                  : "hh:mm"
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Positive flag :</label>
+            ) : (
+              ""
+            )}
+            {props.selectedQuestionDetails.positiveConformityForTime.length >
+            0 ? (
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Positive flag :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Table
+                    aria-label="simple table"
+                    className="flag-details-table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Expression type</TableCell>
+                        <TableCell>From</TableCell>
+                        <TableCell>To</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {props.selectedQuestionDetails.positiveConformityForTime.map(
+                        (row) => (
+                          <TableRow key={row.expressionType}>
+                            <TableCell component="th" scope="row">
+                              {row.expressionType}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forAnswerDate).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.timeFormat
+                                  : "hh:mm"
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forRangeEndDate).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.timeFormat
+                                  : "hh:mm"
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                </Grid>
               </Grid>
-              <Grid item xs={9}>
-                <Table aria-label="simple table" className="flag-details-table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Expression type</TableCell>
-                      <TableCell>From</TableCell>
-                      <TableCell>To</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.selectedQuestionDetails.positiveConformityForTime.map(
-                      (row) => (
-                        <TableRow key={row.expressionType}>
-                          <TableCell component="th" scope="row">
-                            {row.expressionType}
-                          </TableCell>
-                          <TableCell>
-                            {moment(row.forAnswerDate).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.timeFormat
-                                : "hh:mm"
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {moment(row.forRangeEndDate).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.timeFormat
-                                : "hh:mm"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      )
-                    )}
-                  </TableBody>
-                </Table>
-              </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
           </Grid>
         </div>
       </CardContent>

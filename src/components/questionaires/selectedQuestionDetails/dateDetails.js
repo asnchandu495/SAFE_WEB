@@ -172,86 +172,104 @@ function DateDetails(props) {
                 </label>
               </Grid>
             </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Red flag :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <Table aria-label="simple table" className="flag-details-table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Expression type</TableCell>
-                      <TableCell>From</TableCell>
-                      <TableCell>To</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.selectedQuestionDetails.redFlagForDate.map((row) => (
-                      <TableRow key={row.expressionType}>
-                        <TableCell component="th" scope="row">
-                          {row.expressionType}
-                        </TableCell>
-                        <TableCell>
-                          {moment(row.forAnswer).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.dateFormat
-                              : "dd/mm/yyyy"
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {moment(row.forRangeEnd).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.dateFormat
-                              : "dd/mm/yyyy"
-                          )}
-                        </TableCell>
+            {props.selectedQuestionDetails.redFlagForDate.length > 0 ? (
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Red flag :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Table
+                    aria-label="simple table"
+                    className="flag-details-table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Expression type</TableCell>
+                        <TableCell>From</TableCell>
+                        <TableCell>To</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHead>
+                    <TableBody>
+                      {props.selectedQuestionDetails.redFlagForDate.map(
+                        (row) => (
+                          <TableRow key={row.expressionType}>
+                            <TableCell component="th" scope="row">
+                              {row.expressionType}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forAnswer).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.dateFormat
+                                  : "dd/mm/yyyy"
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forRangeEnd).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.dateFormat
+                                  : "dd/mm/yyyy"
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Positive flag :</label>
+            ) : (
+              ""
+            )}
+
+            {props.selectedQuestionDetails.positiveConformityForDate.length >
+            0 ? (
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Positive flag :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Table
+                    aria-label="simple table"
+                    className="flag-details-table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Expression type</TableCell>
+                        <TableCell>From</TableCell>
+                        <TableCell>To</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {props.selectedQuestionDetails.positiveConformityForDate.map(
+                        (row) => (
+                          <TableRow key={row.expressionType}>
+                            <TableCell component="th" scope="row">
+                              {row.expressionType}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forAnswer).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.dateFormat
+                                  : "dd/MM/yyyy"
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forRangeEnd).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.dateFormat
+                                  : "dd/MM/yyyy"
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                </Grid>
               </Grid>
-              <Grid item xs={9}>
-                <Table aria-label="simple table" className="flag-details-table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Expression type</TableCell>
-                      <TableCell>From</TableCell>
-                      <TableCell>To</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.selectedQuestionDetails.positiveConformityForDate.map(
-                      (row) => (
-                        <TableRow key={row.expressionType}>
-                          <TableCell component="th" scope="row">
-                            {row.expressionType}
-                          </TableCell>
-                          <TableCell>
-                            {moment(row.forAnswer).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.dateFormat
-                                : "dd/MM/yyyy"
-                            )}
-                          </TableCell>
-                          <TableCell>
-                            {moment(row.forRangeEnd).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.dateFormat
-                                : "dd/MM/yyyy"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      )
-                    )}
-                  </TableBody>
-                </Table>
-              </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
           </Grid>
         </div>
       </CardContent>
