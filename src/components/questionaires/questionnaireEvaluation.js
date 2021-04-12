@@ -40,21 +40,22 @@ function QuestionnaireEvaluation(props) {
     "array"
   );
   const [covidStatelist, setcovidStatelist] = useState([]);
-  const [formData, SetformData] = useState({
-    id: "",
-    lowerLimit: 0,
-    upperLimit: 0,
-    globalSettingsId: "",
-    covidState: {
-      id: "",
-      stateName: "",
-    },
-  });
+  // const [formData, SetformData] = useState({
+  //   id: "",
+  //   lowerLimit: 0,
+  //   upperLimit: 0,
+  //   globalSettingsId: "",
+  //   covidState: {
+  //     id: "",
+  //     stateName: "",
+  //   },
+  // });
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [selectedcovidState, setSelectedCovidState] = useState();
+  const [disableUpperLimit, setdisableUpperLimit] = useState(false);
   const [temperatureConfigForm, setTemperatureConfigForm] = useState({
     id: "",
     surveyId: id,
@@ -148,7 +149,7 @@ function QuestionnaireEvaluation(props) {
     setTemperatureConfigForm(list);
   }
 
-  const handleInputChangeContacts = (e, index) => {
+  const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = {
       ...temperatureConfigForm,
@@ -171,13 +172,28 @@ function QuestionnaireEvaluation(props) {
     setTemperatureConfigForm(list);
   };
   function handleChange(e) {
+    alert("dsdfjgg");
     setisAlertBoxOpened(true);
-    const { name, value } = e.target;
 
-    SetformData((emergencyContact) => ({
-      ...emergencyContact,
-      [name]: value,
-    }));
+    const { name, value } = e.target;
+    if (name == "HightTemperatureNoLimit") {
+      console.log("hightenperature");
+      console.log(e.target.checked);
+      if (e.target.checked == true) {
+        setdisableUpperLimit(true);
+        setTemperatureConfigForm((logInForm) => ({
+          ...logInForm,
+          [name]: e.target.checked,
+          ["upperLimit"]: -1,
+        }));
+      } else {
+        setdisableUpperLimit(false);
+        setTemperatureConfigForm((logInForm) => ({
+          ...logInForm,
+          [name]: value,
+        }));
+      }
+    }
   }
 
   const handleAddClick = (index, j) => {
@@ -257,7 +273,7 @@ function QuestionnaireEvaluation(props) {
           to={`/questionaires/allquestionaires`}
           className="inactive"
         >
-          Questionaire
+          Questionnaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Questionnaire Evaluation
@@ -307,6 +323,7 @@ function QuestionnaireEvaluation(props) {
                 </Grid>
               </Grid>
             </Grid>
+            <br />
             <Grid container spacing={3}>
               <Grid
                 item
@@ -414,7 +431,7 @@ function QuestionnaireEvaluation(props) {
                             name="lowerLimit"
                             value={x.lowerLimit}
                             className="global-input"
-                            onChange={(e) => handleInputChangeContacts(e, i)}
+                            onChange={(e) => handleInputChange(e, i)}
                             InputLabelProps={{ shrink: false }}
                             InputProps={{
                               endAdornment: (
@@ -431,6 +448,7 @@ function QuestionnaireEvaluation(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
+                            disabled={disableUpperLimit ? "true" : ""}
                             validators={["required", "maxNumber:99"]}
                             errorMessages={[
                               "Please enter upper limit",
@@ -442,7 +460,7 @@ function QuestionnaireEvaluation(props) {
                             name="upperLimit"
                             value={x.upperLimit}
                             className="global-input"
-                            onChange={(e) => handleInputChangeContacts(e, i)}
+                            onChange={(e) => handleInputChange(e, i)}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
@@ -458,7 +476,12 @@ function QuestionnaireEvaluation(props) {
                         <Grid item xs={2} className="row-icons-container">
                           {
                             <FormControlLabel
-                              control={<Checkbox name="checkedA" />}
+                              control={
+                                <Checkbox
+                                  onChange={handleChange}
+                                  name="HightTemperatureNoLimit"
+                                />
+                              }
                               label="No limit"
                             />
                           }
