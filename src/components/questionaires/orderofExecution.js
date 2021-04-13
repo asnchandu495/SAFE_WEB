@@ -59,7 +59,12 @@ function OrderofExecution(props) {
       setSelectedSurveyQuestions(data);
       let orderCollectionApiModels = [];
       data.map((d, i) => {
-        orderCollectionApiModels.push({ surveyQuestionId: d.id, order: i + 1 });
+        if (d.order != 0) {
+          orderCollectionApiModels.push({
+            surveyQuestionId: d.id,
+            order: i + 1,
+          });
+        }
       });
       let sendData = {
         surveryId: item.surveyId,
@@ -133,7 +138,7 @@ function OrderofExecution(props) {
                             className="question-container-full"
                           >
                             <Avatar>{ques.order}</Avatar>
-                            <p className="question-name">{ques.id}</p>
+                            <p className="question-name">{ques.question}</p>
                           </Grid>
                         </ListItem>
                       );
