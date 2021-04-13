@@ -88,14 +88,14 @@ function AdoptQuestionnaire(props) {
     setshowLoadder(true);
     let data = formData;
     data.surveyId = selectedUserQuestionnaire.id;
-    if (selectedQuestionOption == "order") {
-      data.isCopyOrder = true;
-      data.isCopyEvaluation = false;
-    }
-    if (selectedQuestionOption == "evaluation") {
-      data.isCopyOrder = false;
-      data.isCopyEvaluation = true;
-    }
+    // if (selectedQuestionOption == "order") {
+    //   data.isCopyOrder = true;
+    //   data.isCopyEvaluation = false;
+    // }
+    // if (selectedQuestionOption == "evaluation") {
+    //   data.isCopyOrder = false;
+    //   data.isCopyEvaluation = true;
+    // }
     questionaireApiCall
       .adoptExistingQuestionarie(data)
       .then((res) => {
@@ -202,7 +202,7 @@ function AdoptQuestionnaire(props) {
                     </FormControl>
                   </Grid>
                 </Grid>
-                <Grid item cs={12} container>
+                {/* <Grid item cs={12} container>
                   <Grid item xs={3}>
                     <label className="required">Configure Questionnaire</label>
                   </Grid>
@@ -227,7 +227,7 @@ function AdoptQuestionnaire(props) {
                       </RadioGroup>
                     </FormControl>
                   </Grid>
-                </Grid>
+                </Grid> */}
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
                     <label>&nbsp;</label>
