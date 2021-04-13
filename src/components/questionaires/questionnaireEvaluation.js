@@ -450,7 +450,7 @@ function QuestionnaireEvaluation(props) {
                             name="upperLimit"
                             value={x.upperLimit}
                             className="global-input"
-                            onChange={(e) => handleInputChangeContacts(e, i)}
+                            onChange={(e) => handleInputChange(e, i)}
                           />
                         </Grid>
                         <Grid item xs={2} className="row-icons-container">
