@@ -238,7 +238,7 @@ function DateJump(props) {
           to={`/questionaires/allquestionaires`}
           className="inactive"
         >
-          Questionaires
+          Questionnaires
         </LinkTo>
         <LinkTo
           color="textPrimary"

@@ -47,7 +47,8 @@ function TimeDetails(props) {
   ] = useState("");
   useEffect(() => {
     if (props.selectedQuestionDetails) {
-      console.log(props.selectedQuestionDetails.positiveConformityForTime);
+      console.log("detauu");
+      console.log(props.selectedQuestionDetails);
     }
   }, []);
 

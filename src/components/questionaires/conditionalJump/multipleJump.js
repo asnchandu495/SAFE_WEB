@@ -284,7 +284,7 @@ function MultipleJump(props) {
           to={`/questionaires/view-questions/`}
           className="inactive"
         >
-          Questionaires
+          Questionnaires
         </LinkTo>
         <LinkTo
           color="textPrimary"

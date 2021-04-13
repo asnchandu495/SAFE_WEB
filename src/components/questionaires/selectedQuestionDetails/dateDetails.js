@@ -273,11 +273,6 @@ function DateDetails(props) {
           </Grid>
         </div>
       </CardContent>
-      {/* <CardActions className="action-container">
-        <Button type="button" size="small" color="primary">
-          Close
-        </Button>
-      </CardActions> */}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
         ConfirmationHeaderTittle={ConfirmationHeaderTittle}
