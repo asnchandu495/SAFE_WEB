@@ -84,7 +84,10 @@ function SingleJump(props) {
           choiceQuestionBooleanDetails,
         ]) => {
           setAllAnswerExpressions(allExpressions);
-          setSelectedSurveyQuestions(allSurveyQuestions);
+          let filteredQuestions = allSurveyQuestions.filter((r) => {
+            return r.id != questionId;
+          });
+          setSelectedSurveyQuestions(filteredQuestions);
           setselectedQuestionDetails(choiceQuestionDetails);
           setAnswerChoices(choiceQuestionDetails.surveyResponseChoices);
           setsurveyDetails(getsurveyDetails);

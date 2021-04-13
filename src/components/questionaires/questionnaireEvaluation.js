@@ -416,16 +416,6 @@ function QuestionnaireEvaluation(props) {
                             className="global-input"
                             onChange={(e) => handleInputChangeContacts(e, i)}
                             InputLabelProps={{ shrink: false }}
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  {props.loadGlobalSettingsData
-                                    ? props.loadGlobalSettingsData
-                                        .temperatureUnit
-                                    : ""}
-                                </InputAdornment>
-                              ),
-                            }}
                           />
                         </Grid>
                         <Grid item xs={2}>
@@ -443,16 +433,6 @@ function QuestionnaireEvaluation(props) {
                             value={x.upperLimit}
                             className="global-input"
                             onChange={(e) => handleInputChangeContacts(e, i)}
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  {props.loadGlobalSettingsData
-                                    ? props.loadGlobalSettingsData
-                                        .temperatureUnit
-                                    : ""}
-                                </InputAdornment>
-                              ),
-                            }}
                           />
                         </Grid>
                         <Grid item xs={2} className="row-icons-container">

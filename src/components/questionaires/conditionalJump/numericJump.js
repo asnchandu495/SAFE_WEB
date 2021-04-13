@@ -87,7 +87,10 @@ function NumericJump(props) {
           getNumeicBooleanDetails,
         ]) => {
           setAllAnswerExpressions(allExpressions);
-          setSelectedSurveyQuestions(allSurveyQuestions);
+          let filteredQuestions = allSurveyQuestions.filter((r) => {
+            return r.id != questionId;
+          });
+          setSelectedSurveyQuestions(filteredQuestions);
           setselectedQuestionDetails(getNumeicDetails);
           setsurveyDetails(getsurveyDetails);
           if (getNumeicBooleanDetails) {

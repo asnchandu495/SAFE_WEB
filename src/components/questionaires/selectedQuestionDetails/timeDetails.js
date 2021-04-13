@@ -171,45 +171,59 @@ function TimeDetails(props) {
                 </label>
               </Grid>
             </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Red flag :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <Table aria-label="simple table" className="flag-details-table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Expression type</TableCell>
-                      <TableCell>From</TableCell>
-                      <TableCell>To</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.selectedQuestionDetails.redFlagForTime.map((row) => (
-                      <TableRow key={row.expressionType}>
-                        <TableCell component="th" scope="row">
-                          {row.expressionType}
-                        </TableCell>
-                        <TableCell>
-                          {moment(row.forAnswerDate).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.timeFormat
-                              : "hh:mm"
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {moment(row.forRangeEndDate).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.timeFormat
-                              : "hh:mm"
-                          )}
-                        </TableCell>
+            {props.selectedQuestionDetails.isPositiveConfirmityRedFlag ? (
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Red flag :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Table
+                    aria-label="simple table"
+                    className="flag-details-table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Expression type</TableCell>
+                        <TableCell>From</TableCell>
+                        <TableCell>To</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHead>
+                    <TableBody>
+                      {props.selectedQuestionDetails.redFlagForTime.map(
+                        (row) => (
+                          <TableRow key={row.expressionType}>
+                            <TableCell component="th" scope="row">
+                              {row.expressionType}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forAnswerDate).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.timeFormat
+                                  : "hh:mm"
+                              )}
+                            </TableCell>
+                            {row.expressionType == "RANGE" ? (
+                              <TableCell>
+                                {moment(row.forRangeEndDate).format(
+                                  props.loadGlobalSettingsData
+                                    ? props.loadGlobalSettingsData.timeFormat
+                                    : "hh:mm"
+                                )}
+                              </TableCell>
+                            ) : (
+                              <TableCell>-</TableCell>
+                            )}
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                </Grid>
               </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
+
             <Grid item xs={12} container>
               <Grid item xs={3}>
                 <label>Positive flag :</label>
@@ -237,13 +251,17 @@ function TimeDetails(props) {
                                 : "hh:mm"
                             )}
                           </TableCell>
-                          <TableCell>
-                            {moment(row.forRangeEnd).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.timeFormat
-                                : "hh:mm"
-                            )}
-                          </TableCell>
+                          {row.expressionType == "RANGE" ? (
+                            <TableCell>
+                              {moment(row.forRangeEnd).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.timeFormat
+                                  : "hh:mm"
+                              )}
+                            </TableCell>
+                          ) : (
+                            <TableCell>-</TableCell>
+                          )}
                         </TableRow>
                       )
                     )}

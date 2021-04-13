@@ -25,6 +25,9 @@ import {
 import moment from "moment";
 import userService from "../../services/usersService";
 import healthCheckService from "../../services/healthCheckService";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -115,6 +118,20 @@ function ConfigureHealth(props) {
       options: {
         filter: false,
         sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return (
+              <span>
+                {moment(thisRowData[4]).format(
+                  props.loadGlobalSettingsData
+                    ? props.loadGlobalSettingsData.dateFormat
+                    : "hh:mm"
+                )}
+              </span>
+            );
+          }
+        },
       },
     },
     {
@@ -186,6 +203,16 @@ function ConfigureHealth(props) {
     }));
   };
 
+  function resetFilterForm() {
+    setSearchForm({
+      userId: "",
+      fromDate: moment().toISOString(),
+      toDate: moment().toISOString(),
+    });
+    setSelectedUserDetails();
+    setSelfHealthChecks([]);
+  }
+
   function submitForm(e) {
     e.preventDefault();
     setComponentLoadder(true);
@@ -240,10 +267,10 @@ function ConfigureHealth(props) {
           to={`/selfhealthcheck/configurehealth`}
           className="inactive"
         >
-          Health
+          Configure self health-check
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          Configure Self Health Check
+          Health Declarations
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (
@@ -261,7 +288,7 @@ function ConfigureHealth(props) {
                           UserList && UserList.length > 0 ? UserList : []
                         }
                         getOptionLabel={(option) => option.firstName}
-                        defaultValue="#"
+                        defaultValue={selectedUserDetails}
                         name="userId"
                         onChange={(e, v) => handleChangeSearchForm(v, "userId")}
                         filterSelectedOptions
@@ -277,7 +304,7 @@ function ConfigureHealth(props) {
                       />{" "}
                     </FormControl>
                   </Grid>
-                  <Grid item xs={3} className="date-time-pickers">
+                  <Grid item xs={2} className="date-time-pickers">
                     <KeyboardDatePicker
                       format="MM/dd/yyyy"
                       fullWidth
@@ -295,7 +322,7 @@ function ConfigureHealth(props) {
                       }
                     />
                   </Grid>
-                  <Grid item xs={3} className="date-time-pickers">
+                  <Grid item xs={2} className="date-time-pickers">
                     <KeyboardDatePicker
                       format="MM/dd/yyyy"
                       fullWidth
@@ -323,6 +350,18 @@ function ConfigureHealth(props) {
                       >
                         {" "}
                         {showLoadder ? <ButtonLoadderComponent /> : "Apply"}
+                      </Button>
+                    </div>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <div className={`form-buttons-container`}>
+                      <Button
+                        variant="contained"
+                        type="button"
+                        className="global-cancel-btn global-filter-reset-btn"
+                        onClick={resetFilterForm}
+                      >
+                        Reset
                       </Button>
                     </div>
                   </Grid>
@@ -357,4 +396,20 @@ function ConfigureHealth(props) {
     </div>
   );
 }
-export default ConfigureHealth;
+
+ConfigureHealth.propTypes = {
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConfigureHealth);

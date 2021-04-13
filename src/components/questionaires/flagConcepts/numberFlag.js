@@ -177,7 +177,11 @@ function QuestionTypeNumber(props) {
                             key={`redflag-container${i}`}
                             className="dynamic-flag-container"
                           >
-                            <Grid item xs={2}>
+                            <Grid
+                              item
+                              xs={2}
+                              key={`redflag-containerSelect${i}`}
+                            >
                               <FormControl variant="outlined" fullWidth>
                                 <InputLabel
                                   id={`demo-simple-select-outlined-label${i}`}
@@ -269,7 +273,12 @@ function QuestionTypeNumber(props) {
                             ) : (
                               ""
                             )}
-                            <Grid item xs={2} className="row-icons-container">
+                            <Grid
+                              item
+                              xs={2}
+                              className="row-icons-container"
+                              key={`redflag-containerIcons${i}`}
+                            >
                               {props.numericFlag.redFlagForNumber.length !==
                                 1 && (
                                 <Tooltip title="Remove">
@@ -322,7 +331,11 @@ function QuestionTypeNumber(props) {
                             key={`positiveflag-container${i}`}
                             className="dynamic-flag-container"
                           >
-                            <Grid item xs={2}>
+                            <Grid
+                              item
+                              xs={2}
+                              key={`positiveflag-containerSelect${i}`}
+                            >
                               <FormControl variant="outlined" fullWidth>
                                 <InputLabel
                                   id={`demo-simple-select-outlined-label${i}`}
@@ -415,7 +428,12 @@ function QuestionTypeNumber(props) {
                             ) : (
                               ""
                             )}
-                            <Grid item xs={2} className="row-icons-container">
+                            <Grid
+                              item
+                              xs={2}
+                              className="row-icons-container"
+                              key={`positiveflag-containerIcons${i}`}
+                            >
                               {props.numericFlag.positiveConformityForNumber
                                 .length !== 1 && (
                                 <Tooltip title="Remove">

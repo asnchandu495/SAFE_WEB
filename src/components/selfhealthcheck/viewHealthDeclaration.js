@@ -65,10 +65,10 @@ function ViewHealthDeclaration(props) {
           to={`/selfhealthcheck/configurehealth`}
           className="inactive"
         >
-          Health
+          Configure self health-check
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          View responses
+          Health Declarations
         </LinkTo>
       </Breadcrumbs>
       {componentLoadder ? (
@@ -131,15 +131,6 @@ function ViewHealthDeclaration(props) {
                               </Grid>
                               <Grid item xs={11}>
                                 <p className="question-name">{ans.question}</p>
-                                <p className="question-answer">
-                                  {" "}
-                                  <Button
-                                    className="edit-icon-faq"
-                                    type="button"
-                                  >
-                                    {ans.forAnswerDate}
-                                  </Button>
-                                </p>
                               </Grid>
                             </Grid>
                           </Grid>

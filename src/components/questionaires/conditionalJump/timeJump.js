@@ -98,7 +98,10 @@ function TimeJump(props) {
         ]) => {
           props.loadGlobalSettingWithoutAPICall();
           setAllAnswerExpressions(allExpressions);
-          setSelectedSurveyQuestions(allSurveyQuestions);
+          let filteredQuestions = allSurveyQuestions.filter((r) => {
+            return r.id != questionId;
+          });
+          setSelectedSurveyQuestions(filteredQuestions);
           setselectedQuestionDetails(getTimeDetails);
           setsurveyDetails(getsurveyDetails);
           if (getTimeBooleanDetails) {

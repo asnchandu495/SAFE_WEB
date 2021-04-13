@@ -172,35 +172,47 @@ function NumericDetails(props) {
                 </label>
               </Grid>
             </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Red flag :</label>
+            {props.selectedQuestionDetails.isPositiveConfirmityRedFlag ? (
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Red flag :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Table
+                    aria-label="simple table"
+                    className="flag-details-table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Expression type</TableCell>
+                        <TableCell>From</TableCell>
+                        <TableCell>To</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {props.selectedQuestionDetails.redFlagForNumber.map(
+                        (row) => (
+                          <TableRow key={row.expressionType}>
+                            <TableCell component="th" scope="row">
+                              {row.expressionType}
+                            </TableCell>
+                            <TableCell>{row.forAnswer}</TableCell>
+                            {row.expressionType == "RANGE" ? (
+                              <TableCell>{row.forRangeEnd}</TableCell>
+                            ) : (
+                              <TableCell>-</TableCell>
+                            )}
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                </Grid>
               </Grid>
-              <Grid item xs={9}>
-                <Table aria-label="simple table" className="flag-details-table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Expression type</TableCell>
-                      <TableCell>From</TableCell>
-                      <TableCell>To</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.selectedQuestionDetails.redFlagForNumber.map(
-                      (row) => (
-                        <TableRow key={row.expressionType}>
-                          <TableCell component="th" scope="row">
-                            {row.expressionType}
-                          </TableCell>
-                          <TableCell>{row.forAnswer}</TableCell>
-                          <TableCell>{row.forRangeEnd}</TableCell>
-                        </TableRow>
-                      )
-                    )}
-                  </TableBody>
-                </Table>
-              </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
+
             <Grid item xs={12} container>
               <Grid item xs={3}>
                 <label>Positive flag :</label>
@@ -222,7 +234,11 @@ function NumericDetails(props) {
                             {row.expressionType}
                           </TableCell>
                           <TableCell>{row.forAnswer}</TableCell>
-                          <TableCell>{row.forRangeEnd}</TableCell>
+                          {row.expressionType == "RANGE" ? (
+                            <TableCell>{row.forRangeEnd}</TableCell>
+                          ) : (
+                            <TableCell>-</TableCell>
+                          )}
                         </TableRow>
                       )
                     )}

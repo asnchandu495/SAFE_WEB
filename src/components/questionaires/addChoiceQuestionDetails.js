@@ -67,22 +67,12 @@ function AddChoiceQuestionDetails(props) {
     isPositiveConfirmityRedFlag: false,
     positiveConformityMultiChoice: [
       {
-        options: [
-          {
-            optionId: "",
-            option: "",
-          },
-        ],
+        options: [],
       },
     ],
     redFlagForMultipleChoice: [
       {
-        options: [
-          {
-            optionId: "",
-            option: "",
-          },
-        ],
+        options: [],
       },
     ],
   });
@@ -119,21 +109,11 @@ function AddChoiceQuestionDetails(props) {
               positiveConformitySingleChoice:
                 res.positiveConformitySingleChoice.length > 0
                   ? res.positiveConformitySingleChoice
-                  : [
-                      {
-                        optionId: "",
-                        option: "",
-                      },
-                    ],
+                  : [],
               redFlagForSingleChoice:
                 res.redFlagForSingleChoice.length > 0
                   ? res.redFlagForSingleChoice
-                  : [
-                      {
-                        optionId: "",
-                        option: "",
-                      },
-                    ],
+                  : [],
             };
             setSingleChoiceFlag(newSingleChoiceFlag);
             setshowLoadder(false);
@@ -160,12 +140,7 @@ function AddChoiceQuestionDetails(props) {
                   ? res.positiveConformityMultiChoice
                   : [
                       {
-                        options: [
-                          {
-                            optionId: "",
-                            option: "",
-                          },
-                        ],
+                        options: [],
                       },
                     ],
               redFlagForMultipleChoice:
@@ -173,12 +148,7 @@ function AddChoiceQuestionDetails(props) {
                   ? res.redFlagForMultipleChoice
                   : [
                       {
-                        options: [
-                          {
-                            optionId: "",
-                            option: "",
-                          },
-                        ],
+                        options: [],
                       },
                     ],
             };
@@ -244,7 +214,7 @@ function AddChoiceQuestionDetails(props) {
               props.history.push(
                 `/questionaires/add-questions/${props.surveyIdURL}/${finalObject.id}?type=SingleChoice`
               );
-            }, 10000);
+            }, 15000);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -271,7 +241,7 @@ function AddChoiceQuestionDetails(props) {
               props.history.push(
                 `/questionaires/add-questions/${props.surveyIdURL}/${res.id}?type=SingleChoice`
               );
-            }, 10000);
+            }, 15000);
           })
           .catch((err) => {
             setToasterMessage(err.data.errors);
@@ -406,6 +376,10 @@ function AddChoiceQuestionDetails(props) {
     e.preventDefault();
     setshowLoadderFlag(true);
     if (props.questionTypeForm.questionType == "SingleChoice") {
+      console.log(singleChoiceFlag);
+      if (!singleChoiceFlag.isPositiveConfirmityRedFlag) {
+        singleChoiceFlag.redFlagForSingleChoice = [];
+      }
       questionaireApiCall
         .UpdateSingleChoiceFlags(singleChoiceFlag)
         .then((res) => {
@@ -422,6 +396,9 @@ function AddChoiceQuestionDetails(props) {
           setshowLoadderFlag(false);
         });
     } else {
+      if (!multiChoiceFlag.isPositiveConfirmityRedFlag) {
+        multiChoiceFlag.redFlagForMultipleChoice = [];
+      }
       questionaireApiCall
         .UpdateMultiChoiceFlags(multiChoiceFlag)
         .then((res) => {

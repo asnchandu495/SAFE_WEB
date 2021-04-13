@@ -172,45 +172,59 @@ function DateDetails(props) {
                 </label>
               </Grid>
             </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Red flag :</label>
-              </Grid>
-              <Grid item xs={9}>
-                <Table aria-label="simple table" className="flag-details-table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Expression type</TableCell>
-                      <TableCell>From</TableCell>
-                      <TableCell>To</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.selectedQuestionDetails.redFlagForDate.map((row) => (
-                      <TableRow key={row.expressionType}>
-                        <TableCell component="th" scope="row">
-                          {row.expressionType}
-                        </TableCell>
-                        <TableCell>
-                          {moment(row.forAnswer).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.dateFormat
-                              : "dd/mm/yyyy"
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          {moment(row.forRangeEnd).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.dateFormat
-                              : "dd/mm/yyyy"
-                          )}
-                        </TableCell>
+            {props.selectedQuestionDetails.isPositiveConfirmityRedFlag ? (
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Red flag :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Table
+                    aria-label="simple table"
+                    className="flag-details-table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Expression type</TableCell>
+                        <TableCell>From</TableCell>
+                        <TableCell>To</TableCell>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHead>
+                    <TableBody>
+                      {props.selectedQuestionDetails.redFlagForDate.map(
+                        (row) => (
+                          <TableRow key={row.expressionType}>
+                            <TableCell component="th" scope="row">
+                              {row.expressionType}
+                            </TableCell>
+                            <TableCell>
+                              {moment(row.forAnswer).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.dateFormat
+                                  : "dd/mm/yyyy"
+                              )}
+                            </TableCell>
+                            {row.expressionType == "RANGE" ? (
+                              <TableCell>
+                                {moment(row.forRangeEnd).format(
+                                  props.loadGlobalSettingsData
+                                    ? props.loadGlobalSettingsData.dateFormat
+                                    : "dd/mm/yyyy"
+                                )}
+                              </TableCell>
+                            ) : (
+                              <TableCell>-</TableCell>
+                            )}
+                          </TableRow>
+                        )
+                      )}
+                    </TableBody>
+                  </Table>
+                </Grid>
               </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
+
             <Grid item xs={12} container>
               <Grid item xs={3}>
                 <label>Positive flag :</label>
@@ -238,13 +252,17 @@ function DateDetails(props) {
                                 : "dd/MM/yyyy"
                             )}
                           </TableCell>
-                          <TableCell>
-                            {moment(row.forRangeEnd).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.dateFormat
-                                : "dd/MM/yyyy"
-                            )}
-                          </TableCell>
+                          {row.expressionType == "RANGE" ? (
+                            <TableCell>
+                              {moment(row.forRangeEnd).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.dateFormat
+                                  : "dd/MM/yyyy"
+                              )}
+                            </TableCell>
+                          ) : (
+                            <TableCell>-</TableCell>
+                          )}
                         </TableRow>
                       )
                     )}

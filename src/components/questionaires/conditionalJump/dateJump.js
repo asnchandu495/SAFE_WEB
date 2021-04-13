@@ -97,7 +97,10 @@ function DateJump(props) {
         ]) => {
           props.loadGlobalSettingWithoutAPICall();
           setAllAnswerExpressions(allExpressions);
-          setSelectedSurveyQuestions(allSurveyQuestions);
+          let filteredQuestions = allSurveyQuestions.filter((r) => {
+            return r.id != questionId;
+          });
+          setSelectedSurveyQuestions(filteredQuestions);
           setselectedQuestionDetails(getBooleanDetails);
           setsurveyDetails(getsurveyDetails);
           if (getBooleanConditionDetails) {

@@ -80,12 +80,7 @@ function QuestionTypeMultiSelect(props) {
     list.redFlagForMultipleChoice = [
       ...thisRedFlagMultiChoice,
       {
-        options: [
-          {
-            optionId: "",
-            option: "",
-          },
-        ],
+        options: [],
       },
     ];
     props.setMultiChoiceFlag(list);
@@ -103,12 +98,7 @@ function QuestionTypeMultiSelect(props) {
     list.positiveConformityMultiChoice = [
       ...thisPositiveFlagMultiChoice,
       {
-        options: [
-          {
-            optionId: "",
-            option: "",
-          },
-        ],
+        options: [],
       },
     ];
     props.setMultiChoiceFlag(list);
