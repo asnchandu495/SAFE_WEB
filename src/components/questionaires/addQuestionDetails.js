@@ -17,6 +17,9 @@ import questionaireService from "../../services/questionaireService";
 import ToasterMessageComponent from "../common/toaster";
 import Paper from "@material-ui/core/Paper";
 import moment from "moment";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { withStyles } from "@material-ui/core/styles";
+import Switch from "@material-ui/core/Switch";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import AddChoiceQuestionDetails from "./addChoiceQuestionDetails";
 
@@ -105,6 +108,20 @@ function AddQuestionDetails(props) {
     isPositiveConfirmityRedFlag: false,
   });
 
+  const PurpleSwitch = withStyles({
+    switchBase: {
+      color: "#be1d56",
+      "&$checked": {
+        color: "#26235d",
+      },
+      "&$checked + $track": {
+        backgroundColor: "#26235d",
+      },
+    },
+    checked: {},
+    track: {},
+  })(Switch);
+
   useEffect(() => {
     if (props.selectedQuestionDetails) {
       setAddQuestion({
@@ -166,6 +183,14 @@ function AddQuestionDetails(props) {
     setAddQuestion((addQuestion) => ({
       ...addQuestion,
       [name]: value,
+    }));
+  };
+
+  const handleChangeSwitch = (e) => {
+    const { name, value } = e.target;
+    setAddQuestion((booleanFlag) => ({
+      ...addQuestion,
+      [name]: e.target.checked,
     }));
   };
 
@@ -559,6 +584,22 @@ function AddQuestionDetails(props) {
                         onChange={handleChange}
                         className="global-input global-input-multiline"
                         InputLabelProps={{ shrink: false }}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid item container xs={12}>
+                    <Grid item xs={2}>
+                      <label>Is mandatory?</label>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <FormControlLabel
+                        control={
+                          <PurpleSwitch
+                            checked={addQuestion.isMandatory}
+                            name="isMandatory"
+                            onChange={handleChangeSwitch}
+                          />
+                        }
                       />
                     </Grid>
                   </Grid>

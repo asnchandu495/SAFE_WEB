@@ -9,6 +9,9 @@ import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { withStyles } from "@material-ui/core/styles";
+import Switch from "@material-ui/core/Switch";
 import { Link as LinkTo, withRouter } from "react-router-dom";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import QuestionTypeMultiSelect from "./flagConcepts/multiSelectFlag";
@@ -85,6 +88,21 @@ function AddChoiceQuestionDetails(props) {
   });
   const [showFlags, setShowFlags] = useState(false);
   const [reloadPage, setReloadPage] = useState(false);
+  const [selectedQId, setSelectedQId] = useState(props.match.params.qid);
+
+  const PurpleSwitch = withStyles({
+    switchBase: {
+      color: "#be1d56",
+      "&$checked": {
+        color: "#26235d",
+      },
+      "&$checked + $track": {
+        backgroundColor: "#26235d",
+      },
+    },
+    checked: {},
+    track: {},
+  })(Switch);
 
   useEffect(() => {
     if (props.questionIdURL != 0) {
@@ -190,6 +208,14 @@ function AddChoiceQuestionDetails(props) {
     }));
   };
 
+  const handleChangeSwitch = (e) => {
+    const { name, value } = e.target;
+    setAddQuestionWithChoices((addQuestionWithChoices) => ({
+      ...addQuestionWithChoices,
+      [name]: e.target.checked,
+    }));
+  };
+
   const navigateToQuestionType = () => {
     setTimeout(() => {
       props.setGotoAddQuestion(false);
@@ -235,6 +261,7 @@ function AddChoiceQuestionDetails(props) {
             setToasterMessage("Added new question.");
             settoasterServerity("success");
             setTimeout(function () {
+              setSelectedQId(res.id);
               setAddQuestionWithChoices((addQuestionWithChoices) => ({
                 ...addQuestionWithChoices,
                 id: res.id,
@@ -471,6 +498,22 @@ function AddChoiceQuestionDetails(props) {
                       onChange={handleChange}
                       className="global-input global-input-multiline"
                       InputLabelProps={{ shrink: false }}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container xs={12}>
+                  <Grid item xs={2}>
+                    <label>Is mandatory?</label>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <FormControlLabel
+                      control={
+                        <PurpleSwitch
+                          checked={addQuestionWithChoices.isMandatory}
+                          name="isMandatory"
+                          onChange={handleChangeSwitch}
+                        />
+                      }
                     />
                   </Grid>
                 </Grid>

@@ -349,12 +349,7 @@ function DateJump(props) {
                                         className="date-time-pickers"
                                       >
                                         <KeyboardDatePicker
-                                          format={
-                                            props.loadGlobalSettingsData
-                                              ? props.loadGlobalSettingsData
-                                                  .dateFormat
-                                              : "dd/MM/yyyy"
-                                          }
+                                          format={"dd/MM/yyyy"}
                                           fullWidth
                                           id={`forAnswerR${i}`}
                                           placeholder="Your answer"
@@ -391,12 +386,7 @@ function DateJump(props) {
                                             className="date-time-pickers"
                                           >
                                             <KeyboardDatePicker
-                                              format={
-                                                props.loadGlobalSettingsData
-                                                  ? props.loadGlobalSettingsData
-                                                      .dateFormat
-                                                  : "dd/MM/yyyy"
-                                              }
+                                              format={"dd/MM/yyyy"}
                                               fullWidth
                                               id={`forRangeEndR${i}`}
                                               placeholder="Your answer"

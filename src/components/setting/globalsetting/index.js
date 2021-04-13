@@ -105,42 +105,87 @@ function GlobalSetting(props) {
 
   const datesFormat = [
     {
-      id: "dd/MM/yyyy",
-      formatvalue: "dd/MM/yyyy",
+      id: "yyyy-MM-DD",
+      formatvalue: "yyyy-MM-DD",
     },
     {
-      id: "MM/dd/yyyy",
-      formatvalue: "MM/dd/yyyy",
+      id: "MM/DD/yyyy",
+      formatvalue: "MM/DD/yyyy",
     },
     {
-      id: "yyyy/MM/dd",
-      formatvalue: "yyyy/MM/dd",
+      id: "DD/MM/yyyy",
+      formatvalue: "DD/MM/yyyy",
     },
     {
-      id: "ddd/MM/yyyy",
-      formatvalue: "ddd/MM/yyyy",
+      id: "dddd,DD MMMM yyyy",
+      formatvalue: "dddd,DD MMMM yyyy",
     },
     {
-      id: "dddd/MM/yyyy",
-      formatvalue: "dddd/MM/yyyy",
+      id: "MMMM DD,yyyy",
+      formatvalue: "MMMM DD,yyyy",
     },
     {
-      id: "dd/MMM/yyyy",
-      formatvalue: "dd/MMM/yyyy",
+      id: "MMMDDyyyy",
+      formatvalue: "MMMDDyyyy",
     },
     {
-      id: "dd/MMMM/yyyy",
-      formatvalue: "dd/MMMM/yyyy",
+      id: "DDMMMyyyy",
+      formatvalue: "DDMMMyyyy",
+    },
+
+    {
+      id: "yyyyMMMDD",
+      formatvalue: "yyyyMMMDD",
+    },
+    {
+      id: "DD MMMM,yyyy",
+      formatvalue: "DD MMMM,yyyy",
+    },
+    {
+      id: "yyyy,MMMM DD",
+      formatvalue: "yyyy,MMMM DD",
+    },
+    {
+      id: "MMM DD,yyyy",
+      formatvalue: "MMM DD,yyyy",
+    },
+    {
+      id: "DD MMM,yyyy",
+      formatvalue: "DD MMM,yyyy",
+    },
+    {
+      id: "yyyy,MMM DD",
+      formatvalue: "yyyy,MMM DD",
+    },
+    {
+      id: "MMM/DD/yyyy",
+      formatvalue: "MMM/DD/yyyy",
+    },
+    {
+      id: "DD/MMM/yyyy",
+      formatvalue: "DD/MMM/yyyy",
+    },
+    {
+      id: "yyyy/MMM/DD",
+      formatvalue: "yyyy/MMM/DD",
     },
   ];
   const timesFormat = [
     {
-      id: "hh:mm a",
-      value: "12 Hours",
+      id: "HH:mm",
+      value: "HH:mm",
     },
     {
-      id: "HH:mm",
-      value: "24 Hours",
+      id: "hh:mm a",
+      value: "hh:mm a",
+    },
+    {
+      id: "HH:mm:ss",
+      value: "HH:mm:ss",
+    },
+    {
+      id: "hh:mm:ss a",
+      value: "hh:mm:ss a",
     },
   ];
 

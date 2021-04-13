@@ -231,14 +231,14 @@ function TimeDetails(props) {
                             {row.expressionType}
                           </TableCell>
                           <TableCell>
-                            {moment(row.forAnswerDate).format(
+                            {moment(row.forAnswer).format(
                               props.loadGlobalSettingsData
                                 ? props.loadGlobalSettingsData.timeFormat
                                 : "hh:mm"
                             )}
                           </TableCell>
                           <TableCell>
-                            {moment(row.forRangeEndDate).format(
+                            {moment(row.forRangeEnd).format(
                               props.loadGlobalSettingsData
                                 ? props.loadGlobalSettingsData.timeFormat
                                 : "hh:mm"
