@@ -45,7 +45,7 @@ function AddChoiceQuestionDetails(props) {
     ],
   });
   const [singleChoiceFlag, setSingleChoiceFlag] = useState({
-    questionId: props.questionIdURL,
+    questionId: props.match.params.qid,
     isPositiveConfirmity: true,
     isPositiveConfirmityRedFlag: false,
     positiveConformitySingleChoice: [
@@ -62,7 +62,7 @@ function AddChoiceQuestionDetails(props) {
     ],
   });
   const [multiChoiceFlag, setMultiChoiceFlag] = useState({
-    questionId: props.questionIdURL,
+    questionId: props.match.params.qid,
     isPositiveConfirmity: true,
     isPositiveConfirmityRedFlag: false,
     positiveConformityMultiChoice: [
@@ -105,10 +105,10 @@ function AddChoiceQuestionDetails(props) {
   })(Switch);
 
   useEffect(() => {
-    if (props.questionIdURL != 0) {
+    if (selectedQId != 0) {
       if (props.questionTypeForm.questionType == "SingleChoice") {
         questionaireApiCall
-          .GetSingleChoiceQuestion(props.questionIdURL)
+          .GetSingleChoiceQuestion(selectedQId)
           .then((res) => {
             setAddQuestionWithChoices(res);
             setAddQuestionWithChoices(res);
@@ -148,7 +148,7 @@ function AddChoiceQuestionDetails(props) {
           });
       } else {
         questionaireApiCall
-          .GetMultipleChoicQuestionById(props.questionIdURL)
+          .GetMultipleChoicQuestionById(selectedQId)
           .then((res) => {
             setAddQuestionWithChoices(res);
             let newMultiChoiceFlag = {
@@ -195,7 +195,7 @@ function AddChoiceQuestionDetails(props) {
           });
       }
     } else {
-      setShowFlags(true);
+      setShowFlags(false);
     }
   }, [reloadPage]);
 
@@ -619,7 +619,7 @@ function AddChoiceQuestionDetails(props) {
           <Card className="question-card question-card-choice-flag flag-card">
             <CardContent className="scrollable-card scrollable-card-choices">
               {props.questionTypeForm.questionType == "SingleChoice" ? (
-                props.questionIdURL != 0 ? (
+                selectedQId != 0 ? (
                   <QuestionTypeSingleSelect
                     questionTypeForm={props.questionTypeForm}
                     singleChoiceFlag={singleChoiceFlag}
@@ -629,7 +629,7 @@ function AddChoiceQuestionDetails(props) {
                 ) : (
                   ""
                 )
-              ) : props.questionIdURL != 0 ? (
+              ) : selectedQId != 0 ? (
                 <QuestionTypeMultiSelect
                   questionTypeForm={props.questionTypeForm}
                   multiChoiceFlag={multiChoiceFlag}

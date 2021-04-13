@@ -123,15 +123,6 @@ function Questionaire(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick={() => handleClickViewQuestion(thisRowData)}
-                  ></Button>
-                </Tooltip>
                 <Tooltip title="Edit">
                   <Button
                     variant="contained"
