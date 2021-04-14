@@ -192,12 +192,12 @@ function NumericDetails(props) {
                     <TableBody>
                       {props.selectedQuestionDetails.redFlagForNumber.map(
                         (row) => (
-                          <TableRow key={row.expressionType}>
+                          <TableRow key={row.numericExpressionType}>
                             <TableCell component="th" scope="row">
-                              {row.expressionType}
+                              {row.numericExpressionType}
                             </TableCell>
                             <TableCell>{row.forAnswer}</TableCell>
-                            {row.expressionType == "RANGE" ? (
+                            {row.numericExpressionType == "RANGE" ? (
                               <TableCell>{row.forRangeEnd}</TableCell>
                             ) : (
                               <TableCell>-</TableCell>
@@ -228,12 +228,12 @@ function NumericDetails(props) {
                   <TableBody>
                     {props.selectedQuestionDetails.positiveConformityForNumber.map(
                       (row) => (
-                        <TableRow key={row.expressionType}>
+                        <TableRow key={row.numericExpressionType}>
                           <TableCell component="th" scope="row">
-                            {row.expressionType}
+                            {row.numericExpressionType}
                           </TableCell>
                           <TableCell>{row.forAnswer}</TableCell>
-                          {row.expressionType == "RANGE" ? (
+                          {row.numericExpressionType == "RANGE" ? (
                             <TableCell>{row.forRangeEnd}</TableCell>
                           ) : (
                             <TableCell>-</TableCell>

@@ -558,14 +558,16 @@ function AddChoiceQuestionDetails(props) {
                                   {addQuestionWithChoices.surveyResponseChoices
                                     .length -
                                     1 ===
-                                    i && (
-                                    <Tooltip title="Add">
-                                      <AddCircleIcon
-                                        className={`add-row-icon`}
-                                        onClick={handleAddClickChoices}
-                                      ></AddCircleIcon>
-                                    </Tooltip>
-                                  )}
+                                    i &&
+                                    addQuestionWithChoices.surveyResponseChoices
+                                      .length < 10 && (
+                                      <Tooltip title="Add">
+                                        <AddCircleIcon
+                                          className={`add-row-icon`}
+                                          onClick={handleAddClickChoices}
+                                        ></AddCircleIcon>
+                                      </Tooltip>
+                                    )}
                                 </Grid>
                               </Grid>
                             );

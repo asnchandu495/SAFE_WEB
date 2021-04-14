@@ -1,28 +1,19 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
-import MUIDataTable from "mui-datatables";
-import { Button } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import { connect } from "react-redux";
-import * as UserAction from "../../Redux/Action/userAction";
 import PropTypes from "prop-types";
-import ToasterMessageComponent from "../common/toaster";
-import Tooltip from "@material-ui/core/Tooltip";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import { connect } from "react-redux";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
+import moment from "moment";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import Paper from "@material-ui/core/Paper";
-import AddIcon from "@material-ui/icons/Add";
-import { makeStyles } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import EditIcon from "@material-ui/icons/Edit";
 import HelpIcon from "@material-ui/icons/Help";
-import InfoIcon from "@material-ui/icons/Info";
 import healthCheckService from "../../services/healthCheckService";
 
 function ViewHealthDeclaration(props) {
@@ -34,6 +25,7 @@ function ViewHealthDeclaration(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
 
   useEffect(() => {
+    props.loadGlobalSettingWithoutAPICall();
     HealthCheckApiCall.getAllResponsesbyId(ResponseId)
       .then((response) => {
         getAllAnswersbyResponseId(response);
@@ -47,6 +39,67 @@ function ViewHealthDeclaration(props) {
   const handleChangeAnswerSection = (panel) => (event, isExpanded) => {
     setExpandedFaq(isExpanded ? panel : false);
   };
+
+  function RenderAnswers(props) {
+    console.log(props.questionDetails.questionType);
+    switch (props.questionDetails.questionType) {
+      case "Boolean":
+        return (
+          <p className="question-answer">
+            {props.questionDetails.answer ? "Yes" : "No"}
+          </p>
+        );
+      case "Time":
+        return (
+          <p className="question-answer">
+            {moment(props.questionDetails.forAnswerDate).format(
+              props.loadGlobalSettingsData
+                ? props.loadGlobalSettingsData.timeFormat
+                : "dd/MM/yyyy"
+            )}
+          </p>
+        );
+      case "Numeric":
+        return (
+          <p className="question-answer">{props.questionDetails.answer}</p>
+        );
+      case "Date":
+        return (
+          <p className="question-answer">
+            {moment(props.questionDetails.answer).format(
+              props.loadGlobalSettingsData
+                ? props.loadGlobalSettingsData.dateFormat
+                : "dd/MM/yyyy"
+            )}
+          </p>
+        );
+      case "FreeText":
+        return (
+          <p className="question-answer">{props.questionDetails.answer}</p>
+        );
+      case "SingleChoice":
+        return (
+          <p className="question-answer">{props.questionDetails.option}</p>
+        );
+      case "MultiChoice":
+        return (
+          <p className="question-answer">
+            {props.questionDetails.surveyReplyChoiceAnswer &&
+            props.questionDetails.surveyReplyChoiceAnswer.length > 0 ? (
+              <ul className="question_choices_list">
+                {props.questionDetails.surveyReplyChoiceAnswer.map((an) => {
+                  return <li key={`choices_${an.id}`}>{an.option}</li>;
+                })}
+              </ul>
+            ) : (
+              "Nil"
+            )}
+          </p>
+        );
+      default:
+        return <h4>Not found</h4>;
+    }
+  }
 
   return (
     <div className="innerpage-container">
@@ -131,6 +184,12 @@ function ViewHealthDeclaration(props) {
                               </Grid>
                               <Grid item xs={11}>
                                 <p className="question-name">{ans.question}</p>
+                                <RenderAnswers
+                                  questionDetails={ans}
+                                  loadGlobalSettingsData={
+                                    props.loadGlobalSettingsData
+                                  }
+                                ></RenderAnswers>
                               </Grid>
                             </Grid>
                           </Grid>
@@ -146,4 +205,23 @@ function ViewHealthDeclaration(props) {
     </div>
   );
 }
-export default ViewHealthDeclaration;
+
+ViewHealthDeclaration.propTypes = {
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ViewHealthDeclaration);
