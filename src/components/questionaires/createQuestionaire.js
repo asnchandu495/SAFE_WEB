@@ -23,6 +23,8 @@ import * as QuestionaireAction from "../../Redux/Action/questionaireAction";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
+
 function CreateQuestionarie(props) {
   const paramsId = props.match.params.id;
   const questionaireApiCall = new questionaireService();
@@ -34,6 +36,7 @@ function CreateQuestionarie(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [QuestionaireList, setQuestionaireList] = useState();
+  const [isDuplicate, setIsDuplicate] = useState(false);
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
@@ -77,12 +80,45 @@ function CreateQuestionarie(props) {
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
+    if (name == "name") {
+      checkUnqueName(value);
+    }
 
     setformData((formData) => ({
       ...formData,
       [name]: value,
     }));
   }
+
+  function checkUnqueName(value) {
+    if (props.match.params.id != 0) {
+      if (props.questionaireDatas && props.questionaireDatas.length > 0) {
+        let filteredData = props.questionaireDatas.filter((x) => {
+          return x.id != props.match.params.id;
+        });
+        let matchedValue = filteredData.find(
+          (x) => x.name.toLowerCase() == value.toLowerCase()
+        );
+        if (matchedValue) {
+          setIsDuplicate(true);
+        } else {
+          setIsDuplicate(false);
+        }
+      }
+    } else {
+      if (props.questionaireDatas && props.questionaireDatas.length > 0) {
+        let matchedValue = props.questionaireDatas.find(
+          (x) => x.name.toLowerCase() == value.toLowerCase()
+        );
+        if (matchedValue) {
+          setIsDuplicate(true);
+        } else {
+          setIsDuplicate(false);
+        }
+      }
+    }
+  }
+
   function handleClickGoBack() {
     props.history.push("/questionaires/allquestionaires");
   }
@@ -197,6 +233,13 @@ function CreateQuestionarie(props) {
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
                     />
+                    {isDuplicate ? (
+                      <FormHelperText className="error-msg">
+                        This name already exists.
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )}
                   </Grid>
                 </Grid>
 

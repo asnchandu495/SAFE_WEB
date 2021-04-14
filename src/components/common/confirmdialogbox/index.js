@@ -492,7 +492,7 @@ function CustomizedDialogs(props) {
         .DeleteMultiQuestionData(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Deleted multochoice Question.");
+          props.setToasterMessage("Deleted Multichoice Question.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
         })
