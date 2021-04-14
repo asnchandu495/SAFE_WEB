@@ -216,7 +216,7 @@ function AddChoiceQuestionDetails(props) {
           .then((res) => {
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
-            setToasterMessage("Selected question updated.");
+            setToasterMessage("Question details updated.");
             settoasterServerity("success");
             setTimeout(function () {
               setshowLoadder(false);
