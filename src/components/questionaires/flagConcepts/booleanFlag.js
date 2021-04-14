@@ -51,7 +51,7 @@ function QuestionTypeBollean(props) {
         <Card className="flag-card">
           <CardContent>
             <Grid item container xs={12}>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                 <label>Red Flag</label>
               </Grid>
               <Grid item xs={6}>
@@ -68,7 +68,7 @@ function QuestionTypeBollean(props) {
             </Grid>
             {props.booleanFlag.isPositiveConfirmityRedFlag ? (
               <Grid item container xs={12}>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <label
                     className={
                       props.booleanFlag.isPositiveConfirmityRedFlag

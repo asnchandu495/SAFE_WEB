@@ -36,6 +36,7 @@ function QuestionnaireEvaluation(props) {
   const questionaireApiCall = new questionaireService();
   const { id } = useParams();
   const [showLoadder, setshowLoadder] = useState(false);
+  const [questionaireDetails, setquestionaireDetails] = useState();
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
@@ -91,11 +92,13 @@ function QuestionnaireEvaluation(props) {
 
   useEffect(() => {
     Promise.all([
+      questionaireApiCall.getSurveyById(id),
       CovidStateApi.getCOVIDStates(),
       questionaireApiCall.GetEvaluationId(id),
     ])
-      .then(([covidstateRes, getEvaluationDetails]) => {
+      .then(([surveyid, covidstateRes, getEvaluationDetails]) => {
         setcovidStatelist(covidstateRes);
+        setquestionaireDetails(surveyid);
         if (getEvaluationDetails && getEvaluationDetails.id) {
           setTemperatureConfigForm(getEvaluationDetails);
         }
@@ -172,13 +175,10 @@ function QuestionnaireEvaluation(props) {
     setTemperatureConfigForm(list);
   };
   function handleChange(e) {
-    alert("dsdfjgg");
     setisAlertBoxOpened(true);
 
     const { name, value } = e.target;
     if (name == "HightTemperatureNoLimit") {
-      console.log("hightenperature");
-      console.log(e.target.checked);
       if (e.target.checked == true) {
         setdisableUpperLimit(true);
         setTemperatureConfigForm((logInForm) => ({
@@ -274,6 +274,9 @@ function QuestionnaireEvaluation(props) {
           className="inactive"
         >
           Questionnaire
+        </LinkTo>
+        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+          {questionaireDetails ? questionaireDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Questionnaire Evaluation

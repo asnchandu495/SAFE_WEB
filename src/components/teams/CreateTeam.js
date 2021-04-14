@@ -27,6 +27,7 @@ function CreateTeam(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
+  const [isDuplicate, setIsDuplicate] = useState(false);
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
@@ -72,11 +73,44 @@ function CreateTeam(props) {
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
+    if (name == "name") {
+      checkUnqueName(value);
+    }
     SetformData((formData) => ({
       ...formData,
       [name]: value,
     }));
   }
+
+  function checkUnqueName(value) {
+    if (props.match.params.id != 0) {
+      if (props.teamDatas && props.teamDatas.length > 0) {
+        let filteredData = props.teamDatas.filter((x) => {
+          return x.id != props.match.params.id;
+        });
+        let matchedValue = filteredData.find(
+          (x) => x.name.toLowerCase() == value.toLowerCase()
+        );
+        if (matchedValue) {
+          setIsDuplicate(true);
+        } else {
+          setIsDuplicate(false);
+        }
+      }
+    } else {
+      if (props.teamDatas && props.teamDatas.length > 0) {
+        let matchedValue = props.teamDatas.find(
+          (x) => x.name.toLowerCase() == value.toLowerCase()
+        );
+        if (matchedValue) {
+          setIsDuplicate(true);
+        } else {
+          setIsDuplicate(false);
+        }
+      }
+    }
+  }
+
   function handleChangeTeamManagers(event, value) {
     setisAlertBoxOpened(true);
     setSelectedTeamManager(value);
@@ -219,6 +253,13 @@ function CreateTeam(props) {
                     InputLabelProps={{ shrink: false }}
                     className="global-input"
                   />
+                  {isDuplicate ? (
+                    <FormHelperText className="error-msg">
+                      This name already exists.
+                    </FormHelperText>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
               </Grid>
               <Grid item container xs={12}>
