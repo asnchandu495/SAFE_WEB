@@ -39,6 +39,7 @@ function ViewQuestions(props) {
   });
   const [selectedQuestionDetails, setSelectedQuestionDetails] = useState();
   // const [selectedfreetextDetails, setSelectedfreetextDetails] = useState();
+  const [reloadListPage, setReloadListPage] = useState("No");
 
   useEffect(() => {
     props.loadGlobalSettingWithoutAPICall();
@@ -50,7 +51,7 @@ function ViewQuestions(props) {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reloadListPage]);
 
   function gotoAddQuestion() {
     props.history.push(`/questionaires/add-questions/${questionaireId}/0`);
@@ -65,6 +66,7 @@ function ViewQuestions(props) {
               <BooleanDetails
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
+                setReloadListPage={props.setReloadListPage}
               ></BooleanDetails>
             </Grid>
           </Grid>
@@ -77,6 +79,7 @@ function ViewQuestions(props) {
               <FreetextDetails
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
+                setReloadListPage={props.setReloadListPage}
               ></FreetextDetails>{" "}
             </Grid>
           </Grid>
@@ -90,6 +93,7 @@ function ViewQuestions(props) {
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
                 loadGlobalSettingsData={props.loadGlobalSettingsData}
+                setReloadListPage={props.setReloadListPage}
               ></DateDetails>{" "}
             </Grid>
           </Grid>
@@ -103,6 +107,7 @@ function ViewQuestions(props) {
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
                 loadGlobalSettingsData={props.loadGlobalSettingsData}
+                setReloadListPage={props.setReloadListPage}
               ></TimeDetails>{" "}
             </Grid>
           </Grid>
@@ -115,6 +120,7 @@ function ViewQuestions(props) {
               <NumericDetails
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
+                setReloadListPage={props.setReloadListPage}
               ></NumericDetails>{" "}
             </Grid>
           </Grid>
@@ -127,6 +133,7 @@ function ViewQuestions(props) {
               <SingleChoiceDetails
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
+                setReloadListPage={props.setReloadListPage}
               ></SingleChoiceDetails>{" "}
             </Grid>
           </Grid>
@@ -139,6 +146,7 @@ function ViewQuestions(props) {
               <MultiChoiceDetails
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
+                setReloadListPage={props.setReloadListPage}
               ></MultiChoiceDetails>{" "}
             </Grid>
           </Grid>
@@ -190,6 +198,7 @@ function ViewQuestions(props) {
             <Paper className="list-questions">
               <ListofQuestions
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
+                reloadListPage={reloadListPage}
                 // setSelectedfreetextDetails={setSelectedfreetextDetails}
               ></ListofQuestions>
             </Paper>
@@ -206,6 +215,7 @@ function ViewQuestions(props) {
                       : ""
                   }
                   loadGlobalSettingsData={props.loadGlobalSettingsData}
+                  setReloadListPage={setReloadListPage}
                 ></RenderFlagComponent>
 
                 {/* <QuestionDetails

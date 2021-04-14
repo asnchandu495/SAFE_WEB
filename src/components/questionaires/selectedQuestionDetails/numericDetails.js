@@ -263,6 +263,8 @@ function NumericDetails(props) {
         settoasterServerity={settoasterServerity}
         ConfirmationModalActionType={ConfirmationModalActionType}
         SelectedRowDetails={SelectedRowDetails}
+        setSelectedQuestionDetails={props.setSelectedQuestionDetails}
+        selectedQuestionDetails={props.selectedQuestionDetails}
       />
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}

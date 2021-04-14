@@ -384,6 +384,10 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Boolean Question.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          props.setSelectedQuestionDetails((selectedQuestionDetails) => ({
+            ...props.selectedQuestionDetails,
+            ["questionType"]: null,
+          }));
         })
         .catch((error) => {
           console.log(error);
@@ -403,6 +407,10 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Freetext Question.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          props.setSelectedQuestionDetails((selectedQuestionDetails) => ({
+            ...props.selectedQuestionDetails,
+            ["questionType"]: null,
+          }));
         })
         .catch((error) => {
           console.log(error);
@@ -419,6 +427,10 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Time Question.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          props.setSelectedQuestionDetails((selectedQuestionDetails) => ({
+            ...props.selectedQuestionDetails,
+            ["questionType"]: null,
+          }));
         })
         .catch((error) => {
           console.log(error);
@@ -438,6 +450,10 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted date Question.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          props.setSelectedQuestionDetails((selectedQuestionDetails) => ({
+            ...props.selectedQuestionDetails,
+            ["questionType"]: null,
+          }));
         })
         .catch((error) => {
           console.log(error);
@@ -456,6 +472,10 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted numeric Question.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          props.setSelectedQuestionDetails((selectedQuestionDetails) => ({
+            ...props.selectedQuestionDetails,
+            ["questionType"]: null,
+          }));
         })
         .catch((error) => {
           console.log(error);
@@ -476,6 +496,10 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted singlechoice Question.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          props.setSelectedQuestionDetails((selectedQuestionDetails) => ({
+            ...props.selectedQuestionDetails,
+            ["questionType"]: null,
+          }));
         })
         .catch((error) => {
           console.log(error);
@@ -495,6 +519,10 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Multichoice Question.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          props.setSelectedQuestionDetails((selectedQuestionDetails) => ({
+            ...props.selectedQuestionDetails,
+            ["questionType"]: null,
+          }));
         })
         .catch((error) => {
           console.log(error);
