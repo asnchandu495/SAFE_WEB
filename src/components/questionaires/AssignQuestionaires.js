@@ -562,7 +562,7 @@ function AssignQuestionaires(props) {
             <LinkTo
               color="textPrimary"
               href="#"
-              to={`/teams/allteams`}
+              to={`/questionaires/allquestionaires`}
               className="inactive"
             >
               Questionnaire
