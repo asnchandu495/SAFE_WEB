@@ -249,7 +249,7 @@ function AddPrimaryUserTeam(props) {
       },
     },
     {
-      label: "User Id",
+      label: "User ID",
       name: "userId",
       options: {
         filter: true,
@@ -258,7 +258,7 @@ function AddPrimaryUserTeam(props) {
     },
     {
       name: "emailID",
-      label: "Email Id",
+      label: "Email ID",
       options: {
         filter: true,
         sort: true,
@@ -363,6 +363,35 @@ function AddPrimaryUserTeam(props) {
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">User Group </label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          userGroupList && userGroupList.length > 0
+                            ? userGroupList
+                            : []
+                        }
+                        getOptionLabel={(option) => option.groupName}
+                        defaultValue="#"
+                        onChange={selectedUser}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select usergroup"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
+                  </Grid>
+                </Grid>
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
                     <label className="">Designation</label>
@@ -387,35 +416,6 @@ function AddPrimaryUserTeam(props) {
                             {...params}
                             variant="outlined"
                             placeholder="Select designation"
-                          />
-                        )}
-                      />{" "}
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid item cs={12} container>
-                  <Grid item xs={4}>
-                    <label className="">Group Name</label>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <FormControl variant="outlined" fullWidth>
-                      <Autocomplete
-                        id="tags-outlined"
-                        options={
-                          userGroupList && userGroupList.length > 0
-                            ? userGroupList
-                            : []
-                        }
-                        getOptionLabel={(option) => option.groupName}
-                        defaultValue="#"
-                        onChange={selectedUser}
-                        filterSelectedOptions
-                        className="global-input autocomplete-select"
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            variant="outlined"
-                            placeholder="Select usergroup"
                           />
                         )}
                       />{" "}
