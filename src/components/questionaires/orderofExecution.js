@@ -110,11 +110,10 @@ function OrderofExecution(props) {
           to={`/questionaires/allquestionaires`}
           className="inactive"
         >
-          Questionaire
+          Questionnaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="inactive">
-          {/* {ViewQuestionaireDetails.name} */}
-          Selected questionnaire
+          {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Order of execution

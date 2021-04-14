@@ -60,7 +60,7 @@ function NumericDetails(props) {
     setConfirmationModalActionType("DeleteNumericQuestion");
     setConfirmationHeaderTittle("Delete  Numeric Question");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value.question} ?`
+      `Are you sure you want to delete this question ?`
     );
   }
 

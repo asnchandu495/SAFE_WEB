@@ -53,9 +53,10 @@ function MultiChoiceDetails(props) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteMultichoiceQuestion");
-    setConfirmationHeaderTittle("Delete  multi Question");
+    setConfirmationHeaderTittle("DELETE  MULTI CHOICE QUESTION");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value.question} ?`
+      // `Are you sure you want to delete ${value.question} ?`
+      `Are you sure you want to delete this question ?`
     );
   }
 
