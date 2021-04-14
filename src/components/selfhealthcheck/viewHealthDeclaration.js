@@ -131,73 +131,91 @@ function ViewHealthDeclaration(props) {
           <Grid item xs={12} className="faq-basic-info">
             <Paper className="main-paper">
               <Grid container spacing={3}>
-                <Grid item xs={12} className="faq-title">
-                  <Grid container spacing={3}>
-                    <Grid item container xs={12}>
-                      <Grid item xs={7}>
-                        <label>
-                          Self health result of user Gabby George on 1/7/2020
-                        </label>
-                      </Grid>
-                      <Grid item xs={5}>
-                        <span>Status : Suspected</span>
+                {allAnswersbyResponseId.length > 0 ? (
+                  <Grid item xs={12} className="faq-title">
+                    <Grid container spacing={3}>
+                      <Grid item container xs={12}>
+                        <Grid item xs={7}>
+                          <label>
+                            Self health result of user{" "}
+                            <b>{allAnswersbyResponseId[0].userName}</b> on{" "}
+                            <b>
+                              {moment(
+                                allAnswersbyResponseId[0].createdDate
+                              ).format(
+                                props.loadGlobalSettingsData
+                                  ? props.loadGlobalSettingsData.dateFormat
+                                  : "dd/MM/yyyy"
+                              )}
+                            </b>
+                          </label>
+                        </Grid>
+                        <Grid item xs={5}>
+                          <span>
+                            Status : <b>{allAnswersbyResponseId[0].result}</b>
+                          </span>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
+                ) : (
+                  ""
+                )}
               </Grid>
             </Paper>
             <Paper className="view-faq-paper-section">
-              {allAnswersbyResponseId.length > 0
-                ? allAnswersbyResponseId.map((ans, i) => {
-                    let thisPanel = "panel" + i;
-                    return (
-                      <Accordion
-                        square
-                        expanded={expandedFaq === thisPanel}
-                        onChange={handleChangeAnswerSection(thisPanel)}
+              {allAnswersbyResponseId.length > 0 ? (
+                allAnswersbyResponseId.map((ans, i) => {
+                  let thisPanel = "panel" + i;
+                  return (
+                    <Accordion
+                      square
+                      expanded={expandedFaq === thisPanel}
+                      onChange={handleChangeAnswerSection(thisPanel)}
+                    >
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1c-content"
                       >
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="panel1c-content"
-                        >
-                          <Typography className="section-heading">
-                            Question {i + 1} (Type : {ans.questionType})
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Grid container item xs={12}>
+                        <Typography className="section-heading">
+                          Question {i + 1} (Type : {ans.questionType})
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Grid container item xs={12}>
+                          <Grid
+                            container
+                            spacing={1}
+                            item
+                            xs={12}
+                            key={`ans-container${i}`}
+                            className="question-container"
+                          >
                             <Grid
-                              container
-                              spacing={1}
                               item
-                              xs={12}
-                              key={`ans-container${i}`}
-                              className="question-container"
+                              xs={1}
+                              className="question-icon-container"
                             >
-                              <Grid
-                                item
-                                xs={1}
-                                className="question-icon-container"
-                              >
-                                <HelpIcon></HelpIcon>
-                              </Grid>
-                              <Grid item xs={11}>
-                                <p className="question-name">{ans.question}</p>
-                                <RenderAnswers
-                                  questionDetails={ans}
-                                  loadGlobalSettingsData={
-                                    props.loadGlobalSettingsData
-                                  }
-                                ></RenderAnswers>
-                              </Grid>
+                              <HelpIcon></HelpIcon>
+                            </Grid>
+                            <Grid item xs={11}>
+                              <p className="question-name">{ans.question}</p>
+                              <RenderAnswers
+                                questionDetails={ans}
+                                loadGlobalSettingsData={
+                                  props.loadGlobalSettingsData
+                                }
+                              ></RenderAnswers>
                             </Grid>
                           </Grid>
-                        </AccordionDetails>
-                      </Accordion>
-                    );
-                  })
-                : "No answers"}
+                        </Grid>
+                      </AccordionDetails>
+                    </Accordion>
+                  );
+                })
+              ) : (
+                <p>No answers</p>
+              )}
             </Paper>
           </Grid>
         </Grid>
