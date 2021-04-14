@@ -47,7 +47,7 @@ import UserProfie from "./components/profile";
 import AddedPrimaryUserTeam from "./components/teams/addedprimaryuserteam";
 import Questionaire from "./components/questionaires";
 import CreateQuestionarie from "./components/questionaires/createQuestionaire";
-import AddQuestion from "./components/questionaires/addQuestion";
+import AddNewQuestion from "./components/questionaires/addNewQuestion";
 import ViewQuestions from "./components/questionaires/viewQuestions";
 import QuestionnaireEvaluation from "./components/questionaires/questionnaireEvaluation";
 import InternalServer from "./components/common/ErrorPage/InternalServerError/index";
@@ -224,7 +224,7 @@ function App(props) {
         ></Route>
         <Route
           path="/questionaires/add-questions/:id/:qid"
-          component={AddQuestion}
+          component={AddNewQuestion}
         ></Route>
         <Route
           path="/questionaires/view-questions/:id"
