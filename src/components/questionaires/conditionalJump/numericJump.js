@@ -236,7 +236,7 @@ function NumericJump(props) {
           {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          Conditional Jumb
+          Conditional Jump
         </LinkTo>
       </Breadcrumbs>
       <div className="main-paper-add-question">
