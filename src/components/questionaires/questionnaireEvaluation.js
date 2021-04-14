@@ -172,7 +172,6 @@ function QuestionnaireEvaluation(props) {
     setTemperatureConfigForm(list);
   };
   function handleChange(e) {
-    alert("dsdfjgg");
     setisAlertBoxOpened(true);
 
     const { name, value } = e.target;
