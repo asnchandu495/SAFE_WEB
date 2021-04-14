@@ -109,11 +109,21 @@ function AddChoiceQuestionDetails(props) {
               positiveConformitySingleChoice:
                 res.positiveConformitySingleChoice.length > 0
                   ? res.positiveConformitySingleChoice
-                  : [],
+                  : [
+                      {
+                        optionId: "",
+                        option: "",
+                      },
+                    ],
               redFlagForSingleChoice:
                 res.redFlagForSingleChoice.length > 0
                   ? res.redFlagForSingleChoice
-                  : [],
+                  : [
+                      {
+                        optionId: "",
+                        option: "",
+                      },
+                    ],
             };
             setSingleChoiceFlag(newSingleChoiceFlag);
             setshowLoadder(false);

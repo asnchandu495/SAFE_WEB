@@ -152,14 +152,15 @@ function AddQuestionDetails(props) {
             props.selectedQuestionDetails.isPositiveConformityRedFlag,
         });
       } else if (props.selectedQuestionDetails.questionType == "Time") {
-        setDatetimeFlag({
-          positiveConformityForDate:
-            props.selectedQuestionDetails.positiveConformityForDate,
-          redFlagForDate: props.selectedQuestionDetails.redFlagForDate,
+        console.log(props.selectedQuestionDetails);
+        setTimeFlag({
+          positiveConformityForTime:
+            props.selectedQuestionDetails.positiveConformityForTime,
+          redFlagForTime: props.selectedQuestionDetails.redFlagForTime,
           isPositiveConformity:
             props.selectedQuestionDetails.isPositiveConformity,
-          isPositiveConformityRedFlag:
-            props.selectedQuestionDetails.isPositiveConformityRedFlag,
+          isPositiveConfirmityRedFlag:
+            props.selectedQuestionDetails.isPositiveConfirmityRedFlag,
         });
       } else if (props.selectedQuestionDetails.questionType == "Numeric") {
         setNumericFlag({
