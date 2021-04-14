@@ -212,7 +212,6 @@ function NumericDetails(props) {
             ) : (
               ""
             )}
-
             <Grid item xs={12} container>
               <Grid item xs={3}>
                 <label>Positive flag :</label>
