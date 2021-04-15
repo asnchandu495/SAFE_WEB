@@ -112,8 +112,8 @@ function UpdateShiftingInfo(props) {
   const [selectedId, setSelectedId] = useState("");
 
   useEffect(() => {
+    props.loadGlobalSettingWithoutAPICall();
     if (props.SelectedRowId) {
-      props.loadGlobalSettingWithoutAPICall();
       setSelectedId(props.SelectedRowId);
       usersApiCall
         .getShiftInfo(props.SelectedRowId)
@@ -205,7 +205,8 @@ function UpdateShiftingInfo(props) {
                       }
                       ampm={
                         props.loadGlobalSettingsData
-                          ? props.loadGlobalSettingsData.timeFormat.includes(
+                          ? props.loadGlobalSettingsData.timeFormat &&
+                            props.loadGlobalSettingsData.timeFormat.includes(
                               "HH"
                             )
                             ? false
@@ -233,7 +234,8 @@ function UpdateShiftingInfo(props) {
                       }
                       ampm={
                         props.loadGlobalSettingsData
-                          ? props.loadGlobalSettingsData.timeFormat.includes(
+                          ? props.loadGlobalSettingsData.timeFormat &&
+                            props.loadGlobalSettingsData.timeFormat.includes(
                               "HH"
                             )
                             ? false
