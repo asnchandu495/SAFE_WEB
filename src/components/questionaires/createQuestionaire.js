@@ -161,7 +161,7 @@ function CreateQuestionarie(props) {
           setisAlertBoxOpened(false);
 
           setStateSnackbar(true);
-          setToasterMessage("Added new questionnaire.");
+          setToasterMessage("Added new questionaire.");
           settoasterServerity("success");
 
           setTimeout(() => {

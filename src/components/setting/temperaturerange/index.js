@@ -361,7 +361,7 @@ function TemperatureRange(props) {
                             errorMessages={["Please enter lower limit"]}
                             validators={[
                               "required",
-                              "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                               "maxNumber:999999",
                             ]}
                             errorMessages={[
@@ -392,7 +392,7 @@ function TemperatureRange(props) {
                             errorMessages={["Please enter lower limit"]}
                             validators={[
                               "required",
-                              "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                               "maxNumber:999999",
                             ]}
                             errorMessages={[
