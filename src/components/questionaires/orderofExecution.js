@@ -3,15 +3,13 @@ import ReactDOM from "react-dom";
 import ReactDragListView from "react-drag-listview/lib/index.js";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 import questionaireService from "../../services/questionaireService";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -33,6 +31,8 @@ function OrderofExecution(props) {
     "array"
   );
   const [reloadPage, setReloadPage] = useState("NO");
+  const [displayListDiv, setDisplayListDiv] = useState("");
+  const [selectedParentQuestions, setSelectedParentQuestions] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -93,6 +93,103 @@ function OrderofExecution(props) {
     handleSelector: "li",
   };
 
+  function showDIveList(index, question) {
+    switch (question.questionType) {
+      case "Boolean":
+        questionaireApiCall
+          .GetBooleanConditionQuestionById(question.id)
+          .then((res) => {
+            let newResponse = [];
+            if (res.positiveResponseQuestionHasCondition) {
+              newResponse.push({
+                id: res.positiveResponseQuestionId,
+                question: res.positiveResponseQuestionName,
+              });
+            }
+            if (res.negativeResponseQuestionHasCondition) {
+              newResponse.push({
+                id: res.negativeResponseQuestionId,
+                question: res.negativeResponseQuestionName,
+              });
+            }
+            setSelectedParentQuestions(newResponse);
+            setDisplayListDiv(`dis${index}`);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "FreeText":
+        questionaireApiCall
+          .GetFreeTextQuestion(question.id)
+          .then((res) => {
+            setSelectedParentQuestions(res);
+            setDisplayListDiv(`dis${index}`);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "Date":
+        questionaireApiCall
+          .GetDateTimeBooleanById(question.id)
+          .then((res) => {
+            setSelectedParentQuestions(res.dateTimeConditionalQuestions);
+            setDisplayListDiv(`dis${index}`);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "Time":
+        questionaireApiCall
+          .GetTimeQuestionBooleanById(question.id)
+          .then((res) => {
+            setSelectedParentQuestions(res.timeConditionalQuestions);
+            setDisplayListDiv(`dis${index}`);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "Numeric":
+        questionaireApiCall
+          .GetNumeicQuestionBoooleanById(question.id)
+          .then((res) => {
+            setSelectedParentQuestions(res.numericConditionalQuestions);
+            setDisplayListDiv(`dis${index}`);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "SingleChoice":
+        questionaireApiCall
+          .GetSingleChoiceBooleanQuestion(question.id)
+          .then((res) => {
+            setSelectedParentQuestions(res.singleChoiceConditionalQuestions);
+            setDisplayListDiv(`dis${index}`);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "MultiChoice":
+        questionaireApiCall
+          .GetMultipleChoicQuestionBooleanById(question.id)
+          .then((res) => {
+            setSelectedParentQuestions(res.multiChoiceConditionalQuestions);
+            setDisplayListDiv(`dis${index}`);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      default:
+        return <h4>Not found</h4>;
+    }
+  }
+
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -113,10 +210,10 @@ function OrderofExecution(props) {
           Questionnaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="inactive">
-          {surveyDetails ? surveyDetails.name : ""}
+          Order of execution
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          Order of execution
+          {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper main-paper-add-question">
@@ -130,7 +227,15 @@ function OrderofExecution(props) {
                   <ReactDragListView {...dragProps}>
                     {selectedSurveyQuestions.map((ques, index = index + 1) => {
                       return (
-                        <ListItem alignItems="flex-start" key={index}>
+                        <ListItem
+                          alignItems="flex-start"
+                          key={index}
+                          className={
+                            ques.hasConditionalOrder
+                              ? "conditional-order-li queslist"
+                              : "queslist"
+                          }
+                        >
                           <Grid
                             item
                             xs={12}
@@ -138,7 +243,37 @@ function OrderofExecution(props) {
                           >
                             <Avatar>{ques.order}</Avatar>
                             <p className="question-name">{ques.question}</p>
+                            {ques.hasConditionalOrder ? (
+                              <Avatar
+                                className="viewlist"
+                                onClick={() => showDIveList(index, ques)}
+                              >
+                                <VisibilityIcon></VisibilityIcon>
+                              </Avatar>
+                            ) : (
+                              ""
+                            )}
                           </Grid>
+                          {displayListDiv == `dis${index}` ? (
+                            <Grid
+                              item
+                              xs={12}
+                              className="question-container-full sublist"
+                            >
+                              {selectedParentQuestions &&
+                              selectedParentQuestions.length > 0
+                                ? selectedParentQuestions.map((q, i) => {
+                                    return (
+                                      <p>
+                                        {i + 1} ) {q.question}
+                                      </p>
+                                    );
+                                  })
+                                : ""}
+                            </Grid>
+                          ) : (
+                            ""
+                          )}
                         </ListItem>
                       );
                     })}

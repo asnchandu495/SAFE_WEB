@@ -1174,6 +1174,7 @@ label.required {
   .question-container-full {
     display: inline-flex;
     align-items: center;
+    width: 100%;
   }
 }
 
@@ -1183,4 +1184,36 @@ label.required {
   box-shadow: none !important;
   border: 1px solid #ccc;
   padding: 15px;
+}
+
+.conditional-order-li {
+  background-color: #f7d6d3;
+}
+
+.question-container-full .viewlist {
+  margin-left: auto !important;
+}
+
+.queslist {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.viewlist {
+  height: 20px !important;
+  width: 20px !important;
+  cursor: pointer !important;
+  .MuiSvgIcon-root {
+    height: 15px;
+    width: 15px;
+  }
+}
+
+.sublist {
+  padding-left: 45px !important;
+  background-color: #fff !important;
+  margin-top: 10px !important;
+  flex-direction: column;
+  align-items: flex-start !important;
 }
