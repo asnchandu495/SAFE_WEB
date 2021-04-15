@@ -220,7 +220,7 @@ function CreateQuestionarie(props) {
                         "matchRegexp:^.{0,100}$",
                       ]}
                       errorMessages={[
-                        "Please enter questionarie",
+                        "Please enter questionnaire",
                         "Special charcters are not allowed",
                         "Maximum 100 characters",
                       ]}
