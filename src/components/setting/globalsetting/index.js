@@ -874,6 +874,11 @@ function GlobalSetting(props) {
                       labelWidth={0}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      // InputProps={{
+                      //   endAdornment: (
+                      //     <InputAdornment position="end">MB</InputAdornment>
+                      //   ),
+                      // }}
                     />
                   </FormControl>
                 </Grid>
