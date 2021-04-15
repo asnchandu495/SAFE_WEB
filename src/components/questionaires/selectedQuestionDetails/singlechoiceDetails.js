@@ -55,7 +55,8 @@ function SingleChoiceDetails(props) {
     setConfirmationModalActionType("DeleteSinglechoiceQuestion");
     setConfirmationHeaderTittle("Delete  single choice Question");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value.question} ?`
+      // `Are you sure you want to delete ${value.question} ?`
+      `Are you sure you want to delete this question ?`
     );
   }
 

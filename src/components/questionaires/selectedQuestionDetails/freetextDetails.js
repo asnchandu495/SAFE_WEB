@@ -53,7 +53,8 @@ function FreetextDetails(props) {
     setConfirmationModalActionType("DeleteFreeQuestion");
     setConfirmationHeaderTittle("Delete Freetext Question");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value.question} ?`
+      // `Are you sure you want to delete ${value.question} ?`
+      `Are you sure you want to delete this question ?`
     );
   }
 

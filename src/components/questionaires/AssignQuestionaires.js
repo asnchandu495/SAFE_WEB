@@ -178,14 +178,14 @@ function AssignQuestionaires(props) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("ChangeQuestionnaireStatus");
-    setConfirmationHeaderTittle("Change questionaire status");
+    setConfirmationHeaderTittle("Change questionnaire status");
     if (userStatus == "Active") {
       setConfirmationDialogContextText(
-        `By changing the status to “Inactive”, users of the user group ${value[3]} will not be able to access any  documents. Are you sure you want to change status ?`
+        `By changing the status to “Inactive”, users of the user group  will not be able to access the questionnaire. Are you sure you want to change status ?`
       );
     } else {
       setConfirmationDialogContextText(
-        `By changing the assignment status to “Active” the  Contact document  will be available on mobile app for all users of the user group. Are you sure you want to change the status ?`
+        `By changing the assignment status to “Active” the  questionnaire document  will be available on mobile app for all users of the user group. Are you sure you want to change the status ?`
       );
     }
   };
@@ -193,9 +193,9 @@ function AssignQuestionaires(props) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("CancelQuestionaire");
-    setConfirmationHeaderTittle("Cancel assigned ");
+    setConfirmationHeaderTittle("Cancel assignment ");
     setConfirmationDialogContextText(
-      `Are you sure you want to cancel assignment  to user group `
+      `Are you sure you want to cancel assignment  to user group ?`
     );
   };
   function AssignFiltersForm() {
@@ -314,7 +314,7 @@ function AssignQuestionaires(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Filter By User">
+          <Tooltip title="Assign Questionnaire to User Group">
             <Button
               variant="contained"
               startIcon={<PostAddIcon />}
@@ -429,7 +429,7 @@ function AssignQuestionaires(props) {
         // open={props.Modalopen}
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
-          Filters
+          Assign Questionnaire to User Group
         </DialogTitle>
         <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
           <DialogContent dividers>

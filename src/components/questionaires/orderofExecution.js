@@ -112,7 +112,12 @@ function OrderofExecution(props) {
         >
           Questionnaire
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/questionaires/allquestionaires`}
+          className="inactive"
+        >
           {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">

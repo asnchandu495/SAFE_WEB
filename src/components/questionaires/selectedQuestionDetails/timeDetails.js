@@ -60,7 +60,8 @@ function TimeDetails(props) {
     setConfirmationModalActionType("DeleteTimeQuestion");
     setConfirmationHeaderTittle("Delete  Time Question");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value.question} ?`
+      // `Are you sure you want to delete ${value.question} ?`
+      `Are you sure you want to delete this question ?`
     );
   }
 

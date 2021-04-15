@@ -275,7 +275,12 @@ function QuestionnaireEvaluation(props) {
         >
           Questionnaire
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/questionaires/allquestionaires`}
+          className="inactive"
+        >
           {questionaireDetails ? questionaireDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">

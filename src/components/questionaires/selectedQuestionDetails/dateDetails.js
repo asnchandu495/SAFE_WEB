@@ -61,7 +61,8 @@ function DateDetails(props) {
     setConfirmationModalActionType("DeleteDateQuestion");
     setConfirmationHeaderTittle("Delete Date Question");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value.question} ?`
+      // `Are you sure you want to delete ${value.question} ?`
+      `Are you sure you want to delete this question ?`
     );
   }
 
