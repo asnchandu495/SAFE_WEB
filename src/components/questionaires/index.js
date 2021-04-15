@@ -75,7 +75,7 @@ function Questionaire(props) {
     setConfirmationModalActionType("DeleteQuestionaire");
     setConfirmationHeaderTittle("Delete Questionnaire");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value[1]} ?`
+      `Are you sure you want to delete the questionnaire - ${value[1]} ?`
     );
   }
   function handleClickViewQuestion(value) {

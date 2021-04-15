@@ -55,7 +55,8 @@ function BooleanDetails(props) {
     setConfirmationModalActionType("DeleteBooleanQuestion");
     setConfirmationHeaderTittle("Delete Question");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value.question} ?`
+      // `Are you sure you want to delete ${value.question} ?`
+      `Are you sure you want to delete this question ?`
     );
   }
 

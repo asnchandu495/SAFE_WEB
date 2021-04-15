@@ -147,7 +147,7 @@ function AdoptQuestionnaire(props) {
               <Grid container spacing={3}>
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
-                    <label className="required">Questionnarie Title</label>
+                    <label className="required">Questionnaire Title</label>
                   </Grid>
                   <Grid item xs={5}>
                     <TextValidator
@@ -158,7 +158,7 @@ function AdoptQuestionnaire(props) {
                         "matchRegexp:^.{0,50}$",
                       ]}
                       errorMessages={[
-                        "Please enter questionarie",
+                        "Please enter questionnaire",
                         "Special charcters are not allowed",
                         "Maximum 50 characters",
                       ]}
