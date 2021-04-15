@@ -5,10 +5,13 @@ import Grid from "@material-ui/core/Grid";
 import { Link as LinkTo, withRouter } from "react-router-dom";
 import QuestionType from "./selectQuestionType";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
-// import QuestionTypeBollean from "./flagConcepts/booleanFlag";
-// import QuestionTypeDate from "./flagConcepts/dateFlag";
+import BooleanQuestion from "./questionTypes/booleanQuestion";
+import DateQuestion from "./questionTypes/dateQuestion";
 import NumericQuestion from "./questionTypes/numericQuestion";
-// import QuestionTypeTime from "./flagConcepts/timeFlag";
+import TimeQuestion from "./questionTypes/timeQuestion";
+import FreetextQuestion from "./questionTypes/freeTextQuestion";
+import SingleSelectQuestion from "./questionTypes/singleSelectQuestion";
+import MultiSelectQuestion from "./questionTypes/multiSelectQuestion";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
@@ -163,16 +166,52 @@ function AddNewQuestion(props) {
   function AddQuestion(props) {
     switch (props.questionTypeForm.questionType) {
       case "Boolean":
-        return <h4>Boolean</h4>;
+        return (
+          <BooleanQuestion
+            questionTypeForm={props.questionTypeForm}
+            surveyIdURL={props.surveyIdURL}
+            questionIdURL={props.questionIdURL}
+            answerTypes={props.answerTypes}
+            selectedQuestionDetails={props.selectedQuestionDetails}
+            loadGlobalSettingsData={props.loadGlobalSettingsData}
+          ></BooleanQuestion>
+        );
         break;
       case "FreeText":
-        return <h4>FreeText</h4>;
+        return (
+          <FreetextQuestion
+            questionTypeForm={props.questionTypeForm}
+            surveyIdURL={props.surveyIdURL}
+            questionIdURL={props.questionIdURL}
+            answerTypes={props.answerTypes}
+            selectedQuestionDetails={props.selectedQuestionDetails}
+            loadGlobalSettingsData={props.loadGlobalSettingsData}
+          ></FreetextQuestion>
+        );
         break;
       case "Date":
-        return <h4>Date</h4>;
+        return (
+          <DateQuestion
+            questionTypeForm={props.questionTypeForm}
+            surveyIdURL={props.surveyIdURL}
+            questionIdURL={props.questionIdURL}
+            answerTypes={props.answerTypes}
+            selectedQuestionDetails={props.selectedQuestionDetails}
+            loadGlobalSettingsData={props.loadGlobalSettingsData}
+          ></DateQuestion>
+        );
         break;
       case "Time":
-        return <h4>Time</h4>;
+        return (
+          <TimeQuestion
+            questionTypeForm={props.questionTypeForm}
+            surveyIdURL={props.surveyIdURL}
+            questionIdURL={props.questionIdURL}
+            answerTypes={props.answerTypes}
+            selectedQuestionDetails={props.selectedQuestionDetails}
+            loadGlobalSettingsData={props.loadGlobalSettingsData}
+          ></TimeQuestion>
+        );
         break;
       case "Numeric":
         return (
@@ -182,14 +221,33 @@ function AddNewQuestion(props) {
             questionIdURL={props.questionIdURL}
             answerTypes={props.answerTypes}
             selectedQuestionDetails={props.selectedQuestionDetails}
+            loadGlobalSettingsData={props.loadGlobalSettingsData}
           ></NumericQuestion>
         );
         break;
       case "SingleChoice":
-        return <h4>SingleChoice</h4>;
+        return (
+          <SingleSelectQuestion
+            questionTypeForm={props.questionTypeForm}
+            surveyIdURL={props.surveyIdURL}
+            questionIdURL={props.questionIdURL}
+            answerTypes={props.answerTypes}
+            selectedQuestionDetails={props.selectedQuestionDetails}
+            loadGlobalSettingsData={props.loadGlobalSettingsData}
+          ></SingleSelectQuestion>
+        );
         break;
       case "MultiChoice":
-        return <h4>MultiChoice</h4>;
+        return (
+          <MultiSelectQuestion
+            questionTypeForm={props.questionTypeForm}
+            surveyIdURL={props.surveyIdURL}
+            questionIdURL={props.questionIdURL}
+            answerTypes={props.answerTypes}
+            selectedQuestionDetails={props.selectedQuestionDetails}
+            loadGlobalSettingsData={props.loadGlobalSettingsData}
+          ></MultiSelectQuestion>
+        );
         break;
       default:
         return <h4>Not found</h4>;
@@ -261,6 +319,9 @@ function AddNewQuestion(props) {
                               questionIdURL={questionIdURL}
                               answerTypes={answerTypes}
                               selectedQuestionDetails={selectedQuestionDetails}
+                              loadGlobalSettingsData={
+                                props.loadGlobalSettingsData
+                              }
                             ></AddQuestion>
                           </Grid>
                         </Grid>
@@ -279,4 +340,22 @@ function AddNewQuestion(props) {
   );
 }
 
-export default withRouter(AddNewQuestion);
+AddNewQuestion.propTypes = {
+  loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(AddNewQuestion));

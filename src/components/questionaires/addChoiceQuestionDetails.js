@@ -144,7 +144,7 @@ function AddChoiceQuestionDetails(props) {
             let newMultiChoiceFlag = {
               questionId: res.id,
               isPositiveConfirmity: res.isPositiveConfirmity,
-              isPositiveConfirmityRedFlag: res.isPositiveConfirmity,
+              isPositiveConfirmityRedFlag: res.isPositiveConfirmityRedFlag,
               positiveConformityMultiChoice:
                 res.positiveConformityMultiChoice.length > 0
                   ? res.positiveConformityMultiChoice
