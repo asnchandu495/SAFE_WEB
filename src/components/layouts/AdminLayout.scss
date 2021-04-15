@@ -58,7 +58,8 @@
     margin-top: 4px;
     margin-bottom: 2px;
     span {
-      font: var(--unnamed-font-size-12) var(--unnamed-font-family-proxima-nova);
+      font-size: var(--unnamed-font-size-12) !important;
+      font-family: var(--unnamed-font-family-proxima-nova) !important;
       letter-spacing: var(--unnamed-character-spacing-0) !important;
       color: var(--primary-26235d);
       text-align: left;
@@ -75,8 +76,8 @@
       margin-left: 0 !important;
       margin-top: 2px;
       span {
-        font: var(--unnamed-font-size-11)
-          var(--unnamed-font-family-proxima-nova) !important;
+        font-size: var(--unnamed-font-size-11) !important;
+        font-family: var(--unnamed-font-family-proxima-nova) !important;
       }
     }
     .MuiListItemIcon-root {
