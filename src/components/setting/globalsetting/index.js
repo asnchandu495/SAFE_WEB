@@ -799,7 +799,7 @@ function GlobalSetting(props) {
                       ]}
                       errorMessages={[
                         "Please enter automated check-out time",
-                        "Only numbers and decimals are allowed",
+                        "Numbers and decimals  allowed",
                       ]}
                       name="automatedCheckoutTime"
                       type={"text"}
