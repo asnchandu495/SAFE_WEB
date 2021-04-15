@@ -153,18 +153,22 @@ function BooleanDetails(props) {
                 </label>
               </Grid>
             </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Red flag answer :</label>
+            {props.selectedQuestionDetails.isPositiveConformityRedFlag ? (
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Red flag answer :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <label>
+                    {props.selectedQuestionDetails
+                      ? props.selectedQuestionDetails.positiveResponse
+                      : ""}
+                  </label>
+                </Grid>
               </Grid>
-              <Grid item xs={9}>
-                <label>
-                  {props.selectedQuestionDetails
-                    ? props.selectedQuestionDetails.positiveResponse
-                    : ""}
-                </label>
-              </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
             <Grid item xs={12} container>
               <Grid item xs={3}>
                 <label>Positive flag answer :</label>

@@ -181,25 +181,30 @@ function SingleChoiceDetails(props) {
                 </ul>
               </Grid>
             </Grid>
-            <Grid item xs={12} container>
-              <Grid item xs={3}>
-                <label>Red flag :</label>
+            {props.selectedQuestionDetails.isPositiveConfirmityRedFlag ? (
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Red flag :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <ul className="question_choices_list">
+                    {props.selectedQuestionDetails.redFlagForSingleChoice
+                      .length > 0
+                      ? props.selectedQuestionDetails.redFlagForSingleChoice.map(
+                          (opt) => {
+                            return (
+                              <li key={`choicesR_${opt.id}`}>{opt.option}</li>
+                            );
+                          }
+                        )
+                      : ""}
+                  </ul>
+                </Grid>
               </Grid>
-              <Grid item xs={9}>
-                <ul className="question_choices_list">
-                  {props.selectedQuestionDetails.redFlagForSingleChoice.length >
-                  0
-                    ? props.selectedQuestionDetails.redFlagForSingleChoice.map(
-                        (opt) => {
-                          return (
-                            <li key={`choicesR_${opt.id}`}>{opt.option}</li>
-                          );
-                        }
-                      )
-                    : ""}
-                </ul>
-              </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
+
             <Grid item xs={12} container>
               <Grid item xs={3}>
                 <label>Positive flag:</label>
