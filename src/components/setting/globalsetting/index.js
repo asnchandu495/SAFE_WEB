@@ -748,7 +748,13 @@ function GlobalSetting(props) {
                 </Grid>
                 <Grid item xs={2}>
                   <FormControl variant="outlined">
-                    <OutlinedInput
+                    <TextValidator
+                      variant="outlined"
+                      validators={["required", "matchRegexp:^[0-9]*$"]}
+                      errorMessages={[
+                        "Please enter unlock duration of user account",
+                        "Only numbers are allowed",
+                      ]}
                       id="outlined-adornment-weight"
                       name="durationToLockUserAccount"
                       type={"text"}
@@ -758,13 +764,20 @@ function GlobalSetting(props) {
                           : ""
                       }
                       onChange={handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">Minutes</InputAdornment>
-                      }
+                      // endAdornment={
+                      //   <InputAdornment position="end">Minutes</InputAdornment>
+                      // }
                       aria-describedby="outlined-weight-helper-text"
                       labelWidth={0}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            Minutes
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                   </FormControl>
                 </Grid>
@@ -777,7 +790,8 @@ function GlobalSetting(props) {
                 </Grid>
                 <Grid item xs={2}>
                   <FormControl variant="outlined">
-                    <OutlinedInput
+                    <TextValidator
+                      variant="outlined"
                       id="outlined-adornment-weight"
                       validators={[
                         "required",
@@ -785,7 +799,7 @@ function GlobalSetting(props) {
                       ]}
                       errorMessages={[
                         "Please enter automated check-out time",
-                        "Only numbers and decimals are allowed",
+                        "Numbers and decimals  allowed",
                       ]}
                       name="automatedCheckoutTime"
                       type={"text"}
@@ -795,13 +809,18 @@ function GlobalSetting(props) {
                           : ""
                       }
                       onChange={handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">Hours</InputAdornment>
-                      }
+                      // endAdornment={
+                      //   <InputAdornment position="end">Hours</InputAdornment>
+                      // }
                       aria-describedby="outlined-weight-helper-text"
                       labelWidth={0}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">Hours</InputAdornment>
+                        ),
+                      }}
                     />
                   </FormControl>
                 </Grid>
@@ -814,7 +833,13 @@ function GlobalSetting(props) {
                 </Grid>
                 <Grid item xs={2}>
                   <FormControl variant="outlined">
-                    <OutlinedInput
+                    <TextValidator
+                      variant="outlined"
+                      validators={["required", "matchRegexp:^[0-9]*$"]}
+                      errorMessages={[
+                        "Please enter passord",
+                        "Only numbers are allowed",
+                      ]}
                       id="outlined-adornment-weight"
                       name="maxPasswordlength"
                       type={"text"}
@@ -824,15 +849,17 @@ function GlobalSetting(props) {
                           : ""
                       }
                       onChange={handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          Characters
-                        </InputAdornment>
-                      }
                       aria-describedby="outlined-weight-helper-text"
                       labelWidth={0}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            Characters
+                          </InputAdornment>
+                        ),
+                      }}
                     />
                   </FormControl>
                 </Grid>
@@ -847,7 +874,8 @@ function GlobalSetting(props) {
                 </Grid>
                 <Grid item xs={2}>
                   <FormControl variant="outlined">
-                    <OutlinedInput
+                    <TextValidator
+                      variant="outlined"
                       validators={[
                         "required",
                         "matchRegexp:^[0-9]*$",
@@ -867,13 +895,15 @@ function GlobalSetting(props) {
                           : ""
                       }
                       onChange={handleChange}
-                      endAdornment={
-                        <InputAdornment position="end">MB</InputAdornment>
-                      }
                       aria-describedby="outlined-weight-helper-text"
                       labelWidth={0}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">MB</InputAdornment>
+                        ),
+                      }}
                     />
                   </FormControl>
                 </Grid>
