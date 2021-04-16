@@ -529,8 +529,8 @@ function CreateSite(props) {
                       </label>
                       <TextValidator
                         variant="outlined"
-                        validators={["matchRegexp:^.{0,50}$"]}
-                        errorMessages={["Maximum 50 characters"]}
+                        validators={["matchRegexp:^.{0,150}$"]}
+                        errorMessages={["Maximum 150 characters"]}
                         fullWidth
                         id="address2"
                         placeholder="Enter address"
@@ -568,7 +568,7 @@ function CreateSite(props) {
                       <TextValidator
                         variant="outlined"
                         validators={["matchRegexp:^.{0,60}$"]}
-                        errorMessages={["Maximum 50 characters"]}
+                        errorMessages={["Maximum 60 characters"]}
                         fullWidth
                         id="state"
                         placeholder="Enter state name"

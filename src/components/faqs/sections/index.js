@@ -233,10 +233,10 @@ function FaqSections(props) {
                 <Grid item xs={3}>
                   <TextValidator
                     variant="outlined"
-                    validators={["required", "matchRegexp:^.{0,60}$"]}
+                    validators={["required", "matchRegexp:^.{0,100}$"]}
                     errorMessages={[
                       "Please enter section heading",
-                      "Maximum 60 characters",
+                      "Maximum 100 characters",
                     ]}
                     fullWidth
                     id="sectionName"
@@ -294,11 +294,11 @@ function FaqSections(props) {
                                     variant="outlined"
                                     validators={[
                                       "required",
-                                      "matchRegexp:^.{0,60}$",
+                                      "matchRegexp:^.{0,150}$",
                                     ]}
                                     errorMessages={[
                                       "Please enter question",
-                                      "Maximum 60 characters",
+                                      "Maximum 150 characters",
                                     ]}
                                     fullWidth
                                     id={`questionName_${i}`}
@@ -311,12 +311,20 @@ function FaqSections(props) {
                                     className="global-input"
                                     InputLabelProps={{ shrink: false }}
                                   />
+                                  <br />
                                 </Grid>
+
                                 <Grid item xs={12} className="answer-input">
                                   <TextValidator
                                     variant="outlined"
-                                    validators={["required"]}
-                                    errorMessages={["Please enter answer"]}
+                                    validators={[
+                                      "required",
+                                      "matchRegexp:^.{0,150}$",
+                                    ]}
+                                    errorMessages={[
+                                      "Please enter answer",
+                                      "Maximum 150 characters",
+                                    ]}
                                     fullWidth
                                     id={`answer_${i}`}
                                     placeholder="Answer *"

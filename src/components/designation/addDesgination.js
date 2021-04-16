@@ -202,12 +202,12 @@ function AddDesignation(props) {
                       validators={[
                         "required",
                         "matchRegexp:^[a-zA-Z0-9 ]*$",
-                        "matchRegexp:^.{0,50}$",
+                        "matchRegexp:^.{0,60}$",
                       ]}
                       errorMessages={[
                         "Please enter designation name",
                         "Special charcters are not allowed",
-                        "Maximum 50 characters",
+                        "Maximum 60 characters",
                       ]}
                       fullWidth
                       id="name"
@@ -229,7 +229,7 @@ function AddDesignation(props) {
                 </Grid>
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
-                    <label>Attendance grace time</label>
+                    <label className="required">Attendance grace time</label>
                   </Grid>
                   <Grid item xs={2}>
                     <FormControl variant="outlined">
@@ -240,7 +240,7 @@ function AddDesignation(props) {
                         value={
                           formData.attendanceGracetime
                             ? formData.attendanceGracetime
-                            : ""
+                            : "00"
                         }
                         onChange={handleChange}
                         endAdornment={

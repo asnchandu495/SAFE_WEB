@@ -509,6 +509,11 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
+                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      errorMessages={[
+                        "Only numbers are allowed",
+                        "Maximum allowed 6 digits",
+                      ]}
                       type="number"
                       fullWidth
                       id="densityThreasholdLowFrom"
@@ -527,6 +532,11 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
+                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      errorMessages={[
+                        "Only  numbers are allowed",
+                        "Maximum allowed 6 digits",
+                      ]}
                       type="number"
                       fullWidth
                       id="densityThreasholdLowTo"
@@ -553,6 +563,11 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
+                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      errorMessages={[
+                        "Only numbers are allowed",
+                        "Maximum allowed 6 digits",
+                      ]}
                       type="number"
                       fullWidth
                       id="densityThreasholdMediumFrom"
@@ -571,6 +586,11 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
+                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      errorMessages={[
+                        " Only numbers are allowed",
+                        "Maximum allowed 6 digits",
+                      ]}
                       type="number"
                       fullWidth
                       id="densityThreasholdMediumTo"
@@ -597,6 +617,11 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
+                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      errorMessages={[
+                        " Only numbers are allowed",
+                        "Maximum allowed 6 digits",
+                      ]}
                       type="number"
                       fullWidth
                       id="densityThreasholdHighFrom"
@@ -615,6 +640,11 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
+                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      errorMessages={[
+                        " Only numbers are allowed",
+                        "Maximum allowed 6 digits",
+                      ]}
                       disabled={formData.HightTemperatureNoLimit}
                       type="number"
                       fullWidth
