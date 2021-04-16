@@ -33,7 +33,7 @@ function AddDesignation(props) {
   const [formData, SetformData] = useState({
     id: "",
     name: "",
-    attendanceGracetime: 0,
+    attendanceGracetime: "00",
     description: "",
   });
 
@@ -233,19 +233,27 @@ function AddDesignation(props) {
                   </Grid>
                   <Grid item xs={2}>
                     <FormControl variant="outlined">
-                      <OutlinedInput
+                      <TextValidator
+                        variant="outlined"
                         id="outlined-adornment-weight"
+                        validators={["required"]}
+                        errorMessages={["Please enter attendance grace time"]}
                         name="attendanceGracetime"
                         type={"text"}
                         value={
                           formData.attendanceGracetime
                             ? formData.attendanceGracetime
-                            : "00"
+                            : ""
                         }
                         onChange={handleChange}
-                        endAdornment={
-                          <InputAdornment position="end">Min</InputAdornment>
-                        }
+                        // endAdornment={
+                        //   <InputAdornment position="end">Min</InputAdornment>
+                        // }
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">Min</InputAdornment>
+                          ),
+                        }}
                         aria-describedby="outlined-weight-helper-text"
                         labelWidth={0}
                         className="global-input"

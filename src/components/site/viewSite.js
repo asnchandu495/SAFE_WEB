@@ -158,14 +158,7 @@ function ViewSite(props) {
         filter: false,
       },
     },
-    {
-      name: "locationName",
-      label: "Floor",
-      options: {
-        filter: false,
-        sort: true,
-      },
-    },
+
     {
       name: "locationName",
       label: "Location",
@@ -183,7 +176,9 @@ function ViewSite(props) {
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
           if (thisRowData) {
-            return <span>{thisRowData[3] ? "Active" : "Inactive"}</span>;
+            return (
+              <span>{thisRowData[3] == false ? "Inactive" : "Active"}</span>
+            );
           }
         },
       },
@@ -196,11 +191,12 @@ function ViewSite(props) {
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+
           if (thisRowData) {
             return (
               <span>
-                {thisRowData[4].lowerLimit.from} -{" "}
-                {thisRowData[4].lowerLimit.to}
+                {thisRowData.densityThreasholdLowFrom} -{" "}
+                {thisRowData.densityThreasholdLowTo}
               </span>
             );
           }
@@ -218,8 +214,8 @@ function ViewSite(props) {
           if (thisRowData) {
             return (
               <span>
-                {thisRowData[4].mediumLimit.from} -{" "}
-                {thisRowData[4].mediumLimit.to}
+                {thisRowData.densityThreasholdMediumFrom} -{" "}
+                {thisRowData.densityThreasholdMediumFrom}
               </span>
             );
           }
@@ -237,8 +233,8 @@ function ViewSite(props) {
           if (thisRowData) {
             return (
               <span>
-                {thisRowData[4].higherLimit.from} -{" "}
-                {thisRowData[4].higherLimit.to}
+                {thisRowData.densityThreasholdHighFrom} -{" "}
+                {thisRowData.densityThreasholdHighTo}
               </span>
             );
           }
@@ -369,10 +365,15 @@ function ViewSite(props) {
                     {" "}
                     <MUIDataTable
                       title={""}
+                      // data={
+                      //   viewSiteValue.sitetofloormappings &&
+                      //   viewSiteValue.sitetofloormappings.length > 0
+                      //     ? viewSiteValue.sitetofloormappings
+                      //     : []
+                      // }
                       data={
-                        viewSiteValue.sitetofloormappings &&
-                        viewSiteValue.sitetofloormappings.length > 0
-                          ? viewSiteValue.sitetofloormappings
+                        viewSiteValue.floors && viewSiteValue.floors.length > 0
+                          ? viewSiteValue.floors
                           : []
                       }
                       columns={floorColumns}
@@ -387,10 +388,16 @@ function ViewSite(props) {
                     {" "}
                     <MUIDataTable
                       title={""}
+                      // data={
+                      //   viewSiteValue.locationSiteMappings &&
+                      //   viewSiteValue.locationSiteMappings.length > 0
+                      //     ? viewSiteValue.locationSiteMappings
+                      //     : []
+                      // }
                       data={
-                        viewSiteValue.locationSiteMappings &&
-                        viewSiteValue.locationSiteMappings.length > 0
-                          ? viewSiteValue.locationSiteMappings
+                        viewSiteValue.locations &&
+                        viewSiteValue.locations.length > 0
+                          ? viewSiteValue.locations
                           : []
                       }
                       columns={locationColumns}
