@@ -43,13 +43,10 @@ function SingleChoiceDetails(props) {
   ] = useState("");
   useEffect(() => {
     if (props.selectedQuestionDetails) {
-      console.log(props.selectedQuestionDetails.positiveConformityForTime);
     }
   }, []);
 
   function handleClickOpenConfirmationModal(value) {
-    console.log("time");
-    console.log(value);
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteSinglechoiceQuestion");

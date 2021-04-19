@@ -107,7 +107,6 @@ function NumericJump(props) {
 
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
-    console.log(checked);
     if (name == "goToNormalSequence") {
       setConditionalJump((conditionalJump) => ({
         ...conditionalJump,

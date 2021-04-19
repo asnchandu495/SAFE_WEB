@@ -43,7 +43,7 @@ function FreetextQuestion(props) {
   const [addQuestionData, setAddQuestionData] = useState({
     id: "",
     surveyId: surveyIdURL,
-    questionDescription: "",
+    description: "",
     questionType: "",
     question: "",
     isMandatory: false,
@@ -97,9 +97,9 @@ function FreetextQuestion(props) {
     e.preventDefault();
     setshowLoadder(true);
     const finalObject = {
-      ...props.questionTypeForm,
       ...addQuestionData,
     };
+    finalObject.questionType = props.questionTypeForm.questionType;
     if (finalObject.id != 0) {
       questionaireApiCall
         .UpdateFreeTextQuestion(finalObject)

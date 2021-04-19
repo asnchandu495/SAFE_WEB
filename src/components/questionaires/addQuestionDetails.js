@@ -152,7 +152,6 @@ function AddQuestionDetails(props) {
             props.selectedQuestionDetails.isPositiveConformityRedFlag,
         });
       } else if (props.selectedQuestionDetails.questionType == "Time") {
-        console.log(props.selectedQuestionDetails);
         setTimeFlag({
           positiveConformityForTime:
             props.selectedQuestionDetails.positiveConformityForTime,
@@ -450,7 +449,7 @@ function AddQuestionDetails(props) {
             });
         }
       } else {
-        console.log("fdsf");
+        console.log("");
       }
     }
   }

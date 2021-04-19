@@ -165,8 +165,6 @@ function AddPrimaryUserTeam(props) {
           let primaryUsers = teamInfo.users;
           setApplicationUsers(applicationUsers);
           setSelectedTeamInfo(teamInfo);
-          // console.log('getUserList');
-          // console.log(getUserList);
           setdesignationMasterData(getDesignations);
           setuserGroupList(getUserList);
           setComponentLoadder(false);
@@ -204,7 +202,6 @@ function AddPrimaryUserTeam(props) {
     rowsSelected: selectedUsersToGroup,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
       setSelectedUsers(allRowsSelected);
-      console.log(allRowsSelected);
       var selectedUsersToGroupArray = [];
       allRowsSelected.map((user, i) => {
         selectedUsersToGroupArray.push(user.dataIndex);
@@ -285,7 +282,6 @@ function AddPrimaryUserTeam(props) {
       finalUsers.push({ id: applicationUsers[user.dataIndex].id });
     });
     var data = formData;
-    // console.log(data);
 
     data.teamId = teamId;
     data.users = finalUsers;
@@ -320,7 +316,6 @@ function AddPrimaryUserTeam(props) {
 
   function AssignFiltersForm() {
     if (searchformData) {
-      console.log(searchformData);
       submitAssignTeams();
     } else {
       submitAssignTeams(false);

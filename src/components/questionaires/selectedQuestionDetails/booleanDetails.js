@@ -44,12 +44,10 @@ function BooleanDetails(props) {
   ] = useState("");
   useEffect(() => {
     if (props.selectedQuestionDetails) {
-      console.log(props.selectedQuestionDetails);
     }
   }, []);
 
   function handleClickOpenConfirmationModal(value) {
-    console.log(value);
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteBooleanQuestion");

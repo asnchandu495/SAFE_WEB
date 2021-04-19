@@ -22,14 +22,10 @@ function ListofQuestions(props) {
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
   const [componentLoadder, setComponentLoadder] = useState(true);
   useEffect(() => {
-    // questionaireApiCall
-    //   .GetAllQuestionsBySurveyId(id)
     props
       .LoadAllQuestions(id)
       .then((res) => {
-        console.log(res);
         setSelectedSurveyQuestions(res);
-        console.log(selectedSurveyQuestions);
         setComponentLoadder(false);
       })
       .catch((err) => {
@@ -38,14 +34,11 @@ function ListofQuestions(props) {
   }, []);
 
   const handleListItemClick = (quesId, questionType) => {
-    console.log("questiontype");
-    console.log(questionType);
     setSelectedIndex(quesId);
     if (questionType == "Boolean") {
       questionaireApiCall
         .GetBooleanQuestionById(quesId)
         .then((booleanQuestionResponse) => {
-          // console.log(booleanQuestionResponse);
           props.setSelectedQuestionDetails(booleanQuestionResponse);
         })
         .catch((err) => {
@@ -56,55 +49,39 @@ function ListofQuestions(props) {
       questionaireApiCall
         .GetFreeTextQuestion(quesId)
         .then((freetextQuestionResponse) => {
-          // console.log(freetextQuestionResponse);
           props.setSelectedQuestionDetails(freetextQuestionResponse);
         })
         .catch((err) => {
           console.log("error");
         });
     } else if (questionType == "Date") {
-      console.log("date selected");
       questionaireApiCall
         .GetDateTimeById(quesId)
         .then((dateQuestionResponse) => {
-          console.log("date");
-          console.log(dateQuestionResponse.positiveConformityForDate);
           props.setSelectedQuestionDetails(dateQuestionResponse);
         });
     } else if (questionType == "Time") {
-      console.log("time selected");
       questionaireApiCall
         .GetTimeQuestionById(quesId)
         .then((timeQuestionResponse) => {
-          console.log("time");
-          console.log(timeQuestionResponse);
           props.setSelectedQuestionDetails(timeQuestionResponse);
         });
     } else if (questionType == "Numeric") {
-      console.log("numeric selected");
       questionaireApiCall
         .GetNumeicQuestionById(quesId)
         .then((numericQuestionResponse) => {
-          console.log("time");
-          console.log(numericQuestionResponse);
           props.setSelectedQuestionDetails(numericQuestionResponse);
         });
     } else if (questionType == "SingleChoice") {
-      console.log("SingleChoice selected");
       questionaireApiCall
         .GetSingleChoiceQuestion(quesId)
         .then((numericQuestionResponse) => {
-          console.log("time");
-          console.log(numericQuestionResponse);
           props.setSelectedQuestionDetails(numericQuestionResponse);
         });
     } else if (questionType == "MultiChoice") {
-      console.log("MultiChoice selected");
       questionaireApiCall
         .GetMultipleChoicQuestionById(quesId)
         .then((numericQuestionResponse) => {
-          console.log("time");
-          console.log(numericQuestionResponse);
           props.setSelectedQuestionDetails(numericQuestionResponse);
         });
     } else {

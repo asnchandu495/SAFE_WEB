@@ -62,7 +62,6 @@ function GlobalSetting(props) {
     fileFormatToImportUsers: "",
     timeFormat: "",
     dateFormat: "",
-
     automatedCheckoutTime: 0,
     selfHealthCheckReminder: 0,
     selfHealthCheckReminderUnit: "",
@@ -72,7 +71,7 @@ function GlobalSetting(props) {
     allowCheckinWithoutProfileSelfieApproval: true,
     maximumFileSizeOfUserSelfieUnit: "MB",
     maximumFileSizeOfUserSelfie: 0,
-    // maximumFileSizeToImportUsersUnit: "",
+    maximumFileSizeToImportUsersUnit: "MB",
     // temperatureUnit: "",
   });
   const [geoUnits, setGeoUnits] = useState([]);
@@ -196,6 +195,7 @@ function GlobalSetting(props) {
       GlobalSettingApi.GetGeoFencingToleranceUnits(),
     ])
       .then(([globalSettings, getGeoUnits, getToleranceUnits]) => {
+        console.log(globalSettings);
         setGeoUnits(getGeoUnits);
         setToleranceUnits(getToleranceUnits);
         SetformData(globalSettings);
@@ -223,9 +223,6 @@ function GlobalSetting(props) {
     e.preventDefault();
     setshowLoadder(true);
     setisFormSubmit(true);
-    // console.log("data");
-    // console.log(JSON.stringify(formData));
-    // return false;
     let finalData = formData;
     finalData.socialDistanceTolerance = parseInt(
       formData.socialDistanceTolerance
@@ -248,6 +245,9 @@ function GlobalSetting(props) {
     finalData.maximumFileSizeOfUserSelfie = parseInt(
       formData.maximumFileSizeOfUserSelfie
     );
+
+    finalData.maximumFileSizeOfUserSelfieUnit = "MB";
+    finalData.maximumFileSizeToImportUsersUnit = "MB";
 
     props
       .createGlobalSetting(finalData)

@@ -124,7 +124,6 @@ function CreateQuestionarie(props) {
   }
 
   function handleChangeQuestionnaire(e, value) {
-    console.log(value);
     setselectedUserQuestionnaire(value);
   }
 
@@ -148,7 +147,6 @@ function CreateQuestionarie(props) {
           }, 3000);
         })
         .catch((err) => {
-          // console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);

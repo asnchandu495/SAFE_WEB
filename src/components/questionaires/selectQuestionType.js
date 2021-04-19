@@ -11,9 +11,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 
 function QuestionType(props) {
-  useEffect(() => {
-    console.log(props.selectedQuestionDetails);
-  }, []);
+  useEffect(() => {}, []);
 
   const navigateToQuestionDetails = () => {
     setTimeout(() => {

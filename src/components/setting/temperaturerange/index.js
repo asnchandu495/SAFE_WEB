@@ -98,16 +98,14 @@ function TemperatureRange(props) {
     ])
       .then(([result, globalSettings]) => {
         setcovidStatelist(result);
-        console.log(globalSettings.covidStateTemperatures);
-        console.log(tempsections.covidStates);
-        tempsections.covidStates = globalSettings.covidStateTemperatures;
-        console.log(globalSettings.id);
+        if (globalSettings.covidStateTemperatures.length > 0) {
+          tempsections.covidStates = globalSettings.covidStateTemperatures;
+        }
         tempsections.globalSettingsId = globalSettings.id;
         tempsections.temperatureUnit = globalSettings.temperatureUnit;
         setComponentLoadder(false);
       })
       .catch((err) => {
-        console.log("eror");
         console.log(err);
       });
     // setComponentLoadder(false);
@@ -190,8 +188,6 @@ function TemperatureRange(props) {
     e.preventDefault();
     setshowLoadder(true);
     setisFormSubmit(true);
-    console.log("tempsections");
-    console.log(tempsections.covidStates[0].lowerLimit);
     let sendData = tempsections;
 
     let getCovidStates = sendData.covidStates;
@@ -200,17 +196,9 @@ function TemperatureRange(props) {
       item.lowerLimit = parseFloat(item.lowerLimit);
     });
     sendData.covidStates = getCovidStates;
-
-    console.log(JSON.stringify(sendData));
-
-    // sendData.lowerLimit = parseInt(tempsections.lowerLimit);
-    // sendData.upperLimit = parseInt(tempsections.upperLimit);
-
-    // GlobalSettingApi.UpdateCovidStateTemperature(sendData)
     props
       .updateTemp(sendData)
       .then((result) => {
-        console.log("success");
         setStateSnackbar(true);
         setToasterMessage("Updated temperature range settings.");
         settoasterServerity("success");
@@ -259,15 +247,8 @@ function TemperatureRange(props) {
         <Paper className="main-paper">
           <ValidatorForm className={`global-form`} onSubmit={submitForm}>
             <Grid container spacing={3}>
-              <Grid
-                item
-                container
-                xs={12}
-                className={[classes.gridDispaly].join(" ")}
-                container
-                spacing={1}
-              >
-                <Grid container item xs={3}>
+              <Grid item container xs={12}>
+                <Grid item xs={3}>
                   <label className="required">UoM for temperature</label>
                 </Grid>
                 <Grid item xs={2}>
@@ -308,16 +289,14 @@ function TemperatureRange(props) {
                   </FormControl>
                 </Grid>
               </Grid>
-            </Grid>
-            {tempsections.covidStates && tempsections.covidStates.length > 0
-              ? tempsections.covidStates.map((x, i) => {
-                  return (
-                    <Grid container spacing={3}>
+              {tempsections.covidStates && tempsections.covidStates.length > 0
+                ? tempsections.covidStates.map((x, i) => {
+                    return (
                       <Grid
                         container
-                        spacing={1}
                         item
                         xs={12}
+                        spacing={3}
                         className={[classes.gridDispaly].join(" ")}
                         key={`section-container${i}`}
                       >
@@ -445,40 +424,41 @@ function TemperatureRange(props) {
                           )}
                         </Grid>
                       </Grid>
-                    </Grid>
-                  );
-                })
-              : ""}
-            {isFormSubmit && !tempsections.covidStates ? (
-              <FormHelperText className={classes.errorSpanMsg}>
-                Please select value{" "}
-              </FormHelperText>
-            ) : (
-              ""
-            )}
-            <Grid item container xs={12}>
-              <Grid item xs={3}>
-                <label>&nbsp;</label>
-              </Grid>
-              <Grid item xs={9}>
-                <div className={`form-buttons-container`}>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    className="global-submit-btn"
-                    disabled={showLoadder}
-                  >
-                    {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                  </Button>
-                  <Button
-                    variant="contained"
-                    type="reset"
-                    onClick={handleClickGoBackToPage}
-                    className="global-cancel-btn"
-                  >
-                    Cancel
-                  </Button>
-                </div>
+                    );
+                  })
+                : ""}
+              {isFormSubmit && !tempsections.covidStates ? (
+                <FormHelperText className={classes.errorSpanMsg}>
+                  Please select value{" "}
+                </FormHelperText>
+              ) : (
+                ""
+              )}
+              <Grid item container xs={12}>
+                <Grid item xs={3}>
+                  <label>&nbsp;</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <div className={`form-buttons-container`}>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className="global-submit-btn"
+                      disabled={showLoadder}
+                    >
+                      {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="reset"
+                      onClick={handleClickGoBackToPage}
+                      className="global-cancel-btn"
+                    >
+                      Cancel
+                    </Button>
+                    &nbsp;
+                  </div>
+                </Grid>
               </Grid>
             </Grid>
           </ValidatorForm>

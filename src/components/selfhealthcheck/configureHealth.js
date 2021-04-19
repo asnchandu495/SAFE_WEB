@@ -216,7 +216,6 @@ function ConfigureHealth(props) {
   function submitForm(e) {
     e.preventDefault();
     setComponentLoadder(true);
-    console.log(searchForm);
     HealthCheckApiCall.getUserHealthChecks(searchForm)
       .then((healthChecks) => {
         if (healthChecks.length > 0) {
