@@ -744,7 +744,9 @@ function GlobalSetting(props) {
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label>Unlock duration of user account</label>
+                  <label className="required">
+                    Unlock duration of user account
+                  </label>
                 </Grid>
                 <Grid item xs={2}>
                   <FormControl variant="outlined">
