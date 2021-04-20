@@ -137,10 +137,11 @@ function NumericQuestion(props) {
     if (name == "numericExpressionType") {
       thisVal = value;
     } else {
-      if (value != "" && !isNaN(value)) {
-        thisVal = parseInt(value);
+      let chkType = value - Math.floor(value) !== 0;
+      if (chkType) {
+        thisVal = parseFloat(value);
       } else {
-        thisVal = value;
+        thisVal = parseInt(value);
       }
     }
     const list = {
@@ -160,10 +161,11 @@ function NumericQuestion(props) {
     if (name == "numericExpressionType") {
       thisVal = value;
     } else {
-      if (value != "" && !isNaN(value)) {
-        thisVal = parseInt(value);
+      let chkType = value - Math.floor(value) !== 0;
+      if (chkType) {
+        thisVal = parseFloat(value);
       } else {
-        thisVal = value;
+        thisVal = parseInt(value);
       }
     }
     const list = {
@@ -462,12 +464,10 @@ function NumericQuestion(props) {
                                     onChange={(e) => handleChangeFlagR(e, i)}
                                     className="global-input"
                                     validators={[
-                                      "matchRegexp:^[0-9]*$",
-                                      "maxNumber:99",
+                                      "matchRegexp:^[0-9]+([.][0-9]+)?$",
                                     ]}
                                     errorMessages={[
-                                      "Only numbers are allowed",
-                                      "Maximum allowed 2 digits",
+                                      "Only numbers and decimals are allowed",
                                     ]}
                                     InputLabelProps={{ shrink: false }}
                                   />
@@ -493,12 +493,10 @@ function NumericQuestion(props) {
                                         }
                                         className="global-input"
                                         validators={[
-                                          "matchRegexp:^[0-9]*$",
-                                          "maxNumber:99",
+                                          "matchRegexp:^[0-9]+([.][0-9]+)?$",
                                         ]}
                                         errorMessages={[
-                                          "Only numbers are allowed",
-                                          "Maximum allowed 2 digits",
+                                          "Only numbers and decimals are allowed",
                                         ]}
                                         InputLabelProps={{ shrink: false }}
                                       />
@@ -637,12 +635,10 @@ function NumericQuestion(props) {
                                     onChange={(e) => handleChangeFlagP(e, i)}
                                     className="global-input"
                                     validators={[
-                                      "matchRegexp:^[0-9]*$",
-                                      "maxNumber:99",
+                                      "matchRegexp:^[0-9]+([.][0-9]+)?$",
                                     ]}
                                     errorMessages={[
-                                      "Only numbers are allowed",
-                                      "Maximum allowed 2 digits",
+                                      "Only numbers and decimals are allowed",
                                     ]}
                                     InputLabelProps={{ shrink: false }}
                                   />
@@ -668,12 +664,10 @@ function NumericQuestion(props) {
                                         }
                                         className="global-input"
                                         validators={[
-                                          "matchRegexp:^[0-9]*$",
-                                          "maxNumber:99",
+                                          "matchRegexp:^[0-9]+([.][0-9]+)?$",
                                         ]}
                                         errorMessages={[
-                                          "Only numbers are allowed",
-                                          "Maximum allowed 2 digits",
+                                          "Only numbers and decimals are allowed",
                                         ]}
                                         InputLabelProps={{ shrink: false }}
                                       />

@@ -463,17 +463,23 @@ function TimeQuestion(props) {
                                       format={
                                         props.loadGlobalSettingsData
                                           ? props.loadGlobalSettingsData
-                                              .timeFormat
+                                              .timeFormat != null
+                                            ? props.loadGlobalSettingsData
+                                                .timeFormat
+                                            : "hh:mm"
                                           : "hh:mm"
                                       }
                                       ampm={
                                         props.loadGlobalSettingsData
-                                          ? props.loadGlobalSettingsData.timeFormat.includes(
-                                              "HH"
-                                            )
-                                            ? false
+                                          ? props.loadGlobalSettingsData
+                                              .timeFormat != null
+                                            ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                "HH"
+                                              )
+                                              ? false
+                                              : true
                                             : true
-                                          : "hh:mm"
+                                          : true
                                       }
                                       fullWidth
                                       id={`forAnswerR${i}`}
@@ -512,17 +518,23 @@ function TimeQuestion(props) {
                                           format={
                                             props.loadGlobalSettingsData
                                               ? props.loadGlobalSettingsData
-                                                  .timeFormat
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData
+                                                    .timeFormat
+                                                : "hh:mm"
                                               : "hh:mm"
                                           }
                                           ampm={
                                             props.loadGlobalSettingsData
-                                              ? props.loadGlobalSettingsData.timeFormat.includes(
-                                                  "HH"
-                                                )
-                                                ? false
+                                              ? props.loadGlobalSettingsData
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                    "HH"
+                                                  )
+                                                  ? false
+                                                  : true
                                                 : true
-                                              : "hh:mm"
+                                              : true
                                           }
                                           fullWidth
                                           id={`forRangeEndR${i}`}
@@ -668,17 +680,23 @@ function TimeQuestion(props) {
                                       format={
                                         props.loadGlobalSettingsData
                                           ? props.loadGlobalSettingsData
-                                              .timeFormat
+                                              .timeFormat != null
+                                            ? props.loadGlobalSettingsData
+                                                .timeFormat
+                                            : "hh:mm"
                                           : "hh:mm"
                                       }
                                       ampm={
                                         props.loadGlobalSettingsData
-                                          ? props.loadGlobalSettingsData.timeFormat.includes(
-                                              "HH"
-                                            )
-                                            ? false
+                                          ? props.loadGlobalSettingsData
+                                              .timeFormat != null
+                                            ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                "HH"
+                                              )
+                                              ? false
+                                              : true
                                             : true
-                                          : "hh:mm"
+                                          : true
                                       }
                                       fullWidth
                                       id={`forAnswerR${i}`}
@@ -718,17 +736,23 @@ function TimeQuestion(props) {
                                           format={
                                             props.loadGlobalSettingsData
                                               ? props.loadGlobalSettingsData
-                                                  .timeFormat
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData
+                                                    .timeFormat
+                                                : "hh:mm"
                                               : "hh:mm"
                                           }
                                           ampm={
                                             props.loadGlobalSettingsData
-                                              ? props.loadGlobalSettingsData.timeFormat.includes(
-                                                  "HH"
-                                                )
-                                                ? false
+                                              ? props.loadGlobalSettingsData
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                    "HH"
+                                                  )
+                                                  ? false
+                                                  : true
                                                 : true
-                                              : "hh:mm"
+                                              : true
                                           }
                                           fullWidth
                                           id={`forRangeEndR${i}`}

@@ -98,7 +98,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteUserGroup") {
@@ -112,7 +111,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteTeams") {
@@ -127,7 +125,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteQuestionaire") {
@@ -141,7 +138,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
@@ -155,7 +151,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "CancelQuestionaire") {
@@ -170,7 +165,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "EmergencyContactCancel") {
@@ -186,7 +180,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "ChangeDocStatus") {
@@ -217,28 +210,21 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (
       props.ConfirmationModalActionType == "ChangeQuestionnaireStatus"
     ) {
       let thisId = props.SelectedRowDetails[0];
-      // console.log("id");
-      // console.log(thisId);
-      // console.log(props.SelectedRowDetails);
       let data = {
         id: props.SelectedRowDetails[0],
         status: props.SelectedRowDetails[3],
       };
-      console.log(data);
       if (data.status == "Active") {
         data.status = "Inactive";
       } else {
         data.status = "Active";
       }
-      // questionaireApiCall
-      //   .ChangeQuestionnaireStatus(data)
       props
         .ChangeQuestionnaireUserStatus(data)
         .then((result) => {
@@ -248,7 +234,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeactiveDesignation") {
@@ -262,7 +247,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteCovidState") {
@@ -276,7 +260,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteFaq") {
@@ -290,7 +273,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteSite") {
@@ -304,7 +286,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteFloor") {
@@ -318,7 +299,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DisassociateFaq") {
@@ -332,7 +312,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "ChangeStatusFaq") {
@@ -354,7 +333,6 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteLocation") {
@@ -368,15 +346,10 @@ function CustomizedDialogs(props) {
           props.setOpenConfirmationModal(false);
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteBooleanQuestion") {
       var thisId = props.SelectedRowDetails.id;
-      console.log("gettheid");
-      console.log(props.SelectedRowDetails.id);
-      // questionaireApiCall
-      //   .DeleteBooleanQuestion(thisId)
       props
         .DeleteSelectedQuestion(thisId)
         .then((result) => {
@@ -390,18 +363,12 @@ function CustomizedDialogs(props) {
           }));
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteFreeQuestion") {
       var thisId = props.SelectedRowDetails.id;
-      console.log("gettheid");
-      console.log(props.SelectedRowDetails.id);
-      // questionaireApiCall
-      //   .DeleteFreeTextQuestion(thisId)
       props
         .DeleteFreetextQuestionData(thisId)
-
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted Freetext Question.");
@@ -413,13 +380,10 @@ function CustomizedDialogs(props) {
           }));
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteTimeQuestion") {
       var thisId = props.SelectedRowDetails.id;
-      console.log("gettheid");
-      console.log(props.SelectedRowDetails.id);
       questionaireApiCall
         .DeleteTimeQuestion(thisId)
         .then((result) => {
@@ -433,18 +397,12 @@ function CustomizedDialogs(props) {
           }));
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteDateQuestion") {
       var thisId = props.SelectedRowDetails.id;
-      console.log("gettheid");
-      console.log(props.SelectedRowDetails.id);
-
       questionaireApiCall
         .DeleteDateQuestion(thisId)
-        // props
-        //   .DeleteDateQuestionData(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted date Question.");
@@ -456,15 +414,10 @@ function CustomizedDialogs(props) {
           }));
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteNumericQuestion") {
       var thisId = props.SelectedRowDetails.id;
-      console.log("gettheid");
-      console.log(props.SelectedRowDetails.id);
-      // questionaireApiCall
-      // .DeleteNumericQuestion(thisId)
       props
         .DeleteNumericQuestionData(thisId)
         .then((result) => {
@@ -478,17 +431,12 @@ function CustomizedDialogs(props) {
           }));
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (
       props.ConfirmationModalActionType == "DeleteSinglechoiceQuestion"
     ) {
       var thisId = props.SelectedRowDetails.id;
-      console.log("gettheid");
-      console.log(props.SelectedRowDetails.id);
-      // questionaireApiCall
-      // .DeleteSinglechoiceQuestion(thisId)
       props
         .DeleteSinglechoiceQuestionData(thisId)
         .then((result) => {
@@ -502,16 +450,12 @@ function CustomizedDialogs(props) {
           }));
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     } else if (
       props.ConfirmationModalActionType == "DeleteMultichoiceQuestion"
     ) {
       var thisId = props.SelectedRowDetails.id;
-      console.log("gettheid");
-      console.log(props.SelectedRowDetails.id);
-      // questionaireApiCall
       props
         .DeleteMultiQuestionData(thisId)
         .then((result) => {
@@ -525,7 +469,6 @@ function CustomizedDialogs(props) {
           }));
         })
         .catch((error) => {
-          console.log(error);
           toasterErrorMessage(error);
         });
     }

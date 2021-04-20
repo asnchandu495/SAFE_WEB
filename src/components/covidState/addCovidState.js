@@ -134,7 +134,6 @@ function CreateCovidState(props) {
           }, 3000);
         })
         .catch((err) => {
-          console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
@@ -155,7 +154,6 @@ function CreateCovidState(props) {
           }, 3000);
         })
         .catch((err) => {
-          console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);

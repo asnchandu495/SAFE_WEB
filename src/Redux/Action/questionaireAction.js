@@ -51,7 +51,6 @@ export function loadquestions() {
     return questionaireApi
       .GetAllQuestionarie()
       .then((data) => {
-        console.log(data);
         dispatch(LoaddAllQuestionaire(data));
       })
       .catch((error) => {

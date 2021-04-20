@@ -47,14 +47,10 @@ function TimeDetails(props) {
   ] = useState("");
   useEffect(() => {
     if (props.selectedQuestionDetails) {
-      console.log("detauu");
-      console.log(props.selectedQuestionDetails);
     }
   }, []);
 
   function handleClickOpenConfirmationModal(value) {
-    console.log("time");
-    console.log(value);
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteTimeQuestion");

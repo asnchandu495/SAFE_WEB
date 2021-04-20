@@ -17,7 +17,6 @@ import Grid from "@material-ui/core/Grid";
 function QuestionDetails(props) {
   useEffect(() => {
     if (props.selectedQuestionDetails) {
-      console.log(props.selectedQuestionDetails);
     }
   }, []);
 

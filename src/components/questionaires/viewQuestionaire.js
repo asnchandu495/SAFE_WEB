@@ -33,7 +33,6 @@ function ViewQuestionaire(props) {
     questionaireApiCall
       .getSurveyById(questionId)
       .then((questionaireInfo) => {
-        console.log("success");
         setViewQuestionaireDetails(questionaireInfo);
       })
       .catch((error) => {

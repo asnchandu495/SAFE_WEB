@@ -41,7 +41,6 @@ function ViewHealthDeclaration(props) {
   };
 
   function RenderAnswers(props) {
-    console.log(props.questionDetails.questionType);
     switch (props.questionDetails.questionType) {
       case "Boolean":
         return (

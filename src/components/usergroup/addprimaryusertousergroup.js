@@ -122,14 +122,11 @@ function AddPrimaryUserToUserGroups(props) {
           ]) => {
             let primaryUsers = groupInfo.primaryapplicationuserDetails;
             setuserList(getUserList);
-            console.log("roles");
-            console.log(getUserRoles);
             setdesignationMasterData(getDesignations);
             setCountryMasterData(getCountries);
             setBusinessTeamMasterData(getTeams);
             setSiteMasterData(getSites);
             setBusinessUserRoleMasterData(getUserRoles);
-            // setUserPrimaryGroupMasterData(UserGroup);
             setSelectedGroupInfo(groupInfo);
             setApplicationUsers(applicationUsers);
             setComponentLoadder(false);
@@ -302,7 +299,6 @@ function AddPrimaryUserToUserGroups(props) {
 
   function AssignFiltersForm() {
     if (searchformData) {
-      console.log(searchformData);
       submitAssignFilter();
     } else {
       submitAssignFilter(false);
@@ -324,14 +320,11 @@ function AddPrimaryUserToUserGroups(props) {
     setshowLoadder(true);
     UsersApi.ListApplicationUsersForTeams(filterData)
       .then((result) => {
-        console.log("result");
-        console.log(result);
         setApplicationUsers(result);
         setshowLoadder(false);
         setModalOpen(false);
       })
       .catch((err) => {
-        console.log(err);
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);

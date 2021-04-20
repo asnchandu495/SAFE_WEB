@@ -12,7 +12,6 @@ export default function loadQuestionaireReducer(state = intialState, action) {
       return action.loadAssignQuestionnaire;
 
     case ASSIGN_QUESTIONAIRE_USERGROUP:
-      console.log(action.assignQuestionaire);
       return [{ ...action.assignQuestionaire }, ...state];
 
     case CHANGE_QUESTIONAIRE_STATUS:

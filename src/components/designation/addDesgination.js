@@ -79,7 +79,6 @@ function AddDesignation(props) {
           }, 3000);
         })
         .catch((err) => {
-          console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
@@ -101,7 +100,6 @@ function AddDesignation(props) {
           }, 3000);
         })
         .catch((err) => {
-          console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);

@@ -43,13 +43,10 @@ function MultiChoiceDetails(props) {
   ] = useState("");
   useEffect(() => {
     if (props.selectedQuestionDetails) {
-      console.log(props.selectedQuestionDetails.positiveConformityForTime);
     }
   }, []);
 
   function handleClickOpenConfirmationModal(value) {
-    console.log("time");
-    console.log(value);
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteMultichoiceQuestion");
@@ -192,7 +189,6 @@ function MultiChoiceDetails(props) {
                     .length > 0
                     ? props.selectedQuestionDetails.redFlagForMultipleChoice.map(
                         (opt) => {
-                          console.log(opt);
                           return (
                             <li key={`choicesR_${opt.id}`}>
                               {Array.prototype.map
@@ -218,7 +214,6 @@ function MultiChoiceDetails(props) {
                     .length > 0
                     ? props.selectedQuestionDetails.positiveConformityMultiChoice.map(
                         (opt) => {
-                          console.log(opt);
                           return (
                             <li key={`choicesP_${opt.id}`}>
                               {Array.prototype.map

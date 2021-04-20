@@ -175,7 +175,6 @@ function EmergencyContact(props) {
   ];
 
   const handleClickOpenConfirmationModal = (value) => {
-    // console.log(value);
     setSelectedRowsDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteEmergencyContacts");

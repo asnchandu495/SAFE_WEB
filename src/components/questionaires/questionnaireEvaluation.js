@@ -227,7 +227,6 @@ function QuestionnaireEvaluation(props) {
       questionaireApiCall
         .updateEvaluationResultForQuestionnaire(formData)
         .then((response) => {
-          console.log("success");
           setStateSnackbar(true);
           setToasterMessage("Updated evaluation settings.");
           settoasterServerity("success");

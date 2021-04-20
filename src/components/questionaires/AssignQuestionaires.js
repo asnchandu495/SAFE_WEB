@@ -164,17 +164,14 @@ function AssignQuestionaires(props) {
   }
 
   function handleChangeGroup(e, value) {
-    console.log(value);
     setselectedUserData(value);
   }
   function handleChangeQuestionnaire(e, value) {
-    console.log(value);
     setselectedUserQuestionnaire(value);
   }
 
   const handleClickOpenChangeStatusModal = (value) => {
     var userStatus = value[3];
-    console.log(value);
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("ChangeQuestionnaireStatus");
@@ -199,7 +196,6 @@ function AssignQuestionaires(props) {
     );
   };
   function AssignFiltersForm() {
-    // console.log("data");
     setshowLoadder(true);
     var selectedData = formData;
 
@@ -207,12 +203,9 @@ function AssignQuestionaires(props) {
     selectedData.groupdetails.name = selectedUserData.groupName;
     selectedData.questionnairedetails.id = selectedUserQuestionnaire.id;
     selectedData.questionnairedetails.name = selectedUserQuestionnaire.name;
-    console.log("formdata");
-    console.log(selectedData);
     props
       .AssignQuestionairetoGroup(selectedData)
       .then((result) => {
-        console.log("true");
         setStateSnackbar(true);
         setToasterMessage("Questionnaire assigned to User Group.");
         settoasterServerity("success");
@@ -223,8 +216,6 @@ function AssignQuestionaires(props) {
         }, 3000);
       })
       .catch((err) => {
-        console.log("false");
-        console.log(err);
         setToasterMessage(err.data);
         settoasterServerity("error");
         setStateSnackbar(true);
@@ -276,14 +267,8 @@ function AssignQuestionaires(props) {
       QuestionaireApicall.GetAllQuestionarie(),
     ])
       .then(([getassignedQuestionaire, getUserList, getQuestionaireList]) => {
-        console.log("redux");
-        console.log(getassignedQuestionaire);
-        // setassignedqList(getassignedQuestionaire);
-        // console.log(assignedqList);
         setuserGroupList(getUserList);
         setQuestionaireList(getQuestionaireList);
-        // console.log(getUserList);
-        // console.log(getQuestionaireList);
         setComponentLoadder(false);
       })
       .catch((error) => {

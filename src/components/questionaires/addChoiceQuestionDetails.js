@@ -315,7 +315,7 @@ function AddChoiceQuestionDetails(props) {
           });
       }
     } else {
-      console.log("fdsf");
+      console.log("");
     }
   }
 
@@ -386,7 +386,6 @@ function AddChoiceQuestionDetails(props) {
     e.preventDefault();
     setshowLoadderFlag(true);
     if (props.questionTypeForm.questionType == "SingleChoice") {
-      console.log(singleChoiceFlag);
       if (!singleChoiceFlag.isPositiveConfirmityRedFlag) {
         singleChoiceFlag.redFlagForSingleChoice = [];
       }
