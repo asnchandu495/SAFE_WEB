@@ -262,7 +262,7 @@ function AddFloor(props) {
                       variant="outlined"
                       validators={[
                         "required",
-                        "matchRegexp:^[a-zA-Z0-9]*$",
+                        "matchRegexp:^[a-zA-Z0-9 ]*$",
                         "matchRegexp:^.{0,50}$",
                       ]}
                       errorMessages={[
