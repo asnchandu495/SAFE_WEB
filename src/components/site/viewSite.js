@@ -183,28 +183,75 @@ function ViewSite(props) {
         },
       },
     },
+
     {
-      name: "densityTreasHold",
+      name: "densityThreasholdLowTo",
       label: "Low",
       options: {
+        display: "excluded",
+        print: false,
         filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          console.log("denisty");
 
+          console.log(thisRowData);
           if (thisRowData) {
             return (
               <span>
-                {thisRowData.densityThreasholdLowFrom} -{" "}
-                {thisRowData.densityThreasholdLowTo}
+                {thisRowData[3]} - {thisRowData[6]}
               </span>
             );
           }
         },
       },
     },
+
     {
-      name: "densityTreasHold",
+      name: "densityThreasholdLowFrom",
+      label: "Low",
+      options: {
+        filter: false,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          console.log("denisty");
+
+          console.log(thisRowData);
+          if (thisRowData) {
+            return (
+              <span>
+                {thisRowData[4]} - {thisRowData[3]}
+              </span>
+            );
+          }
+        },
+      },
+    },
+
+    {
+      name: "densityThreasholdMediumTo",
+      label: "Medium",
+      options: {
+        display: "excluded",
+        filter: false,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return (
+              <span>
+                {thisRowData[4]} - {thisRowData.densityThreasholdMediumTo}
+              </span>
+            );
+          }
+        },
+      },
+    },
+
+    {
+      name: "densityThreasholdMediumFrom",
       label: "Medium",
       options: {
         filter: false,
@@ -214,16 +261,36 @@ function ViewSite(props) {
           if (thisRowData) {
             return (
               <span>
-                {thisRowData.densityThreasholdMediumFrom} -{" "}
-                {thisRowData.densityThreasholdMediumFrom}
+                {thisRowData[6]} - {thisRowData[5]}
               </span>
             );
           }
         },
       },
     },
+
     {
-      name: "densityTreasHold",
+      name: "densityThreasholdHighTo",
+      label: "High",
+      options: {
+        display: "excluded",
+        filter: false,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return (
+              <span>
+                {thisRowData[5]} - {thisRowData.densityThreasholdHighTo}
+              </span>
+            );
+          }
+        },
+      },
+    },
+
+    {
+      name: "densityThreasholdHighFrom",
       label: "High",
       options: {
         filter: false,
@@ -233,8 +300,7 @@ function ViewSite(props) {
           if (thisRowData) {
             return (
               <span>
-                {thisRowData.densityThreasholdHighFrom} -{" "}
-                {thisRowData.densityThreasholdHighTo}
+                {thisRowData[8]} - {thisRowData[7]}
               </span>
             );
           }

@@ -636,8 +636,11 @@ function CreateSite(props) {
                       </label>
                       <TextValidator
                         variant="outlined"
-                        validators={["required"]}
-                        errorMessages={["Please enter postal code"]}
+                        validators={["required", "matchRegexp:^[a-zA-Z0-9]*$"]}
+                        errorMessages={[
+                          "Please enter postal code",
+                          "Special charcters are not allowed",
+                        ]}
                         fullWidth
                         id="zipCode"
                         placeholder="Enter postal code"
