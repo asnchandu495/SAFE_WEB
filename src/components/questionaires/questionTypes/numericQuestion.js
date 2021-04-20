@@ -133,22 +133,11 @@ function NumericQuestion(props) {
 
   const handleChangeFlagR = (e, index) => {
     const { name, value } = e.target;
-    let thisVal = "";
-    if (name == "numericExpressionType") {
-      thisVal = value;
-    } else {
-      let chkType = value - Math.floor(value) !== 0;
-      if (chkType) {
-        thisVal = parseFloat(value);
-      } else {
-        thisVal = parseInt(value);
-      }
-    }
     const list = {
       ...addQuestionData,
       redFlagForNumber: [
         ...addQuestionData.redFlagForNumber.map((con, conIndex) =>
-          conIndex == index ? { ...con, [name]: thisVal } : con
+          conIndex == index ? { ...con, [name]: value } : con
         ),
       ],
     };
@@ -157,22 +146,11 @@ function NumericQuestion(props) {
 
   const handleChangeFlagP = (e, index) => {
     const { name, value } = e.target;
-    let thisVal = "";
-    if (name == "numericExpressionType") {
-      thisVal = value;
-    } else {
-      let chkType = value - Math.floor(value) !== 0;
-      if (chkType) {
-        thisVal = parseFloat(value);
-      } else {
-        thisVal = parseInt(value);
-      }
-    }
     const list = {
       ...addQuestionData,
       positiveConformityForNumber: [
         ...addQuestionData.positiveConformityForNumber.map((con, conIndex) =>
-          conIndex == index ? { ...con, [name]: thisVal } : con
+          conIndex == index ? { ...con, [name]: value } : con
         ),
       ],
     };
@@ -228,6 +206,70 @@ function NumericQuestion(props) {
       ...props.questionTypeForm,
       ...addQuestionData,
     };
+
+    let getPositiveConformityForNumber =
+      finalObject.positiveConformityForNumber;
+
+    let newPositiveConformityForNumber = [];
+    getPositiveConformityForNumber.forEach((ch) => {
+      let newForAnswer = 0;
+      let chkTypeForAns = ch.forAnswer - Math.floor(ch.forAnswer) !== 0;
+      if (chkTypeForAns) {
+        newForAnswer = parseFloat(ch.forAnswer);
+      } else {
+        newForAnswer = parseInt(ch.forAnswer);
+      }
+
+      let newForRangeEnd = 0;
+      let chkTypeForEndAns = ch.forRangeEnd - Math.floor(ch.forRangeEnd) !== 0;
+      if (chkTypeForEndAns) {
+        newForRangeEnd = parseFloat(ch.forRangeEnd);
+      } else {
+        newForRangeEnd = parseInt(ch.forRangeEnd);
+      }
+
+      newPositiveConformityForNumber.push({
+        id: ch.id,
+        numericExpressionType: ch.numericExpressionType,
+        forAnswer: newForAnswer,
+        forRangeEnd: newForRangeEnd,
+      });
+    });
+
+    let getRedFlagForNumber = finalObject.redFlagForNumber;
+
+    let newRedFlagForNumber = [];
+    if (getRedFlagForNumber.length > 0) {
+      getRedFlagForNumber.forEach((ch) => {
+        let newForAnswer = 0;
+        let chkTypeForAns = ch.forAnswer - Math.floor(ch.forAnswer) !== 0;
+        if (chkTypeForAns) {
+          newForAnswer = parseFloat(ch.forAnswer);
+        } else {
+          newForAnswer = parseInt(ch.forAnswer);
+        }
+
+        let newForRangeEnd = 0;
+        let chkTypeForEndAns =
+          ch.forRangeEnd - Math.floor(ch.forRangeEnd) !== 0;
+        if (chkTypeForEndAns) {
+          newForRangeEnd = parseFloat(ch.forRangeEnd);
+        } else {
+          newForRangeEnd = parseInt(ch.forRangeEnd);
+        }
+
+        newRedFlagForNumber.push({
+          id: ch.id,
+          numericExpressionType: ch.numericExpressionType,
+          forAnswer: newForAnswer,
+          forRangeEnd: newForRangeEnd,
+        });
+      });
+    }
+
+    finalObject.positiveConformityForNumber = newPositiveConformityForNumber;
+    finalObject.redFlagForNumber = newRedFlagForNumber;
+
     if (finalObject.id != 0) {
       questionaireApiCall
         .UpdateNumericQuestion(finalObject)
