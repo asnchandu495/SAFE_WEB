@@ -27,7 +27,21 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
-
+import FilterListIcon from "@material-ui/icons/FilterList";
+import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import Dialog from "@material-ui/core/Dialog";
+import TextField from "@material-ui/core/TextField";
+import DialogContent from "@material-ui/core/DialogContent";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import MasterService from "../../services/masterDataService";
+import UserGroupService from "../../services/userGroupService";
+import FormControl from "@material-ui/core/FormControl";
+import Grid from "@material-ui/core/Grid";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import CovidStateApiServices from "../../services/masterDataService";
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -42,7 +56,9 @@ const theme1 = createMuiTheme({
 
 function Users(props) {
   const usersApiCall = new UserService();
-
+  const masterDataCallApi = new MasterService();
+  const UserGroupApi = new UserGroupService();
+  const CovidStateApi = new CovidStateApiServices();
   const [openMoreMenu, setOpenMoreMenu] = useState(false);
   const anchorRef = useRef(null);
   const prevOpen = useRef(openMoreMenu);
@@ -56,11 +72,16 @@ function Users(props) {
   const [openuserTemepratureModal, setopenuserTemepratureModal] = useState(
     false
   );
+  const [BusinessUserRoleMasterData, setBusinessUserRoleMasterData] = useState(
+    []
+  );
+  const [showLoadder, setshowLoadder] = useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [
     ConfirmationDialogContextText,
     setConfirmationDialogContextText,
   ] = useState("");
+  const [Modalopen, setModalOpen] = useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [SelectedRowId, setSelectedRowId] = useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -78,19 +99,43 @@ function Users(props) {
   const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
     []
   );
-
+  const [designationMasterData, setdesignationMasterData] = useState();
+  const [SiteMasterData, setSiteMasterData] = useState([]);
+  const [userGroupList, setuserGroupList] = useState();
+  const [UserGroupData, setUserGroupData] = useState([]);
+  const [covidStatelist, setcovidStatelist] = useState([]);
   useEffect(() => {
     if (prevOpen.current === true && openMoreMenu === false) {
       anchorRef.current.focus();
     }
     prevOpen.current = openMoreMenu;
     setcomponentLoadder(true);
-    props
-      .LoadAllUser()
-      .then((result) => {
-        setReloadPage("NO");
-        setcomponentLoadder(false);
-      })
+    Promise.all([
+      props.LoadAllUser(),
+      masterDataCallApi.getUserPrimaryRoles(),
+      masterDataCallApi.getDesignations(),
+      masterDataCallApi.getSites(),
+      UserGroupApi.loadUserGroup(),
+      CovidStateApi.getCOVIDStates(),
+    ])
+      .then(
+        ([
+          result,
+          getUserRoles,
+          getDesignations,
+          getSites,
+          getUserGroup,
+          getCovidState,
+        ]) => {
+          setReloadPage("NO");
+          setBusinessUserRoleMasterData(getUserRoles);
+          setdesignationMasterData(getDesignations);
+          setSiteMasterData(getSites);
+          setUserGroupData(getUserGroup);
+          setcovidStatelist(getCovidState);
+          setcomponentLoadder(false);
+        }
+      )
       .catch((err) => {
         console.log(err);
       });
@@ -99,6 +144,14 @@ function Users(props) {
   const handleToggleMoreMenu = (thisRowData) => {
     setSelectedRowDetails(thisRowData);
     setOpenMoreMenu((prevOpen) => !prevOpen);
+  };
+
+  const handleClickOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
   };
 
   const handleCloseMoreMenu = (event) => {
@@ -129,6 +182,21 @@ function Users(props) {
     props.history.push("/users/update-user-details/" + userId);
   }
 
+  function handleChangeUserRole(e, value) {
+    setBusinessUserRoleMasterData(value);
+  }
+  function handleChangeUserDesignation(e, value) {
+    setdesignationMasterData(value);
+  }
+  function userSelectSite(e, value) {
+    setSiteMasterData(value);
+  }
+  function usergroupSelect(e, value) {
+    setUserGroupData(value);
+  }
+  function covidStateSelect(e, value) {
+    setcovidStatelist(value);
+  }
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -158,6 +226,7 @@ function Users(props) {
         noMatch: "There are no users",
       },
     },
+
     customToolbar: () => {
       return (
         <span>
@@ -178,6 +247,22 @@ function Users(props) {
             ""
           )}
         </span>
+      );
+    },
+
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbar: () => {
+      return (
+        <div className={`maingrid-actions`}>
+          <Tooltip title="Filter By User">
+            <Button
+              variant="contained"
+              startIcon={<FilterListIcon />}
+              className={`add-icon`}
+              onClick={handleClickOpenModal}
+            ></Button>
+          </Tooltip>
+        </div>
       );
     },
   };
@@ -325,7 +410,6 @@ function Users(props) {
   ];
 
   const handleClickOpenConfirmationModal = (value) => {
-    
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeactiveUser");
@@ -355,6 +439,202 @@ function Users(props) {
 
   return (
     <div className="innerpage-container">
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+        open={Modalopen}
+      >
+        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+          Filters
+        </DialogTitle>
+        <ValidatorForm className={`global-form`} onSubmit="#">
+          <DialogContent dividers>
+            {!componentLoadder ? (
+              <Grid container spacing={3}>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">Roles </label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          BusinessUserRoleMasterData &&
+                          BusinessUserRoleMasterData.length > 0
+                            ? BusinessUserRoleMasterData
+                            : []
+                        }
+                        getOptionLabel={(option) => option.description}
+                        // defaultValue={UserSelectedRoleValue}
+                        onChange={handleChangeUserRole}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select user roles"
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">Designation</label>
+                  </Grid>
+                  <Grid item sm={8}>
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      multiple
+                      options={
+                        designationMasterData &&
+                        designationMasterData.length > 0
+                          ? designationMasterData
+                          : []
+                      }
+                      getOptionLabel={(option) => option.name}
+                      // defaultValue={UserSelectedDesignationValue}
+                      onChange={handleChangeUserDesignation}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select designation"
+                        />
+                      )}
+                    />
+                    {/* {formFieldValidation.designation ? (
+                      <FormHelperText className="error-msg">
+                        Please select designation{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )} */}
+                  </Grid>
+                </Grid>
+
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">Site</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Autocomplete
+                      id="tags-outlined"
+                      options={
+                        SiteMasterData && SiteMasterData.length > 0
+                          ? SiteMasterData
+                          : []
+                      }
+                      getOptionLabel={(option) => option.name}
+                      // defaultValue={UserSelectSiteValue}
+                      onChange={userSelectSite}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select site"
+                        />
+                      )}
+                    />
+                    {/* {formFieldValidation.designation ? (
+                      <FormHelperText className="error-msg">
+                        Please select designation{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )} */}
+                  </Grid>
+                </Grid>
+
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">User Group</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Autocomplete
+                      id="tags-outlined"
+                      options={
+                        UserGroupData && UserGroupData.length > 0
+                          ? UserGroupData
+                          : []
+                      }
+                      getOptionLabel={(option) => option.groupName}
+                      // defaultValue={UserSelectSiteValue}
+                      onChange={usergroupSelect}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select site"
+                        />
+                      )}
+                    />
+                    {/* {formFieldValidation.designation ? (
+                      <FormHelperText className="error-msg">
+                        Please select designation{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )} */}
+                  </Grid>
+                </Grid>
+
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">Covid State</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Autocomplete
+                      id="tags-outlined"
+                      // /options={teamManagers}
+                      options={
+                        covidStatelist && covidStatelist.length > 0
+                          ? covidStatelist
+                          : []
+                      }
+                      getOptionLabel={(option) => option.stateName}
+                      onChange={covidStateSelect}
+                      name="covidState"
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select  covid state"
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            ) : null}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              type="submit"
+              className="global-submit-btn"
+              disabled={showLoadder}
+            >
+              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+            </Button>
+            <Button onClick={handleClose} className="global-cancel-btn">
+              Cancel
+            </Button>
+          </DialogActions>
+        </ValidatorForm>
+      </Dialog>
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
         <LinkTo
           color="inherit"

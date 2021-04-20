@@ -4,6 +4,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import samplePicture from "../common/Image/user.jpg";
+import defaultPicture from "../common/Image/defaultuser.png";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import WcOutlinedIcon from "@material-ui/icons/WcOutlined";
@@ -116,19 +117,35 @@ export default function UserProfile() {
           <Grid item>
             <Grid item>
               <div className={classes.image}>
-                {imageBinaryData ? (
-                  <img
-                    className={classes.img}
-                    alt="complex"
-                    src={imageBinaryData}
-                  />
-                ) : (
-                  <img
-                    className={classes.img}
-                    alt="complex"
-                    src={samplePicture}
-                  />
-                )}
+                {loggedinUserDetails
+                  ? (() => {
+                      if (loggedinUserDetails.profileImage) {
+                        return (
+                          <img
+                            className={classes.img}
+                            alt="complex"
+                            src={loggedinUserDetails.profileImage}
+                          />
+                        );
+                      } else if (loggedinUserDetails.uploadedProfileImage) {
+                        return (
+                          <img
+                            className={classes.img}
+                            alt="complex"
+                            src={loggedinUserDetails.uploadedProfileImage}
+                          />
+                        );
+                      } else {
+                        return (
+                          <img
+                            className={classes.img}
+                            alt="complex"
+                            src={defaultPicture}
+                          />
+                        );
+                      }
+                    })()
+                  : ""}
               </div>
             </Grid>
           </Grid>
