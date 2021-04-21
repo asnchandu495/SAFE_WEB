@@ -137,7 +137,7 @@ function Users(props) {
   const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
     []
   );
-  const [designationMasterData, setdesignationMasterData] = useState([]);
+  const [designationMasterData, setdesignationMasterData] = useState();
   const [RoleMasterData, setRoleMasterData] = useState([]);
   const [SiteMasterData, setSiteMasterData] = useState([]);
   const [UserGroupData, setUserGroupData] = useState([]);
@@ -150,6 +150,14 @@ function Users(props) {
   const [BusinessSiteMasterData, setBusinessSiteMasterData] = useState();
   const [BusinessGroupData, setBusinessGroupData] = useState();
   const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
+  const [applicationUsers, setApplicationUsers] = useState([]);
+  const [searchformData, setsearchformData] = useState({
+    primaryGroupId: "",
+    designationId: "",
+    covidStateId: "",
+    roleIds: [],
+    siteId: [],
+  });
 
   useEffect(() => {
     if (prevOpen.current === true && openMoreMenu === false) {
@@ -243,6 +251,42 @@ function Users(props) {
   }
   function covidStateSelect(e, value) {
     setcovidStatelist(value);
+  }
+
+  function AssignFiltersForm() {
+    if (searchformData) {
+      submitAssignFilteredUser();
+    } else {
+      submitAssignFilteredUser(false);
+      return false;
+    }
+  }
+
+  function submitAssignFilteredUser() {
+    console.log(designationMasterData);
+    var userfilterData = searchformData;
+    userfilterData.designationId = designationMasterData[0].id;
+    userfilterData.primaryGroupId = BusinessGroupData[0].id;
+    userfilterData.covidStateId = BusinessCovidStateData[0].id;
+
+    console.log(userfilterData);
+
+    setshowLoadder(true);
+    // LoadAllUser.ListFliteredData(teamData)
+    usersApiCall
+      .ListFliteredData(userfilterData)
+      .then((result) => {
+        setApplicationUsers(result);
+        setshowLoadder(false);
+        setModalOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
   const options = {
     filter: false,
@@ -494,7 +538,7 @@ function Users(props) {
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Filters
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit="#">
+        <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
@@ -721,6 +765,7 @@ function Users(props) {
             data={
               props.UserData && props.UserData.length > 0 ? props.UserData : []
             }
+            // data={applicationUsers ? applicationUsers : []}
             columns={columns}
             options={options}
             className="global-table"

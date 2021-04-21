@@ -32,6 +32,16 @@ export default class UserService {
     });
   }
 
+  ListFliteredData(searchformData) {
+    var data = JSON.stringify(searchformData);
+    return this.fetch(`${this.baseURL}/ApplicationUser/ListApplicationUsers`, {
+      method: "POST",
+      body: data,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   ListPrimaryApplicationUsers() {
     let sendData = {
       primaryGroupId: "",
