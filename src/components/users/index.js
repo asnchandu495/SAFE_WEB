@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
+import { makeStyles } from "@material-ui/core/styles";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import CheckIcon from "@material-ui/icons/Check";
@@ -54,7 +55,46 @@ const theme1 = createMuiTheme({
   },
 });
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    padding: 25,
+  },
+  stepButtons: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  icon: {
+    marginRight: theme.spacing(0.5),
+    marginBottom: -3,
+    width: 20,
+    height: 20,
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: "100%",
+    margin: 0,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  errorSpanMsg: {
+    color: "red",
+  },
+  HideGrid: {
+    display: "none",
+  },
+}));
 function Users(props) {
+  const userId = props.match.params.id;
+  const classes = useStyles();
   const usersApiCall = new UserService();
   const masterDataCallApi = new MasterService();
   const UserGroupApi = new UserGroupService();
@@ -72,9 +112,7 @@ function Users(props) {
   const [openuserTemepratureModal, setopenuserTemepratureModal] = useState(
     false
   );
-  const [BusinessUserRoleMasterData, setBusinessUserRoleMasterData] = useState(
-    []
-  );
+
   const [showLoadder, setshowLoadder] = useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [
@@ -99,11 +137,20 @@ function Users(props) {
   const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
     []
   );
-  const [designationMasterData, setdesignationMasterData] = useState();
+  const [designationMasterData, setdesignationMasterData] = useState([]);
+  const [RoleMasterData, setRoleMasterData] = useState([]);
   const [SiteMasterData, setSiteMasterData] = useState([]);
-  const [userGroupList, setuserGroupList] = useState();
   const [UserGroupData, setUserGroupData] = useState([]);
   const [covidStatelist, setcovidStatelist] = useState([]);
+  const [BusinessDesingationData, setBusinessDesingationData] = useState();
+  const [
+    BusinessUserRoleMasterData,
+    setBusinessUserRoleMasterData,
+  ] = useState();
+  const [BusinessSiteMasterData, setBusinessSiteMasterData] = useState();
+  const [BusinessGroupData, setBusinessGroupData] = useState();
+  const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
+
   useEffect(() => {
     if (prevOpen.current === true && openMoreMenu === false) {
       anchorRef.current.focus();
@@ -129,10 +176,10 @@ function Users(props) {
         ]) => {
           setReloadPage("NO");
           setBusinessUserRoleMasterData(getUserRoles);
-          setdesignationMasterData(getDesignations);
-          setSiteMasterData(getSites);
-          setUserGroupData(getUserGroup);
-          setcovidStatelist(getCovidState);
+          setBusinessDesingationData(getDesignations);
+          setBusinessSiteMasterData(getSites);
+          setBusinessGroupData(getUserGroup);
+          setBusinessCovidStateData(getCovidState);
           setcomponentLoadder(false);
         }
       )
@@ -183,7 +230,7 @@ function Users(props) {
   }
 
   function handleChangeUserRole(e, value) {
-    setBusinessUserRoleMasterData(value);
+    setRoleMasterData(value);
   }
   function handleChangeUserDesignation(e, value) {
     setdesignationMasterData(value);
@@ -453,11 +500,47 @@ function Users(props) {
               <Grid container spacing={3}>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
+                    <label className=""> Group</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={
+                        BusinessGroupData && BusinessGroupData.length > 0
+                          ? BusinessGroupData
+                          : []
+                      }
+                      getOptionLabel={(option) => option.groupName}
+                      defaultValue={UserGroupData}
+                      onChange={usergroupSelect}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select site"
+                        />
+                      )}
+                    />
+                    {/* {formFieldValidation.designation ? (
+                      <FormHelperText className="error-msg">
+                        Please select designation{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )} */}
+                  </Grid>
+                </Grid>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
                     <label className="">Roles </label>
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
                       <Autocomplete
+                        multiple
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
@@ -466,7 +549,7 @@ function Users(props) {
                             : []
                         }
                         getOptionLabel={(option) => option.description}
-                        // defaultValue={UserSelectedRoleValue}
+                        defaultValue={RoleMasterData}
                         onChange={handleChangeUserRole}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -481,23 +564,28 @@ function Users(props) {
                     </FormControl>
                   </Grid>
                 </Grid>
+
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
                     <label className="">Designation</label>
                   </Grid>
-                  <Grid item sm={8}>
+                  <Grid
+                    item
+                    sm={8}
+                    className={[userId ? classes.HideGrid : ""].join(" ")}
+                  >
                     <Autocomplete
                       multiple
                       id="tags-outlined"
                       multiple
                       options={
-                        designationMasterData &&
-                        designationMasterData.length > 0
-                          ? designationMasterData
+                        BusinessDesingationData &&
+                        BusinessDesingationData.length > 0
+                          ? BusinessDesingationData
                           : []
                       }
                       getOptionLabel={(option) => option.name}
-                      // defaultValue={UserSelectedDesignationValue}
+                      defaultValue={designationMasterData}
                       onChange={handleChangeUserDesignation}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -525,50 +613,17 @@ function Users(props) {
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
+                      multiple
                       id="tags-outlined"
                       options={
-                        SiteMasterData && SiteMasterData.length > 0
-                          ? SiteMasterData
+                        BusinessSiteMasterData &&
+                        BusinessSiteMasterData.length > 0
+                          ? BusinessSiteMasterData
                           : []
                       }
                       getOptionLabel={(option) => option.name}
-                      // defaultValue={UserSelectSiteValue}
+                      defaultValue={SiteMasterData}
                       onChange={userSelectSite}
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select site"
-                        />
-                      )}
-                    />
-                    {/* {formFieldValidation.designation ? (
-                      <FormHelperText className="error-msg">
-                        Please select designation{" "}
-                      </FormHelperText>
-                    ) : (
-                      ""
-                    )} */}
-                  </Grid>
-                </Grid>
-
-                <Grid item cs={12} container>
-                  <Grid item xs={4}>
-                    <label className="">User Group</label>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Autocomplete
-                      id="tags-outlined"
-                      options={
-                        UserGroupData && UserGroupData.length > 0
-                          ? UserGroupData
-                          : []
-                      }
-                      getOptionLabel={(option) => option.groupName}
-                      // defaultValue={UserSelectSiteValue}
-                      onChange={usergroupSelect}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
                       renderInput={(params) => (
@@ -595,15 +650,18 @@ function Users(props) {
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
+                      multiple
                       id="tags-outlined"
                       // /options={teamManagers}
                       options={
-                        covidStatelist && covidStatelist.length > 0
-                          ? covidStatelist
+                        BusinessCovidStateData &&
+                        BusinessCovidStateData.length > 0
+                          ? BusinessCovidStateData
                           : []
                       }
                       getOptionLabel={(option) => option.stateName}
                       onChange={covidStateSelect}
+                      defaultValue={covidStatelist}
                       name="covidState"
                       filterSelectedOptions
                       className="global-input autocomplete-select"
