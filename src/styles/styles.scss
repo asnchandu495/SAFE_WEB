@@ -602,6 +602,9 @@ label.required {
 }
 
 .add-location-dialog {
+  .MuiDialog-paper {
+    min-width: 500px !important;
+  }
   .global-input {
     height: 37px !important;
   }

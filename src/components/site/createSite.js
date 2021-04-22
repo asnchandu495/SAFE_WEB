@@ -639,7 +639,7 @@ function CreateSite(props) {
                         validators={["required", "matchRegexp:^[0-9]*$"]}
                         errorMessages={[
                           "Please enter postal code",
-                          "Special charcters are not allowed",
+                          "Only numbers are allowed",
                         ]}
                         fullWidth
                         id="zipCode"

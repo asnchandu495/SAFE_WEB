@@ -22,6 +22,7 @@ import ApartmentIcon from "@material-ui/icons/Apartment";
 import RoomIcon from "@material-ui/icons/Room";
 import SiteServices from "../../services/siteService";
 import AddFlocationPage from "./addLocation";
+import ViewlocationPage from "./viewLocation";
 import CustomToolbaraddFlocation from "./addLocationCustomButton";
 
 const useStyles = makeStyles((theme) => ({
@@ -76,6 +77,7 @@ function ListSite(props) {
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [openCovidStateInfoModal, setopenCovidStateInfoModal] = useState(false);
   const [openAddLocationModal, setopenAddLocationModal] = useState(false);
+  const [openViewLocationModal, setopenViewLocationModal] = useState(false);
   const [openshiftInfoModal, setopenshiftInfoModal] = useState(false);
   const [openuserTemepratureModal, setopenuserTemepratureModal] = useState(
     false
@@ -88,6 +90,7 @@ function ListSite(props) {
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [listLocationData, setlistLocationData] = useState([]);
   const [SelectedRowId, setSelectedRowId] = useState("");
+  const [selectedLocationDetails, setSelectedLocationDetails] = useState();
   const [openaddFloorModal, setopenaddFloorModal] = useState(false);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -118,6 +121,12 @@ function ListSite(props) {
     setSelectedRowId(locationId);
     setopenAddLocationModal(true);
   }
+
+  function handleClickViewLocation(value) {
+    setopenViewLocationModal(true);
+    setSelectedLocationDetails(value);
+  }
+
   function handleClickViewUsers(value) {
     // props.history.push("/designation/view-designation/" + value);
   }
@@ -206,7 +215,60 @@ function ListSite(props) {
         },
       },
     },
-
+    {
+      name: "densityThreasholdLowFrom",
+      label: "densityThreasholdLowFrom",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      name: "densityThreasholdLowTo",
+      label: "densityThreasholdLowTo",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      name: "densityThreasholdMediumFrom",
+      label: "densityThreasholdMediumFrom",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      name: "densityThreasholdMediumTo",
+      label: "densityThreasholdMediumTo",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      name: "densityThreasholdHighFrom",
+      label: "densityThreasholdHighFrom",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      name: "densityThreasholdHighTo",
+      label: "densityThreasholdHighTo",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
     {
       label: "Actions",
       name: "",
@@ -218,6 +280,16 @@ function ListSite(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
+                <Tooltip title="View">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<VisibilityIcon />}
+                    className={`view-icon`}
+                    onClick={() => handleClickViewLocation(thisRowData)}
+                  ></Button>
+                </Tooltip>
+
                 <Tooltip title="Edit">
                   <Button
                     variant="contained"
@@ -295,7 +367,7 @@ function ListSite(props) {
               aria-current="page"
               className="inactive"
             >
-             {siteName}
+              {siteName}
             </LinkTo>
             <LinkTo
               color="textPrimary"
@@ -340,6 +412,12 @@ function ListSite(props) {
         setSelectedRowId={setSelectedRowId}
         setopenAddLocationModal={setopenAddLocationModal}
         siteId={siteId}
+      />
+      <ViewlocationPage
+        openViewLocationModal={openViewLocationModal}
+        selectedLocationDetails={selectedLocationDetails}
+        setSelectedLocationDetails={setSelectedLocationDetails}
+        setopenViewLocationModal={setopenViewLocationModal}
       />
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
