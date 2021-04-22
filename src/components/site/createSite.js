@@ -636,7 +636,7 @@ function CreateSite(props) {
                       </label>
                       <TextValidator
                         variant="outlined"
-                        validators={["required", "matchRegexp:^[a-zA-Z0-9]*$"]}
+                        validators={["required", "matchRegexp:^[0-9]*$"]}
                         errorMessages={[
                           "Please enter postal code",
                           "Special charcters are not allowed",

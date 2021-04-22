@@ -21,6 +21,16 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ApartmentIcon from "@material-ui/icons/Apartment";
 import * as AddFloorAction from "../../Redux/Action/addFloorAction";
 import RoomIcon from "@material-ui/icons/Room";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
+import FormControl from "@material-ui/core/FormControl";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import SiteService from "../../services/siteService";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -47,7 +57,7 @@ function ListSite(props) {
   const classes = useStyles();
 
   const usersApiCall = new UserService();
-
+  const siteApiCall = new SiteService();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [openCovidStateInfoModal, setopenCovidStateInfoModal] = useState(false);
   const [openshiftInfoModal, setopenshiftInfoModal] = useState(false);
@@ -67,18 +77,33 @@ function ListSite(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
+  const [UserList, setUserList] = useState([]);
   const [
     ConfirmationModalActionType,
     setConfirmationModalActionType,
   ] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
-
+  const [showLoadder, setshowLoadder] = useState(false);
+  const [userSelectedSiteManager, setUserSelectedSiteManager] = useState();
+  const [siteManger, setSiteManger] = useState([]);
+  const [securityManger, setSecurityManger] = useState([]);
+  const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
+  const [
+    userSelectedSecurityManager,
+    setUserSelectedSecurityManager,
+  ] = useState();
   useEffect(() => {
     setcomponentLoadder(true);
-    props
-      .LoadData()
-      .then((result) => {
+    Promise.all([
+      siteApiCall.getSiteManagers(),
+      siteApiCall.getLocationManagers(),
+      props.LoadData(),
+    ])
+
+      .then(([getSiteManagers, getLocationManagers, result]) => {
         setcomponentLoadder(false);
+        setSiteManger(getSiteManagers);
+        setSecurityManger(getLocationManagers);
       })
       .catch((err) => {
         console.log(err);
@@ -101,6 +126,15 @@ function ListSite(props) {
   function handleClickOpenAddFlocationPage(value) {
     var thisId = value[0];
     props.history.push(`/site/${thisId}/list-location`);
+  }
+
+  function handleChangeSiteManager(event, value) {
+    setisAlertBoxOpened(true);
+    setUserSelectedSiteManager(value);
+  }
+  function handleChangeSecurityManager(event, value) {
+    setisAlertBoxOpened(true);
+    setUserSelectedSecurityManager(value);
   }
 
   const options = {
@@ -279,6 +313,98 @@ function ListSite(props) {
               Sites
             </LinkTo>
           </Breadcrumbs>
+          <Paper className="search-form-top-paper">
+            <ValidatorForm className={`global-form`} onSubmit="#">
+              <Grid container spacing={3}>
+                <Grid item xs={4}>
+                  <label htmlFor="password" className="input-label ">
+                    Site manager
+                  </label>
+                  <Autocomplete
+                    id="tags-outlined"
+                    options={siteManger}
+                    getOptionLabel={(option) => option.name}
+                    onChange={handleChangeSiteManager}
+                    // defaultValue={userSelectedSiteManager}
+                    filterSelectedOptions
+                    className="global-input autocomplete-select"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        placeholder="Select site manager"
+                      />
+                    )}
+                  />
+                  {/* {formFieldValidation.siteManager ? (
+                    <FormHelperText className="error-msg">
+                      Please select site manager{" "}
+                    </FormHelperText>
+                  ) : (
+                    ""
+                  )} */}
+                </Grid>
+                <Grid item xs={4}>
+                  <label htmlFor="password" className="input-label ">
+                    Security manager
+                  </label>
+                  <Autocomplete
+                    id="tags-outlined"
+                    options={securityManger}
+                    getOptionLabel={(option) => option.name}
+                    onChange={handleChangeSecurityManager}
+                    // defaultValue={userSelectedSecurityManager}
+                    filterSelectedOptions
+                    className="global-input autocomplete-select"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        placeholder="Select security manager"
+                      />
+                    )}
+                  />
+                  {/* {formFieldValidation.securityManager ? (
+                    <FormHelperText className="error-msg">
+                      Please select security manager{" "}
+                    </FormHelperText>
+                  ) : (
+                    ""
+                  )} */}
+                </Grid>
+
+                <Grid item xs={2}>
+                  <label htmlFor="password" className="input-label "></label>
+                  <br />
+                  <div className={`form-buttons-container`}>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className="global-submit-btn global-filter-btn"
+                      disabled={showLoadder}
+                    >
+                      {" "}
+                      {showLoadder ? <ButtonLoadderComponent /> : "Apply"}
+                    </Button>
+                  </div>
+                </Grid>
+                <Grid item xs={2}>
+                  <label htmlFor="password" className="input-label "></label>
+                  <br />
+                  <div className={`form-buttons-container`}>
+                    <Button
+                      variant="contained"
+                      type="button"
+                      className="global-cancel-btn global-filter-reset-btn"
+                      onClick="#"
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </Grid>
+              </Grid>
+            </ValidatorForm>
+          </Paper>
           <MuiThemeProvider theme={theme1}>
             {" "}
             <MUIDataTable

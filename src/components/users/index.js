@@ -43,6 +43,13 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CovidStateApiServices from "../../services/masterDataService";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -52,6 +59,19 @@ const theme1 = createMuiTheme({
         maxHeight: "calc(100vh - 290px) !important",
       },
     },
+  },
+});
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
   },
 });
 
@@ -151,6 +171,7 @@ function Users(props) {
   const [BusinessGroupData, setBusinessGroupData] = useState();
   const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
   const [applicationUsers, setApplicationUsers] = useState([]);
+
   const [searchformData, setsearchformData] = useState({
     primaryGroupId: "",
     designationId: "",
@@ -159,6 +180,30 @@ function Users(props) {
     siteId: [],
   });
 
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
   useEffect(() => {
     if (prevOpen.current === true && openMoreMenu === false) {
       anchorRef.current.focus();
@@ -166,7 +211,7 @@ function Users(props) {
     prevOpen.current = openMoreMenu;
     setcomponentLoadder(true);
     Promise.all([
-      props.LoadAllUser(),
+      props.LoadAllUser(searchformData),
       masterDataCallApi.getUserPrimaryRoles(),
       masterDataCallApi.getDesignations(),
       masterDataCallApi.getSites(),
@@ -263,24 +308,45 @@ function Users(props) {
   }
 
   function submitAssignFilteredUser() {
-    console.log(designationMasterData);
-    var userfilterData = searchformData;
+    let userfilterData = searchformData;
+
+    let roleArr = RoleMasterData.map((item) => item.id);
+    console.log(roleArr);
+    userfilterData.roleIds = roleArr;
+
+    let siteArr = SiteMasterData.map((item) => item.id);
+    console.log(siteArr);
+    userfilterData.siteId = siteArr;
+
+    // let getRoleMasterData = RoleMasterData;
+    // getRoleMasterData.forEach((item) => {
+    //   item.id = item.id;
+    //   console.log(item);
+    // });
+    // userfilterData.roleIds = getRoleMasterData;
+    // SiteMasterData.forEach((item) => {
+    //   item.id = item.id;
+    // });
+    // userfilterData.siteId = SiteMasterData;
+
     userfilterData.designationId = designationMasterData[0].id;
     userfilterData.primaryGroupId = BusinessGroupData[0].id;
     userfilterData.covidStateId = BusinessCovidStateData[0].id;
 
-    console.log(userfilterData);
-
     setshowLoadder(true);
-    // LoadAllUser.ListFliteredData(teamData)
-    usersApiCall
-      .ListFliteredData(userfilterData)
+
+    // usersApiCall
+    //   .ListFliteredData(userfilterData)
+    props
+      .LoadAllUser(userfilterData)
       .then((result) => {
-        setApplicationUsers(result);
+        console.log("success");
+        // setApplicationUsers(result);
         setshowLoadder(false);
         setModalOpen(false);
       })
       .catch((err) => {
+        console.log("errors");
         console.log(err);
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
@@ -544,7 +610,7 @@ function Users(props) {
               <Grid container spacing={3}>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className=""> Group</label>
+                    <label className="required"> Group</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
@@ -564,7 +630,7 @@ function Users(props) {
                         <TextField
                           {...params}
                           variant="outlined"
-                          placeholder="Select site"
+                          placeholder="Select Group"
                         />
                       )}
                     />
@@ -579,7 +645,7 @@ function Users(props) {
                 </Grid>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Roles </label>
+                    <label className="required">Roles </label>
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
@@ -611,7 +677,7 @@ function Users(props) {
 
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Designation</label>
+                    <label className="required">Designation</label>
                   </Grid>
                   <Grid
                     item
@@ -653,7 +719,7 @@ function Users(props) {
 
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Site</label>
+                    <label className="required">Site</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
@@ -690,7 +756,7 @@ function Users(props) {
 
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Covid State</label>
+                    <label className="required">Covid State</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
