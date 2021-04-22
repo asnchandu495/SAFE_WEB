@@ -341,7 +341,7 @@ function ListSite(props) {
     // props
     //   .getAllSitesbySiteorSecurityManager(sitefilterData)
     props
-      .LoadSitebySecurity()
+      .LoadSitebySecurity(sitefilterData)
       .then((result) => {
         console.log("success");
         // setApplicationUsers(result);
