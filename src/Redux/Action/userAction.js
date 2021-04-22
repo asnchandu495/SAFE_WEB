@@ -24,10 +24,23 @@ export function DeleteUserSuccess(user) {
   return { type: DELETEUSER_SUCCESS, user };
 }
 
-export function loadUser() {
+// export function loadUser() {
+//   return function (dispatch) {
+//     return usersApiCall
+//       .ListApplicationUsers()
+//       .then((response) => {
+//         dispatch(LoadUserSuccess(response));
+//       })
+//       .catch((error) => {
+//         throw error;
+//       });
+//   };
+// }
+
+export function loadUser(data) {
   return function (dispatch) {
     return usersApiCall
-      .ListApplicationUsers()
+      .ListFliteredData(data)
       .then((response) => {
         dispatch(LoadUserSuccess(response));
       })

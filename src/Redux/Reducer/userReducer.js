@@ -10,7 +10,7 @@ var intialState = [];
 export default function loadUserReducer(state = intialState, action) {
   switch (action.type) {
     case LOADUSER_SUCCESS:
-      if (intialState.length == 0) {
+      if (intialState.length == 0 || intialState) {
         return (intialState = action.loadUser);
       } else {
         return state;

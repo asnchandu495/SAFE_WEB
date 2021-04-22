@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect, useRef } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
+import { makeStyles } from "@material-ui/core/styles";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import CheckIcon from "@material-ui/icons/Check";
@@ -42,6 +43,13 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CovidStateApiServices from "../../services/masterDataService";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -54,7 +62,59 @@ const theme1 = createMuiTheme({
   },
 });
 
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    padding: 25,
+  },
+  stepButtons: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  icon: {
+    marginRight: theme.spacing(0.5),
+    marginBottom: -3,
+    width: 20,
+    height: 20,
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: "100%",
+    margin: 0,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  errorSpanMsg: {
+    color: "red",
+  },
+  HideGrid: {
+    display: "none",
+  },
+}));
 function Users(props) {
+  const userId = props.match.params.id;
+  const classes = useStyles();
   const usersApiCall = new UserService();
   const masterDataCallApi = new MasterService();
   const UserGroupApi = new UserGroupService();
@@ -72,9 +132,7 @@ function Users(props) {
   const [openuserTemepratureModal, setopenuserTemepratureModal] = useState(
     false
   );
-  const [BusinessUserRoleMasterData, setBusinessUserRoleMasterData] = useState(
-    []
-  );
+
   const [showLoadder, setshowLoadder] = useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [
@@ -100,10 +158,52 @@ function Users(props) {
     []
   );
   const [designationMasterData, setdesignationMasterData] = useState();
+  const [RoleMasterData, setRoleMasterData] = useState([]);
   const [SiteMasterData, setSiteMasterData] = useState([]);
-  const [userGroupList, setuserGroupList] = useState();
   const [UserGroupData, setUserGroupData] = useState([]);
   const [covidStatelist, setcovidStatelist] = useState([]);
+  const [BusinessDesingationData, setBusinessDesingationData] = useState();
+  const [
+    BusinessUserRoleMasterData,
+    setBusinessUserRoleMasterData,
+  ] = useState();
+  const [BusinessSiteMasterData, setBusinessSiteMasterData] = useState();
+  const [BusinessGroupData, setBusinessGroupData] = useState();
+  const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
+  const [applicationUsers, setApplicationUsers] = useState([]);
+
+  const [searchformData, setsearchformData] = useState({
+    primaryGroupId: "",
+    designationId: "",
+    covidStateId: "",
+    roleIds: [],
+    siteId: [],
+  });
+
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
   useEffect(() => {
     if (prevOpen.current === true && openMoreMenu === false) {
       anchorRef.current.focus();
@@ -111,7 +211,7 @@ function Users(props) {
     prevOpen.current = openMoreMenu;
     setcomponentLoadder(true);
     Promise.all([
-      props.LoadAllUser(),
+      props.LoadAllUser(searchformData),
       masterDataCallApi.getUserPrimaryRoles(),
       masterDataCallApi.getDesignations(),
       masterDataCallApi.getSites(),
@@ -129,10 +229,10 @@ function Users(props) {
         ]) => {
           setReloadPage("NO");
           setBusinessUserRoleMasterData(getUserRoles);
-          setdesignationMasterData(getDesignations);
-          setSiteMasterData(getSites);
-          setUserGroupData(getUserGroup);
-          setcovidStatelist(getCovidState);
+          setBusinessDesingationData(getDesignations);
+          setBusinessSiteMasterData(getSites);
+          setBusinessGroupData(getUserGroup);
+          setBusinessCovidStateData(getCovidState);
           setcomponentLoadder(false);
         }
       )
@@ -183,7 +283,7 @@ function Users(props) {
   }
 
   function handleChangeUserRole(e, value) {
-    setBusinessUserRoleMasterData(value);
+    setRoleMasterData(value);
   }
   function handleChangeUserDesignation(e, value) {
     setdesignationMasterData(value);
@@ -196,6 +296,63 @@ function Users(props) {
   }
   function covidStateSelect(e, value) {
     setcovidStatelist(value);
+  }
+
+  function AssignFiltersForm() {
+    if (searchformData) {
+      submitAssignFilteredUser();
+    } else {
+      submitAssignFilteredUser(false);
+      return false;
+    }
+  }
+
+  function submitAssignFilteredUser() {
+    let userfilterData = searchformData;
+
+    let roleArr = RoleMasterData.map((item) => item.id);
+    console.log(roleArr);
+    userfilterData.roleIds = roleArr;
+
+    let siteArr = SiteMasterData.map((item) => item.id);
+    console.log(siteArr);
+    userfilterData.siteId = siteArr;
+
+    // let getRoleMasterData = RoleMasterData;
+    // getRoleMasterData.forEach((item) => {
+    //   item.id = item.id;
+    //   console.log(item);
+    // });
+    // userfilterData.roleIds = getRoleMasterData;
+    // SiteMasterData.forEach((item) => {
+    //   item.id = item.id;
+    // });
+    // userfilterData.siteId = SiteMasterData;
+
+    userfilterData.designationId = designationMasterData[0].id;
+    userfilterData.primaryGroupId = BusinessGroupData[0].id;
+    userfilterData.covidStateId = BusinessCovidStateData[0].id;
+
+    setshowLoadder(true);
+
+    // usersApiCall
+    //   .ListFliteredData(userfilterData)
+    props
+      .LoadAllUser(userfilterData)
+      .then((result) => {
+        console.log("success");
+        // setApplicationUsers(result);
+        setshowLoadder(false);
+        setModalOpen(false);
+      })
+      .catch((err) => {
+        console.log("errors");
+        console.log(err);
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
   const options = {
     filter: false,
@@ -447,17 +604,53 @@ function Users(props) {
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Filters
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit="#">
+        <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Roles </label>
+                    <label className="required"> Group</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={
+                        BusinessGroupData && BusinessGroupData.length > 0
+                          ? BusinessGroupData
+                          : []
+                      }
+                      getOptionLabel={(option) => option.groupName}
+                      defaultValue={UserGroupData}
+                      onChange={usergroupSelect}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select Group"
+                        />
+                      )}
+                    />
+                    {/* {formFieldValidation.designation ? (
+                      <FormHelperText className="error-msg">
+                        Please select designation{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )} */}
+                  </Grid>
+                </Grid>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="required">Roles </label>
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
                       <Autocomplete
+                        multiple
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
@@ -466,7 +659,7 @@ function Users(props) {
                             : []
                         }
                         getOptionLabel={(option) => option.description}
-                        // defaultValue={UserSelectedRoleValue}
+                        defaultValue={RoleMasterData}
                         onChange={handleChangeUserRole}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -481,23 +674,28 @@ function Users(props) {
                     </FormControl>
                   </Grid>
                 </Grid>
+
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Designation</label>
+                    <label className="required">Designation</label>
                   </Grid>
-                  <Grid item sm={8}>
+                  <Grid
+                    item
+                    sm={8}
+                    className={[userId ? classes.HideGrid : ""].join(" ")}
+                  >
                     <Autocomplete
                       multiple
                       id="tags-outlined"
                       multiple
                       options={
-                        designationMasterData &&
-                        designationMasterData.length > 0
-                          ? designationMasterData
+                        BusinessDesingationData &&
+                        BusinessDesingationData.length > 0
+                          ? BusinessDesingationData
                           : []
                       }
                       getOptionLabel={(option) => option.name}
-                      // defaultValue={UserSelectedDesignationValue}
+                      defaultValue={designationMasterData}
                       onChange={handleChangeUserDesignation}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -521,18 +719,20 @@ function Users(props) {
 
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Site</label>
+                    <label className="required">Site</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
+                      multiple
                       id="tags-outlined"
                       options={
-                        SiteMasterData && SiteMasterData.length > 0
-                          ? SiteMasterData
+                        BusinessSiteMasterData &&
+                        BusinessSiteMasterData.length > 0
+                          ? BusinessSiteMasterData
                           : []
                       }
                       getOptionLabel={(option) => option.name}
-                      // defaultValue={UserSelectSiteValue}
+                      defaultValue={SiteMasterData}
                       onChange={userSelectSite}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -556,54 +756,22 @@ function Users(props) {
 
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">User Group</label>
+                    <label className="required">Covid State</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
-                      id="tags-outlined"
-                      options={
-                        UserGroupData && UserGroupData.length > 0
-                          ? UserGroupData
-                          : []
-                      }
-                      getOptionLabel={(option) => option.groupName}
-                      // defaultValue={UserSelectSiteValue}
-                      onChange={usergroupSelect}
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select site"
-                        />
-                      )}
-                    />
-                    {/* {formFieldValidation.designation ? (
-                      <FormHelperText className="error-msg">
-                        Please select designation{" "}
-                      </FormHelperText>
-                    ) : (
-                      ""
-                    )} */}
-                  </Grid>
-                </Grid>
-
-                <Grid item cs={12} container>
-                  <Grid item xs={4}>
-                    <label className="">Covid State</label>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Autocomplete
+                      multiple
                       id="tags-outlined"
                       // /options={teamManagers}
                       options={
-                        covidStatelist && covidStatelist.length > 0
-                          ? covidStatelist
+                        BusinessCovidStateData &&
+                        BusinessCovidStateData.length > 0
+                          ? BusinessCovidStateData
                           : []
                       }
                       getOptionLabel={(option) => option.stateName}
                       onChange={covidStateSelect}
+                      defaultValue={covidStatelist}
                       name="covidState"
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -663,6 +831,7 @@ function Users(props) {
             data={
               props.UserData && props.UserData.length > 0 ? props.UserData : []
             }
+            // data={applicationUsers ? applicationUsers : []}
             columns={columns}
             options={options}
             className="global-table"
