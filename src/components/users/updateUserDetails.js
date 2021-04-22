@@ -8,6 +8,7 @@ import AllocateUserToSite from "./allocateUserToSite";
 import AllocateUserToPrimaryGroup from "./allocateUserToPrimaryGroup";
 import AllocateUserToSecondaryGroup from "./allocateUserToSecondaryGroup";
 import AllocateUserToRole from "./allocateUserToRole";
+import AllocateUserToSupervisor from "./allocateUserToSupervisor";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { connect } from "react-redux";
 import * as UserAction from "../../Redux/Action/userAction";
@@ -131,6 +132,15 @@ function UpdateUserDetails(props) {
                 activeCard={activeCard}
                 setIsUpdated={setIsUpdated}
               ></AllocateUserToRole>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <AllocateUserToSupervisor
+                applicationUserId={applicationUserData.id}
+                applicationUserData={applicationUserData}
+                setActiveCard={setActiveCard}
+                activeCard={activeCard}
+                setIsUpdated={setIsUpdated}
+              ></AllocateUserToSupervisor>
             </Grid>
           </Grid>
         </div>

@@ -18,17 +18,14 @@ import MasterService from "../../services/masterDataService";
 import ToasterMessageComponent from "../common/toaster";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-function AllocateUserToSecondaryGroup(props) {
+function AllocateUserToSupervisor(props) {
   const usersApiCall = new UserService();
   const masterDataCallApi = new MasterService();
   const userGroupApiCall = new UserGroupService();
 
-  const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
+  const [AllSupervisorRole, setAllSupervisorRole] = useState();
   const [formFieldValidation, setformFieldValidation] = useState(false);
-  const [
-    UserSelectedSecondaryGroupValue,
-    setUserSelectedSecondaryGroupValue,
-  ] = useState([]);
+  const [UserSelectSupervisorData, setUserSelectSupervisorData] = useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -39,25 +36,19 @@ function AllocateUserToSecondaryGroup(props) {
   );
 
   const [formData, SetformData] = useState({
-    isPrimary: false,
+    applicationUserSupervisorId: "",
     applicationUserId: "",
-    groups: [],
   });
 
   useEffect(() => {
     setcomponentLoadder(true);
-    setUserSelectedSecondaryGroupValue(props.secondaryGroup);
-    Promise.all([userGroupApiCall.loadUserGroup()])
-      .then(([getTeams]) => {
-        let primaryGroup = props.applicationUserData.group;
-        if (primaryGroup) {
-          let filteredSGroupData = getTeams.filter((sgroup) => {
-            return sgroup.id != primaryGroup.id;
-          });
-          setBusinessTeamMasterData(filteredSGroupData);
-        } else {
-          setBusinessTeamMasterData(getTeams);
-        }
+    Promise.all([masterDataCallApi.getAllSuperVisor()])
+      .then(([getAllSuperVisor]) => {
+        setAllSupervisorRole(getAllSuperVisor);
+        setUserSelectSupervisorData({
+          applicationUserId: props.applicationUserData.supervisorId,
+          name: props.applicationUserData.supervisor,
+        });
         setcomponentLoadder(false);
       })
       .catch((error) => {
@@ -65,25 +56,26 @@ function AllocateUserToSecondaryGroup(props) {
       });
   }, []);
 
-  function handleChangeTeam(event, value) {
-    setUserSelectedSecondaryGroupValue(value);
-    props.setActiveCard("secondaryGroup");
+  function handleChangeSupervisor(event, value) {
+    setUserSelectSupervisorData(value);
+    props.setActiveCard("supervisor");
   }
 
   function cancelEdit() {
     props.setActiveCard("");
   }
 
-  function UserSecondaryGroup(e) {
+  function UserSupervisor(e) {
     setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
-    data.groups = UserSelectedSecondaryGroupValue;
+    data.applicationUserSupervisorId =
+      UserSelectSupervisorData.applicationUserId;
     usersApiCall
-      .UpdateApplicationUserSecondaryGroup(data)
+      .UpdateApplicationUserSupervisor(data)
       .then((result) => {
         setStateSnackbar(true);
-        setToasterMessage("Secondary group assigned to users");
+        setToasterMessage("Supervisor is updated to the user");
         settoasterServerity("success");
         setTimeout(() => {
           props.setIsUpdated("YES");
@@ -102,44 +94,34 @@ function AllocateUserToSecondaryGroup(props) {
   return (
     <Card className="user-update-details-card">
       {!componentLoadder ? (
-        <ValidatorForm className={`global-form`} onSubmit={UserSecondaryGroup}>
+        <ValidatorForm className={`global-form`} onSubmit={UserSupervisor}>
           <CardContent>
-            <Typography className="card-heading">
-              Update Secondary Group
-            </Typography>
+            <Typography className="card-heading">Update Supervisor</Typography>
             <div className="card-form">
               <Grid container spacing={3}>
                 <Grid item sm={9}>
                   <Autocomplete
-                    multiple
                     id="tags-outlined"
                     options={
-                      BusinessTeamMasterData &&
-                      BusinessTeamMasterData.length > 0
-                        ? BusinessTeamMasterData
+                      AllSupervisorRole && AllSupervisorRole.length > 0
+                        ? AllSupervisorRole
                         : []
                     }
-                    getOptionLabel={(option) => option.groupName}
-                    defaultValue={BusinessTeamMasterData.filter((group) => {
-                      return UserSelectedSecondaryGroupValue.find(
-                        (selectedGroup) => {
-                          return selectedGroup.id == group.id;
-                        }
-                      );
-                    })}
-                    onChange={handleChangeTeam}
+                    getOptionLabel={(option) => option.name}
+                    defaultValue={UserSelectSupervisorData}
+                    onChange={handleChangeSupervisor}
                     filterSelectedOptions
                     className="global-input autocomplete-select"
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         variant="outlined"
-                        placeholder="Select secondary group"
+                        placeholder="Select primary group"
                       />
                     )}
                   />
                 </Grid>
-                {props.activeCard == "secondaryGroup" ? (
+                {props.activeCard == "supervisor" ? (
                   <Grid
                     item
                     sm={3}
@@ -201,4 +183,4 @@ function AllocateUserToSecondaryGroup(props) {
   );
 }
 
-export default AllocateUserToSecondaryGroup;
+export default AllocateUserToSupervisor;

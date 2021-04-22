@@ -64,7 +64,7 @@ function AllocateUserToSite(props) {
   function UserSitesUpdate(e) {
     setbuttonloadder(true);
     var data = formData;
-    data.applicationUserId = props.userData.id;
+    data.applicationUserId = props.applicationUserId;
     data.sites = UserSelectedTeamValue;
     usersApiCall
       .UpdateSitesToUser(data)
@@ -105,7 +105,11 @@ function AllocateUserToSite(props) {
                         : []
                     }
                     getOptionLabel={(option) => option.name}
-                    defaultValue={UserSelectedTeamValue}
+                    defaultValue={BusinessTeamMasterData.filter((site) => {
+                      return UserSelectedTeamValue.find((selectedSite) => {
+                        return selectedSite.id == site.id;
+                      });
+                    })}
                     onChange={handleChangeTeam}
                     filterSelectedOptions
                     className="global-input autocomplete-select"

@@ -69,6 +69,7 @@ export function UpdateUser(data) {
     return usersApiCall
       .UpdateApplicationUser(data)
       .then((response) => {
+        console.log(data);
         dispatch(UpdateUserSuccess(data));
       })
       .catch((error) => {

@@ -105,14 +105,18 @@ function AllocateUserToRole(props) {
                 <Grid item sm={9}>
                   <Autocomplete
                     multiple
-                    id="tags-outlined"
+                    id="tags-outlinedRole"
                     options={
                       BusinessUserRolesData && BusinessUserRolesData.length > 0
                         ? BusinessUserRolesData
                         : []
                     }
                     getOptionLabel={(option) => option.description}
-                    defaultValue={UserSelectedRoleValue}
+                    defaultValue={BusinessUserRolesData.filter((role) => {
+                      return UserSelectedRoleValue.find((selectedRole) => {
+                        return selectedRole.id == role.id;
+                      });
+                    })}
                     onChange={handleChangeTeam}
                     filterSelectedOptions
                     className="global-input autocomplete-select"

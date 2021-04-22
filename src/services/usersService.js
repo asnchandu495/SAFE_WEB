@@ -156,6 +156,19 @@ export default class UserService {
     });
   }
 
+  UpdateApplicationUserSupervisor(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.baseURL}/ApplicationUser/AssignUserToSupervisor`,
+      {
+        method: "PUT",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   /////// End here
   getCovidStateInfo(userId) {
     return this.fetch(

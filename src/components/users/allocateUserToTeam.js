@@ -105,7 +105,11 @@ function AllocateUserToTeam(props) {
                         : []
                     }
                     getOptionLabel={(option) => option.name}
-                    defaultValue={UserSelectedTeamValue}
+                    defaultValue={BusinessTeamMasterData.filter((team) => {
+                      return UserSelectedTeamValue.find((selectedTeam) => {
+                        return selectedTeam.id == team.id;
+                      });
+                    })}
                     onChange={handleChangeTeam}
                     filterSelectedOptions
                     className="global-input autocomplete-select"

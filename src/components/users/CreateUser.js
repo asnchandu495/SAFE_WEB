@@ -200,20 +200,20 @@ function CreateUser(props) {
 
   useEffect(() => {
     setcomponentLoadder(true);
-    if (props.users.length > 0) {
-      if (userId) {
-        SetformData(props.userData);
-        setUserSelectedTeamValue(props.userData.applicationUserToTeamMapping);
-        setUserSelectedDesignationValue(props.userData.designation);
-        setUserSelectedRoleValue(props.userData.applicationUserToRole);
-        setUserSelectSiteValue(props.userData.applicationUserToSite);
-        setUserSelectedPrimaryGroupValue(props.userData.group);
+    if (userId) {
+      usersApiCall.GetApplicationUsersById(userId).then((userData) => {
+        SetformData(userData);
+        setUserSelectedTeamValue(userData.applicationUserToTeamMapping);
+        setUserSelectedDesignationValue(userData.designation);
+        setUserSelectedRoleValue(userData.applicationUserToRole);
+        setUserSelectSiteValue(userData.applicationUserToSite);
+        setUserSelectedPrimaryGroupValue(userData.group);
         setUserSelectedSecondaryGroupValue(
-          props.userData.applicationUserToSecondaryGroup
+          userData.applicationUserToSecondaryGroup
         );
-        setUserSelectCountry(props.userData.country);
-        setUserSelectSupervisorData(props.userData.supervisor);
-      }
+        setUserSelectCountry(userData.country);
+        setUserSelectSupervisorData(userData.supervisor);
+      });
     }
 
     Promise.all([
@@ -298,16 +298,19 @@ function CreateUser(props) {
 
   function SubmitUserForm() {
     setshowLoadder(true);
-    var data = formData;
-
     if (userId) {
-      data.country = UserSelectCountry;
-      data.designation = UserSelectedDesignationValue;
-      data.zipCode = parseInt(data.zipCode);
-      data.supervisor = UserSelectSupervisorData;
-      data.supervisorId = UserSelectSupervisorData.id;
+      formData.country = UserSelectCountry;
+      formData.designation = {
+        id: UserSelectedDesignationValue.id,
+        name: UserSelectedDesignationValue.name,
+      };
+      formData.zipCode = parseInt(formData.zipCode);
+      console.log(UserSelectedDesignationValue);
+      console.log(formData);
+      // data.supervisor = UserSelectSupervisorData;
+      // data.supervisorId = UserSelectSupervisorData.id;
       props
-        .UpdateUser(data)
+        .UpdateUser(formData)
         .then((result) => {
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
@@ -316,22 +319,28 @@ function CreateUser(props) {
           setshowLoadder(false);
         })
         .catch((err) => {
+          console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
           setshowLoadder(false);
         });
     } else {
+      var data = formData;
       data.applicationUserToRole = UserSelectedRoleValue;
       data.group = UserSelectedPrimaryGroupValue;
       data.applicationUserToSecondaryGroup = UserSelectedSecondaryGroupValue;
       data.country = UserSelectCountry;
-      data.applicationUserToSite = UserSelectSiteValue;
+      data.applicationUserToSite = {
+        id: UserSelectSiteValue.id,
+        name: UserSelectSiteValue.name,
+      };
       data.applicationUserToTeamMapping = UserSelectedTeamValue;
       data.designation = UserSelectedDesignationValue;
       data.zipCode = parseInt(data.zipCode);
       data.supervisor = UserSelectSupervisorData;
       data.supervisorId = UserSelectSupervisorData.applicationUserId;
+
       props
         .AddUser(data)
         .then((result) => {
@@ -824,7 +833,11 @@ function CreateUser(props) {
                       ""
                     )}
                   </Grid>
-                  <Grid item sm={4}>
+                  <Grid
+                    item
+                    sm={4}
+                    className={[userId ? classes.HideGrid : ""].join(" ")}
+                  >
                     <label htmlFor="password" className="input-label required">
                       Supervisor
                     </label>
