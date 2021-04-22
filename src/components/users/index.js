@@ -298,16 +298,16 @@ function Users(props) {
     setcovidStatelist(value);
   }
 
-  function AssignFiltersForm() {
-    if (searchformData) {
-      submitAssignFilteredUser();
-    } else {
-      submitAssignFilteredUser(false);
-      return false;
-    }
-  }
+  // function AssignFiltersForm() {
+  //   if (searchformData) {
+  //     submitAssignFilteredUser();
+  //   } else {
+  //     submitAssignFilteredUser(false);
+  //     return false;
+  //   }
+  // }
 
-  function submitAssignFilteredUser() {
+  function AssignFiltersForm() {
     let userfilterData = searchformData;
 
     let roleArr = RoleMasterData.map((item) => item.id);
@@ -610,7 +610,7 @@ function Users(props) {
               <Grid container spacing={3}>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="required"> Group</label>
+                    <label className=""> Group</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
@@ -634,18 +634,12 @@ function Users(props) {
                         />
                       )}
                     />
-                    {/* {formFieldValidation.designation ? (
-                      <FormHelperText className="error-msg">
-                        Please select designation{" "}
-                      </FormHelperText>
-                    ) : (
-                      ""
-                    )} */}
+                    {""}
                   </Grid>
                 </Grid>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="required">Roles </label>
+                    <label className="">Roles </label>
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
@@ -671,13 +665,14 @@ function Users(props) {
                           />
                         )}
                       />
+                      {""}
                     </FormControl>
                   </Grid>
                 </Grid>
 
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
-                    <label className="required">Designation</label>
+                    <label className="">Designation</label>
                   </Grid>
                   <Grid
                     item
@@ -707,19 +702,13 @@ function Users(props) {
                         />
                       )}
                     />
-                    {/* {formFieldValidation.designation ? (
-                      <FormHelperText className="error-msg">
-                        Please select designation{" "}
-                      </FormHelperText>
-                    ) : (
-                      ""
-                    )} */}
+                    {""}
                   </Grid>
                 </Grid>
 
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="required">Site</label>
+                    <label className="">Site</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
@@ -744,45 +733,42 @@ function Users(props) {
                         />
                       )}
                     />
-                    {/* {formFieldValidation.designation ? (
-                      <FormHelperText className="error-msg">
-                        Please select designation{" "}
-                      </FormHelperText>
-                    ) : (
-                      ""
-                    )} */}
+                    {""}
                   </Grid>
                 </Grid>
 
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="required">Covid State</label>
+                    <label className="">Covid State</label>
                   </Grid>
                   <Grid item xs={8}>
-                    <Autocomplete
-                      multiple
-                      id="tags-outlined"
-                      // /options={teamManagers}
-                      options={
-                        BusinessCovidStateData &&
-                        BusinessCovidStateData.length > 0
-                          ? BusinessCovidStateData
-                          : []
-                      }
-                      getOptionLabel={(option) => option.stateName}
-                      onChange={covidStateSelect}
-                      defaultValue={covidStatelist}
-                      name="covidState"
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select  covid state"
-                        />
-                      )}
-                    />
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        multiple
+                        id="tags-outlined"
+                        // /options={teamManagers}
+                        options={
+                          BusinessCovidStateData &&
+                          BusinessCovidStateData.length > 0
+                            ? BusinessCovidStateData
+                            : []
+                        }
+                        getOptionLabel={(option) => option.stateName}
+                        onChange={covidStateSelect}
+                        defaultValue={covidStatelist}
+                        name="covidState"
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select  covid state"
+                          />
+                        )}
+                      />
+                      {""}
+                    </FormControl>
                   </Grid>
                 </Grid>
               </Grid>

@@ -14,6 +14,16 @@ export default class SiteService {
       return Promise.resolve(res);
     });
   }
+  getAllSitesbySiteorSecurityManager(id) {
+    return this.fetch(
+      `${this.baseURL}/Site/GetAllSitesbySiteorSecurityManager`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
 
   getSiteById(id) {
     return this.fetch(`${this.baseURL}/Site/GetSiteById/` + id, {

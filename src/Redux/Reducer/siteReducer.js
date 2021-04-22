@@ -5,6 +5,7 @@ import {
   DELETE_SITE_SUCCESS,
   DELETE_SITE_FLOOR_SUCCESS,
   UPDATE_SITE_FLOOR_SUCCESS,
+  LOAD__SITE_SECURITY_SUCCESS,
 } from "../utilits";
 var intialState = [];
 export default function loadSiteReducer(state = intialState, action) {
@@ -12,6 +13,12 @@ export default function loadSiteReducer(state = intialState, action) {
     case LOAD_LIST_SITE_SUCCESS:
       if (intialState.length == 0) {
         return (intialState = action.loadUserSite);
+      } else {
+        return state;
+      }
+    case LOAD__SITE_SECURITY_SUCCESS:
+      if (intialState.length == 0 || intialState) {
+        return (intialState = action.loadUserSiteSecurity);
       } else {
         return state;
       }

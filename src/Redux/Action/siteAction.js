@@ -5,6 +5,7 @@ import {
   DELETE_SITE_SUCCESS,
   DELETE_SITE_FLOOR_SUCCESS,
   UPDATE_SITE_FLOOR_SUCCESS,
+  LOAD__SITE_SECURITY_SUCCESS,
 } from "../utilits";
 
 import SiteApiServices from "../../services/siteService";
@@ -13,6 +14,10 @@ const SiteStateApi = new SiteApiServices();
 
 export function LoadSiteSuccess(loadUserSite) {
   return { type: LOAD_LIST_SITE_SUCCESS, loadUserSite };
+}
+
+export function LoadbySiteorSecurityManagerSuccess(loadUserSiteSecurity) {
+  return { type: LOAD__SITE_SECURITY_SUCCESS, loadUserSiteSecurity };
 }
 
 export function CreateSiteSuccess(userSite) {
@@ -40,6 +45,18 @@ export function loadSite() {
     return SiteStateApi.getListSite()
       .then((data) => {
         dispatch(LoadSiteSuccess(data));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+}
+
+export function loadSitesbySiteorSecurityManager() {
+  return function (dispatch) {
+    return SiteStateApi.getAllSitesbySiteorSecurityManager()
+      .then((data) => {
+        dispatch(LoadbySiteorSecurityManagerSuccess(data));
       })
       .catch((error) => {
         throw error;
