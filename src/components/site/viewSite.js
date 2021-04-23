@@ -413,7 +413,7 @@ function ViewSite(props) {
                     <label>Site Manager :</label>
                   </Grid>
                   <Grid item xs={8}>
-                    <label>{viewSiteValue.siteManager}</label>
+                    <label>{viewSiteValue.siteManagerName}</label>
                   </Grid>
                 </Grid>
 
@@ -422,7 +422,7 @@ function ViewSite(props) {
                     <label>Security Manager :</label>
                   </Grid>
                   <Grid item xs={8}>
-                    <label>{viewSiteValue.securityManager}</label>
+                    <label>{viewSiteValue.securityManagerName}</label>
                   </Grid>
                 </Grid>
 
