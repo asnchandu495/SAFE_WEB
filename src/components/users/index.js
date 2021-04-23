@@ -160,8 +160,8 @@ function Users(props) {
   const [designationMasterData, setdesignationMasterData] = useState();
   const [RoleMasterData, setRoleMasterData] = useState([]);
   const [SiteMasterData, setSiteMasterData] = useState([]);
-  const [UserGroupData, setUserGroupData] = useState([]);
-  const [covidStatelist, setcovidStatelist] = useState([]);
+  const [UserGroupData, setUserGroupData] = useState();
+  const [covidStatelist, setcovidStatelist] = useState();
   const [BusinessDesingationData, setBusinessDesingationData] = useState();
   const [
     BusinessUserRoleMasterData,
@@ -204,6 +204,7 @@ function Users(props) {
       padding: theme.spacing(1),
     },
   }))(MuiDialogActions);
+
   useEffect(() => {
     if (prevOpen.current === true && openMoreMenu === false) {
       anchorRef.current.focus();
@@ -298,56 +299,48 @@ function Users(props) {
     setcovidStatelist(value);
   }
 
-  // function AssignFiltersForm() {
-  //   if (searchformData) {
-  //     submitAssignFilteredUser();
-  //   } else {
-  //     submitAssignFilteredUser(false);
-  //     return false;
-  //   }
-  // }
-
   function AssignFiltersForm() {
     let userfilterData = searchformData;
+    if (RoleMasterData.length > 0) {
+      let roleArr = RoleMasterData.map((item) => item.id);
+      userfilterData.roleIds = roleArr;
+    } else {
+      userfilterData.roleIds = [];
+    }
 
-    let roleArr = RoleMasterData.map((item) => item.id);
-    console.log(roleArr);
-    userfilterData.roleIds = roleArr;
+    if (SiteMasterData.length > 0) {
+      let siteArr = SiteMasterData.map((item) => item.id);
+      userfilterData.siteId = siteArr;
+    } else {
+      userfilterData.siteId = [];
+    }
 
-    let siteArr = SiteMasterData.map((item) => item.id);
-    console.log(siteArr);
-    userfilterData.siteId = siteArr;
+    if (designationMasterData) {
+      userfilterData.designationId = designationMasterData.id;
+    } else {
+      userfilterData.designationId = "";
+    }
 
-    // let getRoleMasterData = RoleMasterData;
-    // getRoleMasterData.forEach((item) => {
-    //   item.id = item.id;
-    //   console.log(item);
-    // });
-    // userfilterData.roleIds = getRoleMasterData;
-    // SiteMasterData.forEach((item) => {
-    //   item.id = item.id;
-    // });
-    // userfilterData.siteId = SiteMasterData;
+    if (UserGroupData) {
+      userfilterData.primaryGroupId = UserGroupData.id;
+    } else {
+      userfilterData.primaryGroupId = "";
+    }
 
-    userfilterData.designationId = designationMasterData[0].id;
-    userfilterData.primaryGroupId = BusinessGroupData[0].id;
-    userfilterData.covidStateId = BusinessCovidStateData[0].id;
+    if (covidStatelist) {
+      userfilterData.covidStateId = covidStatelist.id;
+    } else {
+      userfilterData.covidStateId = "";
+    }
 
     setshowLoadder(true);
-
-    // usersApiCall
-    //   .ListFliteredData(userfilterData)
     props
       .LoadAllUser(userfilterData)
       .then((result) => {
-        console.log("success");
-        // setApplicationUsers(result);
         setshowLoadder(false);
         setModalOpen(false);
       })
       .catch((err) => {
-        console.log("errors");
-        console.log(err);
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
@@ -614,7 +607,6 @@ function Users(props) {
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
-                      multiple
                       id="tags-outlined"
                       options={
                         BusinessGroupData && BusinessGroupData.length > 0
@@ -680,9 +672,7 @@ function Users(props) {
                     className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <Autocomplete
-                      multiple
                       id="tags-outlined"
-                      multiple
                       options={
                         BusinessDesingationData &&
                         BusinessDesingationData.length > 0
@@ -744,9 +734,7 @@ function Users(props) {
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
                       <Autocomplete
-                        multiple
                         id="tags-outlined"
-                        // /options={teamManagers}
                         options={
                           BusinessCovidStateData &&
                           BusinessCovidStateData.length > 0
