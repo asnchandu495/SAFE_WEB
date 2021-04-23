@@ -336,7 +336,7 @@ function ListSite(props) {
       (item) => item.applicationUserId
     );
     console.log(securityArr);
-    sitefilterData1.SecurityManagerId = securityArr;
+    sitefilterData.SecurityManagerId = securityArr;
     setshowLoadder(true);
     // props
     //   .getAllSitesbySiteorSecurityManager(sitefilterData)
