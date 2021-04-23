@@ -179,6 +179,7 @@ function Users(props) {
     roleIds: [],
     siteId: [],
   });
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
 
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
@@ -347,13 +348,19 @@ function Users(props) {
         setshowLoadder(false);
       });
   }
+
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
     print: false,
     viewColumns: false,
     download: false,

@@ -96,6 +96,7 @@ function AddPrimaryUserToUserGroups(props) {
     roleIds: [],
     siteId: [],
   });
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
 
   useEffect(() => {
     if (userGroupUpdateid) {
@@ -147,13 +148,18 @@ function AddPrimaryUserToUserGroups(props) {
     }
   }, []);
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
     print: false,
     viewColumns: false,
     download: false,

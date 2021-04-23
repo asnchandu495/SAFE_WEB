@@ -53,6 +53,7 @@ function AddSecondaryUserToUserGroups(props) {
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedGroupInfo, setSelectedGroupInfo] = useState();
   const [selectedUsersToGroup, setSelectedUsersToGroup] = useState([]);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
 
   useEffect(() => {
     if (userGroupUpdateid) {
@@ -81,13 +82,18 @@ function AddSecondaryUserToUserGroups(props) {
     }
   }, []);
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
     print: false,
     viewColumns: false,
     download: false,
