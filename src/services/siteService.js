@@ -14,16 +14,36 @@ export default class SiteService {
       return Promise.resolve(res);
     });
   }
-  getAllSitesbySiteorSecurityManager(data) {
-    console.log("data");
-    console.log(data);
 
-    return this.fetch(
-      `${this.baseURL}/Site/GetAllSitesbySiteorSecurityManager?SiteManagerId=${data}&SecurityManagerId=${data}`,
-      {
-        method: "GET",
-      }
-    ).then((res) => {
+  getAllSitesbySiteorSecurityManager(data) {
+    let SecurityManagerIds = "";
+    let SiteManagerIds = "";
+    if (data.SecurityManagerId.length > 0) {
+      SecurityManagerIds = data.SecurityManagerId.map(function (el, idx) {
+        return "SecurityManagerId=" + el;
+      }).join("&");
+    }
+    if (data.SiteManagerId.length > 0) {
+      SiteManagerIds = data.SiteManagerId.map(function (el, idx) {
+        return "SiteManagerId=" + el;
+      }).join("&");
+    }
+
+    let apiURL = "";
+
+    if (SecurityManagerIds != "" && SiteManagerIds != "") {
+      apiURL = `Site/GetAllSitesbySiteorSecurityManager?${SecurityManagerIds}&${SiteManagerIds}`;
+    } else if (SecurityManagerIds != "" && SiteManagerIds == "") {
+      apiURL = `Site/GetAllSitesbySiteorSecurityManager?${SecurityManagerIds}`;
+    } else if (SecurityManagerIds == "" && SiteManagerIds != "") {
+      apiURL = `Site/GetAllSitesbySiteorSecurityManager?${SiteManagerIds}`;
+    } else {
+      apiURL = `Site/GetAllSitesbySiteorSecurityManager`;
+    }
+
+    return this.fetch(`${this.baseURL}/${apiURL}`, {
+      method: "GET",
+    }).then((res) => {
       return Promise.resolve(res);
     });
   }

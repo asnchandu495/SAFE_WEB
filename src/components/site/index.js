@@ -92,14 +92,14 @@ function ListSite(props) {
   ] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [showLoadder, setshowLoadder] = useState(false);
-  const [userSelectedSiteManager, setUserSelectedSiteManager] = useState();
+  const [userSelectedSiteManager, setUserSelectedSiteManager] = useState([]);
   const [siteManger, setSiteManger] = useState([]);
   const [securityManger, setSecurityManger] = useState([]);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [
     userSelectedSecurityManager,
     setUserSelectedSecurityManager,
-  ] = useState();
+  ] = useState([]);
   const [Modalopen, setModalOpen] = useState(false);
   const [searchformData, setsearchformData] = useState({
     SiteManagerId: [],
@@ -327,25 +327,28 @@ function ListSite(props) {
 
   function AssignFiltersForm() {
     let sitefilterData = searchformData;
+    if (userSelectedSiteManager.length > 0) {
+      let siteArr = userSelectedSiteManager.map(
+        (item) => item.applicationUserId
+      );
+      sitefilterData.SiteManagerId = siteArr;
+    } else {
+      sitefilterData.SiteManagerId = [];
+    }
 
-    let siteArr = userSelectedSiteManager.map((item) => item.applicationUserId);
-    console.log(siteArr);
-    sitefilterData.SiteManagerId = siteArr;
+    if (userSelectedSecurityManager.length > 0) {
+      let securityArr = userSelectedSecurityManager.map(
+        (item) => item.applicationUserId
+      );
+      sitefilterData.SecurityManagerId = securityArr;
+    } else {
+      sitefilterData.SecurityManagerId = [];
+    }
+    // setshowLoadder(true);
 
-    let securityArr = userSelectedSecurityManager.map(
-      (item) => item.applicationUserId
-    );
-    console.log(securityArr);
-    sitefilterData.SecurityManagerId = securityArr;
-    setshowLoadder(true);
-    // props
-    //   .getAllSitesbySiteorSecurityManager(sitefilterData)
-    console.log(sitefilterData);
     props
       .LoadSitebySecurity(sitefilterData)
       .then((result) => {
-        console.log("success");
-        // setApplicationUsers(result);
         setshowLoadder(false);
         setModalOpen(false);
       })
