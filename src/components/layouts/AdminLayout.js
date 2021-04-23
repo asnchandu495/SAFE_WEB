@@ -43,6 +43,7 @@ import HealingIcon from "@material-ui/icons/Healing";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
+import WorkIcon from "@material-ui/icons/Work";
 
 const drawerWidth = 240;
 
@@ -143,6 +144,7 @@ function AdminLayout(props) {
   const [openSiteMenu, setopenSiteMenu] = useState(false);
   const [openTeamMenu, setTeamMenu] = useState(false);
   const [openQuestionaires, setOpenQuestionaires] = useState(false);
+  const [openWorkflow, setOpenWorkflow] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -298,6 +300,21 @@ function AdminLayout(props) {
     setopenFAQMenu(false);
     setTeamMenu(false);
     setOpenQuestionaires(!openQuestionaires);
+  };
+
+  const handleClickopenWorkflow = () => {
+    setOpenDrawer(true);
+    setopenEmergencyContact(false);
+    setOpenUsers(false);
+    setopenUserManagment(false);
+    setopenDesiginationMenu(false);
+    setopenCovidStateMenu(false);
+    setopenSetting(false);
+    setopenSiteMenu(false);
+    setopenFAQMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
+    setOpenWorkflow(!openWorkflow);
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -1031,6 +1048,57 @@ function AdminLayout(props) {
                   })}
                 />
               </ListItem>
+              <Divider></Divider>
+
+              <ListItem button onClick={handleClickopenWorkflow}>
+                <ListItemIcon>
+                  <WorkIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Workflow"
+                  className={clsx({
+                    [classes.hide]: !openDrawer,
+                  })}
+                />
+                {openWorkflow ? (
+                  <ExpandLess className="exp-coll-icon" />
+                ) : (
+                  <ExpandMore className="exp-coll-icon" />
+                )}
+              </ListItem>
+              <Collapse in={openWorkflow} timeout="auto" unmountOnExit>
+                <List
+                  component="div"
+                  disablePadding
+                  className={clsx({
+                    [classes.hide]: !openDrawer,
+                  })}
+                >
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/workflow/allWorkflow"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />{" "}
+                    </ListItemIcon>
+                    <ListItemText primary="View" />
+                  </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/workflow/createWorkflow"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="CREATE" />
+                  </ListItem>
+                </List>
+              </Collapse>
               <Divider></Divider>
             </List>
           </div>

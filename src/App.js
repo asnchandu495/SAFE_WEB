@@ -68,6 +68,8 @@ import AdoptQuestionnaire from "./components/questionaires/adoptQuestionnaire";
 import OrderofExecution from "./components/questionaires/orderofExecution";
 import configureHealth from "./components/selfhealthcheck/configureHealth";
 import ViewHealthDeclaration from "./components/selfhealthcheck/viewHealthDeclaration";
+import Workflow from "./components/workflow";
+import CreateWorkflow from "./components/workflow/CreateWorkflow";
 
 function App(props) {
   const AuthContainer = () => {
@@ -277,6 +279,12 @@ function App(props) {
         <Route
           path="/selfhealth/heath-declarations/:id"
           component={ViewHealthDeclaration}
+        ></Route>
+
+        <Route path="/workflow/allWorkflow" component={Workflow}></Route>
+        <Route
+          path="/workflow/createWorkflow"
+          component={CreateWorkflow}
         ></Route>
       </AdminLayout>
     );
@@ -488,6 +496,13 @@ function App(props) {
           path="/selfhealth/heath-declarations/:id"
           component={AdminContainer}
         ></Route>
+        <Route path="/workflow/allWorkflow" component={AdminContainer}></Route>
+
+        <Route
+          path="/workflow/createWorkflow"
+          component={AdminContainer}
+        ></Route>
+
         <Route path="/InternalServerError" component={ErrorPageContainer} />
         <Route path="/Unauthorized" component={ErrorPageContainer} />
       </Switch>
