@@ -14,9 +14,12 @@ export default class SiteService {
       return Promise.resolve(res);
     });
   }
-  getAllSitesbySiteorSecurityManager(id) {
+  getAllSitesbySiteorSecurityManager(data) {
+    console.log("data");
+    console.log(data);
+
     return this.fetch(
-      `${this.baseURL}/Site/GetAllSitesbySiteorSecurityManager`,
+      `${this.baseURL}/Site/GetAllSitesbySiteorSecurityManager?SiteManagerId=${data}&SecurityManagerId=${data}`,
       {
         method: "GET",
       }
