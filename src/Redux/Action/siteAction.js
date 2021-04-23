@@ -52,9 +52,9 @@ export function loadSite() {
   };
 }
 
-export function loadSitesbySiteorSecurityManager() {
+export function loadSitesbySiteorSecurityManager(data) {
   return function (dispatch) {
-    return SiteStateApi.getAllSitesbySiteorSecurityManager()
+    return SiteStateApi.getAllSitesbySiteorSecurityManager(data)
       .then((data) => {
         dispatch(LoadbySiteorSecurityManagerSuccess(data));
       })
