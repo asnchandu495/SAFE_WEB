@@ -271,12 +271,12 @@ function CreateCovidState(props) {
                           validators={[
                             "required",
                             "matchRegexp:^[a-zA-Z ]*$",
-                            "matchRegexp:^.{0,60}$",
+                            "matchRegexp:^.{0,50}$",
                           ]}
                           errorMessages={[
                             "Please enter covid state name",
                             "Special charcters are not allowed",
-                            "Maximum 60 characters",
+                            "Maximum 50 characters",
                           ]}
                           fullWidth
                           id="stateName"

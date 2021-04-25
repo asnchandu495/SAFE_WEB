@@ -478,13 +478,20 @@ function Users(props) {
         sort: true,
       },
     },
-
     {
-      name: "covidState",
+      name: "covidStateDetails",
       label: "Covid state",
       options: {
         filter: false,
         sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData && thisRowData[6] != null) {
+            return <span>{thisRowData[6].stateName}</span>;
+          } else {
+            return <span></span>;
+          }
+        },
       },
     },
     {

@@ -284,7 +284,7 @@ function FaqSections(props) {
                             spacing={1}
                             item
                             xs={12}
-                            className="dynamic-rows-bottom"
+                            className="dynamic-rows-bottom dynamic-rows-bottom-question"
                             key={`section-container${i}`}
                           >
                             <Grid item xs={10}>
