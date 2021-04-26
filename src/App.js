@@ -70,6 +70,7 @@ import configureHealth from "./components/selfhealthcheck/configureHealth";
 import ViewHealthDeclaration from "./components/selfhealthcheck/viewHealthDeclaration";
 import Workflow from "./components/workflow";
 import CreateWorkflow from "./components/workflow/CreateWorkflow";
+import AddActivity from "./components/workflow/addActivity";
 
 function App(props) {
   const AuthContainer = () => {
@@ -286,6 +287,8 @@ function App(props) {
           path="/workflow/createWorkflow"
           component={CreateWorkflow}
         ></Route>
+
+        <Route path="/workflow/addactivity/:id" component={AddActivity}></Route>
       </AdminLayout>
     );
   };
@@ -500,6 +503,11 @@ function App(props) {
 
         <Route
           path="/workflow/createWorkflow"
+          component={AdminContainer}
+        ></Route>
+
+        <Route
+          path="/workflow/addactivity/:id"
           component={AdminContainer}
         ></Route>
 

@@ -33,11 +33,20 @@ import ToasterMessageComponent from "../common/toaster";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { useHistory } from "react-router-dom";
+import SpeedDial from "@material-ui/lab/SpeedDial";
+import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
+import { withStyles } from "@material-ui/core/styles";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import { makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
-function Workflow(props) {
+function AddActivity(props) {
   const UserGroup = new UserGroupService();
-  let history = useHistory();
+  // const classes = useStyles();
   const [responsive, setResponsive] = useState("vertical");
   const [tableBodyHeight, setTableBodyHeight] = useState("300px");
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
@@ -49,23 +58,54 @@ function Workflow(props) {
     { id: true, name: "Active" },
     { id: false, name: "Inactive" },
   ];
+  const [answersToSelect, setAnswersToSelect] = useState([
+    { id: "TRUE", name: "Send  Email" },
+    { id: "FALSE", name: "Send in-app notification" },
+    { id: "FALSE", name: "Send push notification" },
+    { id: "TRUE", name: "Contact Tracing-RLAP" },
+    { id: "TRUE", name: "Contact Tracing-BLE" },
+  ]);
+
+  const styles = (theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(2),
+    },
+    closeButton: {
+      position: "absolute",
+      right: theme.spacing(1),
+      top: theme.spacing(1),
+      color: theme.palette.grey[500],
+    },
+  });
+
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
   const columns = [
     {
-      label: "Work Flow Name ",
-      options: {
-        filter: false,
-        sort: true,
-      },
-    },
-    {
-      label: "User Group",
-      options: {
-        filter: false,
-        sort: true,
-      },
-    },
-    {
-      label: "Status",
+      label: "Activity Name ",
       options: {
         filter: false,
         sort: true,
@@ -83,26 +123,7 @@ function Workflow(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick="#"
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Edit">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<EditIcon />}
-                    className={`edit-icon`}
-                    onClick="#"
-                  ></Button>
-                </Tooltip>
-
-                <Tooltip title="Add">
+                <Tooltip title="Add Options To Activity">
                   <Button
                     variant="contained"
                     color="default"
@@ -118,16 +139,6 @@ function Workflow(props) {
                     color="default"
                     startIcon={<DeleteIcon />}
                     className={`delete-icon`}
-                    onClick="#"
-                  ></Button>
-                </Tooltip>
-
-                <Tooltip title="Upload">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<BackupIcon />}
-                    className={`edit-icon`}
                     onClick="#"
                   ></Button>
                 </Tooltip>
@@ -162,44 +173,23 @@ function Workflow(props) {
       },
     },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
-    customToolbar: () => {
-      return (
-        <div className={`maingrid-actions`}>
-          <Tooltip title="Filter By User">
-            <Button
-              variant="contained"
-              startIcon={<FilterListIcon />}
-              className={`add-icon`}
-              onClick={handleClickOpenModal}
-            ></Button>
-          </Tooltip>
-        </div>
-      );
-    },
+    // customToolbar: () => {
+    //   return (
+    //     <div className={`maingrid-actions`}>
+    //       <Tooltip title="Filter By User">
+    //         <Button
+    //           variant="contained"
+    //           startIcon={<FilterListIcon />}
+    //           className={`add-icon`}
+    //           onClick={handleClickOpenModal}
+    //         ></Button>
+    //       </Tooltip>
+    //     </div>
+    //   );
+    // },
   };
 
-  let data = [
-    ["Harper White", "Attorney", "Pittsburgh"],
-    ["Kris Humphrey", "Agency Legal Counsel", "Laredo"],
-    ["Frankie Long", "Industrial Analyst", "Austin"],
-    ["Brynn Robbins", "Business Analyst", "Norfolk"],
-    ["Justice Mann", "Business Consultant", "Chicago"],
-    ["Addison Navarro", "Business Management Analyst", "New York"],
-    ["Jesse Welch", "Agency Legal Counsel", "Seattle"],
-    ["Eli Mejia", "Commercial Specialist", "Long Beach"],
-    ["Gene Leblanc", "Industrial Analyst", "Hartford"],
-    ["Danny Leon", "Computer Scientist", "Newark"],
-    ["Lane Lee", "Corporate Counselor", "Cincinnati"],
-    ["Jesse Hall", "Business Analyst", "Baltimore"],
-    ["Danni Hudson", "Agency Legal Counsel", "Tampa"],
-    ["Terry Macdonald", "Commercial Specialist", "Miami"],
-    ["Justice Mccarthy", "Attorney", "Tucson"],
-    ["Silver Carey", "Computer Scientist", "Memphis"],
-    ["Franky Miles", "Industrial Analyst", "Buffalo"],
-    ["Glen Nixon", "Corporate Counselor", "Arlington"],
-    ["Gabby Strickland", "Business Process Consultant", "Scottsdale"],
-    ["Mason Ray", "Computer Scientist", "San Francisco"],
-  ];
+  let data = [["Send Email"], ["Contact Tracing-Pin Micro"]];
 
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
@@ -235,75 +225,39 @@ function Workflow(props) {
         open={Modalopen}
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
-          Filters
+          Add Activity
         </DialogTitle>
         <ValidatorForm className={`global-form`} onSubmit="#">
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
                 <Grid item cs={12} container>
-                  <Grid item xs={4}>
-                    <label className="">User Group </label>
+                  <Grid item xs={6}>
+                    <label className="">Select State</label>
                   </Grid>
-                  <Grid item xs={8}>
-                    <FormControl variant="outlined" fullWidth>
-                      <Autocomplete
-                        id="tags-outlined"
-                        options={
-                          userGroupList && userGroupList.length > 0
-                            ? userGroupList
-                            : []
-                        }
-                        getOptionLabel={(option) => option.groupName}
-                        // defaultValue="#"
-                        // onChange="#"
-                        filterSelectedOptions
-                        className="global-input autocomplete-select"
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            variant="outlined"
-                            placeholder="Select usergroup"
-                          />
-                        )}
-                      />{" "}
-                    </FormControl>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} container>
-                  <Grid item xs={4}>
-                    <label className="">Status</label>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <FormControl variant="outlined" fullWidth>
-                      <InputLabel
-                        id="demo-simple-select-outlined-label"
-                        shrink={false}
-                        className="select-label"
-                      >
-                        {/* {formData.isActive != "" ? "Select status" : ""} */}
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-outlined-label"
-                        id="demo-simple-select-outlined"
-                        placeholder="Select status"
-                        name="isActive"
-                        // value={formData.isActive}
-                        // onChange={handleChange}
-                        className="global-input single-select"
-                      >
-                        <MenuItem value="">None</MenuItem>
-                        {userStatusData.length > 0
-                          ? userStatusData.map((UserStatus) => {
-                              return (
-                                <MenuItem value={UserStatus.id}>
-                                  {UserStatus.name}
-                                </MenuItem>
-                              );
-                            })
-                          : ""}
-                      </Select>
-                    </FormControl>
+                  <Grid item xs={6}>
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={
+                        answersToSelect && answersToSelect.length > 0
+                          ? answersToSelect
+                          : []
+                      }
+                      getOptionLabel={(option) => option.name}
+                      // defaultValue={SiteMasterData}
+                      // onChange={userSelectSite}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select State"
+                        />
+                      )}
+                    />
+                    {""}
                   </Grid>
                 </Grid>
               </Grid>
@@ -324,7 +278,6 @@ function Workflow(props) {
           </DialogActions>
         </ValidatorForm>
       </Dialog>
-
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
         <LinkTo
           color="inherit"
@@ -338,10 +291,22 @@ function Workflow(props) {
           Work Flow
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          List Work Flow
+          WorkFlow name
+        </LinkTo>
+        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+          Add Activity
         </LinkTo>
       </Breadcrumbs>
-
+      <br />
+      <Button
+        variant="contained"
+        style={{ float: "right" }}
+        className={`add-icon`}
+        onClick={handleClickOpenModal}
+      >
+        ADD ACTIVITY
+      </Button>
+      <br /> <br /> <br />
       <MUIDataTable
         title={""}
         data={data}
@@ -353,4 +318,4 @@ function Workflow(props) {
   );
 }
 
-export default Workflow;
+export default AddActivity;
