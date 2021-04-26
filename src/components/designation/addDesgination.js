@@ -234,8 +234,11 @@ function AddDesignation(props) {
                       <TextValidator
                         variant="outlined"
                         id="outlined-adornment-weight"
-                        validators={["required"]}
-                        errorMessages={["Please enter attendance grace time"]}
+                        validators={["required", "matchRegexp:^[0-9]*$"]}
+                        errorMessages={[
+                          "Please enter attendance grace time",
+                          "Alphabets and special characters are not allowed",
+                        ]}
                         name="attendanceGracetime"
                         type={"text"}
                         value={

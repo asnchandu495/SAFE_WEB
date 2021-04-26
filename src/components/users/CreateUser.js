@@ -331,10 +331,7 @@ function CreateUser(props) {
       data.group = UserSelectedPrimaryGroupValue;
       data.applicationUserToSecondaryGroup = UserSelectedSecondaryGroupValue;
       data.country = UserSelectCountry;
-      data.applicationUserToSite = {
-        id: UserSelectSiteValue.id,
-        name: UserSelectSiteValue.name,
-      };
+      data.applicationUserToSite = UserSelectSiteValue;
       data.applicationUserToTeamMapping = UserSelectedTeamValue;
       data.designation = UserSelectedDesignationValue;
       data.zipCode = parseInt(data.zipCode);
