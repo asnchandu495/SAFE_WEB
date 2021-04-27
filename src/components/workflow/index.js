@@ -4,7 +4,6 @@ import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -33,25 +32,50 @@ import ToasterMessageComponent from "../common/toaster";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { useHistory } from "react-router-dom";
 
 function Workflow(props) {
   const UserGroup = new UserGroupService();
-  let history = useHistory();
-  const [responsive, setResponsive] = useState("vertical");
-  const [tableBodyHeight, setTableBodyHeight] = useState("300px");
-  const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
   const [userGroupList, setuserGroupList] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [Modalopen, setModalOpen] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
+  const [workflowData, setWorkflowData] = useState([
+    {
+      id: "001",
+      name: "Workflow safe to suspected",
+      userGroup: { id: "001", name: "Sutherland Hyderabad" },
+      status: "Active",
+    },
+    {
+      id: "002",
+      name: "Workflow safe to confirmed",
+      userGroup: { id: "001", name: "Sutherland Hyderabad" },
+      status: "Inctive",
+    },
+    {
+      id: "001",
+      name: "Workflow suspected to confirmed",
+      userGroup: { id: "001", name: "Sutherland Chennai" },
+      status: "Active",
+    },
+  ]);
   const userStatusData = [
     { id: true, name: "Active" },
     { id: false, name: "Inactive" },
   ];
   const columns = [
     {
+      name: "id",
+      label: "Id",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
       label: "Work Flow Name ",
+      name: "name",
       options: {
         filter: false,
         sort: true,
@@ -59,19 +83,26 @@ function Workflow(props) {
     },
     {
       label: "User Group",
+      name: "userGroup",
       options: {
         filter: false,
         sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return <span>{thisRowData[2].name}</span>;
+          }
+        },
       },
     },
     {
       label: "Status",
+      name: "status",
       options: {
         filter: false,
         sort: true,
       },
     },
-
     {
       label: "Action",
       name: "",
@@ -101,17 +132,6 @@ function Workflow(props) {
                     onClick="#"
                   ></Button>
                 </Tooltip>
-
-                <Tooltip title="Add">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<AddIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleaddactivitymodal(thisRowData)}
-                  ></Button>
-                </Tooltip>
-
                 <Tooltip title="Delete">
                   <Button
                     variant="contained"
@@ -121,8 +141,16 @@ function Workflow(props) {
                     onClick="#"
                   ></Button>
                 </Tooltip>
-
-                <Tooltip title="Upload">
+                <Tooltip title="Activities">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<AddIcon />}
+                    className={`edit-icon`}
+                    onClick={() => handleViewActivity(thisRowData)}
+                  ></Button>
+                </Tooltip>
+                <Tooltip title="Publish">
                   <Button
                     variant="contained"
                     color="default"
@@ -178,29 +206,6 @@ function Workflow(props) {
     },
   };
 
-  let data = [
-    ["Harper White", "Attorney", "Pittsburgh"],
-    ["Kris Humphrey", "Agency Legal Counsel", "Laredo"],
-    ["Frankie Long", "Industrial Analyst", "Austin"],
-    ["Brynn Robbins", "Business Analyst", "Norfolk"],
-    ["Justice Mann", "Business Consultant", "Chicago"],
-    ["Addison Navarro", "Business Management Analyst", "New York"],
-    ["Jesse Welch", "Agency Legal Counsel", "Seattle"],
-    ["Eli Mejia", "Commercial Specialist", "Long Beach"],
-    ["Gene Leblanc", "Industrial Analyst", "Hartford"],
-    ["Danny Leon", "Computer Scientist", "Newark"],
-    ["Lane Lee", "Corporate Counselor", "Cincinnati"],
-    ["Jesse Hall", "Business Analyst", "Baltimore"],
-    ["Danni Hudson", "Agency Legal Counsel", "Tampa"],
-    ["Terry Macdonald", "Commercial Specialist", "Miami"],
-    ["Justice Mccarthy", "Attorney", "Tucson"],
-    ["Silver Carey", "Computer Scientist", "Memphis"],
-    ["Franky Miles", "Industrial Analyst", "Buffalo"],
-    ["Glen Nixon", "Corporate Counselor", "Arlington"],
-    ["Gabby Strickland", "Business Process Consultant", "Scottsdale"],
-    ["Mason Ray", "Computer Scientist", "San Francisco"],
-  ];
-
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
@@ -213,9 +218,9 @@ function Workflow(props) {
     setModalOpen(false);
   };
 
-  function handleaddactivitymodal(value) {
-    // var workflowId = value[0];
-    props.history.push("/workflow/addactivity/1");
+  function handleViewActivity(value) {
+    var workflowId = value[0];
+    props.history.push(`/workflow/${workflowId}/activities`);
   }
   useEffect(() => {
     UserGroup.loadUserGroup()
@@ -344,7 +349,7 @@ function Workflow(props) {
 
       <MUIDataTable
         title={""}
-        data={data}
+        data={workflowData}
         columns={columns}
         options={options}
         className="global-table"

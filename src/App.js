@@ -71,6 +71,7 @@ import ViewHealthDeclaration from "./components/selfhealthcheck/viewHealthDeclar
 import Workflow from "./components/workflow";
 import CreateWorkflow from "./components/workflow/CreateWorkflow";
 import AddActivity from "./components/workflow/addActivity";
+import AddActions from "./components/workflow/addActions";
 
 function App(props) {
   const AuthContainer = () => {
@@ -281,14 +282,17 @@ function App(props) {
           path="/selfhealth/heath-declarations/:id"
           component={ViewHealthDeclaration}
         ></Route>
-
         <Route path="/workflow/allWorkflow" component={Workflow}></Route>
         <Route
-          path="/workflow/createWorkflow"
+          path="/workflow/create-workflow/:id"
           component={CreateWorkflow}
         ></Route>
-
-        <Route path="/workflow/addactivity/:id" component={AddActivity}></Route>
+        <Route path="/workflow/:wid/activities" component={AddActivity}></Route>
+        <Route
+          exact
+          path="/workflow/:wid/:aid/actions"
+          component={AddActions}
+        ></Route>
       </AdminLayout>
     );
   };
@@ -441,7 +445,6 @@ function App(props) {
           path="/questionaires/create-questionaire/:id"
           component={AdminContainer}
         ></Route>
-
         <Route
           path="/questionaires/view-questionaire/:id"
           component={AdminContainer}
@@ -500,17 +503,19 @@ function App(props) {
           component={AdminContainer}
         ></Route>
         <Route path="/workflow/allWorkflow" component={AdminContainer}></Route>
-
         <Route
-          path="/workflow/createWorkflow"
+          path="/workflow/create-workflow/:id"
           component={AdminContainer}
         ></Route>
-
         <Route
-          path="/workflow/addactivity/:id"
+          path="/workflow/:wid/activities"
           component={AdminContainer}
         ></Route>
-
+        <Route
+          exact
+          path="/workflow/:wid/:aid/actions"
+          component={AdminContainer}
+        ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />
         <Route path="/Unauthorized" component={ErrorPageContainer} />
       </Switch>

@@ -1,40 +1,22 @@
 import React, { Fragment, useEffect, useState } from "react";
-import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-
 import PropTypes from "prop-types";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import GroupAddIcon from "@material-ui/icons/GroupAdd";
-import BackupIcon from "@material-ui/icons/Backup";
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import AddIcon from "@material-ui/icons/Add";
-import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
-import ConfirmationDialog from "../common/confirmdialogbox";
 import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ToasterMessageComponent from "../common/toaster";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import SpeedDial from "@material-ui/lab/SpeedDial";
-import SpeedDialIcon from "@material-ui/lab/SpeedDialIcon";
 import { withStyles } from "@material-ui/core/styles";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogActions from "@material-ui/core/DialogActions";
@@ -46,10 +28,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 function AddActivity(props) {
   const UserGroup = new UserGroupService();
-  // const classes = useStyles();
-  const [responsive, setResponsive] = useState("vertical");
-  const [tableBodyHeight, setTableBodyHeight] = useState("300px");
-  const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
+  const workflowId = props.match.params.wid;
   const [userGroupList, setuserGroupList] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [Modalopen, setModalOpen] = useState(false);
@@ -59,12 +38,28 @@ function AddActivity(props) {
     { id: false, name: "Inactive" },
   ];
   const [answersToSelect, setAnswersToSelect] = useState([
-    { id: "TRUE", name: "Send  Email" },
-    { id: "FALSE", name: "Send in-app notification" },
-    { id: "FALSE", name: "Send push notification" },
-    { id: "TRUE", name: "Contact Tracing-RLAP" },
-    { id: "TRUE", name: "Contact Tracing-BLE" },
+    { id: "001", name: "Send  Email" },
+    { id: "002", name: "Send in-app notification" },
+    { id: "003", name: "Send push notification" },
+    { id: "004", name: "Contact Tracing-RLAP" },
+    { id: "005", name: "Contact Tracing-BLE" },
   ]);
+  const [selectedActivities, setSelectedActivities] = useState([
+    { id: "001", name: "Send  Email" },
+    { id: "002", name: "Send in-app notification" },
+    { id: "003", name: "Send push notification" },
+  ]);
+
+  useEffect(() => {
+    UserGroup.loadUserGroup()
+      .then((getUsergrouplist) => {
+        setuserGroupList(getUsergrouplist);
+        setComponentLoadder(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const styles = (theme) => ({
     root: {
@@ -105,13 +100,22 @@ function AddActivity(props) {
   }))(MuiDialogActions);
   const columns = [
     {
+      name: "id",
+      label: "Id",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      name: "name",
       label: "Activity Name ",
       options: {
         filter: false,
         sort: true,
       },
     },
-
     {
       label: "Action",
       name: "",
@@ -129,7 +133,7 @@ function AddActivity(props) {
                     color="default"
                     startIcon={<AddIcon />}
                     className={`edit-icon`}
-                    onClick={() => handleaddactivitymodal(thisRowData)}
+                    onClick={() => handleaddOptions(thisRowData)}
                   ></Button>
                 </Tooltip>
 
@@ -169,24 +173,9 @@ function AddActivity(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no users  teams",
+        noMatch: "There are no activities",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
-    // customToolbar: () => {
-    //   return (
-    //     <div className={`maingrid-actions`}>
-    //       <Tooltip title="Filter By User">
-    //         <Button
-    //           variant="contained"
-    //           startIcon={<FilterListIcon />}
-    //           className={`add-icon`}
-    //           onClick={handleClickOpenModal}
-    //         ></Button>
-    //       </Tooltip>
-    //     </div>
-    //   );
-    // },
   };
 
   let data = [["Send Email"], ["Contact Tracing-Pin Micro"]];
@@ -203,26 +192,18 @@ function AddActivity(props) {
     setModalOpen(false);
   };
 
-  function handleaddactivitymodal(value) {
-    // var workflowId = value[0];
-    props.history.push("/workflow/addactivity/1");
+  function handleaddOptions(value) {
+    let activityId = value[0];
+    props.history.push(`/workflow/${workflowId}/${activityId}/actions`);
   }
-  useEffect(() => {
-    UserGroup.loadUserGroup()
-      .then((getUsergrouplist) => {
-        setuserGroupList(getUsergrouplist);
-        setComponentLoadder(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+
   return (
     <div className="innerpage-container">
       <Dialog
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
         open={Modalopen}
+        className="modal-min-widtn"
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Add Activity
@@ -231,34 +212,30 @@ function AddActivity(props) {
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
-                <Grid item cs={12} container>
-                  <Grid item xs={6}>
-                    <label className="">Select State</label>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Autocomplete
-                      multiple
-                      id="tags-outlined"
-                      options={
-                        answersToSelect && answersToSelect.length > 0
-                          ? answersToSelect
-                          : []
-                      }
-                      getOptionLabel={(option) => option.name}
-                      // defaultValue={SiteMasterData}
-                      // onChange={userSelectSite}
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select State"
-                        />
-                      )}
-                    />
-                    {""}
-                  </Grid>
+                <Grid item sm={12} container>
+                  <Autocomplete
+                    fullWidth
+                    multiple
+                    id="tags-outlined"
+                    options={
+                      answersToSelect && answersToSelect.length > 0
+                        ? answersToSelect
+                        : []
+                    }
+                    getOptionLabel={(option) => option.name}
+                    // defaultValue={SiteMasterData}
+                    // onChange={userSelectSite}
+                    filterSelectedOptions
+                    className="global-input autocomplete-select"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        placeholder="Select activities"
+                      />
+                    )}
+                  />
+                  {""}
                 </Grid>
               </Grid>
             ) : null}
@@ -293,23 +270,27 @@ function AddActivity(props) {
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
           WorkFlow name
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Add Activity
+        <LinkTo color="textPrimary" href="#" to="#" className="active">
+          Activities
         </LinkTo>
       </Breadcrumbs>
-      <br />
-      <Button
-        variant="contained"
-        style={{ float: "right" }}
-        className={`add-icon`}
-        onClick={handleClickOpenModal}
-      >
-        ADD ACTIVITY
-      </Button>
-      <br /> <br /> <br />
+      <Grid container spacing={3} className="add-activity-section global-form">
+        <Grid item xs={2}>
+          <div className={`form-buttons-container`}>
+            <Button
+              variant="contained"
+              type="button"
+              className="global-submit-btn global-filter-btn"
+              onClick={handleClickOpenModal}
+            >
+              ADD ACTIVITY
+            </Button>
+          </div>
+        </Grid>
+      </Grid>
       <MUIDataTable
         title={""}
-        data={data}
+        data={selectedActivities}
         columns={columns}
         options={options}
         className="global-table"

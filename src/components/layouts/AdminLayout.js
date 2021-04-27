@@ -1090,7 +1090,7 @@ function AdminLayout(props) {
                     button
                     className={classes.nested}
                     component={Link}
-                    to="/workflow/createWorkflow"
+                    to="/workflow/create-workflow/0"
                   >
                     <ListItemIcon>
                       <ArrowForwardIcon />
