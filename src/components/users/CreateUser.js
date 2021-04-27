@@ -304,7 +304,7 @@ function CreateUser(props) {
         id: UserSelectedDesignationValue.id,
         name: UserSelectedDesignationValue.name,
       };
-      formData.zipCode = parseInt(formData.zipCode);
+      // formData.zipCode = parseInt(formData.zipCode);
       console.log(UserSelectedDesignationValue);
       console.log(formData);
       // data.supervisor = UserSelectSupervisorData;
@@ -334,7 +334,7 @@ function CreateUser(props) {
       data.applicationUserToSite = UserSelectSiteValue;
       data.applicationUserToTeamMapping = UserSelectedTeamValue;
       data.designation = UserSelectedDesignationValue;
-      data.zipCode = parseInt(data.zipCode);
+      // data.zipCode = parseInt(data.zipCode);
       data.supervisor = UserSelectSupervisorData;
       data.supervisorId = UserSelectSupervisorData.applicationUserId;
 
@@ -1168,16 +1168,8 @@ function CreateUser(props) {
                     </label>
                     <TextValidator
                       variant="outlined"
-                      validators={[
-                        "required",
-                        "matchRegexp:^[0-9]*$",
-                        "matchRegexp:^.{0,6}$",
-                      ]}
-                      errorMessages={[
-                        "Please enter zipcode",
-                        "Only numbers are allowed",
-                        "Maximum 6 digits",
-                      ]}
+                      validators={["required"]}
+                      errorMessages={["Please enter zipcode"]}
                       fullWidth
                       id="zipCode"
                       placeholder="Postal / Zip Code"

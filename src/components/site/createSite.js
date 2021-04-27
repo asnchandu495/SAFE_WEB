@@ -233,7 +233,7 @@ function CreateSite(props) {
     setshowLoadder(true);
     var data = formData;
     if (!siteId) {
-      data.zipCode = parseInt(data.zipCode);
+      // data.zipCode = parseInt(data.zipCode);
       data.siteManager = userSelectedSiteManager.applicationUserId;
       data.siteManagerName = userSelectedSiteManager.name;
 
@@ -258,7 +258,7 @@ function CreateSite(props) {
           setshowLoadder(false);
         });
     } else {
-      data.zipCode = parseInt(data.zipCode);
+      // data.zipCode = parseInt(data.zipCode);
       data.siteManager = userSelectedSiteManager.applicationUserId;
       data.siteManagerName = userSelectedSiteManager.name;
 
@@ -636,11 +636,8 @@ function CreateSite(props) {
                       </label>
                       <TextValidator
                         variant="outlined"
-                        validators={["required", "matchRegexp:^[0-9]*$"]}
-                        errorMessages={[
-                          "Please enter postal code",
-                          "Only numbers are allowed",
-                        ]}
+                        validators={["required"]}
+                        errorMessages={["Please enter postal code"]}
                         fullWidth
                         id="zipCode"
                         placeholder="Enter postal code"

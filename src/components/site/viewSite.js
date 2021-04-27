@@ -397,7 +397,7 @@ function ViewSite(props) {
                     <label>Country :</label>
                   </Grid>
                   <Grid item xs={8}>
-                    <label>{viewSiteValue.countryId}</label>
+                    <label>{viewSiteValue.country}</label>
                   </Grid>
                 </Grid>
                 <Grid item sm={6} container>
