@@ -111,6 +111,15 @@ function Questionaire(props) {
         sort: true,
       },
     },
+    {
+      name: "isAssignedToUserGroup",
+      label: "isAssignedToUserGroup",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
 
     {
       label: "Action",
@@ -121,10 +130,12 @@ function Questionaire(props) {
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
           if (thisRowData) {
+            console.log(thisRowData[2]);
             return (
               <div className={`action-buttons-container`}>
                 <Tooltip title="Edit">
                   <Button
+                    disabled={thisRowData[2]}
                     variant="contained"
                     color="default"
                     startIcon={<EditIcon />}
@@ -134,6 +145,7 @@ function Questionaire(props) {
                 </Tooltip>
                 <Tooltip title="Delete">
                   <Button
+                    disabled={thisRowData[2]}
                     variant="contained"
                     color="default"
                     startIcon={<DeleteIcon />}

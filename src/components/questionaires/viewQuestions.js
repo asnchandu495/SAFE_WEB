@@ -47,6 +47,7 @@ function ViewQuestions(props) {
       .getSurveyById(questionaireId)
       .then((questionaireInfo) => {
         setViewQuestionaireDetails(questionaireInfo);
+        console.log(questionaireInfo);
       })
       .catch((error) => {
         console.log(error);
@@ -67,6 +68,7 @@ function ViewQuestions(props) {
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
                 setReloadListPage={props.setReloadListPage}
+                ViewQuestionaireDetails={ViewQuestionaireDetails}
               ></BooleanDetails>
             </Grid>
           </Grid>
@@ -80,6 +82,7 @@ function ViewQuestions(props) {
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
                 setReloadListPage={props.setReloadListPage}
+                ViewQuestionaireDetails={ViewQuestionaireDetails}
               ></FreetextDetails>{" "}
             </Grid>
           </Grid>
@@ -94,6 +97,7 @@ function ViewQuestions(props) {
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
                 loadGlobalSettingsData={props.loadGlobalSettingsData}
                 setReloadListPage={props.setReloadListPage}
+                ViewQuestionaireDetails={ViewQuestionaireDetails}
               ></DateDetails>{" "}
             </Grid>
           </Grid>
@@ -108,6 +112,7 @@ function ViewQuestions(props) {
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
                 loadGlobalSettingsData={props.loadGlobalSettingsData}
                 setReloadListPage={props.setReloadListPage}
+                ViewQuestionaireDetails={ViewQuestionaireDetails}
               ></TimeDetails>{" "}
             </Grid>
           </Grid>
@@ -121,6 +126,7 @@ function ViewQuestions(props) {
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
                 setReloadListPage={props.setReloadListPage}
+                ViewQuestionaireDetails={ViewQuestionaireDetails}
               ></NumericDetails>{" "}
             </Grid>
           </Grid>
@@ -134,6 +140,7 @@ function ViewQuestions(props) {
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
                 setReloadListPage={props.setReloadListPage}
+                ViewQuestionaireDetails={ViewQuestionaireDetails}
               ></SingleChoiceDetails>{" "}
             </Grid>
           </Grid>
@@ -147,6 +154,7 @@ function ViewQuestions(props) {
                 selectedQuestionDetails={selectedQuestionDetails}
                 setSelectedQuestionDetails={setSelectedQuestionDetails}
                 setReloadListPage={props.setReloadListPage}
+                ViewQuestionaireDetails={ViewQuestionaireDetails}
               ></MultiChoiceDetails>{" "}
             </Grid>
           </Grid>
@@ -228,8 +236,9 @@ function ViewQuestions(props) {
                 {/* </Grid> */}
               </ValidatorForm>
               <SpeedDial
+                hidden={ViewQuestionaireDetails.isAssignedToUserGroup}
                 ariaLabel="SpeedDial example"
-                hidden={false}
+                // hidden={false}
                 icon={<SpeedDialIcon />}
                 direction={`up`}
                 className="add-question-speeddial"

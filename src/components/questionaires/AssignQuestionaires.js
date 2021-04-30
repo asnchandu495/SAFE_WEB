@@ -216,7 +216,7 @@ function AssignQuestionaires(props) {
         }, 3000);
       })
       .catch((err) => {
-        setToasterMessage(err.data);
+        setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
         setshowLoadder(false);
@@ -262,13 +262,17 @@ function AssignQuestionaires(props) {
   useEffect(() => {
     Promise.all([
       props.LoadAllAssignQuestionire(),
-      // QuestionaireApicall.ListAllAssignedQuestionnaires(),
+
       UserGroup.loadUserGroup(),
       QuestionaireApicall.GetAllQuestionarie(),
     ])
       .then(([getassignedQuestionaire, getUserList, getQuestionaireList]) => {
         setuserGroupList(getUserList);
-        setQuestionaireList(getQuestionaireList);
+        let filteredQuestionnaires = getQuestionaireList.filter((question) => {
+          return question.isSaveasDraft == true;
+        });
+        setQuestionaireList(filteredQuestionnaires);
+
         setComponentLoadder(false);
       })
       .catch((error) => {

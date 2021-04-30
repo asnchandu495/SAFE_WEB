@@ -81,6 +81,7 @@ function TimeDetails(props) {
           <div className="action-buttons-container question-actions">
             <Tooltip title="Edit">
               <Button
+                disabled={props.ViewQuestionaireDetails.isAssignedToUserGroup}
                 variant="contained"
                 color="default"
                 startIcon={<EditIcon />}
@@ -104,6 +105,7 @@ function TimeDetails(props) {
 
             <Tooltip title="Delete">
               <Button
+                disabled={props.ViewQuestionaireDetails.isAssignedToUserGroup}
                 variant="contained"
                 color="default"
                 startIcon={<DeleteIcon />}
