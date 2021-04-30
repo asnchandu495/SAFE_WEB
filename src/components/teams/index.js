@@ -109,7 +109,7 @@ function Teams(props) {
       name: "name",
       label: "Team ",
       options: {
-        filter: false,
+        filter: true,
         sort: true,
       },
     },
@@ -117,14 +117,16 @@ function Teams(props) {
       name: "manager",
       label: "Team Manager",
       options: {
-        filter: false,
         sort: true,
+        filterList: [],
+
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
           if (thisRowData) {
             return <span>{thisRowData[2].name}</span>;
           }
         },
+        filter: true,
       },
     },
 
@@ -193,12 +195,12 @@ function Teams(props) {
   ];
 
   const options = {
-    filter: false,
+    filter: true,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
-    // rowsPerPageOptions: [5, 10, 15, 100],
-    // rowsPerPage: 5,
+    rowsPerPageOptions: [5, 10, 15, 100],
+    rowsPerPage: 10,
     print: false,
     viewColumns: false,
     download: false,
@@ -208,6 +210,7 @@ function Teams(props) {
         noMatch: "There are no users  teams",
       },
     },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
   };
 
   return (
@@ -238,6 +241,7 @@ function Teams(props) {
           <MuiThemeProvider theme={theme1}>
             {" "}
             <MUIDataTable
+              title={""}
               data={
                 props.TeamData && props.TeamData.length > 0
                   ? props.TeamData

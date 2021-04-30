@@ -837,10 +837,15 @@ function GlobalSetting(props) {
                   <FormControl variant="outlined">
                     <TextValidator
                       variant="outlined"
-                      validators={["required", "matchRegexp:^[0-9]*$"]}
+                      validators={[
+                        "required",
+                        "matchRegexp:^[0-9]*$",
+                        "maxNumber:99",
+                      ]}
                       errorMessages={[
                         "Please enter passord",
                         "Only numbers are allowed",
+                        "Only two digits are allowed ",
                       ]}
                       id="outlined-adornment-weight"
                       name="maxPasswordlength"
