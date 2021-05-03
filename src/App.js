@@ -57,6 +57,8 @@ import CreateTeam from "./components/teams/CreateTeam";
 import ViewTeam from "./components/teams/ViewTeam";
 import ListofQuestions from "./components/questionaires/listofQuestions";
 import ViewQuestionaire from "./components/questionaires/viewQuestionaire";
+import PublishQuestionnaire from "./components/questionaires/publishQuestionnaire";
+
 import AssignQuestionaires from "./components/questionaires/AssignQuestionaires";
 import BooleanJump from "./components/questionaires/conditionalJump/booleanJumb";
 import NumericJump from "./components/questionaires/conditionalJump/numericJump";
@@ -225,6 +227,10 @@ function App(props) {
         <Route
           path="/questionaires/view-questionaire/:id"
           component={ViewQuestionaire}
+        ></Route>
+        <Route
+          path="/questionaires/publish-questionnaire/:id"
+          component={PublishQuestionnaire}
         ></Route>
         <Route
           path="/questionaires/add-questions/:id/:qid"
@@ -447,6 +453,10 @@ function App(props) {
         ></Route>
         <Route
           path="/questionaires/view-questionaire/:id"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/questionaires/publish-questionnaire/:id"
           component={AdminContainer}
         ></Route>
         <Route

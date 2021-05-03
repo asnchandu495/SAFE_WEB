@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import questionaireService from "../../services/questionaireService";
 import * as questionaireAction from "../../Redux/Action/questionaireAction";
 import prototypes from "prop-types";
+import BackupIcon from "@material-ui/icons/Backup";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -88,6 +89,11 @@ function Questionaire(props) {
     props.history.push(`/questionaires/create-questionaire/${questionId}`);
   }
 
+  function handleClickPublishQuestions(value) {
+    var questionId = value[0];
+    props.history.push(`/questionaires/publish-questionnaire/${questionId}`);
+  }
+
   function handleClickOrderofExecution(value) {
     var questionId = value[0];
     props.history.push(`/questionaires/order-of-execution/${questionId}`);
@@ -120,6 +126,15 @@ function Questionaire(props) {
         filter: false,
       },
     },
+    {
+      name: "isSaveasDraft",
+      label: "isSaveasDraft",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
 
     {
       label: "Action",
@@ -129,10 +144,24 @@ function Questionaire(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          console.log(thisRowData);
           if (thisRowData) {
-            console.log(thisRowData[2]);
             return (
               <div className={`action-buttons-container`}>
+                {thisRowData[3] ? (
+                  <Tooltip title="Publish">
+                    <Button
+                      hidden={!thisRowData[3]}
+                      variant="contained"
+                      color="default"
+                      startIcon={<BackupIcon />}
+                      className={`edit-icon`}
+                      onClick={() => handleClickPublishQuestions(thisRowData)}
+                    ></Button>
+                  </Tooltip>
+                ) : (
+                  ""
+                )}
                 <Tooltip title="Edit">
                   <Button
                     disabled={thisRowData[2]}

@@ -7,10 +7,11 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import ToasterMessageComponent from "../../common/toaster";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import AuthService from "../../../services/authService";
+import GlobalSettingApiServices from "../../../services/globalSettingService";
 
 export default function ResetPassword(props) {
   const authApiCall = new AuthService();
-
+  const GlobalSettingApi = new GlobalSettingApiServices();
   const [formData, SetformData] = useState({
     validId: "",
     password: "",
@@ -23,8 +24,16 @@ export default function ResetPassword(props) {
   );
   const [toasterServerity, settoasterServerity] = useState("");
   const [showLoadder, setshowLoadder] = useState(false);
+  const [passwordLength, setpasswordLength] = useState();
 
   useEffect(() => {
+    GlobalSettingApi.getLoadGlobalSetting()
+      .then((getPasswordLength) => {
+        setpasswordLength(getPasswordLength.maxPasswordlength);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     ValidatorForm.addValidationRule("isPasswordMatch", (value) => {
       if (value !== formData.password) {
         return false;
@@ -71,8 +80,14 @@ export default function ResetPassword(props) {
               <TextValidator
                 variant="outlined"
                 margin="normal"
-                validators={["required"]}
-                errorMessages={["Please enter password"]}
+                validators={[
+                  "required",
+                  "matchRegexp:^.{" + passwordLength + ",}$",
+                ]}
+                errorMessages={[
+                  "Please enter password",
+                  "Minimum 8 characters",
+                ]}
                 fullWidth
                 name="password"
                 placeholder="Password"
@@ -90,10 +105,15 @@ export default function ResetPassword(props) {
               <TextValidator
                 variant="outlined"
                 margin="normal"
-                validators={["required", "isPasswordMatch"]}
+                validators={[
+                  "required",
+                  "isPasswordMatch",
+                  "matchRegexp:^.{" + passwordLength + ",}$",
+                ]}
                 errorMessages={[
                   "Please re-enter password",
                   "Password mismatch",
+                  "Minimum 8 characters",
                 ]}
                 fullWidth
                 name="confirmPassword"

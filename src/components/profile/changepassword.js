@@ -11,12 +11,13 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import AuthService from "../../services/authService";
+import GlobalSettingApiServices from "../../services/globalSettingService";
 
 const useStyles = makeStyles((theme) => ({}));
 
 export default function ChangePassword(props) {
   const thisUserId = props.userId;
-
+  const GlobalSettingApi = new GlobalSettingApiServices();
   const classes = useStyles();
 
   const authApiCall = new AuthService();
@@ -32,9 +33,17 @@ export default function ChangePassword(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState("");
   const [toasterServerity, settoasterServerity] = useState("array");
+  const [passwordLength, setpasswordLength] = useState();
   const [showLoadder, setshowLoadder] = useState(false);
 
   useEffect(() => {
+    GlobalSettingApi.getLoadGlobalSetting()
+      .then((getPasswordLength) => {
+        setpasswordLength(getPasswordLength.maxPasswordlength);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     ValidatorForm.addValidationRule("isPasswordMatch", (value) => {
       if (value !== formData.newPassword) {
         return false;
@@ -58,7 +67,9 @@ export default function ChangePassword(props) {
       .ChangePassword(data)
       .then((res) => {
         setStateSnackbar(true);
-        setToasterMessage("Your account password is updated. Login with your new password.");
+        setToasterMessage(
+          "Your account password is updated. Login with your new password."
+        );
         settoasterServerity("success");
         setTimeout(() => {
           setshowLoadder(false);
@@ -109,8 +120,16 @@ export default function ChangePassword(props) {
               <Grid item xs={12}>
                 <TextValidator
                   variant="outlined"
-                  validators={["required"]}
-                  errorMessages={["Please enter new password"]}
+                  validators={[
+                    "required",
+
+                    "matchRegexp:^.{" + passwordLength + ",}$",
+                  ]}
+                  errorMessages={[
+                    "Please enter new password",
+
+                    "Minimum 8 characters",
+                  ]}
                   fullWidth
                   name="newPassword"
                   placeholder="New Password *"
@@ -126,10 +145,16 @@ export default function ChangePassword(props) {
               <Grid item xs={12}>
                 <TextValidator
                   variant="outlined"
-                  validators={["required", "isPasswordMatch"]}
+                  validators={[
+                    "required",
+                    "isPasswordMatch",
+
+                    "matchRegexp:^.{" + passwordLength + ",}$",
+                  ]}
                   errorMessages={[
                     "Please re-enter password",
                     "Password mismatch",
+                    "Minimum 8 characters",
                   ]}
                   fullWidth
                   name="confirmPassword"

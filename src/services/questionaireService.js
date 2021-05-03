@@ -41,6 +41,16 @@ export default class questionaireService {
     });
   }
 
+  PublishQuestionnaire(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(`${this.questionaireURL}/Survey/PublishSurvey`, {
+      method: "PUT",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   GetAllQuestionarie() {
     return this.fetch(`${this.questionaireURL}/Survey/GetAllSurvey`, {
       method: "GET",
