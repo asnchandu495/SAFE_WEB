@@ -15,6 +15,7 @@ import teamState from "./teamReducer";
 import questionaireStates from "./questionaireReducer";
 import assignquestionaireStates from "./assignquestionaireReducer";
 import questionStates from "./questionReducer";
+import workflowStates from "./workflowReducer";
 
 const rootReducer = combineReducers({
   user: userState,
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   questionaireState: questionaireStates,
   assignquestionaireState: assignquestionaireStates,
   questionState: questionStates,
+  workflowState: workflowStates,
 });
 
 export default rootReducer;

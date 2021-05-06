@@ -33,12 +33,33 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 
+import propTypes from "prop-types";
+import { connect } from "react-redux";
+import * as worlflowAction from "../../Redux/Action/workflowAction";
+
 function Workflow(props) {
   const UserGroup = new UserGroupService();
   const [userGroupList, setuserGroupList] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [Modalopen, setModalOpen] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [
+    ConfirmationDialogContextText,
+    setConfirmationDialogContextText,
+  ] = useState("");
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
+  const [
+    ConfirmationModalActionType,
+    setConfirmationModalActionType,
+  ] = useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [workflowData, setWorkflowData] = useState([
     {
       id: "001",
@@ -129,7 +150,7 @@ function Workflow(props) {
                     color="default"
                     startIcon={<EditIcon />}
                     className={`edit-icon`}
-                    onClick="#"
+                    onClick={() => handleClickOpenConfirmationModal()}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Delete">
@@ -222,7 +243,16 @@ function Workflow(props) {
     var workflowId = value[0];
     props.history.push(`/workflow/${workflowId}/activities`);
   }
+
+  const handleClickOpenConfirmationModal = () => {
+    // setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("Delete Worflow");
+    setConfirmationHeaderTittle("Delete Worflow");
+    setConfirmationDialogContextText(`Are you sure you want to delete ?`);
+  };
   useEffect(() => {
+    // Promise.all([props.LoadData(searchformData)]);
     UserGroup.loadUserGroup()
       .then((getUsergrouplist) => {
         setuserGroupList(getUsergrouplist);
@@ -354,8 +384,43 @@ function Workflow(props) {
         options={options}
         className="global-table"
       />
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        SelectedRowDetails={SelectedRowDetails}
+      />
+      <ToasterMessageComponent
+        stateSnackbar={stateSnackbar}
+        setStateSnackbar={setStateSnackbar}
+        toasterMessage={toasterMessage}
+        toasterServerity={toasterServerity}
+        toasterErrorMessageType={toasterErrorMessageType}
+      />
     </div>
   );
 }
 
-export default Workflow;
+// export default Workflow;
+
+Workflow.propTypes = {
+  WorkflowData: propTypes.array.isRequired,
+  LoadData: propTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    WorkflowData: state.workflowState,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadData: worlflowAction.loadWorkflow,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Workflow);

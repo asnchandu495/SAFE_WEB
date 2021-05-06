@@ -21,6 +21,8 @@ import UserGroupService from "../../services/userGroupService";
 import CovidStateApiServices from "../../services/masterDataService";
 import FormControl from "@material-ui/core/FormControl";
 
+import * as worlflowAction from "../../Redux/Action/workflowAction";
+
 function CreateWorkflow(props) {
   const UserGroup = new UserGroupService();
   const CovidStateApi = new CovidStateApiServices();
@@ -29,9 +31,26 @@ function CreateWorkflow(props) {
   const [formFieldValidation, setformFieldValidation] = useState({
     manager: false,
   });
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+
+  const [isDuplicate, setIsDuplicate] = useState(false);
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [covidStatelist, setcovidStatelist] = useState([]);
+  const workflowId = props.match.params.id;
+
+  const [formData, SetformData] = useState({
+    id: "",
+    name: "",
+    description: "",
+    manager: {},
+  });
+
   useEffect(() => {
     Promise.all([UserGroup.loadUserGroup(), CovidStateApi.getCOVIDStates()])
       .then(([getUserList, getCovidStates]) => {
@@ -43,6 +62,81 @@ function CreateWorkflow(props) {
         console.log(error);
       });
   }, []);
+
+  function workflowCreation(e) {
+    e.preventDefault();
+    SelectUserGroupValidation();
+    // if (selectedTeamManager) {
+    //   SubmitUserForm();
+    // } else {
+    //   return false;
+    // }
+  }
+
+  function SubmitUserForm() {
+    setshowLoadder(true);
+    var workflowData = formData;
+    if (workflowId != 0) {
+      // workflowData.manager = selectedTeamManager;
+      props
+        .UpdateWorkflowCall(workflowData)
+        .then((result) => {
+          setisAlertBoxOpened(false);
+          setshowLoadder(false);
+          setStateSnackbar(true);
+          setToasterMessage("Workflow  Updated");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.history.push("");
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          console.log(err);
+          setToasterMessage(err.data.errors);
+
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    } else {
+      // workflowData.manager = selectedTeamManager;
+
+      props
+        .CreateWorkflowCall(workflowData)
+
+        .then((result) => {
+          setisAlertBoxOpened(false);
+          setStateSnackbar(true);
+          setToasterMessage("Workflow  Created");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.history.push("");
+            setshowLoadder(false);
+          }, 6000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
+  }
+
+  function SelectUserGroupValidation() {
+    // if (selectedTeamManager) {
+    //   setformFieldValidation((ValidationForm) => ({
+    //     ...ValidationForm,
+    //     ["manager"]: false,
+    //   }));
+    // } else {
+    //   setformFieldValidation((ValidationForm) => ({
+    //     ...ValidationForm,
+    //     ["manager"]: true,
+    //   }));
+    // }
+  }
   return (
     <div className="innerpage-container">
       <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
@@ -74,7 +168,7 @@ function CreateWorkflow(props) {
       </Breadcrumbs>
       {!componentLoadder ? (
         <Paper className="main-paper">
-          <ValidatorForm className={`global-form`} onSubmit="#">
+          <ValidatorForm className={`global-form`} onSubmit={workflowCreation}>
             <Grid container spacing={3}>
               <Grid item container xs={12}>
                 <Grid item xs={3}>
@@ -99,7 +193,7 @@ function CreateWorkflow(props) {
                     name="name"
                     autoComplete="name"
                     // onChange={handleChange}
-                    // value={formData.name}s
+                    // value={formData.name}
                     autoFocus
                     InputLabelProps={{ shrink: false }}
                     className="global-input"
@@ -251,8 +345,47 @@ function CreateWorkflow(props) {
       ) : (
         <ComponentLoadderComponent />
       )}
+      <ToasterMessageComponent
+        stateSnackbar={stateSnackbar}
+        setStateSnackbar={setStateSnackbar}
+        toasterMessage={toasterMessage}
+        toasterServerity={toasterServerity}
+        toasterErrorMessageType={toasterErrorMessageType}
+      />
     </div>
   );
 }
 
-export default CreateWorkflow;
+// export default CreateWorkflow;
+
+export function getWorkflowById(users, id) {
+  return users.find((user) => user.id === id) || null;
+}
+CreateWorkflow.propTypes = {
+  workflowDatas: PropTypes.array.isRequired,
+  workflowData: PropTypes.array.isRequired,
+  LoadAllUserGroup: PropTypes.func.isRequired,
+  CreateWorkflowCall: PropTypes.func.isRequired,
+  UpdateWorkflowCall: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  const id = ownProps.match.params.id;
+  const emptyObject = {};
+  const workflowData =
+    id && state.workflowState.length > 0
+      ? getWorkflowById(state.workflowState, id)
+      : emptyObject;
+  return {
+    workflowData,
+    workflowDatas: state.workflowState,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadAllUserGroup: worlflowAction.loadWorkflow,
+  CreateWorkflowCall: worlflowAction.createWorkflowData,
+  UpdateWorkflowCall: worlflowAction.updateWorkflowData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateWorkflow);

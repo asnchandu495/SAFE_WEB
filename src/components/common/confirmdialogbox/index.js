@@ -30,6 +30,7 @@ import * as QuestionaireAction from "../../../Redux/Action/questionaireAction";
 import * as QuestionAction from "../../../Redux/Action/questionAction";
 import * as AssignquestionaireAction from "../../../Redux/Action/assignquestionaireAction";
 import questionaireService from "../../../services/questionaireService";
+import * as WorkflowAction from "../../../Redux/Action/workflowAction";
 
 const styles = (theme) => ({
   root: {
@@ -555,6 +556,7 @@ const mapDispatchToProps = {
   DeleteMultiQuestionData: QuestionAction.DeleteMultichoiceQuestion,
   DeleteNumericQuestionData: QuestionAction.DeleteNumericQuestion,
   DeleteSinglechoiceQuestionData: QuestionAction.DeleteSinglechoiceQuestion,
+  DeleteWorkflow: WorkflowAction.deleteWorkflowData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomizedDialogs);
