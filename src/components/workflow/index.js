@@ -60,26 +60,26 @@ function Workflow(props) {
     setConfirmationModalActionType,
   ] = useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [workflowData, setWorkflowData] = useState([
-    {
-      id: "001",
-      name: "Workflow safe to suspected",
-      userGroup: { id: "001", name: "Sutherland Hyderabad" },
-      status: "Active",
-    },
-    {
-      id: "002",
-      name: "Workflow safe to confirmed",
-      userGroup: { id: "001", name: "Sutherland Hyderabad" },
-      status: "Inctive",
-    },
-    {
-      id: "001",
-      name: "Workflow suspected to confirmed",
-      userGroup: { id: "001", name: "Sutherland Chennai" },
-      status: "Active",
-    },
-  ]);
+  // const [workflowData, setWorkflowData] = useState([
+  // {
+  //   id: "001",
+  //   name: "Workflow safe to suspected",
+  //   userGroup: { id: "001", name: "Sutherland Hyderabad" },
+  //   status: "Active",
+  // },
+  // {
+  //   id: "002",
+  //   name: "Workflow safe to confirmed",
+  //   userGroup: { id: "001", name: "Sutherland Hyderabad" },
+  //   status: "Inctive",
+  // },
+  // {
+  //   id: "001",
+  //   name: "Workflow suspected to confirmed",
+  //   userGroup: { id: "001", name: "Sutherland Chennai" },
+  //   status: "Active",
+  // },
+  // ]);
   const userStatusData = [
     { id: true, name: "Active" },
     { id: false, name: "Inactive" },
@@ -104,24 +104,34 @@ function Workflow(props) {
     },
     {
       label: "User Group",
-      name: "userGroup",
+      name: "groupName",
       options: {
         filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          console.log(thisRowData);
           if (thisRowData) {
-            return <span>{thisRowData[2].name}</span>;
+            return <span>{thisRowData[2]}</span>;
           }
         },
       },
     },
     {
       label: "Status",
-      name: "status",
+      name: "isActive",
       options: {
         filter: false,
         sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          console.log(thisRowData);
+          if (thisRowData) {
+            return (
+              <span>{thisRowData[3] == false ? "Inactive" : "Active"}</span>
+            );
+          }
+        },
       },
     },
     {
@@ -150,7 +160,7 @@ function Workflow(props) {
                     color="default"
                     startIcon={<EditIcon />}
                     className={`edit-icon`}
-                    onClick={() => handleClickOpenConfirmationModal()}
+                    onClick={() => handleClickUpdateWorkflow(thisRowData)}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Delete">
@@ -159,7 +169,7 @@ function Workflow(props) {
                     color="default"
                     startIcon={<DeleteIcon />}
                     className={`delete-icon`}
-                    onClick="#"
+                    onClick={() => handleClickOpenConfirmationModal()}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Activities">
@@ -207,7 +217,7 @@ function Workflow(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no users  teams",
+        noMatch: "There are no worlflows",
       },
     },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
@@ -244,6 +254,11 @@ function Workflow(props) {
     props.history.push(`/workflow/${workflowId}/activities`);
   }
 
+  function handleClickUpdateWorkflow(value) {
+    var workflowId = value[0];
+    props.history.push("/workflow/create-workflow/" + workflowId);
+  }
+
   const handleClickOpenConfirmationModal = () => {
     // setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -252,9 +267,10 @@ function Workflow(props) {
     setConfirmationDialogContextText(`Are you sure you want to delete ?`);
   };
   useEffect(() => {
-    // Promise.all([props.LoadData(searchformData)]);
-    UserGroup.loadUserGroup()
-      .then((getUsergrouplist) => {
+    Promise.all([props.LoadData(), UserGroup.loadUserGroup()])
+
+      .then(([getAllWorkflows, getUsergrouplist]) => {
+        // setWorkflowData(getAllWorkflows);
         setuserGroupList(getUsergrouplist);
         setComponentLoadder(false);
       })
@@ -379,7 +395,13 @@ function Workflow(props) {
 
       <MUIDataTable
         title={""}
-        data={workflowData}
+        // data={workflowData}
+
+        data={
+          props.WorkflowData && props.WorkflowData.length > 0
+            ? props.WorkflowData
+            : []
+        }
         columns={columns}
         options={options}
         className="global-table"

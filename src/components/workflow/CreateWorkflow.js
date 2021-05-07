@@ -21,7 +21,8 @@ import UserGroupService from "../../services/userGroupService";
 import CovidStateApiServices from "../../services/masterDataService";
 import FormControl from "@material-ui/core/FormControl";
 
-import * as worlflowAction from "../../Redux/Action/workflowAction";
+import * as workflowAction from "../../Redux/Action/workflowAction";
+import workflowService from "../../services/workflowService";
 
 function CreateWorkflow(props) {
   const UserGroup = new UserGroupService();
@@ -42,16 +43,40 @@ function CreateWorkflow(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [covidStatelist, setcovidStatelist] = useState([]);
-  const workflowId = props.match.params.id;
+  const [selectedGroupName, setSelectedGroupName] = useState();
+  const [selectedFromCovidState, setSelectedFromCovidState] = useState();
+  const [selectedToCovidState, setSelectedToCovidState] = useState();
 
+  const workflowId = props.match.params.id;
+  const workflowApiCall = new workflowService();
   const [formData, SetformData] = useState({
-    id: "",
+    groupId: "",
     name: "",
-    description: "",
-    manager: {},
+    fromState: "",
+    toState: "",
   });
 
   useEffect(() => {
+    if (workflowId != 0) {
+      workflowApiCall
+        .GetWorkFlowById(workflowId)
+        .then((workflowData) => {
+          SetformData(workflowData);
+          console.log(workflowData);
+
+          setSelectedGroupName(workflowData);
+
+          setSelectedFromCovidState(workflowData);
+          setSelectedToCovidState(workflowData);
+
+          // setSelectedFromCovidState(filtereddata);
+
+          setComponentLoadder(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     Promise.all([UserGroup.loadUserGroup(), CovidStateApi.getCOVIDStates()])
       .then(([getUserList, getCovidStates]) => {
         setuserGroupList(getUserList);
@@ -63,6 +88,31 @@ function CreateWorkflow(props) {
       });
   }, []);
 
+  function handleChangeGroupName(event, value) {
+    setisAlertBoxOpened(true);
+    setSelectedGroupName(value);
+  }
+
+  function handleChangeFromCovidState(event, value) {
+    setisAlertBoxOpened(true);
+    setSelectedFromCovidState(value);
+  }
+
+  function handleChangeToCovidState(event, value) {
+    setisAlertBoxOpened(true);
+    setSelectedToCovidState(value);
+  }
+
+  function handleChange(e) {
+    setisAlertBoxOpened(true);
+    const { name, value } = e.target;
+
+    SetformData((formData) => ({
+      ...formData,
+      [name]: value,
+    }));
+  }
+
   function workflowCreation(e) {
     e.preventDefault();
     SelectUserGroupValidation();
@@ -73,11 +123,18 @@ function CreateWorkflow(props) {
     // }
   }
 
-  function SubmitUserForm() {
+  function SubmitUserForm(e) {
+    e.preventDefault();
     setshowLoadder(true);
+    console.log("covidstate");
+    console.log(selectedFromCovidState);
+
     var workflowData = formData;
+    console.log(workflowData);
     if (workflowId != 0) {
-      // workflowData.manager = selectedTeamManager;
+      workflowData.groupId = selectedGroupName.id;
+      workflowData.fromState = selectedFromCovidState.stateName;
+      workflowData.toState = selectedToCovidState.stateName;
       props
         .UpdateWorkflowCall(workflowData)
         .then((result) => {
@@ -100,7 +157,9 @@ function CreateWorkflow(props) {
           setshowLoadder(false);
         });
     } else {
-      // workflowData.manager = selectedTeamManager;
+      workflowData.groupId = selectedGroupName.id;
+      workflowData.fromState = selectedFromCovidState.stateName;
+      workflowData.toState = selectedToCovidState.stateName;
 
       props
         .CreateWorkflowCall(workflowData)
@@ -111,7 +170,7 @@ function CreateWorkflow(props) {
           setToasterMessage("Workflow  Created");
           settoasterServerity("success");
           setTimeout(() => {
-            props.history.push("");
+            props.history.push("/workflow/allWorkflow");
             setshowLoadder(false);
           }, 6000);
         })
@@ -152,27 +211,22 @@ function CreateWorkflow(props) {
         <LinkTo
           color="textPrimary"
           href="#"
-          to={`/teams/allteams`}
+          to={`/workflow/allWorkflow`}
           className="inactive"
         >
           Workflow
         </LinkTo>
-        <LinkTo
-          color="textPrimary"
-          href="#"
-          to={`/teams/allteams`}
-          className="inactive"
-        >
-          Create workflow
+        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+          {workflowId != 0 ? "Update Workflow " : "Create Workflow "}
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (
         <Paper className="main-paper">
-          <ValidatorForm className={`global-form`} onSubmit={workflowCreation}>
+          <ValidatorForm className={`global-form`} onSubmit={SubmitUserForm}>
             <Grid container spacing={3}>
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label className="input-label ">Work Flow Name</label>
+                  <label className="input-label required">WorkFlow Name</label>
                 </Grid>
                 <Grid item xs={5}>
                   <TextValidator
@@ -192,8 +246,8 @@ function CreateWorkflow(props) {
                     placeholder="Worlflow name"
                     name="name"
                     autoComplete="name"
-                    // onChange={handleChange}
-                    // value={formData.name}
+                    onChange={handleChange}
+                    value={formData.name}
                     autoFocus
                     InputLabelProps={{ shrink: false }}
                     className="global-input"
@@ -215,8 +269,8 @@ function CreateWorkflow(props) {
                           : []
                       }
                       getOptionLabel={(option) => option.groupName}
-                      defaultValue="#"
-                      //   onChange={selectedUser}
+                      onChange={handleChangeGroupName}
+                      defaultValue={selectedGroupName ? selectedGroupName : ""}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
                       renderInput={(params) => (
@@ -234,7 +288,7 @@ function CreateWorkflow(props) {
               <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label htmlFor="password" className="input-label ">
-                    From State
+                    FromState
                   </label>
                 </Grid>
                 <Grid item xs={5}>
@@ -247,12 +301,26 @@ function CreateWorkflow(props) {
                         : []
                     }
                     getOptionLabel={(option) => option.stateName}
-                    // onChange={(e, v) => handleChangeCovidState(e, v, i)}
-                    // defaultValue={
-                    //   tempsections.covidStates ? tempsections.covidStates : []
-                    // }
-                    name="covidState"
-                    // defaultValue={x.covidState}
+                    onChange={handleChangeFromCovidState}
+                    defaultValue={
+                      selectedFromCovidState
+                        ? selectedFromCovidState.fromState
+                        : ""
+                    }
+                    // defaultValue={covidStatelist.filter((group) => {
+                    //   return selectedFromCovidState == group.id;
+                    // })}
+
+                    // defaultValue={covidStatelist.find((group) => {
+                    //   // return selectedFromCovidState.find((selectedGroup) => {
+                    //   console.log("group.id");
+                    //   console.log(group.id);
+                    //   console.log(selectedFromCovidState.fromState);
+
+                    //   return selectedFromCovidState.fromState === group.id;
+                    //   // });
+                    // })}
+                    name="fromState"
                     filterSelectedOptions
                     className="global-input autocomplete-select"
                     renderInput={(params) => (
@@ -282,19 +350,17 @@ function CreateWorkflow(props) {
                 <Grid item xs={5}>
                   <Autocomplete
                     id="tags-outlined"
-                    // /options={teamManagers}
                     options={
                       covidStatelist && covidStatelist.length > 0
                         ? covidStatelist
                         : []
                     }
                     getOptionLabel={(option) => option.stateName}
-                    // onChange={(e, v) => handleChangeCovidState(e, v, i)}
-                    // defaultValue={
-                    //   tempsections.covidStates ? tempsections.covidStates : []
-                    // }
-                    name="covidState"
-                    // defaultValue={x.covidState}
+                    onChange={handleChangeToCovidState}
+                    defaultValue={
+                      selectedToCovidState ? selectedToCovidState.toState : ""
+                    }
+                    // name="toState"
                     filterSelectedOptions
                     className="global-input autocomplete-select"
                     renderInput={(params) => (
@@ -383,9 +449,9 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  LoadAllUserGroup: worlflowAction.loadWorkflow,
-  CreateWorkflowCall: worlflowAction.createWorkflowData,
-  UpdateWorkflowCall: worlflowAction.updateWorkflowData,
+  LoadAllUserGroup: workflowAction.loadWorkflow,
+  CreateWorkflowCall: workflowAction.createWorkflowData,
+  UpdateWorkflowCall: workflowAction.updateWorkflowData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateWorkflow);

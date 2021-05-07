@@ -20,7 +20,7 @@ export default function LoadWorkflowSuccess(state = intialState, action) {
     case DELETE_WORKFLOW_SUCCESS:
       return state.filter((user) => user.id !== action.workflow);
     case CREATE_WORKFLOW_SUCCESS:
-      return [{ ...action.workflow }, ...state];
+      return [{ ...action.createWorkflowData }, ...state];
 
     case UPDATE_WORKFLOW_SUCCESS:
       return state.map((workflow) =>

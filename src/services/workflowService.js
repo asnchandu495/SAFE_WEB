@@ -7,6 +7,47 @@ export default class WorkflowService {
     this.fetch = this.fetch.bind(this);
   }
 
+  ListAllWorkflow() {
+    return this.fetch(`${this.baseURL}/WorkFlow/GetAllWorkFlow`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  CreateWorkflow(data) {
+    var finalData = JSON.stringify(data);
+    return this.fetch(`${this.baseURL}/WorkFlow/AddWorkFlow`, {
+      method: "POST",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetWorkFlowById(id) {
+    return this.fetch(`${this.baseURL}/WorkFlow/GetWorkFlowById/${id}`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  updateWorkflow(data) {
+    var finalData = JSON.stringify(data);
+    return this.fetch(`${this.baseURL}/WorkFlow/UpdateWorkFlow`, {
+      method: "PUT",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  getToken() {
+    // Retrieves the user token from localStorage
+    return localStorage.getItem("id_token");
+  }
+
   fetch(url, options) {
     // performs api calls sending the required authentication headers
     const headers = {};

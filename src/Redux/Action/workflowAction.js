@@ -13,10 +13,10 @@ export function LoadWorkflowSuccess(loadWorkflow) {
   return { type: LIST_ALL_WORKFLOW, loadWorkflow };
 }
 
-export function CreateWorkflowSuccess(workflow) {
+export function CreateWorkflowSuccess(createworkflow) {
   return {
     type: CREATE_WORKFLOW_SUCCESS,
-    workflow,
+    createworkflow,
   };
 }
 export function updateWorkflowSuccess(workflow) {
@@ -35,7 +35,7 @@ export function deleteWorkflowSuccess(workflow) {
 
 export function loadWorkflow() {
   return function (dispatch) {
-    return WorkflowApi.loadUserGroup()
+    return WorkflowApi.ListAllWorkflow()
       .then((data) => {
         dispatch(LoadWorkflowSuccess(data));
       })
@@ -47,7 +47,7 @@ export function loadWorkflow() {
 
 export function createWorkflowData(data) {
   return function (dispatch) {
-    return WorkflowApi.createWorkflow(data)
+    return WorkflowApi.CreateWorkflow(data)
       .then((response) => {
         data.id = response.id;
         dispatch(CreateWorkflowSuccess(data));
