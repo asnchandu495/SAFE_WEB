@@ -66,7 +66,7 @@ function CreateWorkflow(props) {
         .GetWorkFlowById(workflowId)
         .then((workflowData) => {
           SetformData(workflowData);
-          console.log("workflows");
+
           console.log(workflowData);
           setSelectedGroupName(workflowData);
           setSelectedFromCovidState(workflowData);

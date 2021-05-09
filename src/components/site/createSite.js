@@ -154,7 +154,6 @@ function CreateSite(props) {
           }
 
           setCountryMasterData(getCountries);
-
           setSiteManger(getSiteManagers);
           setSecurityManger(getLocationManagers);
           setUserSelectedSecurityManager({
