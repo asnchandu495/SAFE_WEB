@@ -267,7 +267,7 @@ function Workflow(props) {
     setConfirmationModalActionType("DeleteWorflow");
     setConfirmationHeaderTittle("Delete Worflow");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value[1]} ?`
+      `Are you sure you want to delete ${value[0]} ?`
     );
   };
   useEffect(() => {
@@ -396,20 +396,23 @@ function Workflow(props) {
           List Work Flow
         </LinkTo>
       </Breadcrumbs>
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <MUIDataTable
+          title={""}
+          // data={workflowData}
 
-      <MUIDataTable
-        title={""}
-        // data={workflowData}
-
-        data={
-          props.WorkflowData && props.WorkflowData.length > 0
-            ? props.WorkflowData
-            : []
-        }
-        columns={columns}
-        options={options}
-        className="global-table"
-      />
+          data={
+            props.WorkflowData && props.WorkflowData.length > 0
+              ? props.WorkflowData
+              : []
+          }
+          columns={columns}
+          options={options}
+          className="global-table"
+        />
+      )}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
         ConfirmationHeaderTittle={ConfirmationHeaderTittle}
