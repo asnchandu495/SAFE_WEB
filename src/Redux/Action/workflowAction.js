@@ -72,8 +72,8 @@ export function updateWorkflowData(data) {
 
 export function deleteWorkflowData(data) {
   return function (dispatch) {
-    return WorkflowApi.deleteWorflow(data)
-      .then((data) => {
+    return WorkflowApi.deleteWorkflow(data)
+      .then((response) => {
         dispatch(deleteWorkflowSuccess(data));
       })
       .catch((error) => {

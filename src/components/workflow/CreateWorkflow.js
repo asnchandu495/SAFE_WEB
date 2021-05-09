@@ -29,9 +29,7 @@ function CreateWorkflow(props) {
   const CovidStateApi = new CovidStateApiServices();
   const [showLoadder, setshowLoadder] = useState(false);
   const [userGroupList, setuserGroupList] = useState();
-  const [formFieldValidation, setformFieldValidation] = useState({
-    manager: false,
-  });
+
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
@@ -46,6 +44,12 @@ function CreateWorkflow(props) {
   const [selectedGroupName, setSelectedGroupName] = useState();
   const [selectedFromCovidState, setSelectedFromCovidState] = useState();
   const [selectedToCovidState, setSelectedToCovidState] = useState();
+
+  const [formFieldValidation, setformFieldValidation] = useState({
+    group: false,
+    from: false,
+    to: false,
+  });
 
   const workflowId = props.match.params.id;
   const workflowApiCall = new workflowService();
@@ -62,15 +66,12 @@ function CreateWorkflow(props) {
         .GetWorkFlowById(workflowId)
         .then((workflowData) => {
           SetformData(workflowData);
+          console.log("workflows");
           console.log(workflowData);
-
           setSelectedGroupName(workflowData);
-
           setSelectedFromCovidState(workflowData);
           setSelectedToCovidState(workflowData);
-
           // setSelectedFromCovidState(filtereddata);
-
           setComponentLoadder(false);
         })
         .catch((error) => {
@@ -113,18 +114,69 @@ function CreateWorkflow(props) {
     }));
   }
 
-  function workflowCreation(e) {
-    e.preventDefault();
-    SelectUserGroupValidation();
-    // if (selectedTeamManager) {
-    //   SubmitUserForm();
-    // } else {
-    //   return false;
-    // }
+  function SelectUserGroupValidation() {
+    // console.log("selected");
+    // console.log(selectedGroupName);
+    if (selectedGroupName.id) {
+      // console.log("formda");
+      // console.log(selectedGroupName);
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["group"]: false,
+      }));
+    } else {
+      console.log("chekflase");
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["group"]: true,
+      }));
+    }
   }
 
-  function SubmitUserForm(e) {
-    e.preventDefault();
+  function SelectFromStateValidation() {
+    console.log(selectedFromCovidState);
+    if (selectedFromCovidState.stateName) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["from"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["from"]: true,
+      }));
+    }
+  }
+
+  function SelectToStateValidation() {
+    console.log(selectedToCovidState);
+    if (selectedToCovidState.selectedFromCovidState) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["to"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["to"]: true,
+      }));
+    }
+  }
+
+  function workflowCreation() {
+    // e.preventDefault();
+    SelectUserGroupValidation();
+    SelectFromStateValidation();
+    SelectToStateValidation();
+
+    if (selectedGroupName && selectedToCovidState && selectedFromCovidState) {
+      SubmitUserForm();
+    } else {
+      return false;
+    }
+  }
+
+  function SubmitUserForm() {
     setshowLoadder(true);
     console.log("covidstate");
     console.log(selectedFromCovidState);
@@ -183,19 +235,19 @@ function CreateWorkflow(props) {
     }
   }
 
-  function SelectUserGroupValidation() {
-    // if (selectedTeamManager) {
-    //   setformFieldValidation((ValidationForm) => ({
-    //     ...ValidationForm,
-    //     ["manager"]: false,
-    //   }));
-    // } else {
-    //   setformFieldValidation((ValidationForm) => ({
-    //     ...ValidationForm,
-    //     ["manager"]: true,
-    //   }));
-    // }
-  }
+  // function SelectUserGroupValidation() {
+  // if (selectedTeamManager) {
+  //   setformFieldValidation((ValidationForm) => ({
+  //     ...ValidationForm,
+  //     ["manager"]: false,
+  //   }));
+  // } else {
+  //   setformFieldValidation((ValidationForm) => ({
+  //     ...ValidationForm,
+  //     ["manager"]: true,
+  //   }));
+  // }
+  // }
   return (
     <div className="innerpage-container">
       <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
@@ -222,7 +274,7 @@ function CreateWorkflow(props) {
       </Breadcrumbs>
       {!componentLoadder ? (
         <Paper className="main-paper">
-          <ValidatorForm className={`global-form`} onSubmit={SubmitUserForm}>
+          <ValidatorForm className={`global-form`} onSubmit={workflowCreation}>
             <Grid container spacing={3}>
               <Grid item container xs={12}>
                 <Grid item xs={3}>
@@ -257,7 +309,7 @@ function CreateWorkflow(props) {
 
               <Grid item cs={12} container>
                 <Grid item xs={3}>
-                  <label className="">User Group </label>
+                  <label className="required">User Group </label>
                 </Grid>
                 <Grid item xs={5}>
                   <FormControl variant="outlined" fullWidth>
@@ -281,13 +333,20 @@ function CreateWorkflow(props) {
                         />
                       )}
                     />{" "}
+                    {formFieldValidation.group == false ? (
+                      <FormHelperText className="error-msg">
+                        Please select group name{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )}
                   </FormControl>
                 </Grid>
               </Grid>
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label htmlFor="password" className="input-label ">
+                  <label htmlFor="password" className="input-label  required">
                     FromState
                   </label>
                 </Grid>
@@ -302,10 +361,11 @@ function CreateWorkflow(props) {
                     }
                     getOptionLabel={(option) => option.stateName}
                     onChange={handleChangeFromCovidState}
+                    name="fromState"
                     defaultValue={
                       selectedFromCovidState
                         ? selectedFromCovidState.fromState
-                        : ""
+                        : []
                     }
                     // defaultValue={covidStatelist.filter((group) => {
                     //   return selectedFromCovidState == group.id;
@@ -331,9 +391,9 @@ function CreateWorkflow(props) {
                       />
                     )}
                   />
-                  {formFieldValidation.manager ? (
+                  {formFieldValidation.from == false ? (
                     <FormHelperText className="error-msg">
-                      Please select from state{" "}
+                      Please select Fromstate{" "}
                     </FormHelperText>
                   ) : (
                     ""
@@ -343,7 +403,7 @@ function CreateWorkflow(props) {
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label htmlFor="password" className="input-label ">
+                  <label htmlFor="password" className="input-label required ">
                     To State
                   </label>
                 </Grid>
@@ -371,9 +431,9 @@ function CreateWorkflow(props) {
                       />
                     )}
                   />
-                  {formFieldValidation.manager ? (
+                  {formFieldValidation.to != true ? (
                     <FormHelperText className="error-msg">
-                      Please select To state{" "}
+                      Please select Tostate{" "}
                     </FormHelperText>
                   ) : (
                     ""

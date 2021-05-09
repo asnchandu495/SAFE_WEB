@@ -169,7 +169,9 @@ function Workflow(props) {
                     color="default"
                     startIcon={<DeleteIcon />}
                     className={`delete-icon`}
-                    onClick={() => handleClickOpenConfirmationModal()}
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Activities">
@@ -259,12 +261,14 @@ function Workflow(props) {
     props.history.push("/workflow/create-workflow/" + workflowId);
   }
 
-  const handleClickOpenConfirmationModal = () => {
-    // setSelectedRowDetails(value);
+  const handleClickOpenConfirmationModal = (value) => {
+    setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
-    setConfirmationModalActionType("Delete Worflow");
+    setConfirmationModalActionType("DeleteWorflow");
     setConfirmationHeaderTittle("Delete Worflow");
-    setConfirmationDialogContextText(`Are you sure you want to delete ?`);
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${value[1]} ?`
+    );
   };
   useEffect(() => {
     Promise.all([props.LoadData(), UserGroup.loadUserGroup()])

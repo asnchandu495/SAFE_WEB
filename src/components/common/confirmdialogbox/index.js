@@ -128,6 +128,21 @@ function CustomizedDialogs(props) {
         .catch((error) => {
           toasterErrorMessage(error);
         });
+    } else if (props.ConfirmationModalActionType == "DeleteWorflow") {
+      var thisId = props.SelectedRowDetails[0];
+
+      props
+        .DeleteWorkflow(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          // props.setStateSnackbar(true);
+          props.setToasterMessage("Workflow is deleted");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          toasterErrorMessage(error);
+        });
     } else if (props.ConfirmationModalActionType == "DeleteQuestionaire") {
       var thisId = props.SelectedRowDetails[0];
       props
@@ -524,6 +539,7 @@ CustomizedDialogs.propTypes = {
   DeleteQuestion: PropTypes.func.isRequired,
   DeleteSelectedQuestion: PropTypes.func.isRequired,
   DeleteDateQuestionData: PropTypes.func.isRequired,
+  // DeleteWorkflow: PropTypes.func.isRequired,
 };
 function mapStateToProps(state, ownProps) {}
 

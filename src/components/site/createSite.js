@@ -152,7 +152,9 @@ function CreateSite(props) {
           if (siteId && props.userSiteData) {
             SetformData(props.userSiteData);
           }
+
           setCountryMasterData(getCountries);
+
           setSiteManger(getSiteManagers);
           setSecurityManger(getLocationManagers);
           setUserSelectedSecurityManager({

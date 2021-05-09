@@ -43,6 +43,14 @@ export default class WorkflowService {
     });
   }
 
+  deleteWorkflow(data) {
+    return this.fetch(`${this.baseURL}/WorkFlow/DeleteWorkFlow/${data}`, {
+      method: "DELETE",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

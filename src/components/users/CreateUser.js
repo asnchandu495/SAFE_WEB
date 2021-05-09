@@ -204,6 +204,7 @@ function CreateUser(props) {
       usersApiCall.GetApplicationUsersById(userId).then((userData) => {
         SetformData(userData);
         setUserSelectedTeamValue(userData.applicationUserToTeamMapping);
+
         setUserSelectedDesignationValue(userData.designation);
         setUserSelectedRoleValue(userData.applicationUserToRole);
         setUserSelectSiteValue(userData.applicationUserToSite);
