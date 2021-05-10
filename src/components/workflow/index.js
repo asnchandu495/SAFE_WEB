@@ -91,7 +91,6 @@ function Workflow(props) {
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
-          console.log(thisRowData);
           if (thisRowData) {
             return <span>{thisRowData[2]}</span>;
           }
@@ -107,7 +106,6 @@ function Workflow(props) {
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
-          console.log(thisRowData);
           if (thisRowData) {
             return (
               <span>{thisRowData[3] == false ? "Inactive" : "Active"}</span>
@@ -125,7 +123,6 @@ function Workflow(props) {
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
-          console.log(thisRowData);
           if (thisRowData) {
             return (
               <span>{thisRowData[4] == false ? "Inactive" : "Active"}</span>
