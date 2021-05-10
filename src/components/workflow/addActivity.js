@@ -25,41 +25,47 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import workflowService from "../../services/workflowService";
 
 function AddActivity(props) {
   const UserGroup = new UserGroupService();
+  const workflowApiCall = new workflowService();
   const workflowId = props.match.params.wid;
   const [userGroupList, setuserGroupList] = useState();
-  const [componentLoadder, setComponentLoadder] = useState(true);
   const [Modalopen, setModalOpen] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
-  const userStatusData = [
-    { id: true, name: "Active" },
-    { id: false, name: "Inactive" },
-  ];
-  const [answersToSelect, setAnswersToSelect] = useState([
-    { id: "001", name: "Send  Email" },
-    { id: "002", name: "Send in-app notification" },
-    { id: "003", name: "Send push notification" },
-    { id: "004", name: "Contact Tracing-RLAP" },
-    { id: "005", name: "Contact Tracing-BLE" },
-  ]);
-  const [selectedActivities, setSelectedActivities] = useState([
-    { id: "001", name: "Send  Email" },
-    { id: "002", name: "Send in-app notification" },
-    { id: "003", name: "Send push notification" },
-  ]);
+  const [allActivities, setAllActivities] = useState([]);
+  const [selectedActivities, setSelectedActivities] = useState([]);
+  const [componentLoadder, setComponentLoadder] = useState(true);
+  const [userSelectedActivities, setUserSelectedActivities] = useState([]);
+  const [formData, setFormData] = useState({
+    aimWorkflowId: props.match.params.wid,
+    selectedWorkflowActivities: [],
+  });
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
+  const [reloadPage, setReloadPage] = useState("NO");
 
   useEffect(() => {
-    UserGroup.loadUserGroup()
-      .then((getUsergrouplist) => {
-        setuserGroupList(getUsergrouplist);
+    setComponentLoadder(true);
+    Promise.all([
+      workflowApiCall.getWorkflowDetails(workflowId),
+      workflowApiCall.getMasterActivities(),
+    ])
+      .then(([workflowDetails, getAllActivities]) => {
+        setSelectedActivities(workflowDetails.selectedWorkflowActivities);
+        setUserSelectedActivities(workflowDetails.selectedWorkflowActivities);
+        setAllActivities(getAllActivities);
         setComponentLoadder(false);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
-  }, []);
+  }, [reloadPage]);
 
   const styles = (theme) => ({
     root: {
@@ -98,6 +104,7 @@ function AddActivity(props) {
       padding: theme.spacing(1),
     },
   }))(MuiDialogActions);
+
   const columns = [
     {
       name: "id",
@@ -178,8 +185,6 @@ function AddActivity(props) {
     },
   };
 
-  let data = [["Send Email"], ["Contact Tracing-Pin Micro"]];
-
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
@@ -197,6 +202,52 @@ function AddActivity(props) {
     props.history.push(`/workflow/${workflowId}/${activityId}/actions`);
   }
 
+  function userSelectActivity(event, value) {
+    setUserSelectedActivities(value);
+  }
+
+  function submitActivityForm(e) {
+    e.preventDefault();
+    // if (userSelectedActivities.length > 0) {
+    let selectedWorkflowActivities = allActivities.map((act) => ({
+      id: act.id ? act.id : "",
+      uniqueActivityId: act.uniqueActivityId,
+      name: act.name,
+    }));
+
+    selectedWorkflowActivities.map((fAct) => {
+      selectedActivities.find((act) => {
+        if (act.uniqueActivityId == fAct.uniqueActivityId) {
+          fAct.isDelete = false;
+        } else {
+          fAct.isDelete = true;
+        }
+      });
+    });
+
+    formData.selectedWorkflowActivities = selectedWorkflowActivities;
+    setshowLoadder(true);
+    workflowApiCall
+      .UpdateActivities(formData)
+      .then((result) => {
+        setStateSnackbar(true);
+        setToasterMessage("Updated workflow activities.");
+        settoasterServerity("success");
+        setTimeout(() => {
+          setshowLoadder(false);
+          setReloadPage("YES");
+          setModalOpen(false);
+        }, 6000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
+    // }
+  }
+
   return (
     <div className="innerpage-container">
       <Dialog
@@ -208,37 +259,39 @@ function AddActivity(props) {
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Add Activity
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit="#">
+        <ValidatorForm className={`global-form`} onSubmit={submitActivityForm}>
           <DialogContent dividers>
-            {!componentLoadder ? (
-              <Grid container spacing={3}>
-                <Grid item sm={12} container>
-                  <Autocomplete
-                    fullWidth
-                    multiple
-                    id="tags-outlined"
-                    options={
-                      answersToSelect && answersToSelect.length > 0
-                        ? answersToSelect
-                        : []
-                    }
-                    getOptionLabel={(option) => option.name}
-                    // defaultValue={SiteMasterData}
-                    // onChange={userSelectSite}
-                    filterSelectedOptions
-                    className="global-input autocomplete-select"
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        variant="outlined"
-                        placeholder="Select activities"
-                      />
-                    )}
-                  />
-                  {""}
-                </Grid>
+            <Grid container spacing={3}>
+              <Grid item sm={12} container>
+                <Autocomplete
+                  fullWidth
+                  multiple
+                  id="tags-outlined"
+                  options={
+                    allActivities && allActivities.length > 0
+                      ? allActivities
+                      : []
+                  }
+                  getOptionLabel={(option) => option.friendlyName}
+                  defaultValue={allActivities.filter((act) => {
+                    return userSelectedActivities.find((sact) => {
+                      return sact.uniqueActivityId == act.uniqueActivityId;
+                    });
+                  })}
+                  onChange={userSelectActivity}
+                  filterSelectedOptions
+                  className="global-input autocomplete-select"
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      placeholder="Select activities"
+                    />
+                  )}
+                />
+                {""}
               </Grid>
-            ) : null}
+            </Grid>
           </DialogContent>
           <DialogActions>
             <Button
@@ -274,27 +327,48 @@ function AddActivity(props) {
           Activities
         </LinkTo>
       </Breadcrumbs>
-      <Grid container spacing={3} className="add-activity-section global-form">
-        <Grid item xs={2}>
-          <div className={`form-buttons-container`}>
-            <Button
-              variant="contained"
-              type="button"
-              className="global-submit-btn global-filter-btn"
-              onClick={handleClickOpenModal}
-            >
-              ADD ACTIVITY
-            </Button>
-          </div>
-        </Grid>
-      </Grid>
-      <MUIDataTable
-        title={""}
-        data={selectedActivities}
-        columns={columns}
-        options={options}
-        className="global-table"
-      />
+      {!componentLoadder ? (
+        <>
+          <Grid
+            container
+            spacing={3}
+            className="add-activity-section global-form"
+          >
+            <Grid item xs={2}>
+              <div className={`form-buttons-container`}>
+                <Button
+                  variant="contained"
+                  type="button"
+                  className="global-submit-btn global-filter-btn"
+                  onClick={handleClickOpenModal}
+                >
+                  ADD ACTIVITY
+                </Button>
+              </div>
+            </Grid>
+          </Grid>
+          <MUIDataTable
+            title={""}
+            data={
+              selectedActivities && selectedActivities.length > 0
+                ? selectedActivities
+                : []
+            }
+            columns={columns}
+            options={options}
+            className="global-table"
+          />
+          <ToasterMessageComponent
+            stateSnackbar={stateSnackbar}
+            setStateSnackbar={setStateSnackbar}
+            toasterMessage={toasterMessage}
+            toasterServerity={toasterServerity}
+            toasterErrorMessageType={toasterErrorMessageType}
+          />
+        </>
+      ) : (
+        <ComponentLoadderComponent></ComponentLoadderComponent>
+      )}
     </div>
   );
 }

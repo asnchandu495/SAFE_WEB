@@ -51,6 +51,35 @@ export default class WorkflowService {
     });
   }
 
+  getWorkflowDetails(id) {
+    return this.fetch(
+      `${this.baseURL}/WorkFlow/GetActivitiesByWorkFlow?AIMWorkflowId=${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  getMasterActivities() {
+    return this.fetch(`${this.baseURL}/WorkFlow/GetMasterActivities`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  UpdateActivities(data) {
+    var finalData = JSON.stringify(data);
+    return this.fetch(`${this.baseURL}/WorkFlow/UpdateActivities`, {
+      method: "PUT",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");
