@@ -38,6 +38,9 @@ function AddActivity(props) {
   const [selectedActivities, setSelectedActivities] = useState([]);
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [userSelectedActivities, setUserSelectedActivities] = useState([]);
+  const [oldUserSelectedActivities, setOldUserSelectedActivities] = useState(
+    []
+  );
   const [formData, setFormData] = useState({
     aimWorkflowId: props.match.params.wid,
     selectedWorkflowActivities: [],
@@ -59,6 +62,9 @@ function AddActivity(props) {
       .then(([workflowDetails, getAllActivities]) => {
         setSelectedActivities(workflowDetails.selectedWorkflowActivities);
         setUserSelectedActivities(workflowDetails.selectedWorkflowActivities);
+        setOldUserSelectedActivities(
+          workflowDetails.selectedWorkflowActivities
+        );
         setAllActivities(getAllActivities);
         setComponentLoadder(false);
       })
@@ -209,23 +215,37 @@ function AddActivity(props) {
   function submitActivityForm(e) {
     e.preventDefault();
     // if (userSelectedActivities.length > 0) {
-    let selectedWorkflowActivities = allActivities.map((act) => ({
+    let selectedWorkflowActivities = userSelectedActivities.map((act) => ({
       id: act.id ? act.id : "",
       uniqueActivityId: act.uniqueActivityId,
       name: act.name,
+      isDelete: false,
     }));
 
-    selectedWorkflowActivities.map((fAct) => {
-      selectedActivities.find((act) => {
-        if (act.uniqueActivityId == fAct.uniqueActivityId) {
-          fAct.isDelete = false;
-        } else {
-          fAct.isDelete = true;
-        }
-      });
+    let newActivities = [];
+
+    oldUserSelectedActivities.map((act) => {
+      let obj = selectedWorkflowActivities.find(
+        (o) => o.uniqueActivityId == act.uniqueActivityId
+      );
+      if (obj) {
+        newActivities.push({
+          id: act.id ? act.id : "",
+          uniqueActivityId: act.uniqueActivityId,
+          name: act.name,
+          isDelete: false,
+        });
+      } else {
+        newActivities.push({
+          id: act.id ? act.id : "",
+          uniqueActivityId: act.uniqueActivityId,
+          name: act.name,
+          isDelete: true,
+        });
+      }
     });
 
-    formData.selectedWorkflowActivities = selectedWorkflowActivities;
+    formData.selectedWorkflowActivities = newActivities;
     setshowLoadder(true);
     workflowApiCall
       .UpdateActivities(formData)
