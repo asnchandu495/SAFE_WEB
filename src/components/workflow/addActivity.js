@@ -25,6 +25,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import ConfirmationDialog from "../common/confirmdialogbox";
 import workflowService from "../../services/workflowService";
 
 function AddActivity(props) {
@@ -45,6 +46,17 @@ function AddActivity(props) {
     aimWorkflowId: props.match.params.wid,
     selectedWorkflowActivities: [],
   });
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [
+    ConfirmationDialogContextText,
+    setConfirmationDialogContextText,
+  ] = useState("");
+  const [
+    ConfirmationModalActionType,
+    setConfirmationModalActionType,
+  ] = useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
@@ -156,7 +168,9 @@ function AddActivity(props) {
                     color="default"
                     startIcon={<DeleteIcon />}
                     className={`delete-icon`}
-                    onClick="#"
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
                   ></Button>
                 </Tooltip>
               </div>
@@ -211,6 +225,16 @@ function AddActivity(props) {
   function userSelectActivity(event, value) {
     setUserSelectedActivities(value);
   }
+
+  const handleClickOpenConfirmationModal = (value) => {
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteActivity");
+    setConfirmationHeaderTittle("Delete Activity");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${value[1]} ?`
+    );
+  };
 
   function submitActivityForm(e) {
     e.preventDefault();
@@ -377,6 +401,17 @@ function AddActivity(props) {
             columns={columns}
             options={options}
             className="global-table"
+          />
+          <ConfirmationDialog
+            openConfirmationModal={openConfirmationModal}
+            ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+            ConfirmationDialogContextText={ConfirmationDialogContextText}
+            setOpenConfirmationModal={setOpenConfirmationModal}
+            setStateSnackbar={setStateSnackbar}
+            setToasterMessage={setToasterMessage}
+            settoasterServerity={settoasterServerity}
+            ConfirmationModalActionType={ConfirmationModalActionType}
+            SelectedRowDetails={SelectedRowDetails}
           />
           <ToasterMessageComponent
             stateSnackbar={stateSnackbar}
