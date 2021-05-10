@@ -252,6 +252,30 @@ function CustomizedDialogs(props) {
         .catch((error) => {
           toasterErrorMessage(error);
         });
+    } else if (props.ConfirmationModalActionType == "PublishWorkflow") {
+      let thisId = props.SelectedRowDetails[0];
+
+      let data = {
+        id: props.SelectedRowDetails[0],
+        isSaveAsDraft: props.SelectedRowDetails[4],
+      };
+      if (data.isSaveAsDraft == true) {
+        data.isSaveAsDraft = false;
+      } else {
+        data.isSaveAsDraft = true;
+      }
+
+      props
+        .PublishWorkflow(data)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Published");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+        })
+        .catch((error) => {
+          toasterErrorMessage(error);
+        });
     } else if (props.ConfirmationModalActionType == "DeactiveDesignation") {
       var thisId = props.SelectedRowDetails[0];
       props
@@ -573,6 +597,7 @@ const mapDispatchToProps = {
   DeleteNumericQuestionData: QuestionAction.DeleteNumericQuestion,
   DeleteSinglechoiceQuestionData: QuestionAction.DeleteSinglechoiceQuestion,
   DeleteWorkflow: WorkflowAction.deleteWorkflowData,
+  PublishWorkflow: WorkflowAction.PublishWorkflow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomizedDialogs);

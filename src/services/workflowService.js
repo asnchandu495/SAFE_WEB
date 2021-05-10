@@ -51,6 +51,16 @@ export default class WorkflowService {
     });
   }
 
+  PublishWorkflow(data) {
+    var finalData = JSON.stringify(data);
+    return this.fetch(`${this.baseURL}/WorkFlow/PublishWorkFlow`, {
+      method: "PUT",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

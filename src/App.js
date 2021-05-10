@@ -74,6 +74,7 @@ import Workflow from "./components/workflow";
 import CreateWorkflow from "./components/workflow/CreateWorkflow";
 import AddActivity from "./components/workflow/addActivity";
 import AddActions from "./components/workflow/addActions";
+import ViewWorkflow from "./components/workflow/ViewWorkflow";
 
 function App(props) {
   const AuthContainer = () => {
@@ -292,6 +293,10 @@ function App(props) {
         <Route
           path="/workflow/create-workflow/:id"
           component={CreateWorkflow}
+        ></Route>
+        <Route
+          path="/workflow/view-workflow/:id"
+          component={ViewWorkflow}
         ></Route>
         <Route path="/workflow/:wid/activities" component={AddActivity}></Route>
         <Route
@@ -515,6 +520,10 @@ function App(props) {
         <Route path="/workflow/allWorkflow" component={AdminContainer}></Route>
         <Route
           path="/workflow/create-workflow/:id"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          path="/workflow/view-workflow/:id"
           component={AdminContainer}
         ></Route>
         <Route
