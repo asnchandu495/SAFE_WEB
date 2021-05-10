@@ -90,6 +90,14 @@ export default class WorkflowService {
     });
   }
 
+  DeleteActivity(data) {
+    return this.fetch(`${this.baseURL}/WorkFlow/DeleteActivity/${data}`, {
+      method: "DELETE",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

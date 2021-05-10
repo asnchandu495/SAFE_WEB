@@ -77,8 +77,16 @@ function AddActivity(props) {
         setOldUserSelectedActivities(
           workflowDetails.selectedWorkflowActivities
         );
-        setAllActivities(getAllActivities);
+        let newActivities = getAllActivities.filter(
+          (elem) =>
+            !workflowDetails.selectedWorkflowActivities.find(
+              ({ uniqueActivityId }) =>
+                elem.uniqueActivityId == uniqueActivityId
+            ) && elem
+        );
+        setAllActivities(newActivities);
         setComponentLoadder(false);
+        setReloadPage("NO");
       })
       .catch((error) => {
         console.log(error);
@@ -238,58 +246,35 @@ function AddActivity(props) {
 
   function submitActivityForm(e) {
     e.preventDefault();
-    // if (userSelectedActivities.length > 0) {
-    let selectedWorkflowActivities = userSelectedActivities.map((act) => ({
-      id: act.id ? act.id : "",
-      uniqueActivityId: act.uniqueActivityId,
-      name: act.name,
-      isDelete: false,
-    }));
+    if (userSelectedActivities.length > 0) {
+      let selectedWorkflowActivities = userSelectedActivities.map((act) => ({
+        id: act.id ? act.id : "",
+        uniqueActivityId: act.uniqueActivityId,
+        name: act.name,
+        isDelete: false,
+      }));
 
-    let newActivities = [];
-
-    oldUserSelectedActivities.map((act) => {
-      let obj = selectedWorkflowActivities.find(
-        (o) => o.uniqueActivityId == act.uniqueActivityId
-      );
-      if (obj) {
-        newActivities.push({
-          id: act.id ? act.id : "",
-          uniqueActivityId: act.uniqueActivityId,
-          name: act.name,
-          isDelete: false,
-        });
-      } else {
-        newActivities.push({
-          id: act.id ? act.id : "",
-          uniqueActivityId: act.uniqueActivityId,
-          name: act.name,
-          isDelete: true,
-        });
-      }
-    });
-
-    formData.selectedWorkflowActivities = newActivities;
-    setshowLoadder(true);
-    workflowApiCall
-      .UpdateActivities(formData)
-      .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("Updated workflow activities.");
-        settoasterServerity("success");
-        setTimeout(() => {
+      formData.selectedWorkflowActivities = selectedWorkflowActivities;
+      setshowLoadder(true);
+      workflowApiCall
+        .UpdateActivities(formData)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Updated workflow activities.");
+          settoasterServerity("success");
+          setTimeout(() => {
+            setshowLoadder(false);
+            setReloadPage("YES");
+            setModalOpen(false);
+          }, 6000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
           setshowLoadder(false);
-          setReloadPage("YES");
-          setModalOpen(false);
-        }, 6000);
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
-      });
-    // }
+        });
+    }
   }
 
   return (
@@ -412,6 +397,7 @@ function AddActivity(props) {
             settoasterServerity={settoasterServerity}
             ConfirmationModalActionType={ConfirmationModalActionType}
             SelectedRowDetails={SelectedRowDetails}
+            setReloadPage={setReloadPage}
           />
           <ToasterMessageComponent
             stateSnackbar={stateSnackbar}

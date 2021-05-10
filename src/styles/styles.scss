@@ -525,7 +525,7 @@ label.required {
     background: var(--primary-26235d) 0% 0% no-repeat padding-box;
     border-radius: 20px;
     opacity: 1;
-    color: #fff;
+    color: #fff !important;
     padding: 4px 8px;
     font-size: 12px;
     &:hover {

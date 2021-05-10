@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -22,15 +22,15 @@ import * as AddLocationAction from "../../../Redux/Action/addLocationAction";
 import * as AddFloorAction from "../../../Redux/Action/addFloorAction";
 import PropTypes from "prop-types";
 import FaqService from "../../../services/faqService";
-
 import teamService from "../../../services/teamService";
-
 import * as TeamAction from "../../../Redux/Action/teamAction";
 import * as QuestionaireAction from "../../../Redux/Action/questionaireAction";
 import * as QuestionAction from "../../../Redux/Action/questionAction";
 import * as AssignquestionaireAction from "../../../Redux/Action/assignquestionaireAction";
 import questionaireService from "../../../services/questionaireService";
 import * as WorkflowAction from "../../../Redux/Action/workflowAction";
+import workflowService from "../../../services/workflowService";
+import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 
 const styles = (theme) => ({
   root: {
@@ -80,6 +80,8 @@ function CustomizedDialogs(props) {
   const faqApiCall = new FaqService();
   const teamApiCall = new teamService();
   const questionaireApiCall = new questionaireService();
+  const workflowApiCall = new workflowService();
+  const [showLoadder, setshowLoadder] = useState(false);
 
   const handleClickYes = () => {
     if (props.ConfirmationModalActionType == "RemoveProfilePhoto") {
@@ -130,12 +132,10 @@ function CustomizedDialogs(props) {
         });
     } else if (props.ConfirmationModalActionType == "DeleteWorflow") {
       var thisId = props.SelectedRowDetails[0];
-
       props
         .DeleteWorkflow(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          // props.setStateSnackbar(true);
           props.setToasterMessage("Workflow is deleted");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
@@ -511,6 +511,25 @@ function CustomizedDialogs(props) {
         .catch((error) => {
           toasterErrorMessage(error);
         });
+    } else if (props.ConfirmationModalActionType == "DeleteActivity") {
+      setshowLoadder(true);
+      var thisId = props.SelectedRowDetails[0];
+      workflowApiCall
+        .DeleteActivity(thisId)
+        .then((result) => {
+          setTimeout(() => {
+            setshowLoadder(false);
+            props.setStateSnackbar(false);
+            props.setToasterMessage("Activity is deleted");
+            props.settoasterServerity("success");
+            props.setOpenConfirmationModal(false);
+            props.setReloadPage("YES");
+          }, 6000);
+        })
+        .catch((error) => {
+          setshowLoadder(false);
+          toasterErrorMessage(error);
+        });
     }
   };
 
@@ -530,7 +549,7 @@ function CustomizedDialogs(props) {
         onClose={handleClickNo}
         aria-labelledby="customized-dialog-title"
         open={props.openConfirmationModal}
-        className="global-dialog confirmation-dialog"
+        className="global-dialog confirmation-dialog global-form"
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClickNo}>
           {props.ConfirmationHeaderTittle}
@@ -544,8 +563,12 @@ function CustomizedDialogs(props) {
           <Button onClick={handleClickNo} className="no-button">
             No
           </Button>
-          <Button onClick={handleClickYes} className="yes-button">
-            Yes
+          <Button
+            onClick={handleClickYes}
+            className="yes-button"
+            disabled={showLoadder}
+          >
+            {showLoadder ? <ButtonLoadderComponent /> : "Yes"}
           </Button>
         </DialogActions>
       </Dialog>
