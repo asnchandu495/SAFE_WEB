@@ -3,6 +3,7 @@ import {
   CREATE_WORKFLOW_SUCCESS,
   UPDATE_WORKFLOW_SUCCESS,
   DELETE_WORKFLOW_SUCCESS,
+  PUBLISH_WORKFLOW_SUCCESS,
 } from "../utilits";
 
 import WorkflowService from "../../services/workflowService";
@@ -13,10 +14,10 @@ export function LoadWorkflowSuccess(loadWorkflow) {
   return { type: LIST_ALL_WORKFLOW, loadWorkflow };
 }
 
-export function CreateWorkflowSuccess(createworkflow) {
+export function CreateWorkflowSuccess(workflow) {
   return {
     type: CREATE_WORKFLOW_SUCCESS,
-    createworkflow,
+    workflow,
   };
 }
 export function updateWorkflowSuccess(workflow) {
@@ -31,6 +32,10 @@ export function deleteWorkflowSuccess(workflow) {
     type: DELETE_WORKFLOW_SUCCESS,
     workflow,
   };
+}
+
+export function PublishWorkFlowSuccess(workflow) {
+  return { type: PUBLISH_WORKFLOW_SUCCESS, workflow };
 }
 
 export function loadWorkflow() {
@@ -61,7 +66,7 @@ export function createWorkflowData(data) {
 export function updateWorkflowData(data) {
   return function (dispatch) {
     return WorkflowApi.updateWorkflow(data)
-      .then((data) => {
+      .then((response) => {
         dispatch(updateWorkflowSuccess(data));
       })
       .catch((error) => {
@@ -75,6 +80,18 @@ export function deleteWorkflowData(data) {
     return WorkflowApi.deleteWorkflow(data)
       .then((response) => {
         dispatch(deleteWorkflowSuccess(data));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+}
+
+export function PublishWorkflow(data) {
+  return function (dispatch) {
+    return WorkflowApi.PublishWorkflow(data)
+      .then((response) => {
+        dispatch(PublishWorkFlowSuccess(data));
       })
       .catch((error) => {
         throw error;

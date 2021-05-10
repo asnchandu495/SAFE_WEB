@@ -60,26 +60,7 @@ function Workflow(props) {
     setConfirmationModalActionType,
   ] = useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  // const [workflowData, setWorkflowData] = useState([
-  // {
-  //   id: "001",
-  //   name: "Workflow safe to suspected",
-  //   userGroup: { id: "001", name: "Sutherland Hyderabad" },
-  //   status: "Active",
-  // },
-  // {
-  //   id: "002",
-  //   name: "Workflow safe to confirmed",
-  //   userGroup: { id: "001", name: "Sutherland Hyderabad" },
-  //   status: "Inctive",
-  // },
-  // {
-  //   id: "001",
-  //   name: "Workflow suspected to confirmed",
-  //   userGroup: { id: "001", name: "Sutherland Chennai" },
-  //   status: "Active",
-  // },
-  // ]);
+
   const userStatusData = [
     { id: true, name: "Active" },
     { id: false, name: "Inactive" },
@@ -95,7 +76,7 @@ function Workflow(props) {
       },
     },
     {
-      label: "Work Flow Name ",
+      label: "Workflow Name ",
       name: "name",
       options: {
         filter: false,
@@ -118,9 +99,10 @@ function Workflow(props) {
       },
     },
     {
-      label: "Status",
+      label: "isActive",
       name: "isActive",
       options: {
+        display: "excluded",
         filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
@@ -129,6 +111,24 @@ function Workflow(props) {
           if (thisRowData) {
             return (
               <span>{thisRowData[3] == false ? "Inactive" : "Active"}</span>
+            );
+          }
+        },
+      },
+    },
+
+    {
+      label: "Status",
+      name: "isSaveAsDraft",
+      options: {
+        filter: false,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          console.log(thisRowData);
+          if (thisRowData) {
+            return (
+              <span>{thisRowData[4] == false ? "Inactive" : "Active"}</span>
             );
           }
         },
@@ -151,7 +151,7 @@ function Workflow(props) {
                     color="default"
                     startIcon={<VisibilityIcon />}
                     className={`view-icon`}
-                    onClick="#"
+                    onClick={() => handleClickViewWorkflow(thisRowData)}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Edit">
@@ -189,7 +189,7 @@ function Workflow(props) {
                     color="default"
                     startIcon={<BackupIcon />}
                     className={`edit-icon`}
-                    onClick="#"
+                    onClick={() => handlePublishModal(thisRowData)}
                   ></Button>
                 </Tooltip>
               </div>
@@ -260,6 +260,9 @@ function Workflow(props) {
     var workflowId = value[0];
     props.history.push("/workflow/create-workflow/" + workflowId);
   }
+  function handleClickViewWorkflow(value) {
+    props.history.push("/workflow/view-workflow/" + value);
+  }
 
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
@@ -267,7 +270,17 @@ function Workflow(props) {
     setConfirmationModalActionType("DeleteWorflow");
     setConfirmationHeaderTittle("Delete Worflow");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value[0]} ?`
+      `Are you sure you want to delete ${value[1]} ?`
+    );
+  };
+
+  const handlePublishModal = (value) => {
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("PublishWorkflow");
+    setConfirmationHeaderTittle("Publish Worflow");
+    setConfirmationDialogContextText(
+      `Are you sure you want to publish ${value[1]} ?`
     );
   };
   useEffect(() => {
@@ -390,10 +403,10 @@ function Workflow(props) {
           Home
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Work Flow
+          Workflow
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          List Work Flow
+          List Workflow
         </LinkTo>
       </Breadcrumbs>
       {componentLoadder ? (

@@ -3,6 +3,7 @@ import {
   CREATE_WORKFLOW_SUCCESS,
   UPDATE_WORKFLOW_SUCCESS,
   DELETE_WORKFLOW_SUCCESS,
+  PUBLISH_WORKFLOW_SUCCESS,
 } from "../utilits";
 
 var intialState = [];
@@ -20,11 +21,20 @@ export default function LoadWorkflowSuccess(state = intialState, action) {
     case DELETE_WORKFLOW_SUCCESS:
       return state.filter((user) => user.id !== action.workflow);
     case CREATE_WORKFLOW_SUCCESS:
-      return [{ ...action.createWorkflowData }, ...state];
+      return [{ ...action.workflow }, ...state];
 
     case UPDATE_WORKFLOW_SUCCESS:
       return state.map((workflow) =>
         workflow.id === action.workflow.id ? action.workflow : workflow
+      );
+    case PUBLISH_WORKFLOW_SUCCESS:
+      return state.map((PublishWorkFlow) =>
+        PublishWorkFlow.id == action.workflow.id
+          ? {
+              ...PublishWorkFlow,
+              isSaveAsDraft: action.workflow.isSaveAsDraft,
+            }
+          : PublishWorkFlow
       );
     default:
       return state;
