@@ -150,6 +150,15 @@ function AddActivity(props) {
       },
     },
     {
+      name: "uniqueActivityId",
+      label: "uniqueActivityId",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
       label: "Action",
       name: "",
       options: {
@@ -226,7 +235,7 @@ function AddActivity(props) {
   };
 
   function handleaddOptions(value) {
-    let activityId = value[0];
+    let activityId = value[2];
     props.history.push(`/workflow/${workflowId}/${activityId}/actions`);
   }
 

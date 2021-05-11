@@ -67,6 +67,10 @@ function ActionList(props) {
     }
   }
 
+  function handleListItemClick(action) {
+    props.setSelectedAction(action);
+  }
+
   return (
     <List component="nav">
       <ListItem className="search-list-input">
@@ -87,28 +91,33 @@ function ActionList(props) {
           }}
         />
       </ListItem>
-      {selectedActivityActions.map((act, index) => {
-        return (
-          <div className="actionlistitems" key={"action=" + act.id}>
-            <ListItem
-              button
-              selected={selectedIndex == act.id}
-              //   onClick={() => handleListItemClick(act.id)}
-              alignItems="flex-start"
-            >
-              <ListItemText
-                secondary={<p className="question-name">{act.name}</p>}
-              />
-              {act.isSaved ? (
+      {props.allActivityOptions && props.allActivityOptions.length > 0
+        ? props.allActivityOptions.map((act, index) => {
+            return (
+              <div
+                className="actionlistitems"
+                key={"action=" + act.uniqueActivityId}
+              >
+                <ListItem
+                  button
+                  selected={selectedIndex == act.uniqueActivityId}
+                  onClick={() => handleListItemClick(act)}
+                  alignItems="flex-start"
+                >
+                  <ListItemText
+                    secondary={<p className="question-name">{act.name}</p>}
+                  />
+                  {/* {act.isSaved ? (
                 <DoneAllIcon className="already-saved"></DoneAllIcon>
               ) : (
                 ""
-              )}
-            </ListItem>
-            <Divider component="li" />
-          </div>
-        );
-      })}
+              )} */}
+                </ListItem>
+                <Divider component="li" />
+              </div>
+            );
+          })
+        : ""}
     </List>
   );
 }

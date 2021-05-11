@@ -172,6 +172,16 @@ body,
       }
     }
   }
+  .action-form-input {
+    .MuiOutlinedInput-input {
+      padding: 10px 14px !important;
+    }
+    .MuiInputBase-input {
+      &:focus {
+        padding: 9px 13px !important;
+      }
+    }
+  }
   .global-input-multiline {
     height: 67px;
     .MuiOutlinedInput-multiline {
@@ -962,7 +972,7 @@ label.required {
     .scrollable-card-actions {
       min-height: calc(100vh - 214px);
       height: calc(100vh - 214px);
-      overflow-y: initial !important;
+      overflow-y: auto !important;
     }
   }
   .list-questions-container {

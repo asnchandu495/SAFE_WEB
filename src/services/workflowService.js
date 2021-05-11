@@ -98,6 +98,17 @@ export default class WorkflowService {
     });
   }
 
+  getAllMasterOptionsForActivity(id) {
+    return this.fetch(
+      `${this.baseURL}/WorkFlow/GetAllMasterOptionsForActivity?UniqueActivityId=${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");
