@@ -36,9 +36,31 @@ import MenuItem from "@material-ui/core/MenuItem";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
 import * as worlflowAction from "../../Redux/Action/workflowAction";
+import workflowService from "../../services/workflowService";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
 
 function Workflow(props) {
   const UserGroup = new UserGroupService();
+  const workflowApiCall = new workflowService();
   const [userGroupList, setuserGroupList] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [Modalopen, setModalOpen] = useState(false);
@@ -60,6 +82,12 @@ function Workflow(props) {
     setConfirmationModalActionType,
   ] = useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [selectedUserData, setselectedUserData] = useState();
+  const [selectedStatusData, setselectedStatusData] = useState();
+  const [searchformData, setsearchformData] = useState({
+    UserGroupId: "",
+    IsActive: "",
+  });
 
   const userStatusData = [
     { id: true, name: "Active" },
@@ -98,10 +126,9 @@ function Workflow(props) {
       },
     },
     {
-      label: "isActive",
+      label: "Status",
       name: "isActive",
       options: {
-        display: "excluded",
         filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
@@ -119,6 +146,7 @@ function Workflow(props) {
       label: "Status",
       name: "isSaveAsDraft",
       options: {
+        display: "excluded",
         filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
@@ -216,7 +244,7 @@ function Workflow(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no worlflows",
+        noMatch: "There are no Worlflows",
       },
     },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
@@ -258,7 +286,54 @@ function Workflow(props) {
     props.history.push("/workflow/create-workflow/" + workflowId);
   }
   function handleClickViewWorkflow(value) {
-    props.history.push("/workflow/view-workflow/" + value);
+    var workflowId = value[0];
+    props.history.push("/workflow/view-workflow/" + workflowId);
+  }
+
+  function selectedUser(e, value) {
+    setselectedUserData(value);
+  }
+
+  function selectedStatus(e, value) {
+    setselectedStatusData(value);
+  }
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setsearchformData((logInForm) => ({
+      ...logInForm,
+      [name]: value,
+    }));
+  }
+
+  function AssignFiltersForm() {
+    console.log(searchformData);
+    if (searchformData) {
+      submitAssignWorkflow();
+    } else {
+      submitAssignWorkflow(false);
+      return false;
+    }
+  }
+
+  function submitAssignWorkflow() {
+    var workflowData = searchformData;
+    workflowData.UserGroupId = selectedUserData.id;
+
+    setshowLoadder(true);
+    props
+      .LoadData(workflowData)
+      .then((result) => {
+        setshowLoadder(false);
+        setModalOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
 
   const handleClickOpenConfirmationModal = (value) => {
@@ -280,6 +355,31 @@ function Workflow(props) {
       `Are you sure you want to publish ${value[1]} ?`
     );
   };
+
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
   useEffect(() => {
     Promise.all([props.LoadData(), UserGroup.loadUserGroup()])
 
@@ -302,7 +402,7 @@ function Workflow(props) {
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Filters
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit="#">
+        <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
@@ -321,7 +421,8 @@ function Workflow(props) {
                         }
                         getOptionLabel={(option) => option.groupName}
                         // defaultValue="#"
-                        // onChange="#"
+                        onChange={selectedUser}
+                        name="UserGroupId"
                         filterSelectedOptions
                         className="global-input autocomplete-select"
                         renderInput={(params) => (
@@ -345,16 +446,13 @@ function Workflow(props) {
                         id="demo-simple-select-outlined-label"
                         shrink={false}
                         className="select-label"
-                      >
-                        {/* {formData.isActive != "" ? "Select status" : ""} */}
-                      </InputLabel>
+                      ></InputLabel>
                       <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
                         placeholder="Select status"
-                        name="isActive"
-                        // value={formData.isActive}
-                        // onChange={handleChange}
+                        name="IsActive"
+                        onChange={handleChange}
                         className="global-input single-select"
                       >
                         <MenuItem value="">None</MenuItem>
@@ -399,10 +497,15 @@ function Workflow(props) {
         >
           Home
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/workflow/allWorkflow`}
+          className="inactive"
+        >
           Workflow
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+        <LinkTo color="textPrimary" href="#" to="#" className="active">
           List Workflow
         </LinkTo>
       </Breadcrumbs>
@@ -411,8 +514,6 @@ function Workflow(props) {
       ) : (
         <MUIDataTable
           title={""}
-          // data={workflowData}
-
           data={
             props.WorkflowData && props.WorkflowData.length > 0
               ? props.WorkflowData
@@ -444,8 +545,6 @@ function Workflow(props) {
     </div>
   );
 }
-
-// export default Workflow;
 
 Workflow.propTypes = {
   WorkflowData: propTypes.array.isRequired,

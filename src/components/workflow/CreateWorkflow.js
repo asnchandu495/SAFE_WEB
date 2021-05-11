@@ -302,7 +302,7 @@ function CreateWorkflow(props) {
           aria-current="page"
           className="active"
         >
-          {workflowId != 0 ? "Update Workflow " : "Create Workflow "}
+          {workflowId != 0 ? "Update Workflow " : "Create   Workflow "}
         </LinkTo>
       </Breadcrumbs>
       <div>

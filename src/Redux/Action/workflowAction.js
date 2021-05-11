@@ -38,9 +38,9 @@ export function PublishWorkFlowSuccess(workflow) {
   return { type: PUBLISH_WORKFLOW_SUCCESS, workflow };
 }
 
-export function loadWorkflow() {
+export function loadWorkflow(data) {
   return function (dispatch) {
-    return WorkflowApi.ListAllWorkflow()
+    return WorkflowApi.ListAllWorkflow(data)
       .then((data) => {
         dispatch(LoadWorkflowSuccess(data));
       })

@@ -7,8 +7,31 @@ export default class WorkflowService {
     this.fetch = this.fetch.bind(this);
   }
 
-  ListAllWorkflow() {
-    return this.fetch(`${this.baseURL}/WorkFlow/GetAllWorkFlow`, {
+  ListAllWorkflow(data) {
+    let groupIds = "";
+    let IsActives = "";
+
+    if (data && data != "") {
+      groupIds = "UserGroupId=" + data.UserGroupId;
+    }
+
+    if (data && data != "") {
+      IsActives = "IsActive=" + data.IsActive;
+    }
+
+    let apiURL = "";
+
+    if (groupIds != "" && IsActives != "") {
+      apiURL = `WorkFlow/GetAllWorkFlow?${groupIds}&${IsActives}`;
+    } else if (groupIds != "" && IsActives == "") {
+      apiURL = `WorkFlow/GetAllWorkFlow?${groupIds}`;
+    } else if (groupIds == "" && IsActives != "") {
+      apiURL = `WorkFlow/GetAllWorkFlow?${IsActives}`;
+    } else {
+      apiURL = `WorkFlow/GetAllWorkFlow?`;
+    }
+
+    return this.fetch(`${this.baseURL}/${apiURL}`, {
       method: "GET",
     }).then((res) => {
       return Promise.resolve(res);
