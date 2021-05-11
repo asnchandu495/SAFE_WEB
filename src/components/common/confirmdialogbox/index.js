@@ -257,13 +257,13 @@ function CustomizedDialogs(props) {
 
       let data = {
         id: props.SelectedRowDetails[0],
-        isSaveAsDraft: props.SelectedRowDetails[4],
+        isSaveAsDraft: false,
       };
-      if (data.isSaveAsDraft == true) {
-        data.isSaveAsDraft = false;
-      } else {
-        data.isSaveAsDraft = true;
-      }
+      // if (data.isSaveAsDraft == true) {
+      //   data.isSaveAsDraft = false;
+      // } else {
+      //   data.isSaveAsDraft = true;
+      // }
 
       props
         .PublishWorkflow(data)

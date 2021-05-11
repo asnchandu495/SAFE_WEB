@@ -37,6 +37,7 @@ function AddActivity(props) {
   const [showLoadder, setshowLoadder] = useState(false);
   const [allActivities, setAllActivities] = useState([]);
   const [selectedActivities, setSelectedActivities] = useState([]);
+  const [workflowDetails, setWorkflowDetails] = useState([]);
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [userSelectedActivities, setUserSelectedActivities] = useState([]);
   const [oldUserSelectedActivities, setOldUserSelectedActivities] = useState(
@@ -72,6 +73,7 @@ function AddActivity(props) {
       workflowApiCall.getMasterActivities(),
     ])
       .then(([workflowDetails, getAllActivities]) => {
+        setWorkflowDetails(workflowDetails);
         setSelectedActivities(workflowDetails.selectedWorkflowActivities);
         setUserSelectedActivities(workflowDetails.selectedWorkflowActivities);
         setOldUserSelectedActivities(
@@ -346,11 +348,21 @@ function AddActivity(props) {
         >
           Home
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Work Flow
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/workflow/allWorkflow`}
+          className="inactive"
+        >
+          Workflow
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          WorkFlow name
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/workflow/allWorkflow`}
+          className="inactive"
+        >
+          {workflowDetails ? workflowDetails.workFlowName : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="active">
           Activities
