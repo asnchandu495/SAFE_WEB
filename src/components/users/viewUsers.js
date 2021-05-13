@@ -70,6 +70,7 @@ function ViewUser(props) {
   const classes = useStyles();
   const [viewUserDetails, setviewUserDetails] = useState();
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [changeTemprange, setchangeTemprange] = useState(0);
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -78,12 +79,27 @@ function ViewUser(props) {
       .GetApplicationUsersById(userId)
       .then((result) => {
         setviewUserDetails(result);
+
         setcomponentLoadder(false);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  function ChangeTemp(temperature, temperatureUnit) {
+    // let tempunit = props.loadGlobalSettingsData.temperatureUnit;
+    // let temp = viewUserDetails.covidStateInfo.temperature;
+
+    if (temperatureUnit == "C") {
+      let convertedTemp = ((temperature - 32) * 5) / 9;
+      return <span>{convertedTemp}</span>;
+    } else {
+      // return setchangeTemprange(temperature * (9 / 5) + 32);
+      let convertedTemp = temperature * (9 / 5) + 32;
+      return <span>{convertedTemp}</span>;
+    }
+  }
 
   function handleClickGoBack() {
     props.history.push("/users/allusers");
@@ -357,16 +373,21 @@ function ViewUser(props) {
               </Grid>
               <Grid item xs={6} container>
                 <Grid item xs={4}>
-                  <label>Tempearture :</label>
+                  <label>Temperature :</label>
                 </Grid>
                 <Grid item xs={8}>
                   <label>
-                    {viewUserDetails.covidStateInfo
+                    {ChangeTemp(
+                      viewUserDetails.covidStateInfo.temperature,
+                      props.loadGlobalSettingsData.temperatureUnit
+                    )}
+
+                    {/* {viewUserDetails.covidStateInfo
                       ? viewUserDetails.covidStateInfo.temperature
                       : "-"}{" "}
                     {props.loadGlobalSettingsData
                       ? props.loadGlobalSettingsData.temperatureUnit
-                      : ""}
+                      : ""} */}
                   </label>
                 </Grid>
               </Grid>

@@ -95,9 +95,8 @@ function UpdateTempearture(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [formData, SetformData] = useState({
     id: "",
@@ -112,6 +111,8 @@ function UpdateTempearture(props) {
     temperatureUnit: "F",
     covidStateId: "",
   });
+
+  const [convertTemp, setconvertTemp] = useState(0);
 
   useEffect(() => {
     if (props.SelectedRowId) {
@@ -157,11 +158,21 @@ function UpdateTempearture(props) {
     data.id = props.SelectedRowId;
     data.temperature = parseFloat(data.temperature);
     data.temperatureUnit = props.loadGlobalSettingsData.temperatureUnit;
+    let converttemp = data.temperature;
+    let converttounit = data.temperatureUnit;
+
+    if (converttounit == "C") {
+      setconvertTemp(((converttemp - 32) * 5) / 9);
+    } else {
+      setconvertTemp(converttemp * (9 / 5) + 32);
+    }
+    console.log(convertTemp);
+
     usersApiCall
       .UpdateUserCovidTempearture(data)
       .then((result) => {
         setStateSnackbar(true);
-        setToasterMessage("User's tempearture updated");
+        setToasterMessage("User's temperature updated");
         settoasterServerity("success");
         setTimeout(() => {
           props.setopenuserTemepratureModal(false);
