@@ -88,16 +88,12 @@ function ViewUser(props) {
   }, []);
 
   function ChangeTemp(temperature, temperatureUnit) {
-    // let tempunit = props.loadGlobalSettingsData.temperatureUnit;
-    // let temp = viewUserDetails.covidStateInfo.temperature;
-
     if (temperatureUnit == "C") {
       let convertedTemp = ((temperature - 32) * 5) / 9;
-      return <span>{convertedTemp}</span>;
+      return <span>{convertedTemp}-C</span>;
     } else {
-      // return setchangeTemprange(temperature * (9 / 5) + 32);
       let convertedTemp = temperature * (9 / 5) + 32;
-      return <span>{convertedTemp}</span>;
+      return <span>{convertedTemp}-F</span>;
     }
   }
 
