@@ -26,45 +26,75 @@ function ActionForm(props) {
       .getOptionsByActivityId(activityId)
       .then((result) => {
         console.log(result);
+        console.log(props.selectedAction);
         if (result) {
-          let dynamicForm = result.configurationDataList;
-          let dynamicFormSelected = props.selectedAction.worflowActivityInputs;
-          console.log(dynamicFormSelected);
-          let newFormCollection = [];
-          dynamicForm.map((form) => {
-            let remarksForInput = dynamicFormSelected.find((item) => {
-              return item.name == form.name ? item.remarksForInput : "";
-            });
+          result.map((acFrpmAPI) => {
+            if (
+              acFrpmAPI.uniqueActivityId ==
+              props.selectedAction.uniqueActivityId
+            ) {
+              let dynamicForm = acFrpmAPI.configurationDataList;
+              let dynamicFormSelected =
+                props.selectedAction.worflowActivityInputs;
+              console.log(dynamicFormSelected);
+              let newFormCollection = [];
+              dynamicForm.map((form) => {
+                let remarksForInput = dynamicFormSelected.find((item) => {
+                  return item.name == form.name ? item.remarksForInput : "";
+                });
 
-            let inputIntelliSenseOptions = dynamicFormSelected.find((item) => {
-              return item.name == form.name
-                ? item.inputIntelliSenseOptions
-                : "";
-            });
+                let inputIntelliSenseOptions = dynamicFormSelected.find(
+                  (item) => {
+                    return item.name == form.name
+                      ? item.inputIntelliSenseOptions
+                      : "";
+                  }
+                );
 
-            newFormCollection.push({
-              id: form.id,
-              inputType: form.inputType,
-              name: form.name,
-              value: form.value,
-              remarksForInput: remarksForInput
-                ? remarksForInput.remarksForInput
-                : "",
-              inputIntelliSenseOptions: inputIntelliSenseOptions
-                ? inputIntelliSenseOptions.inputIntelliSenseOptions
-                : [],
-            });
+                newFormCollection.push({
+                  id: form.id,
+                  inputType: form.inputType,
+                  name: form.name,
+                  value: form.value,
+                  remarksForInput: remarksForInput
+                    ? remarksForInput.remarksForInput
+                    : "",
+                  inputIntelliSenseOptions: inputIntelliSenseOptions
+                    ? inputIntelliSenseOptions.inputIntelliSenseOptions
+                    : [],
+                });
+              });
+              console.log(newFormCollection);
+              setFormData({
+                id: result.id,
+                uniqueActivityId: result.uniqueActivityId,
+                name: result.name,
+                aimWorkflowId: result.workflowId,
+                parentActivityId: result.activityId,
+                configurationDataList: newFormCollection,
+              });
+              setComponentLoadder(false);
+            } else {
+              let dynamicForm = props.selectedAction.worflowActivityInputs;
+              let newFormCollection = dynamicForm.map((form) => ({
+                id: form.id ? form.id : "",
+                inputType: form.inputType,
+                name: form.name,
+                remarksForInput: form.remarksForInput,
+                inputIntelliSenseOptions: form.inputIntelliSenseOptions,
+                value: form.value ? form.value : "",
+              }));
+              setFormData({
+                id: "",
+                uniqueActivityId: props.selectedAction.uniqueActivityId,
+                name: props.selectedAction.name,
+                aimWorkflowId: workflowId,
+                parentActivityId: activityId,
+                configurationDataList: newFormCollection,
+              });
+              setComponentLoadder(false);
+            }
           });
-          console.log(newFormCollection);
-          setFormData({
-            id: result.id,
-            uniqueActivityId: result.uniqueActivityId,
-            name: result.name,
-            aimWorkflowId: result.workflowId,
-            parentActivityId: result.activityId,
-            configurationDataList: newFormCollection,
-          });
-          setComponentLoadder(false);
         } else {
           let dynamicForm = props.selectedAction.worflowActivityInputs;
           let newFormCollection = dynamicForm.map((form) => ({
