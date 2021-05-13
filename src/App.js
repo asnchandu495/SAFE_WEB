@@ -301,7 +301,7 @@ function App(props) {
         <Route path="/workflow/:wid/activities" component={AddActivity}></Route>
         <Route
           exact
-          path="/workflow/:wid/:aid/actions"
+          path="/workflow/:wid/:aid/:uaid/actions"
           component={AddActions}
         ></Route>
       </AdminLayout>
@@ -532,7 +532,7 @@ function App(props) {
         ></Route>
         <Route
           exact
-          path="/workflow/:wid/:aid/actions"
+          path="/workflow/:wid/:aid/:uaid/actions"
           component={AdminContainer}
         ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />

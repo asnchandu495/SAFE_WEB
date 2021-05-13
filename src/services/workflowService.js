@@ -132,6 +132,27 @@ export default class WorkflowService {
     });
   }
 
+  addOptions(data) {
+    var finalData = JSON.stringify(data);
+    return this.fetch(`${this.baseURL}/WorkFlow/AddOptions`, {
+      method: "POST",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  getOptionsByActivityId(id) {
+    return this.fetch(
+      `${this.baseURL}/WorkFlow/GetAllOptionsByActivityId?ParentActivityId=${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

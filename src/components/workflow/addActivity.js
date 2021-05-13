@@ -237,8 +237,11 @@ function AddActivity(props) {
   };
 
   function handleaddOptions(value) {
-    let activityId = value[2];
-    props.history.push(`/workflow/${workflowId}/${activityId}/actions`);
+    let uActivityId = value[2];
+    let activityId = value[0];
+    props.history.push(
+      `/workflow/${workflowId}/${activityId}/${uActivityId}/actions`
+    );
   }
 
   function userSelectActivity(event, value) {

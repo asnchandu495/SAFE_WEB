@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import { Link as LinkTo } from "react-router-dom";
+import { Link as LinkTo, withRouter } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
 import ActionForm from "./actionForm";
 import ActionList from "./actionsList";
@@ -12,6 +12,7 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 function AddActions(props) {
   const workflowId = props.match.params.wid;
   const activityId = props.match.params.aid;
+  const uActivityId = props.match.params.uaid;
   const workflowApiCall = new workflowService();
 
   const [componentLoadder, setComponentLoadder] = useState(true);
@@ -21,7 +22,7 @@ function AddActions(props) {
 
   useEffect(() => {
     setComponentLoadder(true);
-    Promise.all([workflowApiCall.getAllMasterOptionsForActivity(activityId)])
+    Promise.all([workflowApiCall.getAllMasterOptionsForActivity(uActivityId)])
       .then(([allMasterOptionsForActivity]) => {
         setAllActivityOptions(allMasterOptionsForActivity);
         setComponentLoadder(false);
@@ -85,4 +86,4 @@ function AddActions(props) {
   );
 }
 
-export default AddActions;
+export default withRouter(AddActions);
