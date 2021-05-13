@@ -155,8 +155,8 @@ function UpdateTempearture(props) {
     setshowLoadder(true);
     var data = formData;
     data.id = props.SelectedRowId;
-    // data.temperature = parseFloat(data.temperature).toFixed(2);
-    data.temperature = parseInt(data.temperature);
+    data.temperature = parseFloat(data.temperature);
+    data.temperatureUnit = props.loadGlobalSettingsData.temperatureUnit;
     usersApiCall
       .UpdateUserCovidTempearture(data)
       .then((result) => {
