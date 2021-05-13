@@ -57,8 +57,8 @@ function CreateWorkflow(props) {
   const [formData, SetformData] = useState({
     groupId: "",
     name: "",
-    fromState: "",
-    toState: "",
+    fromStateId: "",
+    toStateId: "",
   });
 
   useEffect(() => {
@@ -75,15 +75,12 @@ function CreateWorkflow(props) {
           SetformData(workflowData);
           setSelectedGroupName(workflowData);
           let fromStateObject = getCovidStates.find(
-            (o) => o.id == workflowData.fromState
+            (o) => o.id == workflowData.fromStateId
           );
           let toStateObject = getCovidStates.find(
-            (o) => o.id == workflowData.toState
+            (o) => o.id == workflowData.toStateId
           );
-          setSelectedFromCovidState({
-            id: "39fbbed4745f015cb1e80fddd4eeae96",
-            stateName: "Confirmed",
-          });
+          setSelectedFromCovidState(fromStateObject);
           setSelectedToCovidState(toStateObject);
           setComponentLoadder(false);
         })
@@ -225,8 +222,8 @@ function CreateWorkflow(props) {
     var workflowData = formData;
     if (workflowId != 0) {
       workflowData.groupId = selectedGroupName.id;
-      workflowData.fromState = selectedFromCovidState.id;
-      workflowData.toState = selectedToCovidState.id;
+      workflowData.fromStateId = selectedFromCovidState.id;
+      workflowData.toStateId = selectedToCovidState.id;
       props
         .UpdateWorkflowCall(workflowData)
         .then((result) => {
@@ -236,7 +233,7 @@ function CreateWorkflow(props) {
           setToasterMessage("Workflow  Updated");
           settoasterServerity("success");
           setTimeout(() => {
-            props.history.push("");
+            props.history.push("/workflow/allWorkflow");
             setshowLoadder(false);
           }, 3000);
         })
@@ -248,8 +245,8 @@ function CreateWorkflow(props) {
         });
     } else {
       workflowData.groupId = selectedGroupName.id;
-      workflowData.fromState = selectedFromCovidState.id;
-      workflowData.toState = selectedToCovidState.id;
+      workflowData.fromStateId = selectedFromCovidState.id;
+      workflowData.toStateId = selectedToCovidState.id;
 
       props
         .CreateWorkflowCall(workflowData)
@@ -412,7 +409,7 @@ function CreateWorkflow(props) {
                         }
                         getOptionLabel={(option) => option.stateName}
                         onChange={handleChangeFromCovidState}
-                        name="fromState"
+                        name="fromStateId"
                         defaultValue={
                           selectedFromCovidState ? selectedFromCovidState : {}
                         }
@@ -422,7 +419,7 @@ function CreateWorkflow(props) {
                           <TextField
                             {...params}
                             variant="outlined"
-                            placeholder="Select   state"
+                            placeholder="Select state"
                           />
                         )}
                       />
@@ -458,14 +455,14 @@ function CreateWorkflow(props) {
                         defaultValue={
                           selectedToCovidState ? selectedToCovidState : ""
                         }
-                        name="toState"
+                        name="toStateId"
                         filterSelectedOptions
                         className="global-input autocomplete-select"
                         renderInput={(params) => (
                           <TextField
                             {...params}
                             variant="outlined"
-                            placeholder="Select   state"
+                            placeholder="Select state"
                           />
                         )}
                       />

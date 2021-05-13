@@ -73,7 +73,10 @@ function AddActions(props) {
             <Grid item xs={12} sm={9}>
               <Paper className="add-new-question">
                 {selectedAction ? (
-                  <ActionForm selectedAction={selectedAction}></ActionForm>
+                  <ActionForm
+                    selectedAction={selectedAction}
+                    setReloadPage={setReloadPage}
+                  ></ActionForm>
                 ) : (
                   "Please select an action from the list"
                 )}
