@@ -87,7 +87,7 @@ function ViewUser(props) {
       });
   }, []);
 
-  function ChangeTemp(temperature, temperatureUnit) {
+  function ConvertTemperature(temperature, temperatureUnit) {
     if (temperatureUnit == "C") {
       let convertedTemp = ((temperature - 32) * 5) / 9;
       return <span>{convertedTemp}-C</span>;
@@ -373,11 +373,12 @@ function ViewUser(props) {
                 </Grid>
                 <Grid item xs={8}>
                   <label>
-                    {ChangeTemp(
-                      viewUserDetails.covidStateInfo.temperature,
-                      props.loadGlobalSettingsData.temperatureUnit
-                    )}
-
+                    {viewUserDetails.covidStateInfo
+                      ? ConvertTemperature(
+                          viewUserDetails.covidStateInfo.temperature,
+                          props.loadGlobalSettingsData.temperatureUnit
+                        )
+                      : " - " + props.loadGlobalSettingsData.temperatureUnit}
                     {/* {viewUserDetails.covidStateInfo
                       ? viewUserDetails.covidStateInfo.temperature
                       : "-"}{" "}

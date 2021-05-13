@@ -112,7 +112,7 @@ function UpdateTempearture(props) {
     covidStateId: "",
   });
 
-  const [convertTemp, setconvertTemp] = useState(0);
+  const [convertTemp, setconvertTemp] = useState();
 
   useEffect(() => {
     if (props.SelectedRowId) {
@@ -158,15 +158,17 @@ function UpdateTempearture(props) {
     data.id = props.SelectedRowId;
     data.temperature = parseFloat(data.temperature);
     data.temperatureUnit = props.loadGlobalSettingsData.temperatureUnit;
-    let converttemp = data.temperature;
-    let converttounit = data.temperatureUnit;
+    // let converttemp = data.temperature;
+    // let converttounit = data.temperatureUnit;
 
-    if (converttounit == "C") {
-      setconvertTemp(((converttemp - 32) * 5) / 9);
+    if (data.temperatureUnit == "C") {
+      setconvertTemp(((data.temperature - 32) * 5) / 9);
     } else {
-      setconvertTemp(converttemp * (9 / 5) + 32);
+      setconvertTemp(data.temperature * (9 / 5) + 32);
     }
-    console.log(convertTemp);
+    // data.temperature = convertedtemperature;
+
+    // console.log(convertedtemperature);
 
     usersApiCall
       .UpdateUserCovidTempearture(data)

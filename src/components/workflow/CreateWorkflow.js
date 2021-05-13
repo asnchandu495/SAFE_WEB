@@ -36,9 +36,8 @@ function CreateWorkflow(props) {
   const [toasterServerity, settoasterServerity] = useState("");
 
   const [isDuplicate, setIsDuplicate] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [covidStatelist, setcovidStatelist] = useState([]);
