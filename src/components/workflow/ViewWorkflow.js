@@ -2,13 +2,19 @@ import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Box from "@material-ui/core/Box";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Paper from "@material-ui/core/Paper";
-import { connect } from "react-redux";
-import Tooltip from "@material-ui/core/Tooltip";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import HelpIcon from "@material-ui/icons/Help";
-import PropTypes from "prop-types";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -23,20 +29,6 @@ function ViewWorkflow(props) {
   const [workflow, setWorkflow] = useState({
     id: getworkflowById,
   });
-  const sections = [
-    {
-      id: "39fac56b2c443e198750a9aee057f85a",
-      faqId: "39fac56ac1bdb2a92c317ab0c0a4b3c1",
-    },
-    {
-      id: "39fac56b2c443e198750a9aee057f85a",
-      faqId: "39fac56ac1bdb2a92c317ab0c0a4b3c1",
-    },
-    {
-      id: "39fac56b2c443e198750a9aee057f85a",
-      faqId: "39fac56ac1bdb2a92c317ab0c0a4b3c1",
-    },
-  ];
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [worlflowDetails, setWorkflowDetails] = useState();
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -51,7 +43,7 @@ function ViewWorkflow(props) {
   useEffect(() => {
     Promise.all([
       workflowApiCall.GetWorkFlowById(getworkflowById),
-      workflowApiCall.getWorkflowDetails(getworkflowById),
+      workflowApiCall.getWorkflowActivities(getworkflowById),
     ])
       .then(([getWorkflowDetails, getWorkflowActivities]) => {
         setWorkflowDetails(getWorkflowDetails);
@@ -71,21 +63,58 @@ function ViewWorkflow(props) {
     setExpandedWorflow(isExpanded ? panel : false);
   };
 
-  function DisplayActions(props) {
-    // workflowApiCall
-    //   .getOptionsByActivityId(props.activityId)
-    //   .then((activityActions) => {
-    //     console.log(activityActions);
-    //     if (activityActions.length > 0) {
-    //       return <h4>No actions added</h4>;
-    //     } else {
-    //       return <h4>No actions added</h4>;
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    return <h4>No actions added</h4>;
+  function Row(props) {
+    const { row } = props;
+    const [openAction, setOpenAction] = React.useState(false);
+
+    return (
+      <React.Fragment>
+        <TableRow>
+          <TableCell>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpenAction(!openAction)}
+            >
+              {openAction ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell component="th" scope="row">
+            {row.name}
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <Collapse in={openAction} timeout="auto" unmountOnExit>
+              <Box margin={1}>
+                <Table size="small" aria-label="purchases">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Value</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {row.configurationDataList.map((dataList) => (
+                      <TableRow key={dataList.id}>
+                        <TableCell component="th" scope="row">
+                          {dataList.name}
+                        </TableCell>
+                        <TableCell>
+                          <div
+                            dangerouslySetInnerHTML={{ __html: dataList.value }}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      </React.Fragment>
+    );
   }
 
   return (
@@ -204,21 +233,26 @@ function ViewWorkflow(props) {
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                          <Grid container item xs={12}>
-                            <Grid
-                              container
-                              spacing={1}
-                              item
-                              xs={12}
-                              className="question-container"
-                            >
-                              <Grid item xs={11}>
-                                <DisplayActions
-                                  activityId={act.id}
-                                ></DisplayActions>
-                              </Grid>
-                            </Grid>
-                          </Grid>
+                          {act.options.length > 0
+                            ? act.options.map((act) => {
+                                return (
+                                  <Table
+                                    aria-label="simple table"
+                                    className="flag-details-table action-details-table"
+                                  >
+                                    <TableHead>
+                                      <TableRow>
+                                        <TableCell />
+                                        <TableCell>Action</TableCell>
+                                      </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                      <Row key={act.id} row={act} />
+                                    </TableBody>
+                                  </Table>
+                                );
+                              })
+                            : ""}
                         </AccordionDetails>
                       </Accordion>
                     );

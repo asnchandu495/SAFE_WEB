@@ -163,6 +163,33 @@ export default class WorkflowService {
     });
   }
 
+  getWorkflowActivities(id) {
+    return this.fetch(
+      `${this.baseURL}/WorkFlow/GetAllWorkFlows?WorkFlowId=${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  DeleteOption(data) {
+    return this.fetch(`${this.baseURL}/WorkFlow/DeleteOption/${data}`, {
+      method: "DELETE",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  GetActivityById(id) {
+    return this.fetch(`${this.baseURL}/WorkFlow/GetActivityById/${id}`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

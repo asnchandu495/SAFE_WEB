@@ -73,7 +73,11 @@ function CreateWorkflow(props) {
           setcovidStatelist(getCovidStates);
           setToCovidStatelist(getCovidStates);
           SetformData(workflowData);
-          setSelectedGroupName(workflowData);
+          let selectedGroup = {
+            id: workflowData.groupId,
+            groupName: workflowData.groupName,
+          };
+          setSelectedGroupName(selectedGroup);
           let fromStateObject = getCovidStates.find(
             (o) => o.id == workflowData.fromStateId
           );

@@ -530,6 +530,25 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
           toasterErrorMessage(error);
         });
+    } else if (props.ConfirmationModalActionType == "DeleteOption") {
+      setshowLoadder(true);
+      var thisId = props.SelectedRowDetails[0];
+      workflowApiCall
+        .DeleteOption(thisId)
+        .then((result) => {
+          setTimeout(() => {
+            setshowLoadder(false);
+            props.setStateSnackbar(false);
+            props.setToasterMessage("Option is deleted");
+            props.settoasterServerity("success");
+            props.setOpenConfirmationModal(false);
+            props.setReloadPage("YES");
+          }, 6000);
+        })
+        .catch((error) => {
+          setshowLoadder(false);
+          toasterErrorMessage(error);
+        });
     }
   };
 

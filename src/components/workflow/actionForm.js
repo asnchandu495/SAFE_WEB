@@ -10,11 +10,17 @@ import Typography from "@material-ui/core/Typography";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import workflowService from "../../services/workflowService";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
-import ActionDetailsForm from "./actionDetailsForm";
+
+const initialState = {
+  mouseX: null,
+  mouseY: null,
+};
 
 function ActionForm(props) {
   const workflowId = props.match.params.wid;
@@ -34,71 +40,103 @@ function ActionForm(props) {
   );
   const [selectedActionForm, setSelectedActionForm] = useState();
   const [selectedWorkflowDetails, setSelectedWorkflowDetails] = useState();
+  const [stateContextMenu, setStateContextMenu] = useState(initialState);
+  const [currentEditor, setCurrentEditor] = useState();
+  const [selectedActivityDetails, setSelectedActivityDetails] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
     Promise.all([
       workflowApiCall.getAllMasterOptionsForActivity(uActivityId),
       workflowApiCall.GetWorkFlowById(workflowId),
+      workflowApiCall.GetActivityById(activityId),
     ])
-      .then(([allMasterOptionsForActivity, workflowDetails]) => {
-        setSelectedWorkflowDetails(workflowDetails);
-        console.log(allMasterOptionsForActivity);
-        let selectedActivityOptionFormData = allMasterOptionsForActivity.find(
-          (act) => {
-            return act.uniqueActivityId == actionId ? act : "";
-          }
-        );
-        setSelectedActionForm(selectedActivityOptionFormData);
-        console.log(selectedActivityOptionFormData);
-        workflowApiCall
-          .getOptionsByActivityId(activityId)
-          .then((result) => {
-            console.log(result);
-            if (result.length > 0) {
-              let selectedActivityOptionSaved = result.find((act) => {
-                return act.uniqueActivityId ==
-                  selectedActivityOptionFormData.uniqueActivityId
-                  ? act
-                  : "";
-              });
-              console.log(selectedActivityOptionSaved);
-              if (selectedActivityOptionSaved) {
-                let actionListFromAPI =
-                  selectedActivityOptionSaved.configurationDataList;
-                let newFormCollection = [];
-                selectedActivityOptionFormData.worflowActivityInputs.map(
-                  (ac) => {
-                    let alreadyAddedAction = actionListFromAPI.find((item) => {
-                      return item.name == ac.name ? item : null;
-                    });
-
-                    newFormCollection.push({
-                      id: alreadyAddedAction ? alreadyAddedAction.id : "",
-                      inputType: alreadyAddedAction
-                        ? alreadyAddedAction.inputType
-                        : ac.inputType,
-                      name: alreadyAddedAction
-                        ? alreadyAddedAction.name
-                        : ac.name,
-                      value: alreadyAddedAction ? alreadyAddedAction.value : "",
-                      remarksForInput: ac.remarksForInput,
-                      inputIntelliSenseOptions: ac.inputIntelliSenseOptions,
-                    });
-                  }
-                );
-                console.log(newFormCollection);
-                setFormData({
-                  id: selectedActivityOptionSaved.id,
-                  uniqueActivityId:
-                    selectedActivityOptionSaved.uniqueActivityId,
-                  name: selectedActivityOptionSaved.name,
-                  aimWorkflowId: selectedActivityOptionSaved.aimWorkflowId,
-                  parentActivityId:
-                    selectedActivityOptionSaved.parentActivityId,
-                  configurationDataList: newFormCollection,
+      .then(
+        ([allMasterOptionsForActivity, workflowDetails, activityDetails]) => {
+          setSelectedWorkflowDetails(workflowDetails);
+          setSelectedActivityDetails(activityDetails);
+          console.log(allMasterOptionsForActivity);
+          let selectedActivityOptionFormData = allMasterOptionsForActivity.find(
+            (act) => {
+              return act.uniqueActivityId == actionId ? act : "";
+            }
+          );
+          setSelectedActionForm(selectedActivityOptionFormData);
+          console.log(selectedActivityOptionFormData);
+          workflowApiCall
+            .getOptionsByActivityId(activityId)
+            .then((result) => {
+              console.log(result);
+              if (result.length > 0) {
+                let selectedActivityOptionSaved = result.find((act) => {
+                  return act.uniqueActivityId ==
+                    selectedActivityOptionFormData.uniqueActivityId
+                    ? act
+                    : "";
                 });
-                setComponentLoadder(false);
+                console.log(selectedActivityOptionSaved);
+                if (selectedActivityOptionSaved) {
+                  let actionListFromAPI =
+                    selectedActivityOptionSaved.configurationDataList;
+                  let newFormCollection = [];
+                  selectedActivityOptionFormData.worflowActivityInputs.map(
+                    (ac) => {
+                      let alreadyAddedAction = actionListFromAPI.find(
+                        (item) => {
+                          return item.name == ac.name ? item : null;
+                        }
+                      );
+
+                      newFormCollection.push({
+                        id: alreadyAddedAction ? alreadyAddedAction.id : "",
+                        inputType: alreadyAddedAction
+                          ? alreadyAddedAction.inputType
+                          : ac.inputType,
+                        name: alreadyAddedAction
+                          ? alreadyAddedAction.name
+                          : ac.name,
+                        value: alreadyAddedAction
+                          ? alreadyAddedAction.value
+                          : "",
+                        remarksForInput: ac.remarksForInput,
+                        inputIntelliSenseOptions: ac.inputIntelliSenseOptions,
+                      });
+                    }
+                  );
+                  console.log(newFormCollection);
+                  setFormData({
+                    id: selectedActivityOptionSaved.id,
+                    uniqueActivityId:
+                      selectedActivityOptionSaved.uniqueActivityId,
+                    name: selectedActivityOptionSaved.name,
+                    aimWorkflowId: selectedActivityOptionSaved.aimWorkflowId,
+                    parentActivityId:
+                      selectedActivityOptionSaved.parentActivityId,
+                    configurationDataList: newFormCollection,
+                  });
+                  setComponentLoadder(false);
+                } else {
+                  let dynamicForm =
+                    selectedActivityOptionFormData.worflowActivityInputs;
+                  let newFormCollection = dynamicForm.map((form) => ({
+                    id: form.id ? form.id : "",
+                    inputType: form.inputType,
+                    name: form.name,
+                    remarksForInput: form.remarksForInput,
+                    inputIntelliSenseOptions: form.inputIntelliSenseOptions,
+                    value: form.value ? form.value : "",
+                  }));
+                  setFormData({
+                    id: "",
+                    uniqueActivityId:
+                      selectedActivityOptionFormData.uniqueActivityId,
+                    name: selectedActivityOptionFormData.name,
+                    aimWorkflowId: workflowId,
+                    parentActivityId: activityId,
+                    configurationDataList: newFormCollection,
+                  });
+                  setComponentLoadder(false);
+                }
               } else {
                 let dynamicForm =
                   selectedActivityOptionFormData.worflowActivityInputs;
@@ -121,33 +159,12 @@ function ActionForm(props) {
                 });
                 setComponentLoadder(false);
               }
-            } else {
-              let dynamicForm =
-                selectedActivityOptionFormData.worflowActivityInputs;
-              let newFormCollection = dynamicForm.map((form) => ({
-                id: form.id ? form.id : "",
-                inputType: form.inputType,
-                name: form.name,
-                remarksForInput: form.remarksForInput,
-                inputIntelliSenseOptions: form.inputIntelliSenseOptions,
-                value: form.value ? form.value : "",
-              }));
-              setFormData({
-                id: "",
-                uniqueActivityId:
-                  selectedActivityOptionFormData.uniqueActivityId,
-                name: selectedActivityOptionFormData.name,
-                aimWorkflowId: workflowId,
-                parentActivityId: activityId,
-                configurationDataList: newFormCollection,
-              });
-              setComponentLoadder(false);
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      )
       .catch((error) => {
         console.log(error);
       });
@@ -230,6 +247,37 @@ function ActionForm(props) {
     );
   }
 
+  const handleClickContextMenu = (event) => {
+    event.preventDefault();
+    setStateContextMenu({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+    });
+  };
+
+  const handleCloseContextMenu = () => {
+    setStateContextMenu(initialState);
+  };
+
+  const handleClickContextMenuOption = (opt, index, name) => {
+    currentEditor.model.change((writer) => {
+      writer.insertText(
+        opt,
+        currentEditor.model.document.selection.getFirstPosition()
+      );
+    });
+    const list = {
+      ...formData,
+      configurationDataList: [
+        ...formData.configurationDataList.map((con, conIndex) =>
+          conIndex == index ? { ...con, [name]: currentEditor.getData() } : con
+        ),
+      ],
+    };
+    setFormData(list);
+    setStateContextMenu(initialState);
+  };
+
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -252,8 +300,13 @@ function ActionForm(props) {
         >
           {selectedWorkflowDetails ? selectedWorkflowDetails.name : ""}
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Activity name
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/workflow/${workflowId}/${activityId}/${uActivityId}/actions`}
+          className="inactive"
+        >
+          {selectedActivityDetails ? selectedActivityDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
           {selectedActionForm ? selectedActionForm.name : ""}
@@ -318,7 +371,11 @@ function ActionForm(props) {
                               <Grid item xs={3}>
                                 <label>{act.remarksForInput}</label>
                               </Grid>
-                              <Grid item xs={9}>
+                              <Grid
+                                item
+                                xs={9}
+                                onContextMenu={handleClickContextMenu}
+                              >
                                 <CKEditor
                                   editor={ClassicEditor}
                                   data={act.value}
@@ -332,7 +389,45 @@ function ActionForm(props) {
                                       "value"
                                     );
                                   }}
+                                  onFocus={(event, editor) => {
+                                    setCurrentEditor(editor);
+                                  }}
                                 />
+                                <Menu
+                                  keepMounted
+                                  open={stateContextMenu.mouseY !== null}
+                                  onClose={handleCloseContextMenu}
+                                  anchorReference="anchorPosition"
+                                  anchorPosition={
+                                    stateContextMenu.mouseY !== null &&
+                                    stateContextMenu.mouseX !== null
+                                      ? {
+                                          top: stateContextMenu.mouseY,
+                                          left: stateContextMenu.mouseX,
+                                        }
+                                      : undefined
+                                  }
+                                >
+                                  {act.inputIntelliSenseOptions.length > 0 ? (
+                                    act.inputIntelliSenseOptions.map((opt) => {
+                                      return (
+                                        <MenuItem
+                                          onClick={() =>
+                                            handleClickContextMenuOption(
+                                              opt,
+                                              index,
+                                              "value"
+                                            )
+                                          }
+                                        >
+                                          {opt}
+                                        </MenuItem>
+                                      );
+                                    })
+                                  ) : (
+                                    <MenuItem>No options</MenuItem>
+                                  )}
+                                </Menu>
                               </Grid>
                             </Grid>
                           );

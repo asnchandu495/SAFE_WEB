@@ -11,6 +11,7 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import MUIDataTable from "mui-datatables";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/Delete";
 import Tooltip from "@material-ui/core/Tooltip";
 
 function AddActions(props) {
@@ -24,19 +25,45 @@ function AddActions(props) {
   const [allActivityOptions, setAllActivityOptions] = useState([]);
   const [selectedAction, setSelectedAction] = useState();
   const [worlflowDetails, setWorkflowDetails] = useState();
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [
+    ConfirmationDialogContextText,
+    setConfirmationDialogContextText,
+  ] = useState("");
+  const [
+    ConfirmationModalActionType,
+    setConfirmationModalActionType,
+  ] = useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
+    "array"
+  );
+  const [selectedActivityDetails, setSelectedActivityDetails] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
     Promise.all([
       workflowApiCall.getAllMasterOptionsForActivity(uActivityId),
       workflowApiCall.GetWorkFlowById(workflowId),
+      workflowApiCall.GetActivityById(activityId),
     ])
-      .then(([allMasterOptionsForActivity, getWorkflowDetails]) => {
-        setWorkflowDetails(getWorkflowDetails);
-        setAllActivityOptions(allMasterOptionsForActivity);
-        setComponentLoadder(false);
-        setReloadPage("NO");
-      })
+      .then(
+        ([
+          allMasterOptionsForActivity,
+          getWorkflowDetails,
+          activityDetails,
+        ]) => {
+          setWorkflowDetails(getWorkflowDetails);
+          setAllActivityOptions(allMasterOptionsForActivity);
+          setSelectedActivityDetails(activityDetails);
+          setComponentLoadder(false);
+          setReloadPage("NO");
+        }
+      )
       .catch((error) => {
         console.log(error);
       });
@@ -56,14 +83,6 @@ function AddActions(props) {
         display: "excluded",
         print: false,
         filter: false,
-      },
-    },
-    {
-      name: "name",
-      label: "Action Name ",
-      options: {
-        filter: false,
-        sort: true,
       },
     },
     {
@@ -92,6 +111,18 @@ function AddActions(props) {
                     startIcon={<AddIcon />}
                     className={`edit-icon`}
                     onClick={() => configureOption(thisRowData)}
+                  ></Button>
+                </Tooltip>
+
+                <Tooltip title="Delete">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<DeleteIcon />}
+                    className={`delete-icon`}
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
                   ></Button>
                 </Tooltip>
               </div>
@@ -126,6 +157,16 @@ function AddActions(props) {
     },
   };
 
+  const handleClickOpenConfirmationModal = (value) => {
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteOption");
+    setConfirmationHeaderTittle("Delete Option");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${value[1]} ?`
+    );
+  };
+
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -153,8 +194,13 @@ function AddActions(props) {
         >
           {worlflowDetails ? worlflowDetails.name : ""}
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Activity name
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/workflow/${workflowId}/activities`}
+          className="inactive"
+        >
+          {selectedActivityDetails ? selectedActivityDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="active">
           Actions
@@ -175,6 +221,18 @@ function AddActions(props) {
           className="global-table"
         />
       )}
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        SelectedRowDetails={SelectedRowDetails}
+        setReloadPage={setReloadPage}
+      />
     </div>
   );
 }
