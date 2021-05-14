@@ -46,12 +46,16 @@ function ViewWorkflow(props) {
     "array"
   );
   const [expandedWorflow, setExpandedWorflow] = useState("panel0");
+  const [workflowActivities, setWorkflowActivities] = useState([]);
 
   useEffect(() => {
-    workflowApiCall
-      .GetWorkFlowById(getworkflowById)
-      .then((getWorkflowDetails) => {
+    Promise.all([
+      workflowApiCall.GetWorkFlowById(getworkflowById),
+      workflowApiCall.getWorkflowDetails(getworkflowById),
+    ])
+      .then(([getWorkflowDetails, getWorkflowActivities]) => {
         setWorkflowDetails(getWorkflowDetails);
+        setWorkflowActivities(getWorkflowActivities.selectedWorkflowActivities);
         setcomponentLoadder(false);
       })
       .catch((error) => {
@@ -62,9 +66,27 @@ function ViewWorkflow(props) {
   function goBack() {
     props.history.push("/emergencycontacts/view");
   }
+
   const handleChangeWorkflowSection = (panel) => (event, isExpanded) => {
     setExpandedWorflow(isExpanded ? panel : false);
   };
+
+  function DisplayActions(props) {
+    // workflowApiCall
+    //   .getOptionsByActivityId(props.activityId)
+    //   .then((activityActions) => {
+    //     console.log(activityActions);
+    //     if (activityActions.length > 0) {
+    //       return <h4>No actions added</h4>;
+    //     } else {
+    //       return <h4>No actions added</h4>;
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    return <h4>No actions added</h4>;
+  }
 
   return (
     <div className="innerpage-container">
@@ -162,52 +184,46 @@ function ViewWorkflow(props) {
               </Grid>
             </Paper>
             <Paper className="view-faq-paper-section">
-              {sections.map((sec, i) => {
-                let thisPanel = "panel" + i;
-                return (
-                  <Accordion
-                    defaultExpanded
-                    square
-                    expanded={expandedWorflow === thisPanel}
-                    onChange={handleChangeWorkflowSection(thisPanel)}
-                  >
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1bh-content"
-                      id="panel1bh-header"
-                    >
-                      <Typography className="section-heading">
-                        Workflow Data
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Grid container item xs={12}>
-                        <Grid
-                          container
-                          spacing={1}
-                          item
-                          xs={12}
-                          className="question-container"
+              {workflowActivities.length > 0
+                ? workflowActivities.map((act, i) => {
+                    let thisPanel = "panel" + i;
+                    return (
+                      <Accordion
+                        defaultExpanded
+                        square
+                        expanded={expandedWorflow === thisPanel}
+                        onChange={handleChangeWorkflowSection(thisPanel)}
+                      >
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1bh-content"
+                          id="panel1bh-header"
                         >
-                          <Grid item xs={11}>
-                            <p className="question-name">
-                              Lorem ipsum dolor sit amet. Ad alias earum sit
-                              quas sequi est eaque molestias. Eum dolor atque
-                              hic porro ratione qui dolores numquam est omnis
-                              consequatur id error odit in dolore molestias. Aut
-                              ipsa fugit id quos doloribus et officia debitis.
-                              Eos culpa autem ea accusantium delectus qui
-                              similique officiis et enim explicabo.
-                            </p>
-
-                            <p className="question-answer"></p>
+                          <Typography className="section-heading">
+                            {act.name}
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid container item xs={12}>
+                            <Grid
+                              container
+                              spacing={1}
+                              item
+                              xs={12}
+                              className="question-container"
+                            >
+                              <Grid item xs={11}>
+                                <DisplayActions
+                                  activityId={act.id}
+                                ></DisplayActions>
+                              </Grid>
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      </Grid>
-                    </AccordionDetails>
-                  </Accordion>
-                );
-              })}
+                        </AccordionDetails>
+                      </Accordion>
+                    );
+                  })
+                : "No activities are added"}
             </Paper>
           </Grid>
         </Grid>

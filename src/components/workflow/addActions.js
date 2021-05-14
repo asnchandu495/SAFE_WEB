@@ -8,6 +8,10 @@ import ActionList from "./actionsList";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import workflowService from "../../services/workflowService";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import MUIDataTable from "mui-datatables";
+import AddIcon from "@material-ui/icons/Add";
+import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
 
 function AddActions(props) {
   const workflowId = props.match.params.wid;
@@ -19,11 +23,16 @@ function AddActions(props) {
   const [reloadPage, setReloadPage] = useState("NO");
   const [allActivityOptions, setAllActivityOptions] = useState([]);
   const [selectedAction, setSelectedAction] = useState();
+  const [worlflowDetails, setWorkflowDetails] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
-    Promise.all([workflowApiCall.getAllMasterOptionsForActivity(uActivityId)])
-      .then(([allMasterOptionsForActivity]) => {
+    Promise.all([
+      workflowApiCall.getAllMasterOptionsForActivity(uActivityId),
+      workflowApiCall.GetWorkFlowById(workflowId),
+    ])
+      .then(([allMasterOptionsForActivity, getWorkflowDetails]) => {
+        setWorkflowDetails(getWorkflowDetails);
         setAllActivityOptions(allMasterOptionsForActivity);
         setComponentLoadder(false);
         setReloadPage("NO");
@@ -32,6 +41,90 @@ function AddActions(props) {
         console.log(error);
       });
   }, [reloadPage]);
+
+  function configureOption(getRowData) {
+    props.history.push(
+      `/workflow/${workflowId}/${activityId}/${uActivityId}/${getRowData[0]}/configure-action`
+    );
+  }
+
+  const columns = [
+    {
+      name: "uniqueActivityId",
+      label: "Id",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      name: "name",
+      label: "Action Name ",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      name: "friendlyName",
+      label: "Friendly Name",
+      options: {
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      label: "Action",
+      name: "",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return (
+              <div className={`action-buttons-container`}>
+                <Tooltip title="Configure">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<AddIcon />}
+                    className={`edit-icon`}
+                    onClick={() => configureOption(thisRowData)}
+                  ></Button>
+                </Tooltip>
+              </div>
+            );
+          }
+        },
+
+        setCellProps: (value) => {
+          return {
+            style: { width: "250px", minWidth: "250px", textAlign: "center" },
+          };
+        },
+      },
+    },
+  ];
+
+  const options = {
+    filter: false,
+    filterType: "dropdown",
+    responsive: "scroll",
+    fixedHeader: true,
+    rowsPerPageOptions: [5, 10, 15, 100],
+    rowsPerPage: 5,
+    print: false,
+    viewColumns: false,
+    download: false,
+    selectableRows: false,
+    textLabels: {
+      body: {
+        noMatch: "There are no actions",
+      },
+    },
+  };
 
   return (
     <div className="innerpage-container">
@@ -44,11 +137,21 @@ function AddActions(props) {
         >
           Home
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/workflow/allWorkflow`}
+          className="inactive"
+        >
           Work Flow
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          WorkFlow name
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/workflow/view-workflow/${workflowId}`}
+          className="inactive"
+        >
+          {worlflowDetails ? worlflowDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
           Activity name
@@ -60,30 +163,17 @@ function AddActions(props) {
       {componentLoadder ? (
         <ComponentLoadderComponent></ComponentLoadderComponent>
       ) : (
-        <Paper className="main-paper main-paper-add-question">
-          <Grid container spacing={0}>
-            <Grid item xs={12} sm={3} className="list-questions-container">
-              <Paper className="list-questions">
-                <ActionList
-                  allActivityOptions={allActivityOptions}
-                  setSelectedAction={setSelectedAction}
-                ></ActionList>
-              </Paper>
-            </Grid>
-            <Grid item xs={12} sm={9}>
-              <Paper className="add-new-question">
-                {selectedAction ? (
-                  <ActionForm
-                    selectedAction={selectedAction}
-                    setReloadPage={setReloadPage}
-                  ></ActionForm>
-                ) : (
-                  "Please select an action from the list"
-                )}
-              </Paper>
-            </Grid>
-          </Grid>
-        </Paper>
+        <MUIDataTable
+          title={""}
+          data={
+            allActivityOptions && allActivityOptions.length > 0
+              ? allActivityOptions
+              : []
+          }
+          columns={columns}
+          options={options}
+          className="global-table"
+        />
       )}
     </div>
   );

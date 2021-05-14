@@ -492,16 +492,8 @@ function Workflow(props) {
         >
           Home
         </LinkTo>
-        <LinkTo
-          color="textPrimary"
-          href="#"
-          to={`/workflow/allWorkflow`}
-          className="inactive"
-        >
-          Workflow
-        </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="active">
-          List Workflow
+        <LinkTo color="textPrimary" href="#" className="active">
+          Workflows
         </LinkTo>
       </Breadcrumbs>
       {componentLoadder ? (

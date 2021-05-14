@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Component } from "react";
 import Grid from "@material-ui/core/Grid";
+import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo, withRouter } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -19,6 +20,7 @@ function ActionForm(props) {
   const workflowId = props.match.params.wid;
   const activityId = props.match.params.aid;
   const uActivityId = props.match.params.uaid;
+  const actionId = props.match.params.actionId;
   const workflowApiCall = new workflowService();
 
   const [formData, setFormData] = useState();
@@ -30,51 +32,98 @@ function ActionForm(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
     "array"
   );
+  const [selectedActionForm, setSelectedActionForm] = useState();
+  const [selectedWorkflowDetails, setSelectedWorkflowDetails] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
-    workflowApiCall
-      .getOptionsByActivityId(activityId)
-      .then((result) => {
-        if (result.length > 0) {
-          console.log(props.selectedAction);
-          result.map((action) => {
-            if (
-              action.uniqueActivityId == props.selectedAction.uniqueActivityId
-            ) {
-              console.log(action);
-              let actionListFromAPI = action.configurationDataList;
-              let actionListFromSelected =
-                props.selectedAction.worflowActivityInputs;
-              let newFormCollection = [];
-              actionListFromSelected.map((ac) => {
-                let alreadyAddedAction = actionListFromAPI.find((item) => {
-                  return item.name == ac.name ? item : null;
-                });
+    Promise.all([
+      workflowApiCall.getAllMasterOptionsForActivity(uActivityId),
+      workflowApiCall.GetWorkFlowById(workflowId),
+    ])
+      .then(([allMasterOptionsForActivity, workflowDetails]) => {
+        setSelectedWorkflowDetails(workflowDetails);
+        console.log(allMasterOptionsForActivity);
+        let selectedActivityOptionFormData = allMasterOptionsForActivity.find(
+          (act) => {
+            return act.uniqueActivityId == actionId ? act : "";
+          }
+        );
+        setSelectedActionForm(selectedActivityOptionFormData);
+        console.log(selectedActivityOptionFormData);
+        workflowApiCall
+          .getOptionsByActivityId(activityId)
+          .then((result) => {
+            console.log(result);
+            if (result.length > 0) {
+              let selectedActivityOptionSaved = result.find((act) => {
+                return act.uniqueActivityId ==
+                  selectedActivityOptionFormData.uniqueActivityId
+                  ? act
+                  : "";
+              });
+              console.log(selectedActivityOptionSaved);
+              if (selectedActivityOptionSaved) {
+                let actionListFromAPI =
+                  selectedActivityOptionSaved.configurationDataList;
+                let newFormCollection = [];
+                selectedActivityOptionFormData.worflowActivityInputs.map(
+                  (ac) => {
+                    let alreadyAddedAction = actionListFromAPI.find((item) => {
+                      return item.name == ac.name ? item : null;
+                    });
 
-                newFormCollection.push({
-                  id: alreadyAddedAction ? alreadyAddedAction.id : "",
-                  inputType: alreadyAddedAction
-                    ? alreadyAddedAction.inputType
-                    : ac.inputType,
-                  name: alreadyAddedAction ? alreadyAddedAction.name : ac.name,
-                  value: alreadyAddedAction ? alreadyAddedAction.value : "",
-                  remarksForInput: ac.remarksForInput,
-                  inputIntelliSenseOptions: ac.inputIntelliSenseOptions,
+                    newFormCollection.push({
+                      id: alreadyAddedAction ? alreadyAddedAction.id : "",
+                      inputType: alreadyAddedAction
+                        ? alreadyAddedAction.inputType
+                        : ac.inputType,
+                      name: alreadyAddedAction
+                        ? alreadyAddedAction.name
+                        : ac.name,
+                      value: alreadyAddedAction ? alreadyAddedAction.value : "",
+                      remarksForInput: ac.remarksForInput,
+                      inputIntelliSenseOptions: ac.inputIntelliSenseOptions,
+                    });
+                  }
+                );
+                console.log(newFormCollection);
+                setFormData({
+                  id: selectedActivityOptionSaved.id,
+                  uniqueActivityId:
+                    selectedActivityOptionSaved.uniqueActivityId,
+                  name: selectedActivityOptionSaved.name,
+                  aimWorkflowId: selectedActivityOptionSaved.aimWorkflowId,
+                  parentActivityId:
+                    selectedActivityOptionSaved.parentActivityId,
+                  configurationDataList: newFormCollection,
                 });
-              });
-              console.log(newFormCollection);
-              setFormData({
-                id: action.id,
-                uniqueActivityId: action.uniqueActivityId,
-                name: action.name,
-                aimWorkflowId: action.aimWorkflowId,
-                parentActivityId: action.parentActivityId,
-                configurationDataList: newFormCollection,
-              });
-              setComponentLoadder(false);
+                setComponentLoadder(false);
+              } else {
+                let dynamicForm =
+                  selectedActivityOptionFormData.worflowActivityInputs;
+                let newFormCollection = dynamicForm.map((form) => ({
+                  id: form.id ? form.id : "",
+                  inputType: form.inputType,
+                  name: form.name,
+                  remarksForInput: form.remarksForInput,
+                  inputIntelliSenseOptions: form.inputIntelliSenseOptions,
+                  value: form.value ? form.value : "",
+                }));
+                setFormData({
+                  id: "",
+                  uniqueActivityId:
+                    selectedActivityOptionFormData.uniqueActivityId,
+                  name: selectedActivityOptionFormData.name,
+                  aimWorkflowId: workflowId,
+                  parentActivityId: activityId,
+                  configurationDataList: newFormCollection,
+                });
+                setComponentLoadder(false);
+              }
             } else {
-              let dynamicForm = props.selectedAction.worflowActivityInputs;
+              let dynamicForm =
+                selectedActivityOptionFormData.worflowActivityInputs;
               let newFormCollection = dynamicForm.map((form) => ({
                 id: form.id ? form.id : "",
                 inputType: form.inputType,
@@ -85,41 +134,24 @@ function ActionForm(props) {
               }));
               setFormData({
                 id: "",
-                uniqueActivityId: props.selectedAction.uniqueActivityId,
-                name: props.selectedAction.name,
+                uniqueActivityId:
+                  selectedActivityOptionFormData.uniqueActivityId,
+                name: selectedActivityOptionFormData.name,
                 aimWorkflowId: workflowId,
                 parentActivityId: activityId,
                 configurationDataList: newFormCollection,
               });
               setComponentLoadder(false);
             }
+          })
+          .catch((err) => {
+            console.log(err);
           });
-        } else {
-          let dynamicForm = props.selectedAction.worflowActivityInputs;
-          let newFormCollection = dynamicForm.map((form) => ({
-            id: form.id ? form.id : "",
-            inputType: form.inputType,
-            name: form.name,
-            remarksForInput: form.remarksForInput,
-            inputIntelliSenseOptions: form.inputIntelliSenseOptions,
-            value: form.value ? form.value : "",
-          }));
-          setFormData({
-            id: "",
-            uniqueActivityId: props.selectedAction.uniqueActivityId,
-            name: props.selectedAction.name,
-            aimWorkflowId: workflowId,
-            parentActivityId: activityId,
-            configurationDataList: newFormCollection,
-          });
-          setComponentLoadder(false);
-        }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        console.log(error);
       });
-    return false;
-  }, [props]);
+  }, []);
 
   const handleTemplate = (e, editor, index, name) => {
     const list = {
@@ -158,7 +190,9 @@ function ActionForm(props) {
           settoasterServerity("success");
           setTimeout(() => {
             setshowLoadder(false);
-            props.setReloadPage("YES");
+            props.history.push(
+              `/workflow/${workflowId}/${activityId}/${uActivityId}/actions`
+            );
           }, 6000);
         })
         .catch((err) => {
@@ -176,7 +210,9 @@ function ActionForm(props) {
           settoasterServerity("success");
           setTimeout(() => {
             setshowLoadder(false);
-            props.setReloadPage("YES");
+            props.history.push(
+              `/workflow/${workflowId}/${activityId}/${uActivityId}/actions`
+            );
           }, 6000);
         })
         .catch((err) => {
@@ -189,117 +225,152 @@ function ActionForm(props) {
   }
 
   function gotoPreviousPage() {
-    props.history.push(`/workflow/${workflowId}/activities`);
+    props.history.push(
+      `/workflow/${workflowId}/${activityId}/${uActivityId}/actions`
+    );
   }
 
   return (
-    <>
+    <div className="innerpage-container">
+      <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
+        <LinkTo
+          color="inherit"
+          href="#"
+          to={`/home/dashboard`}
+          className="inactive"
+        >
+          Home
+        </LinkTo>
+        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+          Work Flow
+        </LinkTo>
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/workflow/view-workflow/${workflowId}`}
+          className="inactive"
+        >
+          {selectedWorkflowDetails ? selectedWorkflowDetails.name : ""}
+        </LinkTo>
+        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+          Activity name
+        </LinkTo>
+        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+          {selectedActionForm ? selectedActionForm.name : ""}
+        </LinkTo>
+        <LinkTo color="textPrimary" href="#" to="#" className="active">
+          Configure
+        </LinkTo>
+      </Breadcrumbs>
       {componentLoadder ? (
         <ComponentLoadderComponent></ComponentLoadderComponent>
       ) : (
-        // <ValidatorForm
-        //   className={`global-form full-height`}
-        //   onSubmit={formSubmit}
-        // >
-        //   <Card className="question-type-card">
-        //     <CardContent className="scrollable-card-actions">
-        //       <Typography gutterBottom variant="h6" component="h6">
-        //         Selected action details{" "}
-        //       </Typography>
-        //       <div className="card-form">
-        //         <Grid container item xs={12} spacing={3} direction="column">
-        //           {formData.configurationDataList &&
-        //           formData.configurationDataList.length > 0
-        //             ? formData.configurationDataList.map((act, index) => {
-        //                 if (act.inputType == "Text") {
-        //                   return (
-        //                     <Grid
-        //                       item
-        //                       xs={12}
-        //                       container
-        //                       key={`inputText_${index}`}
-        //                     >
-        //                       <Grid item xs={3}>
-        //                         <label>{act.remarksForInput}</label>
-        //                       </Grid>
-        //                       <Grid item xs={9}>
-        //                         <TextValidator
-        //                           variant="outlined"
-        //                           validators={["required"]}
-        //                           errorMessages={[
-        //                             `Please enter ${act.remarksForInput}`,
-        //                           ]}
-        //                           fullWidth
-        //                           id={`${act.name}_${index}`}
-        //                           placeholder={act.remarksForInput}
-        //                           name="value"
-        //                           onChange={(e) => handleInputChange(e, index)}
-        //                           value={act.value}
-        //                           InputLabelProps={{ shrink: false }}
-        //                           className="global-input action-form-input"
-        //                         />
-        //                       </Grid>
-        //                     </Grid>
-        //                   );
-        //                 }
-        //                 if (act.inputType == "Template") {
-        //                   return (
-        //                     <Grid
-        //                       item
-        //                       xs={12}
-        //                       container
-        //                       key={`inputTemplate_${index}`}
-        //                     >
-        //                       <Grid item xs={3}>
-        //                         <label>{act.remarksForInput}</label>
-        //                       </Grid>
-        //                       <Grid item xs={9}>
-        //                         <CKEditor
-        //                           editor={ClassicEditor}
-        //                           data={act.value}
-        //                           id={act.name}
-        //                           name="value"
-        //                           onChange={(event, editor) => {
-        //                             handleTemplate(
-        //                               event,
-        //                               editor.getData(),
-        //                               index,
-        //                               "value"
-        //                             );
-        //                           }}
-        //                         />
-        //                       </Grid>
-        //                     </Grid>
-        //                   );
-        //                 }
-        //               })
-        //             : ""}
-        //         </Grid>
-        //       </div>
-        //     </CardContent>
-        //     <CardActions className="action-container">
-        //       <div className={`form-buttons-container`}>
-        //         <Button
-        //           variant="contained"
-        //           type="submit"
-        //           className="global-submit-btn"
-        //           disabled={showLoadder}
-        //         >
-        //           {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-        //         </Button>
-        //         <Button
-        //           variant="contained"
-        //           type="button"
-        //           className="global-cancel-btn"
-        //           onClick={gotoPreviousPage}
-        //         >
-        //           Cancel
-        //         </Button>
-        //       </div>
-        //     </CardActions>
-        //   </Card>
-        // </ValidatorForm>
-        <ActionDetailsForm formData={formData}></ActionDetailsForm>
+        <ValidatorForm
+          className={`global-form full-height`}
+          onSubmit={formSubmit}
+        >
+          <Card className="question-type-card">
+            <CardContent className="scrollable-card-actions">
+              <div className="card-form">
+                <Grid container item xs={12} spacing={3} direction="column">
+                  {formData.configurationDataList &&
+                  formData.configurationDataList.length > 0
+                    ? formData.configurationDataList.map((act, index) => {
+                        if (act.inputType == "Text") {
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              container
+                              key={`inputText_${index}`}
+                            >
+                              <Grid item xs={3}>
+                                <label>{act.remarksForInput}</label>
+                              </Grid>
+                              <Grid item xs={9}>
+                                <TextValidator
+                                  variant="outlined"
+                                  validators={["required"]}
+                                  errorMessages={[
+                                    `Please enter ${act.remarksForInput}`,
+                                  ]}
+                                  fullWidth
+                                  id={`${act.name}_${index}`}
+                                  placeholder={act.remarksForInput}
+                                  name="value"
+                                  onChange={(e) => handleInputChange(e, index)}
+                                  value={act.value}
+                                  InputLabelProps={{ shrink: false }}
+                                  className="global-input action-form-input"
+                                />
+                              </Grid>
+                            </Grid>
+                          );
+                        }
+                        if (act.inputType == "Template") {
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              container
+                              key={`inputTemplate_${index}`}
+                            >
+                              <Grid item xs={3}>
+                                <label>{act.remarksForInput}</label>
+                              </Grid>
+                              <Grid item xs={9}>
+                                <CKEditor
+                                  editor={ClassicEditor}
+                                  data={act.value}
+                                  id={act.name}
+                                  name="value"
+                                  onChange={(event, editor) => {
+                                    handleTemplate(
+                                      event,
+                                      editor.getData(),
+                                      index,
+                                      "value"
+                                    );
+                                  }}
+                                />
+                              </Grid>
+                            </Grid>
+                          );
+                        }
+                      })
+                    : ""}
+                </Grid>
+              </div>
+            </CardContent>
+            <CardActions className="action-container">
+              <Grid item container xs={12} className={`inner-table-buttons`}>
+                <Grid item xs={3}>
+                  <label>&nbsp;</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <div className={`form-buttons-container`}>
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className="global-submit-btn"
+                      disabled={showLoadder}
+                    >
+                      {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      type="button"
+                      className="global-cancel-btn"
+                      onClick={gotoPreviousPage}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </Grid>
+              </Grid>
+            </CardActions>
+          </Card>
+        </ValidatorForm>
       )}
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
@@ -308,7 +379,7 @@ function ActionForm(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
-    </>
+    </div>
   );
 }
 
