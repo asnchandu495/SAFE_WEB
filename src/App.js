@@ -367,7 +367,7 @@ function App(props) {
           component={AdminContainer}
         ></Route>
         <Route
-          path="/deupdate-designationsignation//:id"
+          path="/designation/update-designation/:id"
           component={AdminContainer}
         ></Route>
         <Route

@@ -106,12 +106,10 @@ function AssignEmergencyContactToUserGroup(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [validEmergencyContactForm, setvalidEmergencyContactForm] = useState(
-    true
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [validEmergencyContactForm, setvalidEmergencyContactForm] =
+    useState(true);
   const [showLoadder, setshowLoadder] = useState(false);
 
   useEffect(() => {
@@ -231,8 +229,9 @@ function AssignEmergencyContactToUserGroup(props) {
                         shrink={false}
                         className="select-label"
                       >
-                        {formData.groupId != "" ? "Select group name" : ""}
+                        {formData.groupId == "" ? "Select group name" : ""}
                       </InputLabel>
+
                       <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
@@ -325,7 +324,7 @@ function AssignEmergencyContactToUserGroup(props) {
                         shrink={false}
                         className="select-label"
                       >
-                        {formData.isActive != "" ? "Select status" : ""}
+                        {formData.isActive == "" ? "Select status" : ""}
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-outlined-label"

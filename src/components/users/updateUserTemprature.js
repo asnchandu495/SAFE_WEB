@@ -158,17 +158,6 @@ function UpdateTempearture(props) {
     data.id = props.SelectedRowId;
     data.temperature = parseFloat(data.temperature);
     data.temperatureUnit = props.loadGlobalSettingsData.temperatureUnit;
-    // let converttemp = data.temperature;
-    // let converttounit = data.temperatureUnit;
-
-    if (data.temperatureUnit == "C") {
-      setconvertTemp(((data.temperature - 32) * 5) / 9);
-    } else {
-      setconvertTemp(data.temperature * (9 / 5) + 32);
-    }
-    // data.temperature = convertedtemperature;
-
-    // console.log(convertedtemperature);
 
     usersApiCall
       .UpdateUserCovidTempearture(data)
@@ -205,7 +194,7 @@ function UpdateTempearture(props) {
           onSubmit={submitUserShiftInform}
         >
           <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-            Update user tempearture
+            Update user temperature
           </DialogTitle>
           <DialogContent dividers>
             <Grid container spacing={3}>

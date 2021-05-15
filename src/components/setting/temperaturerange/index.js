@@ -51,7 +51,7 @@ function TemperatureRange(props) {
   const uomTemp = [
     {
       id: "F",
-      uomTempvalue: "Farenheit",
+      uomTempvalue: "Fahrenheit",
     },
     {
       id: "C",
@@ -69,9 +69,8 @@ function TemperatureRange(props) {
   const [covidStatelist, setcovidStatelist] = useState([]);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [globalsettingsId, setglobalsettingsId] = useState();
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [tempsections, settempsections] = useState({

@@ -47,9 +47,8 @@ function GlobalSetting(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [formData, SetformData] = useState({
     id: "",
     geoFencingTolerance: 0,
@@ -231,7 +230,9 @@ function GlobalSetting(props) {
     finalData.durationToLockUserAccount = parseInt(
       formData.durationToLockUserAccount
     );
-    finalData.automatedCheckoutTime = parseInt(formData.automatedCheckoutTime);
+    finalData.automatedCheckoutTime = parseFloat(
+      formData.automatedCheckoutTime
+    );
     finalData.selfHealthCheckReminder = parseInt(
       formData.selfHealthCheckReminder
     );
@@ -752,10 +753,15 @@ function GlobalSetting(props) {
                   <FormControl variant="outlined">
                     <TextValidator
                       variant="outlined"
-                      validators={["required", "matchRegexp:^[0-9]*$"]}
+                      validators={[
+                        "required",
+                        "matchRegexp:^[0-9]*$",
+                        "maxNumber:999",
+                      ]}
                       errorMessages={[
                         "Please enter unlock duration of user account",
                         "Only numbers are allowed",
+                        "Maximum allowed 3 digits",
                       ]}
                       id="outlined-adornment-weight"
                       name="durationToLockUserAccount"

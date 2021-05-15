@@ -620,6 +620,7 @@ const mapDispatchToProps = {
   ChangeQuestionnaireUserStatus:
     AssignquestionaireAction.ChangeQuestionnaireStatus,
   DeleteUser: UserAction.deleteUser,
+  DelteUserGroup: UserGroupAction.deleteUserGroup,
 
   DelteUserDesignation: DesignationAction.deleteUserDesignation,
   DelteCovidState: CovidStateAction.deleteCovidState,

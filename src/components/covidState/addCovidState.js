@@ -76,9 +76,8 @@ function CreateCovidState(props) {
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [formData, SetformData] = useState({
     id: "",
@@ -271,12 +270,12 @@ function CreateCovidState(props) {
                           validators={[
                             "required",
                             "matchRegexp:^[a-zA-Z ]*$",
-                            "matchRegexp:^.{0,50}$",
+                            "matchRegexp:^.{0,60}$",
                           ]}
                           errorMessages={[
                             "Please enter covid state name",
                             "Special charcters are not allowed",
-                            "Maximum 50 characters",
+                            "Maximum 60 characters",
                           ]}
                           fullWidth
                           id="stateName"
@@ -343,8 +342,8 @@ function CreateCovidState(props) {
                       <Grid item xs={5}>
                         <TextValidator
                           variant="outlined"
-                          validators={["matchRegexp:^.{0,50}$"]}
-                          errorMessages={["Maximum 50 characters"]}
+                          validators={["matchRegexp:^.{0,60}$"]}
+                          errorMessages={["Maximum 60 characters"]}
                           fullWidth
                           id="message"
                           placeholder="Add message"

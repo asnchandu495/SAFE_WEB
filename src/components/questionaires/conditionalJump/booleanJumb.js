@@ -36,9 +36,8 @@ function BooleanJump(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [reloadPage, setReloadPage] = useState("false");
 
   useEffect(() => {
@@ -58,6 +57,7 @@ function BooleanJump(props) {
           let filteredQuestions = res.filter((r) => {
             return r.id != questionId;
           });
+          console.log(getBooleanDetails);
           setSelectedSurveyQuestions(filteredQuestions);
           setselectedQuestionDetails(getBooleanDetails);
           setsurveyDetails(getsurveyDetails);
@@ -170,6 +170,23 @@ function BooleanJump(props) {
                     className="jump-form-content"
                     spacing={1}
                   >
+                    <Grid item container xs={12}>
+                      <Grid item xs={2}>
+                        <label className="">Question Name </label>
+                      </Grid>
+                      <Grid container xs={8} spacing={2}>
+                        <Grid item container xs={12}>
+                          <Grid
+                            item
+                            xs={4}
+                            className="center-align-w-padding-v"
+                          >
+                            {selectedQuestionDetails.question}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+
                     <Grid item container xs={12}>
                       <Grid item xs={2}>
                         <label className="required">Select question</label>

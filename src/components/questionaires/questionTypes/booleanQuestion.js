@@ -36,9 +36,8 @@ function BooleanQuestion(props) {
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [addQuestionData, setAddQuestionData] = useState({
     id: "",
@@ -97,7 +96,8 @@ function BooleanQuestion(props) {
 
   const navigateToQuestionType = () => {
     setTimeout(() => {
-      props.setGotoAddQuestion(false);
+      // props.setGotoAddQuestion(false);
+      props.history.push(`/questionaires/view-questions/${props.surveyIdURL}`);
     }, 1000);
   };
 

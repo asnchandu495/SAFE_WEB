@@ -24,9 +24,8 @@ function AddDesignation(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
@@ -234,13 +233,19 @@ function AddDesignation(props) {
                       <TextValidator
                         variant="outlined"
                         id="outlined-adornment-weight"
-                        validators={["required", "matchRegexp:^[0-9]*$"]}
+                        validators={[
+                          "required",
+                          "matchRegexp:^[0-9]*$",
+
+                          "maxNumber:99",
+                        ]}
                         errorMessages={[
                           "Please enter attendance grace time",
-                          "Alphabets and special characters are not allowed",
+                          "Numbers allowed",
+                          "Only two digits are allowed",
                         ]}
                         name="attendanceGracetime"
-                        type={"text"}
+                        type={"number"}
                         value={
                           formData.attendanceGracetime
                             ? formData.attendanceGracetime

@@ -12,6 +12,7 @@ import * as CovidStateAction from "../../Redux/Action/covidStateAction";
 import PropTypes from "prop-types";
 import HomeIcon from "@material-ui/icons/Home";
 import VisibilityIcon from "@material-ui/icons/Visibility";
+import DeleteIcon from "@material-ui/icons/Delete";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import UserService from "../../services/usersService";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
@@ -36,26 +37,20 @@ function CovidState(props) {
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [openCovidStateInfoModal, setopenCovidStateInfoModal] = useState(false);
   const [openshiftInfoModal, setopenshiftInfoModal] = useState(false);
-  const [openuserTemepratureModal, setopenuserTemepratureModal] = useState(
-    false
-  );
+  const [openuserTemepratureModal, setopenuserTemepratureModal] =
+    useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [SelectedRowId, setSelectedRowId] = useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [componentLoadder, setcomponentLoadder] = useState(false);
 
   useEffect(() => {
@@ -142,6 +137,17 @@ function CovidState(props) {
                     onClick={() => handleClickViewUsers(thisRowData[0])}
                   ></Button>
                 </Tooltip>
+                <Tooltip title="View">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<DeleteIcon />}
+                    className={`delete-icon`}
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
+                  ></Button>
+                </Tooltip>
               </div>
             );
           }
@@ -158,7 +164,9 @@ function CovidState(props) {
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
-    setConfirmationModalActionType("DeleteCovidState");
+    setConfirmationModalActionType("DeleteCovidStates");
+    // setConfirmationModalActionType("DeleteCovidState");
+
     setConfirmationHeaderTittle("Delete Covid State");
     setConfirmationDialogContextText(
       `Are you sure you want to delete ${value[1]} ?`
