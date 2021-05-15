@@ -134,27 +134,22 @@ function Workflow(props) {
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
           if (thisRowData) {
-            return (
-              <span>{thisRowData[3] == false ? "Inactive" : "Active"}</span>
-            );
+            return <span>{thisRowData[3] ? "Active" : "Inactive"}</span>;
           }
         },
       },
     },
 
     {
-      label: "Status",
+      label: "Is Draft",
       name: "isSaveAsDraft",
       options: {
-        display: "excluded",
         filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
           if (thisRowData) {
-            return (
-              <span>{thisRowData[4] == false ? "Inactive" : "Active"}</span>
-            );
+            return <span>{thisRowData[4] ? "Yes" : "N0"}</span>;
           }
         },
       },
@@ -497,16 +492,8 @@ function Workflow(props) {
         >
           Home
         </LinkTo>
-        <LinkTo
-          color="textPrimary"
-          href="#"
-          to={`/workflow/allWorkflow`}
-          className="inactive"
-        >
-          Workflow
-        </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="active">
-          List Workflow
+        <LinkTo color="textPrimary" href="#" className="active">
+          Workflows
         </LinkTo>
       </Breadcrumbs>
       {componentLoadder ? (

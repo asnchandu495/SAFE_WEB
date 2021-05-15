@@ -58,7 +58,6 @@ import ViewTeam from "./components/teams/ViewTeam";
 import ListofQuestions from "./components/questionaires/listofQuestions";
 import ViewQuestionaire from "./components/questionaires/viewQuestionaire";
 import PublishQuestionnaire from "./components/questionaires/publishQuestionnaire";
-
 import AssignQuestionaires from "./components/questionaires/AssignQuestionaires";
 import BooleanJump from "./components/questionaires/conditionalJump/booleanJumb";
 import NumericJump from "./components/questionaires/conditionalJump/numericJump";
@@ -75,6 +74,7 @@ import CreateWorkflow from "./components/workflow/CreateWorkflow";
 import AddActivity from "./components/workflow/addActivity";
 import AddActions from "./components/workflow/addActions";
 import ViewWorkflow from "./components/workflow/ViewWorkflow";
+import ActionForm from "./components/workflow/actionForm";
 
 function App(props) {
   const AuthContainer = () => {
@@ -303,6 +303,11 @@ function App(props) {
           exact
           path="/workflow/:wid/:aid/:uaid/actions"
           component={AddActions}
+        ></Route>
+        <Route
+          exact
+          path="/workflow/:wid/:aid/:uaid/:actionId/configure-action"
+          component={ActionForm}
         ></Route>
       </AdminLayout>
     );
@@ -533,6 +538,11 @@ function App(props) {
         <Route
           exact
           path="/workflow/:wid/:aid/:uaid/actions"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/workflow/:wid/:aid/:uaid/:actionId/configure-action"
           component={AdminContainer}
         ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />

@@ -371,12 +371,12 @@ function AddActivity(props) {
         <LinkTo
           color="textPrimary"
           href="#"
-          to={`/workflow/allWorkflow`}
+          to={`/workflow/view-workflow/${workflowId}`}
           className="inactive"
         >
           {workflowDetails ? workflowDetails.workFlowName : ""}
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="active">
+        <LinkTo color="textPrimary" href="#" className="active">
           Activities
         </LinkTo>
       </Breadcrumbs>
