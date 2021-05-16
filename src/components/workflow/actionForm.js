@@ -9,7 +9,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import Editor from "ckeditor5-custom-build/build/ckeditor";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import workflowService from "../../services/workflowService";
@@ -20,6 +21,33 @@ import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 const initialState = {
   mouseX: null,
   mouseY: null,
+};
+
+const editorConfiguration = {
+  toolbar: [
+    "heading",
+    "|",
+    "bold",
+    "italic",
+    "underline",
+    "bulletedList",
+    "numberedList",
+    "link",
+    "strikethrough",
+    "fontcolor",
+    "FontBackgroundColor",
+    "FontSize",
+    "Alignment",
+    "fontFamily",
+    "insertTable",
+  ],
+  fontSize: {
+    options: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  },
+  fontFamily: {
+    options: ["default", "Arial", "Times New Roman"],
+    supportAllValues: true,
+  },
 };
 
 function ActionForm(props) {
@@ -35,9 +63,8 @@ function ActionForm(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [selectedActionForm, setSelectedActionForm] = useState();
   const [selectedWorkflowDetails, setSelectedWorkflowDetails] = useState();
   const [stateContextMenu, setStateContextMenu] = useState(initialState);
@@ -377,10 +404,20 @@ function ActionForm(props) {
                                 onContextMenu={handleClickContextMenu}
                               >
                                 <CKEditor
-                                  editor={ClassicEditor}
+                                  editor={Editor}
+                                  config={editorConfiguration}
                                   data={act.value}
                                   id={act.name}
                                   name="value"
+                                  onReady={(editor) => {
+                                    editor.editing.view.change((writer) => {
+                                      writer.setStyle(
+                                        "height",
+                                        "250px",
+                                        editor.editing.view.document.getRoot()
+                                      );
+                                    });
+                                  }}
                                   onChange={(event, editor) => {
                                     handleTemplate(
                                       event,
