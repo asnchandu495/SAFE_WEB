@@ -50,9 +50,8 @@ function SingleJump(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [answerChoices, setAnswerChoices] = useState([]);
   const [reloadPage, setReloadPage] = useState("false");
@@ -165,6 +164,7 @@ function SingleJump(props) {
           settoasterServerity("success");
           setTimeout(function () {
             setshowLoadder(false);
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setReloadPage("true");
           }, 5000);
         })
@@ -183,6 +183,7 @@ function SingleJump(props) {
           settoasterServerity("success");
           setTimeout(function () {
             setshowLoadder(false);
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setReloadPage("true");
           }, 5000);
         })

@@ -23,6 +23,7 @@ import * as QuestionaireAction from "../../Redux/Action/questionaireAction";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 function AdoptQuestionnaire(props) {
   const questionaireApiCall = new questionaireService();
@@ -34,9 +35,8 @@ function AdoptQuestionnaire(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [QuestionaireList, setQuestionaireList] = useState();
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [allLanguages, setAllLanguages] = useState([]);
   const [showLoadder, setshowLoadder] = useState(false);
   const [formData, setformData] = useState({
@@ -46,6 +46,9 @@ function AdoptQuestionnaire(props) {
     title: "",
   });
   const [selectedQuestionOption, setSelectedQuestionOption] = useState("");
+  const [formFieldValidation, setformFieldValidation] = useState({
+    userquestionnaire: false,
+  });
 
   useEffect(() => {
     Promise.all([
@@ -84,6 +87,16 @@ function AdoptQuestionnaire(props) {
     setSelectedQuestionOption(e.target.value);
   }
 
+  function adoptQuestionnaire(e) {
+    e.preventDefault();
+    SelectUserQuestionnaire();
+    if (selectedUserQuestionnaire) {
+      submitForm();
+    } else {
+      return false;
+    }
+  }
+
   function submitForm() {
     setshowLoadder(true);
     let data = formData;
@@ -116,6 +129,20 @@ function AdoptQuestionnaire(props) {
       });
   }
 
+  function SelectUserQuestionnaire() {
+    if (selectedUserQuestionnaire) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["userquestionnaire"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["userquestionnaire"]: true,
+      }));
+    }
+  }
+
   return (
     <div className="innerpage-container">
       <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
@@ -143,7 +170,10 @@ function AdoptQuestionnaire(props) {
       {!componentLoadder ? (
         <>
           <Paper className={`main-paper`}>
-            <ValidatorForm className={`global-form`} onSubmit={submitForm}>
+            <ValidatorForm
+              className={`global-form`}
+              onSubmit={adoptQuestionnaire}
+            >
               <Grid container spacing={3}>
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
@@ -187,7 +217,7 @@ function AdoptQuestionnaire(props) {
                             : []
                         }
                         getOptionLabel={(option) => option.name}
-                        defaultValue="#"
+                        defaultValue={selectedUserQuestionnaire}
                         onChange={handleChangeQuestionnaire}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -198,7 +228,14 @@ function AdoptQuestionnaire(props) {
                             placeholder="Select questionnaire"
                           />
                         )}
-                      />{" "}
+                      />
+                      {formFieldValidation.userquestionnaire ? (
+                        <FormHelperText className="error-msg">
+                          Please select questionnaire{" "}
+                        </FormHelperText>
+                      ) : (
+                        ""
+                      )}
                     </FormControl>
                   </Grid>
                 </Grid>

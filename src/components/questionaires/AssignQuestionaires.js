@@ -108,22 +108,17 @@ function AssignQuestionaires(props) {
   const [assignedqList, setassignedqList] = useState([]);
 
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
 
   const [formData, SetformData] = useState({
     groupdetails: {
@@ -146,6 +141,12 @@ function AssignQuestionaires(props) {
       name: "",
     },
     status: "",
+  });
+
+  const [formFieldValidation, setformFieldValidation] = useState({
+    selectedUserData: false,
+    userquestionnaire: false,
+    status: false,
   });
 
   const [Modalopen, setModalOpen] = useState(false);
@@ -195,6 +196,63 @@ function AssignQuestionaires(props) {
       `Are you sure you want to cancel assignment  to user group ?`
     );
   };
+
+  function SelectUserQuestionnaire() {
+    if (selectedUserQuestionnaire) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["userquestionnaire"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["userquestionnaire"]: true,
+      }));
+    }
+  }
+  function SelectUserGroup() {
+    if (selectedUserData) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["selectedUserData"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["selectedUserData"]: true,
+      }));
+    }
+  }
+  function SelectStatus() {
+    if (selectedUserQuestionnaire) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["status"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["status"]: true,
+      }));
+    }
+  }
+
+  function assignQuestionnaire(e) {
+    e.preventDefault();
+    SelectUserQuestionnaire();
+    SelectUserGroup();
+    SelectStatus();
+    if (
+      selectedUserQuestionnaire &&
+      selectedUserData &&
+      formData.status !== ""
+    ) {
+      AssignFiltersForm();
+    } else {
+      return false;
+    }
+  }
+
   function AssignFiltersForm() {
     setshowLoadder(true);
     var selectedData = formData;
@@ -420,7 +478,7 @@ function AssignQuestionaires(props) {
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Assign Questionnaire to User Group
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
+        <ValidatorForm className={`global-form`} onSubmit={assignQuestionnaire}>
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
@@ -438,7 +496,7 @@ function AssignQuestionaires(props) {
                             : []
                         }
                         getOptionLabel={(option) => option.groupName}
-                        defaultValue="#"
+                        defaultValue={selectedUserData}
                         onChange={handleChangeGroup}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -450,6 +508,13 @@ function AssignQuestionaires(props) {
                           />
                         )}
                       />{" "}
+                      {formFieldValidation.selectedUserData ? (
+                        <FormHelperText className="error-msg">
+                          Please select usergroup{" "}
+                        </FormHelperText>
+                      ) : (
+                        ""
+                      )}
                     </FormControl>
                   </Grid>
                 </Grid>
@@ -468,7 +533,7 @@ function AssignQuestionaires(props) {
                             : []
                         }
                         getOptionLabel={(option) => option.name}
-                        defaultValue="#"
+                        defaultValue={selectedUserQuestionnaire}
                         onChange={handleChangeQuestionnaire}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -480,6 +545,13 @@ function AssignQuestionaires(props) {
                           />
                         )}
                       />{" "}
+                      {formFieldValidation.userquestionnaire ? (
+                        <FormHelperText className="error-msg">
+                          Please select questionnaire{" "}
+                        </FormHelperText>
+                      ) : (
+                        ""
+                      )}
                     </FormControl>
                   </Grid>
                 </Grid>
@@ -515,6 +587,13 @@ function AssignQuestionaires(props) {
                           : ""}
                       </Select>
                     </FormControl>
+                    {formData.status == "" ? (
+                      <FormHelperText className="error-message-select">
+                        Please select status{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

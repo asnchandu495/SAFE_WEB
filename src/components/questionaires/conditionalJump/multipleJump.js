@@ -52,9 +52,8 @@ function MultipleJump(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [answerChoices, setAnswerChoices] = useState([]);
   const [reloadPage, setReloadPage] = useState("false");
@@ -101,9 +100,10 @@ function MultipleJump(props) {
               let selectedAnswerChoice = element.answerChoices;
               let newAnswerChoices = [];
               selectedAnswerChoice.forEach((ch) => {
-                let selectedMainChoiceInfo = choiceQuestionDetails.surveyResponseChoices.find(
-                  (cho) => cho.optionId == ch.option
-                );
+                let selectedMainChoiceInfo =
+                  choiceQuestionDetails.surveyResponseChoices.find(
+                    (cho) => cho.optionId == ch.option
+                  );
                 newAnswerChoices.push({
                   option: selectedMainChoiceInfo.option,
                   optionId: ch.option,
@@ -117,7 +117,8 @@ function MultipleJump(props) {
                 goToSurveyQuestionId: element.goToSurveyQuestionId,
               });
             });
-            choiceQuestionMultipleDetails.multiChoiceConditionalQuestions = newChoicesArray;
+            choiceQuestionMultipleDetails.multiChoiceConditionalQuestions =
+              newChoicesArray;
             setConditionalJump(choiceQuestionMultipleDetails);
             setReloadPage("false");
             setcomponentLoadder(false);
@@ -237,6 +238,7 @@ function MultipleJump(props) {
 
           setTimeout(function () {
             setshowLoadder(false);
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setReloadPage("true");
           }, 5000);
         })
@@ -255,6 +257,7 @@ function MultipleJump(props) {
           settoasterServerity("success");
           setTimeout(function () {
             setshowLoadder(false);
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setReloadPage("true");
           }, 5000);
         })

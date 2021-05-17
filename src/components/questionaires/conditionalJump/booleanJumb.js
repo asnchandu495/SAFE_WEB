@@ -92,6 +92,7 @@ function BooleanJump(props) {
           setToasterMessage("Conditional jump is updated.");
           settoasterServerity("success");
           setTimeout(function () {
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setshowLoadder(false);
             setReloadPage("true");
           }, 5000);
@@ -110,6 +111,7 @@ function BooleanJump(props) {
           setToasterMessage("Conditional jump is added.");
           settoasterServerity("success");
           setTimeout(function () {
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setshowLoadder(false);
             setReloadPage("true");
           }, 5000);

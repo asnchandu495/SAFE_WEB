@@ -55,9 +55,8 @@ function NumericJump(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [reloadPage, setReloadPage] = useState("false");
 
   const GreenCheckbox = withStyles({
@@ -177,6 +176,7 @@ function NumericJump(props) {
           settoasterServerity("success");
           setTimeout(function () {
             setshowLoadder(false);
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setReloadPage("true");
           }, 5000);
         })
@@ -195,6 +195,7 @@ function NumericJump(props) {
           settoasterServerity("success");
           setTimeout(function () {
             setshowLoadder(false);
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setReloadPage("true");
           }, 5000);
         })

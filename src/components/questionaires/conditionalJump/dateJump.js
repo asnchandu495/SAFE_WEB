@@ -64,9 +64,8 @@ function DateJump(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [reloadPage, setReloadPage] = useState("false");
 
   const GreenCheckbox = withStyles({
@@ -189,6 +188,7 @@ function DateJump(props) {
           setToasterMessage("Conditional jump is updated.");
           settoasterServerity("success");
           setTimeout(function () {
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setshowLoadder(false);
             setReloadPage("true");
           }, 5000);
@@ -207,6 +207,7 @@ function DateJump(props) {
           setToasterMessage("Conditional jump is added.");
           settoasterServerity("success");
           setTimeout(function () {
+            props.history.push("/questionaires/view-questions/" + surveyId);
             setshowLoadder(false);
             setReloadPage("true");
           }, 5000);

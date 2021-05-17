@@ -166,9 +166,8 @@ function AddLocation(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [floorInfoData, setfloorInfoData] = useState([]);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
 
@@ -213,7 +212,7 @@ function AddLocation(props) {
       SetformData((logInForm) => ({
         ...logInForm,
         [name]: e.target.checked,
-        ["densityThreasholdHighTo"]: -1,
+        ["densityThreasholdHighTo"]: 0,
       }));
     } else {
       SetformData((logInForm) => ({
@@ -443,12 +442,12 @@ function AddLocation(props) {
                       variant="outlined"
                       validators={[
                         "required",
-                        "matchRegexp:^[a-zA-Z0-9]*$",
+                        // "matchRegexp:^[a-zA-Z0-9]*$",
                         "matchRegexp:^.{0,50}$",
                       ]}
                       errorMessages={[
                         "Please enter location name",
-                        "Special charcters are not allowed",
+                        // "Special charcters are not allowed",
                         "Maximum 60 characters",
                       ]}
                       fullWidth

@@ -51,9 +51,8 @@ function ConfigureHealth(props) {
   const [toasterServerity, settoasterServerity] = useState("");
   const [UserList, setUserList] = useState([]);
   const [selfHealthChecks, setSelfHealthChecks] = useState([]);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [searchForm, setSearchForm] = useState({
     userId: "",
     fromDate: moment().toISOString(),
@@ -187,6 +186,7 @@ function ConfigureHealth(props) {
 
   const handleChangeSearchForm = (getSelectedVal, name) => {
     let thisValue = "";
+    var nextday = "";
     if (name == "userId") {
       if (getSelectedVal) {
         thisValue = getSelectedVal.id;
@@ -196,6 +196,10 @@ function ConfigureHealth(props) {
       }
     } else {
       thisValue = moment(getSelectedVal).toISOString();
+
+      console.log(moment(thisValue).add(1, "days").toISOString());
+      nextday = moment(thisValue).add(1, "days").toISOString();
+      console.log(nextday);
     }
     setSearchForm((searchForm) => ({
       ...searchForm,
