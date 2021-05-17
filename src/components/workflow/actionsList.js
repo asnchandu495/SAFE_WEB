@@ -69,8 +69,11 @@ function ActionList(props) {
                   alignItems="flex-start"
                 >
                   <ListItemText
-                    secondary={<p className="question-name">{act.name}</p>}
+                    secondary={
+                      <p className="question-name">{act.friendlyName}</p>
+                    }
                   />
+                  <DoneAllIcon className="already-saved"></DoneAllIcon>
                   {/* {act.isSaved ? (
                 <DoneAllIcon className="already-saved"></DoneAllIcon>
               ) : (

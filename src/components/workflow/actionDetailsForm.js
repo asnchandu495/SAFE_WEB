@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 
 function ActionDetailsForm(props) {
-  useEffect(() => {}, [props]);
+  useEffect(() => {
+    console.log(props.formData.configurationDataList);
+  }, [props]);
   return (
     <div>
       {props.formData.configurationDataList.map((item) => {
