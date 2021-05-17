@@ -75,6 +75,7 @@ import AddActivity from "./components/workflow/addActivity";
 import AddActions from "./components/workflow/addActions";
 import ViewWorkflow from "./components/workflow/ViewWorkflow";
 import ActionForm from "./components/workflow/actionForm";
+import AddActionsNew from "./components/workflow/addActionNew";
 
 function App(props) {
   const AuthContainer = () => {
@@ -299,10 +300,15 @@ function App(props) {
           component={ViewWorkflow}
         ></Route>
         <Route path="/workflow/:wid/activities" component={AddActivity}></Route>
-        <Route
+        {/* <Route
           exact
           path="/workflow/:wid/:aid/:uaid/actions"
           component={AddActions}
+        ></Route> */}
+        <Route
+          exact
+          path="/workflow/:wid/:aid/:uaid/actions"
+          component={AddActionsNew}
         ></Route>
         <Route
           exact
@@ -535,6 +541,11 @@ function App(props) {
           path="/workflow/:wid/activities"
           component={AdminContainer}
         ></Route>
+        {/* <Route
+          exact
+          path="/workflow/:wid/:aid/:uaid/actions"
+          component={AdminContainer}
+        ></Route> */}
         <Route
           exact
           path="/workflow/:wid/:aid/:uaid/actions"
