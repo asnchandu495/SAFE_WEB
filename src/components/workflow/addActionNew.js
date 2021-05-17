@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo, withRouter } from "react-router-dom";
 import Paper from "@material-ui/core/Paper";
-import ActionForm from "./actionForm";
+import ActionFormNew from "./actionFormNew";
 import ActionList from "./actionsList";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import workflowService from "../../services/workflowService";
@@ -122,7 +122,33 @@ function AddActionsNew(props) {
       {componentLoadder ? (
         <ComponentLoadderComponent></ComponentLoadderComponent>
       ) : (
-        <h4>Welcome</h4>
+        <Paper className="main-paper main-paper-add-question">
+          <Grid container spacing={0}>
+            <Grid item xs={12} sm={3} className="list-questions-container">
+              <Paper className="list-questions">
+                <ActionList
+                  allActivityOptions={allActivityOptions}
+                  setSelectedAction={setSelectedAction}
+                  setReloadPage={setReloadPage}
+                  reloadPage={reloadPage}
+                ></ActionList>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={9}>
+              <Paper className="add-new-question">
+                {selectedAction ? (
+                  <ActionFormNew
+                    selectedAction={selectedAction}
+                    setReloadPage={setReloadPage}
+                    reloadPage={reloadPage}
+                  ></ActionFormNew>
+                ) : (
+                  "Please select an action from the list"
+                )}
+              </Paper>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
     </div>
   );
