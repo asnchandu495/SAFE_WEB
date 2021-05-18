@@ -1,4 +1,5 @@
 import React, { useState, Fragment, useEffect } from "react";
+import { Link as LinkTo, withRouter } from "react-router-dom";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -11,10 +12,26 @@ import SearchIcon from "@material-ui/icons/Search";
 import DoneAllIcon from "@material-ui/icons/DoneAll";
 import { useParams } from "react-router-dom";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import workflowService from "../../services/workflowService";
 
 function ActionList(props) {
+  const workflowId = props.match.params.wid;
+  const activityId = props.match.params.aid;
+  const uActivityId = props.match.params.uaid;
+  const actionId = props.match.params.actionId;
+  const workflowApiCall = new workflowService();
+
   const [selectedIndex, setSelectedIndex] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
+
+  useEffect(() => {
+    workflowApiCall
+      .getOptionsByActivityId(activityId)
+      .then((result) => {})
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   function searchActions(e) {
     var input = e.target.value;
@@ -88,4 +105,4 @@ function ActionList(props) {
   );
 }
 
-export default ActionList;
+export default withRouter(ActionList);
