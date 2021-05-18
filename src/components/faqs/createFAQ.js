@@ -26,9 +26,8 @@ function CreateFAQ(props) {
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [formData, SetformData] = useState({
     id: "",

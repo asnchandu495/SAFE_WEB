@@ -287,6 +287,20 @@ function Workflow(props) {
   function selectedStatus(e, value) {
     setselectedStatusData(value);
   }
+  function resetFilterForm() {
+    setsearchformData({
+      UserGroupId: "",
+      IsActive: "",
+    });
+    setComponentLoadder(true);
+    setselectedUserData();
+    props.LoadData().then((result) => {
+      setshowLoadder(false);
+      setModalOpen(false);
+      setComponentLoadder(false);
+    });
+    handleClose();
+  }
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -412,7 +426,7 @@ function Workflow(props) {
                             : []
                         }
                         getOptionLabel={(option) => option.groupName}
-                        // defaultValue="#"
+                        defaultValue={selectedUserData}
                         onChange={selectedUser}
                         name="UserGroupId"
                         filterSelectedOptions
@@ -476,8 +490,16 @@ function Workflow(props) {
             >
               {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
             </Button>
-            <Button onClick={handleClose} className="global-cancel-btn">
-              Cancel
+            {/* <Button onClick={handleClose} className="global-cancel-btn">
+              Reset
+            </Button> */}
+            <Button
+              variant="contained"
+              type="button"
+              className="global-cancel-btn"
+              onClick={resetFilterForm}
+            >
+              Reset
             </Button>
           </DialogActions>
         </ValidatorForm>
