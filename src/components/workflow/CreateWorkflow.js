@@ -25,6 +25,11 @@ import * as workflowAction from "../../Redux/Action/workflowAction";
 import workflowService from "../../services/workflowService";
 
 function CreateWorkflow(props) {
+  const [formFieldValidation, setformFieldValidation] = useState({
+    group: false,
+    from: false,
+    to: false,
+  });
   const workflowId = props.match.params.id;
   const UserGroup = new UserGroupService();
   const CovidStateApi = new CovidStateApiServices();
@@ -45,12 +50,6 @@ function CreateWorkflow(props) {
   const [selectedGroupName, setSelectedGroupName] = useState();
   const [selectedFromCovidState, setSelectedFromCovidState] = useState();
   const [selectedToCovidState, setSelectedToCovidState] = useState();
-
-  const [formFieldValidation, setformFieldValidation] = useState({
-    group: false,
-    from: false,
-    to: false,
-  });
 
   const workflowApiCall = new workflowService();
   const [formData, SetformData] = useState({
@@ -104,6 +103,20 @@ function CreateWorkflow(props) {
     }
   }, []);
 
+  function resetForm() {
+    SetformData({
+      groupId: "",
+      name: "",
+      fromStateId: "",
+      toStateId: "",
+    });
+
+    setSelectedGroupName();
+    setSelectedFromCovidState();
+    setcovidStatelist([]);
+    setSelectedToCovidState();
+  }
+
   function handleChangeGroupName(event, value) {
     setisAlertBoxOpened(true);
     setSelectedGroupName(value);
@@ -134,11 +147,11 @@ function CreateWorkflow(props) {
         ["from"]: true,
       }));
     }
-    // setToCovidStatelist(
-    //   covidStatelist.filter((state) => {
-    //     return state.id != value.id;
-    //   })
-    // );
+    setToCovidStatelist(
+      covidStatelist.filter((state) => {
+        return state.id != value.id;
+      })
+    );
   }
 
   function handleChangeToCovidState(event, value) {
@@ -395,6 +408,7 @@ function CreateWorkflow(props) {
                       {/* <FormControl variant="outlined" fullWidth> */}
                       <Autocomplete
                         id="tags-outlined"
+                        label=""
                         options={
                           userGroupList && userGroupList.length > 0
                             ? userGroupList
@@ -402,9 +416,8 @@ function CreateWorkflow(props) {
                         }
                         getOptionLabel={(option) => option.groupName}
                         onChange={handleChangeGroupName}
-                        defaultValue={
-                          selectedGroupName ? selectedGroupName : ""
-                        }
+                        defaultValue={selectedGroupName}
+                        name="groupId"
                         filterSelectedOptions
                         className="global-input autocomplete-select"
                         renderInput={(params) => (
@@ -532,6 +545,14 @@ function CreateWorkflow(props) {
                           disabled={showLoadder}
                         >
                           {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                        </Button>
+                        <Button
+                          variant="contained"
+                          type="reset"
+                          onClick={resetForm}
+                          className="global-cancel-btn"
+                        >
+                          Reset
                         </Button>
                         <Button
                           variant="contained"
