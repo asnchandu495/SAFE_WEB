@@ -73,7 +73,6 @@ function ActionList(props) {
                       <p className="question-name">{act.friendlyName}</p>
                     }
                   />
-                  <DoneAllIcon className="already-saved"></DoneAllIcon>
                   {/* {act.isSaved ? (
                 <DoneAllIcon className="already-saved"></DoneAllIcon>
               ) : (
