@@ -68,8 +68,11 @@ function ActionFormNew(props) {
   const [selectedActionForm, setSelectedActionForm] = useState();
   const [selectedWorkflowDetails, setSelectedWorkflowDetails] = useState();
   const [stateContextMenu, setStateContextMenu] = useState(initialState);
+  const [stateContextMenuText, setStateContextMenuText] =
+    useState(initialState);
   const [currentEditor, setCurrentEditor] = useState();
   const [selectedActivityDetails, setSelectedActivityDetails] = useState();
+  const [currentInputText, setCurrentInputText] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -235,8 +238,20 @@ function ActionFormNew(props) {
     });
   };
 
+  const handleClickContextMenuText = (event) => {
+    event.preventDefault();
+    setStateContextMenuText({
+      mouseX: event.clientX - 2,
+      mouseY: event.clientY - 4,
+    });
+  };
+
   const handleCloseContextMenu = () => {
     setStateContextMenu(initialState);
+  };
+
+  const handleCloseContextMenuText = () => {
+    setStateContextMenuText(initialState);
   };
 
   const handleClickContextMenuOption = (opt, index, name) => {
@@ -251,6 +266,34 @@ function ActionFormNew(props) {
       configurationDataList: [
         ...formData.configurationDataList.map((con, conIndex) =>
           conIndex == index ? { ...con, [name]: currentEditor.getData() } : con
+        ),
+      ],
+    };
+    setFormData(list);
+    setStateContextMenu(initialState);
+  };
+
+  const handleClickContextMenuOptionText = (opt, index, name) => {
+    let textToInsert = opt;
+    let cursorPosition = currentInputText.target.selectionStart;
+    let textBeforeCursorPosition = currentInputText.target.value.substring(
+      0,
+      cursorPosition
+    );
+    let textAfterCursorPosition = currentInputText.target.value.substring(
+      cursorPosition,
+      currentInputText.target.value.length
+    );
+    currentInputText.target.value =
+      textBeforeCursorPosition + textToInsert + textAfterCursorPosition;
+
+    const list = {
+      ...formData,
+      configurationDataList: [
+        ...formData.configurationDataList.map((con, conIndex) =>
+          conIndex == index
+            ? { ...con, [name]: currentInputText.target.value }
+            : con
         ),
       ],
     };
@@ -289,7 +332,11 @@ function ActionFormNew(props) {
                               <Grid item xs={3}>
                                 <label>{act.remarksForInput}</label>
                               </Grid>
-                              <Grid item xs={9}>
+                              <Grid
+                                item
+                                xs={9}
+                                onContextMenu={handleClickContextMenuText}
+                              >
                                 <TextValidator
                                   variant="outlined"
                                   validators={["required"]}
@@ -304,7 +351,45 @@ function ActionFormNew(props) {
                                   value={act.value}
                                   InputLabelProps={{ shrink: false }}
                                   className="global-input action-form-input"
+                                  onFocus={(e) => {
+                                    setCurrentInputText(e);
+                                  }}
                                 />
+                                <Menu
+                                  keepMounted
+                                  open={stateContextMenuText.mouseY !== null}
+                                  onClose={handleCloseContextMenuText}
+                                  anchorReference="anchorPosition"
+                                  anchorPosition={
+                                    stateContextMenuText.mouseY !== null &&
+                                    stateContextMenuText.mouseX !== null
+                                      ? {
+                                          top: stateContextMenuText.mouseY,
+                                          left: stateContextMenuText.mouseX,
+                                        }
+                                      : undefined
+                                  }
+                                >
+                                  {act.inputIntelliSenseOptions.length > 0 ? (
+                                    act.inputIntelliSenseOptions.map((opt) => {
+                                      return (
+                                        <MenuItem
+                                          onClick={() =>
+                                            handleClickContextMenuOptionText(
+                                              opt,
+                                              index,
+                                              "value"
+                                            )
+                                          }
+                                        >
+                                          {opt}
+                                        </MenuItem>
+                                      );
+                                    })
+                                  ) : (
+                                    <MenuItem>No options</MenuItem>
+                                  )}
+                                </Menu>
                               </Grid>
                             </Grid>
                           );
