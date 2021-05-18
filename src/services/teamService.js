@@ -36,7 +36,7 @@ export default class TeamService {
   }
 
   deleteTeam(data) {
-    return this.fetch(`${this.baseURL}/Team/DeleteTeam/${data}` , {
+    return this.fetch(`${this.baseURL}/Team/DeleteTeam/${data}`, {
       method: "DELETE",
     }).then((res) => {
       return Promise.resolve(res);
@@ -54,13 +54,16 @@ export default class TeamService {
   }
 
   viewApplicationUserByTeamId(id) {
-    return this.fetch(`${this.baseURL}/Team/ViewApplicationUserByTeamId?Id=${id}`, {
-      method: "GET",
-    }).then((res) => {
+    return this.fetch(
+      `${this.baseURL}/Team/ViewApplicationUserByTeamId?Id=${id}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
       return Promise.resolve(res);
     });
   }
-  getTeamList(){
+  getTeamList() {
     return this.fetch(`${this.baseURL}/Team/ListTeams`, {
       method: "GET",
     }).then((res) => {
@@ -82,7 +85,7 @@ export default class TeamService {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");
   }
-  
+
   fetch(url, options) {
     // performs api calls sending the required authentication headers
     const headers = {};
@@ -122,7 +125,7 @@ export default class TeamService {
       } else if (response.status === 500) {
         window.location.href = "/InternalServerError";
       } else if (response.status === 401) {
-        window.location.href = "/Unauthorized";
+        window.location.href = "/";
       } else if (response.status === 502) {
         window.location.href = "/ServerError";
       } else {

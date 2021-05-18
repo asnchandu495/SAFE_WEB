@@ -133,7 +133,7 @@ export default class FileUploadService {
       } else if (response.status === 500) {
         window.location.href = "/InternalServerError";
       } else if (response.status === 401) {
-        window.location.href = "/Unauthorized";
+        window.location.href = "/";
       } else if (response.status === 502) {
         window.location.href = "/ServerError";
       } else {

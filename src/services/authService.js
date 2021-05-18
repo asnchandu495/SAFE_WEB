@@ -7,9 +7,8 @@ export default class AuthService {
     this.fetch = this.fetch.bind(this);
     this.fetchWithoutToken = this.fetchWithoutToken.bind(this);
     this.login = this.login.bind(this);
-    this.loginForChangingOrganization = this.loginForChangingOrganization.bind(
-      this
-    );
+    this.loginForChangingOrganization =
+      this.loginForChangingOrganization.bind(this);
     this.getProfile = this.getProfile.bind(this);
   }
 
@@ -278,7 +277,7 @@ export default class AuthService {
       } else if (response.status === 500) {
         window.location.href = "/InternalServerError";
       } else if (response.status === 401) {
-        window.location.href = "/Unauthorized";
+        window.location.href = "/";
       } else if (response.status === 502) {
         window.location.href = "/ServerError";
       } else {

@@ -624,6 +624,7 @@ function NumericQuestion(props) {
                                         : "Answer type"}
                                     </InputLabel>
                                     <Select
+                                      required
                                       labelId={`demo-simple-select-outlined-label${i}`}
                                       id={`demo-simple-select-outlined${i}`}
                                       value={
@@ -677,9 +678,11 @@ function NumericQuestion(props) {
                                     onChange={(e) => handleChangeFlagP(e, i)}
                                     className="global-input"
                                     validators={[
+                                      "required",
                                       "matchRegexp:^[0-9]+([.][0-9]+)?$",
                                     ]}
                                     errorMessages={[
+                                      "Please enter range",
                                       "Only numbers and decimals are allowed",
                                     ]}
                                     InputLabelProps={{ shrink: false }}

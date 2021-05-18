@@ -107,21 +107,54 @@ function CreateWorkflow(props) {
   function handleChangeGroupName(event, value) {
     setisAlertBoxOpened(true);
     setSelectedGroupName(value);
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["group"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["group"]: true,
+      }));
+    }
   }
 
   function handleChangeFromCovidState(event, value) {
     setisAlertBoxOpened(true);
     setSelectedFromCovidState(value);
-    setToCovidStatelist(
-      covidStatelist.filter((state) => {
-        return state.id != value.id;
-      })
-    );
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["from"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["from"]: true,
+      }));
+    }
+    // setToCovidStatelist(
+    //   covidStatelist.filter((state) => {
+    //     return state.id != value.id;
+    //   })
+    // );
   }
 
   function handleChangeToCovidState(event, value) {
     setisAlertBoxOpened(true);
     setSelectedToCovidState(value);
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["to"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["to"]: true,
+      }));
+    }
   }
 
   function handleChange(e) {
@@ -329,7 +362,7 @@ function CreateWorkflow(props) {
                           "matchRegexp:^.{0,50}$",
                         ]}
                         errorMessages={[
-                          "Please Worlflow name",
+                          "Please enter workflow name",
                           "Special character  not allowed",
                           "Maximum 50 characters",
                         ]}
@@ -378,7 +411,7 @@ function CreateWorkflow(props) {
                           <TextField
                             {...params}
                             variant="outlined"
-                            placeholder="Select usergroup"
+                            placeholder="Select user group"
                             autoComplete="nope"
                           />
                         )}
@@ -386,7 +419,7 @@ function CreateWorkflow(props) {
 
                       {formFieldValidation.group ? (
                         <FormHelperText className="error-msg">
-                          Please select group name{" "}
+                          Please select group name
                         </FormHelperText>
                       ) : (
                         ""
@@ -430,7 +463,7 @@ function CreateWorkflow(props) {
                       />
                       {formFieldValidation.from ? (
                         <FormHelperText className="error-msg">
-                          Please select Fromstate{" "}
+                          Please select COVID state From
                         </FormHelperText>
                       ) : (
                         ""
@@ -474,7 +507,7 @@ function CreateWorkflow(props) {
                       />
                       {formFieldValidation.to ? (
                         <FormHelperText className="error-msg">
-                          Please select Tostate{" "}
+                          Please select COVID state To
                         </FormHelperText>
                       ) : (
                         ""
