@@ -196,10 +196,6 @@ function ConfigureHealth(props) {
       }
     } else {
       thisValue = moment(getSelectedVal).toISOString();
-
-      console.log(moment(thisValue).add(1, "days").toISOString());
-      nextday = moment(thisValue).add(1, "days").toISOString();
-      console.log(nextday);
     }
     setSearchForm((searchForm) => ({
       ...searchForm,

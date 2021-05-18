@@ -234,7 +234,7 @@ function Workflow(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no Worlflows",
+        noMatch: "No matching records found",
       },
     },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
