@@ -49,21 +49,16 @@ function AddActivity(props) {
   });
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [reloadPage, setReloadPage] = useState("NO");
 
   useEffect(() => {
@@ -171,7 +166,7 @@ function AddActivity(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="Add Options To Activity">
+                <Tooltip title="Assign Options To Activity">
                   <Button
                     variant="contained"
                     color="default"
@@ -181,7 +176,7 @@ function AddActivity(props) {
                   ></Button>
                 </Tooltip>
 
-                <Tooltip title="Delete">
+                <Tooltip title="Revoke Activity">
                   <Button
                     variant="contained"
                     color="default"

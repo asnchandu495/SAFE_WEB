@@ -67,20 +67,15 @@ function Workflow(props) {
   const [showLoadder, setshowLoadder] = useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [selectedUserData, setselectedUserData] = useState();
   const [selectedStatusData, setselectedStatusData] = useState();
@@ -141,7 +136,7 @@ function Workflow(props) {
     },
 
     {
-      label: "Is Draft",
+      label: "Is draft",
       name: "isSaveAsDraft",
       options: {
         filter: false,
@@ -149,7 +144,7 @@ function Workflow(props) {
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
           if (thisRowData) {
-            return <span>{thisRowData[4] ? "Yes" : "N0"}</span>;
+            return <span>{thisRowData[4] ? "Yes" : "No"}</span>;
           }
         },
       },
@@ -194,7 +189,7 @@ function Workflow(props) {
                     }
                   ></Button>
                 </Tooltip>
-                <Tooltip title="Activities">
+                <Tooltip title="Assign Activity">
                   <Button
                     variant="contained"
                     color="default"
@@ -246,7 +241,7 @@ function Workflow(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Filter By User">
+          <Tooltip title="Advanced Search">
             <Button
               variant="contained"
               startIcon={<FilterListIcon />}
@@ -301,19 +296,21 @@ function Workflow(props) {
     }));
   }
 
-  function AssignFiltersForm() {
-    console.log(searchformData);
-    if (searchformData) {
-      submitAssignWorkflow();
-    } else {
-      submitAssignWorkflow(false);
-      return false;
-    }
-  }
+  // function AssignFiltersForm() {
+  //   console.log(searchformData);
+  //   if (searchformData) {
+  //     submitAssignWorkflow();
+  //   } else {
+  //     submitAssignWorkflow(false);
+  //     return false;
+  //   }
+  // }
 
-  function submitAssignWorkflow() {
+  function AssignFiltersForm() {
     var workflowData = searchformData;
-    workflowData.UserGroupId = selectedUserData.id;
+    if (selectedUserData) {
+      workflowData.UserGroupId = selectedUserData.id;
+    }
 
     setshowLoadder(true);
     props
@@ -395,7 +392,7 @@ function Workflow(props) {
         open={Modalopen}
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
-          Filters
+          Advanced Search
         </DialogTitle>
         <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
           <DialogContent dividers>
@@ -427,8 +424,8 @@ function Workflow(props) {
                             placeholder="Select usergroup"
                           />
                         )}
-                      />{" "}
-                    </FormControl>
+                      />
+                    </FormControl>{" "}
                   </Grid>
                 </Grid>
                 <Grid item xs={12} container>
@@ -441,12 +438,14 @@ function Workflow(props) {
                         id="demo-simple-select-outlined-label"
                         shrink={false}
                         className="select-label"
-                      ></InputLabel>
+                      >
+                        {searchformData.IsActive === "" ? "Select status" : ""}
+                      </InputLabel>
                       <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
-                        placeholder="Select status"
                         name="IsActive"
+                        value={searchformData.IsActive}
                         onChange={handleChange}
                         className="global-input single-select"
                       >
@@ -462,6 +461,7 @@ function Workflow(props) {
                           : ""}
                       </Select>
                     </FormControl>
+                    {""}
                   </Grid>
                 </Grid>
               </Grid>
