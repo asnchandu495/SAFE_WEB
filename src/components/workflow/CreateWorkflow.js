@@ -379,6 +379,7 @@ function CreateWorkflow(props) {
                             {...params}
                             variant="outlined"
                             placeholder="Select usergroup"
+                            autoComplete="nope"
                           />
                         )}
                       />
@@ -423,6 +424,7 @@ function CreateWorkflow(props) {
                             {...params}
                             variant="outlined"
                             placeholder="Select state"
+                            autoComplete="nope"
                           />
                         )}
                       />
@@ -466,6 +468,7 @@ function CreateWorkflow(props) {
                             {...params}
                             variant="outlined"
                             placeholder="Select state"
+                            autoComplete="nope"
                           />
                         )}
                       />
