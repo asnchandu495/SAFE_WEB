@@ -103,19 +103,17 @@ function CreateWorkflow(props) {
     }
   }, []);
 
-  function resetForm() {
-    SetformData({
-      groupId: "",
-      name: "",
-      fromStateId: "",
-      toStateId: "",
-    });
-
-    setSelectedGroupName();
-    setSelectedFromCovidState();
-    setcovidStatelist([]);
-    setSelectedToCovidState();
-  }
+  // function resetForm() {
+  //   SetformData({
+  //     groupId: "",
+  //     name: "",
+  //     fromStateId: "",
+  //     toStateId: "",
+  //   });
+  //   setSelectedGroupName(null);
+  //   setSelectedFromCovidState(null);
+  //   setSelectedToCovidState(null);
+  // }
 
   function handleChangeGroupName(event, value) {
     setisAlertBoxOpened(true);
@@ -407,7 +405,7 @@ function CreateWorkflow(props) {
                     <Grid item xs={5}>
                       {/* <FormControl variant="outlined" fullWidth> */}
                       <Autocomplete
-                        id="tags-outlined"
+                        id="tags-outlinedGroup"
                         label=""
                         options={
                           userGroupList && userGroupList.length > 0
@@ -417,6 +415,7 @@ function CreateWorkflow(props) {
                         getOptionLabel={(option) => option.groupName}
                         onChange={handleChangeGroupName}
                         defaultValue={selectedGroupName}
+                        value={selectedGroupName}
                         name="groupId"
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -451,7 +450,7 @@ function CreateWorkflow(props) {
                     </Grid>
                     <Grid item xs={5}>
                       <Autocomplete
-                        id="tags-outlined"
+                        id="tags-outlinedFrom"
                         options={
                           covidStatelist && covidStatelist.length > 0
                             ? covidStatelist
@@ -495,7 +494,7 @@ function CreateWorkflow(props) {
                     </Grid>
                     <Grid item xs={5}>
                       <Autocomplete
-                        id="tags-outlined"
+                        id="tags-outlinedTo"
                         options={
                           toCovidStatelist && toCovidStatelist.length > 0
                             ? toCovidStatelist
@@ -546,14 +545,14 @@ function CreateWorkflow(props) {
                         >
                           {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
                         </Button>
-                        <Button
+                        {/* <Button
                           variant="contained"
                           type="reset"
                           onClick={resetForm}
                           className="global-cancel-btn"
                         >
                           Reset
-                        </Button>
+                        </Button> */}
                         <Button
                           variant="contained"
                           type="reset"
