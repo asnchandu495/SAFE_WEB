@@ -343,15 +343,38 @@ function TemperatureRange(props) {
                             variant="outlined"
                             validators={["required"]}
                             errorMessages={["Please enter lower limit"]}
-                            validators={[
-                              "required",
-                              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                              "maxNumber:999999",
-                            ]}
-                            errorMessages={[
-                              "Please enter lower limit",
-                              "Entered numbers are not valid",
-                            ]}
+                            validators={
+                              tempsections.temperatureUnit == "C"
+                                ? [
+                                    "required",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+
+                                    "maxNumber:45",
+                                    "minNumber:30",
+                                  ]
+                                : [
+                                    "required",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+
+                                    "maxNumber:113",
+                                    "minNumber:86",
+                                  ]
+                            }
+                            errorMessages={
+                              tempsections.temperatureUnit == "C"
+                                ? [
+                                    "Please enter lower limit",
+                                    "Entered numbers are not valid",
+                                    "Maximum allowed is 45",
+                                    "Minimum allowed is 30",
+                                  ]
+                                : [
+                                    "Please enter lower limit",
+                                    "Entered numbers are not valid",
+                                    "Maximum allowed is 113",
+                                    "Minimum allowed is 86",
+                                  ]
+                            }
                             id={`lowerLimit_${i}`}
                             placeholder="Lower Limit"
                             name="lowerLimit"
@@ -374,15 +397,38 @@ function TemperatureRange(props) {
                           <TextValidator
                             variant="outlined"
                             errorMessages={["Please enter lower limit"]}
-                            validators={[
-                              "required",
-                              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                              "maxNumber:999999",
-                            ]}
-                            errorMessages={[
-                              "Please enter lower limit",
-                              "Entered numbers are not valid",
-                            ]}
+                            validators={
+                              tempsections.temperatureUnit == "C"
+                                ? [
+                                    "required",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+
+                                    "maxNumber:45",
+                                    "minNumber:30",
+                                  ]
+                                : [
+                                    "required",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+
+                                    "maxNumber:113",
+                                    "minNumber:86",
+                                  ]
+                            }
+                            errorMessages={
+                              tempsections.temperatureUnit == "C"
+                                ? [
+                                    "Please enter lower limit",
+                                    "Entered numbers are not valid",
+                                    "Maximum allowed is 45",
+                                    "Minimum allowed is 30",
+                                  ]
+                                : [
+                                    "Please enter lower limit",
+                                    "Entered numbers are not valid",
+                                    "Maximum allowed is 113",
+                                    "Minimum allowed is 86",
+                                  ]
+                            }
                             id={`upperLimit_${i}`}
                             placeholder="Upper Limit"
                             name="upperLimit"
