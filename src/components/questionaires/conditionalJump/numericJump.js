@@ -25,7 +25,6 @@ import questionaireService from "../../../services/questionaireService";
 import ToasterMessageComponent from "../../common/toaster";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import { IndeterminateCheckBoxTwoTone } from "@material-ui/icons";
-import FormHelperText from "@material-ui/core/FormHelperText";
 
 function NumericJump(props) {
   const surveyId = props.match.params.id;
@@ -292,6 +291,7 @@ function NumericJump(props) {
                                             : "Expression type"}
                                         </InputLabel>
                                         <Select
+                                          required
                                           labelId={`demo-simple-select-outlined-label${i}`}
                                           id={`demo-simple-select-outlined${i}`}
                                           value={
@@ -324,15 +324,6 @@ function NumericJump(props) {
                                           })}
                                         </Select>
                                       </FormControl>
-                                      {
-                                        (x.numericExpressionType = "" ? (
-                                          <FormHelperText>
-                                            Please select value{" "}
-                                          </FormHelperText>
-                                        ) : (
-                                          ""
-                                        ))
-                                      }
                                     </Grid>
                                     <Grid item xs={2}>
                                       <TextValidator
@@ -340,10 +331,13 @@ function NumericJump(props) {
                                         type="text"
                                         validators={[
                                           "required",
-                                          "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                                          "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+
+                                          "maxNumber:999999",
                                         ]}
                                         errorMessages={[
                                           "Please enter answer",
+                                          "Numbers and decimal point",
                                           "",
                                         ]}
                                         fullWidth
@@ -399,6 +393,7 @@ function NumericJump(props) {
                                             : ""}
                                         </InputLabel>
                                         <Select
+                                          required
                                           labelId="demo-simple-select-outlined-label"
                                           id="demo-simple-select-outlined"
                                           value={x.goToSurveyQuestionId}
@@ -468,7 +463,7 @@ function NumericJump(props) {
                     </Grid>
                     <Grid item container xs={12}>
                       <Grid item xs={2}>
-                        <label className="required">Default</label>
+                        <label className="">Default</label>
                       </Grid>
                       <Grid container xs={8} spacing={2}>
                         <Grid item container xs={12} spacing={1}>

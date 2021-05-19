@@ -215,6 +215,7 @@ function BooleanJump(props) {
                                   : ""}
                               </InputLabel>
                               <Select
+                                required
                                 labelId="demo-simple-select-outlined-label"
                                 id="demo-simple-select-outlined"
                                 value={
@@ -266,6 +267,7 @@ function BooleanJump(props) {
                                   : ""}
                               </InputLabel>
                               <Select
+                                required
                                 labelId="demo-simple-select-outlined-label"
                                 id="demo-simple-select-outlined"
                                 value={

@@ -306,6 +306,7 @@ function TimeJump(props) {
                                               : "Expression type"}
                                           </InputLabel>
                                           <Select
+                                            required
                                             labelId={`demo-simple-select-outlined-label${i}`}
                                             id={`demo-simple-select-outlined${i}`}
                                             value={
@@ -470,6 +471,7 @@ function TimeJump(props) {
                                               : ""}
                                           </InputLabel>
                                           <Select
+                                            required
                                             labelId="demo-simple-select-outlined-label"
                                             id="demo-simple-select-outlined"
                                             value={x.goToSurveyQuestionId}
@@ -546,7 +548,7 @@ function TimeJump(props) {
                       </Grid>
                       <Grid item container xs={12}>
                         <Grid item xs={2}>
-                          <label className="required">Default</label>
+                          <label className="">Default</label>
                         </Grid>
                         <Grid container xs={8} spacing={2}>
                           <Grid item container xs={12} spacing={1}>

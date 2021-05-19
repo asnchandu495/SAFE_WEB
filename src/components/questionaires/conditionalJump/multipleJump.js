@@ -356,6 +356,7 @@ function MultipleJump(props) {
                                             <TextField
                                               {...params}
                                               variant="outlined"
+                                              required={x.answerChoices == ""}
                                               placeholder="Select answer"
                                             />
                                           )}
@@ -374,6 +375,7 @@ function MultipleJump(props) {
                                             : ""}
                                         </InputLabel>
                                         <Select
+                                          required
                                           labelId="demo-simple-select-outlined-label"
                                           id="demo-simple-select-outlined"
                                           value={x.goToSurveyQuestionId}
@@ -444,7 +446,7 @@ function MultipleJump(props) {
                     </Grid>
                     <Grid item container xs={12}>
                       <Grid item xs={2}>
-                        <label className="required">Default</label>
+                        <label className="">Default</label>
                       </Grid>
                       <Grid container xs={8} spacing={2}>
                         <Grid item container xs={12} spacing={1}>
