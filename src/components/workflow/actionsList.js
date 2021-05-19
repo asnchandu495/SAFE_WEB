@@ -10,9 +10,13 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import DoneAllIcon from "@material-ui/icons/DoneAll";
+import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
+import Tooltip from "@material-ui/core/Tooltip";
 import { useParams } from "react-router-dom";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import workflowService from "../../services/workflowService";
+import ConfirmationDialog from "../common/confirmdialogbox";
+import ToasterMessageComponent from "../common/toaster";
 
 function ActionList(props) {
   const workflowId = props.match.params.wid;
@@ -23,11 +27,26 @@ function ActionList(props) {
 
   const [selectedIndex, setSelectedIndex] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
+  const [assignedActivities, setAssignedActivities] = useState([]);
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
+  const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState("");
+  const [toasterServerity, settoasterServerity] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
 
   useEffect(() => {
     workflowApiCall
       .getOptionsByActivityId(activityId)
-      .then((result) => {})
+      .then((result) => {
+        setAssignedActivities(result);
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -52,56 +71,102 @@ function ActionList(props) {
     setSelectedIndex(action.uniqueActivityId);
   }
 
+  const handleClickOpenConfirmationModal = (value) => {
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteOption");
+    setConfirmationHeaderTittle("Revert Action");
+    setConfirmationDialogContextText(
+      `Are you sure you want to revert ${value.friendlyName} ?`
+    );
+  };
+
   return (
-    <List component="nav">
-      <ListItem className="search-list-input">
-        <TextField
-          variant="outlined"
-          fullWidth
-          id="groupName"
-          placeholder="Search by action..."
-          name="groupName"
-          onChange={searchActions}
-          InputLabelProps={{ shrink: false }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </ListItem>
-      {props.allActivityOptions && props.allActivityOptions.length > 0
-        ? props.allActivityOptions.map((act, index) => {
-            return (
-              <div
-                className="actionlistitems"
-                key={"action=" + act.uniqueActivityId}
-              >
-                <ListItem
-                  button
-                  selected={selectedIndex == act.uniqueActivityId}
-                  onClick={() => handleListItemClick(act)}
-                  alignItems="flex-start"
+    <>
+      <List component="nav">
+        <ListItem className="search-list-input">
+          <TextField
+            variant="outlined"
+            fullWidth
+            id="groupName"
+            placeholder="Search by action..."
+            name="groupName"
+            onChange={searchActions}
+            InputLabelProps={{ shrink: false }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </ListItem>
+        {props.allActivityOptions && props.allActivityOptions.length > 0
+          ? props.allActivityOptions.map((act, index) => {
+              let thisFormData = assignedActivities.find(
+                (sAct) => sAct.uniqueActivityId == act.uniqueActivityId
+              );
+              return (
+                <div
+                  className="actionlistitems"
+                  key={"action=" + act.uniqueActivityId}
                 >
-                  <ListItemText
-                    secondary={
-                      <p className="question-name">{act.friendlyName}</p>
-                    }
-                  />
-                  {/* {act.isSaved ? (
-                <DoneAllIcon className="already-saved"></DoneAllIcon>
-              ) : (
-                ""
-              )} */}
-                </ListItem>
-                <Divider component="li" />
-              </div>
-            );
-          })
-        : ""}
-    </List>
+                  <ListItem
+                    button
+                    selected={selectedIndex == act.uniqueActivityId}
+                    alignItems="flex-start"
+                  >
+                    <ListItemText
+                      onClick={() => handleListItemClick(act)}
+                      secondary={
+                        <p className="question-name">{act.friendlyName}</p>
+                      }
+                    />
+                    {thisFormData ? (
+                      <>
+                        <Tooltip title="Action is configured">
+                          <DoneAllIcon className="already-saved"></DoneAllIcon>
+                        </Tooltip>
+                        <Tooltip title="Revert action">
+                          <SettingsBackupRestoreIcon
+                            className="already-configured"
+                            onClick={() =>
+                              handleClickOpenConfirmationModal(act)
+                            }
+                          ></SettingsBackupRestoreIcon>
+                        </Tooltip>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </ListItem>
+                  <Divider component="li" />
+                </div>
+              );
+            })
+          : ""}
+      </List>
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        SelectedRowDetails={SelectedRowDetails}
+        setReloadPage={props.setReloadPage}
+      />
+      <ToasterMessageComponent
+        stateSnackbar={stateSnackbar}
+        setStateSnackbar={setStateSnackbar}
+        toasterMessage={toasterMessage}
+        toasterServerity={toasterServerity}
+        toasterErrorMessageType={toasterErrorMessageType}
+      />
+    </>
   );
 }
 
