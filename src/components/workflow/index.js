@@ -184,7 +184,7 @@ function Workflow(props) {
                     onClick={() => handleViewActivity(thisRowData)}
                   ></Button>
                 </Tooltip>
-                <Tooltip title="Publish">
+                <Tooltip title={thisRowData[3] ? "Deactivate" : "Activate"}>
                   <Button
                     variant="contained"
                     color="default"
@@ -342,9 +342,12 @@ function Workflow(props) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("PublishWorkflow");
-    setConfirmationHeaderTittle("Publish Worflow");
+    setConfirmationHeaderTittle(value[3] ? "Deactivate" : "Activate");
+
     setConfirmationDialogContextText(
-      `Are you sure you want to publish ${value[1]} ?`
+      value[3]
+        ? `Are you sure you want to deactivate workflow-${value[1]} `
+        : `Are you sure you want to activate workflow-${value[1]}`
     );
   };
 

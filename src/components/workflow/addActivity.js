@@ -27,9 +27,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import workflowService from "../../services/workflowService";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 function AddActivity(props) {
   const UserGroup = new UserGroupService();
+  const [formFieldValidation, setformFieldValidation] = useState({
+    addactivity: false,
+  });
   const workflowApiCall = new workflowService();
   const workflowId = props.match.params.wid;
   const [userGroupList, setuserGroupList] = useState();
@@ -253,7 +257,33 @@ function AddActivity(props) {
     );
   };
 
-  function submitActivityForm(e) {
+  function validateAddActivity() {
+    if (userSelectedActivities.length > 0) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["addactivity"]: false,
+      }));
+      console.log(userSelectedActivities);
+      console.log("yes");
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["addactivity"]: true,
+      }));
+      console.log("flse");
+    }
+  }
+
+  function submitActivityForm() {
+    validateAddActivity();
+    if (userSelectedActivities.length > 0) {
+      submitActivityForm1();
+    } else {
+      return false;
+    }
+  }
+
+  function submitActivityForm1(e) {
     e.preventDefault();
     if (userSelectedActivities.length > 0) {
       let selectedWorkflowActivities = userSelectedActivities.map((act) => ({
@@ -327,7 +357,13 @@ function AddActivity(props) {
                     />
                   )}
                 />
-                {""}
+                {formFieldValidation.addactivity ? (
+                  <FormHelperText className="error-msg">
+                    Please select group name
+                  </FormHelperText>
+                ) : (
+                  ""
+                )}
               </Grid>
             </Grid>
           </DialogContent>

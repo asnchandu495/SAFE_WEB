@@ -255,7 +255,7 @@ function CustomizedDialogs(props) {
     } else if (props.ConfirmationModalActionType == "PublishWorkflow") {
       let data = {
         id: props.SelectedRowDetails[0],
-        isActive: true,
+        isActive: props.SelectedRowDetails[3] ? false : true,
       };
 
       props
