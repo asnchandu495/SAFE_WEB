@@ -143,7 +143,11 @@ function AddActionsNew(props) {
                     reloadPage={reloadPage}
                   ></ActionFormNew>
                 ) : (
-                  "Please select an action from the list"
+                  <>
+                    <p className="select-action">
+                      Please select an action from the list
+                    </p>
+                  </>
                 )}
               </Paper>
             </Grid>

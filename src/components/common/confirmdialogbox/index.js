@@ -510,12 +510,12 @@ function CustomizedDialogs(props) {
       workflowApiCall
         .DeleteActivity(thisId)
         .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Activity is deleted");
+          props.settoasterServerity("success");
           setTimeout(() => {
-            setshowLoadder(false);
-            props.setStateSnackbar(false);
-            props.setToasterMessage("Activity is deleted");
-            props.settoasterServerity("success");
             props.setOpenConfirmationModal(false);
+            setshowLoadder(false);
             props.setReloadPage("YES");
           }, 6000);
         })
@@ -525,16 +525,16 @@ function CustomizedDialogs(props) {
         });
     } else if (props.ConfirmationModalActionType == "DeleteOption") {
       setshowLoadder(true);
-      var thisId = props.SelectedRowDetails[0];
+      var thisId = props.SelectedRowDetails.uniqueActivityId;
       workflowApiCall
         .DeleteOption(thisId)
         .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Option is reverted");
+          props.settoasterServerity("success");
           setTimeout(() => {
-            setshowLoadder(false);
-            props.setStateSnackbar(false);
-            props.setToasterMessage("Option is deleted");
-            props.settoasterServerity("success");
             props.setOpenConfirmationModal(false);
+            setshowLoadder(false);
             props.setReloadPage("YES");
           }, 6000);
         })

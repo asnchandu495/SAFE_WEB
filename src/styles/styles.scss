@@ -1256,12 +1256,27 @@ label.required {
 
 .actionlistitems {
   .already-saved {
-    font-size: 15px;
+    font-size: 20px;
     color: #3f51b5;
+    margin-left: 3px;
+  }
+  .already-configured {
+    font-size: 20px;
+    color: #be1d56;
+    margin-left: 3px;
   }
 }
 
 .action-details-table {
   border-collapse: inherit !important;
   border-bottom: none !important;
+}
+
+.select-action {
+  height: calc(100vh - 160px) !important;
+  margin: 0 !important;
+  align-items: center !important;
+  display: inline-flex !important;
+  color: #c41c56;
+  font-size: 20px;
 }

@@ -320,17 +320,15 @@ function AssignQuestionaires(props) {
   useEffect(() => {
     Promise.all([
       props.LoadAllAssignQuestionire(),
-
       UserGroup.loadUserGroup(),
       QuestionaireApicall.GetAllQuestionarie(),
     ])
       .then(([getassignedQuestionaire, getUserList, getQuestionaireList]) => {
         setuserGroupList(getUserList);
         let filteredQuestionnaires = getQuestionaireList.filter((question) => {
-          return question.isSaveasDraft == true;
+          return !question.isSaveasDraft;
         });
         setQuestionaireList(filteredQuestionnaires);
-
         setComponentLoadder(false);
       })
       .catch((error) => {
