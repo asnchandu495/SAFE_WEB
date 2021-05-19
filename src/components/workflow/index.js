@@ -223,6 +223,27 @@ function Workflow(props) {
         noMatch: "No matching records found",
       },
     },
+    customSearch: (searchQuery, currentRow, columns) => {
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col != "undefined") {
+          let getValue;
+          if (typeof col == "boolean") {
+            if (col) {
+              getValue = "Active";
+            } else {
+              getValue = "Inactive";
+            }
+          } else {
+            getValue = col;
+          }
+          if (getValue.toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+            isFound = true;
+          }
+        }
+      });
+      return isFound;
+    },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (

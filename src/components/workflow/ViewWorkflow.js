@@ -34,9 +34,8 @@ function ViewWorkflow(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [expandedWorflow, setExpandedWorflow] = useState("panel0");
   const [workflowActivities, setWorkflowActivities] = useState([]);
 
@@ -86,7 +85,7 @@ function ViewWorkflow(props) {
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
             <Collapse in={openAction} timeout="auto" unmountOnExit>
-              <Box margin={1}>
+              <Box className="nested-inner-table-box-margin">
                 <Table size="small" aria-label="purchases">
                   <TableHead>
                     <TableRow>
@@ -232,7 +231,7 @@ function ViewWorkflow(props) {
                             {act.name}
                           </Typography>
                         </AccordionSummary>
-                        <AccordionDetails>
+                        <AccordionDetails className="nested-table-accordion">
                           {act.options.length > 0
                             ? act.options.map((act) => {
                                 return (
@@ -242,7 +241,7 @@ function ViewWorkflow(props) {
                                   >
                                     <TableHead>
                                       <TableRow>
-                                        <TableCell />
+                                        <TableCell className="empty-cell" />
                                         <TableCell>Action</TableCell>
                                       </TableRow>
                                     </TableHead>

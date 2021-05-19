@@ -367,14 +367,9 @@ function CreateWorkflow(props) {
                     <Grid item xs={5}>
                       <TextValidator
                         variant="outlined"
-                        validators={[
-                          "required",
-                          "matchRegexp:^[a-zA-Z0-9 ]*$",
-                          "matchRegexp:^.{0,50}$",
-                        ]}
+                        validators={["required", "matchRegexp:^.{0,50}$"]}
                         errorMessages={[
                           "Please enter workflow name",
-                          "Special character  not allowed",
                           "Maximum 50 characters",
                         ]}
                         fullWidth

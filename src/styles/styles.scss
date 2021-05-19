@@ -1280,3 +1280,18 @@ label.required {
   color: #c41c56;
   font-size: 20px;
 }
+
+.nested-table-accordion {
+  display: inline-block !important;
+  width: 100% !important;
+  .empty-cell {
+    max-width: 50px;
+    width: 50px;
+  }
+  .nested-inner-table-box-margin {
+    margin: 8px 8px 8px 50px;
+    table {
+      border: 1px solid #ccc;
+    }
+  }
+}
