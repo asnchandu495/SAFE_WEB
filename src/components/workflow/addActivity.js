@@ -245,6 +245,17 @@ function AddActivity(props) {
 
   function userSelectActivity(event, value) {
     setUserSelectedActivities(value);
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["addactivity"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["addactivity"]: true,
+      }));
+    }
   }
 
   const handleClickOpenConfirmationModal = (value) => {
@@ -258,33 +269,40 @@ function AddActivity(props) {
   };
 
   function validateAddActivity() {
-    if (userSelectedActivities.length > 0) {
+    let defaultSelectedValue = allActivities.filter((act) => {
+      return userSelectedActivities.find((sact) => {
+        return sact.uniqueActivityId == act.uniqueActivityId;
+      });
+    });
+    if (defaultSelectedValue.length > 0) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["addactivity"]: false,
       }));
-      console.log(userSelectedActivities);
-      console.log("yes");
     } else {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["addactivity"]: true,
       }));
-      console.log("flse");
     }
   }
 
   function submitActivityForm() {
     validateAddActivity();
-    if (userSelectedActivities.length > 0) {
+    let defaultSelectedValue = allActivities.filter((act) => {
+      return userSelectedActivities.find((sact) => {
+        return sact.uniqueActivityId == act.uniqueActivityId;
+      });
+    });
+    if (defaultSelectedValue.length > 0) {
       submitActivityForm1();
     } else {
       return false;
     }
   }
 
-  function submitActivityForm1(e) {
-    e.preventDefault();
+  function submitActivityForm1() {
+    // e.preventDefault();
     if (userSelectedActivities.length > 0) {
       let selectedWorkflowActivities = userSelectedActivities.map((act) => ({
         id: act.id ? act.id : "",
@@ -359,7 +377,7 @@ function AddActivity(props) {
                 />
                 {formFieldValidation.addactivity ? (
                   <FormHelperText className="error-msg">
-                    Please select group name
+                    Please select activity
                   </FormHelperText>
                 ) : (
                   ""
