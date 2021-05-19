@@ -145,11 +145,11 @@ function CreateWorkflow(props) {
         ["from"]: true,
       }));
     }
-    setToCovidStatelist(
-      covidStatelist.filter((state) => {
-        return state.id != value.id;
-      })
-    );
+    // setToCovidStatelist(
+    //   covidStatelist.filter((state) => {
+    //     return state.id != value.id;
+    //   })
+    // );
   }
 
   function handleChangeToCovidState(event, value) {

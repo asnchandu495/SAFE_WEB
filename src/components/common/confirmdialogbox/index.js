@@ -253,17 +253,10 @@ function CustomizedDialogs(props) {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "PublishWorkflow") {
-      let thisId = props.SelectedRowDetails[0];
-
       let data = {
         id: props.SelectedRowDetails[0],
-        isSaveAsDraft: false,
+        isActive: true,
       };
-      // if (data.isSaveAsDraft == true) {
-      //   data.isSaveAsDraft = false;
-      // } else {
-      //   data.isSaveAsDraft = true;
-      // }
 
       props
         .PublishWorkflow(data)

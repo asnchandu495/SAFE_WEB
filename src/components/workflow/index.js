@@ -136,20 +136,6 @@ function Workflow(props) {
     },
 
     {
-      label: "Is draft",
-      name: "isSaveAsDraft",
-      options: {
-        filter: false,
-        sort: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return <span>{thisRowData[4] ? "Yes" : "No"}</span>;
-          }
-        },
-      },
-    },
-    {
       label: "Action",
       name: "",
       options: {

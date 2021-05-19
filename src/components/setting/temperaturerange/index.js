@@ -138,7 +138,13 @@ function TemperatureRange(props) {
   };
 
   function handleChangeCovidState(e, value, index) {
-    let thisValue = { id: value.id, state: value.stateName };
+    let thisValue;
+    if (value) {
+      thisValue = { id: value.id, state: value.stateName };
+    } else {
+      thisValue = value;
+    }
+
     const list = {
       ...tempsections,
       covidStates: [

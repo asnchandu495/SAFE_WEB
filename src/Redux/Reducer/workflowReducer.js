@@ -32,7 +32,7 @@ export default function LoadWorkflowSuccess(state = intialState, action) {
         PublishWorkFlow.id == action.workflow.id
           ? {
               ...PublishWorkFlow,
-              isSaveAsDraft: action.workflow.isSaveAsDraft,
+              isActive: action.workflow.isActive,
             }
           : PublishWorkFlow
       );
