@@ -24,6 +24,8 @@ import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import questionaireService from "../../../services/questionaireService";
 import ToasterMessageComponent from "../../common/toaster";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
+import { IndeterminateCheckBoxTwoTone } from "@material-ui/icons";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 function NumericJump(props) {
   const surveyId = props.match.params.id;
@@ -121,11 +123,13 @@ function NumericJump(props) {
 
   const handleChangeLogicAnswer = (e, index) => {
     const { name, value } = e.target;
+
     let thisVal = "";
     if (name == "numericExpressionType" || name == "goToSurveyQuestionId") {
       thisVal = value;
     } else {
       let getValue = value;
+
       if (getValue != "") {
         thisVal = parseInt(getValue);
       }
@@ -320,10 +324,28 @@ function NumericJump(props) {
                                           })}
                                         </Select>
                                       </FormControl>
+                                      {
+                                        (x.numericExpressionType = "" ? (
+                                          <FormHelperText>
+                                            Please select value{" "}
+                                          </FormHelperText>
+                                        ) : (
+                                          ""
+                                        ))
+                                      }
                                     </Grid>
                                     <Grid item xs={2}>
                                       <TextValidator
                                         variant="outlined"
+                                        type="text"
+                                        validators={[
+                                          "required",
+                                          "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                                        ]}
+                                        errorMessages={[
+                                          "Please enter answer",
+                                          "",
+                                        ]}
                                         fullWidth
                                         id={`forAnswerR${i}`}
                                         placeholder="Your answer"
