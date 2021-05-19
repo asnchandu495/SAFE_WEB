@@ -77,7 +77,7 @@ function ActionList(props) {
     setConfirmationModalActionType("DeleteOption");
     setConfirmationHeaderTittle("Revert Action");
     setConfirmationDialogContextText(
-      `Are you sure you want to revert ${value.friendlyName} ?`
+      `Are you sure you want to revert ${value.name} ?`
     );
   };
 
@@ -132,7 +132,7 @@ function ActionList(props) {
                           <SettingsBackupRestoreIcon
                             className="already-configured"
                             onClick={() =>
-                              handleClickOpenConfirmationModal(act)
+                              handleClickOpenConfirmationModal(thisFormData)
                             }
                           ></SettingsBackupRestoreIcon>
                         </Tooltip>

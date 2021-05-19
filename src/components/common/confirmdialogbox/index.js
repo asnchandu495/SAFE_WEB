@@ -525,7 +525,7 @@ function CustomizedDialogs(props) {
         });
     } else if (props.ConfirmationModalActionType == "DeleteOption") {
       setshowLoadder(true);
-      var thisId = props.SelectedRowDetails.uniqueActivityId;
+      var thisId = props.SelectedRowDetails.id;
       workflowApiCall
         .DeleteOption(thisId)
         .then((result) => {
