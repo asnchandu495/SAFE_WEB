@@ -89,7 +89,7 @@ function QuestionType(props) {
                           value={qType.inputType}
                           key={`qtype_${qType.inputType}`}
                         >
-                          {qType.inputType}
+                          {qType.name}
                         </MenuItem>
                       );
                     })}

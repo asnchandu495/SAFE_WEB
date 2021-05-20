@@ -204,16 +204,35 @@ function AddLocation(props) {
       checkUnqueName(value);
     }
     if (name == "isPinMicroActive") {
+      if (!e.target.checked) {
+        SetformData((logInForm) => ({
+          ...logInForm,
+          ["densityThreasholdLowFrom"]: 0,
+          ["densityThreasholdLowTo"]: 0,
+          ["densityThreasholdMediumFrom"]: 0,
+          ["densityThreasholdMediumTo"]: 0,
+          ["densityThreasholdHighFrom"]: 0,
+          ["densityThreasholdHighTo"]: 0,
+        }));
+      }
       SetformData((logInForm) => ({
         ...logInForm,
         [name]: e.target.checked,
       }));
     } else if (name == "HightTemperatureNoLimit") {
-      SetformData((logInForm) => ({
-        ...logInForm,
-        [name]: e.target.checked,
-        ["densityThreasholdHighTo"]: 0,
-      }));
+      if (e.target.checked) {
+        SetformData((logInForm) => ({
+          ...logInForm,
+          [name]: e.target.checked,
+          ["densityThreasholdHighTo"]: -1,
+        }));
+      } else {
+        SetformData((logInForm) => ({
+          ...logInForm,
+          [name]: e.target.checked,
+          ["densityThreasholdHighTo"]: null,
+        }));
+      }
     } else {
       SetformData((logInForm) => ({
         ...logInForm,
@@ -253,10 +272,9 @@ function AddLocation(props) {
 
   function handleChangedensityThreashold(e) {
     const { name, value } = e.target;
-    var finalValue = parseFloat(value);
     SetformData((logInForm) => ({
       ...logInForm,
-      [name]: finalValue,
+      [name]: value,
     }));
   }
 
@@ -316,11 +334,20 @@ function AddLocation(props) {
 
   function submitUserCovidInformation(e) {
     var data = formData;
+
     var fileterSelectedFloorName = floorInfoData.filter(
       (item) => item.id == data.floorId
     );
     data.siteId = props.siteId;
     data.floorName = fileterSelectedFloorName[0].floorName;
+    data.densityThreasholdHighFrom = parseFloat(data.densityThreasholdHighFrom);
+    data.densityThreasholdHighTo = parseFloat(data.densityThreasholdHighTo);
+    data.densityThreasholdLowFrom = parseFloat(data.densityThreasholdLowFrom);
+    data.densityThreasholdLowTo = parseFloat(data.densityThreasholdLowTo);
+    data.densityThreasholdMediumFrom = parseFloat(
+      data.densityThreasholdMediumFrom
+    );
+    data.densityThreasholdMediumTo = parseFloat(data.densityThreasholdMediumTo);
     setshowLoadder(true);
     if (props.SelectedRowId) {
       props
@@ -495,7 +522,7 @@ function AddLocation(props) {
                     </label>
                   </Grid>
                 </Grid>
-                <Grid item cs={12} container>
+                <Grid item cs={12} container className="thershold-limits">
                   <Grid item xs={3}>
                     <label
                       className={[
@@ -531,10 +558,21 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
-                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      validators={[
+                        "matchRegexp:^[0-9]*$",
+                        `minNumber:${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdLowFrom) + 1
+                            : 0
+                        }`,
+                      ]}
                       errorMessages={[
                         "Only  numbers are allowed",
-                        "Maximum allowed 6 digits",
+                        `Minimum allowed ${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdLowFrom) + 1
+                            : 0
+                        }`,
                       ]}
                       type="number"
                       fullWidth
@@ -549,7 +587,7 @@ function AddLocation(props) {
                     />
                   </Grid>
                 </Grid>
-                <Grid item cs={12} container>
+                <Grid item cs={12} container className="thershold-limits">
                   <Grid item xs={3}>
                     <label
                       className={[
@@ -562,10 +600,21 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
-                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      validators={[
+                        "matchRegexp:^[0-9]*$",
+                        `minNumber:${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdLowTo) + 1
+                            : 0
+                        }`,
+                      ]}
                       errorMessages={[
                         "Only numbers are allowed",
-                        "Maximum allowed 6 digits",
+                        `Minimum allowed ${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdLowTo) + 1
+                            : 0
+                        }`,
                       ]}
                       type="number"
                       fullWidth
@@ -585,10 +634,21 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
-                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      validators={[
+                        "matchRegexp:^[0-9]*$",
+                        `minNumber:${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdMediumFrom) + 1
+                            : 0
+                        }`,
+                      ]}
                       errorMessages={[
-                        " Only numbers are allowed",
-                        "Maximum allowed 6 digits",
+                        "Only numbers are allowed",
+                        `Minimum allowed ${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdMediumFrom) + 1
+                            : 0
+                        }`,
                       ]}
                       type="number"
                       fullWidth
@@ -603,7 +663,7 @@ function AddLocation(props) {
                     />
                   </Grid>
                 </Grid>
-                <Grid item cs={12} container>
+                <Grid item cs={12} container className="thershold-limits">
                   <Grid item xs={3}>
                     <label
                       className={[
@@ -616,10 +676,21 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
-                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      validators={[
+                        "matchRegexp:^[0-9]*$",
+                        `minNumber:${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdMediumTo) + 1
+                            : 0
+                        }`,
+                      ]}
                       errorMessages={[
-                        " Only numbers are allowed",
-                        "Maximum allowed 6 digits",
+                        "Only numbers are allowed",
+                        `Minimum allowed ${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdMediumTo) + 1
+                            : 0
+                        }`,
                       ]}
                       type="number"
                       fullWidth
@@ -639,10 +710,21 @@ function AddLocation(props) {
                   <Grid item xs={3}>
                     <TextValidator
                       variant="outlined"
-                      validators={["matchRegexp:^[0-9]*$", "maxNumber:999999"]}
+                      validators={[
+                        "matchRegexp:^[0-9]*$",
+                        `minNumber:${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdHighFrom) + 1
+                            : 0
+                        }`,
+                      ]}
                       errorMessages={[
-                        " Only numbers are allowed",
-                        "Maximum allowed 6 digits",
+                        "Only numbers are allowed",
+                        `Minimum allowed ${
+                          formData.isPinMicroActive
+                            ? parseInt(formData.densityThreasholdHighFrom) + 1
+                            : 0
+                        }`,
                       ]}
                       disabled={formData.HightTemperatureNoLimit}
                       type="number"
@@ -658,7 +740,10 @@ function AddLocation(props) {
                       }
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
-                      disabled={!formData.isPinMicroActive}
+                      disabled={
+                        !formData.isPinMicroActive ||
+                        formData.HightTemperatureNoLimit
+                      }
                     />
                   </Grid>
                   <Grid item xs={2} style={{ paddingLeft: 10 }}>

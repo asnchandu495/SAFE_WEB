@@ -21,9 +21,8 @@ function CreateUserGroup(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
@@ -39,7 +38,6 @@ function CreateUserGroup(props) {
       setComponentLoadder(true);
       SetformData(props.userGroupData);
     }
-
     props
       .LoadAllUserGroup()
       .then((result) => {
@@ -48,7 +46,7 @@ function CreateUserGroup(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, [props.userGroupDatas]);
+  }, []);
 
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
@@ -69,10 +67,9 @@ function CreateUserGroup(props) {
           setTimeout(() => {
             props.history.push("/usergroups/allusergroups");
             setshowLoadder(false);
-          }, 3000);
+          }, 6000);
         })
         .catch((err) => {
-          console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
@@ -90,10 +87,9 @@ function CreateUserGroup(props) {
           setTimeout(() => {
             props.history.push("/usergroups/allusergroups");
             setshowLoadder(false);
-          }, 3000);
+          }, 6000);
         })
         .catch((err) => {
-          console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
