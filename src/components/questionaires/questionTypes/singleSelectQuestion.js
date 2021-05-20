@@ -605,6 +605,7 @@ function SingleSelectQuestion(props) {
                                               className="global-input autocomplete-select"
                                               renderInput={(params) => (
                                                 <TextField
+                                                  required
                                                   {...params}
                                                   variant="outlined"
                                                   placeholder="Select answer"
@@ -701,6 +702,7 @@ function SingleSelectQuestion(props) {
                                             className="global-input autocomplete-select"
                                             renderInput={(params) => (
                                               <TextField
+                                                required
                                                 {...params}
                                                 variant="outlined"
                                                 placeholder="Select answer"

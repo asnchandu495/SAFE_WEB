@@ -9,14 +9,18 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
+import FormHelperText from "@material-ui/core/FormHelperText";
 
 function QuestionType(props) {
   useEffect(() => {}, []);
 
   const navigateToQuestionDetails = () => {
-    setTimeout(() => {
-      props.setGotoAddQuestion(true);
-    }, 1000);
+    Selectquestiontype();
+    if (props.questionTypeForm.questionType) {
+      setTimeout(() => {
+        props.setGotoAddQuestion(true);
+      }, 1000);
+    }
   };
 
   const handleChange = (e) => {
@@ -26,7 +30,23 @@ function QuestionType(props) {
       [name]: value,
     }));
   };
+  const [formFieldValidation, setformFieldValidation] = useState({
+    selectedQuestionType: false,
+  });
 
+  function Selectquestiontype() {
+    if (props.questionTypeForm.questionType) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["selectedQuestionType"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["selectedQuestionType"]: true,
+      }));
+    }
+  }
   return (
     <Card className="question-type-card">
       <CardContent>
@@ -75,6 +95,13 @@ function QuestionType(props) {
                     })}
                   </Select>
                 </FormControl>
+                {formFieldValidation.selectedQuestionType ? (
+                  <FormHelperText className="error-msg">
+                    Please select question type{" "}
+                  </FormHelperText>
+                ) : (
+                  ""
+                )}
               </Grid>
             </Grid>
           </Grid>

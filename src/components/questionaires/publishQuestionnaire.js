@@ -50,14 +50,11 @@ function PublishQuestionnaire(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [ViewQuestionaireDetails, setViewQuestionaireDetails] = useState([]);
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -94,7 +91,7 @@ function PublishQuestionnaire(props) {
 
   const [formData, SetformData] = useState({
     id: questionnaireId,
-    isSaveAsDraft: true,
+    isSaveAsDraft: false,
   });
   useEffect(() => {
     questionaireApiCall

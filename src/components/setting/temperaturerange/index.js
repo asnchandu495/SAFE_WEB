@@ -61,6 +61,7 @@ function TemperatureRange(props) {
 
   // const [faqId, setFaqId] = useState(getFaqId);
   // const [faqIdSecId, setFaqIdSecId] = useState(getFaqIdSecId);
+  const [flagStatus, setflagStatus] = useState(false);
   const [isFormSubmit, setisFormSubmit] = useState(false);
   const [muivalidatorForm, setmuivalidatorForm] = useState(false);
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -109,6 +110,15 @@ function TemperatureRange(props) {
       });
     // setComponentLoadder(false);
   }, []);
+
+  function handleChange(e) {
+    const { name, value } = e.target.checked;
+    if (e.target.checked) {
+      setflagStatus(true);
+    } else {
+      setflagStatus(false);
+    }
+  }
 
   function handleChangeInput(e) {
     const { name, value } = e.target;
@@ -331,6 +341,7 @@ function TemperatureRange(props) {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
+                                required
                                 variant="outlined"
                                 placeholder="Select  covid state"
                               />
@@ -447,15 +458,18 @@ function TemperatureRange(props) {
                             }}
                           />
                         </Grid>
-                        <Grid item xs={2} className="row-icons-container">
-                          {
-                            <FormControlLabel
-                              control={<Checkbox name="checkedA" />}
-                              label="No limit"
-                            />
-                          }
-                        </Grid>
-
+                        {tempsections.covidStates.length - 1 === i && (
+                          <Grid item xs={2} className="row-icons-container">
+                            {
+                              <FormControlLabel
+                                control={<Checkbox name="checkedA" />}
+                                // className={setflagStatus ? disabled : ""}
+                                onChange={handleChange}
+                                label="No limit"
+                              />
+                            }
+                          </Grid>
+                        )}
                         <Grid item xs={1} className="row-icons-container">
                           {tempsections.covidStates.length !== 1 && (
                             <Tooltip title="Remove">
@@ -465,14 +479,17 @@ function TemperatureRange(props) {
                               ></CancelIcon>
                             </Tooltip>
                           )}
-                          {tempsections.covidStates.length - 1 === i && (
-                            <Tooltip title="Add">
-                              <AddCircleIcon
-                                className={`add-row-icon`}
-                                onClick={handleAddClickContacts}
-                              ></AddCircleIcon>
-                            </Tooltip>
-                          )}
+                          {!flagStatus
+                            ? tempsections.covidStates.length - 1 === i && (
+                                <Tooltip title="Add">
+                                  <AddCircleIcon
+                                    className={`add-row-icon`}
+                                    hidden={setflagStatus}
+                                    onClick={handleAddClickContacts}
+                                  ></AddCircleIcon>
+                                </Tooltip>
+                              )
+                            : ""}
                         </Grid>
                       </Grid>
                     );
