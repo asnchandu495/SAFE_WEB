@@ -40,21 +40,16 @@ function Questionaire(props) {
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
 
   const [reloadPage, setReloadPage] = useState("NO");
   useEffect(() => {

@@ -606,6 +606,7 @@ function MultiSelectQuestion(props) {
                                               className="global-input autocomplete-select"
                                               renderInput={(params) => (
                                                 <TextField
+                                                  required
                                                   {...params}
                                                   variant="outlined"
                                                   placeholder="Select answer"
@@ -703,6 +704,7 @@ function MultiSelectQuestion(props) {
                                             className="global-input autocomplete-select"
                                             renderInput={(params) => (
                                               <TextField
+                                                required
                                                 {...params}
                                                 variant="outlined"
                                                 placeholder="Select answer"

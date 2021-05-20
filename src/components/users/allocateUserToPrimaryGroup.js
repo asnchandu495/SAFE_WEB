@@ -25,18 +25,15 @@ function AllocateUserToPrimaryGroup(props) {
 
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
   const [formFieldValidation, setformFieldValidation] = useState(false);
-  const [
-    UserSelectedPrimaryGroupValue,
-    setUserSelectedPrimaryGroupValue,
-  ] = useState([]);
+  const [UserSelectedPrimaryGroupValue, setUserSelectedPrimaryGroupValue] =
+    useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [buttonloadder, setbuttonloadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
 
   const [formData, SetformData] = useState({
     isPrimary: true,
@@ -121,7 +118,11 @@ function AllocateUserToPrimaryGroup(props) {
                         : []
                     }
                     getOptionLabel={(option) => option.groupName}
-                    defaultValue={UserSelectedPrimaryGroupValue[0]}
+                    defaultValue={
+                      UserSelectedPrimaryGroupValue
+                        ? UserSelectedPrimaryGroupValue[0]
+                        : ""
+                    }
                     onChange={handleChangeTeam}
                     filterSelectedOptions
                     className="global-input autocomplete-select"
