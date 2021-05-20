@@ -31,9 +31,8 @@ function AllocateUserToTeam(props) {
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [buttonloadder, setbuttonloadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [formData, SetformData] = useState({
     applicationUserId: "",
     applicationUserToTeamMapping: [],
@@ -58,6 +57,10 @@ function AllocateUserToTeam(props) {
   }
 
   function cancelEdit() {
+    setcomponentLoadder(true);
+    console.log(props.siteTeamData);
+    setUserSelectedTeamValue(props.siteTeamData);
+    setcomponentLoadder(false);
     props.setActiveCard("");
   }
 
