@@ -127,11 +127,7 @@ function NumericJump(props) {
     if (name == "numericExpressionType" || name == "goToSurveyQuestionId") {
       thisVal = value;
     } else {
-      let getValue = value;
-
-      if (getValue != "") {
-        thisVal = parseInt(getValue);
-      }
+      thisVal = value;
     }
     const list = {
       ...conditionalJump,
@@ -169,6 +165,20 @@ function NumericJump(props) {
 
   function submitForm(e) {
     e.preventDefault();
+    let newNumericConditionalQuestions =
+      conditionalJump.numericConditionalQuestions.map((con) => ({
+        id: con.id ? con.id : "",
+        forAnswer: parseFloat(con.forAnswer),
+        forRangeEnd: parseFloat(con.forRangeEnd),
+        goToSurveyQuestionId: con.goToSurveyQuestionId,
+        hasConditionalOrder: con.hasConditionalOrder,
+        numericConditionalOrderId: con.numericConditionalOrderId,
+        numericExpressionType: con.numericExpressionType,
+        question: con.question,
+        questionType: con.questionType,
+      }));
+    conditionalJump.numericConditionalQuestions =
+      newNumericConditionalQuestions;
     setshowLoadder(true);
     if (conditionalJump.id != "") {
       questionaireApiCall
@@ -331,14 +341,11 @@ function NumericJump(props) {
                                         type="text"
                                         validators={[
                                           "required",
-                                          "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-
-                                          "maxNumber:999999",
+                                          "matchRegexp:^[0-9]+.?[0-9]*$",
                                         ]}
                                         errorMessages={[
                                           "Please enter answer",
                                           "Numbers and decimal point",
-                                          "",
                                         ]}
                                         fullWidth
                                         id={`forAnswerR${i}`}
