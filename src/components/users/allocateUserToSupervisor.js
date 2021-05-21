@@ -24,21 +24,24 @@ function AllocateUserToSupervisor(props) {
   const userGroupApiCall = new UserGroupService();
 
   const [AllSupervisorRole, setAllSupervisorRole] = useState();
-  const [formFieldValidation, setformFieldValidation] = useState(false);
+  const [formFieldValidation, setformFieldValidation] = useState({
+    supervisor: false,
+  });
   const [UserSelectSupervisorData, setUserSelectSupervisorData] = useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [buttonloadder, setbuttonloadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
 
   const [formData, SetformData] = useState({
     applicationUserSupervisorId: "",
     applicationUserId: "",
   });
+
+  const [resetComponent, setResetComponent] = useState("NO");
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -49,23 +52,58 @@ function AllocateUserToSupervisor(props) {
           applicationUserId: props.applicationUserData.supervisorId,
           name: props.applicationUserData.supervisor,
         });
+        setResetComponent("NO");
         setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [resetComponent]);
 
   function handleChangeSupervisor(event, value) {
     setUserSelectSupervisorData(value);
     props.setActiveCard("supervisor");
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["supervisor"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["supervisor"]: true,
+      }));
+    }
+  }
+
+  function SelecSupervisorValidation() {
+    if (UserSelectSupervisorData) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["supervisor"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["supervisor"]: true,
+      }));
+    }
   }
 
   function cancelEdit() {
     props.setActiveCard("");
+    setResetComponent("YES");
+  }
+  function UserSupervisor() {
+    SelecSupervisorValidation();
+    if (UserSelectSupervisorData) {
+      UserSupervisorSubmit();
+    } else {
+      return false;
+    }
   }
 
-  function UserSupervisor(e) {
+  function UserSupervisorSubmit() {
     setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
@@ -161,9 +199,9 @@ function AllocateUserToSupervisor(props) {
                 )}
               </Grid>
 
-              {formFieldValidation.Team ? (
+              {formFieldValidation.supervisor ? (
                 <FormHelperText className="error-msg">
-                  Please select team{" "}
+                  Please select supervisor{" "}
                 </FormHelperText>
               ) : (
                 ""

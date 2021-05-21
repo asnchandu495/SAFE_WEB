@@ -24,20 +24,22 @@ function AllocateUserToSite(props) {
   const userGroupApiCall = new UserGroupService();
 
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
-  const [formFieldValidation, setformFieldValidation] = useState(false);
+  const [formFieldValidation, setformFieldValidation] = useState({
+    site: false,
+  });
   const [UserSelectedTeamValue, setUserSelectedTeamValue] = useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [buttonloadder, setbuttonloadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [formData, SetformData] = useState({
     applicationUserId: "",
     sites: [],
   });
+  const [resetComponent, setResetComponent] = useState("NO");
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -45,23 +47,59 @@ function AllocateUserToSite(props) {
     Promise.all([masterDataCallApi.getSites()])
       .then(([getTeams]) => {
         setBusinessTeamMasterData(getTeams);
+        setResetComponent("NO");
         setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [resetComponent]);
 
   function handleChangeTeam(event, value) {
     setUserSelectedTeamValue(value);
     props.setActiveCard("userSite");
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["site"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["site"]: true,
+      }));
+    }
   }
 
   function cancelEdit() {
     props.setActiveCard("");
+    setResetComponent("YES");
   }
 
-  function UserSitesUpdate(e) {
+  function SelectSiteValidation() {
+    if (UserSelectedTeamValue.length > 0) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["site"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["site"]: true,
+      }));
+    }
+  }
+
+  function UserSitesUpdate() {
+    SelectSiteValidation();
+    if (UserSelectedTeamValue.length > 0) {
+      UserSitesUpdateSubmit();
+    } else {
+      return false;
+    }
+  }
+
+  function UserSitesUpdateSubmit() {
     setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
@@ -162,9 +200,9 @@ function AllocateUserToSite(props) {
                 )}
               </Grid>
 
-              {formFieldValidation.Team ? (
+              {formFieldValidation.site ? (
                 <FormHelperText className="error-msg">
-                  Please select team{" "}
+                  Please select site{" "}
                 </FormHelperText>
               ) : (
                 ""

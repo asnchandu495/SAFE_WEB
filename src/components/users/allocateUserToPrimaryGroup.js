@@ -24,7 +24,9 @@ function AllocateUserToPrimaryGroup(props) {
   const userGroupApiCall = new UserGroupService();
 
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
-  const [formFieldValidation, setformFieldValidation] = useState(false);
+  const [formFieldValidation, setformFieldValidation] = useState({
+    primaryGroup: false,
+  });
   const [UserSelectedPrimaryGroupValue, setUserSelectedPrimaryGroupValue] =
     useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
@@ -67,6 +69,31 @@ function AllocateUserToPrimaryGroup(props) {
   function handleChangeTeam(event, value) {
     setUserSelectedPrimaryGroupValue(value);
     props.setActiveCard("primaryGroup");
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["primaryGroup"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["primaryGroup"]: true,
+      }));
+    }
+  }
+
+  function SelecPrimaryGroupValidation() {
+    if (UserSelectedPrimaryGroupValue) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["primaryGroup"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["primaryGroup"]: true,
+      }));
+    }
   }
 
   function cancelEdit() {
@@ -74,7 +101,16 @@ function AllocateUserToPrimaryGroup(props) {
     setResetComponent("YES");
   }
 
-  function UserPrimaryGroup(e) {
+  function UserPrimaryGroup() {
+    SelecPrimaryGroupValidation();
+    if (UserSelectedPrimaryGroupValue) {
+      UserPrimaryGroupSubmit();
+    } else {
+      return false;
+    }
+  }
+
+  function UserPrimaryGroupSubmit() {
     setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
@@ -176,9 +212,9 @@ function AllocateUserToPrimaryGroup(props) {
                 )}
               </Grid>
 
-              {formFieldValidation.Team ? (
+              {formFieldValidation.primaryGroup ? (
                 <FormHelperText className="error-msg">
-                  Please select team{" "}
+                  Please select primary group{" "}
                 </FormHelperText>
               ) : (
                 ""
