@@ -415,14 +415,14 @@ function TemperatureRange(props) {
                                     "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
 
                                     "maxNumber:45",
-                                    "minNumber:30",
+                                    `minNumber:${parseFloat(x.lowerLimit) + 1}`,
                                   ]
                                 : [
                                     "required",
                                     "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
 
                                     "maxNumber:113",
-                                    "minNumber:86",
+                                    `minNumber:${parseFloat(x.lowerLimit) + 1}`,
                                   ]
                             }
                             errorMessages={
@@ -431,13 +431,17 @@ function TemperatureRange(props) {
                                     "Please enter lower limit",
                                     "Entered numbers are not valid",
                                     "Maximum allowed is 45",
-                                    "Minimum allowed is 30",
+                                    `Minimum allowed is ${
+                                      parseFloat(x.lowerLimit) + 1
+                                    }`,
                                   ]
                                 : [
                                     "Please enter lower limit",
                                     "Entered numbers are not valid",
                                     "Maximum allowed is 113",
-                                    "Minimum allowed is 86",
+                                    `Minimum allowed is ${
+                                      parseFloat(x.lowerLimit) + 1
+                                    }`,
                                   ]
                             }
                             id={`upperLimit_${i}`}
