@@ -24,7 +24,9 @@ function AllocateUserToTeam(props) {
   const userGroupApiCall = new UserGroupService();
 
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
-  const [formFieldValidation, setformFieldValidation] = useState(false);
+  const [formFieldValidation, setformFieldValidation] = useState({
+    team: false,
+  });
   const [UserSelectedTeamValue, setUserSelectedTeamValue] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -37,34 +39,68 @@ function AllocateUserToTeam(props) {
     applicationUserId: "",
     applicationUserToTeamMapping: [],
   });
-
+  const [resetComponent, setResetComponent] = useState("NO");
   useEffect(() => {
     setcomponentLoadder(true);
     setUserSelectedTeamValue(props.siteTeamData);
     Promise.all([masterDataCallApi.getTeams()])
       .then(([getTeams]) => {
         setBusinessTeamMasterData(getTeams);
+        setResetComponent("NO");
         setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [resetComponent]);
 
   function handleChangeTeam(event, value) {
     setUserSelectedTeamValue(value);
     props.setActiveCard("userTeam");
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["team"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["team"]: true,
+      }));
+    }
   }
 
-  function cancelEdit() {
-    setcomponentLoadder(true);
-    console.log(props.siteTeamData);
-    setUserSelectedTeamValue(props.siteTeamData);
-    setcomponentLoadder(false);
-    props.setActiveCard("");
+  function SelectTeamValidation() {
+    if (UserSelectedTeamValue.length > 0) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["team"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["team"]: true,
+      }));
+    }
   }
 
-  function UserTeamUpdate(e) {
+  // function cancelEdit() {
+  //   setcomponentLoadder(true);
+  //   console.log(props.siteTeamData);
+  //   setUserSelectedTeamValue(props.siteTeamData);
+  //   setcomponentLoadder(false);
+  //   props.setActiveCard("");
+  // }
+  function UserTeamUpdate() {
+    SelectTeamValidation();
+    if (UserSelectedTeamValue.length > 0) {
+      UserTeamUpdateSubmit();
+    } else {
+      return false;
+    }
+  }
+
+  function UserTeamUpdateSubmit() {
     setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
@@ -87,6 +123,11 @@ function AllocateUserToTeam(props) {
         setStateSnackbar(true);
         setbuttonloadder(false);
       });
+  }
+
+  function cancelEdit() {
+    props.setActiveCard("");
+    setResetComponent("YES");
   }
 
   return (
@@ -165,7 +206,7 @@ function AllocateUserToTeam(props) {
                 )}
               </Grid>
 
-              {formFieldValidation.Team ? (
+              {formFieldValidation.team ? (
                 <FormHelperText className="error-msg">
                   Please select team{" "}
                 </FormHelperText>

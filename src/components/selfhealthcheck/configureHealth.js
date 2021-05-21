@@ -330,6 +330,7 @@ function ConfigureHealth(props) {
                       name="toDate"
                       required
                       value={searchForm.toDate}
+                      minDate={searchForm.fromDate}
                       className="global-input"
                       KeyboardButtonProps={{
                         "aria-label": "change date",

@@ -24,25 +24,25 @@ function AllocateUserToSecondaryGroup(props) {
   const userGroupApiCall = new UserGroupService();
 
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
-  const [formFieldValidation, setformFieldValidation] = useState(false);
-  const [
-    UserSelectedSecondaryGroupValue,
-    setUserSelectedSecondaryGroupValue,
-  ] = useState([]);
+  const [formFieldValidation, setformFieldValidation] = useState({
+    group: false,
+  });
+  const [UserSelectedSecondaryGroupValue, setUserSelectedSecondaryGroupValue] =
+    useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [buttonloadder, setbuttonloadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
 
   const [formData, SetformData] = useState({
     isPrimary: false,
     applicationUserId: "",
     groups: [],
   });
+  const [resetComponent, setResetComponent] = useState("NO");
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -58,23 +58,59 @@ function AllocateUserToSecondaryGroup(props) {
         } else {
           setBusinessTeamMasterData(getTeams);
         }
+        setResetComponent("NO");
         setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [resetComponent]);
 
   function handleChangeTeam(event, value) {
     setUserSelectedSecondaryGroupValue(value);
     props.setActiveCard("secondaryGroup");
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["group"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["group"]: true,
+      }));
+    }
   }
 
   function cancelEdit() {
     props.setActiveCard("");
+    setResetComponent("YES");
   }
 
-  function UserSecondaryGroup(e) {
+  function SelectGroupValidation() {
+    if (UserSelectedSecondaryGroupValue.length > 0) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["group"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["group"]: true,
+      }));
+    }
+  }
+
+  function UserSecondaryGroup() {
+    SelectGroupValidation();
+    if (UserSelectedSecondaryGroupValue.length > 0) {
+      UserSecondaryGroupSubmit();
+    } else {
+      return false;
+    }
+  }
+
+  function UserSecondaryGroupSubmit() {
     setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
@@ -179,9 +215,9 @@ function AllocateUserToSecondaryGroup(props) {
                 )}
               </Grid>
 
-              {formFieldValidation.Team ? (
+              {formFieldValidation.group ? (
                 <FormHelperText className="error-msg">
-                  Please select team{" "}
+                  Please select group{" "}
                 </FormHelperText>
               ) : (
                 ""

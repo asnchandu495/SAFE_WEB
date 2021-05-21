@@ -31,45 +31,81 @@ function AllocateUserToRole(props) {
   const userGroupApiCall = new UserGroupService();
 
   const [BusinessUserRolesData, setBusinessUserRolesData] = useState();
-  const [formFieldValidation, setformFieldValidation] = useState(false);
+  const [formFieldValidation, setformFieldValidation] = useState({
+    role: false,
+  });
   const [UserSelectedRoleValue, setUserSelectedRoleValue] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [buttonloadder, setbuttonloadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
 
   const [formData, SetformData] = useState({
     applicationUserId: "",
     applicationUserToRoleMapping: [],
   });
-
+  const [resetComponent, setResetComponent] = useState("NO");
   useEffect(() => {
     setcomponentLoadder(true);
     setUserSelectedRoleValue(props.siteRoleData);
     Promise.all([masterDataCallApi.getUserRoles()])
       .then(([getUserRoles]) => {
         setBusinessUserRolesData(getUserRoles);
+        setResetComponent("NO");
         setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [resetComponent]);
 
   function handleChangeTeam(event, value) {
     setUserSelectedRoleValue(value);
     props.setActiveCard("userRole");
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["role"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["role"]: true,
+      }));
+    }
+  }
+  function SelectRoleValidation() {
+    if (UserSelectedRoleValue.length > 0) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["role"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["role"]: true,
+      }));
+    }
   }
 
   function cancelEdit() {
     props.setActiveCard("");
+    setResetComponent("YES");
   }
 
-  function UserRoleUpdate(e) {
+  function UserRoleUpdate() {
+    SelectRoleValidation();
+    if (UserSelectedRoleValue.length > 0) {
+      UserRoleUpdateSubmit();
+    } else {
+      return false;
+    }
+  }
+
+  function UserRoleUpdateSubmit() {
     setbuttonloadder(true);
     var data = formData;
     data.applicationUserId = props.applicationUserId;
@@ -169,7 +205,7 @@ function AllocateUserToRole(props) {
                 )}
               </Grid>
 
-              {formFieldValidation.Team ? (
+              {formFieldValidation.role ? (
                 <FormHelperText className="error-msg">
                   Please select roles{" "}
                 </FormHelperText>

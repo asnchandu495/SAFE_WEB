@@ -91,6 +91,7 @@ function CustomizedDialogs(props) {
       props.settoasterServerity("success");
       props.setOpenConfirmationModal(false);
     } else if (props.ConfirmationModalActionType == "DeactiveUser") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteUser(thisId)
@@ -99,11 +100,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted user.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteUserGroup") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DelteUserGroup(thisId)
@@ -112,11 +115,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted User Group.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteTeams") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteTeam(thisId)
@@ -126,11 +131,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Team is deleted");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteWorflow") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteWorkflow(thisId)
@@ -139,11 +146,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Workflow is deleted");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteQuestionaire") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteQuestion(thisId)
@@ -152,11 +161,13 @@ function CustomizedDialogs(props) {
           props.setStateSnackbar(true);
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeletEmergencyContactList(thisId)
@@ -165,11 +176,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Emergency Contacts.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "CancelQuestionaire") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
 
       props
@@ -179,11 +192,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Questionaire.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "EmergencyContactCancel") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails;
       props
         .DeletAssignEmergencyContactList(thisId)
@@ -194,11 +209,13 @@ function CustomizedDialogs(props) {
           );
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "ChangeDocStatus") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       var data = {
         emergencyContactId: props.SelectedRowDetails[1],
@@ -224,6 +241,7 @@ function CustomizedDialogs(props) {
           );
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
@@ -231,6 +249,7 @@ function CustomizedDialogs(props) {
     } else if (
       props.ConfirmationModalActionType == "ChangeQuestionnaireStatus"
     ) {
+      setshowLoadder(true);
       let thisId = props.SelectedRowDetails[0];
       let data = {
         id: props.SelectedRowDetails[0],
@@ -248,11 +267,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Updated");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "PublishWorkflow") {
+      setshowLoadder(true);
       let data = {
         id: props.SelectedRowDetails[0],
         isActive: props.SelectedRowDetails[3] ? false : true,
@@ -265,11 +286,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Published");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeactiveDesignation") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DelteUserDesignation(thisId)
@@ -278,11 +301,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Designation.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteCovidState") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DelteCovidState(thisId)
@@ -291,11 +316,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted COVID state.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteFaq") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteFaq(thisId)
@@ -304,11 +331,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted FAQ.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteSite") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteSite(thisId)
@@ -317,11 +346,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Site.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteFloor") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteFloor(thisId)
@@ -330,11 +361,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Floor.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DisassociateFaq") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteAssignFaq(thisId)
@@ -343,11 +376,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Disassociated FAQ from User Group.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "ChangeStatusFaq") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       let activeValue = props.SelectedRowDetails[3] ? false : true;
       let sendData = {
@@ -364,11 +399,13 @@ function CustomizedDialogs(props) {
           );
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteLocation") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
       props
         .DeleteLocation(thisId)
@@ -377,11 +414,13 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Deleted Location.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteBooleanQuestion") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails.id;
       props
         .DeleteSelectedQuestion(thisId)
@@ -394,11 +433,13 @@ function CustomizedDialogs(props) {
             ...props.selectedQuestionDetails,
             ["questionType"]: null,
           }));
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteFreeQuestion") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails.id;
       props
         .DeleteFreetextQuestionData(thisId)
@@ -411,11 +452,13 @@ function CustomizedDialogs(props) {
             ...props.selectedQuestionDetails,
             ["questionType"]: null,
           }));
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteTimeQuestion") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails.id;
       questionaireApiCall
         .DeleteTimeQuestion(thisId)
@@ -428,11 +471,13 @@ function CustomizedDialogs(props) {
             ...props.selectedQuestionDetails,
             ["questionType"]: null,
           }));
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteDateQuestion") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails.id;
       questionaireApiCall
         .DeleteDateQuestion(thisId)
@@ -445,11 +490,13 @@ function CustomizedDialogs(props) {
             ...props.selectedQuestionDetails,
             ["questionType"]: null,
           }));
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteNumericQuestion") {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails.id;
       props
         .DeleteNumericQuestionData(thisId)
@@ -462,6 +509,7 @@ function CustomizedDialogs(props) {
             ...props.selectedQuestionDetails,
             ["questionType"]: null,
           }));
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
@@ -469,6 +517,7 @@ function CustomizedDialogs(props) {
     } else if (
       props.ConfirmationModalActionType == "DeleteSinglechoiceQuestion"
     ) {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails.id;
       props
         .DeleteSinglechoiceQuestionData(thisId)
@@ -481,6 +530,7 @@ function CustomizedDialogs(props) {
             ...props.selectedQuestionDetails,
             ["questionType"]: null,
           }));
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
@@ -488,6 +538,7 @@ function CustomizedDialogs(props) {
     } else if (
       props.ConfirmationModalActionType == "DeleteMultichoiceQuestion"
     ) {
+      setshowLoadder(true);
       var thisId = props.SelectedRowDetails.id;
       props
         .DeleteMultiQuestionData(thisId)
@@ -500,6 +551,7 @@ function CustomizedDialogs(props) {
             ...props.selectedQuestionDetails,
             ["questionType"]: null,
           }));
+          setshowLoadder(false);
         })
         .catch((error) => {
           toasterErrorMessage(error);
@@ -518,6 +570,7 @@ function CustomizedDialogs(props) {
             setshowLoadder(false);
             props.setReloadPage("YES");
           }, 6000);
+          setshowLoadder(false);
         })
         .catch((error) => {
           setshowLoadder(false);
@@ -537,6 +590,7 @@ function CustomizedDialogs(props) {
             setshowLoadder(false);
             props.setReloadPage("YES");
           }, 6000);
+          setshowLoadder(false);
         })
         .catch((error) => {
           setshowLoadder(false);
@@ -572,7 +626,11 @@ function CustomizedDialogs(props) {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClickNo} className="no-button">
+          <Button
+            onClick={handleClickNo}
+            className="no-button"
+            disabled={showLoadder}
+          >
             No
           </Button>
           <Button
