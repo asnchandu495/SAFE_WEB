@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useCallback, useEffect } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
-import { useDropzone } from "react-dropzone";
+import Dropzone from "react-dropzone";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -105,12 +105,11 @@ function ImportUsers(props) {
   const onDrop = useCallback((acceptedFiles) => {
     setMyFiles(acceptedFiles);
   });
-  const { getRootProps, getInputProps, open, acceptedFiles } = useDropzone({
-    onDrop,
-    noClick: true,
-    noKeyboard: true,
-    accept: ".xls,.xlsx",
-  });
+  // const { getRootProps, getInputProps, open, acceptedFiles } = useDropzone({
+  //   onDrop,
+  //   noClick: true,
+  //   noKeyboard: true,
+  // });
 
   const files = myFiles.map((file) => (
     <Grid item xs={12} className={classes.uploadFileContainer}>
@@ -130,23 +129,12 @@ function ImportUsers(props) {
     GlobalSettingApi.getLoadGlobalSetting()
       .then((globalSettings) => {
         setfileFormat(globalSettings.fileFormatToImportUsers);
-
-        UpdateDropzoneConfig();
+        setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-
-  function UpdateDropzoneConfig() {
-    const { getRootProps, getInputProps, open, acceptedFiles } = useDropzone({
-      onDrop,
-      noClick: true,
-      noKeyboard: true,
-      accept: ".xls,.xlsx",
-    });
-    setcomponentLoadder(false);
-  }
 
   function removeFile() {
     setMyFiles([]);
@@ -229,25 +217,34 @@ function ImportUsers(props) {
               </Grid>
             </Grid>
             <Grid item xs={12} className={classes.importUserFileContainer}>
-              <div {...getRootProps({ className: classes.dropzone })}>
-                <input {...getInputProps()} />
-                <p className={classes.fileUploadParagraph}>
-                  upload Drag and drop or browse{" "}
-                  {fileFormat ? fileFormat : "xls"} file to upload
-                  {/* upload Drag and drop or browse XLS, XLSX file to
-                upload(dynamic/if empty:xls) */}
-                </p>
-                <div className={`fileuploadcontainer`}>
-                  <Button
-                    variant="contained"
-                    onClick={open}
-                    className={`global-info-btn`}
-                    startIcon={<CloudUploadIcon />}
-                  >
-                    Browse
-                  </Button>
-                </div>
-              </div>
+              <Dropzone
+                accept={fileFormat ? "." + fileFormat : ".xls"}
+                onDrop={onDrop}
+                noClick={true}
+                noKeyboard={true}
+              >
+                {({ getRootProps, getInputProps, open }) => {
+                  return (
+                    <div {...getRootProps({ className: classes.dropzone })}>
+                      <input {...getInputProps()} />
+                      <p className={classes.fileUploadParagraph}>
+                        upload Drag and drop or browse{" "}
+                        {fileFormat ? fileFormat : "xls"} file to upload
+                      </p>
+                      <div className={`fileuploadcontainer`}>
+                        <Button
+                          variant="contained"
+                          onClick={open}
+                          className={`global-info-btn`}
+                          startIcon={<CloudUploadIcon />}
+                        >
+                          Browse
+                        </Button>
+                      </div>
+                    </div>
+                  );
+                }}
+              </Dropzone>
               <div>
                 <aside>
                   {files.length > 0 ? (
