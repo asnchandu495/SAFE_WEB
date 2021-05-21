@@ -312,7 +312,7 @@ function TemperatureRange(props) {
                         item
                         xs={12}
                         spacing={3}
-                        className={[classes.gridDispaly].join(" ")}
+                        className={`${classes.gridDispaly} temperature-states`}
                         key={`section-container${i}`}
                       >
                         <Grid item xs={3}>
@@ -438,7 +438,7 @@ function TemperatureRange(props) {
                                 : [
                                     "Please enter lower limit",
                                     "Entered numbers are not valid",
-                                    "Maximum allowed is 113",
+                                    `Maximum allowed is 113`,
                                     `Minimum allowed is ${
                                       parseFloat(x.lowerLimit) + 1
                                     }`,
