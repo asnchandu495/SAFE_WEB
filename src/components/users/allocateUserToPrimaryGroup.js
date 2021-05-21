@@ -34,12 +34,12 @@ function AllocateUserToPrimaryGroup(props) {
   const [buttonloadder, setbuttonloadder] = useState(false);
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
-
   const [formData, SetformData] = useState({
     isPrimary: true,
     applicationUserId: "",
     groups: [],
   });
+  const [resetComponent, setResetComponent] = useState("NO");
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -56,13 +56,13 @@ function AllocateUserToPrimaryGroup(props) {
         } else {
           setBusinessTeamMasterData(getTeams);
         }
-
+        setResetComponent("NO");
         setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [resetComponent]);
 
   function handleChangeTeam(event, value) {
     setUserSelectedPrimaryGroupValue(value);
@@ -71,6 +71,7 @@ function AllocateUserToPrimaryGroup(props) {
 
   function cancelEdit() {
     props.setActiveCard("");
+    setResetComponent("YES");
   }
 
   function UserPrimaryGroup(e) {
