@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useCallback } from "react";
+import React, { Fragment, useState, useCallback, useEffect } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { useDropzone } from "react-dropzone";
 import Grid from "@material-ui/core/Grid";
@@ -14,6 +14,11 @@ import UserService from "../../services/usersService";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import { connect } from "react-redux";
+import * as UserAction from "../../Redux/Action/userAction";
+import GlobalSettingApiServices from "../../services/globalSettingService";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,6 +90,7 @@ var excelDownladFileUrl =
 
 function ImportUsers(props) {
   const classes = useStyles();
+  const GlobalSettingApi = new GlobalSettingApiServices();
   const apiCallForFileUpload = new FileUploadServices();
   const apiCallForUser = new UserService();
   const [componentLoadder, setcomponentLoadder] = useState(true);
@@ -92,9 +98,9 @@ function ImportUsers(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [fileFormat, setfileFormat] = useState();
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [myFiles, setMyFiles] = useState([]);
   const onDrop = useCallback((acceptedFiles) => {
     setMyFiles(acceptedFiles);
@@ -119,6 +125,28 @@ function ImportUsers(props) {
       </Grid>
     </Grid>
   ));
+
+  useEffect(() => {
+    GlobalSettingApi.getLoadGlobalSetting()
+      .then((globalSettings) => {
+        setfileFormat(globalSettings.fileFormatToImportUsers);
+
+        UpdateDropzoneConfig();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  function UpdateDropzoneConfig() {
+    const { getRootProps, getInputProps, open, acceptedFiles } = useDropzone({
+      onDrop,
+      noClick: true,
+      noKeyboard: true,
+      accept: ".xls,.xlsx",
+    });
+    setcomponentLoadder(false);
+  }
 
   function removeFile() {
     setMyFiles([]);
@@ -187,68 +215,74 @@ function ImportUsers(props) {
           Import users
         </LinkTo>
       </Breadcrumbs>
-      <Paper className={`main-paper import-user-paper`}>
-        <ValidatorForm className={`global-form`} onSubmit={UserbulkUpload}>
-          <Grid item sm={12}>
-            <Grid item sm={9} required>
-              <label>
-                Step1:<a href={excelDownladFileUrl}>Download</a> excel File
-                Template. Skip if already downloaded.
-              </label>
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <Paper className={`main-paper import-user-paper`}>
+          <ValidatorForm className={`global-form`} onSubmit={UserbulkUpload}>
+            <Grid item sm={12}>
+              <Grid item sm={9} required>
+                <label>
+                  Step1:<a href={excelDownladFileUrl}>Download</a> excel File
+                  Template. Skip if already downloaded.
+                </label>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={12} className={classes.importUserFileContainer}>
-            <div {...getRootProps({ className: classes.dropzone })}>
-              <input {...getInputProps()} />
-              <p className={classes.fileUploadParagraph}>
-                {" "}
-                Drag and drop or browse XLS, XLSX file to upload
-              </p>
-              <div className={`fileuploadcontainer`}>
-                <Button
-                  variant="contained"
-                  onClick={open}
-                  className={`global-info-btn`}
-                  startIcon={<CloudUploadIcon />}
-                >
-                  Browse
-                </Button>
+            <Grid item xs={12} className={classes.importUserFileContainer}>
+              <div {...getRootProps({ className: classes.dropzone })}>
+                <input {...getInputProps()} />
+                <p className={classes.fileUploadParagraph}>
+                  upload Drag and drop or browse{" "}
+                  {fileFormat ? fileFormat : "xls"} file to upload
+                  {/* upload Drag and drop or browse XLS, XLSX file to
+                upload(dynamic/if empty:xls) */}
+                </p>
+                <div className={`fileuploadcontainer`}>
+                  <Button
+                    variant="contained"
+                    onClick={open}
+                    className={`global-info-btn`}
+                    startIcon={<CloudUploadIcon />}
+                  >
+                    Browse
+                  </Button>
+                </div>
               </div>
-            </div>
-            <div>
-              <aside>
-                {files.length > 0 ? (
-                  <div>
-                    {/* <h4>Files</h4> */}
-                    <ul>{files}</ul>
-                  </div>
-                ) : null}
-              </aside>
-            </div>
-          </Grid>
-          <Grid container>
-            <Grid item xs={12} className={`inner-table-buttons`}>
-              <div className={`form-buttons-container`}>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className="global-submit-btn"
-                  disabled={showLoadder}
-                >
-                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                </Button>
-                <Button
-                  variant="contained"
-                  type="reset"
-                  className="global-cancel-btn"
-                >
-                  Cancel
-                </Button>
+              <div>
+                <aside>
+                  {files.length > 0 ? (
+                    <div>
+                      {/* <h4>Files</h4> */}
+                      <ul>{files}</ul>
+                    </div>
+                  ) : null}
+                </aside>
               </div>
             </Grid>
-          </Grid>
-        </ValidatorForm>
-      </Paper>
+            <Grid container>
+              <Grid item xs={12} className={`inner-table-buttons`}>
+                <div className={`form-buttons-container`}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className="global-submit-btn"
+                    disabled={showLoadder}
+                  >
+                    {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="reset"
+                    className="global-cancel-btn"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </Grid>
+            </Grid>
+          </ValidatorForm>
+        </Paper>
+      )}
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
@@ -261,3 +295,21 @@ function ImportUsers(props) {
 }
 
 export default ImportUsers;
+
+// ImportUsers.propTypes = {
+//   loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
+// };
+
+// function mapStateToProps(state, ownProps) {
+//   return {
+//     UserData: state.user,
+//     loadGlobalSettingsData: state.loadGlobalSettingsData,
+//   };
+// }
+
+// const mapDispatchToProps = {
+//   loadGlobalSettingWithoutAPICall:
+//     globalSettingAction.loadGlobalSettingWithoutAPICall,
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(ImportUsers);
