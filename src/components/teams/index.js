@@ -205,6 +205,23 @@ function Teams(props) {
         noMatch: "There are no users  teams",
       },
     },
+    customSearch: (searchQuery, currentRow, columns) => {
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col != "undefined") {
+          let getValue;
+          if (col.name) {
+            getValue = col.name;
+          } else {
+            getValue = col;
+          }
+          if (getValue.toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+            isFound = true;
+          }
+        }
+      });
+      return isFound;
+    },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
   };
 
