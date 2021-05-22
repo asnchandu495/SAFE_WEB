@@ -169,7 +169,7 @@ function ViewSite(props) {
     },
     {
       name: "isPinMicroActive",
-      label: "Pin micro status",
+      label: "RLAP status",
       options: {
         filter: false,
         sort: true,

@@ -513,7 +513,7 @@ function AddLocation(props) {
                           name="isPinMicroActive"
                         />
                       }
-                      label="Pin Micro Active"
+                      label="RLAP Active"
                     />
                   </Grid>
                 </Grid>

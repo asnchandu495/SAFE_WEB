@@ -420,7 +420,7 @@ function CustomizedDialogs(props) {
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage(
-            "Updated FAQ assignment status to User Group.s"
+            "Updated FAQ assignment status to User Group."
           );
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);

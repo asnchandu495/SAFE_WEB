@@ -539,6 +539,37 @@ function Users(props) {
       },
     },
     {
+      name: "userId",
+      label: "User ID",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      name: "covidStateDetails",
+      label: "Temperature ",
+      options: {
+        filter: false,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData && thisRowData[6] != null) {
+            return (
+              <span>
+                {thisRowData[6].temperature}-
+                {thisRowData[6].temperatureUnit
+                  ? thisRowData[6].temperatureUnit
+                  : ""}
+              </span>
+            );
+          } else {
+            return <span></span>;
+          }
+        },
+      },
+    },
+    {
       label: "Actions",
       name: "",
       options: {

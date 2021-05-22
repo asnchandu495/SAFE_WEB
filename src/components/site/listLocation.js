@@ -79,14 +79,11 @@ function ListSite(props) {
   const [openAddLocationModal, setopenAddLocationModal] = useState(false);
   const [openViewLocationModal, setopenViewLocationModal] = useState(false);
   const [openshiftInfoModal, setopenshiftInfoModal] = useState(false);
-  const [openuserTemepratureModal, setopenuserTemepratureModal] = useState(
-    false
-  );
+  const [openuserTemepratureModal, setopenuserTemepratureModal] =
+    useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [listLocationData, setlistLocationData] = useState([]);
   const [SelectedRowId, setSelectedRowId] = useState("");
@@ -95,13 +92,10 @@ function ListSite(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [siteName, setsiteName] = useState("");
 
@@ -192,7 +186,7 @@ function ListSite(props) {
     },
     {
       name: "isPinMicroActive",
-      label: "Pin Micro Status",
+      label: "RLAP Status",
       options: {
         filter: true,
         sort: true,

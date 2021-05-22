@@ -73,6 +73,30 @@ function GlobalSetting(props) {
     maximumFileSizeToImportUsersUnit: "MB",
     // temperatureUnit: "",
   });
+
+  const [cancelData, setcancelData] = useState({
+    id: "",
+    geoFencingTolerance: 0,
+    geoFencingToleranceUnit: "",
+    frequencyOfGeoLocation: 0,
+    frequencyOfGeoLocationUnit: "",
+    facialTolerance: 0.0,
+    socialDistanceTolerance: 0,
+    socialDistanceToleranceUnit: "",
+    fileFormatToImportUsers: "",
+    timeFormat: "",
+    dateFormat: "",
+    automatedCheckoutTime: 0,
+    selfHealthCheckReminder: 0,
+    selfHealthCheckReminderUnit: "",
+    durationToLockUserAccount: 0,
+    maxPasswordlength: 0,
+    allowCheckinWithoutWFHLocationApproval: true,
+    allowCheckinWithoutProfileSelfieApproval: true,
+    maximumFileSizeOfUserSelfieUnit: "MB",
+    maximumFileSizeOfUserSelfie: 0,
+    maximumFileSizeToImportUsersUnit: "MB",
+  });
   const [geoUnits, setGeoUnits] = useState([]);
   const [toleranceUnits, setToleranceUnits] = useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
@@ -198,6 +222,7 @@ function GlobalSetting(props) {
         setGeoUnits(getGeoUnits);
         setToleranceUnits(getToleranceUnits);
         SetformData(globalSettings);
+        setcancelData(globalSettings);
         setcomponentLoadder(false);
       })
       .catch((error) => {
@@ -218,6 +243,10 @@ function GlobalSetting(props) {
       ["allowCheckinWithoutProfileSelfieApproval"]: e.target.checked,
     }));
   };
+
+  function redirectToViewUsersGroup() {
+    SetformData(cancelData);
+  }
   function GlobalSettingForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -1119,7 +1148,7 @@ function GlobalSetting(props) {
                     <Button
                       variant="contained"
                       type="reset"
-                      // onClick={redirectToViewUsersGroup}
+                      onClick={redirectToViewUsersGroup}
                       className="global-cancel-btn"
                     >
                       Cancel
