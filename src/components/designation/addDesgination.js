@@ -61,6 +61,8 @@ function AddDesignation(props) {
 
   function UserBasicInfo(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadder(true);
     if (designationIdFromURL != 0) {
       var data = formData;

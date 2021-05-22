@@ -117,6 +117,9 @@ function CreateCovidState(props) {
 
   function UserBasicInfo(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
+
     setshowLoadder(true);
     if (userGroupUpdateid) {
       var data = formData;

@@ -97,9 +97,8 @@ function UpdateShiftingInfo(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
 
   const [formData, SetformData] = useState({
@@ -151,6 +150,8 @@ function UpdateShiftingInfo(props) {
 
   function submitUserShiftInform() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
     data.applicationUserId = selectedId;
     usersApiCall

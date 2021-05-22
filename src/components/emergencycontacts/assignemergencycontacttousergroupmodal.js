@@ -179,6 +179,8 @@ function AssignEmergencyContactToUserGroup(props) {
 
   function submitAssignEmergencyContact() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
     props
       .CreateAssignEmegencyContact(data)

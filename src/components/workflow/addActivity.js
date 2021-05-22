@@ -303,6 +303,8 @@ function AddActivity(props) {
 
   function submitActivityForm1() {
     // e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     if (userSelectedActivities.length > 0) {
       let selectedWorkflowActivities = userSelectedActivities.map((act) => ({
         id: act.id ? act.id : "",

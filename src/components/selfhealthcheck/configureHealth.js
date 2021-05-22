@@ -215,6 +215,8 @@ function ConfigureHealth(props) {
 
   function submitForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setComponentLoadder(true);
     HealthCheckApiCall.getUserHealthChecks(searchForm)
       .then((healthChecks) => {

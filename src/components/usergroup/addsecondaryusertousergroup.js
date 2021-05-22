@@ -46,9 +46,8 @@ function AddSecondaryUserToUserGroups(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedGroupInfo, setSelectedGroupInfo] = useState();
@@ -166,6 +165,8 @@ function AddSecondaryUserToUserGroups(props) {
 
   function assignUsers() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     let finalUsers = [];
     selectedUsers.map((user) => {
       finalUsers.push({ id: applicationUsers[user.dataIndex].id });

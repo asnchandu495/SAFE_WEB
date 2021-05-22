@@ -72,6 +72,8 @@ function CreateFAQ(props) {
   function submitForm(e) {
     setshowLoadder(true);
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     if (paramsId != 0) {
       var data = formData;
       faqApiCall

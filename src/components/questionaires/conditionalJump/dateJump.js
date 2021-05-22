@@ -179,6 +179,8 @@ function DateJump(props) {
 
   function submitForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadder(true);
     if (conditionalJump.id != "") {
       questionaireApiCall

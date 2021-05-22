@@ -113,9 +113,8 @@ function AddFloor(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
 
@@ -184,6 +183,8 @@ function AddFloor(props) {
 
   function submitUserCovidInformation() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
     data.siteId = props.siteId;
     if (props.SelectedRowId) {

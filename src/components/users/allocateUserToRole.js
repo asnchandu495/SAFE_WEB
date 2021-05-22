@@ -107,6 +107,8 @@ function AllocateUserToRole(props) {
 
   function UserRoleUpdateSubmit() {
     setbuttonloadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
     data.applicationUserId = props.applicationUserId;
     data.applicationUserToRoleMapping = UserSelectedRoleValue;

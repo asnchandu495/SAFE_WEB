@@ -37,9 +37,8 @@ function CreateQuestionarie(props) {
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [QuestionaireList, setQuestionaireList] = useState();
   const [isDuplicate, setIsDuplicate] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [allLanguages, setAllLanguages] = useState([]);
   const [showLoadder, setshowLoadder] = useState(false);
   const [formData, setformData] = useState({
@@ -128,6 +127,8 @@ function CreateQuestionarie(props) {
   }
 
   function submitForm() {
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadder(true);
 
     var data = formData;

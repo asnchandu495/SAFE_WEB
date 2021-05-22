@@ -129,29 +129,23 @@ function Users(props) {
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [openCovidStateInfoModal, setopenCovidStateInfoModal] = useState(false);
   const [openshiftInfoModal, setopenshiftInfoModal] = useState(false);
-  const [openuserTemepratureModal, setopenuserTemepratureModal] = useState(
-    false
-  );
+  const [openuserTemepratureModal, setopenuserTemepratureModal] =
+    useState(false);
 
   const [showLoadder, setshowLoadder] = useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [Modalopen, setModalOpen] = useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [SelectedRowId, setSelectedRowId] = useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [reloadPage, setReloadPage] = useState("NO");
   const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
@@ -163,14 +157,13 @@ function Users(props) {
   const [UserGroupData, setUserGroupData] = useState();
   const [covidStatelist, setcovidStatelist] = useState();
   const [BusinessDesingationData, setBusinessDesingationData] = useState();
-  const [
-    BusinessUserRoleMasterData,
-    setBusinessUserRoleMasterData,
-  ] = useState();
+  const [BusinessUserRoleMasterData, setBusinessUserRoleMasterData] =
+    useState();
   const [BusinessSiteMasterData, setBusinessSiteMasterData] = useState();
   const [BusinessGroupData, setBusinessGroupData] = useState();
   const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
   const [applicationUsers, setApplicationUsers] = useState([]);
+  const [RowsSelected, setRowsSelected] = useState([]);
 
   const [searchformData, setsearchformData] = useState({
     primaryGroupId: "",
@@ -368,6 +361,13 @@ function Users(props) {
     disableToolbarSelect: true,
     // rowsSelected: selectedUsersForCovidState,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
+      console.log("rows");
+      console.log(currentRowSelected);
+      var setRowsSelectedArray = [];
+      allRowsSelected.map((user, i) => {
+        setRowsSelectedArray.push(user.dataIndex);
+      });
+      setRowsSelected(setRowsSelectedArray);
       var selectedUsersToCovidStateArray = [];
       allRowsSelected.map((user, i) => {
         selectedUsersToCovidStateArray.push(user.dataIndex);
@@ -408,7 +408,9 @@ function Users(props) {
     },
 
     customToolbarSelect: (value, tableMeta, updateValue) => {},
-    customToolbar: () => {
+    customToolbar: (value, tableMeta, updateValue) => {
+      console.log("id");
+      console.log(selectedUsersForCovidState);
       return (
         <div className={`maingrid-actions`}>
           <Tooltip title="Filter By User">
@@ -419,6 +421,34 @@ function Users(props) {
               onClick={handleClickOpenModal}
             ></Button>
           </Tooltip>
+          {/* {RowsSelected.length ? (
+            <Tooltip title="Delete">
+              <Button
+                variant="contained"
+                startIcon={<DeleteIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModalDelete(
+                    selectedUsersForCovidState
+                  )
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          )}
+          {RowsSelected.length ? (
+            <Tooltip title="covidstate">
+              <Button
+                variant="contained"
+                startIcon={<LocalHospitalIcon />}
+                className={`edit-icon`}
+                // onClick={() => handleClickOpenConfirmationModal(thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          )} */}
         </div>
       );
     },
@@ -580,6 +610,23 @@ function Users(props) {
     setConfirmationHeaderTittle("Delete User");
     setConfirmationDialogContextText(
       `Are you sure you want to delete ${value[3]} ?`
+    );
+  };
+
+  const handleClickOpenConfirmationModalDelete = (value) => {
+    var idArray = [];
+    value.map((user, i) => {
+      idArray.push(user);
+    });
+    var idArraycount = idArray.length;
+    var finalData = JSON.stringify(idArray);
+
+    setSelectedRowDetails(finalData);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteMultipleUser");
+    setConfirmationHeaderTittle("Delete User");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${idArraycount} user?`
     );
   };
 

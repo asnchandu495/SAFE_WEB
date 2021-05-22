@@ -99,9 +99,8 @@ function CreateSite(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
@@ -109,10 +108,8 @@ function CreateSite(props) {
   const [siteManger, setSiteManger] = useState([]);
   const [securityManger, setSecurityManger] = useState([]);
   const [userSelectedSiteManager, setUserSelectedSiteManager] = useState();
-  const [
-    userSelectedSecurityManager,
-    setUserSelectedSecurityManager,
-  ] = useState();
+  const [userSelectedSecurityManager, setUserSelectedSecurityManager] =
+    useState();
 
   const [formData, SetformData] = useState({
     id: "",
@@ -174,6 +171,8 @@ function CreateSite(props) {
 
   function UserBasicInfo(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     SelectCountryValidation();
     SelectSiteManagerValidation();
     SelectSecurityManagerValidation();

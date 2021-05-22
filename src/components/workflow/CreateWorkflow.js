@@ -266,6 +266,8 @@ function CreateWorkflow(props) {
 
   function SubmitUserForm() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var workflowData = formData;
     if (workflowId != 0) {
       workflowData.groupId = selectedGroupName.id;

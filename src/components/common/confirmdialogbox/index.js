@@ -84,6 +84,8 @@ function CustomizedDialogs(props) {
   const [showLoadder, setshowLoadder] = useState(false);
 
   const handleClickYes = () => {
+    props.settoasterServerity("");
+
     if (props.ConfirmationModalActionType == "RemoveProfilePhoto") {
       props.setImageBinaryData("");
       props.setStateSnackbar(true);
@@ -93,11 +95,34 @@ function CustomizedDialogs(props) {
     } else if (props.ConfirmationModalActionType == "DeactiveUser") {
       setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
+
+      let obj = [
+        {
+          id: `${thisId}`,
+        },
+      ];
+
+      var finalData = JSON.stringify(obj);
       props
-        .DeleteUser(thisId)
+        .DeleteUser(finalData)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted user.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
+        })
+        .catch((error) => {
+          toasterErrorMessage(error);
+        });
+    } else if (props.ConfirmationModalActionType == "DeleteMultipleUser") {
+      setshowLoadder(true);
+      var thisId = props.SelectedRowDetails;
+      props
+        .DeleteMultipleUser(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted users.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
           setshowLoadder(false);
@@ -649,6 +674,7 @@ function CustomizedDialogs(props) {
 CustomizedDialogs.propTypes = {
   DeletEmergencyContactList: PropTypes.func.isRequired,
   DeleteUser: PropTypes.func.isRequired,
+  DeleteMultipleUser: PropTypes.func.isRequired,
   DelteUserGroup: PropTypes.func.isRequired,
   ChangeAssignEmergencyContactStatus: PropTypes.func.isRequired,
   ChangeQuestionnaireUserStatus: PropTypes.func.isRequired,
@@ -671,6 +697,7 @@ const mapDispatchToProps = {
   ChangeQuestionnaireUserStatus:
     AssignquestionaireAction.ChangeQuestionnaireStatus,
   DeleteUser: UserAction.deleteUser,
+  DeleteMultipleUser: UserAction.deletemultipleUsers,
   DelteUserGroup: UserGroupAction.deleteUserGroup,
 
   DelteUserDesignation: DesignationAction.deleteUserDesignation,

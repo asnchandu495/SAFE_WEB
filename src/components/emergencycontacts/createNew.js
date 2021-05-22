@@ -44,9 +44,8 @@ function CreateNew(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
@@ -153,6 +152,8 @@ function CreateNew(props) {
 
   function ValidateSubmitForm() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     if (emergencyContactId != 0) {
       props
         .UpdateEmergencyContact(emergencyContact)

@@ -191,6 +191,8 @@ function ActionFormNew(props) {
   function formSubmit(e) {
     setshowLoadder(true);
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     if (formData.id == "") {
       workflowApiCall
         .addOptions(formData)

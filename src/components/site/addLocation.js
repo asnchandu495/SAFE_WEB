@@ -333,6 +333,8 @@ function AddLocation(props) {
   }
 
   function submitUserCovidInformation(e) {
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
 
     var fileterSelectedFloorName = floorInfoData.filter(

@@ -220,6 +220,8 @@ function GlobalSetting(props) {
   };
   function GlobalSettingForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadder(true);
     setisFormSubmit(true);
     let finalData = formData;

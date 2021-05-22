@@ -37,9 +37,8 @@ function QuestionnaireEvaluation(props) {
   const { id } = useParams();
   const [showLoadder, setshowLoadder] = useState(false);
   const [questionaireDetails, setquestionaireDetails] = useState();
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [covidStatelist, setcovidStatelist] = useState([]);
   // const [formData, SetformData] = useState({
   //   id: "",
@@ -216,6 +215,8 @@ function QuestionnaireEvaluation(props) {
 
   function submitForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var formData = temperatureConfigForm;
     let getPositiveResponses = formData.positiveResponses;
     getPositiveResponses.forEach((item) => {

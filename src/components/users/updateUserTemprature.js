@@ -154,6 +154,8 @@ function UpdateTempearture(props) {
   }
   function submitUserShiftInform() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
     data.id = props.SelectedRowId;
     data.temperature = parseFloat(data.temperature);

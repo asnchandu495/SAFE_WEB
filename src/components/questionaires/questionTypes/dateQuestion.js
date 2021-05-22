@@ -231,6 +231,8 @@ function DateQuestion(props) {
 
   function submitQuestionForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadder(true);
     const finalObject = {
       ...props.questionTypeForm,

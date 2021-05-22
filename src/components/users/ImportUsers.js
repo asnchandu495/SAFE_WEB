@@ -142,6 +142,8 @@ function ImportUsers(props) {
 
   function UserbulkUpload() {
     const data = new FormData();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     data.append("file", myFiles[0]);
     apiCallForFileUpload
       .fileUpload(data)

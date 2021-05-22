@@ -112,22 +112,17 @@ function AssignedFAQs(props) {
   const userGroupApiCall = new userGroupApi();
   const [showLoadder, setshowLoadder] = useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [faqUserGroups, setFaqUserGroups] = useState([]);
   const [faqDocs, setFaqDocs] = useState([]);
@@ -380,6 +375,8 @@ function AssignedFAQs(props) {
 
   function assignToGroup(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     SelectUserGroupValidation();
     SelectFaqDocValidation();
     SelectStatusValidation();
@@ -392,6 +389,8 @@ function AssignedFAQs(props) {
 
   function SubmitUserForm() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = assignForm;
     data.faqId = UserSelectFaqDoc.id;
     data.title = UserSelectFaqDoc.title;

@@ -201,6 +201,8 @@ function TemperatureRange(props) {
 
   function submitForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadder(true);
     setisFormSubmit(true);
     let sendData = tempsections;
