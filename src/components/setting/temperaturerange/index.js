@@ -31,6 +31,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import GlobalSettingApiServices from "../../../services/globalSettingService";
 import AlertBoxComponent from "../../common/alert";
+import { SignalCellularNullTwoTone } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -87,6 +88,7 @@ function TemperatureRange(props) {
           id: "",
           stateName: "",
         },
+        isNoUpperLimit: false,
       },
     ],
   });
@@ -129,15 +131,25 @@ function TemperatureRange(props) {
   }
 
   const handleInputChangeContacts = (e, index) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
     const list = {
       ...tempsections,
       covidStates: [
         ...tempsections.covidStates.map((con, conIndex) => {
-          if (name == "upperLimit" || name == "lowerLimit") {
+          if (name == "lowerLimit") {
+            return conIndex == index ? { ...con, [name]: value } : con;
+          } else if (name == "upperLimit") {
             return conIndex == index ? { ...con, [name]: value } : con;
           } else {
-            return conIndex == index ? { ...con, [name]: value } : con;
+            if (checked) {
+              return conIndex == index
+                ? { ...con, [name]: checked, ["upperLimit"]: 0 }
+                : con;
+            } else {
+              return conIndex == index
+                ? { ...con, [name]: checked, ["upperLimit"]: 0 }
+                : con;
+            }
           }
         }),
       ],
@@ -190,6 +202,7 @@ function TemperatureRange(props) {
           id: "",
           stateName: "",
         },
+        isNoUpperLimit: false,
       },
     ];
     settempsections(list);
@@ -412,37 +425,95 @@ function TemperatureRange(props) {
                             errorMessages={["Please enter lower limit"]}
                             validators={
                               tempsections.temperatureUnit == "C"
+                                ? x.isNoUpperLimit
+                                  ? [
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:45",
+                                      `minNumber:${
+                                        x.isNoUpperLimit
+                                          ? 0
+                                          : parseFloat(x.lowerLimit) + 1
+                                      }`,
+                                    ]
+                                  : [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:45",
+                                      `minNumber:${
+                                        x.isNoUpperLimit
+                                          ? 0
+                                          : parseFloat(x.lowerLimit) + 1
+                                      }`,
+                                    ]
+                                : x.isNoUpperLimit
                                 ? [
-                                    "required",
                                     "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-
-                                    "maxNumber:45",
-                                    `minNumber:${parseFloat(x.lowerLimit) + 1}`,
+                                    "maxNumber:113",
+                                    `minNumber:${
+                                      x.isNoUpperLimit
+                                        ? 0
+                                        : parseFloat(x.lowerLimit) + 1
+                                    }`,
                                   ]
                                 : [
                                     "required",
                                     "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-
                                     "maxNumber:113",
-                                    `minNumber:${parseFloat(x.lowerLimit) + 1}`,
+                                    `minNumber:${
+                                      x.isNoUpperLimit
+                                        ? 0
+                                        : parseFloat(x.lowerLimit) + 1
+                                    }`,
                                   ]
                             }
                             errorMessages={
                               tempsections.temperatureUnit == "C"
+                                ? x.isNoUpperLimit
+                                  ? [
+                                      "Entered numbers are not valid",
+                                      `Maximum allowed is ${
+                                        x.isNoUpperLimit ? 0 : 45
+                                      }`,
+                                      `Minimum allowed is ${
+                                        x.isNoUpperLimit
+                                          ? 0
+                                          : parseFloat(x.lowerLimit) + 1
+                                      }`,
+                                    ]
+                                  : [
+                                      "Please enter lower limit",
+                                      "Entered numbers are not valid",
+                                      `Maximum allowed is ${
+                                        x.isNoUpperLimit ? 0 : 45
+                                      }`,
+                                      `Minimum allowed is ${
+                                        x.isNoUpperLimit
+                                          ? 0
+                                          : parseFloat(x.lowerLimit) + 1
+                                      }`,
+                                    ]
+                                : x.isNoUpperLimit
                                 ? [
-                                    "Please enter lower limit",
                                     "Entered numbers are not valid",
-                                    "Maximum allowed is 45",
+                                    `Maximum allowed is ${
+                                      x.isNoUpperLimit ? 0 : 113
+                                    }`,
                                     `Minimum allowed is ${
-                                      parseFloat(x.lowerLimit) + 1
+                                      x.isNoUpperLimit
+                                        ? 0
+                                        : parseFloat(x.lowerLimit) + 1
                                     }`,
                                   ]
                                 : [
                                     "Please enter lower limit",
                                     "Entered numbers are not valid",
-                                    `Maximum allowed is 113`,
+                                    `Maximum allowed is ${
+                                      x.isNoUpperLimit ? 0 : 113
+                                    }`,
                                     `Minimum allowed is ${
-                                      parseFloat(x.lowerLimit) + 1
+                                      x.isNoUpperLimit
+                                        ? 0
+                                        : parseFloat(x.lowerLimit) + 1
                                     }`,
                                   ]
                             }
@@ -453,6 +524,7 @@ function TemperatureRange(props) {
                             onChange={(e) => handleInputChangeContacts(e, i)}
                             className="global-input"
                             InputLabelProps={{ shrink: false }}
+                            disabled={x.isNoUpperLimit}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
@@ -468,10 +540,14 @@ function TemperatureRange(props) {
                           <Grid item xs={2} className="row-icons-container">
                             {
                               <FormControlLabel
-                                control={<Checkbox name="checkedA" />}
+                                control={<Checkbox name="isNoUpperLimit" />}
                                 // className={setflagStatus ? disabled : ""}
-                                onChange={handleChange}
+                                onChange={(e) =>
+                                  handleInputChangeContacts(e, i)
+                                }
                                 label="No limit"
+                                name="isNoUpperLimit"
+                                checked={x.isNoUpperLimit}
                               />
                             }
                           </Grid>
