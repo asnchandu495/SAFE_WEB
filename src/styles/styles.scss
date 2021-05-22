@@ -1208,6 +1208,11 @@ label.required {
   box-shadow: none !important;
   border: 1px solid #ccc;
   padding: 15px;
+  .todate-container {
+    .MuiFormHelperText-root.Mui-error {
+      display: none;
+    }
+  }
 }
 
 .conditional-order-li {

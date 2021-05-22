@@ -55,8 +55,8 @@ function ConfigureHealth(props) {
     useState("array");
   const [searchForm, setSearchForm] = useState({
     userId: "",
-    fromDate: moment().toISOString(),
-    toDate: moment().toISOString(),
+    fromDate: null,
+    toDate: null,
   });
   const [selectedUserDetails, setSelectedUserDetails] = useState();
 
@@ -321,7 +321,11 @@ function ConfigureHealth(props) {
                       }
                     />
                   </Grid>
-                  <Grid item xs={2} className="date-time-pickers">
+                  <Grid
+                    item
+                    xs={2}
+                    className="date-time-pickers todate-container"
+                  >
                     <KeyboardDatePicker
                       format="MM/dd/yyyy"
                       fullWidth

@@ -38,10 +38,8 @@ function Teams(props) {
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
 
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
 
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   // const [SelectedRowId, setSelectedRowId] = useState("");
@@ -49,13 +47,10 @@ function Teams(props) {
 
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [reloadPage, setReloadPage] = useState("NO");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   useEffect(() => {
@@ -195,7 +190,7 @@ function Teams(props) {
   ];
 
   const options = {
-    filter: true,
+    filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
