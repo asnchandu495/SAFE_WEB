@@ -62,6 +62,8 @@ export default function ChangePassword(props) {
 
   function handleSubmit() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
     authApiCall
       .ChangePassword(data)

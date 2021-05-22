@@ -49,9 +49,8 @@ function FaqSections(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [faqTittle, setfaqTittle] = useState("");
@@ -134,11 +133,14 @@ function FaqSections(props) {
 
   function submitForm(e) {
     e.preventDefault();
+
     ValidateSubmitForm();
   }
 
   function ValidateSubmitForm() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     let sendData = faqSections;
     sendData.faqId = props.match.params.id;
     if (props.match.params.secId == 0) {

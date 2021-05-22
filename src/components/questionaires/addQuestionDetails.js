@@ -202,6 +202,8 @@ function AddQuestionDetails(props) {
 
   function submitQuestionForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadder(true);
     if (props.questionTypeForm.questionType == "FreeText") {
       const finalObject = {

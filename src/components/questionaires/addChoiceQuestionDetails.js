@@ -26,9 +26,8 @@ function AddChoiceQuestionDetails(props) {
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [showLoadderFlag, setshowLoadderFlag] = useState(false);
   const [addQuestionWithChoices, setAddQuestionWithChoices] = useState({
@@ -204,6 +203,8 @@ function AddChoiceQuestionDetails(props) {
 
   function submitQuestionForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadder(true);
     if (props.questionTypeForm.questionType == "SingleChoice") {
       const finalObject = {
@@ -384,6 +385,8 @@ function AddChoiceQuestionDetails(props) {
 
   function submitQuestionFormFlags(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadderFlag(true);
     if (props.questionTypeForm.questionType == "SingleChoice") {
       if (!singleChoiceFlag.isPositiveConfirmityRedFlag) {

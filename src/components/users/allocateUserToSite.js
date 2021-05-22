@@ -101,6 +101,8 @@ function AllocateUserToSite(props) {
 
   function UserSitesUpdateSubmit() {
     setbuttonloadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
     data.applicationUserId = props.applicationUserId;
     data.sites = UserSelectedTeamValue;

@@ -108,6 +108,8 @@ function PublishQuestionnaire(props) {
 
   function handlePublish() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var publishData = formData;
     questionaireApiCall
       .PublishQuestionnaire(publishData)

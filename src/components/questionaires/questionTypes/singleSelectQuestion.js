@@ -229,6 +229,8 @@ function SingleSelectQuestion(props) {
 
   function submitQuestionForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     setshowLoadder(true);
     const finalObject = {
       ...props.questionTypeForm,
@@ -366,6 +368,8 @@ function SingleSelectQuestion(props) {
   function submitQuestionFormFlags(e) {
     setshowLoadderFlag(true);
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     if (!choiceFlag.isPositiveConfirmityRedFlag) {
       choiceFlag.redFlagForSingleChoice = [];
     }

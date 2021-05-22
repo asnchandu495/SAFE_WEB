@@ -206,6 +206,8 @@ function MultipleJump(props) {
 
   function submitForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     let newConditionalJumpData = conditionalJump;
     let getSelectedChoicesArray =
       newConditionalJumpData.multiChoiceConditionalQuestions;

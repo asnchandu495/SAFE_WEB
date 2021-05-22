@@ -84,6 +84,8 @@ function CustomizedDialogs(props) {
   const [showLoadder, setshowLoadder] = useState(false);
 
   const handleClickYes = () => {
+    props.settoasterServerity("");
+
     if (props.ConfirmationModalActionType == "RemoveProfilePhoto") {
       props.setImageBinaryData("");
       props.setStateSnackbar(true);
@@ -100,7 +102,6 @@ function CustomizedDialogs(props) {
         },
       ];
 
-      console.log(JSON.stringify(obj));
       var finalData = JSON.stringify(obj);
       props
         .DeleteUser(finalData)

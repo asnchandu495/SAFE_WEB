@@ -64,9 +64,8 @@ function AddPrimaryUserToUserGroups(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedGroupInfo, setSelectedGroupInfo] = useState();
@@ -84,10 +83,8 @@ function AddPrimaryUserToUserGroups(props) {
   const [BusinessUserRoleMasterData, setBusinessUserRoleMasterData] = useState(
     []
   );
-  const [
-    UserPrimaryGroupMasterData,
-    setUserPrimaryGroupMasterData,
-  ] = useState();
+  const [UserPrimaryGroupMasterData, setUserPrimaryGroupMasterData] =
+    useState();
   // const [formFieldValidation, setformFieldValidation] = useState({});
   const [searchformData, setsearchformData] = useState({
     primaryGroupId: "",
@@ -315,6 +312,8 @@ function AddPrimaryUserToUserGroups(props) {
   function submitAssignFilter() {
     roleDetails();
     siteDetails();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var filterData = searchformData;
     filterData.designationId = designationMasterData.id;
     // filterData.primaryGroupId = CountryMasterData.id;
@@ -340,6 +339,8 @@ function AddPrimaryUserToUserGroups(props) {
 
   function assignUsers() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     let finalUsers = [];
     selectedUsers.map((user) => {
       finalUsers.push({ id: applicationUsers[user.dataIndex].id });

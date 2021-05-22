@@ -285,6 +285,9 @@ function CreateUser(props) {
 
   function SubmitUserForm() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
+
     if (userId) {
       formData.country = UserSelectCountry;
       formData.designation = {

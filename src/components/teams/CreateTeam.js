@@ -28,9 +28,8 @@ function CreateTeam(props) {
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [isDuplicate, setIsDuplicate] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
 
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
@@ -130,6 +129,8 @@ function CreateTeam(props) {
 
   function SubmitUserForm() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var teamData = formData;
     if (teamId != 0) {
       teamData.manager = selectedTeamManager;

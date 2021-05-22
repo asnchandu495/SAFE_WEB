@@ -165,6 +165,8 @@ function NumericJump(props) {
 
   function submitForm(e) {
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     let newNumericConditionalQuestions =
       conditionalJump.numericConditionalQuestions.map((con) => ({
         id: con.id ? con.id : "",

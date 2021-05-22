@@ -87,9 +87,8 @@ function AddPrimaryUserTeam(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedTeamInfo, setSelectedTeamInfo] = useState();
@@ -104,18 +103,12 @@ function AddPrimaryUserTeam(props) {
 
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
-  const [
-    openAssignEmergencyContactModal,
-    setopenAssignEmergencyContactModal,
-  ] = useState(false);
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
+  const [openAssignEmergencyContactModal, setopenAssignEmergencyContactModal] =
+    useState(false);
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
 
   const [selectedUserData, setselectedUserData] = useState();
   const [selectedUserDesignation, setselectedUserDesignation] = useState();
@@ -277,6 +270,8 @@ function AddPrimaryUserTeam(props) {
 
   function assignUsers() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     let finalUsers = [];
     selectedUsers.map((user) => {
       finalUsers.push({ id: applicationUsers[user.dataIndex].id });
@@ -324,6 +319,8 @@ function AddPrimaryUserTeam(props) {
   }
 
   function submitAssignTeams() {
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var teamData = searchformData;
     teamData.designationId = selectedUserDesignation.id;
     teamData.primaryGroupId = selectedUserData.id;

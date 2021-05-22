@@ -107,9 +107,8 @@ function UpdateCovidState(props) {
 
   const [SelectCovidState, setSelectCovidState] = useState();
   const [StateMasterData, setStateMasterData] = useState();
-  const [covidstateFieldValidation, setcovidstateFieldValidation] = useState(
-    false
-  );
+  const [covidstateFieldValidation, setcovidstateFieldValidation] =
+    useState(false);
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [formData, SetformData] = useState({
     id: "",
@@ -124,15 +123,12 @@ function UpdateCovidState(props) {
     covidStateId: "",
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
-  const [
-    UserSelectedCovidStateValue,
-    setUserSelectedCovidStateValue,
-  ] = useState();
+  const [UserSelectedCovidStateValue, setUserSelectedCovidStateValue] =
+    useState();
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
 
   useEffect(() => {
@@ -199,6 +195,8 @@ function UpdateCovidState(props) {
 
   function submitUserCovidInformation() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
     if (props.selectedUsersForCovidState.length > 0) {
       let updateCOVIDStatusbyUsersList = [];

@@ -239,6 +239,7 @@ function AssignQuestionaires(props) {
 
   function assignQuestionnaire(e) {
     e.preventDefault();
+
     SelectUserQuestionnaire();
     SelectUserGroup();
     SelectStatus();
@@ -255,6 +256,8 @@ function AssignQuestionaires(props) {
 
   function AssignFiltersForm() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var selectedData = formData;
 
     selectedData.groupdetails.id = selectedUserData.id;

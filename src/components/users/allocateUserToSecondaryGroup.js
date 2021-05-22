@@ -112,6 +112,8 @@ function AllocateUserToSecondaryGroup(props) {
 
   function UserSecondaryGroupSubmit() {
     setbuttonloadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     var data = formData;
     data.applicationUserId = props.applicationUserId;
     data.groups = UserSelectedSecondaryGroupValue;
