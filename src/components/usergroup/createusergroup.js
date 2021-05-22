@@ -55,6 +55,8 @@ function CreateUserGroup(props) {
   function UserBasicInfo(e) {
     setshowLoadder(true);
     e.preventDefault();
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     if (userGroupUpdateid != 0) {
       var data = formData;
       props
