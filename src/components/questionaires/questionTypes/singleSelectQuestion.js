@@ -53,6 +53,7 @@ function SingleSelectQuestion(props) {
       {
         optionId: "",
         option: "",
+        isDelete: false,
       },
     ],
   });
@@ -76,6 +77,7 @@ function SingleSelectQuestion(props) {
       },
     ],
   });
+  const [oldData, setOldData] = useState();
 
   const PurpleSwitch = withStyles({
     switchBase: {
@@ -96,12 +98,14 @@ function SingleSelectQuestion(props) {
       questionaireApiCall
         .GetSingleChoiceQuestion(selectedQId)
         .then((res) => {
+          setOldData(res);
           let getData = res;
           if (getData.surveyResponseChoices.length == 0) {
             getData.surveyResponseChoices = [
               {
                 optionId: "",
                 option: "",
+                isDelete: false,
               },
             ];
           }
@@ -174,10 +178,32 @@ function SingleSelectQuestion(props) {
     setAddQuestionData(list);
   };
 
-  const handleRemoveClickChoices = (j) => {
-    const list = { ...addQuestionData };
-    list.surveyResponseChoices.splice(j, 1);
-    setAddQuestionData(list);
+  const handleRemoveClickChoices = (index, getCurrentOption) => {
+    var newArray = [
+      ...new Set([
+        ...oldData.positiveConformitySingleChoice,
+        ...oldData.redFlagForSingleChoice,
+      ]),
+    ];
+    var checkIfExists = newArray.find(
+      (op) => op.optionId == getCurrentOption.optionId
+    );
+    if (!checkIfExists) {
+      const list = {
+        ...addQuestionData,
+        surveyResponseChoices: [
+          ...addQuestionData.surveyResponseChoices.map((con, conIndex) =>
+            conIndex == index ? { ...con, ["isDelete"]: true } : con
+          ),
+        ],
+      };
+      setAddQuestionData(list);
+    } else {
+      settoasterErrorMessageType("object");
+      setStateSnackbar(true);
+      setToasterMessage("This option can't be removed.");
+      settoasterServerity("error");
+    }
   };
 
   const handleAddClickChoices = (index, j) => {
@@ -188,6 +214,7 @@ function SingleSelectQuestion(props) {
       {
         optionId: "",
         option: "",
+        isDelete: false,
       },
     ];
     setAddQuestionData(list);
@@ -358,6 +385,48 @@ function SingleSelectQuestion(props) {
       });
   }
 
+  function DisplayRemove(props) {
+    var surveyResponseChoices = props.allChoices;
+    var index = props.index;
+    var choice = props.choice;
+
+    var filteredChoices = surveyResponseChoices.filter((c) => {
+      return !c.isDelete;
+    });
+
+    return (
+      filteredChoices.length !== 1 && (
+        <Tooltip title="Remove">
+          <CancelIcon
+            className={`delete-row-icon`}
+            onClick={() => handleRemoveClickChoices(index, choice)}
+          ></CancelIcon>
+        </Tooltip>
+      )
+    );
+  }
+
+  function DisplayAdd(props) {
+    var surveyResponseChoices = props.allChoices;
+    var index = props.index;
+    var filteredChoices = surveyResponseChoices.filter((c) => {
+      return !c.isDelete;
+    });
+    var lastItem = filteredChoices[filteredChoices.length - 1];
+    var a = filteredChoices.indexOf(lastItem);
+
+    return (
+      filteredChoices.length && (
+        <Tooltip title="Add">
+          <AddCircleIcon
+            className={`add-row-icon`}
+            onClick={handleAddClickChoices}
+          ></AddCircleIcon>
+        </Tooltip>
+      )
+    );
+  }
+
   return (
     <>
       <ValidatorForm onSubmit={submitQuestionForm}>
@@ -438,7 +507,7 @@ function SingleSelectQuestion(props) {
                     {addQuestionData.surveyResponseChoices &&
                     addQuestionData.surveyResponseChoices.length > 0
                       ? addQuestionData.surveyResponseChoices.map((x, i) => {
-                          return (
+                          return !x.isDelete ? (
                             <Grid
                               container
                               spacing={1}
@@ -465,31 +534,45 @@ function SingleSelectQuestion(props) {
                                 />
                               </Grid>
                               <Grid item xs={2} className="row-icons-container">
-                                {addQuestionData.surveyResponseChoices
+                                <DisplayRemove
+                                  allChoices={
+                                    addQuestionData.surveyResponseChoices
+                                  }
+                                  index={i}
+                                  choice={x}
+                                ></DisplayRemove>
+                                <DisplayAdd
+                                  allChoices={
+                                    addQuestionData.surveyResponseChoices
+                                  }
+                                  index={i}
+                                  choice={x}
+                                ></DisplayAdd>
+                                {/* {addQuestionData.surveyResponseChoices
                                   .length !== 1 && (
                                   <Tooltip title="Remove">
                                     <CancelIcon
                                       className={`delete-row-icon`}
                                       onClick={() =>
-                                        handleRemoveClickChoices(i)
+                                        handleRemoveClickChoices(i, x)
                                       }
                                     ></CancelIcon>
                                   </Tooltip>
-                                )}
-                                {addQuestionData.surveyResponseChoices.length -
+                                )} */}
+                                {/* {addQuestionData.surveyResponseChoices.length -
                                   1 ===
-                                  i &&
-                                  addQuestionData.surveyResponseChoices.length <
-                                    10 && (
-                                    <Tooltip title="Add">
-                                      <AddCircleIcon
-                                        className={`add-row-icon`}
-                                        onClick={handleAddClickChoices}
-                                      ></AddCircleIcon>
-                                    </Tooltip>
-                                  )}
+                                  i && (
+                                  <Tooltip title="Add">
+                                    <AddCircleIcon
+                                      className={`add-row-icon`}
+                                      onClick={handleAddClickChoices}
+                                    ></AddCircleIcon>
+                                  </Tooltip>
+                                )} */}
                               </Grid>
                             </Grid>
+                          ) : (
+                            ""
                           );
                         })
                       : ""}
@@ -553,7 +636,12 @@ function SingleSelectQuestion(props) {
                         </Grid>
                       </Grid>
                       {choiceFlag.isPositiveConfirmityRedFlag ? (
-                        <Grid item container xs={12}>
+                        <Grid
+                          item
+                          container
+                          xs={12}
+                          className="red-flag-question"
+                        >
                           <Grid item xs={2}>
                             <label
                               className={
@@ -591,7 +679,13 @@ function SingleSelectQuestion(props) {
                                                 addQuestionData
                                                   .surveyResponseChoices
                                                   .length > 0
-                                                  ? addQuestionData.surveyResponseChoices
+                                                  ? addQuestionData.surveyResponseChoices.filter(
+                                                      (opt) => {
+                                                        return (
+                                                          opt.optionId != ""
+                                                        );
+                                                      }
+                                                    )
                                                   : []
                                               }
                                               getOptionLabel={(opt) =>
@@ -690,7 +784,11 @@ function SingleSelectQuestion(props) {
                                               addQuestionData
                                                 .surveyResponseChoices.length >
                                                 0
-                                                ? addQuestionData.surveyResponseChoices
+                                                ? addQuestionData.surveyResponseChoices.filter(
+                                                    (opt) => {
+                                                      return opt.optionId != "";
+                                                    }
+                                                  )
                                                 : []
                                             }
                                             getOptionLabel={(opt) => opt.option}
@@ -699,6 +797,7 @@ function SingleSelectQuestion(props) {
                                               handleChangeFlagP(v, i)
                                             }
                                             filterSelectedOptions
+                                            required
                                             className="global-input autocomplete-select"
                                             renderInput={(params) => (
                                               <TextField

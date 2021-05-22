@@ -84,19 +84,13 @@ function CreateUser(props) {
   const [designationMasterData, setdesignationMasterData] = useState();
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
   const [isDirty, setIsDirty] = useState(false);
-  const [
-    BusinessUserRoleMasterData,
-    setBusinessUserRoleMasterData,
-  ] = useState();
+  const [BusinessUserRoleMasterData, setBusinessUserRoleMasterData] =
+    useState();
 
-  const [
-    UserPrimaryGroupMasterData,
-    setUserPrimaryGroupMasterData,
-  ] = useState();
-  const [
-    UserSecondaryGroupMasterData,
-    setUserSecondaryGroupMasterData,
-  ] = useState();
+  const [UserPrimaryGroupMasterData, setUserPrimaryGroupMasterData] =
+    useState();
+  const [UserSecondaryGroupMasterData, setUserSecondaryGroupMasterData] =
+    useState();
   const [
     UserPrimaryGroupMasterDataOriginal,
     setUserPrimaryGroupMasterDataOriginal,
@@ -111,26 +105,19 @@ function CreateUser(props) {
   const [UserSelectedTeamValue, setUserSelectedTeamValue] = useState([]);
   const [UserSelectedRoleValue, setUserSelectedRoleValue] = useState([]);
   const [UserSelectSiteValue, setUserSelectSiteValue] = useState([]);
-  const [
-    UserSelectedPrimaryGroupValue,
-    setUserSelectedPrimaryGroupValue,
-  ] = useState();
-  const [
-    UserSelectedDesignationValue,
-    setUserSelectedDesignationValue,
-  ] = useState();
-  const [
-    UserSelectedSecondaryGroupValue,
-    setUserSelectedSecondaryGroupValue,
-  ] = useState([]);
+  const [UserSelectedPrimaryGroupValue, setUserSelectedPrimaryGroupValue] =
+    useState();
+  const [UserSelectedDesignationValue, setUserSelectedDesignationValue] =
+    useState();
+  const [UserSelectedSecondaryGroupValue, setUserSelectedSecondaryGroupValue] =
+    useState([]);
   const [UserSelectCountry, setUserSelectCountry] = useState();
   const [UserSelectSupervisorData, setUserSelectSupervisorData] = useState();
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [showLoadder, setshowLoadder] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
@@ -319,7 +306,6 @@ function CreateUser(props) {
           setshowLoadder(false);
         })
         .catch((err) => {
-          console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);

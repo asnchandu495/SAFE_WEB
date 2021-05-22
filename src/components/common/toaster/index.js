@@ -1,25 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Snackbar from "@material-ui/core/Snackbar";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import "../../../styles/styles.scss";
 
 function ToasterComponent(props) {
-  let messageArray = [props.toasterMessage];
-  let finalErrorMsg = [];
-  if (props.toasterServerity === "error") {
-    if (props.toasterErrorMessageType === "object") {
-      finalErrorMsg = messageArray;
-    } else {
-      for (var index in messageArray) {
-        for (var key in messageArray[index]) {
-          let getErrorObject = messageArray[index];
-          finalErrorMsg.push(getErrorObject[key][0]);
+  const [errorMsg, setErrorMsg] = useState();
+
+  useEffect(() => {
+    let messageArray = [props.toasterMessage];
+    let finalErrorMsg = [];
+    if (props.toasterServerity === "error") {
+      if (props.toasterErrorMessageType === "object") {
+        finalErrorMsg = messageArray;
+      } else {
+        for (var index in messageArray) {
+          for (var key in messageArray[index]) {
+            let getErrorObject = messageArray[index];
+            finalErrorMsg.push(getErrorObject[key][0]);
+          }
         }
       }
+    } else if (props.toasterServerity === "success") {
+      finalErrorMsg = messageArray;
+    } else if (props.toasterErrorMessageType === "text") {
+      finalErrorMsg = messageArray;
     }
-  } else if (props.toasterServerity === "success") {
-    finalErrorMsg = messageArray;
-  }
+
+    setErrorMsg(finalErrorMsg);
+  }, [props]);
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
@@ -45,9 +53,7 @@ function ToasterComponent(props) {
           </AlertTitle>
           <span id="client-snackbar" className={"toastermessage"}>
             <ul className={"toastermessagelistconatiner"}>
-              {finalErrorMsg.map((msg) => (
-                <li key={msg}>{msg}</li>
-              ))}
+              {errorMsg ? errorMsg.map((msg) => <li key={msg}>{msg}</li>) : ""}
             </ul>
           </span>
         </Alert>
