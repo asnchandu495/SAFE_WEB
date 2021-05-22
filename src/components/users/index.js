@@ -408,7 +408,9 @@ function Users(props) {
     },
 
     customToolbarSelect: (value, tableMeta, updateValue) => {},
-    customToolbar: () => {
+    customToolbar: (value, tableMeta, updateValue) => {
+      console.log("id");
+      console.log(selectedUsersForCovidState);
       return (
         <div className={`maingrid-actions`}>
           <Tooltip title="Filter By User">
@@ -419,20 +421,24 @@ function Users(props) {
               onClick={handleClickOpenModal}
             ></Button>
           </Tooltip>
-          {RowsSelected.length ? (
+          {/* {RowsSelected.length ? (
             <Tooltip title="Delete">
               <Button
                 variant="contained"
                 startIcon={<DeleteIcon />}
                 className={`delete-icon`}
-                // onClick={() => handleClickOpenConfirmationModal(thisRowData)}
+                onClick={() =>
+                  handleClickOpenConfirmationModalDelete(
+                    selectedUsersForCovidState
+                  )
+                }
               ></Button>
             </Tooltip>
           ) : (
             ""
           )}
           {RowsSelected.length ? (
-            <Tooltip title="Delete">
+            <Tooltip title="covidstate">
               <Button
                 variant="contained"
                 startIcon={<LocalHospitalIcon />}
@@ -442,7 +448,7 @@ function Users(props) {
             </Tooltip>
           ) : (
             ""
-          )}
+          )} */}
         </div>
       );
     },
@@ -604,6 +610,23 @@ function Users(props) {
     setConfirmationHeaderTittle("Delete User");
     setConfirmationDialogContextText(
       `Are you sure you want to delete ${value[3]} ?`
+    );
+  };
+
+  const handleClickOpenConfirmationModalDelete = (value) => {
+    var idArray = [];
+    value.map((user, i) => {
+      idArray.push(user);
+    });
+    var idArraycount = idArray.length;
+    var finalData = JSON.stringify(idArray);
+
+    setSelectedRowDetails(finalData);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteMultipleUser");
+    setConfirmationHeaderTittle("Delete User");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${idArraycount} user?`
     );
   };
 

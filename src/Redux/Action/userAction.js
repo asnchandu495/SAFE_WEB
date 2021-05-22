@@ -63,6 +63,19 @@ export function deleteUser(data) {
   };
 }
 
+export function deletemultipleUsers(data) {
+  return function (dispatch) {
+    return usersApiCall
+      .DeleteApplicationMultipleUsers(data)
+      .then((response) => {
+        dispatch(DeleteUserSuccess(data));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+}
+
 export function CreateUser(data) {
   return function (dispatch) {
     return usersApiCall

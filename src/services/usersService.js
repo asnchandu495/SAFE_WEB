@@ -81,6 +81,15 @@ export default class UserService {
   }
 
   DeleteApplicationUser(getId) {
+    return this.fetch(`${this.baseURL}/ApplicationUser/DeleteApplicationUser`, {
+      method: "DELETE",
+      body: getId,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  DeleteApplicationMultipleUsers(getId) {
     return this.fetch(
       `${this.baseURL}/ApplicationUser/DeleteApplicationUser/${getId}`,
       {
