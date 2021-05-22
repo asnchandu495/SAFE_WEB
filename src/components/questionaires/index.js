@@ -142,20 +142,20 @@ function Questionaire(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                {thisRowData[3] ? (
-                  <Tooltip title="Publish">
-                    <Button
-                      hidden={!thisRowData[3]}
-                      variant="contained"
-                      color="default"
-                      startIcon={<BackupIcon />}
-                      className={`edit-icon`}
-                      onClick={() => handleClickPublishQuestions(thisRowData)}
-                    ></Button>
-                  </Tooltip>
-                ) : (
+                {/* {thisRowData[3] ? ( */}
+                <Tooltip title="Publish">
+                  <Button
+                    disabled={!thisRowData[3]}
+                    variant="contained"
+                    color="default"
+                    startIcon={<BackupIcon />}
+                    className={`edit-icon`}
+                    onClick={() => handleClickPublishQuestions(thisRowData)}
+                  ></Button>
+                </Tooltip>
+                {/* ) : (
                   ""
-                )}
+                )} */}
                 <Tooltip title="Edit">
                   <Button
                     disabled={thisRowData[2]}

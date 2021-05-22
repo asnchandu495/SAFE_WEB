@@ -50,6 +50,7 @@ function QuestionnaireEvaluation(props) {
   //     stateName: "",
   //   },
   // });
+  const [flagStatus, setflagStatus] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -213,6 +214,14 @@ function QuestionnaireEvaluation(props) {
     setTemperatureConfigForm(list);
   };
 
+  function handleChange(e) {
+    const { name, value } = e.target.checked;
+    if (e.target.checked) {
+      setflagStatus(true);
+    } else {
+      setflagStatus(false);
+    }
+  }
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -461,19 +470,22 @@ function QuestionnaireEvaluation(props) {
                             onChange={(e) => handleInputChange(e, i)}
                           />
                         </Grid>
-                        <Grid item xs={2} className="row-icons-container">
-                          {
-                            <FormControlLabel
-                              control={
-                                <Checkbox
-                                  onChange={handleChange}
-                                  name="HightTemperatureNoLimit"
-                                />
-                              }
-                              label="No limit"
-                            />
-                          }
-                        </Grid>
+                        {temperatureConfigForm.positiveResponses.length - 1 ===
+                          i && (
+                          <Grid item xs={2} className="row-icons-container">
+                            {
+                              <FormControlLabel
+                                control={
+                                  <Checkbox
+                                    onChange={handleChange}
+                                    name="HightTemperatureNoLimit"
+                                  />
+                                }
+                                label="No limit"
+                              />
+                            }
+                          </Grid>
+                        )}
                         <Grid item xs={1} className="row-icons-container">
                           {temperatureConfigForm.positiveResponses.length !==
                             1 && (
@@ -484,16 +496,18 @@ function QuestionnaireEvaluation(props) {
                               ></CancelIcon>
                             </Tooltip>
                           )}
-                          {temperatureConfigForm.positiveResponses.length -
-                            1 ===
-                            i && (
-                            <Tooltip title="Add">
-                              <AddCircleIcon
-                                className={`add-row-icon`}
-                                onClick={handleAddClick}
-                              ></AddCircleIcon>
-                            </Tooltip>
-                          )}
+                          {!flagStatus
+                            ? temperatureConfigForm.positiveResponses.length -
+                                1 ===
+                                i && (
+                                <Tooltip title="Add">
+                                  <AddCircleIcon
+                                    className={`add-row-icon`}
+                                    onClick={handleAddClick}
+                                  ></AddCircleIcon>
+                                </Tooltip>
+                              )
+                            : ""}
                         </Grid>
                       </Grid>
                     </Grid>
