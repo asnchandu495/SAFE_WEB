@@ -19,6 +19,8 @@ function ToasterComponent(props) {
     }
   } else if (props.toasterServerity === "success") {
     finalErrorMsg = messageArray;
+  } else if (props.toasterErrorMessageType === "text") {
+    finalErrorMsg = messageArray;
   }
 
   const handleCloseSnackbar = (event, reason) => {

@@ -139,7 +139,6 @@ function Questionaire(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
-          console.log(thisRowData);
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>

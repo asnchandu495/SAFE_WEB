@@ -548,11 +548,19 @@ function TimeJump(props) {
                       </Grid>
                       <Grid item container xs={12}>
                         <Grid item xs={2}>
-                          <label className="">Default</label>
+                          <label
+                            className={
+                              conditionalJump.goToNormalSequence
+                                ? "required"
+                                : ""
+                            }
+                          >
+                            Default
+                          </label>
                         </Grid>
                         <Grid container xs={8} spacing={2}>
                           <Grid item container xs={12} spacing={1}>
-                            <Grid item xs={3} className="checkbox-grid">
+                            <Grid item xs={5} className="checkbox-grid">
                               <FormControlLabel
                                 control={
                                   <GreenCheckbox
@@ -587,6 +595,9 @@ function TimeJump(props) {
                                       shrink: false,
                                     }}
                                     className="global-input single-select"
+                                    required={
+                                      conditionalJump.goToNormalSequence
+                                    }
                                   >
                                     <MenuItem value="">
                                       <em>None</em>
