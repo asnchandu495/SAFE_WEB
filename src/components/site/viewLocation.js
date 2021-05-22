@@ -135,9 +135,8 @@ function ViewLocation(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [floorInfoData, setfloorInfoData] = useState([]);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [isDuplicate, setIsDuplicate] = useState(false);
 
@@ -194,7 +193,7 @@ function ViewLocation(props) {
                   className="location-pin-micro-checkbox"
                 >
                   <Grid item xs={3}>
-                    Pin Micro Active
+                    RLAP Active
                   </Grid>
                   <Grid item xs={7}>
                     {props.selectedLocationDetails &&

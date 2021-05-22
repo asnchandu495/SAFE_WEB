@@ -159,6 +159,7 @@ function Workflow(props) {
                   <Button
                     variant="contained"
                     color="default"
+                    disabled={thisRowData[3]}
                     startIcon={<EditIcon />}
                     className={`edit-icon`}
                     onClick={() => handleClickUpdateWorkflow(thisRowData)}
@@ -168,6 +169,7 @@ function Workflow(props) {
                   <Button
                     variant="contained"
                     color="default"
+                    disabled={thisRowData[3]}
                     startIcon={<DeleteIcon />}
                     className={`delete-icon`}
                     onClick={() =>
@@ -179,6 +181,7 @@ function Workflow(props) {
                   <Button
                     variant="contained"
                     color="default"
+                    disabled={thisRowData[3]}
                     startIcon={<AddIcon />}
                     className={`edit-icon`}
                     onClick={() => handleViewActivity(thisRowData)}

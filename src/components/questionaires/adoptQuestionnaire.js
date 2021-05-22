@@ -99,6 +99,8 @@ function AdoptQuestionnaire(props) {
 
   function submitForm() {
     setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
     let data = formData;
     data.surveyId = selectedUserQuestionnaire.id;
     // if (selectedQuestionOption == "order") {
