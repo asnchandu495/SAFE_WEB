@@ -179,30 +179,41 @@ function SingleSelectQuestion(props) {
   };
 
   const handleRemoveClickChoices = (index, getCurrentOption) => {
-    var newArray = [
-      ...new Set([
-        ...oldData.positiveConformitySingleChoice,
-        ...oldData.redFlagForSingleChoice,
-      ]),
-    ];
-    var checkIfExists = newArray.find(
-      (op) => op.optionId == getCurrentOption.optionId
-    );
-    if (!checkIfExists) {
-      const list = {
-        ...addQuestionData,
-        surveyResponseChoices: [
-          ...addQuestionData.surveyResponseChoices.map((con, conIndex) =>
-            conIndex == index ? { ...con, ["isDelete"]: true } : con
-          ),
-        ],
-      };
+    if (getCurrentOption.optionId == "") {
+      const list = { ...addQuestionData };
+      list.surveyResponseChoices.splice(index, 1);
       setAddQuestionData(list);
     } else {
-      settoasterErrorMessageType("object");
-      setStateSnackbar(true);
-      setToasterMessage("This option can't be removed.");
-      settoasterServerity("error");
+      var newArray;
+      if (oldData) {
+        newArray = [
+          ...new Set([
+            ...oldData.positiveConformitySingleChoice,
+            ...oldData.redFlagForSingleChoice,
+          ]),
+        ];
+      } else {
+        newArray = [];
+      }
+      var checkIfExists = newArray.find(
+        (op) => op.optionId == getCurrentOption.optionId
+      );
+      if (!checkIfExists) {
+        const list = {
+          ...addQuestionData,
+          surveyResponseChoices: [
+            ...addQuestionData.surveyResponseChoices.map((con, conIndex) =>
+              conIndex == index ? { ...con, ["isDelete"]: true } : con
+            ),
+          ],
+        };
+        setAddQuestionData(list);
+      } else {
+        settoasterErrorMessageType("object");
+        setStateSnackbar(true);
+        setToasterMessage("This option can't be removed.");
+        settoasterServerity("error");
+      }
     }
   };
 
@@ -517,7 +528,7 @@ function SingleSelectQuestion(props) {
                               spacing={1}
                               item
                               xs={12}
-                              className="dynamic-rows-bottom"
+                              className="dynamic-rows-bottom dynamic-rows-bottom-choice"
                               key={`choice-container${i}`}
                             >
                               <Grid item xs={6}>
@@ -703,7 +714,9 @@ function SingleSelectQuestion(props) {
                                               className="global-input autocomplete-select"
                                               renderInput={(params) => (
                                                 <TextField
-                                                  required
+                                                  required={
+                                                    choiceFlag.isPositiveConfirmityRedFlag
+                                                  }
                                                   {...params}
                                                   variant="outlined"
                                                   placeholder="Select answer"
@@ -801,7 +814,6 @@ function SingleSelectQuestion(props) {
                                               handleChangeFlagP(v, i)
                                             }
                                             filterSelectedOptions
-                                            required
                                             className="global-input autocomplete-select"
                                             renderInput={(params) => (
                                               <TextField
