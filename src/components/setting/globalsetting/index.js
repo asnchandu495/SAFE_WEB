@@ -612,7 +612,7 @@ function GlobalSetting(props) {
                   <label className="required">Date Format</label>
                 </Grid>
 
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                   <FormControl variant="outlined" fullWidth>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -663,7 +663,7 @@ function GlobalSetting(props) {
                   <label className="required">Times Format</label>
                 </Grid>
 
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                   <FormControl variant="outlined" fullWidth>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -737,7 +737,7 @@ function GlobalSetting(props) {
                   />
                 </Grid> */}
 
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                   <FormControl variant="outlined" fullWidth>
                     <Select
                       labelId="demo-simple-select-outlined-label"
@@ -780,134 +780,126 @@ function GlobalSetting(props) {
                     Unlock duration of user account
                   </label>
                 </Grid>
-                <Grid item xs={2}>
-                  <FormControl variant="outlined">
-                    <TextValidator
-                      variant="outlined"
-                      validators={[
-                        "required",
-                        "matchRegexp:^[0-9]*$",
-                        "maxNumber:999",
-                      ]}
-                      errorMessages={[
-                        "Please enter unlock duration of user account",
-                        "Only numbers are allowed",
-                        "Maximum allowed 3 digits",
-                      ]}
-                      id="outlined-adornment-weight"
-                      name="durationToLockUserAccount"
-                      type={"text"}
-                      value={
-                        formData.durationToLockUserAccount
-                          ? formData.durationToLockUserAccount
-                          : ""
-                      }
-                      onChange={handleChange}
-                      // endAdornment={
-                      //   <InputAdornment position="end">Minutes</InputAdornment>
-                      // }
-                      aria-describedby="outlined-weight-helper-text"
-                      labelWidth={0}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            Minutes
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </FormControl>
+                <Grid item xs={3}>
+                  <TextValidator
+                    variant="outlined"
+                    fullWidth
+                    validators={[
+                      "required",
+                      "matchRegexp:^[0-9]*$",
+                      "maxNumber:999",
+                    ]}
+                    errorMessages={[
+                      "Please enter unlock duration of user account",
+                      "Only numbers are allowed",
+                      "Maximum allowed 3 digits",
+                    ]}
+                    id="outlined-adornment-weight"
+                    name="durationToLockUserAccount"
+                    type={"text"}
+                    value={
+                      formData.durationToLockUserAccount
+                        ? formData.durationToLockUserAccount
+                        : ""
+                    }
+                    onChange={handleChange}
+                    // endAdornment={
+                    //   <InputAdornment position="end">Minutes</InputAdornment>
+                    // }
+                    aria-describedby="outlined-weight-helper-text"
+                    labelWidth={0}
+                    className="global-input"
+                    InputLabelProps={{ shrink: false }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">Minutes</InputAdornment>
+                      ),
+                    }}
+                  />
                 </Grid>
-                <Grid item xs={2}></Grid>
               </Grid>
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label className="required">Automated check-out time</label>
                 </Grid>
-                <Grid item xs={2}>
-                  <FormControl variant="outlined">
-                    <TextValidator
-                      variant="outlined"
-                      id="outlined-adornment-weight"
-                      validators={[
-                        "required",
-                        "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
-                      ]}
-                      errorMessages={[
-                        "Please enter automated check-out time",
-                        "Numbers and decimals  allowed",
-                      ]}
-                      name="automatedCheckoutTime"
-                      type={"text"}
-                      value={
-                        formData.automatedCheckoutTime
-                          ? formData.automatedCheckoutTime
-                          : ""
-                      }
-                      onChange={handleChange}
-                      // endAdornment={
-                      //   <InputAdornment position="end">Hours</InputAdornment>
-                      // }
-                      aria-describedby="outlined-weight-helper-text"
-                      labelWidth={0}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">Hours</InputAdornment>
-                        ),
-                      }}
-                    />
-                  </FormControl>
+                <Grid item xs={3}>
+                  <TextValidator
+                    variant="outlined"
+                    fullWidth
+                    id="outlined-adornment-weight"
+                    validators={[
+                      "required",
+                      "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",
+                    ]}
+                    errorMessages={[
+                      "Please enter automated check-out time",
+                      "Numbers and decimals  allowed",
+                    ]}
+                    name="automatedCheckoutTime"
+                    type={"text"}
+                    value={
+                      formData.automatedCheckoutTime
+                        ? formData.automatedCheckoutTime
+                        : ""
+                    }
+                    onChange={handleChange}
+                    // endAdornment={
+                    //   <InputAdornment position="end">Hours</InputAdornment>
+                    // }
+                    aria-describedby="outlined-weight-helper-text"
+                    labelWidth={0}
+                    className="global-input"
+                    InputLabelProps={{ shrink: false }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">Hours</InputAdornment>
+                      ),
+                    }}
+                  />
                 </Grid>
-                <Grid item xs={2}></Grid>
               </Grid>
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label className="required">Minimum password length</label>
                 </Grid>
-                <Grid item xs={2}>
-                  <FormControl variant="outlined">
-                    <TextValidator
-                      variant="outlined"
-                      validators={[
-                        "required",
-                        "matchRegexp:^[0-9]*$",
-                        "maxNumber:99",
-                      ]}
-                      errorMessages={[
-                        "Please enter passord",
-                        "Only numbers are allowed",
-                        "Only two digits are allowed ",
-                      ]}
-                      id="outlined-adornment-weight"
-                      name="maxPasswordlength"
-                      type={"text"}
-                      value={
-                        formData.maxPasswordlength
-                          ? formData.maxPasswordlength
-                          : ""
-                      }
-                      onChange={handleChange}
-                      aria-describedby="outlined-weight-helper-text"
-                      labelWidth={0}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            Characters
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </FormControl>
+                <Grid item xs={3}>
+                  <TextValidator
+                    variant="outlined"
+                    fullWidth
+                    validators={[
+                      "required",
+                      "matchRegexp:^[0-9]*$",
+                      "maxNumber:99",
+                    ]}
+                    errorMessages={[
+                      "Please enter passord",
+                      "Only numbers are allowed",
+                      "Only two digits are allowed ",
+                    ]}
+                    id="outlined-adornment-weight"
+                    name="maxPasswordlength"
+                    type={"text"}
+                    value={
+                      formData.maxPasswordlength
+                        ? formData.maxPasswordlength
+                        : ""
+                    }
+                    onChange={handleChange}
+                    aria-describedby="outlined-weight-helper-text"
+                    labelWidth={0}
+                    className="global-input"
+                    InputLabelProps={{ shrink: false }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          Characters
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
                 </Grid>
-                <Grid item xs={2}></Grid>
               </Grid>
 
               <Grid item container xs={12}>
@@ -916,42 +908,40 @@ function GlobalSetting(props) {
                     Maximum filesize of userSelfie unit
                   </label>
                 </Grid>
-                <Grid item xs={2}>
-                  <FormControl variant="outlined">
-                    <TextValidator
-                      variant="outlined"
-                      validators={[
-                        "required",
-                        "matchRegexp:^[0-9]*$",
-                        "maxNumber:999",
-                      ]}
-                      errorMessages={[
-                        "Please enter filesize of userSelfie unit",
-                        "Only numbers are allowed",
-                        "Maximum allowed 3 digits",
-                      ]}
-                      id="outlined-adornment-weight"
-                      name="maximumFileSizeOfUserSelfie"
-                      type={"text"}
-                      value={
-                        formData.maximumFileSizeOfUserSelfie
-                          ? formData.maximumFileSizeOfUserSelfie
-                          : ""
-                      }
-                      onChange={handleChange}
-                      aria-describedby="outlined-weight-helper-text"
-                      labelWidth={0}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">MB</InputAdornment>
-                        ),
-                      }}
-                    />
-                  </FormControl>
+                <Grid item xs={3}>
+                  <TextValidator
+                    variant="outlined"
+                    fullWidth
+                    validators={[
+                      "required",
+                      "matchRegexp:^[0-9]*$",
+                      "maxNumber:999",
+                    ]}
+                    errorMessages={[
+                      "Please enter filesize of userSelfie unit",
+                      "Only numbers are allowed",
+                      "Maximum allowed 3 digits",
+                    ]}
+                    id="outlined-adornment-weight"
+                    name="maximumFileSizeOfUserSelfie"
+                    type={"text"}
+                    value={
+                      formData.maximumFileSizeOfUserSelfie
+                        ? formData.maximumFileSizeOfUserSelfie
+                        : ""
+                    }
+                    onChange={handleChange}
+                    aria-describedby="outlined-weight-helper-text"
+                    labelWidth={0}
+                    className="global-input"
+                    InputLabelProps={{ shrink: false }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">MB</InputAdornment>
+                      ),
+                    }}
+                  />
                 </Grid>
-                <Grid item xs={2}></Grid>
               </Grid>
               <Grid
                 item

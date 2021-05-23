@@ -74,6 +74,7 @@ function AllocateUserToSite(props) {
   function cancelEdit() {
     props.setActiveCard("");
     setResetComponent("YES");
+    setformFieldValidation({ site: false });
   }
 
   function SelectSiteValidation() {

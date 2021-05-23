@@ -26,8 +26,8 @@ import * as EmergencyContactAction from "../../Redux/Action/emergencyContactActi
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 
 const userStatusData = [
-  { id: true, name: "Active" },
-  { id: false, name: "Inactive" },
+  { id: "001", name: "Active" },
+  { id: "002", name: "Inactive" },
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -182,6 +182,7 @@ function AssignEmergencyContactToUserGroup(props) {
     settoasterServerity("");
     settoasterErrorMessageType("");
     var data = formData;
+    data.isActive = data.isActive == "001" ? true : false;
     props
       .CreateAssignEmegencyContact(data)
       .then((result) => {
@@ -208,7 +209,7 @@ function AssignEmergencyContactToUserGroup(props) {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={props.openAssignEmergencyContactModal}
-        className="global-dialog"
+        className="global-dialog assign-emergency-contact"
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           Assign emergency contact to group

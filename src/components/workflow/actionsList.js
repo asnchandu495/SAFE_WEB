@@ -50,7 +50,7 @@ function ActionList(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [props]);
 
   function searchActions(e) {
     var input = e.target.value;
@@ -68,14 +68,14 @@ function ActionList(props) {
 
   function handleListItemClick(action) {
     props.setSelectedAction(action);
-    setSelectedIndex(action.uniqueActivityId);
+    props.setSelectedActionList(action.uniqueActivityId);
   }
 
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteOption");
-    setConfirmationHeaderTittle("Revert Action");
+    setConfirmationHeaderTittle("Revert Option");
     setConfirmationDialogContextText(
       `Are you sure you want to revert ${value.name} ?`
     );
@@ -89,7 +89,7 @@ function ActionList(props) {
             variant="outlined"
             fullWidth
             id="groupName"
-            placeholder="Search by action..."
+            placeholder="Search by option..."
             name="groupName"
             onChange={searchActions}
             InputLabelProps={{ shrink: false }}
@@ -114,7 +114,7 @@ function ActionList(props) {
                 >
                   <ListItem
                     button
-                    selected={selectedIndex == act.uniqueActivityId}
+                    selected={props.selectedActionList == act.uniqueActivityId}
                     alignItems="flex-start"
                   >
                     <ListItemText

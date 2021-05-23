@@ -1311,3 +1311,10 @@ label.required {
 .red-flag-question {
   margin-top: 30px !important;
 }
+
+.assign-emergency-contact {
+  .MuiDialog-paper {
+    width: 500px !important;
+    min-width: 500px !important;
+  }
+}

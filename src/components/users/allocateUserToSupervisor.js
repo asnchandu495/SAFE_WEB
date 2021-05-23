@@ -93,6 +93,7 @@ function AllocateUserToSupervisor(props) {
   function cancelEdit() {
     props.setActiveCard("");
     setResetComponent("YES");
+    setformFieldValidation({ supervisor: false });
   }
   function UserSupervisor() {
     SelecSupervisorValidation();

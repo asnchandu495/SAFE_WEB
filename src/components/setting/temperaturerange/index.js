@@ -92,6 +92,23 @@ function TemperatureRange(props) {
       },
     ],
   });
+  const [oldData, setOldData] = useState({
+    id: "",
+    globalSettingsId: globalsettingsId,
+    temperatureUnit: "",
+    covidStates: [
+      {
+        id: "",
+        lowerLimit: 0,
+        upperLimit: 0,
+        covidState: {
+          id: "",
+          stateName: "",
+        },
+        isNoUpperLimit: false,
+      },
+    ],
+  });
 
   useEffect(() => {
     Promise.all([
@@ -102,9 +119,12 @@ function TemperatureRange(props) {
         setcovidStatelist(result);
         if (globalSettings.covidStateTemperatures.length > 0) {
           tempsections.covidStates = globalSettings.covidStateTemperatures;
+          oldData.covidStates = globalSettings.covidStateTemperatures;
         }
         tempsections.globalSettingsId = globalSettings.id;
+        oldData.globalSettingsId = globalSettings.id;
         tempsections.temperatureUnit = globalSettings.temperatureUnit;
+        oldData.temperatureUnit = globalSettings.temperatureUnit;
         setComponentLoadder(false);
       })
       .catch((err) => {
@@ -209,7 +229,7 @@ function TemperatureRange(props) {
   };
 
   function handleClickGoBackToPage() {
-    props.history.push("/");
+    settempsections(oldData);
   }
 
   function submitForm(e) {

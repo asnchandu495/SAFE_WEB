@@ -77,6 +77,26 @@ function QuestionnaireEvaluation(props) {
       },
     ],
   });
+  const [oldData, setOldData] = useState({
+    id: "",
+    surveyId: id,
+    positiveConformityScore: 0,
+    covidState: {
+      id: "",
+      stateName: "",
+    },
+    positiveResponses: [
+      {
+        id: "",
+        upperLimit: 0,
+        lowerLimit: 0,
+        covidState: {
+          id: "",
+          stateName: "",
+        },
+      },
+    ],
+  });
   const [componentLoadder, setcomponentLoadder] = useState(true);
 
   const uomTemp = [
@@ -101,6 +121,7 @@ function QuestionnaireEvaluation(props) {
         setquestionaireDetails(surveyid);
         if (getEvaluationDetails && getEvaluationDetails.id) {
           setTemperatureConfigForm(getEvaluationDetails);
+          setOldData(getEvaluationDetails);
         }
         setcomponentLoadder(false);
       })
@@ -224,6 +245,7 @@ function QuestionnaireEvaluation(props) {
   }
   function submitForm(e) {
     e.preventDefault();
+    setshowLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
     var formData = temperatureConfigForm;
@@ -265,6 +287,11 @@ function QuestionnaireEvaluation(props) {
         });
     }
   }
+
+  function handleClickGoBackToPage() {
+    setTemperatureConfigForm(oldData);
+  }
+
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -372,6 +399,7 @@ function QuestionnaireEvaluation(props) {
                       }
                       filterSelectedOptions
                       className="global-input autocomplete-select"
+                      required
                       renderInput={(params) => (
                         <TextField
                           {...params}
@@ -424,6 +452,7 @@ function QuestionnaireEvaluation(props) {
                               defaultValue={x.covidState}
                               filterSelectedOptions
                               className="global-input autocomplete-select"
+                              required
                               renderInput={(params) => (
                                 <TextField
                                   {...params}
@@ -535,7 +564,7 @@ function QuestionnaireEvaluation(props) {
                   <Button
                     variant="contained"
                     type="reset"
-                    // onClick={redirectToViewUsersGroup}
+                    onClick={handleClickGoBackToPage}
                     className="global-cancel-btn"
                   >
                     Cancel

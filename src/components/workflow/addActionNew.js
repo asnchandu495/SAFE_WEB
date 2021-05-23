@@ -38,6 +38,7 @@ function AddActionsNew(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [selectedActivityDetails, setSelectedActivityDetails] = useState();
+  const [selectedActionList, setSelectedActionList] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -116,7 +117,7 @@ function AddActionsNew(props) {
           {selectedActivityDetails ? selectedActivityDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="active">
-          Actions
+          Options
         </LinkTo>
       </Breadcrumbs>
       {componentLoadder ? (
@@ -131,6 +132,8 @@ function AddActionsNew(props) {
                   setSelectedAction={setSelectedAction}
                   setReloadPage={setReloadPage}
                   reloadPage={reloadPage}
+                  setSelectedActionList={setSelectedActionList}
+                  selectedActionList={selectedActionList}
                 ></ActionList>
               </Paper>
             </Grid>
@@ -141,11 +144,13 @@ function AddActionsNew(props) {
                     selectedAction={selectedAction}
                     setReloadPage={setReloadPage}
                     reloadPage={reloadPage}
+                    setSelectedActionList={setSelectedActionList}
+                    selectedActionList={selectedActionList}
                   ></ActionFormNew>
                 ) : (
                   <>
                     <p className="select-action">
-                      Please select an action from the list
+                      Please select an option from the list
                     </p>
                   </>
                 )}

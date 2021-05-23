@@ -73,6 +73,7 @@ function ActionFormNew(props) {
   const [currentEditor, setCurrentEditor] = useState();
   const [selectedActivityDetails, setSelectedActivityDetails] = useState();
   const [currentInputText, setCurrentInputText] = useState();
+  const [oldData, setOldData] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -113,6 +114,14 @@ function ActionFormNew(props) {
               parentActivityId: thisFormData.parentActivityId,
               configurationDataList: newFormCollection,
             });
+            setOldData({
+              id: thisFormData.id,
+              uniqueActivityId: thisFormData.uniqueActivityId,
+              name: thisFormData.name,
+              aimWorkflowId: thisFormData.aimWorkflowId,
+              parentActivityId: thisFormData.parentActivityId,
+              configurationDataList: newFormCollection,
+            });
             setComponentLoadder(false);
             props.setReloadPage("NO");
           } else {
@@ -126,6 +135,14 @@ function ActionFormNew(props) {
               value: form.value ? form.value : "",
             }));
             setFormData({
+              id: "",
+              uniqueActivityId: props.selectedAction.uniqueActivityId,
+              name: props.selectedAction.name,
+              aimWorkflowId: workflowId,
+              parentActivityId: activityId,
+              configurationDataList: newFormCollection,
+            });
+            setOldData({
               id: "",
               uniqueActivityId: props.selectedAction.uniqueActivityId,
               name: props.selectedAction.name,
@@ -147,6 +164,14 @@ function ActionFormNew(props) {
             value: form.value ? form.value : "",
           }));
           setFormData({
+            id: "",
+            uniqueActivityId: props.selectedAction.uniqueActivityId,
+            name: props.selectedAction.name,
+            aimWorkflowId: workflowId,
+            parentActivityId: activityId,
+            configurationDataList: newFormCollection,
+          });
+          setOldData({
             id: "",
             uniqueActivityId: props.selectedAction.uniqueActivityId,
             name: props.selectedAction.name,
@@ -198,11 +223,12 @@ function ActionFormNew(props) {
         .addOptions(formData)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Action details added");
+          setToasterMessage("Option details added");
           settoasterServerity("success");
           setTimeout(() => {
             setshowLoadder(false);
             props.setReloadPage("YES");
+            props.setSelectedActionList(props.selectedAction.uniqueActivityId);
           }, 10000);
         })
         .catch((err) => {
@@ -216,11 +242,12 @@ function ActionFormNew(props) {
         .updateOptions(formData)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Action details updated");
+          setToasterMessage("Option details updated");
           settoasterServerity("success");
           setTimeout(() => {
             setshowLoadder(false);
             props.setReloadPage("YES");
+            props.setSelectedActionList(props.selectedAction.uniqueActivityId);
           }, 10000);
         })
         .catch((err) => {
@@ -304,7 +331,8 @@ function ActionFormNew(props) {
   };
 
   function gotoPreviousPage() {
-    props.history.push(`/workflow/${workflowId}/activities`);
+    // props.history.push(`/workflow/${workflowId}/activities`);
+    setFormData(oldData);
   }
 
   return (
@@ -341,10 +369,10 @@ function ActionFormNew(props) {
                               >
                                 <TextValidator
                                   variant="outlined"
-                                  validators={["required"]}
-                                  errorMessages={[
-                                    `Please enter ${act.remarksForInput}`,
-                                  ]}
+                                  // validators={["required"]}
+                                  // errorMessages={[
+                                  //   `Please enter ${act.remarksForInput}`,
+                                  // ]}
                                   fullWidth
                                   id={`${act.name}_${index}`}
                                   placeholder={act.remarksForInput}
@@ -422,7 +450,7 @@ function ActionFormNew(props) {
                                     editor.editing.view.change((writer) => {
                                       writer.setStyle(
                                         "height",
-                                        "250px",
+                                        "225px",
                                         editor.editing.view.document.getRoot()
                                       );
                                     });

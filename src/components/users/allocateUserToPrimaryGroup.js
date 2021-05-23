@@ -98,6 +98,7 @@ function AllocateUserToPrimaryGroup(props) {
 
   function cancelEdit() {
     props.setActiveCard("");
+    setformFieldValidation({ primaryGroup: false });
     setResetComponent("YES");
   }
 
