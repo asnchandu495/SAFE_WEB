@@ -113,6 +113,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteMultipleUser") {
@@ -128,6 +129,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteUserGroup") {
@@ -143,6 +145,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteTeams") {
@@ -159,6 +162,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteWorflow") {
@@ -174,6 +178,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteQuestionaire") {
@@ -189,6 +194,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteEmergencyContacts") {
@@ -204,6 +210,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "CancelQuestionaire") {
@@ -220,6 +227,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "EmergencyContactCancel") {
@@ -237,6 +245,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "ChangeDocStatus") {
@@ -269,6 +278,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (
@@ -295,6 +305,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "PublishWorkflow") {
@@ -314,6 +325,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeactiveDesignation") {
@@ -329,6 +341,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteCovidState") {
@@ -344,6 +357,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteFaq") {
@@ -359,6 +373,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteSite") {
@@ -374,6 +389,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteFloor") {
@@ -389,6 +405,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DisassociateFaq") {
@@ -404,6 +421,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "ChangeStatusFaq") {
@@ -427,6 +445,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteLocation") {
@@ -442,6 +461,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteBooleanQuestion") {
@@ -461,6 +481,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteFreeQuestion") {
@@ -480,6 +501,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteTimeQuestion") {
@@ -499,6 +521,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteDateQuestion") {
@@ -518,6 +541,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteNumericQuestion") {
@@ -537,6 +561,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (
@@ -558,6 +583,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (
@@ -579,6 +605,7 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
         })
         .catch((error) => {
+          setshowLoadder(false);
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "DeleteActivity") {

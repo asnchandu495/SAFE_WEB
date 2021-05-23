@@ -14,6 +14,8 @@ import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import BackupIcon from "@material-ui/icons/Backup";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import AddIcon from "@material-ui/icons/Add";
+import ClearIcon from "@material-ui/icons/Clear";
+import CheckIcon from "@material-ui/icons/Check";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
@@ -191,8 +193,8 @@ function Workflow(props) {
                   <Button
                     variant="contained"
                     color="default"
-                    startIcon={<BackupIcon />}
-                    className={`edit-icon`}
+                    startIcon={thisRowData[3] ? <ClearIcon /> : <CheckIcon />}
+                    className={thisRowData[3] ? "delete-icon" : "view-icon"}
                     onClick={() => handlePublishModal(thisRowData)}
                   ></Button>
                 </Tooltip>
