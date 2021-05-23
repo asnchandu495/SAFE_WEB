@@ -192,12 +192,22 @@ function MultiSelectQuestion(props) {
     } else {
       var newArray;
       if (oldData) {
-        newArray = [
-          ...new Set([
-            ...oldData.positiveConformityMultiChoice,
-            ...oldData.redFlagForMultipleChoice,
-          ]),
+        const allPositiveOptions = [
+          ...new Set(
+            [].concat(
+              ...oldData.positiveConformityMultiChoice.map((o) => o.options)
+            )
+          ),
         ];
+        const allRedflagOptions = [
+          ...new Set(
+            [].concat(...oldData.redFlagForMultipleChoice.map((o) => o.options))
+          ),
+        ];
+        newArray = [...new Set([...allPositiveOptions, ...allRedflagOptions])];
+        newArray = newArray.filter(
+          (v, i, a) => a.findIndex((t) => t.optionId === v.optionId) === i
+        );
       } else {
         newArray = [];
       }
