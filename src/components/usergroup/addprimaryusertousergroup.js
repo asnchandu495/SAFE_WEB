@@ -94,6 +94,12 @@ function AddPrimaryUserToUserGroups(props) {
     siteId: [],
   });
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [userSelectedUser, setUserSelectedUser] = useState();
+  const [userSelectedRole, setUserSelectedRole] = useState();
+  const [userSelectedTeam, setUserSelectedTeam] = useState();
+  const [userSelectedDesignation, setUserSelectedDesignation] = useState();
+  const [userSelectedSite, setUserSelectedSite] = useState();
+  const [userSelectedCountry, setUserSelectedCountry] = useState();
 
   useEffect(() => {
     if (userGroupUpdateid) {
@@ -256,6 +262,7 @@ function AddPrimaryUserToUserGroups(props) {
   function handleChangeUserRole(e, value) {
     setBusinessUserRoleMasterData(value);
   }
+
   function roleDetails() {
     if (BusinessUserRoleMasterData.length > 0) {
       setformFieldValidation((ValidationForm) => ({
@@ -322,6 +329,8 @@ function AddPrimaryUserToUserGroups(props) {
     // filterData.primaryGroupId = userList.id;
     filterData.primaryGroupId = "39fb08236ef55c92cc584c03875a6007";
     filterData.roleIds = BusinessUserRoleMasterData;
+    console.log(filterData);
+    return false;
     setshowLoadder(true);
     UsersApi.ListApplicationUsersForTeams(filterData)
       .then((result) => {
