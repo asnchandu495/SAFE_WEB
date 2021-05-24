@@ -29,7 +29,11 @@ export function loadGlobalSetting() {
   return function (dispatch) {
     return GlobalSettingApi.getLoadGlobalSetting()
       .then((data) => {
-        dispatch(LoadGlobalSettingSuccess(data));
+        if (data) {
+          dispatch(LoadGlobalSettingSuccess(data));
+        } else {
+          dispatch(LoadGlobalSettingSuccess({}));
+        }
       })
       .catch((error) => {
         throw error;
