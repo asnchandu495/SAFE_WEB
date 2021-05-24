@@ -69,6 +69,7 @@ function TemperatureRange(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [covidStatelist, setcovidStatelist] = useState([]);
+  const [tempCovidStatelist, setTempCovidStatelist] = useState([]);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [globalsettingsId, setglobalsettingsId] = useState();
   const [toasterErrorMessageType, settoasterErrorMessageType] =
@@ -117,6 +118,7 @@ function TemperatureRange(props) {
     ])
       .then(([result, globalSettings]) => {
         setcovidStatelist(result);
+        setTempCovidStatelist(result);
         if (globalSettings.covidStateTemperatures.length > 0) {
           tempsections.covidStates = globalSettings.covidStateTemperatures;
           oldData.covidStates = globalSettings.covidStateTemperatures;
@@ -258,14 +260,11 @@ function TemperatureRange(props) {
         }, 6000);
       })
       .catch((err) => {
-        console.log(err);
-        // setToasterMessage(err.data.errors);
-        // settoasterServerity("error");
-        // setStateSnackbar(true);
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
         setshowLoadder(false);
-        // throw err;
       });
-    // ValidateSubmitForm();
   }
 
   function ValidateSubmitForm() {
@@ -356,19 +355,21 @@ function TemperatureRange(props) {
                         <Grid item xs={2}>
                           <Autocomplete
                             id="tags-outlined"
-                            // /options={teamManagers}
                             options={
                               covidStatelist && covidStatelist.length > 0
-                                ? covidStatelist
+                                ? covidStatelist.filter((cstate) => {
+                                    return !tempsections.covidStates.find(
+                                      (sselected) => {
+                                        return (
+                                          sselected.covidState.id == cstate.id
+                                        );
+                                      }
+                                    );
+                                  })
                                 : []
                             }
                             getOptionLabel={(option) => option.stateName}
                             onChange={(e, v) => handleChangeCovidState(e, v, i)}
-                            defaultValue={
-                              tempsections.covidStates
-                                ? tempsections.covidStates
-                                : []
-                            }
                             name="covidState"
                             defaultValue={x.covidState}
                             filterSelectedOptions

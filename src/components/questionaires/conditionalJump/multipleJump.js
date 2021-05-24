@@ -319,7 +319,7 @@ function MultipleJump(props) {
                     className="jump-form-content"
                     spacing={1}
                   >
-                    <Grid item container xs={12}>
+                    <Grid item container xs={12} className="logic-ques-name">
                       <Grid item xs={2}>
                         <label className="">Question Name </label>
                       </Grid>
@@ -374,7 +374,9 @@ function MultipleJump(props) {
                                             <TextField
                                               {...params}
                                               variant="outlined"
-                                              required={x.answerChoices == ""}
+                                              required={
+                                                x.answerChoices.length == 0
+                                              }
                                               placeholder="Select answer"
                                             />
                                           )}

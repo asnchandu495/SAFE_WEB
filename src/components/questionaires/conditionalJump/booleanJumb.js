@@ -174,7 +174,7 @@ function BooleanJump(props) {
                     className="jump-form-content"
                     spacing={1}
                   >
-                    <Grid item container xs={12}>
+                    <Grid item container xs={12} className="logic-ques-name">
                       <Grid item xs={2}>
                         <label className="">Question Name </label>
                       </Grid>
