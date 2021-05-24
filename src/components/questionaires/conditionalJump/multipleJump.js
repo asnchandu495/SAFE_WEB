@@ -411,7 +411,6 @@ function MultipleJump(props) {
                                             : ""}
                                         </InputLabel>
                                         <Select
-                                          required
                                           labelId="demo-simple-select-outlined-label"
                                           id="demo-simple-select-outlined"
                                           value={x.goToSurveyQuestionId}
@@ -513,7 +512,7 @@ function MultipleJump(props) {
                                   className="select-label"
                                 >
                                   {conditionalJump.elseGoToQuestionId == ""
-                                    ? "Select question"
+                                    ? "Select questionf"
                                     : ""}
                                 </InputLabel>
                                 <Select
@@ -522,12 +521,12 @@ function MultipleJump(props) {
                                   value={conditionalJump.elseGoToQuestionId}
                                   name="elseGoToQuestionId"
                                   onChange={handleChange}
-                                  placeholder="Select question"
+                                  placeholder="Select questiohn"
                                   InputLabelProps={{
                                     shrink: false,
                                   }}
                                   className="global-input single-select"
-                                  required={conditionalJump.goToNormalSequence}
+                                  // required={conditionalJump.goToNormalSequence}
                                 >
                                   <MenuItem value="">
                                     <em>None</em>

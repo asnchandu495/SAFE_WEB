@@ -554,13 +554,20 @@ function Users(props) {
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
-          if (thisRowData && thisRowData[6] != null) {
+          if (thisRowData && thisRowData[6]) {
             return (
               <span>
-                {thisRowData[6].temperature}-
-                {thisRowData[6].temperatureUnit
+                {thisRowData[6].temperature && thisRowData[6].temperatureUnit
+                  ? thisRowData[6].temperature
+                  : ""}
+                -
+                {thisRowData[6].temperatureUnit && thisRowData[6].temperature
                   ? thisRowData[6].temperatureUnit
                   : ""}
+                {/* {thisRowData[6].temperature}-
+                {thisRowData[6].temperatureUnit
+                  ? thisRowData[6].temperatureUnit
+                  : ""} */}
               </span>
             );
           } else {
