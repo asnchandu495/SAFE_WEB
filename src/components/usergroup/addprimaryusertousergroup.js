@@ -150,12 +150,6 @@ function AddPrimaryUserToUserGroups(props) {
     siteId: [],
   });
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
-  const [userSelectedUser, setUserSelectedUser] = useState();
-  const [userSelectedRole, setUserSelectedRole] = useState();
-  const [userSelectedTeam, setUserSelectedTeam] = useState();
-  const [userSelectedDesignation, setUserSelectedDesignation] = useState();
-  const [userSelectedSite, setUserSelectedSite] = useState();
-  const [userSelectedCountry, setUserSelectedCountry] = useState();
 
   const [RoleMasterData, setRoleMasterData] = useState([]);
 
@@ -805,25 +799,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(AddPrimaryUserToUserGroups);
-
-// AddPrimaryUserToUserGroups.propTypes = {
-//   UserGroupData: PropTypes.array.isRequired,
-//   LoadAllUserGroup: PropTypes.func.isRequired,
-//   LoadAllUser: PropTypes.func.isRequired,
-// };
-
-// function mapStateToProps(state, ownProps) {
-//   return {
-//     UserGroupData: state.usergroup,
-//   };
-// }
-
-// const mapDispatchToProps = {
-//   LoadAllUserGroup: UserGroupAction.loadUserGroup,
-//   LoadAllUser: UserAction.loadUser,
-// };
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(AddPrimaryUserToUserGroups);
