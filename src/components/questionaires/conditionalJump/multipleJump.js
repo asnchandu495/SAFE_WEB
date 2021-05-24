@@ -46,6 +46,21 @@ function MultipleJump(props) {
     elseGoToQuestionId: "",
     goToNormalSequence: false,
   });
+
+  const [cancelconditionalJump, setcancelConditionalJump] = useState({
+    id: "",
+    surveyQuestionId: questionId,
+    multiChoiceConditionalQuestions: [
+      {
+        id: "",
+        multiChoiceConditionalOrderId: "",
+        answerChoices: [],
+        goToSurveyQuestionId: "",
+      },
+    ],
+    elseGoToQuestionId: "",
+    goToNormalSequence: false,
+  });
   const [surveyDetails, setsurveyDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
   const [allAnswerExpressions, setAllAnswerExpressions] = useState([]);
@@ -120,6 +135,7 @@ function MultipleJump(props) {
             choiceQuestionMultipleDetails.multiChoiceConditionalQuestions =
               newChoicesArray;
             setConditionalJump(choiceQuestionMultipleDetails);
+            setcancelConditionalJump(choiceQuestionMultipleDetails);
             setReloadPage("false");
             setcomponentLoadder(false);
           } else {
@@ -203,7 +219,9 @@ function MultipleJump(props) {
     };
     setConditionalJump(list);
   };
-
+  function handleCancel() {
+    setConditionalJump(cancelconditionalJump);
+  }
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -541,14 +559,16 @@ function MultipleJump(props) {
                     type="button"
                     className="global-cancel-btn"
                     variant="contained"
+                    onClick={handleCancel}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"
                     type="submit"
                     className="global-submit-btn"
                     disabled={showLoadder}
+                    onClick={handleCancel}
                   >
                     {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
                   </Button>

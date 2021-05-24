@@ -44,6 +44,21 @@ function SingleJump(props) {
     elseGoToQuestionId: "",
     goToNormalSequence: false,
   });
+
+  const [cancelconditionalJump, setcancelConditionalJump] = useState({
+    id: "",
+    surveyQuestionId: questionId,
+    singleChoiceConditionalQuestions: [
+      {
+        id: "",
+        singleChoiceConditionalOrderId: "",
+        answerChoiceId: "",
+        goToSurveyQuestionId: "",
+      },
+    ],
+    elseGoToQuestionId: "",
+    goToNormalSequence: false,
+  });
   const [surveyDetails, setsurveyDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
   const [allAnswerExpressions, setAllAnswerExpressions] = useState([]);
@@ -92,6 +107,7 @@ function SingleJump(props) {
           setsurveyDetails(getsurveyDetails);
           if (choiceQuestionBooleanDetails) {
             setConditionalJump(choiceQuestionBooleanDetails);
+            setcancelConditionalJump(choiceQuestionBooleanDetails);
           }
           setReloadPage("false");
           setcomponentLoadder(false);
@@ -151,6 +167,9 @@ function SingleJump(props) {
     list.singleChoiceConditionalQuestions.splice(j, 1);
     setConditionalJump(list);
   };
+  function handleCancel() {
+    setConditionalJump(cancelconditionalJump);
+  }
 
   function submitForm(e) {
     e.preventDefault();
@@ -485,8 +504,9 @@ function SingleJump(props) {
                     type="button"
                     className="global-cancel-btn"
                     variant="contained"
+                    onClick={handleCancel}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"

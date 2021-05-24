@@ -58,6 +58,23 @@ function TimeJump(props) {
     goToNormalSequence: false,
   });
 
+  const [cancelconditionalJump, setcancelConditionalJump] = useState({
+    id: "",
+    surveyQuestionId: questionId,
+    timeConditionalQuestions: [
+      {
+        id: "",
+        numericConditionalOrderId: "",
+        numericExpressionType: "",
+        forAnswer: moment().toISOString(),
+        forRangeEnd: moment().toISOString(),
+        goToSurveyQuestionId: "",
+      },
+    ],
+    elseGoToQuestionId: "",
+    goToNormalSequence: false,
+  });
+
   const [surveyDetails, setsurveyDetails] = useState();
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
@@ -105,6 +122,7 @@ function TimeJump(props) {
           setsurveyDetails(getsurveyDetails);
           if (getTimeBooleanDetails) {
             setConditionalJump(getTimeBooleanDetails);
+            setcancelConditionalJump(getTimeBooleanDetails);
           }
           setReloadPage("false");
           setcomponentLoadder(false);
@@ -177,6 +195,10 @@ function TimeJump(props) {
     list.timeConditionalQuestions.splice(j, 1);
     setConditionalJump(list);
   };
+
+  function handleCancel() {
+    setConditionalJump(cancelconditionalJump);
+  }
 
   function submitForm(e) {
     e.preventDefault();
@@ -648,8 +670,9 @@ function TimeJump(props) {
                     type="button"
                     className="global-cancel-btn"
                     variant="contained"
+                    onClick={handleCancel}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"
