@@ -51,6 +51,23 @@ function NumericJump(props) {
     elseGoToQuestionId: "",
     goToNormalSequence: false,
   });
+
+  const [cancelconditionalJump, setcancelConditionalJump] = useState({
+    id: "",
+    surveyQuestionId: questionId,
+    numericConditionalQuestions: [
+      {
+        id: "",
+        numericConditionalOrderId: "",
+        numericExpressionType: "",
+        forAnswer: 0,
+        forRangeEnd: 0,
+        goToSurveyQuestionId: "",
+      },
+    ],
+    elseGoToQuestionId: "",
+    goToNormalSequence: false,
+  });
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
   const [allAnswerExpressions, setAllAnswerExpressions] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -95,6 +112,7 @@ function NumericJump(props) {
           setsurveyDetails(getsurveyDetails);
           if (getNumeicBooleanDetails) {
             setConditionalJump(getNumeicBooleanDetails);
+            setcancelConditionalJump(getNumeicBooleanDetails);
           }
           setReloadPage("false");
           setcomponentLoadder(false);
@@ -162,6 +180,10 @@ function NumericJump(props) {
     list.numericConditionalQuestions.splice(j, 1);
     setConditionalJump(list);
   };
+
+  function handleCancel() {
+    setConditionalJump(cancelconditionalJump);
+  }
 
   function submitForm(e) {
     e.preventDefault();
@@ -565,8 +587,9 @@ function NumericJump(props) {
                     type="button"
                     className="global-cancel-btn"
                     variant="contained"
+                    onClick={handleCancel}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"

@@ -57,6 +57,22 @@ function DateJump(props) {
     elseGoToQuestionId: "",
     goToNormalSequence: false,
   });
+  const [cancelconditionalJump, setcancelConditionalJump] = useState({
+    id: "",
+    surveyQuestionId: questionId,
+    dateTimeConditionalQuestions: [
+      {
+        id: "",
+        dateTimeConditionalOrderId: "",
+        numericExpressionType: "",
+        forAnswer: moment().toISOString(),
+        forRangeEnd: moment().toISOString(),
+        goToSurveyQuestionId: "",
+      },
+    ],
+    elseGoToQuestionId: "",
+    goToNormalSequence: false,
+  });
   const [surveyDetails, setsurveyDetails] = useState();
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
@@ -104,6 +120,7 @@ function DateJump(props) {
           setsurveyDetails(getsurveyDetails);
           if (getBooleanConditionDetails) {
             setConditionalJump(getBooleanConditionDetails);
+            setcancelConditionalJump(getBooleanConditionDetails);
           }
           setReloadPage("false");
           setcomponentLoadder(false);
@@ -176,6 +193,9 @@ function DateJump(props) {
     list.dateTimeConditionalQuestions.splice(j, 1);
     setConditionalJump(list);
   };
+  function handleCancel() {
+    setConditionalJump(cancelconditionalJump);
+  }
 
   function submitForm(e) {
     e.preventDefault();
@@ -607,8 +627,9 @@ function DateJump(props) {
                     type="button"
                     className="global-cancel-btn"
                     variant="contained"
+                    onClick={handleCancel}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"

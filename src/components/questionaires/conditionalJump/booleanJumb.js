@@ -30,6 +30,13 @@ function BooleanJump(props) {
     positiveResponseQuestionId: "",
     negativeResponseQuestionId: "",
   });
+
+  const [cancelconditionalJump, setcancelConditionalJump] = useState({
+    id: "",
+    surveyQuestionId: questionId,
+    positiveResponseQuestionId: "",
+    negativeResponseQuestionId: "",
+  });
   const [surveyDetails, setsurveyDetails] = useState();
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
@@ -63,6 +70,7 @@ function BooleanJump(props) {
           setsurveyDetails(getsurveyDetails);
           if (getBooleanConditionDetails) {
             setConditionalJump(getBooleanConditionDetails);
+            setcancelConditionalJump(getBooleanConditionDetails);
           }
           setReloadPage("false");
           setcomponentLoadder(false);
@@ -80,6 +88,10 @@ function BooleanJump(props) {
       [name]: value,
     }));
   };
+
+  function handleCancel() {
+    setConditionalJump(cancelconditionalJump);
+  }
 
   function submitForm(e) {
     e.preventDefault();
@@ -310,8 +322,9 @@ function BooleanJump(props) {
                     type="button"
                     className="global-cancel-btn"
                     variant="contained"
+                    onClick={handleCancel}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"

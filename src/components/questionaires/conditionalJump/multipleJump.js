@@ -46,6 +46,21 @@ function MultipleJump(props) {
     elseGoToQuestionId: "",
     goToNormalSequence: false,
   });
+
+  const [cancelconditionalJump, setcancelConditionalJump] = useState({
+    id: "",
+    surveyQuestionId: questionId,
+    multiChoiceConditionalQuestions: [
+      {
+        id: "",
+        multiChoiceConditionalOrderId: "",
+        answerChoices: [],
+        goToSurveyQuestionId: "",
+      },
+    ],
+    elseGoToQuestionId: "",
+    goToNormalSequence: false,
+  });
   const [surveyDetails, setsurveyDetails] = useState();
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
   const [allAnswerExpressions, setAllAnswerExpressions] = useState([]);
@@ -120,6 +135,7 @@ function MultipleJump(props) {
             choiceQuestionMultipleDetails.multiChoiceConditionalQuestions =
               newChoicesArray;
             setConditionalJump(choiceQuestionMultipleDetails);
+            setcancelConditionalJump(choiceQuestionMultipleDetails);
             setReloadPage("false");
             setcomponentLoadder(false);
           } else {
@@ -203,7 +219,9 @@ function MultipleJump(props) {
     };
     setConditionalJump(list);
   };
-
+  function handleCancel() {
+    setConditionalJump(cancelconditionalJump);
+  }
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -395,7 +413,6 @@ function MultipleJump(props) {
                                             : ""}
                                         </InputLabel>
                                         <Select
-                                          required
                                           labelId="demo-simple-select-outlined-label"
                                           id="demo-simple-select-outlined"
                                           value={x.goToSurveyQuestionId}
@@ -497,7 +514,7 @@ function MultipleJump(props) {
                                   className="select-label"
                                 >
                                   {conditionalJump.elseGoToQuestionId == ""
-                                    ? "Select question"
+                                    ? "Select questionf"
                                     : ""}
                                 </InputLabel>
                                 <Select
@@ -506,12 +523,12 @@ function MultipleJump(props) {
                                   value={conditionalJump.elseGoToQuestionId}
                                   name="elseGoToQuestionId"
                                   onChange={handleChange}
-                                  placeholder="Select question"
+                                  placeholder="Select questiohn"
                                   InputLabelProps={{
                                     shrink: false,
                                   }}
                                   className="global-input single-select"
-                                  required={conditionalJump.goToNormalSequence}
+                                  // required={conditionalJump.goToNormalSequence}
                                 >
                                   <MenuItem value="">
                                     <em>None</em>
@@ -543,14 +560,16 @@ function MultipleJump(props) {
                     type="button"
                     className="global-cancel-btn"
                     variant="contained"
+                    onClick={handleCancel}
                   >
-                    Back
+                    Cancel
                   </Button>
                   <Button
                     variant="contained"
                     type="submit"
                     className="global-submit-btn"
                     disabled={showLoadder}
+                    onClick={handleCancel}
                   >
                     {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
                   </Button>

@@ -371,21 +371,29 @@ function ViewUser(props) {
                 <Grid item xs={4}>
                   <label>Temperature :</label>
                 </Grid>
+
                 <Grid item xs={8}>
-                  <label>
-                    {viewUserDetails.covidStateInfo
+                  {viewUserDetails.covidStateInfo &&
+                  props.loadGlobalSettingsData ? (
+                    <label>
+                      {/* {viewUserDetails.covidStateInfo
                       ? ConvertTemperature(
                           viewUserDetails.covidStateInfo.temperature,
                           props.loadGlobalSettingsData.temperatureUnit
                         )
-                      : " - " + props.loadGlobalSettingsData.temperatureUnit}
-                    {/* {viewUserDetails.covidStateInfo
-                      ? viewUserDetails.covidStateInfo.temperature
-                      : "-"}{" "}
-                    {props.loadGlobalSettingsData
-                      ? props.loadGlobalSettingsData.temperatureUnit
-                      : ""} */}
-                  </label>
+                      : " - " + props.loadGlobalSettingsData.temperatureUnit} */}
+                      {viewUserDetails.covidStateInfo.temperature &&
+                      props.loadGlobalSettingsData.temperatureUnit
+                        ? viewUserDetails.covidStateInfo.temperature
+                        : "-"}{" "}
+                      {props.loadGlobalSettingsData.temperatureUnit &&
+                      viewUserDetails.covidStateInfo.temperature
+                        ? props.loadGlobalSettingsData.temperatureUnit
+                        : ""}
+                    </label>
+                  ) : (
+                    ""
+                  )}
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
