@@ -392,9 +392,11 @@ function MultipleJump(props) {
                                             <TextField
                                               {...params}
                                               variant="outlined"
-                                              required={
-                                                x.answerChoices.length == 0
-                                              }
+                                              inputProps={{
+                                                ...params.inputProps,
+                                                required:
+                                                  x.answerChoices.length === 0,
+                                              }}
                                               placeholder="Select answer"
                                             />
                                           )}
@@ -425,6 +427,7 @@ function MultipleJump(props) {
                                             shrink: false,
                                           }}
                                           className="global-input single-select"
+                                          required
                                         >
                                           <MenuItem value="">
                                             <em>None</em>
@@ -569,7 +572,6 @@ function MultipleJump(props) {
                     type="submit"
                     className="global-submit-btn"
                     disabled={showLoadder}
-                    onClick={handleCancel}
                   >
                     {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
                   </Button>
