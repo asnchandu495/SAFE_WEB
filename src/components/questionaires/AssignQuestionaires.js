@@ -166,9 +166,31 @@ function AssignQuestionaires(props) {
 
   function handleChangeGroup(e, value) {
     setselectedUserData(value);
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["selectedUserData"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["selectedUserData"]: true,
+      }));
+    }
   }
   function handleChangeQuestionnaire(e, value) {
     setselectedUserQuestionnaire(value);
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["userquestionnaire"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["userquestionnaire"]: true,
+      }));
+    }
   }
 
   const handleClickOpenChangeStatusModal = (value) => {
@@ -223,8 +245,9 @@ function AssignQuestionaires(props) {
       }));
     }
   }
+
   function SelectStatus() {
-    if (selectedUserQuestionnaire) {
+    if (formData.status != "") {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["status"]: false,
@@ -291,6 +314,17 @@ function AssignQuestionaires(props) {
       ...logInForm,
       [name]: value,
     }));
+    if (value != "") {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["status"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["status"]: true,
+      }));
+    }
   }
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
@@ -509,14 +543,14 @@ function AssignQuestionaires(props) {
                           />
                         )}
                       />{" "}
-                      {formFieldValidation.selectedUserData ? (
-                        <FormHelperText className="error-msg">
-                          Please select usergroup{" "}
-                        </FormHelperText>
-                      ) : (
-                        ""
-                      )}
                     </FormControl>
+                    {formFieldValidation.selectedUserData ? (
+                      <FormHelperText className="error-message-select">
+                        Please select usergroup{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )}
                   </Grid>
                 </Grid>
 
@@ -546,14 +580,14 @@ function AssignQuestionaires(props) {
                           />
                         )}
                       />{" "}
-                      {formFieldValidation.userquestionnaire ? (
-                        <FormHelperText className="error-msg">
-                          Please select questionnaire{" "}
-                        </FormHelperText>
-                      ) : (
-                        ""
-                      )}
                     </FormControl>
+                    {formFieldValidation.userquestionnaire ? (
+                      <FormHelperText className="error-message-select">
+                        Please select questionnaire{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )}
                   </Grid>
                 </Grid>
                 <Grid item cs={12} container>
@@ -566,7 +600,9 @@ function AssignQuestionaires(props) {
                         id="demo-simple-select-outlined-label"
                         shrink={false}
                         className="select-label"
-                      ></InputLabel>
+                      >
+                        {formData.status == "" ? "Select status" : ""}
+                      </InputLabel>
                       <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
@@ -588,7 +624,7 @@ function AssignQuestionaires(props) {
                           : ""}
                       </Select>
                     </FormControl>
-                    {formData.status == "" ? (
+                    {formFieldValidation.status ? (
                       <FormHelperText className="error-message-select">
                         Please select status{" "}
                       </FormHelperText>

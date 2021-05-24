@@ -431,14 +431,12 @@ function SingleSelectQuestion(props) {
     var a = filteredChoices.indexOf(lastItem);
 
     return (
-      filteredChoices.length && (
-        <Tooltip title="Add">
-          <AddCircleIcon
-            className={`add-row-icon`}
-            onClick={handleAddClickChoices}
-          ></AddCircleIcon>
-        </Tooltip>
-      )
+      <Tooltip title="Add">
+        <AddCircleIcon
+          className={`add-row-icon`}
+          onClick={handleAddClickChoices}
+        ></AddCircleIcon>
+      </Tooltip>
     );
   }
 
