@@ -231,14 +231,14 @@ function AdoptQuestionnaire(props) {
                           />
                         )}
                       />
-                      {formFieldValidation.userquestionnaire ? (
-                        <FormHelperText className="error-msg">
-                          Please select questionnaire{" "}
-                        </FormHelperText>
-                      ) : (
-                        ""
-                      )}
                     </FormControl>
+                    {formFieldValidation.userquestionnaire ? (
+                      <FormHelperText className="error-msg">
+                        Please select questionnaire{" "}
+                      </FormHelperText>
+                    ) : (
+                      ""
+                    )}
                   </Grid>
                 </Grid>
                 {/* <Grid item cs={12} container>
