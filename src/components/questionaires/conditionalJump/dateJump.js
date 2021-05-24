@@ -273,6 +273,22 @@ function DateJump(props) {
                     >
                       <Grid item container xs={12}>
                         <Grid item xs={2}>
+                          <label className="">Question Name </label>
+                        </Grid>
+                        <Grid container xs={8} spacing={2}>
+                          <Grid item container xs={12}>
+                            <Grid
+                              item
+                              xs={4}
+                              className="center-align-w-padding-v"
+                            >
+                              {selectedQuestionDetails.question}
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <Grid item container xs={12}>
+                        <Grid item xs={2}>
                           <label className="required">Config logic</label>
                         </Grid>
                         <Grid container sm={10} spacing={2}>
