@@ -221,8 +221,13 @@ function GlobalSetting(props) {
         console.log(globalSettings);
         setGeoUnits(getGeoUnits);
         setToleranceUnits(getToleranceUnits);
-        SetformData(globalSettings);
-        setcancelData(globalSettings);
+        if (globalSettings) {
+          SetformData(globalSettings);
+          setcancelData(globalSettings);
+        } else {
+          SetformData(formData);
+          setcancelData(formData);
+        }
         setcomponentLoadder(false);
       })
       .catch((error) => {
