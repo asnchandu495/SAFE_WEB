@@ -124,6 +124,7 @@ function AddSecondaryUserToUserGroups(props) {
     siteId: [],
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
+  const [dialogshowLoadder, setdialogshowLoadder] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(true);
@@ -153,6 +154,31 @@ function AddSecondaryUserToUserGroups(props) {
   const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
     []
   );
+
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
 
   useEffect(() => {
     if (userGroupUpdateid) {
@@ -262,11 +288,14 @@ function AddSecondaryUserToUserGroups(props) {
       userfilterData.covidStateId = "";
     }
 
-    setshowLoadder(true);
+    // setshowLoadder(true);
+    setdialogshowLoadder(true);
     props
       .LoadAllUser(userfilterData)
       .then((result) => {
-        setshowLoadder(false);
+        setApplicationUsers(result);
+        // setshowLoadder(false);
+        setdialogshowLoadder(false);
         setModalOpen(false);
       })
       .catch((err) => {
@@ -612,7 +641,7 @@ function AddSecondaryUserToUserGroups(props) {
               className="global-submit-btn"
               disabled={showLoadder}
             >
-              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+              {dialogshowLoadder ? <ButtonLoadderComponent /> : "Submit"}
             </Button>
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel

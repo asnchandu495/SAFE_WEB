@@ -33,6 +33,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import { makeStyles } from "@material-ui/core/styles";
 import CovidStateApiServices from "../../services/masterDataService";
 import * as UserGroupAction from "../../Redux/Action/userGroupAction";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -123,6 +124,7 @@ function AddPrimaryUserToUserGroups(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
+  const [dialogshowLoadder, setdialogshowLoadder] = useState(false);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedGroupInfo, setSelectedGroupInfo] = useState();
   const [selectedUsersToGroup, setSelectedUsersToGroup] = useState([]);
@@ -161,6 +163,31 @@ function AddPrimaryUserToUserGroups(props) {
   const [BusinessGroupData, setBusinessGroupData] = useState();
   const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
   const CovidStateApi = new CovidStateApiServices();
+
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
 
   useEffect(() => {
     if (userGroupUpdateid) {
@@ -421,11 +448,14 @@ function AddPrimaryUserToUserGroups(props) {
       userfilterData.covidStateId = "";
     }
 
-    setshowLoadder(true);
+    // setshowLoadder(true);
+    setdialogshowLoadder(true);
     props
       .LoadAllUser(userfilterData)
       .then((result) => {
-        setshowLoadder(false);
+        // setshowLoadder(false);
+        setdialogshowLoadder(false);
+        setApplicationUsers(result);
         setModalOpen(false);
       })
       .catch((err) => {
@@ -464,7 +494,8 @@ function AddPrimaryUserToUserGroups(props) {
     // filterData.primaryGroupId = userList.id;
     filterData.primaryGroupId = "39fb08236ef55c92cc584c03875a6007";
     filterData.roleIds = BusinessUserRoleMasterData;
-
+    console.log(filterData);
+    return false;
     setshowLoadder(true);
     UsersApi.ListApplicationUsersForTeams(filterData)
       .then((result) => {
@@ -693,7 +724,7 @@ function AddPrimaryUserToUserGroups(props) {
               className="global-submit-btn"
               disabled={showLoadder}
             >
-              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+              {dialogshowLoadder ? <ButtonLoadderComponent /> : "Submit"}
             </Button>
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
