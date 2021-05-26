@@ -30,6 +30,9 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import DialogActions from "@material-ui/core/DialogActions";
 import MasterService from "../../services/masterDataService";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import { makeStyles } from "@material-ui/core/styles";
+import CovidStateApiServices from "../../services/masterDataService";
+import * as UserGroupAction from "../../Redux/Action/userGroupAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -43,7 +46,60 @@ const theme1 = createMuiTheme({
   },
 });
 
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    padding: 25,
+  },
+  stepButtons: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  icon: {
+    marginRight: theme.spacing(0.5),
+    marginBottom: -3,
+    width: 20,
+    height: 20,
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: "100%",
+    margin: 0,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  errorSpanMsg: {
+    color: "red",
+  },
+  HideGrid: {
+    display: "none",
+  },
+}));
+
 function AddPrimaryUserToUserGroups(props) {
+  const userId = props.match.params.id;
+  const classes = useStyles();
   const userGroupUpdateid = props.match.params.id;
   // const usersApiCall = new UserService();
   const UserGroupApi = new UserGroupApiServices();
@@ -94,12 +150,17 @@ function AddPrimaryUserToUserGroups(props) {
     siteId: [],
   });
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
-  const [userSelectedUser, setUserSelectedUser] = useState();
-  const [userSelectedRole, setUserSelectedRole] = useState();
-  const [userSelectedTeam, setUserSelectedTeam] = useState();
-  const [userSelectedDesignation, setUserSelectedDesignation] = useState();
-  const [userSelectedSite, setUserSelectedSite] = useState();
-  const [userSelectedCountry, setUserSelectedCountry] = useState();
+
+  const [RoleMasterData, setRoleMasterData] = useState([]);
+
+  const [UserGroupData, setUserGroupData] = useState();
+  const [covidStatelist, setcovidStatelist] = useState();
+  const [BusinessDesingationData, setBusinessDesingationData] = useState();
+
+  const [BusinessSiteMasterData, setBusinessSiteMasterData] = useState();
+  const [BusinessGroupData, setBusinessGroupData] = useState();
+  const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
+  const CovidStateApi = new CovidStateApiServices();
 
   useEffect(() => {
     if (userGroupUpdateid) {
@@ -109,6 +170,8 @@ function AddPrimaryUserToUserGroups(props) {
         masterDataCallApi.getCountries(),
         masterDataCallApi.getTeams(),
         masterDataCallApi.getSites(),
+        UserGroupApi.loadUserGroup(),
+        CovidStateApi.getCOVIDStates(),
         masterDataCallApi.getUserPrimaryRoles(),
         UserGroupApi.getGroupInfo(userGroupUpdateid),
         UsersApi.ListApplicationUsers(),
@@ -120,17 +183,25 @@ function AddPrimaryUserToUserGroups(props) {
             getCountries,
             getTeams,
             getSites,
+            getUserGroup,
+
+            getCovidState,
             getUserRoles,
             groupInfo,
             applicationUsers,
           ]) => {
             let primaryUsers = groupInfo.primaryapplicationuserDetails;
             setuserList(getUserList);
-            setdesignationMasterData(getDesignations);
-            setCountryMasterData(getCountries);
-            setBusinessTeamMasterData(getTeams);
-            setSiteMasterData(getSites);
+            // setdesignationMasterData(getDesignations);
+            // setCountryMasterData(getCountries);
+            // setBusinessTeamMasterData(getTeams);
+            // setSiteMasterData(getSites);
+            // setBusinessUserRoleMasterData(getUserRoles);
             setBusinessUserRoleMasterData(getUserRoles);
+            setBusinessDesingationData(getDesignations);
+            setBusinessSiteMasterData(getSites);
+            setBusinessGroupData(getUserGroup);
+            setBusinessCovidStateData(getCovidState);
             setSelectedGroupInfo(groupInfo);
             setApplicationUsers(applicationUsers);
             setComponentLoadder(false);
@@ -316,6 +387,70 @@ function AddPrimaryUserToUserGroups(props) {
     }
   }
 
+  function AssignFiltersForm() {
+    let userfilterData = searchformData;
+    if (RoleMasterData.length > 0) {
+      let roleArr = RoleMasterData.map((item) => item.id);
+      userfilterData.roleIds = roleArr;
+    } else {
+      userfilterData.roleIds = [];
+    }
+
+    if (SiteMasterData.length > 0) {
+      let siteArr = SiteMasterData.map((item) => item.id);
+      userfilterData.siteId = siteArr;
+    } else {
+      userfilterData.siteId = [];
+    }
+
+    if (designationMasterData) {
+      userfilterData.designationId = designationMasterData.id;
+    } else {
+      userfilterData.designationId = "";
+    }
+
+    if (UserGroupData) {
+      userfilterData.primaryGroupId = UserGroupData.id;
+    } else {
+      userfilterData.primaryGroupId = "";
+    }
+
+    if (covidStatelist) {
+      userfilterData.covidStateId = covidStatelist.id;
+    } else {
+      userfilterData.covidStateId = "";
+    }
+
+    setshowLoadder(true);
+    props
+      .LoadAllUser(userfilterData)
+      .then((result) => {
+        setshowLoadder(false);
+        setModalOpen(false);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
+  }
+  function handleChangeUserRole(e, value) {
+    setRoleMasterData(value);
+  }
+  function handleChangeUserDesignation(e, value) {
+    setdesignationMasterData(value);
+  }
+  function userSelectSite(e, value) {
+    setSiteMasterData(value);
+  }
+  function usergroupSelect(e, value) {
+    setUserGroupData(value);
+  }
+  function covidStateSelect(e, value) {
+    setcovidStatelist(value);
+  }
+
   function submitAssignFilter() {
     roleDetails();
     siteDetails();
@@ -390,107 +525,86 @@ function AddPrimaryUserToUserGroups(props) {
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
-                <Grid item xs={12} container>
-                  <Grid item xs={4}>
-                    <label className="">User</label>
-                  </Grid>
-                  <Grid item sm={8}>
-                    <Autocomplete
-                      id="tags-outlined"
-                      options={userList && userList.length > 0 ? userList : []}
-                      getOptionLabel={(option) => option.firstName}
-                      // defaultValue={UserSelectedDesignationValue}
-                      onChange={selectedUser}
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select User"
-                        />
-                      )}
-                    />
-                    {/* {formFieldValidation.designation ? (
-                      <FormHelperText className="error-msg">
-                        Please select designation{" "}
-                      </FormHelperText>
-                    ) : (
-                      ""
-                    )} */}
-                  </Grid>
-                </Grid>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Role</label>
+                    <label className=""> Group</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
                       id="tags-outlined"
                       options={
-                        BusinessUserRoleMasterData &&
-                        BusinessUserRoleMasterData.length > 0
-                          ? BusinessUserRoleMasterData
+                        BusinessGroupData && BusinessGroupData.length > 0
+                          ? BusinessGroupData
                           : []
                       }
-                      getOptionLabel={(option) => option.description}
-                      // defaultValue={UserSelectedRoleValue}
-                      onChange={handleChangeUserRole}
+                      getOptionLabel={(option) => option.groupName}
+                      defaultValue={UserGroupData}
+                      onChange={usergroupSelect}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
                       renderInput={(params) => (
                         <TextField
                           {...params}
                           variant="outlined"
-                          placeholder="Select user roles"
+                          placeholder="Select Group"
                         />
                       )}
                     />
+                    {""}
                   </Grid>
                 </Grid>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Team</label>
+                    <label className="">Roles </label>
                   </Grid>
                   <Grid item xs={8}>
-                    <Autocomplete
-                      id="tags-outlined"
-                      options={
-                        BusinessTeamMasterData &&
-                        BusinessTeamMasterData.length > 0
-                          ? BusinessTeamMasterData
-                          : []
-                      }
-                      getOptionLabel={(option) => option.name}
-                      // defaultValue={UserSelectedTeamValue}
-                      onChange={handleChangeTeam}
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select user team"
-                        />
-                      )}
-                    />
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        multiple
+                        id="tags-outlined"
+                        options={
+                          BusinessUserRoleMasterData &&
+                          BusinessUserRoleMasterData.length > 0
+                            ? BusinessUserRoleMasterData
+                            : []
+                        }
+                        getOptionLabel={(option) => option.description}
+                        defaultValue={RoleMasterData}
+                        onChange={handleChangeUserRole}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select user roles"
+                          />
+                        )}
+                      />
+                      {""}
+                    </FormControl>
                   </Grid>
                 </Grid>
+
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
                     <label className="">Designation</label>
                   </Grid>
-                  <Grid item sm={8}>
+                  <Grid
+                    item
+                    sm={8}
+                    // className={[userId ? classes.HideGrid : ""].join(" ")}
+                  >
                     <Autocomplete
                       id="tags-outlined"
                       options={
-                        designationMasterData &&
-                        designationMasterData.length > 0
-                          ? designationMasterData
+                        BusinessDesingationData &&
+                        BusinessDesingationData.length > 0
+                          ? BusinessDesingationData
                           : []
                       }
                       getOptionLabel={(option) => option.name}
-                      // defaultValue={UserSelectedDesignationValue}
+                      defaultValue={designationMasterData}
                       onChange={handleChangeUserDesignation}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -502,29 +616,26 @@ function AddPrimaryUserToUserGroups(props) {
                         />
                       )}
                     />
-                    {/* {formFieldValidation.designation ? (
-                      <FormHelperText className="error-msg">
-                        Please select designation{" "}
-                      </FormHelperText>
-                    ) : (
-                      ""
-                    )} */}
+                    {""}
                   </Grid>
                 </Grid>
+
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
                     <label className="">Site</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
+                      multiple
                       id="tags-outlined"
                       options={
-                        SiteMasterData && SiteMasterData.length > 0
-                          ? SiteMasterData
+                        BusinessSiteMasterData &&
+                        BusinessSiteMasterData.length > 0
+                          ? BusinessSiteMasterData
                           : []
                       }
                       getOptionLabel={(option) => option.name}
-                      // defaultValue={UserSelectSiteValue}
+                      defaultValue={SiteMasterData}
                       onChange={userSelectSite}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -536,36 +647,40 @@ function AddPrimaryUserToUserGroups(props) {
                         />
                       )}
                     />
-                    {/* {formFieldValidation.designation ? (
-                      <FormHelperText className="error-msg">
-                        Please select designation{" "}
-                      </FormHelperText>
-                    ) : (
-                      ""
-                    )} */}
+                    {""}
                   </Grid>
                 </Grid>
+
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Country</label>
+                    <label className="">Covid State</label>
                   </Grid>
                   <Grid item xs={8}>
-                    <Autocomplete
-                      id="tags-outlined"
-                      options={CountryMasterData}
-                      getOptionLabel={(option) => option.name}
-                      onChange={handleChangeCountry}
-                      // defaultValue={UserSelectCountrsy}
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Country of Residence"
-                        />
-                      )}
-                    />
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          BusinessCovidStateData &&
+                          BusinessCovidStateData.length > 0
+                            ? BusinessCovidStateData
+                            : []
+                        }
+                        getOptionLabel={(option) => option.stateName}
+                        onChange={covidStateSelect}
+                        defaultValue={covidStatelist}
+                        name="covidState"
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select  covid state"
+                          />
+                        )}
+                      />
+                      {""}
+                    </FormControl>
                   </Grid>
                 </Grid>
               </Grid>
@@ -586,6 +701,7 @@ function AddPrimaryUserToUserGroups(props) {
           </DialogActions>
         </ValidatorForm>
       </Dialog>
+
       {componentLoadder ? (
         <ComponentLoadderComponent />
       ) : (
@@ -664,13 +780,13 @@ function AddPrimaryUserToUserGroups(props) {
 }
 
 AddPrimaryUserToUserGroups.propTypes = {
-  UserData: PropTypes.array.isRequired,
+  UserGroupData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    UserData: state.user,
+    UserGroupData: state.usergroup,
   };
 }
 
