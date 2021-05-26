@@ -22,6 +22,7 @@ import SiteService from "../../services/siteService";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import MasterService from "../../services/masterDataService";
 import AlertBoxComponent from "../common/alert";
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from "react-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -202,7 +203,10 @@ function CreateSite(props) {
   }
 
   function SelectSiteManagerValidation() {
-    if (userSelectedSiteManager) {
+    if (
+      userSelectedSiteManager &&
+      userSelectedSiteManager.applicationUserId != null
+    ) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["siteManager"]: false,
@@ -216,7 +220,10 @@ function CreateSite(props) {
   }
 
   function SelectSecurityManagerValidation() {
-    if (userSelectedSecurityManager) {
+    if (
+      userSelectedSecurityManager &&
+      userSelectedSecurityManager.applicationUserId != null
+    ) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["securityManager"]: false,
@@ -329,11 +336,33 @@ function CreateSite(props) {
   function handleChangeSiteManager(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectedSiteManager(value);
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["siteManager"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["siteManager"]: true,
+      }));
+    }
   }
 
   function handleChangeSecurityManager(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectedSecurityManager(value);
+    if (value) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["securityManager"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["securityManager"]: true,
+      }));
+    }
   }
 
   function redirectToViewUsersGroup() {

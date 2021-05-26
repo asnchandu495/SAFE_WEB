@@ -329,8 +329,7 @@ function AddPrimaryUserToUserGroups(props) {
     // filterData.primaryGroupId = userList.id;
     filterData.primaryGroupId = "39fb08236ef55c92cc584c03875a6007";
     filterData.roleIds = BusinessUserRoleMasterData;
-    console.log(filterData);
-    return false;
+
     setshowLoadder(true);
     UsersApi.ListApplicationUsersForTeams(filterData)
       .then((result) => {

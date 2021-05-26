@@ -262,9 +262,9 @@ function AddActivity(props) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteActivity");
-    setConfirmationHeaderTittle("Delete Activity");
+    setConfirmationHeaderTittle("Revoke activity");
     setConfirmationDialogContextText(
-      `Are you sure you want to delete ${value[1]} ?`
+      `Are you sure you want revoke ${value[1]} ?`
     );
   };
 
@@ -446,7 +446,7 @@ function AddActivity(props) {
                   className="global-submit-btn global-filter-btn"
                   onClick={handleClickOpenModal}
                 >
-                  ADD ACTIVITY
+                  Assign Activity
                 </Button>
               </div>
             </Grid>

@@ -309,21 +309,26 @@ function AddPrimaryUserTeam(props) {
     setselectedUserDesignation(value);
   }
 
-  function AssignFiltersForm() {
-    if (searchformData) {
-      submitAssignTeams();
-    } else {
-      submitAssignTeams(false);
-      return false;
-    }
-  }
+  // function AssignFiltersForm() {
+  //   if (searchformData) {
+  //     submitAssignTeams();
+  //   } else {
+  //     submitAssignTeams(false);
+  //     return false;
+  //   }
+  // }
 
-  function submitAssignTeams() {
+  function AssignFiltersForm() {
     settoasterServerity("");
     settoasterErrorMessageType("");
     var teamData = searchformData;
-    teamData.designationId = selectedUserDesignation.id;
-    teamData.primaryGroupId = selectedUserData.id;
+
+    if (selectedUserDesignation) {
+      teamData.designationId = selectedUserDesignation.id;
+    }
+    if (selectedUserData) {
+      teamData.primaryGroupId = selectedUserData.id;
+    }
     setshowLoadder(true);
     UsersApi.ListApplicationUsersForTeams(teamData)
       .then((result) => {
