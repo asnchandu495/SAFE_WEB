@@ -87,12 +87,20 @@ function ViewUser(props) {
       });
   }, []);
 
-  function ConvertTemperature(temperature, temperatureUnit) {
-    if (temperatureUnit == "C") {
-      let convertedTemp = ((temperature - 32) * 5) / 9;
+  function ConvertTemperature(
+    viewtemperature,
+    viewtemperatureUnit,
+    temperatureUnit
+  ) {
+    console.log(viewtemperatureUnit);
+    console.log(temperatureUnit);
+    if (viewtemperatureUnit == temperatureUnit) {
+      console.log("same");
+    } else if (temperatureUnit == "C") {
+      let convertedTemp = ((viewtemperature - 32) * 5) / 9;
       return <span>{convertedTemp}-C</span>;
     } else {
-      let convertedTemp = temperature * (9 / 5) + 32;
+      let convertedTemp = viewtemperature * (9 / 5) + 32;
       return <span>{convertedTemp}-F</span>;
     }
   }
@@ -377,11 +385,12 @@ function ViewUser(props) {
                   props.loadGlobalSettingsData ? (
                     <label>
                       {/* {viewUserDetails.covidStateInfo
-                      ? ConvertTemperature(
-                          viewUserDetails.covidStateInfo.temperature,
-                          props.loadGlobalSettingsData.temperatureUnit
-                        )
-                      : " - " + props.loadGlobalSettingsData.temperatureUnit} */}
+                        ? ConvertTemperature(
+                            viewUserDetails.covidStateInfo.temperature,
+                            viewUserDetails.covidStateInfo.temperatureUnit,
+                            props.loadGlobalSettingsData.temperatureUnit
+                          )
+                        : " - " + props.loadGlobalSettingsData.temperatureUnit} */}
                       {viewUserDetails.covidStateInfo.temperature &&
                       props.loadGlobalSettingsData.temperatureUnit
                         ? viewUserDetails.covidStateInfo.temperature
