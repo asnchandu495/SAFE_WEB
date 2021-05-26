@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(4),
   },
   menuScrollbar: {
-    height: "calc(100vh - 60px) !important",
+    maxHeight: "calc(100vh - 60px) !important",
   },
   contentScrollbar: {
     height: "calc(100vh - 64px) !important",
@@ -119,6 +119,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    marginTop: 60,
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
@@ -127,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     overflowX: "hidden !important",
     width: 53,
-    // marginTop: 60,
+    marginTop: 60,
   },
 }));
 
