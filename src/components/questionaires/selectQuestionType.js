@@ -10,6 +10,8 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import PropTypes from "prop-types";
+import { Link as LinkTo, useParams } from "react-router-dom";
 
 function QuestionType(props) {
   useEffect(() => {}, []);
