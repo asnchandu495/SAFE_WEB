@@ -14,8 +14,9 @@ export function DeleteFaqSuccess(userDesignation) {
 
 export function loadFaq() {
   return function (dispatch) {
+    let status = false;
     return faqApi
-      .ListFAQs()
+      .ListFAQs(status)
       .then((data) => {
         dispatch(LoadFaqSuccess(data));
       })

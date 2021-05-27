@@ -777,6 +777,17 @@ function AdminLayout(props) {
                     </ListItemIcon>
                     <ListItemText primary="Assign" />
                   </ListItem>
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/faq/publish-faqs"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Drafts" />
+                  </ListItem>
                 </List>
               </Collapse>
               <Divider></Divider>

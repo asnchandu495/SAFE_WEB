@@ -16,6 +16,7 @@ import questionaireStates from "./questionaireReducer";
 import assignquestionaireStates from "./assignquestionaireReducer";
 import questionStates from "./questionReducer";
 import workflowStates from "./workflowReducer";
+import publishReducers from "./publishFaqReducer";
 
 const rootReducer = combineReducers({
   user: userState,
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   assignquestionaireState: assignquestionaireStates,
   questionState: questionStates,
   workflowState: workflowStates,
+  publishReducer: publishReducers,
 });
 
 export default rootReducer;

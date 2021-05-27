@@ -154,7 +154,7 @@ function AssignedFAQs(props) {
   useEffect(() => {
     Promise.all([
       props.LoadData(),
-      faqApiCall.ListFAQs(),
+      faqApiCall.ListFAQs(false),
       userGroupApiCall.loadUserGroup(),
     ])
       .then(([faqUserGroups, faqDocs, userGroups]) => {

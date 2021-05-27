@@ -7,10 +7,13 @@ export default class FaqService {
     this.fetch = this.fetch.bind(this);
   }
 
-  ListFAQs() {
-    return this.fetch(`${this.baseURL}/FAQ/GetAllFaqs`, {
-      method: "GET",
-    }).then((res) => {
+  ListFAQs(status) {
+    return this.fetch(
+      `${this.baseURL}/FAQ/GetAllFaqs?IsSaveAsDraft=` + status,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
       return Promise.resolve(res);
     });
   }
@@ -100,6 +103,16 @@ export default class FaqService {
   ChangeFqaGroupStatus(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(`${this.baseURL}/FAQ/UpdateStatusForFaq`, {
+      method: "PUT",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  PublishFAQ(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(`${this.baseURL}/FAQ/PublishFAQ`, {
       method: "PUT",
       body: finalData,
     }).then((res) => {

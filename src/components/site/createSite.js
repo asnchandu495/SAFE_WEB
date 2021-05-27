@@ -179,8 +179,8 @@ function CreateSite(props) {
     SelectSecurityManagerValidation();
     if (
       formData.countryId &&
-      userSelectedSiteManager &&
-      userSelectedSecurityManager
+      userSelectedSiteManager.applicationUserId != null &&
+      userSelectedSecurityManager.applicationUserId != null
     ) {
       submitCreateSiteForm();
     } else {

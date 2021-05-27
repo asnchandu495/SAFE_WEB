@@ -37,6 +37,7 @@ import CreateFAQ from "./components/faqs/createFAQ";
 import FaqSections from "./components/faqs/sections";
 import ViewFaq from "./components/faqs/viewFAQ";
 import AssignedFAQs from "./components/faqs/assignFAQ";
+import PublishFAQ from "./components/faqs/publishFAQ";
 import Users from "./components/users";
 import CreateUser from "./components/users/CreateUser";
 import UpdateUserDetails from "./components/users/updateUserDetails";
@@ -197,6 +198,7 @@ function App(props) {
         ></Route>
         <Route path="/faq/view-faq/:id" component={ViewFaq}></Route>
         <Route path="/faq/assigned-faqs" component={AssignedFAQs}></Route>
+        <Route path="/faq/publish-faqs" component={PublishFAQ}></Route>
         <Route path="/users/allusers" component={Users}></Route>
         <Route
           path="/users/update-user-details/:id"
@@ -437,6 +439,7 @@ function App(props) {
         <Route path="/users/allusers" component={AdminContainer}></Route>
         <Route path="/users/add-user" component={AdminContainer}></Route>
         <Route path="/users/update-user/:id" component={AdminContainer}></Route>
+        <Route path="/faq/publish-faqs" component={AdminContainer}></Route>
         <Route
           path="/users/update-user-details/:id"
           component={AdminContainer}

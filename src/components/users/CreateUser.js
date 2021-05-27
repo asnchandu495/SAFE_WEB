@@ -100,6 +100,7 @@ function CreateUser(props) {
     setUserSecondaryGroupMasterDataOriginal,
   ] = useState();
   const [AllSupervisorRole, setAllSupervisorRole] = useState();
+
   const [CountryMasterData, setCountryMasterData] = useState();
   const [SiteMasterData, setSiteMasterData] = useState();
   const [UserSelectedTeamValue, setUserSelectedTeamValue] = useState([]);
@@ -211,6 +212,7 @@ function CreateUser(props) {
       masterDataCallApi.getUserRoles(),
       userGroupApiCall.loadUserGroup(),
       masterDataCallApi.getAllSuperVisor(),
+      usersApiCall.getProfileDetails(),
     ])
       .then(
         ([
@@ -221,6 +223,7 @@ function CreateUser(props) {
           getUserRoles,
           UserGroup,
           getAllSuperVisor,
+          getUserloggedDetails,
         ]) => {
           setdesignationMasterData(getDesignations);
           setCountryMasterData(getCountries);
@@ -229,7 +232,11 @@ function CreateUser(props) {
           setBusinessUserRoleMasterData(getUserRoles);
           setUserPrimaryGroupMasterData(UserGroup);
           setUserSecondaryGroupMasterData(UserGroup);
-          setAllSupervisorRole(getAllSuperVisor);
+          setAllSupervisorRole(
+            getAllSuperVisor.filter(function (sup) {
+              return sup.applicationUserId != getUserloggedDetails.id;
+            })
+          );
           setUserPrimaryGroupMasterDataOriginal(UserGroup);
           setUserSecondaryGroupMasterDataOriginal(UserGroup);
           setcomponentLoadder(false);

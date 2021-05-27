@@ -31,6 +31,7 @@ import questionaireService from "../../../services/questionaireService";
 import * as WorkflowAction from "../../../Redux/Action/workflowAction";
 import workflowService from "../../../services/workflowService";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
+import * as PublishFAQAction from "../../../Redux/Action/publishFAQAction";
 
 const styles = (theme) => ({
   root: {
@@ -448,6 +449,29 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
           toasterErrorMessage(error);
         });
+    } else if (props.ConfirmationModalActionType == "PublishFaq") {
+      setshowLoadder(true);
+
+      var thisId = props.SelectedRowDetails[0];
+
+      let sendData = {
+        id: props.SelectedRowDetails[0],
+        isSaveAsDraft: false,
+      };
+
+      props
+        .PublishFAQ(sendData)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Published.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
+        })
+        .catch((error) => {
+          setshowLoadder(false);
+          toasterErrorMessage(error);
+        });
     } else if (props.ConfirmationModalActionType == "DeleteLocation") {
       setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
@@ -709,7 +733,7 @@ CustomizedDialogs.propTypes = {
   DeleteQuestion: PropTypes.func.isRequired,
   DeleteSelectedQuestion: PropTypes.func.isRequired,
   DeleteDateQuestionData: PropTypes.func.isRequired,
-  // DeleteWorkflow: PropTypes.func.isRequired,
+  PublishFAQ: PropTypes.func.isRequired,
 };
 function mapStateToProps(state, ownProps) {}
 
@@ -746,6 +770,7 @@ const mapDispatchToProps = {
   DeleteSinglechoiceQuestionData: QuestionAction.DeleteSinglechoiceQuestion,
   DeleteWorkflow: WorkflowAction.deleteWorkflowData,
   PublishWorkflow: WorkflowAction.PublishWorkflow,
+  PublishFAQ: PublishFAQAction.PublishFAQ,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomizedDialogs);

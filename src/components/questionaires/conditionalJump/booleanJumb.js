@@ -64,7 +64,7 @@ function BooleanJump(props) {
           let filteredQuestions = res.filter((r) => {
             return r.id != questionId;
           });
-          console.log(getBooleanDetails);
+          console.log(res);
           setSelectedSurveyQuestions(filteredQuestions);
           setselectedQuestionDetails(getBooleanDetails);
           setsurveyDetails(getsurveyDetails);
