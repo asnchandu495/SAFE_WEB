@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginTop: 60,
+    // marginTop: 60,
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
@@ -128,7 +128,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     overflowX: "hidden !important",
     width: 53,
-    marginTop: 60,
+    // marginTop: 60,
   },
 }));
 
@@ -456,31 +456,31 @@ function AdminLayout(props) {
       >
         <Scrollbars
           className={classes.menuScrollbar}
-          renderTrackVertical={({ style, ...props }) => (
-            <div
-              {...props}
-              style={{
-                ...style,
-                backgroundColor: "#fff",
-                right: "-3px",
-                bottom: "2px",
-                top: "2px",
-                borderRadius: "3px",
-                width: "8px",
-              }}
-            />
-          )}
-          renderThumbVertical={({ style, ...props }) => (
-            <div
-              {...props}
-              style={{
-                ...style,
-                width: "5px",
-                borderRadius: "4px",
-                backgroundColor: "#ccc",
-              }}
-            />
-          )}
+          // renderTrackVertical={({ style, ...props }) => (
+          //   <div
+          //     {...props}
+          //     style={{
+          //       ...style,
+          //       backgroundColor: "#fff",
+          //       right: "-3px",
+          //       bottom: "2px",
+          //       top: "2px",
+          //       borderRadius: "3px",
+          //       width: "8px",
+          //     }}
+          //   />
+          // )}
+          // renderThumbVertical={({ style, ...props }) => (
+          //   <div
+          //     {...props}
+          //     style={{
+          //       ...style,
+          //       width: "5px",
+          //       borderRadius: "4px",
+          //       backgroundColor: "#ccc",
+          //     }}
+          //   />
+          // )}
         >
           {/* <Toolbar /> */}
           <div className={`${classes.drawerContainer} side-menu`}>
