@@ -164,7 +164,7 @@ function FaqSections(props) {
               ],
             });
             setshowLoadder(false);
-          }, 3000);
+          }, 6000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);
@@ -183,7 +183,7 @@ function FaqSections(props) {
           setTimeout(() => {
             props.history.push("/faq/view-faq/" + props.match.params.id);
             setshowLoadder(false);
-          }, 3000);
+          }, 6000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);

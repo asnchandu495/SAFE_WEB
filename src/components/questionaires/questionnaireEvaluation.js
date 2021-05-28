@@ -416,7 +416,11 @@ function QuestionnaireEvaluation(props) {
             temperatureConfigForm.positiveResponses.length > 0
               ? temperatureConfigForm.positiveResponses.map((x, i) => {
                   return (
-                    <Grid container spacing={3}>
+                    <Grid
+                      container
+                      spacing={3}
+                      className="evaluate-dynamic-rows"
+                    >
                       <Grid
                         item
                         xs={12}
@@ -455,6 +459,7 @@ function QuestionnaireEvaluation(props) {
                               required
                               renderInput={(params) => (
                                 <TextField
+                                  required
                                   {...params}
                                   variant="outlined"
                                   placeholder="Select  covid state"

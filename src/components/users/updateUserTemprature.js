@@ -120,6 +120,8 @@ function UpdateTempearture(props) {
       usersApiCall
         .getCovidStateInfo(props.SelectedRowId)
         .then((getCovidInfo) => {
+          if (getCovidInfo.covidStateId) {
+          }
           if (getCovidInfo) {
             SetformData(getCovidInfo);
           }
