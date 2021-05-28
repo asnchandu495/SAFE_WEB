@@ -431,6 +431,7 @@ function ActionFormNew(props) {
                               xs={12}
                               container
                               key={`inputTemplate_${index}`}
+                              className="overflow-hidden-editor"
                             >
                               <Grid item xs={3}>
                                 <label>{act.remarksForInput}</label>
