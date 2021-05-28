@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { Scrollbars } from "react-custom-scrollbars";
+import { Scrollbars } from "react-custom-scrollbars-2";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -51,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexGrow: 1,
+    height: "100vh",
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -68,6 +69,8 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    height: "calc(100vh - 60px)",
+    marginTop: "60px",
   },
   drawerPaper: {
     width: drawerWidth,
@@ -441,6 +444,7 @@ function AdminLayout(props) {
         </Toolbar>
       </AppBar>
       {renderMenu}
+
       <Drawer
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: openDrawer,
@@ -455,34 +459,37 @@ function AdminLayout(props) {
         }}
       >
         <Scrollbars
-          className={classes.menuScrollbar}
-          // renderTrackVertical={({ style, ...props }) => (
-          //   <div
-          //     {...props}
-          //     style={{
-          //       ...style,
-          //       backgroundColor: "#fff",
-          //       right: "-3px",
-          //       bottom: "2px",
-          //       top: "2px",
-          //       borderRadius: "3px",
-          //       width: "8px",
-          //     }}
-          //   />
-          // )}
-          // renderThumbVertical={({ style, ...props }) => (
-          //   <div
-          //     {...props}
-          //     style={{
-          //       ...style,
-          //       width: "5px",
-          //       borderRadius: "4px",
-          //       backgroundColor: "#ccc",
-          //     }}
-          //   />
-          // )}
+          autoHide
+          autoHideTimeout={1000}
+          autoHideDuration={200}
+          renderTrackVertical={({ style, ...props }) => (
+            <div
+              {...props}
+              style={{
+                ...style,
+                backgroundColor: "#f6f6f6",
+                right: "0px",
+                bottom: "2px",
+                top: "2px",
+                borderRadius: "3px",
+                width: "5px",
+              }}
+            />
+          )}
+          renderThumbVertical={({ style, ...props }) => (
+            <div
+              {...props}
+              style={{
+                ...style,
+                width: "5px",
+                borderRadius: "4px",
+                backgroundColor: "#cccccc",
+                left: "0px",
+              }}
+            />
+          )}
+          // autoHeight
         >
-          {/* <Toolbar /> */}
           <div className={`${classes.drawerContainer} side-menu`}>
             <List>
               <ListItem
@@ -1144,11 +1151,10 @@ function AdminLayout(props) {
           </div>
         </Scrollbars>
       </Drawer>
+
       <main className={classes.content}>
         <Toolbar />
-        <Scrollbars className={classes.contentScrollbar}>
-          <div className={classes.mainContent}>{children}</div>
-        </Scrollbars>
+        <div className={classes.mainContent}>{children}</div>
       </main>
     </div>
   );
