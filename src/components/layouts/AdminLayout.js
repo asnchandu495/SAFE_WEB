@@ -92,6 +92,8 @@ const useStyles = makeStyles((theme) => ({
   },
   mainContent: {
     padding: 15,
+    height: "calc(100vh - 60px) !important",
+    overflow: "auto",
   },
   button: {
     marginTop: theme.spacing(1),
