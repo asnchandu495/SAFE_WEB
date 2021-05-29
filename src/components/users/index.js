@@ -928,6 +928,7 @@ function Users(props) {
         openuserTemepratureModal={openuserTemepratureModal}
         setopenuserTemepratureModal={setopenuserTemepratureModal}
         SelectedRowId={SelectedRowId}
+        setReloadPage={setReloadPage}
       />
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}

@@ -222,7 +222,7 @@ function UpdateCovidState(props) {
             resetCovidStateFormData();
             setshowLoadder(false);
             // window.location.reload();
-          }, 3000);
+          }, 6000);
         })
         .catch((err) => {
           console.log(err);
@@ -245,7 +245,7 @@ function UpdateCovidState(props) {
             resetCovidStateFormData();
             props.setReloadPage(true);
             setshowLoadder(false);
-          }, 3000);
+          }, 6000);
         })
         .catch((err) => {
           console.log(err);

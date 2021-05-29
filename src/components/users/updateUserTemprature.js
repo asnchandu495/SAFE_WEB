@@ -86,6 +86,187 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
+const DisplayFormControl = ({
+  validators,
+  errorMessages,
+  formData,
+  handleChange,
+  loadGlobalSettingsData,
+  SetformData,
+}) => {
+  if (formData.covidStateId == "") {
+    return (
+      <TextValidator
+        variant="outlined"
+        fullWidth
+        validators={
+          loadGlobalSettingsData.temperatureUnit == "C"
+            ? [
+                "required",
+                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                "maxNumber:45",
+                "minNumber:30",
+              ]
+            : [
+                "required",
+                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                "maxNumber:113",
+                "minNumber:86",
+              ]
+        }
+        errorMessages={
+          loadGlobalSettingsData.temperatureUnit == "C"
+            ? [
+                "Please enter lower limit",
+                "Entered numbers are not valid",
+                "Maximum allowed is 45",
+                "Minimum allowed is 30",
+              ]
+            : [
+                "Please enter lower limit",
+                "Entered numbers are not valid",
+                "Maximum allowed is 113",
+                "Minimum allowed is 86",
+              ]
+        }
+        id="temperature1"
+        key="temperature1"
+        placeholder="Temperature"
+        name="temperature"
+        autoComplete="temperature"
+        onChange={handleChange}
+        value={formData.temperature}
+        className="global-input"
+        InputLabelProps={{ shrink: false }}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              {loadGlobalSettingsData
+                ? loadGlobalSettingsData.temperatureUnit
+                : ""}
+            </InputAdornment>
+          ),
+        }}
+      />
+    );
+  } else {
+    let getConfiguredCovidState = loadGlobalSettingsData.covidStateTemperatures;
+    let ifExists = getConfiguredCovidState.find(
+      (state) => state.covidState.id == formData.covidStateId
+    );
+    if (ifExists) {
+      return (
+        <TextValidator
+          variant="outlined"
+          fullWidth
+          validators={[
+            "required",
+            "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+            `maxNumber:${
+              ifExists.isNoUpperLimit
+                ? loadGlobalSettingsData.temperatureUnit == "C"
+                  ? "45"
+                  : "113"
+                : ifExists.upperLimit
+            }`,
+            `minNumber:${ifExists.lowerLimit}`,
+          ]}
+          errorMessages={[
+            "Please enter lower limit",
+            "Entered numbers are not valid",
+            `Maximum allowed is ${
+              ifExists.isNoUpperLimit
+                ? loadGlobalSettingsData.temperatureUnit == "C"
+                  ? "45"
+                  : "113"
+                : ifExists.upperLimit
+            }`,
+            `Minimum allowed is ${ifExists.lowerLimit}`,
+          ]}
+          id="temperature2"
+          key="temperature2"
+          placeholder="Temperature"
+          name="temperature"
+          autoComplete="temperature"
+          onChange={(e) =>
+            SetformData((formData) => ({
+              ...formData,
+              [e.target.name]: e.target.value,
+            }))
+          }
+          value={formData.temperature}
+          className="global-input"
+          InputLabelProps={{ shrink: false }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {loadGlobalSettingsData
+                  ? loadGlobalSettingsData.temperatureUnit
+                  : ""}
+              </InputAdornment>
+            ),
+          }}
+        />
+      );
+    } else {
+      return (
+        <TextValidator
+          variant="outlined"
+          fullWidth
+          validators={
+            loadGlobalSettingsData.temperatureUnit == "C"
+              ? [
+                  "required",
+                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                  "maxNumber:45",
+                  "minNumber:30",
+                ]
+              : [
+                  "required",
+                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                  "maxNumber:113",
+                  "minNumber:86",
+                ]
+          }
+          errorMessages={
+            loadGlobalSettingsData.temperatureUnit == "C"
+              ? [
+                  "Please enter lower limit",
+                  "Entered numbers are not valid",
+                  "Maximum allowed is 45",
+                  "Minimum allowed is 30",
+                ]
+              : [
+                  "Please enter lower limit",
+                  "Entered numbers are not valid",
+                  "Maximum allowed is 113",
+                  "Minimum allowed is 86",
+                ]
+          }
+          id="temperature3"
+          key="temperature3"
+          placeholder="Temperature"
+          name="temperature"
+          autoComplete="temperature"
+          onChange={handleChange}
+          value={formData.temperature}
+          className="global-input"
+          InputLabelProps={{ shrink: false }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {loadGlobalSettingsData
+                  ? loadGlobalSettingsData.temperatureUnit
+                  : ""}
+              </InputAdornment>
+            ),
+          }}
+        />
+      );
+    }
+  }
+};
+
 function UpdateTempearture(props) {
   const classes = useStyles();
 
@@ -154,6 +335,7 @@ function UpdateTempearture(props) {
   function resetUserTemeatureFormData() {
     SetformData(resetformData);
   }
+
   function submitUserShiftInform() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -169,15 +351,15 @@ function UpdateTempearture(props) {
         setStateSnackbar(true);
         setToasterMessage("User's temperature updated");
         settoasterServerity("success");
+        props.setReloadPage("YES");
         setTimeout(() => {
           props.setopenuserTemepratureModal(false);
           setcomponentLoadder(true);
           resetUserTemeatureFormData();
           setshowLoadder(false);
-        }, 3000);
+        }, 6000);
       })
       .catch((err) => {
-        console.log(err);
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
@@ -203,11 +385,10 @@ function UpdateTempearture(props) {
           <DialogContent dividers>
             <Grid container spacing={3}>
               <Grid item sm={12}>
-                <TextValidator
-                  variant="outlined"
-                  fullWidth
-                  validators={["required"]}
-                  errorMessages={["Please enter tempeature"]}
+                <DisplayFormControl
+                  formData={formData}
+                  loadGlobalSettingsData={props.loadGlobalSettingsData}
+                  handleChange={handleChange}
                   validators={[
                     "required",
                     "matchRegexp:^\\d{1,3}(\\.\\d{1,2})?$",
@@ -216,24 +397,8 @@ function UpdateTempearture(props) {
                     "Please enter tempeature",
                     "Entered numbers are not valid",
                   ]}
-                  id="temperature"
-                  placeholder="Temperature"
-                  name="temperature"
-                  autoComplete="temperature"
-                  onChange={handleChange}
-                  value={formData.temperature}
-                  className="global-input"
-                  InputLabelProps={{ shrink: false }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        {props.loadGlobalSettingsData
-                          ? props.loadGlobalSettingsData.temperatureUnit
-                          : ""}
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+                  SetformData={SetformData}
+                ></DisplayFormControl>
               </Grid>
             </Grid>
           </DialogContent>

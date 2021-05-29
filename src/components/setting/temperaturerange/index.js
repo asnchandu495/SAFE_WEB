@@ -389,7 +389,6 @@ function TemperatureRange(props) {
                           <TextValidator
                             variant="outlined"
                             validators={["required"]}
-                            errorMessages={["Please enter lower limit"]}
                             validators={
                               tempsections.temperatureUnit == "C"
                                 ? [
@@ -443,7 +442,6 @@ function TemperatureRange(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
-                            errorMessages={["Please enter lower limit"]}
                             validators={
                               tempsections.temperatureUnit == "C"
                                 ? x.isNoUpperLimit
