@@ -252,6 +252,9 @@ export default class SiteService {
       } else if (response.status === 500) {
         window.location.href = "/InternalServerError";
       } else if (response.status === 401) {
+        alert("Session expired. Please login to continue");
+        localStorage.removeItem("id_token");
+        localStorage.removeItem("id_tokenExpiry");
         window.location.href = "/";
       } else if (response.status === 502) {
         window.location.href = "/ServerError";

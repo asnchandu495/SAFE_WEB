@@ -4,6 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
+
 import { Link as LinkTo } from "react-router-dom";
 import { connect } from "react-redux";
 import * as TeamAction from "../../Redux/Action/teamAction";
@@ -27,6 +28,11 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogActions from "@material-ui/core/DialogActions";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const styles = (theme) => ({
   root: {
@@ -56,6 +62,9 @@ function PublishQuestionnaire(props) {
   const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
     useState("");
   const [open, setOpen] = React.useState(false);
+
+  const [page, setPage] = useState(0);
+  const [currentPageData, setCurrentPageData] = useState(props[page]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -104,7 +113,25 @@ function PublishQuestionnaire(props) {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+
+    const upcomingPageData = props[page];
+    setCurrentPageData(upcomingPageData);
+    // setValues((currentValues) => {
+    // const newValues = upcomingPageData.fields.reduce((obj, field) => {
+    // if (field.component === "field_group") {
+    //   for (const subField of field.fields) {
+    //     obj[subField._uid] = "";
+    //   }
+    // } else {
+    //   obj[field._uid] = "";
+    // }
+
+    // return obj;
+    // }, {});
+
+    // retusrn Object.assign({}, newValues, currentValues);
+    // });
+  }, [page, props]);
 
   function handlePublish() {
     setshowLoadder(true);
@@ -149,7 +176,7 @@ function PublishQuestionnaire(props) {
         <LinkTo
           color="textPrimary"
           href="#"
-          to={`/teams/allteams`}
+          to={`/questionaires/allquestionaires`}
           className="inactive"
         >
           List
@@ -166,6 +193,7 @@ function PublishQuestionnaire(props) {
           <Button variant="outlined" color="primary" onClick={handleClickOpen}>
             Publish
           </Button>
+
           <Dialog
             onClose={handleClose}
             aria-labelledby="form-dialog-title"
@@ -209,6 +237,8 @@ function PublishQuestionnaire(props) {
       ) : (
         <ComponentLoadderComponent />
       )}
+      <br />
+
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
@@ -216,6 +246,72 @@ function PublishQuestionnaire(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
+      <Card className="question-type-card">
+        <CardContent>
+          <Typography gutterBottom variant="h6" component="h6"></Typography>
+          <div className="card-form">
+            <ValidatorForm className={`global-form`}>
+              <Grid container item xs={12}>
+                <Grid
+                  container
+                  spacing={1}
+                  item
+                  xs={12}
+                  className="question-container"
+                >
+                  <Grid item xs={1} className="question-icon-container">
+                    1)
+                  </Grid>
+                  <Grid item xs={11}>
+                    <p className="question-name">fsdfsdf</p>
+                  </Grid>
+                </Grid>
+                <Grid
+                  container
+                  spacing={1}
+                  item
+                  xs={12}
+                  className="question-container"
+                >
+                  <Grid item xs={1} className="question-icon-container"></Grid>
+                  <Grid item xs={3}>
+                    <TextValidator
+                      variant="outlined"
+                      validators={[
+                        "required",
+                        "matchRegexp:^[a-zA-Z0-9 ]*$",
+                        "matchRegexp:^.{0,100}$",
+                      ]}
+                      errorMessages={[
+                        "Please enter ",
+                        "Special charcters are not allowed",
+                        "Maximum 100 characters",
+                      ]}
+                      fullWidth
+                      id="title"
+                      placeholder=""
+                      name="name"
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </ValidatorForm>
+          </div>
+        </CardContent>
+        <CardActions className="action-container">
+          <Button
+            type="button"
+            // onClick={navigateToQuestionDetails}
+
+            size="small"
+            color="primary"
+          >
+            Next
+          </Button>
+        </CardActions>
+      </Card>
     </div>
   );
 }
