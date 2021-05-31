@@ -132,7 +132,7 @@ function ViewSite(props) {
     },
     {
       name: "floorName",
-      label: "Floors",
+      label: "Floor",
       options: {
         filter: false,
         sort: true,
@@ -162,6 +162,14 @@ function ViewSite(props) {
     {
       name: "locationName",
       label: "Location",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      name: "floorName",
+      label: "Floor",
       options: {
         filter: false,
         sort: true,

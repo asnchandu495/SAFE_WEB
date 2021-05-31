@@ -74,6 +74,7 @@ function QuestionnaireEvaluation(props) {
           id: "",
           stateName: "",
         },
+        isNoUpperLimit: true,
       },
     ],
   });
@@ -94,6 +95,7 @@ function QuestionnaireEvaluation(props) {
           id: "",
           stateName: "",
         },
+        isNoUpperLimit: true,
       },
     ],
   });
@@ -174,15 +176,25 @@ function QuestionnaireEvaluation(props) {
   }
 
   const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
     const list = {
       ...temperatureConfigForm,
       positiveResponses: [
         ...temperatureConfigForm.positiveResponses.map((con, conIndex) => {
-          if (name == "upperLimit" || name == "lowerLimit") {
+          if (name == "lowerLimit") {
+            return conIndex == index ? { ...con, [name]: value } : con;
+          } else if (name == "upperLimit") {
             return conIndex == index ? { ...con, [name]: value } : con;
           } else {
-            return conIndex == index ? { ...con, [name]: value } : con;
+            if (checked) {
+              return conIndex == index
+                ? { ...con, [name]: checked, ["upperLimit"]: 0 }
+                : con;
+            } else {
+              return conIndex == index
+                ? { ...con, [name]: checked, ["upperLimit"]: 0 }
+                : con;
+            }
           }
         }),
       ],
@@ -499,6 +511,7 @@ function QuestionnaireEvaluation(props) {
                             id={`upperLimit_${i}`}
                             placeholder="Upper Limit"
                             name="upperLimit"
+                            disabled={x.isNoUpperLimit}
                             value={x.upperLimit}
                             className="global-input"
                             onChange={(e) => handleInputChange(e, i)}
@@ -509,13 +522,12 @@ function QuestionnaireEvaluation(props) {
                           <Grid item xs={2} className="row-icons-container">
                             {
                               <FormControlLabel
-                                control={
-                                  <Checkbox
-                                    onChange={handleChange}
-                                    name="HightTemperatureNoLimit"
-                                  />
-                                }
+                                control={<Checkbox name="isNoUpperLimit" />}
+                                // onChange={handleChange}
+                                onChange={(e) => handleInputChange(e, i)}
+                                name="isNoUpperLimit"
                                 label="No limit"
+                                checked={x.isNoUpperLimit}
                               />
                             }
                           </Grid>
