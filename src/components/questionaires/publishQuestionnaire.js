@@ -63,9 +63,6 @@ function PublishQuestionnaire(props) {
     useState("");
   const [open, setOpen] = React.useState(false);
 
-  const [page, setPage] = useState(0);
-  const [currentPageData, setCurrentPageData] = useState(props[page]);
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -91,6 +88,7 @@ function PublishQuestionnaire(props) {
       </MuiDialogTitle>
     );
   });
+
   const DialogActions = withStyles((theme) => ({
     root: {
       margin: 0,
@@ -102,6 +100,7 @@ function PublishQuestionnaire(props) {
     id: questionnaireId,
     isSaveAsDraft: false,
   });
+
   useEffect(() => {
     questionaireApiCall
       .getSurveyById(questionnaireId)
@@ -113,25 +112,7 @@ function PublishQuestionnaire(props) {
       .catch((error) => {
         console.log(error);
       });
-
-    const upcomingPageData = props[page];
-    setCurrentPageData(upcomingPageData);
-    // setValues((currentValues) => {
-    // const newValues = upcomingPageData.fields.reduce((obj, field) => {
-    // if (field.component === "field_group") {
-    //   for (const subField of field.fields) {
-    //     obj[subField._uid] = "";
-    //   }
-    // } else {
-    //   obj[field._uid] = "";
-    // }
-
-    // return obj;
-    // }, {});
-
-    // retusrn Object.assign({}, newValues, currentValues);
-    // });
-  }, [page, props]);
+  }, []);
 
   function handlePublish() {
     setshowLoadder(true);

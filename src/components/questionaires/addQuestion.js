@@ -44,6 +44,7 @@ function AddQuestion(props) {
         setAnswerTypes(allExpressions);
         if (questionIdURL != 0) {
           setQuestionTypes(res);
+          console.log(1);
           callQuestionDetailsAPI(questionIdURL, editQuestionType);
         } else {
           setQuestionTypes(res);
@@ -65,6 +66,7 @@ function AddQuestion(props) {
             setQuestionTypeForm({
               questionType: booleanQuestionResponse.questionType,
             });
+            setGotoAddQuestion(true);
             setComponentLoadder(false);
           })
           .catch((err) => {
@@ -79,6 +81,7 @@ function AddQuestion(props) {
             setQuestionTypeForm({
               questionType: freetextQuestionResponse.questionType,
             });
+            setGotoAddQuestion(true);
             setComponentLoadder(false);
           })
           .catch((err) => {
@@ -93,6 +96,7 @@ function AddQuestion(props) {
             setQuestionTypeForm({
               questionType: dateQuestionResponse.questionType,
             });
+            setGotoAddQuestion(true);
             setComponentLoadder(false);
           })
           .catch((err) => {
@@ -107,6 +111,7 @@ function AddQuestion(props) {
             setQuestionTypeForm({
               questionType: timeQuestionResponse.questionType,
             });
+            setGotoAddQuestion(true);
             setComponentLoadder(false);
           })
           .catch((err) => {
@@ -121,6 +126,7 @@ function AddQuestion(props) {
             setQuestionTypeForm({
               questionType: numericQuestionResponse.questionType,
             });
+            setGotoAddQuestion(true);
             setComponentLoadder(false);
           })
           .catch((err) => {
@@ -135,6 +141,7 @@ function AddQuestion(props) {
             setQuestionTypeForm({
               questionType: singleChoiceQuestionResponse.questionType,
             });
+            setGotoAddQuestion(true);
             setComponentLoadder(false);
           })
           .catch((err) => {
@@ -149,6 +156,7 @@ function AddQuestion(props) {
             setQuestionTypeForm({
               questionType: mulltiChoiceQuestionResponse.questionType,
             });
+            setGotoAddQuestion(true);
             setComponentLoadder(false);
           })
           .catch((err) => {
