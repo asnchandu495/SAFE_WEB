@@ -205,7 +205,18 @@ function QuestionnaireEvaluation(props) {
   const handleRemoveClick = (j) => {
     const list = { ...temperatureConfigForm };
     list.positiveResponses.splice(j, 1);
-    setTemperatureConfigForm(list);
+    const listmain = {
+      ...list,
+      positiveResponses: [
+        ...list.positiveResponses.map((con, conIndex) => {
+          return conIndex - 1 == j - 1
+            ? { ...con, ["isNoUpperLimit"]: true, ["upperLimit"]: 0 }
+            : con;
+        }),
+      ],
+    };
+    // setTemperatureConfigForm(list);
+    setTemperatureConfigForm(listmain);
   };
   function handleChange(e) {
     setisAlertBoxOpened(true);
@@ -242,9 +253,22 @@ function QuestionnaireEvaluation(props) {
           id: "",
           stateName: "",
         },
+        isNoUpperLimit: false,
       },
     ];
-    setTemperatureConfigForm(list);
+    const listmain = {
+      ...list,
+      positiveResponses: [
+        ...list.positiveResponses.map((con, conIndex) => {
+          return conIndex - 1 == index - 1
+            ? { ...con, ["isNoUpperLimit"]: false, ["upperLimit"]: 0 }
+            : con;
+        }),
+      ],
+    };
+
+    // setTemperatureConfigForm(list);
+    setTemperatureConfigForm(listmain);
   };
 
   function handleChange(e) {
@@ -483,10 +507,18 @@ function QuestionnaireEvaluation(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
-                            validators={["required", "maxNumber:99"]}
+                            validators={[
+                              "required",
+                              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+
+                              "maxNumber:45",
+                              "minNumber:30",
+                            ]}
                             errorMessages={[
                               "Please enter lower limit",
                               "Entered numbers are not valid",
+                              "Maximum allowed is 45",
+                              "Minimum allowed is 30",
                             ]}
                             fullWidth
                             id={`lowerLimit_${i}`}
@@ -502,10 +534,25 @@ function QuestionnaireEvaluation(props) {
                           <TextValidator
                             variant="outlined"
                             disabled={disableUpperLimit ? "true" : ""}
-                            validators={["required", "maxNumber:99"]}
+                            validators={[
+                              "required",
+                              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                              "maxNumber:45",
+                              `minNumber:${
+                                x.isNoUpperLimit
+                                  ? 0
+                                  : parseFloat(x.lowerLimit) + 1
+                              }`,
+                            ]}
                             errorMessages={[
-                              "Please enter upper limit",
+                              "Please enter lower limit",
                               "Entered numbers are not valid",
+                              `Maximum allowed is ${x.isNoUpperLimit ? 0 : 45}`,
+                              `Minimum allowed is ${
+                                x.isNoUpperLimit
+                                  ? 0
+                                  : parseFloat(x.lowerLimit) + 1
+                              }`,
                             ]}
                             fullWidth
                             id={`upperLimit_${i}`}

@@ -60,6 +60,9 @@ function TemperatureRange(props) {
     },
   ];
 
+  // const [faqId, setFaqId] = useState(getFaqId);
+  // const [faqIdSecId, setFaqIdSecId] = useState(getFaqIdSecId);
+  const [flagStatus, setflagStatus] = useState(false);
   const [isFormSubmit, setisFormSubmit] = useState(false);
   const [muivalidatorForm, setmuivalidatorForm] = useState(false);
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -132,6 +135,15 @@ function TemperatureRange(props) {
     // setComponentLoadder(false);
   }, []);
 
+  function handleChange(e) {
+    const { name, value } = e.target.checked;
+    if (e.target.checked) {
+      setflagStatus(true);
+    } else {
+      setflagStatus(false);
+    }
+  }
+
   function handleChangeInput(e) {
     const { name, value } = e.target;
     settempsections((tempsections) => ({
@@ -196,19 +208,7 @@ function TemperatureRange(props) {
   const handleRemoveClickContacts = (j) => {
     const list = { ...tempsections };
     list.covidStates.splice(j, 1);
-
-    const listmain = {
-      ...list,
-      covidStates: [
-        ...list.covidStates.map((con, conIndex) => {
-          return conIndex - 1 == j - 1
-            ? { ...con, ["isNoUpperLimit"]: true, ["upperLimit"]: 0 }
-            : con;
-        }),
-      ],
-    };
-
-    settempsections(listmain);
+    settempsections(list);
   };
 
   const handleAddClickContacts = (index, j) => {
@@ -227,19 +227,7 @@ function TemperatureRange(props) {
         isNoUpperLimit: false,
       },
     ];
-
-    const listmain = {
-      ...list,
-      covidStates: [
-        ...list.covidStates.map((con, conIndex) => {
-          return conIndex - 1 == index - 1
-            ? { ...con, ["isNoUpperLimit"]: false, ["upperLimit"]: 0 }
-            : con;
-        }),
-      ],
-    };
-
-    settempsections(listmain);
+    settempsections(list);
   };
 
   function handleClickGoBackToPage() {
@@ -351,7 +339,7 @@ function TemperatureRange(props) {
                 </Grid>
               </Grid>
               {tempsections.covidStates && tempsections.covidStates.length > 0
-                ? tempsections.covidStates.map((x, i, array) => {
+                ? tempsections.covidStates.map((x, i) => {
                     return (
                       <Grid
                         container
@@ -400,74 +388,37 @@ function TemperatureRange(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
+                            validators={["required"]}
                             validators={
                               tempsections.temperatureUnit == "C"
-                                ? i == 0
-                                  ? [
-                                      "required",
-                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-
-                                      "maxNumber:45",
-                                      "minNumber:30",
-                                    ]
-                                  : [
-                                      "required",
-                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-
-                                      `maxNumber:45`,
-                                      `minNumber:${parseFloat(
-                                        array[i - 1].upperLimit
-                                      )}`,
-                                    ]
-                                : i == 0
                                 ? [
+                                    "required",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+
+                                    "maxNumber:45",
+                                    "minNumber:30",
+                                  ]
+                                : [
                                     "required",
                                     "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
 
                                     "maxNumber:113",
                                     "minNumber:86",
                                   ]
-                                : [
-                                    "required",
-                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-
-                                    `maxNumber:113`,
-                                    `minNumber:${parseFloat(
-                                      array[i - 1].upperLimit
-                                    )}`,
-                                  ]
                             }
                             errorMessages={
                               tempsections.temperatureUnit == "C"
-                                ? i == 0
-                                  ? [
-                                      "Please enter lower limit",
-                                      "Entered numbers are not valid",
-                                      "Maximum allowed is 45",
-                                      "Minimum allowed is 30",
-                                    ]
-                                  : [
-                                      "Please enter lower limit",
-                                      "Entered numbers are not valid",
-                                      "Maximum allowed is 45",
-                                      `Minimum allowed is ${parseFloat(
-                                        array[i - 1].upperLimit
-                                      )}`,
-                                    ]
-                                : i == 0
                                 ? [
+                                    "Please enter lower limit",
+                                    "Entered numbers are not valid",
+                                    "Maximum allowed is 45",
+                                    "Minimum allowed is 30",
+                                  ]
+                                : [
                                     "Please enter lower limit",
                                     "Entered numbers are not valid",
                                     "Maximum allowed is 113",
                                     "Minimum allowed is 86",
-                                  ]
-                                : [
-                                    "Please enter lower limit",
-                                    "Entered numbers are not valid",
-                                    "Maximum allowed is 113",
-                                    `Minimum allowed is ${parseFloat(
-                                      array[i - 1].upperLimit
-                                    )}`,
                                   ]
                             }
                             id={`lowerLimit_${i}`}
@@ -500,7 +451,7 @@ function TemperatureRange(props) {
                                       `minNumber:${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit)
+                                          : parseFloat(x.lowerLimit) + 1
                                       }`,
                                     ]
                                   : [
@@ -510,7 +461,7 @@ function TemperatureRange(props) {
                                       `minNumber:${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit)
+                                          : parseFloat(x.lowerLimit) + 1
                                       }`,
                                     ]
                                 : x.isNoUpperLimit
@@ -520,7 +471,7 @@ function TemperatureRange(props) {
                                     `minNumber:${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(x.lowerLimit)
+                                        : parseFloat(x.lowerLimit) + 1
                                     }`,
                                   ]
                                 : [
@@ -530,7 +481,7 @@ function TemperatureRange(props) {
                                     `minNumber:${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(x.lowerLimit)
+                                        : parseFloat(x.lowerLimit) + 1
                                     }`,
                                   ]
                             }
@@ -545,7 +496,7 @@ function TemperatureRange(props) {
                                       `Minimum allowed is ${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit)
+                                          : parseFloat(x.lowerLimit) + 1
                                       }`,
                                     ]
                                   : [
@@ -557,7 +508,7 @@ function TemperatureRange(props) {
                                       `Minimum allowed is ${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit)
+                                          : parseFloat(x.lowerLimit) + 1
                                       }`,
                                     ]
                                 : x.isNoUpperLimit
@@ -569,7 +520,7 @@ function TemperatureRange(props) {
                                     `Minimum allowed is ${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(x.lowerLimit)
+                                        : parseFloat(x.lowerLimit) + 1
                                     }`,
                                   ]
                                 : [
@@ -581,7 +532,7 @@ function TemperatureRange(props) {
                                     `Minimum allowed is ${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(x.lowerLimit)
+                                        : parseFloat(x.lowerLimit) + 1
                                     }`,
                                   ]
                             }
@@ -592,10 +543,7 @@ function TemperatureRange(props) {
                             onChange={(e) => handleInputChangeContacts(e, i)}
                             className="global-input"
                             InputLabelProps={{ shrink: false }}
-                            disabled={
-                              x.isNoUpperLimit &&
-                              tempsections.covidStates.length - 1 === i
-                            }
+                            disabled={x.isNoUpperLimit}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
@@ -612,6 +560,7 @@ function TemperatureRange(props) {
                             {
                               <FormControlLabel
                                 control={<Checkbox name="isNoUpperLimit" />}
+                                // className={setflagStatus ? disabled : ""}
                                 onChange={(e) =>
                                   handleInputChangeContacts(e, i)
                                 }
@@ -631,11 +580,12 @@ function TemperatureRange(props) {
                               ></CancelIcon>
                             </Tooltip>
                           )}
-                          {!x.isNoUpperLimit
+                          {!flagStatus
                             ? tempsections.covidStates.length - 1 === i && (
                                 <Tooltip title="Add">
                                   <AddCircleIcon
                                     className={`add-row-icon`}
+                                    hidden={setflagStatus}
                                     onClick={handleAddClickContacts}
                                   ></AddCircleIcon>
                                 </Tooltip>

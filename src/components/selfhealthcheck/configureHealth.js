@@ -61,6 +61,7 @@ function ConfigureHealth(props) {
   const [selectedUserDetails, setSelectedUserDetails] = useState();
 
   useEffect(() => {
+    props.loadGlobalSettingWithoutAPICall();
     UserApiCall.getProfileDetails()
       .then((loggedinUserDetails) => {
         UserApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id)
@@ -125,7 +126,7 @@ function ConfigureHealth(props) {
                 {moment(thisRowData[4]).format(
                   props.loadGlobalSettingsData
                     ? props.loadGlobalSettingsData.dateFormat
-                    : "hh:mm"
+                    : "dd:MM:yyyy"
                 )}
               </span>
             );
@@ -307,7 +308,11 @@ function ConfigureHealth(props) {
                   </Grid>
                   <Grid item xs={2} className="date-time-pickers">
                     <KeyboardDatePicker
-                      format="MM/dd/yyyy"
+                      format={
+                        props.loadGlobalSettingsData
+                          ? props.loadGlobalSettingsData.dateFormat
+                          : "dd/MM/yyyy"
+                      }
                       fullWidth
                       id="from"
                       label="From"
@@ -329,7 +334,12 @@ function ConfigureHealth(props) {
                     className="date-time-pickers todate-container"
                   >
                     <KeyboardDatePicker
-                      format="MM/dd/yyyy"
+                      // format="MM/dd/yyyy"
+                      format={
+                        props.loadGlobalSettingsData
+                          ? props.loadGlobalSettingsData.dateFormat
+                          : "dd/MM/yyyy"
+                      }
                       fullWidth
                       id="to"
                       label="To"
