@@ -69,6 +69,7 @@ function AddNewQuestion(props) {
               questionType: booleanQuestionResponse.questionType,
             });
             setComponentLoadder(false);
+            setGotoAddQuestion(true);
           })
           .catch((err) => {
             console.log("error");
@@ -83,6 +84,7 @@ function AddNewQuestion(props) {
               questionType: freetextQuestionResponse.questionType,
             });
             setComponentLoadder(false);
+            setGotoAddQuestion(true);
           })
           .catch((err) => {
             console.log("error");
@@ -97,6 +99,7 @@ function AddNewQuestion(props) {
               questionType: dateQuestionResponse.questionType,
             });
             setComponentLoadder(false);
+            setGotoAddQuestion(true);
           })
           .catch((err) => {
             console.log("error");
@@ -111,6 +114,7 @@ function AddNewQuestion(props) {
               questionType: timeQuestionResponse.questionType,
             });
             setComponentLoadder(false);
+            setGotoAddQuestion(true);
           })
           .catch((err) => {
             console.log("error");
@@ -125,6 +129,7 @@ function AddNewQuestion(props) {
               questionType: numericQuestionResponse.questionType,
             });
             setComponentLoadder(false);
+            setGotoAddQuestion(true);
           })
           .catch((err) => {
             console.log("error");
@@ -139,6 +144,7 @@ function AddNewQuestion(props) {
               questionType: singleChoiceQuestionResponse.questionType,
             });
             setComponentLoadder(false);
+            setGotoAddQuestion(true);
           })
           .catch((err) => {
             console.log("error");
@@ -153,6 +159,7 @@ function AddNewQuestion(props) {
               questionType: mulltiChoiceQuestionResponse.questionType,
             });
             setComponentLoadder(false);
+            setGotoAddQuestion(true);
           })
           .catch((err) => {
             console.log("error");
