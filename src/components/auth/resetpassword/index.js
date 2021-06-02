@@ -19,9 +19,8 @@ export default function ResetPassword(props) {
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [toasterServerity, settoasterServerity] = useState("");
   const [showLoadder, setshowLoadder] = useState(false);
   const [passwordLength, setpasswordLength] = useState();

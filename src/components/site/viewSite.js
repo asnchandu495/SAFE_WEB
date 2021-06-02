@@ -230,7 +230,8 @@ function ViewSite(props) {
           if (thisRowData) {
             return (
               <span>
-                {thisRowData[4]} - {thisRowData[3]}
+                {/* {thisRowData[4]} - {thisRowData[3]} */}
+                {thisRowData[5]} -{thisRowData[4]}
               </span>
             );
           }
@@ -269,7 +270,8 @@ function ViewSite(props) {
           if (thisRowData) {
             return (
               <span>
-                {thisRowData[6]} - {thisRowData[5]}
+                {/* {thisRowData[6]} - {thisRowData[5]} */}
+                {thisRowData[7]} - {thisRowData[6]}
               </span>
             );
           }
@@ -308,7 +310,9 @@ function ViewSite(props) {
           if (thisRowData) {
             return (
               <span>
-                {thisRowData[8]} - {thisRowData[7]}
+                {/* {thisRowData[8]} - {thisRowData[7]} */}
+                {thisRowData[9]} -{" "}
+                {thisRowData[8] != -1 ? thisRowData[8] : <span>&#8734;</span>}
               </span>
             );
           }
