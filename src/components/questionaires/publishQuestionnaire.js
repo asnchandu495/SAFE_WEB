@@ -33,6 +33,13 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
+import ShorttextQuestion from "./preview/shorttextQuestion";
+import NumberQuestion from "./preview/numberQuestion";
+import TimeQuestion from "./preview/timeQuestion";
+import DateQuestion from "./preview/dateQuestion";
+import SingleselectQuestion from "./preview/singleselectQuestion";
+import MultiselectQuestion from "./preview/multiselectQuestion";
+import BooleanQuestion from "./preview/booleanQuestion";
 
 const styles = (theme) => ({
   root: {
@@ -46,6 +53,19 @@ const styles = (theme) => ({
     color: theme.palette.grey[500],
   },
 });
+
+function LoadQuestion(props) {
+  switch (props.currentQuestion.questionType) {
+    case "Numeric":
+      return (
+        <NumberQuestion
+          currentQuestion={props.currentQuestion}
+          numberAnswer={props.numberAnswer}
+          setNumberAnswer={props.setNumberAnswer}
+        ></NumberQuestion>
+      );
+  }
+}
 
 function PublishQuestionnaire(props) {
   const questionnaireId = props.match.params.id;
@@ -61,7 +81,8 @@ function PublishQuestionnaire(props) {
   const [ViewQuestionaireDetails, setViewQuestionaireDetails] = useState([]);
   const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
     useState("");
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -100,14 +121,44 @@ function PublishQuestionnaire(props) {
     id: questionnaireId,
     isSaveAsDraft: false,
   });
+  const [booleanAnswer, setBooleanAnswer] = useState({
+    answer: false,
+    surveyQuestionId: questionnaireId,
+  });
+  const [shorttextAnswer, setShorttextAnswer] = useState({
+    answer: "",
+    surveyQuestionId: questionnaireId,
+  });
+  const [numberAnswer, setNumberAnswer] = useState({
+    answer: 0,
+    surveyQuestionId: questionnaireId,
+  });
+  const [timeAnswer, setTimeAnswer] = useState({
+    answer: "",
+    surveyQuestionId: questionnaireId,
+  });
+  const [dateAnswer, setDateAnswer] = useState({
+    answer: "",
+    surveyQuestionId: questionnaireId,
+  });
+  const [singleselectAnswer, setSingleselectAnswer] = useState({
+    answerChoiceId: "",
+    surveyQuestionId: questionnaireId,
+  });
+  const [multiselectAnswer, setMultiselectAnswer] = useState({
+    answers: [],
+    surveyQuestionId: questionnaireId,
+  });
 
   useEffect(() => {
-    questionaireApiCall
-      .getSurveyById(questionnaireId)
-      .then((questionaireInfo) => {
-        setComponentLoadder(false);
+    Promise.all([
+      questionaireApiCall.getSurveyById(questionnaireId),
+      questionaireApiCall.getFirstQuestion(questionnaireId),
+    ])
+      .then(([questionaireInfo, firstQuestion]) => {
         setViewQuestionaireDetails(questionaireInfo);
-        console.log(questionaireInfo);
+        setCurrentQuestion(firstQuestion.question);
+        setComponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
@@ -142,6 +193,38 @@ function PublishQuestionnaire(props) {
       });
   }
 
+  function submitCurrentQuestion(e) {
+    e.preventDefault();
+    console.log(currentQuestion);
+    console.log(numberAnswer);
+    switch (currentQuestion.questionType) {
+      case "Boolean":
+        break;
+      case "FreeText":
+        break;
+      case "Date":
+        break;
+      case "Time":
+        break;
+      case "Numeric":
+        questionaireApiCall
+          .submitNumericAnswer(numberAnswer)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((err) => {
+            console.log("error");
+          });
+        break;
+      case "SingleChoice":
+        break;
+      case "MultiChoice":
+        break;
+      default:
+        return <h4>Not found</h4>;
+    }
+  }
+
   return (
     <div className="innerpage-container">
       <AlertBoxComponent />
@@ -170,10 +253,38 @@ function PublishQuestionnaire(props) {
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (
-        <Paper className="main-paper">
-          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <Paper className="main-paper main-paper-add-question">
+          {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
             Publish
-          </Button>
+          </Button> */}
+          <Paper className="add-new-question">
+            <ValidatorForm
+              className={`global-form`}
+              onSubmit={submitCurrentQuestion}
+            >
+              <Card className="question-type-card">
+                <CardContent>
+                  <div className="card-form">
+                    <LoadQuestion
+                      currentQuestion={currentQuestion}
+                      numberAnswer={numberAnswer}
+                      setNumberAnswer={setNumberAnswer}
+                    ></LoadQuestion>
+                  </div>
+                </CardContent>
+                <CardActions className="action-container">
+                  <Button
+                    type="submit"
+                    onClick={submitCurrentQuestion}
+                    size="small"
+                    color="primary"
+                  >
+                    Submit
+                  </Button>
+                </CardActions>
+              </Card>
+            </ValidatorForm>
+          </Paper>
 
           <Dialog
             onClose={handleClose}
@@ -218,8 +329,6 @@ function PublishQuestionnaire(props) {
       ) : (
         <ComponentLoadderComponent />
       )}
-      <br />
-
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
         setStateSnackbar={setStateSnackbar}
@@ -227,72 +336,6 @@ function PublishQuestionnaire(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
-      <Card className="question-type-card">
-        <CardContent>
-          <Typography gutterBottom variant="h6" component="h6"></Typography>
-          <div className="card-form">
-            <ValidatorForm className={`global-form`}>
-              <Grid container item xs={12}>
-                <Grid
-                  container
-                  spacing={1}
-                  item
-                  xs={12}
-                  className="question-container"
-                >
-                  <Grid item xs={1} className="question-icon-container">
-                    1)
-                  </Grid>
-                  <Grid item xs={11}>
-                    <p className="question-name">fsdfsdf</p>
-                  </Grid>
-                </Grid>
-                <Grid
-                  container
-                  spacing={1}
-                  item
-                  xs={12}
-                  className="question-container"
-                >
-                  <Grid item xs={1} className="question-icon-container"></Grid>
-                  <Grid item xs={3}>
-                    <TextValidator
-                      variant="outlined"
-                      validators={[
-                        "required",
-                        "matchRegexp:^[a-zA-Z0-9 ]*$",
-                        "matchRegexp:^.{0,100}$",
-                      ]}
-                      errorMessages={[
-                        "Please enter ",
-                        "Special charcters are not allowed",
-                        "Maximum 100 characters",
-                      ]}
-                      fullWidth
-                      id="title"
-                      placeholder=""
-                      name="name"
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </ValidatorForm>
-          </div>
-        </CardContent>
-        <CardActions className="action-container">
-          <Button
-            type="button"
-            // onClick={navigateToQuestionDetails}
-
-            size="small"
-            color="primary"
-          >
-            Next
-          </Button>
-        </CardActions>
-      </Card>
     </div>
   );
 }

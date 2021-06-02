@@ -835,6 +835,27 @@ export default class questionaireService {
     });
   }
 
+  getFirstQuestion(id) {
+    return this.fetch(`${this.questionaireURL}/Survey/GetFirstQuestion/${id}`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  submitNumericAnswer(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/NumericQuestion/PreviewNumericAnswer`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");
