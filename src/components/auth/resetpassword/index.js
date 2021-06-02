@@ -19,9 +19,8 @@ export default function ResetPassword(props) {
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [toasterServerity, settoasterServerity] = useState("");
   const [showLoadder, setshowLoadder] = useState(false);
   const [passwordLength, setpasswordLength] = useState();
@@ -82,11 +81,13 @@ export default function ResetPassword(props) {
                 margin="normal"
                 validators={[
                   "required",
-                  "matchRegexp:^.{" + passwordLength + ",}$",
+                  "matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?_-])[A-Za-z\\d#$@!%&*?]{" +
+                    passwordLength +
+                    ",}$",
                 ]}
                 errorMessages={[
                   "Please enter password",
-                  "Minimum 8 characters",
+                  `One upper case letter, One lower case letter, One digit, One special character, Minimum ${passwordLength} in length`,
                 ]}
                 fullWidth
                 name="password"
@@ -105,15 +106,10 @@ export default function ResetPassword(props) {
               <TextValidator
                 variant="outlined"
                 margin="normal"
-                validators={[
-                  "required",
-                  "isPasswordMatch",
-                  "matchRegexp:^.{" + passwordLength + ",}$",
-                ]}
+                validators={["required", "isPasswordMatch"]}
                 errorMessages={[
                   "Please re-enter password",
                   "Password mismatch",
-                  "Minimum 8 characters",
                 ]}
                 fullWidth
                 name="confirmPassword"

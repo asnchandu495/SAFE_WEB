@@ -599,6 +599,7 @@ function DateQuestion(props) {
                                           : "Answer type"}
                                       </InputLabel>
                                       <Select
+                                        required
                                         labelId={`demo-simple-select-outlined-label${i}`}
                                         id={`demo-simple-select-outlined${i}`}
                                         value={

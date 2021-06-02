@@ -374,7 +374,7 @@ function AddPrimaryUserTeam(props) {
                             : []
                         }
                         getOptionLabel={(option) => option.groupName}
-                        defaultValue="#"
+                        defaultValue={selectedUserData}
                         onChange={selectedUser}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -404,7 +404,7 @@ function AddPrimaryUserTeam(props) {
                             : []
                         }
                         getOptionLabel={(option) => option.name}
-                        defaultValue="#"
+                        defaultValue={selectedUserDesignation}
                         onChange={selectedDesignation}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
