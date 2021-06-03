@@ -64,6 +64,22 @@ function LoadQuestion(props) {
           setNumberAnswer={props.setNumberAnswer}
         ></NumberQuestion>
       );
+    case "SingleChoice":
+      return (
+        <SingleselectQuestion
+          currentQuestion={props.currentQuestion}
+          singleselectAnswer={props.singleselectAnswer}
+          setSingleselectAnswer={props.setSingleselectAnswer}
+        ></SingleselectQuestion>
+      );
+    case "MultiChoice":
+      return (
+        <MultiselectQuestion
+          currentQuestion={props.currentQuestion}
+          multiselectAnswer={props.multiselectAnswer}
+          setMultiselectAnswer={props.setMultiselectAnswer}
+        ></MultiselectQuestion>
+      );
   }
 }
 
@@ -123,31 +139,31 @@ function PublishQuestionnaire(props) {
   });
   const [booleanAnswer, setBooleanAnswer] = useState({
     answer: false,
-    surveyQuestionId: questionnaireId,
+    surveyQuestionId: "",
   });
   const [shorttextAnswer, setShorttextAnswer] = useState({
     answer: "",
-    surveyQuestionId: questionnaireId,
+    surveyQuestionId: "",
   });
   const [numberAnswer, setNumberAnswer] = useState({
     answer: 0,
-    surveyQuestionId: questionnaireId,
+    surveyQuestionId: "",
   });
   const [timeAnswer, setTimeAnswer] = useState({
     answer: "",
-    surveyQuestionId: questionnaireId,
+    surveyQuestionId: "",
   });
   const [dateAnswer, setDateAnswer] = useState({
     answer: "",
-    surveyQuestionId: questionnaireId,
+    surveyQuestionId: "",
   });
   const [singleselectAnswer, setSingleselectAnswer] = useState({
     answerChoiceId: "",
-    surveyQuestionId: questionnaireId,
+    surveyQuestionId: "",
   });
   const [multiselectAnswer, setMultiselectAnswer] = useState({
     answers: [],
-    surveyQuestionId: questionnaireId,
+    surveyQuestionId: "",
   });
 
   useEffect(() => {
@@ -196,7 +212,7 @@ function PublishQuestionnaire(props) {
   function submitCurrentQuestion(e) {
     e.preventDefault();
     console.log(currentQuestion);
-    console.log(numberAnswer);
+    console.log(multiselectAnswer);
     switch (currentQuestion.questionType) {
       case "Boolean":
         break;
@@ -207,18 +223,56 @@ function PublishQuestionnaire(props) {
       case "Time":
         break;
       case "Numeric":
+        let sendData = numberAnswer;
+        sendData.answer = parseFloat(numberAnswer.answer);
+        sendData.surveyQuestionId = currentQuestion.id;
         questionaireApiCall
-          .submitNumericAnswer(numberAnswer)
+          .submitNumericAnswer(sendData)
           .then((response) => {
-            console.log(response);
+            if (response.question) {
+              setCurrentQuestion(response.question);
+            } else {
+            }
           })
           .catch((err) => {
             console.log("error");
           });
         break;
       case "SingleChoice":
+        let sendDataSingleselect = singleselectAnswer;
+        sendDataSingleselect.surveyQuestionId = currentQuestion.id;
+        questionaireApiCall
+          .submitSingleselectAnswer(sendDataSingleselect)
+          .then((response) => {
+            if (response.question) {
+              setCurrentQuestion(response.question);
+            } else {
+            }
+          })
+          .catch((err) => {
+            console.log("error");
+          });
         break;
       case "MultiChoice":
+        let sendDataMultiselect = multiselectAnswer;
+        sendDataMultiselect.surveyQuestionId = currentQuestion.id;
+        let newOptions = [];
+        sendDataMultiselect.answers.map((ans) => {
+          newOptions.push({ surveyReplyChoiceId: ans.optionId });
+        });
+        sendDataMultiselect.answers = newOptions;
+        questionaireApiCall
+          .submitMultiselectAnswer(sendDataMultiselect)
+          .then((response) => {
+            console.log(response);
+            if (response.question) {
+              setCurrentQuestion(response.question);
+            } else {
+            }
+          })
+          .catch((err) => {
+            console.log("error");
+          });
         break;
       default:
         return <h4>Not found</h4>;
@@ -269,6 +323,10 @@ function PublishQuestionnaire(props) {
                       currentQuestion={currentQuestion}
                       numberAnswer={numberAnswer}
                       setNumberAnswer={setNumberAnswer}
+                      singleselectAnswer={singleselectAnswer}
+                      setSingleselectAnswer={setSingleselectAnswer}
+                      multiselectAnswer={multiselectAnswer}
+                      setMultiselectAnswer={setMultiselectAnswer}
                     ></LoadQuestion>
                   </div>
                 </CardContent>
