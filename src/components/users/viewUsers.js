@@ -88,7 +88,7 @@ const DisplayFormControl = ({
       return viewUserDetailsTemp + "-" + viewUserDetailsTempUnit;
     }
   } else {
-    return viewUserDetailsTemp + "-" + viewUserDetailsTempUnit;
+    return "-";
   }
 };
 

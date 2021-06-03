@@ -36,6 +36,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import MasterService from "../../services/masterDataService";
+import GlobalSettingService from "../../services/globalSettingService";
 import UserGroupService from "../../services/userGroupService";
 import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
@@ -112,11 +113,41 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
 }));
+
+const DisplayFormControl = ({
+  viewUserDetailsTemp,
+  viewUserDetailsTempUnit,
+  loadGlobalSettingsDataTemp,
+}) => {
+  if (
+    viewUserDetailsTemp != "" &&
+    viewUserDetailsTempUnit != "" &&
+    loadGlobalSettingsDataTemp != ""
+  ) {
+    if (loadGlobalSettingsDataTemp == viewUserDetailsTempUnit) {
+      return viewUserDetailsTemp + "-" + viewUserDetailsTempUnit;
+    } else if (loadGlobalSettingsDataTemp != viewUserDetailsTempUnit) {
+      if (loadGlobalSettingsDataTemp == "C") {
+        let convertedTemp = ((viewUserDetailsTemp - 32) * 5) / 9;
+        return <span>{convertedTemp}-C</span>;
+      } else {
+        let convertedTemp = viewUserDetailsTemp * (9 / 5) + 32;
+        return <span>{convertedTemp}-F</span>;
+      }
+    } else {
+      return viewUserDetailsTemp + "-" + viewUserDetailsTempUnit;
+    }
+  } else {
+    return "";
+  }
+};
+
 function Users(props) {
   const userId = props.match.params.id;
   const classes = useStyles();
   const usersApiCall = new UserService();
   const masterDataCallApi = new MasterService();
+  const GlobalSettingApi = new GlobalSettingService();
   const UserGroupApi = new UserGroupService();
   const CovidStateApi = new CovidStateApiServices();
   const [openMoreMenu, setOpenMoreMenu] = useState(false);
@@ -165,6 +196,7 @@ function Users(props) {
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [RowsSelected, setRowsSelected] = useState([]);
   const [anchorElMenu, setAnchorElMenu] = useState(null);
+  const [globalData, setglobalData] = useState();
 
   const [searchformData, setsearchformData] = useState({
     primaryGroupId: "",
@@ -206,6 +238,7 @@ function Users(props) {
     }
     prevOpen.current = openMoreMenu;
     setcomponentLoadder(true);
+
     Promise.all([
       props.LoadAllUser(searchformData),
       masterDataCallApi.getUserPrimaryRoles(),
@@ -213,6 +246,7 @@ function Users(props) {
       masterDataCallApi.getSites(),
       UserGroupApi.loadUserGroup(),
       CovidStateApi.getCOVIDStates(),
+      GlobalSettingApi.getLoadGlobalSetting(),
     ])
       .then(
         ([
@@ -222,6 +256,7 @@ function Users(props) {
           getSites,
           getUserGroup,
           getCovidState,
+          getLoadGlobalSetting,
         ]) => {
           setReloadPage("NO");
           setBusinessUserRoleMasterData(getUserRoles);
@@ -229,6 +264,7 @@ function Users(props) {
           setBusinessSiteMasterData(getSites);
           setBusinessGroupData(getUserGroup);
           setBusinessCovidStateData(getCovidState);
+          setglobalData(getLoadGlobalSetting);
           setcomponentLoadder(false);
         }
       )
@@ -549,31 +585,32 @@ function Users(props) {
       },
     },
     {
-      name: "covidStateDetails",
+      name: "temperature",
       label: "Temperature ",
       options: {
         filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+
           if (thisRowData && thisRowData[6]) {
             return (
-              <span>
-                {thisRowData[6].temperature && thisRowData[6].temperatureUnit
-                  ? thisRowData[6].temperature
-                  : ""}
-                -
-                {thisRowData[6].temperatureUnit && thisRowData[6].temperature
-                  ? thisRowData[6].temperatureUnit
-                  : ""}
-                {/* {thisRowData[6].temperature}-
-                {thisRowData[6].temperatureUnit
-                  ? thisRowData[6].temperatureUnit
-                  : ""} */}
-              </span>
+              <DisplayFormControl
+                viewUserDetailsTemp={
+                  thisRowData[6] && thisRowData[6].temperature != null
+                    ? thisRowData[6].temperature
+                    : ""
+                }
+                viewUserDetailsTempUnit={
+                  thisRowData[6] && thisRowData[6].temperatureUnit != null
+                    ? thisRowData[6].temperatureUnit
+                    : ""
+                }
+                loadGlobalSettingsDataTemp={
+                  globalData ? globalData.temperatureUnit : ""
+                }
+              ></DisplayFormControl>
             );
-          } else {
-            return <span></span>;
           }
         },
       },

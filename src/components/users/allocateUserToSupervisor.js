@@ -45,9 +45,17 @@ function AllocateUserToSupervisor(props) {
 
   useEffect(() => {
     setcomponentLoadder(true);
-    Promise.all([masterDataCallApi.getAllSuperVisor()])
-      .then(([getAllSuperVisor]) => {
-        setAllSupervisorRole(getAllSuperVisor);
+    Promise.all([
+      masterDataCallApi.getAllSuperVisor(),
+      usersApiCall.getProfileDetails(),
+    ])
+      .then(([getAllSuperVisor, getUserloggedDetails]) => {
+        // setAllSupervisorRole(getAllSuperVisor);
+        setAllSupervisorRole(
+          getAllSuperVisor.filter(function (sup) {
+            return sup.applicationUserId != getUserloggedDetails.id;
+          })
+        );
         setUserSelectSupervisorData({
           applicationUserId: props.applicationUserData.supervisorId,
           name: props.applicationUserData.supervisor,
