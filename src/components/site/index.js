@@ -69,37 +69,29 @@ function ListSite(props) {
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [openCovidStateInfoModal, setopenCovidStateInfoModal] = useState(false);
   const [openshiftInfoModal, setopenshiftInfoModal] = useState(false);
-  const [openuserTemepratureModal, setopenuserTemepratureModal] = useState(
-    false
-  );
+  const [openuserTemepratureModal, setopenuserTemepratureModal] =
+    useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [SelectedRowId, setSelectedRowId] = useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [UserList, setUserList] = useState([]);
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [showLoadder, setshowLoadder] = useState(false);
   const [userSelectedSiteManager, setUserSelectedSiteManager] = useState([]);
   const [siteManger, setSiteManger] = useState([]);
   const [securityManger, setSecurityManger] = useState([]);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
-  const [
-    userSelectedSecurityManager,
-    setUserSelectedSecurityManager,
-  ] = useState([]);
+  const [userSelectedSecurityManager, setUserSelectedSecurityManager] =
+    useState([]);
   const [Modalopen, setModalOpen] = useState(false);
   const [searchformData, setsearchformData] = useState({
     SiteManagerId: [],
@@ -238,6 +230,20 @@ function ListSite(props) {
       options: {
         filter: false,
         sort: true,
+      },
+    },
+    {
+      name: "uniqueKey",
+      label: "Unique Key",
+      options: {
+        filter: false,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return <span>{thisRowData[5]}</span>;
+          }
+        },
       },
     },
     {

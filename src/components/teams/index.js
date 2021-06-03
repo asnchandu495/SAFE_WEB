@@ -124,6 +124,23 @@ function Teams(props) {
         filter: true,
       },
     },
+    {
+      name: "uniqueKey",
+      label: "Unique Key",
+      options: {
+        sort: true,
+        filterList: [],
+
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          console.log(thisRowData);
+          if (thisRowData) {
+            return <span>{thisRowData[3]}</span>;
+          }
+        },
+        filter: true,
+      },
+    },
 
     {
       label: "Action",

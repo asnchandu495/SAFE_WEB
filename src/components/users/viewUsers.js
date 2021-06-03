@@ -64,6 +64,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const DisplayFormControl = ({
+  viewUserDetailsTemp,
+  viewUserDetailsTempUnit,
+  loadGlobalSettingsDataTemp,
+}) => {
+  if (
+    viewUserDetailsTemp != "" &&
+    viewUserDetailsTempUnit != "" &&
+    loadGlobalSettingsDataTemp != ""
+  ) {
+    if (loadGlobalSettingsDataTemp == viewUserDetailsTempUnit) {
+      return viewUserDetailsTemp + "-" + viewUserDetailsTempUnit;
+    } else if (loadGlobalSettingsDataTemp != viewUserDetailsTempUnit) {
+      if (loadGlobalSettingsDataTemp == "C") {
+        let convertedTemp = ((viewUserDetailsTemp - 32) * 5) / 9;
+        return <span>{convertedTemp}-C</span>;
+      } else {
+        let convertedTemp = viewUserDetailsTemp * (9 / 5) + 32;
+        return <span>{convertedTemp}-F</span>;
+      }
+    } else {
+      return viewUserDetailsTemp + "-" + viewUserDetailsTempUnit;
+    }
+  } else {
+    return viewUserDetailsTemp + "-" + viewUserDetailsTempUnit;
+  }
+};
+
 function ViewUser(props) {
   var userId = props.match.params.id;
   const apiCallUsers = new UserService();
@@ -381,28 +409,47 @@ function ViewUser(props) {
                 </Grid>
 
                 <Grid item xs={8}>
-                  {viewUserDetails.covidStateInfo &&
-                  props.loadGlobalSettingsData ? (
-                    <label>
-                      {/* {viewUserDetails.covidStateInfo
+                  {/* {viewUserDetails.covidStateInfo && */}
+                  {/* props.loadGlobalSettingsData ? ( */}
+                  <label>
+                    {/* {viewUserDetails.covidStateInfo
                         ? ConvertTemperature(
                             viewUserDetails.covidStateInfo.temperature,
                             viewUserDetails.covidStateInfo.temperatureUnit,
                             props.loadGlobalSettingsData.temperatureUnit
                           )
                         : " - " + props.loadGlobalSettingsData.temperatureUnit} */}
-                      {viewUserDetails.covidStateInfo.temperature &&
-                      props.loadGlobalSettingsData.temperatureUnit
+
+                    {/* {viewUserDetails.covidStateInfo.temperature && */}
+                    {/* props.loadGlobalSettingsData.temperatureUnit */}
+                    {/* ? viewUserDetails.covidStateInfo.temperature */}
+                    {/* : "-"}{" "} */}
+                    {/* {props.loadGlobalSettingsData.temperatureUnit && */}
+                    {/* viewUserDetails.covidStateInfo.temperature */}
+                    {/* ? props.loadGlobalSettingsData.temperatureUnit */}
+                    {/* : ""} */}
+                  </label>
+                  {/* ) : ( */}
+                  {/* "" */}
+                  {/* )} */}
+
+                  <DisplayFormControl
+                    viewUserDetailsTemp={
+                      viewUserDetails.covidStateInfo
                         ? viewUserDetails.covidStateInfo.temperature
-                        : "-"}{" "}
-                      {props.loadGlobalSettingsData.temperatureUnit &&
-                      viewUserDetails.covidStateInfo.temperature
+                        : ""
+                    }
+                    viewUserDetailsTempUnit={
+                      viewUserDetails.covidStateInfo
+                        ? viewUserDetails.covidStateInfo.temperatureUnit
+                        : ""
+                    }
+                    loadGlobalSettingsDataTemp={
+                      props.loadGlobalSettingsData
                         ? props.loadGlobalSettingsData.temperatureUnit
-                        : ""}
-                    </label>
-                  ) : (
-                    ""
-                  )}
+                        : ""
+                    }
+                  ></DisplayFormControl>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>

@@ -16,9 +16,8 @@ export default function EnterOtp(props) {
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [toasterServerity, settoasterServerity] = useState("");
   const [showLoadder, setshowLoadder] = useState(false);
 
@@ -78,8 +77,16 @@ export default function EnterOtp(props) {
               <TextValidator
                 variant="outlined"
                 margin="normal"
-                validators={["required", "matchRegexp:^[0-9]*$"]}
-                errorMessages={["Please enter otp", "Only numbers"]}
+                validators={[
+                  "required",
+                  "matchRegexp:^[0-9]*$",
+                  "minNumber:99999",
+                ]}
+                errorMessages={[
+                  "Please enter otp",
+                  "Only numbers",
+                  "Minimum allowed is 6 digits",
+                ]}
                 fullWidth
                 id="otp"
                 placeholder="OTP"
