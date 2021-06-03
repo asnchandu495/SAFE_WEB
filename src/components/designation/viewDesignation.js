@@ -16,9 +16,8 @@ function CreateUserGroup(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [formData, SetformData] = useState({
     id: "",
@@ -63,7 +62,7 @@ function CreateUserGroup(props) {
               Designations
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
-            {formData.name}
+              {formData.name}
             </LinkTo>
           </Breadcrumbs>
           <Paper className={`main-paper`}>
@@ -91,6 +90,14 @@ function CreateUserGroup(props) {
                   </Grid>
                   <Grid item xs={8}>
                     <label>{formData.description}</label>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} container>
+                  <Grid item xs={4}>
+                    <label>Unique Key :</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <label>{formData.uniqueKey}</label>
                   </Grid>
                 </Grid>
                 <Grid

@@ -438,6 +438,19 @@ function ViewSite(props) {
                   </Grid>
                 </Grid>
 
+                <Grid item sm={6} container>
+                  <Grid item xs={4}>
+                    <label>Unique Key :</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <label>{viewSiteValue.uniqueKey}</label>
+                  </Grid>
+                </Grid>
+                <Grid item sm={6} container>
+                  <Grid item xs={4}></Grid>
+                  <Grid item xs={8}></Grid>
+                </Grid>
+
                 <Grid item sm={6} container className="inner-page-grid">
                   <MuiThemeProvider theme={theme1}>
                     {" "}

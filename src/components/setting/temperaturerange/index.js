@@ -393,14 +393,16 @@ function TemperatureRange(props) {
                               tempsections.temperatureUnit == "C"
                                 ? [
                                     "required",
-                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                    // "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                    "matchRegexp:^[0-9]+([.][0-9]+)?$",
 
                                     "maxNumber:45",
                                     "minNumber:30",
                                   ]
                                 : [
                                     "required",
-                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                    // "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                    "matchRegexp:^[0-9]+([.][0-9]+)?$",
 
                                     "maxNumber:113",
                                     "minNumber:86",

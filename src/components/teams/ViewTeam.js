@@ -179,6 +179,15 @@ function ViewTeam(props) {
                     </label>
                   </Grid>
                 </Grid>
+                <Grid item xs={12} container>
+                  <Grid item xs={3}>
+                    <label> Unique Key :</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <label>{ViewTeamDetails.uniqueKey}</label>
+                  </Grid>
+                </Grid>
+
                 <Grid container item xs={12} spacing={3} direction="column">
                   <Grid item xs={12} container>
                     <Grid item xs={3}>
