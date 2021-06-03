@@ -882,6 +882,58 @@ export default class questionaireService {
     });
   }
 
+  submitBooleanAnswer(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/BooleanQuestion/PreviewBooleanAnswer`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  submitDateAnswer(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/QuestionDate/PreviewDateTimeAnswer`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  submitShorttextAnswer(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/FreeTextQuestion/PreviewFreeTextAnswer`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  submitTimeAnswer(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(
+      `${this.questionaireURL}/QuestionTime/PreviewTimeAnswer`,
+      {
+        method: "POST",
+        body: finalData,
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

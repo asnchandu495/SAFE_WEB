@@ -358,11 +358,16 @@ function TemperatureRange(props) {
                             options={
                               covidStatelist && covidStatelist.length > 0
                                 ? covidStatelist.filter((cstate) => {
+                                    debugger;
+                                    console.log(cstate);
                                     return !tempsections.covidStates.find(
                                       (sselected) => {
-                                        return (
-                                          sselected.covidState.id == cstate.id
-                                        );
+                                        console.log(sselected);
+                                        if (sselected.covidState) {
+                                          return (
+                                            sselected.covidState.id == cstate.id
+                                          );
+                                        }
                                       }
                                     );
                                   })

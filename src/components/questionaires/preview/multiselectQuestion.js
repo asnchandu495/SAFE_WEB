@@ -37,7 +37,6 @@ function MultiselectQuestion(props) {
             <Grid item xs={12} container>
               <Grid item xs={6}>
                 <FormControl variant="outlined" fullWidth>
-                  {props.multiselectAnswer.answers.length}
                   <Autocomplete
                     id={`tags-outlinedP`}
                     multiple
