@@ -164,6 +164,7 @@ function Users(props) {
   const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [RowsSelected, setRowsSelected] = useState([]);
+  const [anchorElMenu, setAnchorElMenu] = useState(null);
 
   const [searchformData, setsearchformData] = useState({
     primaryGroupId: "",
@@ -236,9 +237,10 @@ function Users(props) {
       });
   }, [reloadPage]);
 
-  const handleToggleMoreMenu = (thisRowData) => {
+  const handleToggleMoreMenu = (thisRowData, e) => {
     setSelectedRowDetails(thisRowData);
     setOpenMoreMenu((prevOpen) => !prevOpen);
+    setAnchorElMenu(e.currentTarget);
   };
 
   const handleClickOpenModal = () => {
@@ -253,7 +255,7 @@ function Users(props) {
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return;
     }
-
+    setAnchorElMenu(null);
     setOpenMoreMenu(false);
   };
 
@@ -625,7 +627,7 @@ function Users(props) {
                     ref={anchorRef}
                     aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
                     aria-haspopup="true"
-                    onClick={() => handleToggleMoreMenu(thisRowData)}
+                    onClick={(e) => handleToggleMoreMenu(thisRowData, e)}
                   ></Button>
                 </Tooltip>
               </div>
@@ -950,10 +952,11 @@ function Users(props) {
       />
       <Popper
         open={openMoreMenu}
-        anchorEl={anchorRef.current}
+        anchorEl={anchorElMenu}
         role={undefined}
         transition
         disablePortal
+        style={{ zIndex: 999 }}
       >
         {({ TransitionProps, placement }) => (
           <Grow
