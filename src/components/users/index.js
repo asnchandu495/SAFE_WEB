@@ -50,6 +50,7 @@ import { withStyles } from "@material-ui/core/styles";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
+import Pagination from "@material-ui/lab/Pagination";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -206,6 +207,8 @@ function Users(props) {
     siteId: [],
   });
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [userData, setUserData] = useState([]);
 
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
@@ -265,6 +268,7 @@ function Users(props) {
           setBusinessGroupData(getUserGroup);
           setBusinessCovidStateData(getCovidState);
           setglobalData(getLoadGlobalSetting);
+          setUserData(props.UserData);
           setcomponentLoadder(false);
         }
       )
@@ -421,7 +425,6 @@ function Users(props) {
         noMatch: "There are no users",
       },
     },
-
     customToolbar: () => {
       return (
         <span>
@@ -444,7 +447,6 @@ function Users(props) {
         </span>
       );
     },
-
     customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: (value, tableMeta, updateValue) => {
       console.log("id");
@@ -490,6 +492,57 @@ function Users(props) {
         </div>
       );
     },
+    customFooter: (
+      count,
+      page,
+      rowsPerPage,
+      changeRowsPerPage,
+      changePage,
+      textLabels
+    ) => {
+      return (
+        <CustomFooter
+          count={count}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          changeRowsPerPage={changeRowsPerPage}
+          changePage={changePage}
+          textLabels={textLabels}
+          userData={props.UserData}
+        />
+      );
+    },
+    onTableChange: (action, tableState) => {
+      console.log(action);
+      console.log(tableState);
+    },
+  };
+
+  const CustomFooter = (props) => {
+    console.log(props.userData);
+    return (
+      <div className="custom-pagination">
+        <Pagination
+          count={Math.ceil(props.userData.length / 5)}
+          page={currentPage}
+          defaultPage={1}
+          showFirstButton
+          showLastButton
+          onChange={handleChangePagination}
+        />
+      </div>
+    );
+  };
+
+  const handleChangePagination = (event, value) => {
+    console.log(userData);
+    console.log(value);
+    let nextSet = value * 5;
+    let currentSet = nextSet - 5;
+    console.log(nextSet);
+    console.log(currentSet);
+    setCurrentPage(value);
+    setUserData(props.UserData.slice(currentSet + 1, nextSet + 1));
   };
 
   const columns = [
@@ -940,9 +993,7 @@ function Users(props) {
           {" "}
           <MUIDataTable
             title={""}
-            data={
-              props.UserData && props.UserData.length > 0 ? props.UserData : []
-            }
+            data={userData && userData.length > 0 ? userData.slice(0, 5) : []}
             // data={applicationUsers ? applicationUsers : []}
             columns={columns}
             options={options}

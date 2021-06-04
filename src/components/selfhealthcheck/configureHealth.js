@@ -55,8 +55,8 @@ function ConfigureHealth(props) {
     useState("array");
   const [searchForm, setSearchForm] = useState({
     userId: "",
-    fromDate: null,
-    toDate: null,
+    fromDate: moment().toISOString(),
+    toDate: moment().toISOString(),
   });
   const [selectedUserDetails, setSelectedUserDetails] = useState();
 
