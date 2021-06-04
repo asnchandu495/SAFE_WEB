@@ -202,13 +202,36 @@ function TemperatureRange(props) {
         ),
       ],
     };
-    settempsections(list);
+
+    const listmain = {
+      ...tempsections,
+      covidStates: [
+        ...tempsections.covidStates.map((con, conIndex) => {
+          return conIndex - 1 == index - 1
+            ? { ...con, ["isNoUpperLimit"]: false }
+            : con;
+        }),
+      ],
+    };
+    settempsections(listmain);
   }
 
   const handleRemoveClickContacts = (j) => {
     const list = { ...tempsections };
     list.covidStates.splice(j, 1);
-    settempsections(list);
+
+    const listmain = {
+      ...list,
+      covidStates: [
+        ...list.covidStates.map((con, conIndex) => {
+          return conIndex - 1 == j - 1
+            ? { ...con, ["isNoUpperLimit"]: true }
+            : con;
+        }),
+      ],
+    };
+
+    settempsections(listmain);
   };
 
   const handleAddClickContacts = (index, j) => {
@@ -389,7 +412,6 @@ function TemperatureRange(props) {
                             )}
                           />
                         </Grid>
-
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
@@ -565,7 +587,6 @@ function TemperatureRange(props) {
                             {
                               <FormControlLabel
                                 control={<Checkbox name="isNoUpperLimit" />}
-                                // className={setflagStatus ? disabled : ""}
                                 onChange={(e) =>
                                   handleInputChangeContacts(e, i)
                                 }
@@ -585,12 +606,11 @@ function TemperatureRange(props) {
                               ></CancelIcon>
                             </Tooltip>
                           )}
-                          {!flagStatus
+                          {!x.isNoUpperLimit
                             ? tempsections.covidStates.length - 1 === i && (
                                 <Tooltip title="Add">
                                   <AddCircleIcon
                                     className={`add-row-icon`}
-                                    hidden={setflagStatus}
                                     onClick={handleAddClickContacts}
                                   ></AddCircleIcon>
                                 </Tooltip>
