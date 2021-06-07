@@ -123,8 +123,7 @@ function SocailDistancing(props) {
   const [selectedDate, setSelectedDate] = React.useState(
     new Date("2014-08-18T21:11:54")
   );
-  const [value, setValue] = React.useState("");
-  const [error, setError] = React.useState(false);
+  const [selectedValue, setSelectedValue] = React.useState("a");
   const [locationDensityData, setlocationDensityData] = useState([
     {
       id: "001",
@@ -275,10 +274,8 @@ function SocailDistancing(props) {
     setSelectedDate(date);
   };
 
-  const handleRadioChange = (event) => {
-    setValue(event.target.value);
-
-    setError(false);
+  const handleChange = (event) => {
+    setSelectedValue(event.target.value);
   };
   useEffect(() => {
     setComponentLoadder(true);
@@ -316,33 +313,26 @@ function SocailDistancing(props) {
                   <Grid item xs={12} container>
                     <Grid item xs={6} className="">
                       <label className=""> </label>
-                      <RadioGroup
-                        aria-label="quiz"
-                        name="quiz"
-                        value="#"
-                        onChange=""
-                      >
-                        <FormControlLabel
-                          value="best"
-                          control={<Radio />}
-                          label="Generate Indoor Report"
-                        />
-                      </RadioGroup>
+                      <Radio
+                        label="sdfddsf"
+                        checked={selectedValue === "a"}
+                        onChange={handleChange}
+                        value="a"
+                        name="radio-button-demo"
+                        inputProps={{ "aria-label": "A" }}
+                      />
                     </Grid>
 
                     <Grid item xs={6} className="date-time-pickers">
-                      <RadioGroup
-                        aria-label="quiz"
-                        name="quiz"
-                        value="#"
-                        onChange=""
-                      >
-                        <FormControlLabel
-                          value="best"
-                          control={<Radio />}
-                          label="Generate Outdoor Report"
-                        />
-                      </RadioGroup>
+                      <label className="">Generate Indoor Report </label>
+                      <Radio
+                        checked={selectedValue === "b"}
+                        onChange={handleChange}
+                        value="b"
+                        name="radio-button-demo"
+                        label="cdcs"
+                        inputProps={{ "aria-label": "B" }}
+                      />
                     </Grid>
                   </Grid>
 
