@@ -1332,3 +1332,10 @@ label.required {
 .overflow-hidden-editor {
   overflow-x: hidden;
 }
+
+.custom-pagination {
+  .MuiPagination-ul {
+    justify-content: center;
+    padding: 15px 0;
+  }
+}
