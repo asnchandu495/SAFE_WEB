@@ -52,7 +52,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-
+import NotificationImportantIcon from "@material-ui/icons/NotificationImportant";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -293,7 +293,7 @@ function ContactTracing(props) {
                   <Button
                     variant="contained"
                     color="default"
-                    startIcon={<CloseIcon />}
+                    startIcon={<NotificationImportantIcon />}
                     className={["delete-icon"].join(" ")}
                     onClick={() =>
                       handleClickOpenConfirmationModal(thisRowData)
@@ -373,7 +373,7 @@ function ContactTracing(props) {
     customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
-        <div className={`maingrid-actions`}>
+        <div className={`maingrid-actions action-buttons-container`}>
           <Tooltip title="Filter ">
             <Button
               variant="contained"
@@ -383,11 +383,11 @@ function ContactTracing(props) {
             ></Button>
           </Tooltip>
           {RowsSelected.length ? (
-            <Tooltip title="Delete">
+            <Tooltip title="Change Covid State">
               <Button
                 variant="contained"
-                startIcon={<PublishIcon />}
-                className={`delete-icon`}
+                startIcon={<ChangeStatusIcon />}
+                className={`edit-icon`}
                 onClick={() =>
                   handleClickOpenBulkModal(selectedUsersForCovidState)
                 }
@@ -523,7 +523,7 @@ function ContactTracing(props) {
       <Dialog
         onClose={handleClickCloseBulkModal}
         aria-labelledby="customized-dialog-title"
-        className="global-dialog confirmation-dialog global-form"
+        className="global-dialog confirmation-dialog global-form bulk-covidstate-update-reports"
         aria-labelledby="form-dialog-title"
         open={BulkModalOpen}
       >
@@ -533,36 +533,41 @@ function ContactTracing(props) {
         >
           Change covid state of users
         </DialogTitle>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <Table aria-label="simple table" className="flag-details-table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email ID</TableCell>
-                <TableCell>COVID state</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>User 1</TableCell>
-                <TableCell>User1@gmail.com</TableCell>
-                <TableCell>Safe</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>User 2</TableCell>
-                <TableCell>User2@gmail.com</TableCell>
-                <TableCell>Confirmed</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-          <ValidatorForm className={`global-form`} onSubmit="#">
-            <DialogContent dividers>
-              {!componentLoadder ? (
-                <Grid container spacing={3}>
-                  <Grid item xs={4}>
+        <ValidatorForm className={`global-form`} onSubmit="#">
+          <DialogContent dividers>
+            {!componentLoadder ? (
+              <Grid container spacing={3}>
+                <Grid item xs={12} container>
+                  <Table
+                    aria-label="simple table"
+                    className="flag-details-table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Email ID</TableCell>
+                        <TableCell>COVID state</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>User 1</TableCell>
+                        <TableCell>User1@gmail.com</TableCell>
+                        <TableCell>Safe</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>User 2</TableCell>
+                        <TableCell>User2@gmail.com</TableCell>
+                        <TableCell>Confirmed</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </Grid>
+                <Grid item xs={12} container>
+                  <Grid item xs={3}>
                     <label className="">Covid State</label>
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs={9}>
                     <Autocomplete
                       id="tags-outlined"
                       options={
@@ -587,29 +592,29 @@ function ContactTracing(props) {
                     />
                   </Grid>
                 </Grid>
-              ) : null}
-            </DialogContent>
-            <DialogActions>
-              <Button
-                variant="contained"
-                type="submit"
-                className="global-submit-btn"
-                disabled={showLoadder}
-              >
-                {showLoadder ? <ButtonLoadderComponent /> : "Save"}
-              </Button>
-              <Button onClick={handleClose} className="global-cancel-btn">
-                Cancel
-              </Button>
-            </DialogActions>
-          </ValidatorForm>{" "}
-        </MuiPickersUtilsProvider>
+              </Grid>
+            ) : null}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              type="submit"
+              className="global-submit-btn"
+              disabled={showLoadder}
+            >
+              {showLoadder ? <ButtonLoadderComponent /> : "Save"}
+            </Button>
+            <Button onClick={handleClose} className="global-cancel-btn">
+              Cancel
+            </Button>
+          </DialogActions>
+        </ValidatorForm>{" "}
       </Dialog>
 
       <Dialog
         onClose={handleChangeStateClose}
         aria-labelledby="customized-dialog-title"
-        className="global-dialog confirmation-dialog global-form"
+        className="global-dialog confirmation-dialog global-form modal-min-width"
         aria-labelledby="form-dialog-title"
         open={ChangeModalOpen}
       >
@@ -619,56 +624,55 @@ function ContactTracing(props) {
         >
           Change State
         </DialogTitle>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <ValidatorForm className={`global-form`} onSubmit="#">
-            <DialogContent dividers>
-              {!componentLoadder ? (
-                <Grid container spacing={3}>
-                  <Grid item xs={4}>
-                    <label className="">Covid State</label>
-                  </Grid>
-                  <Grid item xs={8}>
-                    <Autocomplete
-                      id="tags-outlined"
-                      options={
-                        BusinessCovidStateData &&
-                        BusinessCovidStateData.length > 0
-                          ? BusinessCovidStateData
-                          : []
-                      }
-                      getOptionLabel={(option) => option.stateName}
-                      onChange={covidStateSelect}
-                      defaultValue={covidStatelist}
-                      name="covidState"
-                      filterSelectedOptions
-                      className="global-input autocomplete-select"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          placeholder="Select  covid state"
-                        />
-                      )}
-                    />
-                  </Grid>
+        <ValidatorForm className={`global-form`} onSubmit="#">
+          <DialogContent dividers>
+            {!componentLoadder ? (
+              <Grid container spacing={3}>
+                <Grid item xs={4}>
+                  <label className="">Covid State</label>
                 </Grid>
-              ) : null}
-            </DialogContent>
-            <DialogActions>
-              <Button
-                variant="contained"
-                type="submit"
-                className="global-submit-btn"
-                disabled={showLoadder}
-              >
-                {showLoadder ? <ButtonLoadderComponent /> : "Generate"}
-              </Button>
-              <Button onClick={handleClose} className="global-cancel-btn">
-                Reset
-              </Button>
-            </DialogActions>
-          </ValidatorForm>{" "}
-        </MuiPickersUtilsProvider>
+                <Grid item xs={8}>
+                  <Autocomplete
+                    fullWidth
+                    id="tags-outlined"
+                    options={
+                      BusinessCovidStateData &&
+                      BusinessCovidStateData.length > 0
+                        ? BusinessCovidStateData
+                        : []
+                    }
+                    getOptionLabel={(option) => option.stateName}
+                    onChange={covidStateSelect}
+                    defaultValue={covidStatelist}
+                    name="covidState"
+                    filterSelectedOptions
+                    className="global-input autocomplete-select"
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        placeholder="Select  covid state"
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+            ) : null}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              type="submit"
+              className="global-submit-btn"
+              disabled={showLoadder}
+            >
+              {showLoadder ? <ButtonLoadderComponent /> : "Generate"}
+            </Button>
+            <Button onClick={handleClose} className="global-cancel-btn">
+              Reset
+            </Button>
+          </DialogActions>
+        </ValidatorForm>{" "}
       </Dialog>
 
       <Dialog

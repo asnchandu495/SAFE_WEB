@@ -1339,3 +1339,42 @@ label.required {
     padding: 15px 0;
   }
 }
+
+.reports-table {
+  .inner-table {
+    padding-left: 50px;
+    thead th {
+      padding: 10px 5px;
+    }
+    th:last-child,
+    td:last-child {
+      text-align: left;
+    }
+    tbody td {
+      padding: 10px 5px;
+    }
+    table {
+      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+    }
+  }
+}
+
+.no-action-table {
+  th:last-child,
+  td:last-child {
+    text-align: left;
+  }
+}
+
+.modal-min-width {
+  .MuiDialog-paper {
+    min-width: 450px;
+  }
+}
+
+.bulk-covidstate-update-reports {
+  .MuiDialog-paper {
+    min-width: 600px;
+  }
+}

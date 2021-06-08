@@ -187,39 +187,6 @@ function LocationDensity(props) {
         filter: false,
       },
     },
-
-    {
-      label: "Action",
-      name: "",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return (
-              <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick="#"
-                  ></Button>
-                </Tooltip>
-              </div>
-            );
-          }
-        },
-
-        setCellProps: (value) => {
-          return {
-            style: { width: "250px", minWidth: "250px", textAlign: "center" },
-          };
-        },
-      },
-    },
   ];
 
   const options = {
@@ -326,7 +293,7 @@ function LocationDensity(props) {
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
-                <Grid item cs={12} container>
+                <Grid item xs={12} container>
                   <Grid item xs={4}>
                     <label className="">Site </label>
                   </Grid>
@@ -427,7 +394,7 @@ function LocationDensity(props) {
         data={locationDensityData}
         columns={columns}
         options={options}
-        className="global-table"
+        className="global-table no-action-table"
       />
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}

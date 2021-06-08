@@ -19,9 +19,7 @@ import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
 import moment from "moment";
-
 import Dialog from "@material-ui/core/Dialog";
-
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
@@ -30,7 +28,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -41,10 +38,8 @@ import SiteService from "../../services/siteService";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-
 import propTypes from "prop-types";
 import { connect } from "react-redux";
-
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -241,44 +236,20 @@ function DensityThreshold(props) {
       },
     },
     {
-      label: " # of instances ",
+      name: "usersList",
+      label: "UsersList",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      label: "# of instances ",
       name: "status",
       options: {
         filter: false,
         sort: true,
-      },
-    },
-
-    {
-      label: "Action",
-      name: "",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return (
-              <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick="#"
-                  ></Button>
-                </Tooltip>
-              </div>
-            );
-          }
-        },
-
-        setCellProps: (value) => {
-          return {
-            style: { width: "250px", minWidth: "250px", textAlign: "center" },
-          };
-        },
       },
     },
   ];
@@ -288,56 +259,49 @@ function DensityThreshold(props) {
     onFilterChange: (changedColumn, filterList) => {
       console.log(changedColumn, filterList);
     },
-    selectableRows: "single",
+    selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
-
     rowsPerPage: 5,
     expandableRows: true,
-
+    expandableRowsHeader: false,
     renderExpandableRow: (rowData, rowMeta) => {
-      console.log(rowData, rowMeta);
+      console.log(rowData);
       return (
-        <React.Fragment>
-          <tr>
-            <td colSpan={6}>
-              <TableContainer component={Paper}>
-                <Table style={{ minWidth: "650" }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="right">UserName</TableCell>
-                      <TableCell align="right">User ID&nbsp;</TableCell>
-                      <TableCell align="right">Email ID&nbsp;</TableCell>
-                      <TableCell align="right">Timestamp</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {locationDensityData.userList
-                      ? locationDensityData.userList.map((row) => (
-                          <TableRow key={row.id}>
-                            <TableCell component="th" scope="row">
-                              {row.name}
-                            </TableCell>
-                            <TableCell align="right">{row.userid}</TableCell>
-                            <TableCell align="right">{row.id}</TableCell>
-                            <TableCell align="right">{row.emailid}</TableCell>
-                            <TableCell align="right">{row.timestamp}</TableCell>
-                          </TableRow>
-                        ))
-                      : []}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </td>
-          </tr>
-        </React.Fragment>
+        <tr>
+          <td colSpan={6}>
+            <TableContainer className="inner-table">
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>User Name</TableCell>
+                    <TableCell>User ID&nbsp;</TableCell>
+                    <TableCell>Email ID&nbsp;</TableCell>
+                    <TableCell>Timestamp</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rowData[3]
+                    ? rowData[3].map((row) => (
+                        <TableRow key={row.id}>
+                          <TableCell>{row.name}</TableCell>
+                          <TableCell>{row.userid}</TableCell>
+                          <TableCell>{row.emailid}</TableCell>
+                          <TableCell>{row.timestamp}</TableCell>
+                        </TableRow>
+                      ))
+                    : []}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </td>
+        </tr>
       );
     },
     page: 1,
     print: false,
     viewColumns: false,
     download: false,
-
     customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
@@ -570,7 +534,7 @@ function DensityThreshold(props) {
         data={locationDensityData}
         columns={columns}
         options={options}
-        className="global-table"
+        className="global-table reports-table no-action-table"
       />
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
