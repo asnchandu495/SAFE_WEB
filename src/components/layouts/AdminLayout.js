@@ -37,6 +37,7 @@ import LocationCityIcon from "@material-ui/icons/LocationCity";
 import AuthService from "../../services/authService";
 import GroupWorkIcon from "@material-ui/icons/GroupWork";
 import ListAltIcon from "@material-ui/icons/ListAlt";
+import AssessmentIcon from "@material-ui/icons/Assessment";
 import Logo from "../assets/Logo-dashboard.svg";
 import "./AdminLayout.scss";
 import HealingIcon from "@material-ui/icons/Healing";
@@ -152,6 +153,7 @@ function AdminLayout(props) {
   const [openTeamMenu, setTeamMenu] = useState(false);
   const [openQuestionaires, setOpenQuestionaires] = useState(false);
   const [openWorkflow, setOpenWorkflow] = useState(false);
+  const [openReports, setOpenReports] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -322,6 +324,22 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
     setOpenWorkflow(!openWorkflow);
+  };
+
+  const handleClickopenReports = () => {
+    setOpenDrawer(true);
+    setopenEmergencyContact(false);
+    setOpenUsers(false);
+    setopenUserManagment(false);
+    setopenDesiginationMenu(false);
+    setopenCovidStateMenu(false);
+    setopenSetting(false);
+    setopenSiteMenu(false);
+    setopenFAQMenu(false);
+    setTeamMenu(false);
+    setOpenQuestionaires(false);
+    setOpenWorkflow(false);
+    setOpenReports(!openReports);
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -1145,6 +1163,117 @@ function AdminLayout(props) {
                       <ArrowForwardIcon />
                     </ListItemIcon>
                     <ListItemText primary="CREATE" />
+                  </ListItem>
+                </List>
+              </Collapse>
+              <Divider></Divider>
+
+              <ListItem button onClick={handleClickopenReports}>
+                <ListItemIcon>
+                  <AssessmentIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Reports"
+                  className={clsx({
+                    [classes.hide]: !openDrawer,
+                  })}
+                />
+                {openReports ? (
+                  <ExpandLess className="exp-coll-icon" />
+                ) : (
+                  <ExpandMore className="exp-coll-icon" />
+                )}
+              </ListItem>
+              <Collapse in={openReports} timeout="auto" unmountOnExit>
+                <List
+                  component="div"
+                  disablePadding
+                  className={clsx({
+                    [classes.hide]: !openDrawer,
+                  })}
+                >
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/locationdensity"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />{" "}
+                    </ListItemIcon>
+                    <ListItemText primary="Location Density" />
+                  </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/densitythreshold"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Density Threshold Breaches" />
+                  </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/office-staff"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Number Of Staff In Office" />
+                  </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/social-distancing"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Social Distancing Breaches" />
+                  </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/access-breaches"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Access Breaches" />
+                  </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/contact-trace-history"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Contact Trace History" />
+                  </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/geo-fencing-breaches"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Geo Fencing Threshold Breaches" />
                   </ListItem>
                 </List>
               </Collapse>

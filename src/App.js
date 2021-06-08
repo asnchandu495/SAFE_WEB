@@ -77,6 +77,13 @@ import AddActions from "./components/workflow/addActions";
 import ViewWorkflow from "./components/workflow/ViewWorkflow";
 import ActionForm from "./components/workflow/actionForm";
 import AddActionsNew from "./components/workflow/addActionNew";
+import LocationDensity from "./components/reports/LocationDensity";
+import DensityThreshold from "./components/reports/densityThreshold";
+import OfficeStaff from "./components/reports/officeStaff";
+import socialDistancing from "./components/reports/socialDistancing";
+import AccessBreaches from "./components/reports/accessBreaches";
+import ContactTracing from "./components/reports/contactTracing";
+import GeoFencingBreaches from "./components/reports/geoFencingBreaches";
 
 function App(props) {
   const AuthContainer = () => {
@@ -316,6 +323,41 @@ function App(props) {
           exact
           path="/workflow/:wid/:aid/:uaid/:actionId/configure-action"
           component={ActionForm}
+        ></Route>
+        <Route
+          exact
+          path="/reports/locationdensity"
+          component={LocationDensity}
+        ></Route>
+        <Route
+          exact
+          path="/reports/densitythreshold"
+          component={DensityThreshold}
+        ></Route>
+        <Route
+          exact
+          path="/reports/office-staff"
+          component={OfficeStaff}
+        ></Route>
+        <Route
+          exact
+          path="/reports/social-distancing"
+          component={socialDistancing}
+        ></Route>
+        <Route
+          exact
+          path="/reports/access-breaches"
+          component={AccessBreaches}
+        ></Route>
+        <Route
+          exact
+          path="/reports/contact-trace-history"
+          component={ContactTracing}
+        ></Route>
+        <Route
+          exact
+          path="/reports/geo-fencing-breaches"
+          component={GeoFencingBreaches}
         ></Route>
       </AdminLayout>
     );
@@ -557,6 +599,41 @@ function App(props) {
         <Route
           exact
           path="/workflow/:wid/:aid/:uaid/:actionId/configure-action"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/locationdensity"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/densitythreshold"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/office-staff"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/social-distancing"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/access-Breaches"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/contact-trace-history"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/geo-fencing-breaches"
           component={AdminContainer}
         ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />
