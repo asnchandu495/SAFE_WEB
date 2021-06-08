@@ -18,6 +18,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
+import moment from "moment";
 
 import Dialog from "@material-ui/core/Dialog";
 
@@ -120,11 +121,12 @@ function OfficeStaff(props) {
 
   const [allSites, setAllSites] = useState();
   const [TeamData, setTeamData] = useState();
-
+  const [selectedUserDetails, setSelectedUserDetails] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
-  const [selectedDate, setSelectedDate] = React.useState(
-    new Date("2014-08-18T21:11:54")
-  );
+  const [selectedDate, setSelectedDate] = useState();
+  const [selectedSiteData, setselectedSiteData] = useState();
+  const [selectedTeamData, setselectedTeamData] = useState();
+  const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [locationDensityData, setlocationDensityData] = useState([
     {
       id: "001",
@@ -280,7 +282,7 @@ function OfficeStaff(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Filter By User">
+          <Tooltip title="Filter">
             <Button
               variant="contained"
               startIcon={<FilterListIcon />}
@@ -308,7 +310,62 @@ function OfficeStaff(props) {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+  function selectedSite(e, value) {
+    setselectedSiteData(value);
+  }
+  function selectedTeam(e, value) {
+    setselectedTeamData(value);
+  }
 
+  const [searchForm, setSearchForm] = useState({
+    site: [],
+    team: [],
+    fromDate: moment().toISOString(),
+    toDate: moment().toISOString(),
+    frequency: "",
+  });
+
+  function handleChange(e) {
+    setisAlertBoxOpened(true);
+    const { name, value } = e.target;
+    setSearchForm((logInForm) => ({
+      ...logInForm,
+      [name]: value,
+    }));
+  }
+
+  const handleChangeSearchForm = (getSelectedVal, name) => {
+    let thisValue = "";
+    var nextday = "";
+    if (name == "userId") {
+      if (getSelectedVal) {
+        thisValue = getSelectedVal.id;
+        setSelectedUserDetails(getSelectedVal);
+      } else {
+        thisValue = "";
+      }
+    } else {
+      thisValue = moment(getSelectedVal).toISOString();
+    }
+    setSearchForm((searchForm) => ({
+      ...searchForm,
+      [name]: thisValue,
+    }));
+  };
+
+  function submitForm(e) {
+    e.preventDefault();
+    if (selectedSiteData) {
+      searchForm.site = selectedSiteData;
+    }
+    if (selectedTeamData) {
+      searchForm.team = selectedTeamData;
+    }
+    console.log(searchForm);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
+    setComponentLoadder(true);
+  }
   useEffect(() => {
     setComponentLoadder(true);
     Promise.all([
@@ -340,7 +397,7 @@ function OfficeStaff(props) {
           Filter
         </DialogTitle>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <ValidatorForm className={`global-form`} onSubmit="#">
+          <ValidatorForm className={`global-form`} onSubmit={submitForm}>
             <DialogContent dividers>
               {!componentLoadder ? (
                 <Grid container spacing={3}>
@@ -357,8 +414,8 @@ function OfficeStaff(props) {
                             allSites && allSites.length > 0 ? allSites : []
                           }
                           getOptionLabel={(option) => option.name}
-                          // defaultValue="#"
-                          // onChange="#"
+                          defaultValue={selectedSiteData}
+                          onChange={selectedSite}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
                           renderInput={(params) => (
@@ -382,9 +439,7 @@ function OfficeStaff(props) {
                           id="demo-simple-select-outlined-label"
                           shrink={false}
                           className="select-label"
-                        >
-                          {/* {formData.isActive != "" ? "Select status" : ""} */}
-                        </InputLabel>
+                        ></InputLabel>
 
                         <Autocomplete
                           multiple
@@ -393,8 +448,8 @@ function OfficeStaff(props) {
                             TeamData && TeamData.length > 0 ? TeamData : []
                           }
                           getOptionLabel={(option) => option.name}
-                          // defaultValue="#"
-                          // onChange="#"
+                          defaultValue={selectedTeamData}
+                          onChange={selectedTeam}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
                           renderInput={(params) => (
@@ -411,11 +466,13 @@ function OfficeStaff(props) {
 
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Period</label>
+                      <label className="">From</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers">
-                      {/* {formData.isActive != "" ? "Select status" : ""} */}
-
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers fromdate-container"
+                    >
                       <KeyboardDatePicker
                         fullWidth
                         name="fromDate"
@@ -423,7 +480,7 @@ function OfficeStaff(props) {
                         format="dd/MM/yyyy"
                         value={selectedDate}
                         className="global-input"
-                        onChange={handleDateChange}
+                        onChange={handleChangeSearchForm}
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
@@ -436,8 +493,6 @@ function OfficeStaff(props) {
                       <label className="">To</label>
                     </Grid>
                     <Grid item xs={8} className="date-time-pickers">
-                      {/* {formData.isActive != "" ? "Select status" : ""} */}
-
                       <KeyboardDatePicker
                         fullWidth
                         name="fromDate"
@@ -445,7 +500,7 @@ function OfficeStaff(props) {
                         format="dd/MM/yyyy"
                         value={selectedDate}
                         className="global-input"
-                        onChange={handleDateChange}
+                        onChange={handleChangeSearchForm}
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
@@ -457,29 +512,26 @@ function OfficeStaff(props) {
                     <Grid item xs={4}>
                       <label className="">Frequency</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers">
+                    <Grid item xs={8} className="">
                       <TextValidator
-                        variant="outlined"
                         fullWidth
+                        variant="outlined"
                         validators={[
-                          "required",
+                          // "required",
                           "matchRegexp:^[0-9]*$",
                           "maxNumber:999",
                         ]}
                         errorMessages={[
-                          "Please enter unlock duration of user account",
+                          // "Please enter frequencey ",
                           "Only numbers are allowed",
                           "Maximum allowed 3 digits",
                         ]}
-                        id="outlined-adornment-weight"
-                        name="durationToLockUserAccount"
+                        name="frequency"
                         type={"text"}
-                        value=""
-                        onChange=""
-                        aria-describedby="outlined-weight-helper-text"
-                        labelWidth={0}
+                        value={searchForm.frequency}
+                        onChange={handleChange}
                         className="global-input"
-                        InputLabelProps={{ shrink: false }}
+                        // InputLabelProps={{ shrink: false }}
                         InputProps={{
                           startAdornment: (
                             <InputAdornment position="start">

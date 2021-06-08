@@ -18,6 +18,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
+import moment from "moment";
 
 import Dialog from "@material-ui/core/Dialog";
 
@@ -116,6 +117,14 @@ function DensityThreshold(props) {
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
 
   const [allSites, setAllSites] = useState();
+  const [selectedSiteData, setselectedSiteData] = useState();
+  const [selectedLocationData, setselectedLocationData] = useState();
+  const [searchForm, setSearchForm] = useState({
+    site: [],
+    location: [],
+    fromDate: moment().toISOString(),
+    toDate: moment().toISOString(),
+  });
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [selectedDate, setSelectedDate] = React.useState(
     new Date("2014-08-18T21:11:54")
@@ -241,7 +250,7 @@ function DensityThreshold(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Filter By User">
+          <Tooltip title="Filter ">
             <Button
               variant="contained"
               startIcon={<FilterListIcon />}
@@ -269,6 +278,12 @@ function DensityThreshold(props) {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
+  function selectedSite(e, value) {
+    setselectedSiteData(value);
+  }
+  function selectedLocation(e, value) {
+    setselectedLocationData(value);
+  }
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -286,6 +301,19 @@ function DensityThreshold(props) {
         console.log(err);
       });
   }, []);
+  function submitForm(e) {
+    e.preventDefault();
+    if (selectedSiteData) {
+      searchForm.site = selectedSiteData;
+    }
+    if (selectedLocation) {
+      searchForm.location = selectedLocationData;
+    }
+    console.log(searchForm);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
+    setComponentLoadder(true);
+  }
   return (
     <div className="innerpage-container">
       <Dialog
@@ -299,7 +327,7 @@ function DensityThreshold(props) {
           Filter
         </DialogTitle>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <ValidatorForm className={`global-form`} onSubmit="#">
+          <ValidatorForm className={`global-form`} onSubmit={submitForm}>
             <DialogContent dividers>
               {!componentLoadder ? (
                 <Grid container spacing={3}>
@@ -316,8 +344,8 @@ function DensityThreshold(props) {
                             allSites && allSites.length > 0 ? allSites : []
                           }
                           getOptionLabel={(option) => option.name}
-                          // defaultValue="#"
-                          // onChange="#"
+                          defaultValue={selectedSiteData}
+                          onChange={selectedSite}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
                           renderInput={(params) => (
@@ -341,9 +369,7 @@ function DensityThreshold(props) {
                           id="demo-simple-select-outlined-label"
                           shrink={false}
                           className="select-label"
-                        >
-                          {/* {formData.isActive != "" ? "Select status" : ""} */}
-                        </InputLabel>
+                        ></InputLabel>
 
                         <Autocomplete
                           multiple
@@ -354,8 +380,8 @@ function DensityThreshold(props) {
                               : []
                           }
                           getOptionLabel={(option) => option.name}
-                          // defaultValue="#"
-                          // onChange="#"
+                          defaultValue={selectedLocationData}
+                          onChange={selectedLocation}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
                           renderInput={(params) => (
@@ -372,11 +398,9 @@ function DensityThreshold(props) {
 
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Period</label>
+                      <label className="">From</label>
                     </Grid>
                     <Grid item xs={8} className="date-time-pickers">
-                      {/* {formData.isActive != "" ? "Select status" : ""} */}
-
                       <KeyboardDatePicker
                         fullWidth
                         name="fromDate"
@@ -397,11 +421,9 @@ function DensityThreshold(props) {
                       <label className="">To</label>
                     </Grid>
                     <Grid item xs={8} className="date-time-pickers">
-                      {/* {formData.isActive != "" ? "Select status" : ""} */}
-
                       <KeyboardDatePicker
                         fullWidth
-                        name="fromDate"
+                        name="toDate"
                         id=""
                         format="dd/MM/yyyy"
                         value={selectedDate}

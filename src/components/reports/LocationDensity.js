@@ -109,6 +109,8 @@ function LocationDensity(props) {
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
 
   const [allSites, setAllSites] = useState();
+  const [selectedSiteData, setselectedSiteData] = useState();
+  const [selectedLocationData, setselectedLocationData] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [locationDensityData, setlocationDensityData] = useState([
     {
@@ -116,18 +118,21 @@ function LocationDensity(props) {
       name: "site 0",
       location: { id: "001", name: " Bengaluru" },
       status: "Active",
+      color: "green",
     },
     {
       id: "002",
       name: "Site 1",
       location: { id: "001", name: " Hyderabad" },
       status: "Inctive",
+      color: "#ffbf00",
     },
     {
       id: "001",
       name: "site2",
       location: { id: "001", name: " Chennai" },
       status: "Active",
+      color: "red",
     },
   ]);
   const locationData = [
@@ -165,6 +170,21 @@ function LocationDensity(props) {
             return <span>{thisRowData[2].name}</span>;
           }
         },
+        setCellProps: (value, rowIndex) => {
+          var thisRowData = locationDensityData[rowIndex];
+          return {
+            style: { backgroundColor: thisRowData.color, color: "#fff" },
+          };
+        },
+      },
+    },
+    {
+      name: "color",
+      label: "Color",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
       },
     },
 
@@ -223,7 +243,7 @@ function LocationDensity(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Filter By User">
+          <Tooltip title="Filter ">
             <Button
               variant="contained"
               startIcon={<FilterListIcon />}
@@ -247,6 +267,32 @@ function LocationDensity(props) {
   const handleClose = () => {
     setModalOpen(false);
   };
+
+  const [searchForm, setSearchForm] = useState({
+    site: [],
+    location: [],
+  });
+
+  function selectedSite(e, value) {
+    setselectedSiteData(value);
+  }
+  function selectedLocation(e, value) {
+    setselectedLocationData(value);
+  }
+
+  function submitForm(e) {
+    e.preventDefault();
+    if (selectedSiteData) {
+      searchForm.site = selectedSiteData;
+    }
+    if (selectedLocation) {
+      searchForm.location = selectedLocationData;
+    }
+    console.log(searchForm);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
+    setComponentLoadder(true);
+  }
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -276,7 +322,7 @@ function LocationDensity(props) {
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           Filter
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit="#">
+        <ValidatorForm className={`global-form`} onSubmit={submitForm}>
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
@@ -288,20 +334,21 @@ function LocationDensity(props) {
                     <FormControl variant="outlined" fullWidth>
                       <Autocomplete
                         multiple
+                        name="siteId"
                         id="tags-outlined"
                         options={
                           allSites && allSites.length > 0 ? allSites : []
                         }
                         getOptionLabel={(option) => option.name}
-                        // defaultValue="#"
-                        // onChange="#"
+                        defaultValue={selectedSiteData}
+                        onChange={selectedSite}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
                         renderInput={(params) => (
                           <TextField
                             {...params}
                             variant="outlined"
-                            placeholder="Select Sit"
+                            placeholder="Select Site"
                           />
                         )}
                       />{" "}
@@ -322,9 +369,10 @@ function LocationDensity(props) {
                             ? locationData
                             : []
                         }
+                        name="location"
                         getOptionLabel={(option) => option.name}
-                        // defaultValue="#"
-                        // onChange="#"
+                        defaultValue={selectedLocationData}
+                        onChange={selectedLocation}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
                         renderInput={(params) => (

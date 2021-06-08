@@ -19,6 +19,7 @@ import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
 
+import CovidStateApiServices from "../../services/masterDataService";
 import Dialog from "@material-ui/core/Dialog";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -40,11 +41,8 @@ import SiteService from "../../services/siteService";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import ChangeStatusIcon from "@material-ui/icons/SyncAlt";
 import moment from "moment";
-
 import propTypes from "prop-types";
 import { connect } from "react-redux";
 
@@ -99,13 +97,17 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-function SocailDistancing(props) {
+function ContactTracing(props) {
   const UserGroup = new UserGroupService();
+  const CovidStateApi = new CovidStateApiServices();
+
   const siteApiCall = new SiteService();
   const [userGroupList, setuserGroupList] = useState();
-
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [Modalopen, setModalOpen] = useState(false);
+  const [ChangeModalOpen, setChangeModalOpen] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
+  const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
@@ -124,34 +126,36 @@ function SocailDistancing(props) {
   const [selectedDate, setSelectedDate] = React.useState(
     new Date("2014-08-18T21:11:54")
   );
-  const [selectedSiteData, setselectedSiteData] = useState();
-  const [selectedLocationData, setselectedLocationData] = useState();
+  const [covidStatelist, setcovidStatelist] = useState();
+  const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
   const [searchForm, setSearchForm] = useState({
-    site: [],
-    location: [],
+    userid: "",
+    firstname: "",
+    lastname: "",
     fromDate: moment().toISOString(),
     toDate: moment().toISOString(),
-    reporttype: "",
   });
-  const [selectedValue, setSelectedValue] = React.useState("a");
   const [locationDensityData, setlocationDensityData] = useState([
     {
       id: "001",
-      name: "site 0",
-      location: { id: "001", name: " Bengaluru" },
+      user: "User 1",
+      contact: { id: "001", name: " level1" },
       status: "00",
+      userid: "676768",
     },
     {
       id: "002",
-      name: "Site 1",
-      location: { id: "001", name: " Hyderabad" },
+      user: "User 2",
+      contact: { id: "001", name: " level1" },
       status: "02",
+      userid: "123456",
     },
     {
       id: "001",
-      name: "site2",
-      location: { id: "001", name: " Chennai" },
+      user: "User 3",
+      contact: { id: "001", name: " level1" },
       status: "00",
+      userid: "345673",
     },
   ]);
   const locationData = [
@@ -170,33 +174,34 @@ function SocailDistancing(props) {
       },
     },
     {
-      label: "Site ",
-      name: "name",
+      label: "Name ",
+      name: "user",
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      label: "Location",
-      name: "location",
+      label: "User ID ",
+      name: "userid",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      label: "Contact Trace Level",
+      name: "contact",
       options: {
         filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          console.log(thisRowData);
           if (thisRowData) {
-            return <span>{thisRowData[2].name}</span>;
+            return <span>{thisRowData[3].name}</span>;
           }
         },
-      },
-    },
-    {
-      label: " # of instances ",
-      name: "status",
-      options: {
-        filter: false,
-        sort: true,
       },
     },
 
@@ -211,13 +216,28 @@ function SocailDistancing(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="View">
+                <Tooltip title="Alert">
                   <Button
                     variant="contained"
                     color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick="#"
+                    startIcon={<CloseIcon />}
+                    className={["delete-icon"].join(" ")}
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
+                  ></Button>
+                </Tooltip>
+
+                <Tooltip title="Change Covid State">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<ChangeStatusIcon />}
+                    className={`edit-icon`}
+                    onClick={() =>
+                      // handleClickOpenChangeStatusModal(thisRowData)
+                      handleChangeState(thisRowData)
+                    }
                   ></Button>
                 </Tooltip>
               </div>
@@ -234,18 +254,25 @@ function SocailDistancing(props) {
     },
   ];
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
-
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
     print: false,
     viewColumns: false,
     download: false,
-    selectableRows: false,
+    disableToolbarSelect: true,
+
+    selectableRows: "multiple",
+
     textLabels: {
       body: {
         noMatch: "There are no reports",
@@ -280,36 +307,41 @@ function SocailDistancing(props) {
     setModalOpen(false);
   };
 
+  const handleChangeState = () => {
+    setChangeModalOpen(true);
+  };
+
+  const handleChangeStateClose = () => {
+    setChangeModalOpen(false);
+  };
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
-  // const handleChange = (event) => {
-  //   setSelectedValue(event.target.value);
-  // };
-  function selectedSite(e, value) {
-    setselectedSiteData(value);
-  }
-  function selectedLocation(e, value) {
-    setselectedLocationData(value);
+  function covidStateSelect(e, value) {
+    setcovidStatelist(value);
   }
   function handleChange(e) {
+    setisAlertBoxOpened(true);
     const { name, value } = e.target;
     setSearchForm((logInForm) => ({
       ...logInForm,
       [name]: value,
     }));
   }
+
   useEffect(() => {
     setComponentLoadder(true);
     Promise.all([
       siteApiCall.getListSite(),
       siteApiCall.getLocationManagers(),
+      CovidStateApi.getCOVIDStates(),
       //   props.LoadData(),
     ])
 
-      .then(([getAllSites, result]) => {
+      .then(([getAllSites, result, getCovidStates]) => {
         setComponentLoadder(false);
+        setBusinessCovidStateData(getCovidStates);
         setAllSites(getAllSites);
       })
       .catch((err) => {
@@ -319,20 +351,102 @@ function SocailDistancing(props) {
 
   function submitForm(e) {
     e.preventDefault();
-    if (selectedSiteData) {
-      searchForm.site = selectedSiteData;
-    }
-    if (selectedLocation) {
-      searchForm.location = selectedLocationData;
-    }
-    console.log(searchForm);
+    var formData = searchForm;
+    console.log(formData);
     settoasterServerity("");
     settoasterErrorMessageType("");
     setComponentLoadder(true);
   }
 
+  const handleClickOpenChangeStatusModal = (value) => {
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("ChangeDocStatus");
+    setConfirmationHeaderTittle("Change emergency contact doc status");
+
+    setConfirmationDialogContextText(
+      `By changing the status to “Inactive”, users of the user group will not be able to access any Emergency Contact documents. Are you sure you want to change status ?`
+    );
+  };
+
+  const handleClickOpenConfirmationModal = (value) => {
+    var user = value[1];
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("alertreport");
+    setConfirmationHeaderTittle("Alert");
+    setConfirmationDialogContextText(
+      `Alert! ${user} has been reported as Covid positive. As a precautionary step, please WFH for next 2 week. Contact your supervisor for more information.`
+    );
+  };
+
   return (
     <div className="innerpage-container">
+      <Dialog
+        onClose={handleChangeStateClose}
+        aria-labelledby="customized-dialog-title"
+        className="global-dialog confirmation-dialog global-form"
+        aria-labelledby="form-dialog-title"
+        open={ChangeModalOpen}
+      >
+        <DialogTitle
+          id="customized-dialog-title"
+          onClose={handleChangeStateClose}
+        >
+          Change State
+        </DialogTitle>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <ValidatorForm className={`global-form`} onSubmit="#">
+            <DialogContent dividers>
+              {!componentLoadder ? (
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                    <label className="">Covid State</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Autocomplete
+                      id="tags-outlined"
+                      options={
+                        BusinessCovidStateData &&
+                        BusinessCovidStateData.length > 0
+                          ? BusinessCovidStateData
+                          : []
+                      }
+                      getOptionLabel={(option) => option.stateName}
+                      onChange={covidStateSelect}
+                      defaultValue={covidStatelist}
+                      name="covidState"
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select  covid state"
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              ) : null}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="contained"
+                type="submit"
+                className="global-submit-btn"
+                disabled={showLoadder}
+              >
+                {showLoadder ? <ButtonLoadderComponent /> : "Generate"}
+              </Button>
+              <Button onClick={handleClose} className="global-cancel-btn">
+                Reset
+              </Button>
+            </DialogActions>
+          </ValidatorForm>{" "}
+        </MuiPickersUtilsProvider>
+      </Dialog>
+
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -348,95 +462,79 @@ function SocailDistancing(props) {
             <DialogContent dividers>
               {!componentLoadder ? (
                 <Grid container spacing={3}>
-                  <Grid item xs={12} container>
-                    <Grid item xs={4} className="">
-                      <label>Type</label>
-                    </Grid>
-
-                    <Grid item xs={8} className="">
-                      <Radio
-                        label=""
-                        checked={selectedValue === "a"}
-                        onChange={handleChange}
-                        value="a"
-                        name="reporttype"
-                        inputProps={{ "aria-label": "A" }}
-                      />
-                      <label className=""> Indoor Report </label>
-                      <Radio
-                        checked={selectedValue === "b"}
-                        onChange={handleChange}
-                        value="b"
-                        name="reporttype"
-                        label=""
-                        inputProps={{ "aria-label": "B" }}
-                      />
-                      <label className=""> Outdoor Report </label>
-                    </Grid>
-                  </Grid>
-
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Site </label>
+                      <label className="">User ID </label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
-                        <Autocomplete
-                          multiple
-                          id="tags-outlined"
-                          options={
-                            allSites && allSites.length > 0 ? allSites : []
-                          }
-                          getOptionLabel={(option) => option.name}
-                          defaultValue={selectedSiteData}
-                          onChange={selectedSite}
-                          filterSelectedOptions
-                          className="global-input autocomplete-select"
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              variant="outlined"
-                              placeholder="Select Site"
-                            />
-                          )}
-                        />{" "}
+                        <TextValidator
+                          variant="outlined"
+                          fullWidth
+                          placeholder="User Id"
+                          id="userid"
+                          name="userid"
+                          onChange={handleChange}
+                          value={searchForm.userid}
+                          className="global-input"
+                          InputLabelProps={{ shrink: false }}
+                        />
                       </FormControl>
                     </Grid>
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Location</label>
+                      <label className="">First Name</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
-                        <InputLabel
-                          id="demo-simple-select-outlined-label"
-                          shrink={false}
-                          className="select-label"
-                        >
-                          {/* {formData.isActive != "" ? "Select status" : ""} */}
-                        </InputLabel>
+                        <TextValidator
+                          variant="outlined"
+                          //   validators={[
+                          //     "matchRegexp:^[0-9]*$",
+                          //     "maxNumber:9999999",
+                          //   ]}
+                          //   errorMessages={[
+                          //     "Only numbers are allowed",
+                          //     "Maximum allowed digits",
+                          //   ]}
+                          fullWidth
+                          placeholder="First Name "
+                          id="firstname"
+                          name="firstname"
+                          onChange={handleChange}
+                          value={searchForm.firstname}
+                          className="global-input"
+                          InputLabelProps={{ shrink: false }}
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
 
-                        <Autocomplete
-                          multiple
-                          id="tags-outlined"
-                          options={
-                            locationData && locationData.length > 0
-                              ? locationData
-                              : []
-                          }
-                          getOptionLabel={(option) => option.name}
-                          defaultValue={selectedLocationData}
-                          onChange={selectedLocation}
-                          filterSelectedOptions
-                          className="global-input autocomplete-select"
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              variant="outlined"
-                              placeholder="Select Location"
-                            />
-                          )}
+                  <Grid item xs={12} container>
+                    <Grid item xs={4}>
+                      <label className="">Last Name</label>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <FormControl variant="outlined" fullWidth>
+                        <TextValidator
+                          variant="outlined"
+                          //   validators={[
+                          //     "matchRegexp:^[0-9]*$",
+                          //     "maxNumber:9999999",
+                          //   ]}
+                          //   errorMessages={[
+                          //     "Only numbers are allowed",
+                          //     "Maximum allowed digits",
+                          //   ]}
+                          fullWidth
+                          placeholder="Last Name"
+                          id="lastname"
+                          name="lastname"
+                          onChange={handleChange}
+                          value={searchForm.lastname}
+                          className="global-input"
+                          InputLabelProps={{ shrink: false }}
                         />
                       </FormControl>
                     </Grid>
@@ -447,6 +545,8 @@ function SocailDistancing(props) {
                       <label className="">From</label>
                     </Grid>
                     <Grid item xs={8} className="date-time-pickers">
+                      {/* {formData.isActive != "" ? "Select status" : ""} */}
+
                       <KeyboardDatePicker
                         fullWidth
                         name="fromDate"
@@ -471,7 +571,7 @@ function SocailDistancing(props) {
 
                       <KeyboardDatePicker
                         fullWidth
-                        name="toDate"
+                        name="fromDate"
                         id=""
                         format="dd/MM/yyyy"
                         value={selectedDate}
@@ -516,7 +616,7 @@ function SocailDistancing(props) {
           Reports
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Social Distancing Breaches
+          Contact Trace History
         </LinkTo>
       </Breadcrumbs>
 
@@ -549,4 +649,4 @@ function SocailDistancing(props) {
   );
 }
 
-export default SocailDistancing;
+export default ContactTracing;

@@ -99,7 +99,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-function SocailDistancing(props) {
+function GeoFencingBreaches(props) {
   const UserGroup = new UserGroupService();
   const siteApiCall = new SiteService();
   const [userGroupList, setuserGroupList] = useState();
@@ -127,31 +127,35 @@ function SocailDistancing(props) {
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedLocationData, setselectedLocationData] = useState();
   const [searchForm, setSearchForm] = useState({
-    site: [],
-    location: [],
     fromDate: moment().toISOString(),
     toDate: moment().toISOString(),
-    reporttype: "",
+    users: "",
   });
   const [selectedValue, setSelectedValue] = React.useState("a");
   const [locationDensityData, setlocationDensityData] = useState([
     {
       id: "001",
-      name: "site 0",
+      name: "User1",
       location: { id: "001", name: " Bengaluru" },
       status: "00",
+      userid: "567899",
+      emailid: "user1@sutherland.com",
     },
     {
       id: "002",
-      name: "Site 1",
+      name: "User 2",
       location: { id: "001", name: " Hyderabad" },
       status: "02",
+      userid: "124643",
+      emailid: "user2@sutherland.com",
     },
     {
       id: "001",
-      name: "site2",
+      name: "User 3",
       location: { id: "001", name: " Chennai" },
       status: "00",
+      userid: "098765",
+      emailid: "user3@sutherland.com",
     },
   ]);
   const locationData = [
@@ -170,7 +174,7 @@ function SocailDistancing(props) {
       },
     },
     {
-      label: "Site ",
+      label: "User Name ",
       name: "name",
       options: {
         filter: false,
@@ -178,17 +182,19 @@ function SocailDistancing(props) {
       },
     },
     {
-      label: "Location",
-      name: "location",
+      label: "User ID",
+      name: "userid",
       options: {
         filter: false,
         sort: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return <span>{thisRowData[2].name}</span>;
-          }
-        },
+      },
+    },
+    {
+      label: "Email ID",
+      name: "emailid",
+      options: {
+        filter: false,
+        sort: true,
       },
     },
     {
@@ -350,7 +356,7 @@ function SocailDistancing(props) {
                 <Grid container spacing={3}>
                   <Grid item xs={12} container>
                     <Grid item xs={4} className="">
-                      <label>Type</label>
+                      <label>Select User</label>
                     </Grid>
 
                     <Grid item xs={8} className="">
@@ -359,86 +365,19 @@ function SocailDistancing(props) {
                         checked={selectedValue === "a"}
                         onChange={handleChange}
                         value="a"
-                        name="reporttype"
+                        name="users"
                         inputProps={{ "aria-label": "A" }}
                       />
-                      <label className=""> Indoor Report </label>
+                      <label className=""> All users reporting to me </label>
                       <Radio
                         checked={selectedValue === "b"}
                         onChange={handleChange}
                         value="b"
-                        name="reporttype"
+                        name="users"
                         label=""
                         inputProps={{ "aria-label": "B" }}
                       />
-                      <label className=""> Outdoor Report </label>
-                    </Grid>
-                  </Grid>
-
-                  <Grid item cs={12} container>
-                    <Grid item xs={4}>
-                      <label className="">Site </label>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <FormControl variant="outlined" fullWidth>
-                        <Autocomplete
-                          multiple
-                          id="tags-outlined"
-                          options={
-                            allSites && allSites.length > 0 ? allSites : []
-                          }
-                          getOptionLabel={(option) => option.name}
-                          defaultValue={selectedSiteData}
-                          onChange={selectedSite}
-                          filterSelectedOptions
-                          className="global-input autocomplete-select"
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              variant="outlined"
-                              placeholder="Select Site"
-                            />
-                          )}
-                        />{" "}
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12} container>
-                    <Grid item xs={4}>
-                      <label className="">Location</label>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <FormControl variant="outlined" fullWidth>
-                        <InputLabel
-                          id="demo-simple-select-outlined-label"
-                          shrink={false}
-                          className="select-label"
-                        >
-                          {/* {formData.isActive != "" ? "Select status" : ""} */}
-                        </InputLabel>
-
-                        <Autocomplete
-                          multiple
-                          id="tags-outlined"
-                          options={
-                            locationData && locationData.length > 0
-                              ? locationData
-                              : []
-                          }
-                          getOptionLabel={(option) => option.name}
-                          defaultValue={selectedLocationData}
-                          onChange={selectedLocation}
-                          filterSelectedOptions
-                          className="global-input autocomplete-select"
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              variant="outlined"
-                              placeholder="Select Location"
-                            />
-                          )}
-                        />
-                      </FormControl>
+                      <label className=""> Specific users </label>
                     </Grid>
                   </Grid>
 
@@ -516,7 +455,7 @@ function SocailDistancing(props) {
           Reports
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Social Distancing Breaches
+          Geo Fencing Threshold Breaches
         </LinkTo>
       </Breadcrumbs>
 
@@ -549,4 +488,4 @@ function SocailDistancing(props) {
   );
 }
 
-export default SocailDistancing;
+export default GeoFencingBreaches;

@@ -1239,6 +1239,42 @@ function AdminLayout(props) {
                     </ListItemIcon>
                     <ListItemText primary="Social Distancing Breaches" />
                   </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/access-breaches"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Access Breaches" />
+                  </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/contact-trace-history"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Contact Trace History" />
+                  </ListItem>
+
+                  <ListItem
+                    button
+                    className={classes.nested}
+                    component={Link}
+                    to="/reports/geo-fencing-breaches"
+                  >
+                    <ListItemIcon>
+                      <ArrowForwardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Geo Fencing Threshold Breaches" />
+                  </ListItem>
                 </List>
               </Collapse>
               <Divider></Divider>

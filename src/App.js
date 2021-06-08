@@ -81,6 +81,9 @@ import LocationDensity from "./components/reports/LocationDensity";
 import DensityThreshold from "./components/reports/densityThreshold";
 import OfficeStaff from "./components/reports/officeStaff";
 import socialDistancing from "./components/reports/socialDistancing";
+import AccessBreaches from "./components/reports/accessBreaches";
+import ContactTracing from "./components/reports/contactTracing";
+import GeoFencingBreaches from "./components/reports/geoFencingBreaches";
 
 function App(props) {
   const AuthContainer = () => {
@@ -340,6 +343,21 @@ function App(props) {
           exact
           path="/reports/social-distancing"
           component={socialDistancing}
+        ></Route>
+        <Route
+          exact
+          path="/reports/access-breaches"
+          component={AccessBreaches}
+        ></Route>
+        <Route
+          exact
+          path="/reports/contact-trace-history"
+          component={ContactTracing}
+        ></Route>
+        <Route
+          exact
+          path="/reports/geo-fencing-breaches"
+          component={GeoFencingBreaches}
         ></Route>
       </AdminLayout>
     );
@@ -601,6 +619,21 @@ function App(props) {
         <Route
           exact
           path="/reports/social-distancing"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/access-Breaches"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/contact-trace-history"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/reports/geo-fencing-breaches"
           component={AdminContainer}
         ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />

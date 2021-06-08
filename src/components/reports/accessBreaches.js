@@ -40,9 +40,6 @@ import SiteService from "../../services/siteService";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import moment from "moment";
 
 import propTypes from "prop-types";
@@ -98,8 +95,7 @@ const DialogActions = withStyles((theme) => ({
     padding: theme.spacing(1),
   },
 }))(MuiDialogActions);
-
-function SocailDistancing(props) {
+function AccessBreaches(props) {
   const UserGroup = new UserGroupService();
   const siteApiCall = new SiteService();
   const [userGroupList, setuserGroupList] = useState();
@@ -131,9 +127,7 @@ function SocailDistancing(props) {
     location: [],
     fromDate: moment().toISOString(),
     toDate: moment().toISOString(),
-    reporttype: "",
   });
-  const [selectedValue, setSelectedValue] = React.useState("a");
   const [locationDensityData, setlocationDensityData] = useState([
     {
       id: "001",
@@ -255,7 +249,7 @@ function SocailDistancing(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Filter ">
+          <Tooltip title="Filter">
             <Button
               variant="contained"
               startIcon={<FilterListIcon />}
@@ -284,22 +278,13 @@ function SocailDistancing(props) {
     setSelectedDate(date);
   };
 
-  // const handleChange = (event) => {
-  //   setSelectedValue(event.target.value);
-  // };
   function selectedSite(e, value) {
     setselectedSiteData(value);
   }
   function selectedLocation(e, value) {
     setselectedLocationData(value);
   }
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setSearchForm((logInForm) => ({
-      ...logInForm,
-      [name]: value,
-    }));
-  }
+
   useEffect(() => {
     setComponentLoadder(true);
     Promise.all([
@@ -348,33 +333,6 @@ function SocailDistancing(props) {
             <DialogContent dividers>
               {!componentLoadder ? (
                 <Grid container spacing={3}>
-                  <Grid item xs={12} container>
-                    <Grid item xs={4} className="">
-                      <label>Type</label>
-                    </Grid>
-
-                    <Grid item xs={8} className="">
-                      <Radio
-                        label=""
-                        checked={selectedValue === "a"}
-                        onChange={handleChange}
-                        value="a"
-                        name="reporttype"
-                        inputProps={{ "aria-label": "A" }}
-                      />
-                      <label className=""> Indoor Report </label>
-                      <Radio
-                        checked={selectedValue === "b"}
-                        onChange={handleChange}
-                        value="b"
-                        name="reporttype"
-                        label=""
-                        inputProps={{ "aria-label": "B" }}
-                      />
-                      <label className=""> Outdoor Report </label>
-                    </Grid>
-                  </Grid>
-
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
                       <label className="">Site </label>
@@ -413,9 +371,7 @@ function SocailDistancing(props) {
                           id="demo-simple-select-outlined-label"
                           shrink={false}
                           className="select-label"
-                        >
-                          {/* {formData.isActive != "" ? "Select status" : ""} */}
-                        </InputLabel>
+                        ></InputLabel>
 
                         <Autocomplete
                           multiple
@@ -516,7 +472,7 @@ function SocailDistancing(props) {
           Reports
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Social Distancing Breaches
+          Access Breaches
         </LinkTo>
       </Breadcrumbs>
 
@@ -549,4 +505,4 @@ function SocailDistancing(props) {
   );
 }
 
-export default SocailDistancing;
+export default AccessBreaches;
