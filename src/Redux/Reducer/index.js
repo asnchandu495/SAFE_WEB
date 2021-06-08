@@ -17,6 +17,7 @@ import assignquestionaireStates from "./assignquestionaireReducer";
 import questionStates from "./questionReducer";
 import workflowStates from "./workflowReducer";
 import publishReducers from "./publishFaqReducer";
+import gridState from "./gridReducer";
 
 const rootReducer = combineReducers({
   user: userState,
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   questionState: questionStates,
   workflowState: workflowStates,
   publishReducer: publishReducers,
+  gridState: gridState,
 });
 
 export default rootReducer;

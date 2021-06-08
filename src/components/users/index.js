@@ -492,30 +492,56 @@ function Users(props) {
         </div>
       );
     },
-    customFooter: (
-      count,
-      page,
-      rowsPerPage,
-      changeRowsPerPage,
-      changePage,
-      textLabels
-    ) => {
-      return (
-        <CustomFooter
-          count={count}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          changeRowsPerPage={changeRowsPerPage}
-          changePage={changePage}
-          textLabels={textLabels}
-          userData={props.UserData}
-        />
-      );
+    customSearch: (searchQuery, currentRow, columns) => {
+      console.log(columns);
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col !== "undefined" && col !== null) {
+          if (typeof col === "object") {
+            if (col.name) {
+              if (col.name.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+            if (col.stateName) {
+              if (col.stateName.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+          } else {
+            if (col.toString().indexOf(searchQuery) >= 0) {
+              isFound = true;
+            }
+          }
+        }
+      });
+
+      return isFound;
     },
-    onTableChange: (action, tableState) => {
-      console.log(action);
-      console.log(tableState);
-    },
+    // customFooter: (
+    //   count,
+    //   page,
+    //   rowsPerPage,
+    //   changeRowsPerPage,
+    //   changePage,
+    //   textLabels
+    // ) => {
+    //   return (
+    //     <CustomFooter
+    //       count={count}
+    //       page={page}
+    //       rowsPerPage={rowsPerPage}
+    //       changeRowsPerPage={changeRowsPerPage}
+    //       changePage={changePage}
+    //       textLabels={textLabels}
+    //       userData={props.UserData}
+    //     />
+    //   );
+    // },
+    // onTableChange: (action, tableState) => {
+    //   console.log(action);
+    //   console.log(tableState);
+    // },
   };
 
   const CustomFooter = (props) => {
@@ -993,8 +1019,10 @@ function Users(props) {
           {" "}
           <MUIDataTable
             title={""}
-            data={userData && userData.length > 0 ? userData.slice(0, 5) : []}
-            // data={applicationUsers ? applicationUsers : []}
+            // data={userData && userData.length > 0 ? userData.slice(0, 5) : []}
+            data={
+              props.UserData && props.UserData.length > 0 ? props.UserData : []
+            }
             columns={columns}
             options={options}
             className="global-table"
