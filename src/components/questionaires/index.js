@@ -14,12 +14,14 @@ import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
-import propTypes from "prop-types";
+
 import { connect } from "react-redux";
 import questionaireService from "../../services/questionaireService";
 import * as questionaireAction from "../../Redux/Action/questionaireAction";
 import prototypes from "prop-types";
 import BackupIcon from "@material-ui/icons/Backup";
+import * as GridAction from "../../Redux/Action/gridAction";
+import propTypes from "prop-types";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -50,14 +52,15 @@ function Questionaire(props) {
     useState("array");
   const [ConfirmationModalActionType, setConfirmationModalActionType] =
     useState("");
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const [reloadPage, setReloadPage] = useState("NO");
   useEffect(() => {
     setcomponentLoadder(true);
+    Promise.all([props.LoadData(), props.LoadGridsPage()])
 
-    props
-      .LoadData()
-      .then((res) => {
+      .then(([res, gridResult]) => {
         setcomponentLoadder(false);
       })
       .catch((error) => {
@@ -218,13 +221,38 @@ function Questionaire(props) {
     },
   ];
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "questionnaire";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "questionnaire", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     print: false,
     viewColumns: false,
     download: false,
@@ -313,16 +341,22 @@ function Questionaire(props) {
 Questionaire.propTypes = {
   QuestionaireData: propTypes.array.isRequired,
   LoadData: propTypes.func.isRequired,
+  getGridsPages: propTypes.func.isRequired,
+  gridState: propTypes.array.isRequired,
+  updateGridsPages: propTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     QuestionaireData: state.questionaireState,
+    GridData: state.gridHistory,
   };
 }
 
 const mapDispatchToProps = {
   LoadData: questionaireAction.loadquestions,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Questionaire);

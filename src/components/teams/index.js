@@ -18,6 +18,8 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import propTypes from "prop-types";
 import ToasterMessageComponent from "../common/toaster";
+import PropTypes from "prop-types";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -53,11 +55,13 @@ function Teams(props) {
     useState("");
   const [reloadPage, setReloadPage] = useState("NO");
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
   useEffect(() => {
     setcomponentLoadder(true);
-    props
-      .LoadAllTeams()
-      .then((res) => {
+    Promise.all([props.LoadAllTeams(), props.LoadGridsPage()])
+
+      .then(([result, gridResult]) => {
         setcomponentLoadder(false);
       })
       .catch((error) => {
@@ -206,13 +210,38 @@ function Teams(props) {
     },
   ];
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "teams";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 10,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "teams", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     print: false,
     viewColumns: false,
     download: false,
@@ -309,16 +338,22 @@ function Teams(props) {
 Teams.propTypes = {
   TeamData: propTypes.array.isRequired,
   LoadAllTeams: propTypes.func.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     TeamData: state.team,
+    GridData: state.gridHistory,
   };
 }
 
 const mapDispatchToProps = {
   LoadAllTeams: teamAction.loadTeam,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 // export default Teams;

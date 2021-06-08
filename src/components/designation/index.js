@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -46,11 +47,12 @@ function ListAssignedDesignation(props) {
   const [ConfirmationModalActionType, setConfirmationModalActionType] =
     useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
-
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
   useEffect(() => {
-    props
-      .LoadAllUserDesignation()
-      .then((result) => {
+    Promise.all([props.LoadAllUserDesignation(), props.LoadGridsPage()])
+
+      .then(([result, gridResult]) => {
         setcomponentLoadder(false);
       })
       .catch((err) => {
@@ -66,14 +68,38 @@ function ListAssignedDesignation(props) {
     props.history.push("/designation/view-designation/" + value);
   }
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "designations";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
-    print: false,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "designations", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     viewColumns: false,
     download: false,
     selectableRows: false,
@@ -261,16 +287,22 @@ function ListAssignedDesignation(props) {
 ListAssignedDesignation.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.userDesignation,
+    GridData: state.gridHistory,
   };
 }
 
 const mapDispatchToProps = {
   LoadAllUserDesignation: UserDesignationAction.loadUserDesignation,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(

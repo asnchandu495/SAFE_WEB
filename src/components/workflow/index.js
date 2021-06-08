@@ -46,6 +46,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const styles = (theme) => ({
   root: {
@@ -81,6 +82,8 @@ function Workflow(props) {
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [selectedUserData, setselectedUserData] = useState();
   const [selectedStatusData, setselectedStatusData] = useState();
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
   const [searchformData, setsearchformData] = useState({
     UserGroupId: "",
     IsActive: "",
@@ -212,13 +215,38 @@ function Workflow(props) {
     },
   ];
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "questionnaire";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "questionnaire", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     print: false,
     viewColumns: false,
     download: false,
@@ -573,16 +601,22 @@ function Workflow(props) {
 Workflow.propTypes = {
   WorkflowData: propTypes.array.isRequired,
   LoadData: propTypes.func.isRequired,
+  getGridsPages: propTypes.func.isRequired,
+  gridState: propTypes.array.isRequired,
+  updateGridsPages: propTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     WorkflowData: state.workflowState,
+    GridData: state.gridHistory,
   };
 }
 
 const mapDispatchToProps = {
   LoadData: worlflowAction.loadWorkflow,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workflow);

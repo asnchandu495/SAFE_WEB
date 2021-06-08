@@ -17,6 +17,7 @@ import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import UserService from "../../services/usersService";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -52,11 +53,13 @@ function CovidState(props) {
   const [ConfirmationModalActionType, setConfirmationModalActionType] =
     useState("");
   const [componentLoadder, setcomponentLoadder] = useState(false);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    props
-      .LoadData()
-      .then((result) => {
+    Promise.all([props.LoadData(), props.LoadGridsPage()])
+
+      .then(([result, gridResult]) => {
         setcomponentLoadder(false);
       })
       .catch((err) => {
@@ -71,6 +74,21 @@ function CovidState(props) {
   function handleClickViewUsers(value) {
     props.history.push("/covidstate/view-covidstate/" + value);
   }
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "covidStates";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
 
   const options = {
     filter: false,
@@ -78,7 +96,16 @@ function CovidState(props) {
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "covidStates", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     print: false,
     viewColumns: false,
     download: false,
@@ -258,16 +285,22 @@ function CovidState(props) {
 CovidState.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     CovidData: state.covidState,
+    GridData: state.gridHistory,
   };
 }
 
 const mapDispatchToProps = {
   LoadData: CovidStateAction.loadCovidState,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CovidState);

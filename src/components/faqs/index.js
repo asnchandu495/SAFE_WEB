@@ -18,6 +18,7 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { connect } from "react-redux";
 import * as faqAction from "../../Redux/Action/faqAction";
 import PropTypes from "prop-types";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -33,28 +34,25 @@ const theme1 = createMuiTheme({
 
 function ViewAllFAQs(props) {
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    props
-      .LoadData()
-      .then((result) => {
+    Promise.all([props.LoadData(), props.LoadGridsPage()])
+
+      .then(([result, gridResult]) => {
         // setAllFaqs(result);
         setcomponentLoadder(false);
       })
@@ -73,13 +71,39 @@ function ViewAllFAQs(props) {
     );
   };
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "faqs";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
+
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "faqs", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     print: false,
     viewColumns: false,
     download: false,
@@ -249,16 +273,22 @@ function ViewAllFAQs(props) {
 ViewAllFAQs.propTypes = {
   FaqData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     FaqData: state.faqState,
+    GridData: state.gridHistory,
   };
 }
 
 const mapDispatchToProps = {
   LoadData: faqAction.loadFaq,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewAllFAQs);
