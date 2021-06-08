@@ -116,7 +116,7 @@ function DensityThreshold(props) {
   const [ConfirmationModalActionType, setConfirmationModalActionType] =
     useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [userListDisplay, setuserListDisplay] = useState([]);
+
   const [allSites, setAllSites] = useState();
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedLocationData, setselectedLocationData] = useState();
@@ -342,7 +342,6 @@ function DensityThreshold(props) {
   }
 
   useEffect(() => {
-    setuserListDisplay(locationDensityData.usersList);
     setComponentLoadder(true);
     Promise.all([
       siteApiCall.getListSite(),

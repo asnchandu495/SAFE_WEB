@@ -44,6 +44,12 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import moment from "moment";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 
 import propTypes from "prop-types";
 import { connect } from "react-redux";
@@ -140,6 +146,16 @@ function GeoFencingBreaches(props) {
       status: "00",
       userid: "567899",
       emailid: "user1@sutherland.com",
+      usersList: [
+        {
+          location: "username",
+
+          timestamp: "1-9-2020: 10:32",
+        },
+        {
+          location: "username",
+        },
+      ],
     },
     {
       id: "002",
@@ -148,6 +164,16 @@ function GeoFencingBreaches(props) {
       status: "02",
       userid: "124643",
       emailid: "user2@sutherland.com",
+      usersList: [
+        {
+          location: "sana super mart bg road",
+
+          timestamp: "1-9-2020: 10:32",
+        },
+        {
+          location: "username",
+        },
+      ],
     },
     {
       id: "001",
@@ -156,6 +182,16 @@ function GeoFencingBreaches(props) {
       status: "00",
       userid: "098765",
       emailid: "user3@sutherland.com",
+      usersList: [
+        {
+          location: "day to day fresh bsk 3rd stage",
+
+          timestamp: "1-9-2020: 10:32",
+        },
+        {
+          location: " 2nd stage btm layout",
+        },
+      ],
     },
   ]);
   const locationData = [
@@ -190,6 +226,15 @@ function GeoFencingBreaches(props) {
       },
     },
     {
+      name: "usersList",
+      label: "UsersList",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
       label: "Email ID",
       name: "emailid",
       options: {
@@ -197,6 +242,7 @@ function GeoFencingBreaches(props) {
         sort: true,
       },
     },
+
     {
       label: " # of instances ",
       name: "status",
@@ -242,11 +288,45 @@ function GeoFencingBreaches(props) {
 
   const options = {
     filter: false,
+    onFilterChange: (changedColumn, filterList) => {
+      console.log(changedColumn, filterList);
+    },
+    selectableRows: false,
     filterType: "dropdown",
-    responsive: "scroll",
-    fixedHeader: true,
-    rowsPerPageOptions: [5, 10, 15, 100],
+    responsive: "scrollMaxHeight",
     rowsPerPage: 5,
+    expandableRows: true,
+    expandableRowsHeader: false,
+    renderExpandableRow: (rowData, rowMeta) => {
+      console.log(rowData);
+      return (
+        <tr>
+          <td colSpan={6}>
+            <TableContainer className="inner-table">
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Timestamp</TableCell>
+                    <TableCell>Location</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rowData[3]
+                    ? rowData[3].map((row) => (
+                        <TableRow key={row.id}>
+                          <TableCell>{row.timestamp}</TableCell>
+                          <TableCell>{row.location}</TableCell>
+                        </TableRow>
+                      ))
+                    : []}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </td>
+        </tr>
+      );
+    },
+    page: 1,
 
     print: false,
     viewColumns: false,
@@ -464,7 +544,7 @@ function GeoFencingBreaches(props) {
         data={locationDensityData}
         columns={columns}
         options={options}
-        className="global-table"
+        className="global-table reports-table no-action-table"
       />
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}

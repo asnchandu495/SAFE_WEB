@@ -44,6 +44,12 @@ import moment from "moment";
 
 import propTypes from "prop-types";
 import { connect } from "react-redux";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -134,18 +140,66 @@ function AccessBreaches(props) {
       name: "site 0",
       location: { id: "001", name: " Bengaluru" },
       status: "00",
+      usersList: [
+        {
+          id: "08",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+        {
+          id: "09",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+      ],
     },
     {
       id: "002",
       name: "Site 1",
       location: { id: "001", name: " Hyderabad" },
       status: "02",
+      usersList: [
+        {
+          id: "08",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+        {
+          id: "09",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+      ],
     },
     {
       id: "001",
       name: "site2",
       location: { id: "001", name: " Chennai" },
       status: "00",
+      usersList: [
+        {
+          id: "08",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+        {
+          id: "09",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+      ],
     },
   ]);
   const locationData = [
@@ -183,6 +237,15 @@ function AccessBreaches(props) {
             return <span>{thisRowData[2].name}</span>;
           }
         },
+      },
+    },
+    {
+      name: "usersList",
+      label: "UsersList",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
       },
     },
     {
@@ -230,12 +293,49 @@ function AccessBreaches(props) {
 
   const options = {
     filter: false,
+    onFilterChange: (changedColumn, filterList) => {
+      console.log(changedColumn, filterList);
+    },
+    selectableRows: false,
     filterType: "dropdown",
-    responsive: "scroll",
-    fixedHeader: true,
-    rowsPerPageOptions: [5, 10, 15, 100],
+    responsive: "scrollMaxHeight",
     rowsPerPage: 5,
-
+    expandableRows: true,
+    expandableRowsHeader: false,
+    renderExpandableRow: (rowData, rowMeta) => {
+      console.log(rowData);
+      return (
+        <tr>
+          <td colSpan={6}>
+            <TableContainer className="inner-table">
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>User Name</TableCell>
+                    <TableCell>User ID&nbsp;</TableCell>
+                    <TableCell>Email ID&nbsp;</TableCell>
+                    <TableCell>Timestamp</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rowData[3]
+                    ? rowData[3].map((row) => (
+                        <TableRow key={row.id}>
+                          <TableCell>{row.name}</TableCell>
+                          <TableCell>{row.userid}</TableCell>
+                          <TableCell>{row.emailid}</TableCell>
+                          <TableCell>{row.timestamp}</TableCell>
+                        </TableRow>
+                      ))
+                    : []}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </td>
+        </tr>
+      );
+    },
+    page: 1,
     print: false,
     viewColumns: false,
     download: false,
@@ -481,7 +581,7 @@ function AccessBreaches(props) {
         data={locationDensityData}
         columns={columns}
         options={options}
-        className="global-table"
+        className="global-table reports-table no-action-table"
       />
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
