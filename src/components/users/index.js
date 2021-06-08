@@ -51,6 +51,7 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Pagination from "@material-ui/lab/Pagination";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -198,7 +199,6 @@ function Users(props) {
   const [RowsSelected, setRowsSelected] = useState([]);
   const [anchorElMenu, setAnchorElMenu] = useState(null);
   const [globalData, setglobalData] = useState();
-
   const [searchformData, setsearchformData] = useState({
     primaryGroupId: "",
     designationId: "",
@@ -207,7 +207,7 @@ function Users(props) {
     siteId: [],
   });
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [userData, setUserData] = useState([]);
 
   const DialogTitle = withStyles(styles)((props) => {
@@ -250,6 +250,7 @@ function Users(props) {
       UserGroupApi.loadUserGroup(),
       CovidStateApi.getCOVIDStates(),
       GlobalSettingApi.getLoadGlobalSetting(),
+      props.LoadGridsPage(),
     ])
       .then(
         ([
@@ -260,6 +261,7 @@ function Users(props) {
           getUserGroup,
           getCovidState,
           getLoadGlobalSetting,
+          gridResult,
         ]) => {
           setReloadPage("NO");
           setBusinessUserRoleMasterData(getUserRoles);
@@ -388,6 +390,18 @@ function Users(props) {
     setCurrentRowsPerPage(rowsPerPage);
   }
 
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "users";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -402,9 +416,8 @@ function Users(props) {
     selectableRows: "multiple",
     disableToolbarSelect: true,
     // rowsSelected: selectedUsersForCovidState,
+    jumpToPage: true,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
-      console.log("rows");
-      console.log(currentRowSelected);
       var setRowsSelectedArray = [];
       allRowsSelected.map((user, i) => {
         setRowsSelectedArray.push(user.dataIndex);
@@ -449,8 +462,6 @@ function Users(props) {
     },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: (value, tableMeta, updateValue) => {
-      console.log("id");
-      console.log(selectedUsersForCovidState);
       return (
         <div className={`maingrid-actions`}>
           <Tooltip title="Filter By User">
@@ -493,7 +504,6 @@ function Users(props) {
       );
     },
     customSearch: (searchQuery, currentRow, columns) => {
-      console.log(columns);
       let isFound = false;
       currentRow.forEach((col) => {
         if (typeof col !== "undefined" && col !== null) {
@@ -538,14 +548,16 @@ function Users(props) {
     //     />
     //   );
     // },
-    // onTableChange: (action, tableState) => {
-    //   console.log(action);
-    //   console.log(tableState);
-    // },
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "users", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
   };
 
   const CustomFooter = (props) => {
-    console.log(props.userData);
     return (
       <div className="custom-pagination">
         <Pagination
@@ -561,12 +573,8 @@ function Users(props) {
   };
 
   const handleChangePagination = (event, value) => {
-    console.log(userData);
-    console.log(value);
     let nextSet = value * 5;
     let currentSet = nextSet - 5;
-    console.log(nextSet);
-    console.log(currentSet);
     setCurrentPage(value);
     setUserData(props.UserData.slice(currentSet + 1, nextSet + 1));
   };
@@ -1110,16 +1118,22 @@ function Users(props) {
 Users.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
+    GridData: state.gridHistory,
   };
 }
 
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

@@ -43,6 +43,7 @@ import HealingIcon from "@material-ui/icons/Healing";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
+import * as GridAction from "../../Redux/Action/gridAction";
 import WorkIcon from "@material-ui/icons/Work";
 
 const drawerWidth = 240;
@@ -152,7 +153,18 @@ function AdminLayout(props) {
   const [openTeamMenu, setTeamMenu] = useState(false);
   const [openQuestionaires, setOpenQuestionaires] = useState(false);
   const [openWorkflow, setOpenWorkflow] = useState(false);
-
+  const [gridPages, setGridPages] = useState([
+    { name: "users", page: 1 },
+    { name: "sites", page: 1 },
+    { name: "designations", page: 1 },
+    { name: "covidStates", page: 1 },
+    { name: "faqs", page: 1 },
+    { name: "userGroups", page: 1 },
+    { name: "emergencyContacts", page: 1 },
+    { name: "teams", page: 1 },
+    { name: "questionnaire", page: 1 },
+    { name: "workflows", page: 1 },
+  ]);
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -161,6 +173,7 @@ function AdminLayout(props) {
       props.history.push("/");
     }
     props.loadGlobalSetting();
+    props.loadGridsPages(gridPages);
 
     if (window.performance) {
       if (performance.type == 1) {
@@ -1164,6 +1177,7 @@ function AdminLayout(props) {
 
 AdminLayout.propTypes = {
   loadGlobalSetting: PropTypes.func.isRequired,
+  loadGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -1174,6 +1188,7 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   loadGlobalSetting: globalSettingAction.loadGlobalSetting,
+  loadGridsPages: GridAction.loadGridsPages,
 };
 
 export default connect(

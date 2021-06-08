@@ -1,4 +1,8 @@
-import { LOADGRIDHISTORY_SUCCESS, UPDATEGRIDHISTORY_SUCCESS } from "../utilits";
+import {
+  LOADGRIDHISTORY_SUCCESS,
+  UPDATEGRIDHISTORY_SUCCESS,
+  GETGRIDHISTORY_SUCCESS,
+} from "../utilits";
 
 export function LoadGridHistorySuccess(loadGridHistory) {
   return { type: LOADGRIDHISTORY_SUCCESS, loadGridHistory };
@@ -8,29 +12,24 @@ export function UpdateGridHistorySuccess(gridHistory) {
   return { type: UPDATEGRIDHISTORY_SUCCESS, gridHistory };
 }
 
-export function loadFaq() {
+export function GetGridHistorySuccess(data) {
+  return { type: GETGRIDHISTORY_SUCCESS, data };
+}
+
+export function loadGridsPages(gridPages) {
   return function (dispatch) {
-    let status = false;
-    return faqApi
-      .ListFAQs(status)
-      .then((data) => {
-        dispatch(LoadGridHistorySuccess(data));
-      })
-      .catch((error) => {
-        throw error;
-      });
+    return dispatch(LoadGridHistorySuccess(gridPages));
   };
 }
 
-export function deleteFaq(data) {
+export function getGridsPages() {
   return function (dispatch) {
-    return faqApi
-      .deleteSelectedFaq(data)
-      .then((response) => {
-        dispatch(UpdateGridHistorySuccess(data));
-      })
-      .catch((error) => {
-        throw error;
-      });
+    return dispatch(GetGridHistorySuccess(null));
+  };
+}
+
+export function updateGridsPages(sendData) {
+  return function (dispatch) {
+    return dispatch(UpdateGridHistorySuccess(sendData));
   };
 }

@@ -39,6 +39,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -97,6 +98,8 @@ function ListSite(props) {
     SiteManagerId: [],
     SecurityManagerId: [],
   });
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -104,9 +107,10 @@ function ListSite(props) {
       siteApiCall.getSiteManagers(),
       siteApiCall.getLocationManagers(),
       props.LoadData(),
+      props.LoadGridsPage(),
     ])
 
-      .then(([getSiteManagers, getLocationManagers, result]) => {
+      .then(([getSiteManagers, getLocationManagers, result, gridResult]) => {
         setcomponentLoadder(false);
         setSiteManger(getSiteManagers);
         setSecurityManger(getLocationManagers);
@@ -150,13 +154,39 @@ function ListSite(props) {
   const handleClose = () => {
     setModalOpen(false);
   };
+
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "sites";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "sites", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     print: false,
     viewColumns: false,
     download: false,
@@ -522,11 +552,15 @@ ListSite.propTypes = {
   LoadEmptyData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
   SiteSecurityData: PropTypes.array.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     SiteData: state.SiteState,
+    GridData: state.gridHistory,
   };
 }
 
@@ -534,6 +568,8 @@ const mapDispatchToProps = {
   LoadData: UserSiteAction.loadSite,
   LoadEmptyData: AddFloorAction.loadFloorWithEmptyData,
   LoadSitebySecurity: UserSiteAction.loadSitesbySiteorSecurityManager,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListSite);
