@@ -18,6 +18,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
+import PublishIcon from "@material-ui/icons/Publish";
 
 import CovidStateApiServices from "../../services/masterDataService";
 import Dialog from "@material-ui/core/Dialog";
@@ -385,7 +386,7 @@ function ContactTracing(props) {
             <Tooltip title="Delete">
               <Button
                 variant="contained"
-                startIcon={<DeleteIcon />}
+                startIcon={<PublishIcon />}
                 className={`delete-icon`}
                 onClick={() =>
                   handleClickOpenBulkModal(selectedUsersForCovidState)
