@@ -18,6 +18,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
+import PublishIcon from "@material-ui/icons/Publish";
 
 import CovidStateApiServices from "../../services/masterDataService";
 import Dialog from "@material-ui/core/Dialog";
@@ -45,6 +46,12 @@ import ChangeStatusIcon from "@material-ui/icons/SyncAlt";
 import moment from "moment";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -105,7 +112,10 @@ function ContactTracing(props) {
   const [userGroupList, setuserGroupList] = useState();
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [Modalopen, setModalOpen] = useState(false);
+  const [BulkModalOpen, setBulkModalOpen] = useState(false);
   const [ChangeModalOpen, setChangeModalOpen] = useState(false);
+
+  const [modalChangeValue, setmodalChangeValue] = useState();
   const [showLoadder, setshowLoadder] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
@@ -120,7 +130,10 @@ function ContactTracing(props) {
   const [ConfirmationModalActionType, setConfirmationModalActionType] =
     useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-
+  const [RowsSelected, setRowsSelected] = useState([]);
+  const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
+    []
+  );
   const [allSites, setAllSites] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [selectedDate, setSelectedDate] = React.useState(
@@ -163,6 +176,66 @@ function ContactTracing(props) {
     { id: "02", name: "Parking lot" },
     { id: "03", name: "Cafetaria lot" },
   ];
+
+  const [locationDensityBulkData, setlocationDensityBulkData] = useState([
+    {
+      id: "001",
+      user: "User 1",
+      contact: { id: "001", name: " level1" },
+      status: "00",
+      userid: "676768",
+      covidstate: "safe",
+    },
+    {
+      id: "002",
+      user: "User 2",
+      contact: { id: "001", name: " level1" },
+      status: "02",
+      userid: "123456",
+      covidstate: "confirmed",
+    },
+  ]);
+  const bulkcolumns = [
+    {
+      name: "id",
+      label: "Id",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      label: "Name ",
+      name: "user",
+      options: {
+        filter: false,
+        sort: true,
+      },
+      setCellProps: (value) => {
+        return {
+          style: { width: "50px", minWidth: "50px", textAlign: "center" },
+        };
+      },
+    },
+    {
+      label: "User ID ",
+      name: "userid",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      label: "Covid State ",
+      name: "covidstate",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+  ];
+
   const columns = [
     {
       name: "id",
@@ -269,9 +342,28 @@ function ContactTracing(props) {
     print: false,
     viewColumns: false,
     download: false,
+    selectableRows: "multiple",
     disableToolbarSelect: true,
 
-    selectableRows: "multiple",
+    onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
+      console.log("rows");
+      console.log(currentRowSelected);
+      var setRowsSelectedArray = [];
+      allRowsSelected.map((user, i) => {
+        setRowsSelectedArray.push(user.dataIndex);
+      });
+      setRowsSelected(setRowsSelectedArray);
+      var selectedUsersToCovidStateArray = [];
+      allRowsSelected.map((user, i) => {
+        selectedUsersToCovidStateArray.push(user.dataIndex);
+      });
+      let finalUsers = [];
+      selectedUsersToCovidStateArray.map((user) => {
+        finalUsers.push({ id: user.id });
+      });
+      console.log(finalUsers);
+      setSelectedUsersForCovidState(finalUsers);
+    },
 
     textLabels: {
       body: {
@@ -290,9 +382,45 @@ function ContactTracing(props) {
               onClick={handleClickOpenModal}
             ></Button>
           </Tooltip>
+          {RowsSelected.length ? (
+            <Tooltip title="Delete">
+              <Button
+                variant="contained"
+                startIcon={<PublishIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenBulkModal(selectedUsersForCovidState)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          )}
         </div>
       );
     },
+  };
+
+  const bulkoptions = {
+    filter: false,
+    filterType: "dropdown",
+    responsive: "scroll",
+    fixedHeader: true,
+    rowsPerPageOptions: [5, 10, 15, 100],
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    print: false,
+    viewColumns: false,
+    download: false,
+    selectableRows: false,
+    disableToolbarSelect: true,
+
+    textLabels: {
+      body: {
+        noMatch: "There are no reports",
+      },
+    },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
   };
 
   function BreadcrumbNavigation(getRoute) {
@@ -307,7 +435,17 @@ function ContactTracing(props) {
     setModalOpen(false);
   };
 
-  const handleChangeState = () => {
+  const handleClickOpenBulkModal = () => {
+    setBulkModalOpen(true);
+  };
+
+  const handleClickCloseBulkModal = () => {
+    setBulkModalOpen(false);
+  };
+
+  const handleChangeState = (row) => {
+    console.log(row[0]);
+    setmodalChangeValue(row[0]);
     setChangeModalOpen(true);
   };
 
@@ -382,6 +520,92 @@ function ContactTracing(props) {
 
   return (
     <div className="innerpage-container">
+      <Dialog
+        onClose={handleClickCloseBulkModal}
+        aria-labelledby="customized-dialog-title"
+        className="global-dialog confirmation-dialog global-form"
+        aria-labelledby="form-dialog-title"
+        open={BulkModalOpen}
+      >
+        <DialogTitle
+          id="customized-dialog-title"
+          onClose={handleClickCloseBulkModal}
+        >
+          Change covid state of users
+        </DialogTitle>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Table aria-label="simple table" className="flag-details-table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Email ID</TableCell>
+                <TableCell>COVID state</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>User 1</TableCell>
+                <TableCell>User1@gmail.com</TableCell>
+                <TableCell>Safe</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>User 2</TableCell>
+                <TableCell>User2@gmail.com</TableCell>
+                <TableCell>Confirmed</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <ValidatorForm className={`global-form`} onSubmit="#">
+            <DialogContent dividers>
+              {!componentLoadder ? (
+                <Grid container spacing={3}>
+                  <Grid item xs={4}>
+                    <label className="">Covid State</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Autocomplete
+                      id="tags-outlined"
+                      options={
+                        BusinessCovidStateData &&
+                        BusinessCovidStateData.length > 0
+                          ? BusinessCovidStateData
+                          : []
+                      }
+                      getOptionLabel={(option) => option.stateName}
+                      onChange={covidStateSelect}
+                      defaultValue={covidStatelist}
+                      name="covidState"
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select  covid state"
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              ) : null}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                variant="contained"
+                type="submit"
+                className="global-submit-btn"
+                disabled={showLoadder}
+              >
+                {showLoadder ? <ButtonLoadderComponent /> : "Save"}
+              </Button>
+              <Button onClick={handleClose} className="global-cancel-btn">
+                Cancel
+              </Button>
+            </DialogActions>
+          </ValidatorForm>{" "}
+        </MuiPickersUtilsProvider>
+      </Dialog>
+
       <Dialog
         onClose={handleChangeStateClose}
         aria-labelledby="customized-dialog-title"

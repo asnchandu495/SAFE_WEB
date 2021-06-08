@@ -51,6 +51,12 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 
 const styles = (theme) => ({
   root: {
@@ -115,7 +121,7 @@ function DensityThreshold(props) {
   const [ConfirmationModalActionType, setConfirmationModalActionType] =
     useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-
+  const [userListDisplay, setuserListDisplay] = useState([]);
   const [allSites, setAllSites] = useState();
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedLocationData, setselectedLocationData] = useState();
@@ -135,18 +141,66 @@ function DensityThreshold(props) {
       name: "site 0",
       location: { id: "001", name: " Bengaluru" },
       status: "00",
+      usersList: [
+        {
+          id: "08",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+        {
+          id: "09",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+      ],
     },
     {
       id: "002",
       name: "Site 1",
       location: { id: "001", name: " Hyderabad" },
       status: "02",
+      usersList: [
+        {
+          id: "08",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+        {
+          id: "09",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+      ],
     },
     {
       id: "001",
       name: "site2",
       location: { id: "001", name: " Chennai" },
       status: "00",
+      usersList: [
+        {
+          id: "08",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+        {
+          id: "09",
+          name: "username",
+          emailid: "username@gmail.com",
+          userid: "UID001",
+          timestamp: "1-9-2020: 10:32",
+        },
+      ],
     },
   ]);
   const locationData = [
@@ -169,7 +223,7 @@ function DensityThreshold(props) {
       name: "name",
       options: {
         filter: false,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -177,7 +231,7 @@ function DensityThreshold(props) {
       name: "location",
       options: {
         filter: false,
-        sort: true,
+        sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
           if (thisRowData) {
@@ -231,21 +285,59 @@ function DensityThreshold(props) {
 
   const options = {
     filter: false,
+    onFilterChange: (changedColumn, filterList) => {
+      console.log(changedColumn, filterList);
+    },
+    selectableRows: "single",
     filterType: "dropdown",
-    responsive: "scroll",
-    fixedHeader: true,
-    rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    responsive: "scrollMaxHeight",
 
+    rowsPerPage: 5,
+    expandableRows: true,
+
+    renderExpandableRow: (rowData, rowMeta) => {
+      console.log(rowData, rowMeta);
+      return (
+        <React.Fragment>
+          <tr>
+            <td colSpan={6}>
+              <TableContainer component={Paper}>
+                <Table style={{ minWidth: "650" }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell align="right">UserName</TableCell>
+                      <TableCell align="right">User ID&nbsp;</TableCell>
+                      <TableCell align="right">Email ID&nbsp;</TableCell>
+                      <TableCell align="right">Timestamp</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {locationDensityData.userList
+                      ? locationDensityData.userList.map((row) => (
+                          <TableRow key={row.id}>
+                            <TableCell component="th" scope="row">
+                              {row.name}
+                            </TableCell>
+                            <TableCell align="right">{row.userid}</TableCell>
+                            <TableCell align="right">{row.id}</TableCell>
+                            <TableCell align="right">{row.emailid}</TableCell>
+                            <TableCell align="right">{row.timestamp}</TableCell>
+                          </TableRow>
+                        ))
+                      : []}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </td>
+          </tr>
+        </React.Fragment>
+      );
+    },
+    page: 1,
     print: false,
     viewColumns: false,
     download: false,
-    selectableRows: false,
-    textLabels: {
-      body: {
-        noMatch: "There are no reports",
-      },
-    },
+
     customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
@@ -286,6 +378,7 @@ function DensityThreshold(props) {
   }
 
   useEffect(() => {
+    setuserListDisplay(locationDensityData.usersList);
     setComponentLoadder(true);
     Promise.all([
       siteApiCall.getListSite(),
