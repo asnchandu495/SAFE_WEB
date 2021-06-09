@@ -51,6 +51,7 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Pagination from "@material-ui/lab/Pagination";
+import ReplayIcon from "@material-ui/icons/Replay";
 import * as GridAction from "../../Redux/Action/gridAction";
 
 const theme1 = createMuiTheme({
@@ -324,17 +325,29 @@ function Users(props) {
   function handleChangeUserRole(e, value) {
     setRoleMasterData(value);
   }
+
   function handleChangeUserDesignation(e, value) {
     setdesignationMasterData(value);
   }
+
   function userSelectSite(e, value) {
     setSiteMasterData(value);
   }
+
   function usergroupSelect(e, value) {
     setUserGroupData(value);
   }
+
   function covidStateSelect(e, value) {
     setcovidStatelist(value);
+  }
+
+  function resetFilterForm() {
+    setRoleMasterData([]);
+    setdesignationMasterData();
+    setSiteMasterData([]);
+    setUserGroupData();
+    setcovidStatelist();
   }
 
   function AssignFiltersForm() {
@@ -988,6 +1001,12 @@ function Users(props) {
             ) : null}
           </DialogContent>
           <DialogActions>
+            <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
             <Button
               variant="contained"
               type="submit"

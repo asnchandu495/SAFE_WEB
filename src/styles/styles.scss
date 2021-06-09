@@ -129,6 +129,30 @@ body,
       background: #dae0e4 0% 0% no-repeat padding-box;
     }
   }
+  .global-filter-reset-btn {
+    margin: 0 auto;
+    margin-left: inherit;
+    font: var(--unnamed-font-style-normal) normal bold
+      var(--unnamed-font-size-13) / var(--unnamed-line-spacing-19)
+      var(--unnamed-font-family-proxima-nova);
+    width: 35px !important;
+    min-width: 35px !important;
+    height: 30px !important;
+    background: var(--danger-de1b54) 0% 0% no-repeat padding-box;
+    box-shadow: 0px 12px 18px #26245a0d !important;
+    border-radius: 2px !important;
+    opacity: 1;
+    border-color: transparent !important;
+    text-transform: uppercase;
+    color: #fff !important;
+    &:hover {
+      background: var(--danger-de1b54) 0% 0% no-repeat padding-box;
+    }
+    .MuiSvgIcon-root {
+      width: 0.8em;
+      height: 0.8em;
+    }
+  }
   .global-input {
     height: 38px;
     background: var(--universal-white-ffffff) 0% 0% no-repeat padding-box;
