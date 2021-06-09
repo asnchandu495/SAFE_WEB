@@ -40,6 +40,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
 import MuiTablePagination from "@material-ui/core/TablePagination";
+import moment from "moment";
 
 const styles = (theme) => ({
   root: {
@@ -110,7 +111,7 @@ function LocationDensity(props) {
   const [selectedLocationData, setselectedLocationData] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [locationDensityData, setlocationDensityData] = useState([
     {
       id: "001",
@@ -133,33 +134,36 @@ function LocationDensity(props) {
       status: "Active",
       color: "red",
     },
-    {
-      id: "004",
-      name: "site2",
-      location: { id: "001", name: " Chennai" },
-      status: "Active",
-      color: "red",
-    },
-    {
-      id: "005",
-      name: "site2",
-      location: { id: "001", name: " Chennai" },
-      status: "Active",
-      color: "red",
-    },
-    {
-      id: "006",
-      name: "site2",
-      location: { id: "001", name: " Chennai" },
-      status: "Active",
-      color: "red",
-    },
   ]);
   const locationData = [
     { id: "01", name: "Reception Area" },
     { id: "02", name: "Parking lot" },
     { id: "03", name: "Cafetaria lot" },
   ];
+  const [reportTime, setReportTime] = useState("");
+
+  useEffect(() => {
+    setComponentLoadder(true);
+    Promise.all([
+      siteApiCall.getListSite(),
+      siteApiCall.getLocationManagers(),
+      //   props.LoadData(),
+    ])
+      .then(([getAllSites, result]) => {
+        setComponentLoadder(false);
+        setAllSites(getAllSites);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    const timer = setInterval(() => {
+      setReportTime(moment().toISOString()); // <-- Change this line!
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
   const columns = [
     {
       name: "id",
@@ -264,15 +268,36 @@ function LocationDensity(props) {
 
   const CustomFooter = (props) => {
     return (
-      <MuiTablePagination
-        component="div"
-        count={props.count}
-        rowsPerPage={props.rowsPerPage}
-        page={props.page}
-        rowsPerPageOptions={[5, 10, 20, 100]}
-        onChangePage={handlePageChange}
-        onChangeRowsPerPage={handleRowChange}
-      />
+      <div className="custom-pagination-report">
+        <div className="legend-container">
+          <ul className="legends">
+            <li className="low">Low</li>
+            <li className="medium">Medium</li>
+            <li className="high">High</li>
+            <li>
+              {reportTime != "" ? (
+                <>
+                  Report as on :{" "}
+                  <span className="live-time">
+                    {moment(reportTime).format("DD-MM-YYYY hh:mm:ss a")}
+                  </span>
+                </>
+              ) : (
+                ""
+              )}
+            </li>
+          </ul>
+        </div>
+        <MuiTablePagination
+          component="div"
+          count={props.count}
+          rowsPerPage={props.rowsPerPage}
+          page={props.page}
+          rowsPerPageOptions={[5, 10, 20, 100]}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowChange}
+        />
+      </div>
     );
   };
 
@@ -324,22 +349,6 @@ function LocationDensity(props) {
     setComponentLoadder(true);
   }
 
-  useEffect(() => {
-    setComponentLoadder(true);
-    Promise.all([
-      siteApiCall.getListSite(),
-      siteApiCall.getLocationManagers(),
-      //   props.LoadData(),
-    ])
-
-      .then(([getAllSites, result]) => {
-        setComponentLoadder(false);
-        setAllSites(getAllSites);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
   return (
     <div className="innerpage-container">
       <Dialog
