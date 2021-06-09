@@ -45,6 +45,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 import WorkIcon from "@material-ui/icons/Work";
+import Popover from "@material-ui/core/Popover";
 
 const drawerWidth = 240;
 
@@ -154,9 +155,11 @@ function AdminLayout(props) {
   const [openQuestionaires, setOpenQuestionaires] = useState(false);
   const [openWorkflow, setOpenWorkflow] = useState(false);
   const [openReports, setOpenReports] = useState(false);
-
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
+  const [anchorElNotifications, setAnchorElNotifications] = useState(null);
+  const openNotifications = Boolean(anchorElNotifications);
+  const idNotifications = openNotifications ? "simple-popover" : undefined;
 
   useEffect(() => {
     if (!authApiCall.loggedIn()) {
@@ -404,6 +407,14 @@ function AdminLayout(props) {
     setOpenQuestionaires(false);
   }
 
+  const handleClickNotifications = (event) => {
+    setAnchorElNotifications(event.currentTarget);
+  };
+
+  const handleCloseNotifications = () => {
+    setAnchorElNotifications(null);
+  };
+
   return (
     <div className={`${classes.root} top-header`}>
       <CssBaseline />
@@ -448,7 +459,43 @@ function AdminLayout(props) {
           </Typography>
           <IconButton aria-label="show 17 new notifications" color="inherit">
             <Badge badgeContent={5} color="secondary">
-              <NotificationsIcon />
+              <NotificationsIcon onClick={handleClickNotifications} />
+              <Popover
+                id={idNotifications}
+                open={openNotifications}
+                anchorEl={anchorElNotifications}
+                onClose={handleCloseNotifications}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "center",
+                }}
+                className="notification-container"
+              >
+                <ul>
+                  <li>
+                    <b>Saravana</b> has requested a change of WFM location.
+                  </li>
+                  <li>
+                    <b>Sunil</b> has requested a change of WFM location.
+                  </li>
+                  <li>
+                    <b>Hajira</b> has submitted a new profile selfie.
+                  </li>
+                  <li>
+                    <b>Saravana</b> has requested a change of WFM location.
+                  </li>
+                  <li>
+                    <b>Sunil</b> has requested a change of WFM location.
+                  </li>
+                  <li>
+                    <b>Hajira</b> has submitted a new profile selfie.
+                  </li>
+                </ul>
+              </Popover>
             </Badge>
           </IconButton>
           <IconButton
