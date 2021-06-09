@@ -109,6 +109,8 @@ function LocationDensity(props) {
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedLocationData, setselectedLocationData] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
   const [locationDensityData, setlocationDensityData] = useState([
     {
       id: "001",
@@ -213,8 +215,8 @@ function LocationDensity(props) {
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
-
+    rowsPerPage: currentRowsPerPage,
+    page: currentPage,
     print: false,
     viewColumns: false,
     download: false,
@@ -268,10 +270,20 @@ function LocationDensity(props) {
         rowsPerPage={props.rowsPerPage}
         page={props.page}
         rowsPerPageOptions={[5, 10, 20, 100]}
-        // onChangePage={handlePageChange}
-        // onChangeRowsPerPage={handleRowChange}
+        onChangePage={handlePageChange}
+        onChangeRowsPerPage={handleRowChange}
       />
     );
+  };
+
+  const handlePageChange = (_, page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
+
+  const handleRowChange = (e) => {
+    console.log(e.target.value);
+    setCurrentRowsPerPage(e.target.value);
   };
 
   function BreadcrumbNavigation(getRoute) {
