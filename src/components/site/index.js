@@ -41,6 +41,24 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import * as GridAction from "../../Redux/Action/gridAction";
 
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import ReplayIcon from "@material-ui/icons/Replay";
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
 const useStyles = makeStyles((theme) => ({
   fab: {
     margin: theme.spacing(1),
@@ -100,6 +118,30 @@ function ListSite(props) {
   });
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -194,6 +236,9 @@ function ListSite(props) {
     textLabels: {
       body: {
         noMatch: "There are no sites created",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
@@ -361,6 +406,13 @@ function ListSite(props) {
     props.history.push(getRoute);
   }
 
+  function resetFilterForm() {
+    // setRoleMasterData([]);
+    // setdesignationMasterData();
+    // setSiteMasterData([]);
+    // setUserGroupData();
+    // setcovidStatelist();
+  }
   function AssignFiltersForm() {
     let sitefilterData = searchformData;
     if (userSelectedSiteManager.length > 0) {
@@ -467,6 +519,12 @@ function ListSite(props) {
             ) : null}
           </DialogContent>
           <DialogActions>
+            <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
             <Button
               variant="contained"
               type="submit"

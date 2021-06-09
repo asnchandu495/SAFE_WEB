@@ -64,27 +64,21 @@ function ListFloor(props) {
   const [openCovidStateInfoModal, setopenCovidStateInfoModal] = useState(false);
   const [openshiftInfoModal, setopenshiftInfoModal] = useState(false);
   const [listFloorData, setlistFloorData] = useState([]);
-  const [openuserTemepratureModal, setopenuserTemepratureModal] = useState(
-    false
-  );
+  const [openuserTemepratureModal, setopenuserTemepratureModal] =
+    useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [SelectedRowId, setSelectedRowId] = useState("");
   const [openaddFloorModal, setopenaddFloorModal] = useState(false);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [siteName, setsiteName] = useState("");
 
@@ -123,6 +117,7 @@ function ListFloor(props) {
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
@@ -130,6 +125,9 @@ function ListFloor(props) {
     textLabels: {
       body: {
         noMatch: "There are no floors",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
 

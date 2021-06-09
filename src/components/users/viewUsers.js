@@ -228,7 +228,9 @@ function ViewUser(props) {
             <Grid container spacing={3} direction="row">
               <Grid item xs={6} container>
                 <Grid item xs={4}>
-                  <label>First Name :</label>
+                  <label>
+                    First Name <span>:</span>
+                  </label>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.firstName}</label>

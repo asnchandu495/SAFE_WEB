@@ -112,6 +112,9 @@ function ViewAllFAQs(props) {
       body: {
         noMatch: "There are no FAQs. Add one now",
       },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
     },
   };
 

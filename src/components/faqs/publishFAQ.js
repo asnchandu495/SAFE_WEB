@@ -76,6 +76,7 @@ function PublishFAQ(props) {
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
@@ -83,6 +84,9 @@ function PublishFAQ(props) {
     textLabels: {
       body: {
         noMatch: "There are no Drafts.",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
   };

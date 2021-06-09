@@ -34,6 +34,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CovidStateApiServices from "../../services/masterDataService";
 import * as UserGroupAction from "../../Redux/Action/userGroupAction";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -262,6 +263,7 @@ function AddPrimaryUserToUserGroups(props) {
     rowsPerPage: currentRowsPerPage,
     onChangeRowsPerPage: handleRowsPerPageChange,
     print: false,
+    jumpToPage: true,
     viewColumns: false,
     download: false,
     disableToolbarSelect: true,
@@ -285,6 +287,9 @@ function AddPrimaryUserToUserGroups(props) {
       },
       body: {
         noMatch: "There are no users",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
 
@@ -404,6 +409,8 @@ function AddPrimaryUserToUserGroups(props) {
   function handleChangeUserDesignation(e, value) {
     setdesignationMasterData(value);
   }
+
+  function resetFilterForm() {}
 
   function AssignFiltersForm() {
     if (searchformData) {
@@ -719,17 +726,23 @@ function AddPrimaryUserToUserGroups(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
               disabled={showLoadder}
             >
-              {dialogshowLoadder ? <ButtonLoadderComponent /> : "Submit"}
+              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
             </Button>
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
             </Button>
-          </DialogActions>
+          </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
 

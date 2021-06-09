@@ -250,6 +250,9 @@ function Teams(props) {
       body: {
         noMatch: "There are no users  teams",
       },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
     },
     customSearch: (searchQuery, currentRow, columns) => {
       let isFound = false;

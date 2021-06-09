@@ -33,6 +33,7 @@ import PostAddIcon from "@material-ui/icons/PostAdd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -185,6 +186,7 @@ function AssignedFAQs(props) {
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
@@ -192,6 +194,9 @@ function AssignedFAQs(props) {
     textLabels: {
       body: {
         noMatch: "There are no allocations",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
     customToolbar: () => {
@@ -372,6 +377,8 @@ function AssignedFAQs(props) {
   function handleChangeDocStatus(e) {
     setUserSelectStatus(e.target.value);
   }
+
+  function resetFilterForm() {}
 
   function assignToGroup(e) {
     e.preventDefault();
@@ -648,6 +655,12 @@ function AssignedFAQs(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
@@ -661,7 +674,7 @@ function AssignedFAQs(props) {
             >
               Cancel
             </Button>
-          </DialogActions>
+          </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
       <ConfirmationDialog

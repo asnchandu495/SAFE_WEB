@@ -182,7 +182,10 @@ function NumericJump(props) {
   };
 
   function handleCancel() {
-    setConditionalJump(cancelconditionalJump);
+    // setConditionalJump(cancelconditionalJump);
+    setTimeout(() => {
+      props.history.push(`/questionaires/view-questions/${surveyId}`);
+    }, 1000);
   }
 
   function submitForm(e) {

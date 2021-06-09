@@ -35,30 +35,22 @@ function AssignEmergencyContacts(props) {
   const [tableBodyHeight, setTableBodyHeight] = useState("300px");
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    openAssignEmergencyContactModal,
-    setopenAssignEmergencyContactModal,
-  ] = useState(false);
-  const [opentempeartureInfoModal, setopentempeartureInfoModal] = useState(
-    false
-  );
+  const [openAssignEmergencyContactModal, setopenAssignEmergencyContactModal] =
+    useState(false);
+  const [opentempeartureInfoModal, setopentempeartureInfoModal] =
+    useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [SelectedRowId, setSelectedRowId] = useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
 
   useEffect(() => {
@@ -80,6 +72,7 @@ function AssignEmergencyContacts(props) {
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
     print: false,
+    jumpToPage: true,
     // search: true,
     viewColumns: false,
     download: false,
@@ -87,6 +80,9 @@ function AssignEmergencyContacts(props) {
     textLabels: {
       body: {
         noMatch: "There are no emergency contact assigned",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
     // searchOpen: true,

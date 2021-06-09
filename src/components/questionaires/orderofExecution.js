@@ -13,23 +13,22 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import questionaireService from "../../services/questionaireService";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
+import Button from "@material-ui/core/Button";
 
 function OrderofExecution(props) {
+  const surveyIdURL = props.match.params.id;
   const { id } = useParams();
   const questionaireApiCall = new questionaireService();
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [selectedSurveyQuestions, setSelectedSurveyQuestions] = useState([]);
-  const [
-    selectedSurveyOrderofExecution,
-    setSelectedSurveyOrderofExecution,
-  ] = useState([]);
+  const [selectedSurveyOrderofExecution, setSelectedSurveyOrderofExecution] =
+    useState([]);
   const [surveyDetails, setSurveyDetails] = useState();
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [reloadPage, setReloadPage] = useState("NO");
   const [displayListDiv, setDisplayListDiv] = useState("");
   const [selectedParentQuestions, setSelectedParentQuestions] = useState([]);
@@ -189,7 +188,11 @@ function OrderofExecution(props) {
         return <h4>Not found</h4>;
     }
   }
-
+  function handleCancel() {
+    setTimeout(() => {
+      props.history.push(`/questionaires/view-questions/${surveyIdURL}`);
+    }, 1000);
+  }
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -281,6 +284,27 @@ function OrderofExecution(props) {
                 </List>
               )}
             </Paper>
+
+            <Grid
+              item
+              className={`global-form inline-form`}
+              xs={12}
+              container
+              direction="row"
+              justify="flex-end"
+              alignItems="center"
+            >
+              <div className={`form-buttons-container`}>
+                <Button
+                  variant="contained"
+                  type="button"
+                  onClick={handleCancel}
+                  className="global-cancel-btn"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Grid>
           </Grid>
         </Grid>
       </Paper>

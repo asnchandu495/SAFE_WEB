@@ -828,7 +828,7 @@ function TimeQuestion(props) {
               className="global-cancel-btn"
               variant="contained"
             >
-              Back
+              Cancel
             </Button>
             <Button
               variant="contained"

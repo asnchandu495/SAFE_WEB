@@ -118,6 +118,9 @@ function UserGroups(props) {
       body: {
         noMatch: "There are no user groups",
       },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
     },
     // customToolbar: () => {
     //     return <UserGroupAddButton />;

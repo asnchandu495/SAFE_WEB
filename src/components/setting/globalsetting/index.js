@@ -963,7 +963,7 @@ function GlobalSetting(props) {
                     variant="outlined"
                     validators={[
                       "required",
-                      "matchRegexp:^\\d{1,6}(\\.\\d{1,2})?$",
+                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                     ]}
                     errorMessages={[
                       "Please enter self healthcheck reminder",

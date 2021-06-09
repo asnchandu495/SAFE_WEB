@@ -47,6 +47,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import * as GridAction from "../../Redux/Action/gridAction";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 const styles = (theme) => ({
   root: {
@@ -255,6 +256,9 @@ function Workflow(props) {
       body: {
         noMatch: "No matching records found",
       },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
     },
     customSearch: (searchQuery, currentRow, columns) => {
       let isFound = false;
@@ -327,6 +331,8 @@ function Workflow(props) {
   function selectedStatus(e, value) {
     setselectedStatusData(value);
   }
+
+  function resetFilterForm() {}
   function resetFilterForm() {
     setsearchformData({
       UserGroupId: "",
@@ -526,6 +532,12 @@ function Workflow(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
@@ -533,18 +545,10 @@ function Workflow(props) {
             >
               {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
             </Button>
-            {/* <Button onClick={handleClose} className="global-cancel-btn">
-              Reset
-            </Button> */}
-            <Button
-              variant="contained"
-              type="button"
-              className="global-cancel-btn"
-              onClick={resetFilterForm}
-            >
-              Reset
+            <Button onClick={handleClose} className="global-cancel-btn">
+              Cancel
             </Button>
-          </DialogActions>
+          </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
 

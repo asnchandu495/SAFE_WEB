@@ -261,6 +261,9 @@ function Questionaire(props) {
       body: {
         noMatch: "There are no questionnaire",
       },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
     },
   };
 

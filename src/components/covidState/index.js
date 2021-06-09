@@ -114,6 +114,9 @@ function CovidState(props) {
       body: {
         noMatch: "No COVID states found",
       },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
     },
   };
 

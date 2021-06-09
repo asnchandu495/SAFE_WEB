@@ -104,6 +104,14 @@ function EmergencyContact(props) {
     viewColumns: false,
     download: false,
     selectableRows: "none",
+    textLabels: {
+      body: {
+        noMatch: "There are no emergency contacts",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
+    },
   };
 
   const columns = [

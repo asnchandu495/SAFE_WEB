@@ -22,6 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import ToasterMessageComponent from "../common/toaster";
 import workflowService from "../../services/workflowService";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import Button from "@material-ui/core/Button";
 
 function ViewWorkflow(props) {
   const getworkflowById = props.match.params.id;
@@ -61,7 +62,9 @@ function ViewWorkflow(props) {
   const handleChangeWorkflowSection = (panel) => (event, isExpanded) => {
     setExpandedWorflow(isExpanded ? panel : false);
   };
-
+  function handleCancel() {
+    props.history.push("/workflow/allWorkflow");
+  }
   function Row(props) {
     const { row } = props;
     const [openAction, setOpenAction] = React.useState(false);
@@ -258,6 +261,26 @@ function ViewWorkflow(props) {
                   })
                 : "No activities are added"}
             </Paper>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            className={`global-form inline-form`}
+            container
+            direction="row"
+            justify="flex-end"
+            alignItems="center"
+          >
+            <div className={`form-buttons-container`}>
+              <Button
+                variant="contained"
+                type="button"
+                onClick={handleCancel}
+                className="global-cancel-btn"
+              >
+                Close
+              </Button>
+            </div>
           </Grid>
         </Grid>
       )}

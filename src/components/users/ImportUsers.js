@@ -139,6 +139,9 @@ function ImportUsers(props) {
   function removeFile() {
     setMyFiles([]);
   }
+  function handleredirect() {
+    props.history.push("/users/import-users-history");
+  }
 
   function UserbulkUpload() {
     const data = new FormData();
@@ -273,6 +276,7 @@ function ImportUsers(props) {
                     variant="contained"
                     type="reset"
                     className="global-cancel-btn"
+                    onClick={handleredirect}
                   >
                     Cancel
                   </Button>

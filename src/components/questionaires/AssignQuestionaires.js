@@ -51,6 +51,8 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import questionaireService from "../../services/questionaireService";
+import ReplayIcon from "@material-ui/icons/Replay";
+
 const QuestionaireApicall = new QuestionaireService();
 const userStatusData = [
   { id: "Active", name: "Active" },
@@ -164,6 +166,7 @@ function AssignQuestionaires(props) {
     SetformData(resetformData);
   }
 
+  function resetFilterForm() {}
   function handleChangeGroup(e, value) {
     setselectedUserData(value);
     if (value) {
@@ -380,6 +383,7 @@ function AssignQuestionaires(props) {
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    jumpToPage: true,
     print: false,
     // search: true,
     viewColumns: false,
@@ -388,6 +392,9 @@ function AssignQuestionaires(props) {
     textLabels: {
       body: {
         noMatch: "There are no  assigned users",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
 
@@ -638,6 +645,12 @@ function AssignQuestionaires(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
@@ -648,7 +661,7 @@ function AssignQuestionaires(props) {
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
             </Button>
-          </DialogActions>
+          </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
       {componentLoadder ? (

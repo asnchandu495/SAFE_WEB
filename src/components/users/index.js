@@ -450,6 +450,9 @@ function Users(props) {
       body: {
         noMatch: "There are no users",
       },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
     },
     customToolbar: () => {
       return (

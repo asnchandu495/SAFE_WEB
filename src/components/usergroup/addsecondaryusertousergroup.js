@@ -32,7 +32,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Tooltip from "@material-ui/core/Tooltip";
 import MasterService from "../../services/masterDataService";
-
+import ReplayIcon from "@material-ui/icons/Replay";
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -253,7 +253,7 @@ function AddSecondaryUserToUserGroups(props) {
   function covidStateSelect(e, value) {
     setcovidStatelist(value);
   }
-
+  function resetFilterForm() {}
   function AssignFiltersForm() {
     let userfilterData = searchformData;
     if (RoleMasterData.length > 0) {
@@ -314,6 +314,7 @@ function AddSecondaryUserToUserGroups(props) {
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: currentRowsPerPage,
     onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
@@ -338,6 +339,9 @@ function AddSecondaryUserToUserGroups(props) {
       },
       body: {
         noMatch: "There are no users",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
 
@@ -636,17 +640,23 @@ function AddSecondaryUserToUserGroups(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
               disabled={showLoadder}
             >
-              {dialogshowLoadder ? <ButtonLoadderComponent /> : "Submit"}
+              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
             </Button>
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
             </Button>
-          </DialogActions>
+          </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
       {componentLoadder ? (

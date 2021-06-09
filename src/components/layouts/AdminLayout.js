@@ -579,9 +579,9 @@ function AdminLayout(props) {
                     <ListItemIcon>
                       <ArrowForwardIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Import History" />
+                    <ListItemText primary="Import" />
                   </ListItem>
-                  <ListItem
+                  {/* <ListItem
                     button
                     className={classes.nested}
                     component={Link}
@@ -591,7 +591,7 @@ function AdminLayout(props) {
                       <ArrowForwardIcon />
                     </ListItemIcon>
                     <ListItemText primary="Import" />
-                  </ListItem>
+                  </ListItem> */}
                 </List>
               </Collapse>
               <Divider></Divider>

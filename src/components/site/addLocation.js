@@ -773,7 +773,7 @@ function AddLocation(props) {
                 {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
               </Button>
               <Button onClick={handleClose} className="global-cancel-btn">
-                Close
+                Cancel
               </Button>
             </DialogActions>
           </ValidatorForm>

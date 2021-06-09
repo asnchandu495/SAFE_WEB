@@ -41,6 +41,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import ChangeStatusIcon from "@material-ui/icons/SyncAlt";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 const styles = (theme) => ({
   root: {
@@ -187,6 +188,7 @@ function AddPrimaryUserTeam(props) {
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
@@ -208,6 +210,9 @@ function AddPrimaryUserTeam(props) {
       },
       body: {
         noMatch: "There are no users",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
 
@@ -267,7 +272,7 @@ function AddPrimaryUserTeam(props) {
   const handleClose = () => {
     setModalOpen(false);
   };
-
+  function resetFilterForm() {}
   function assignUsers() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -424,6 +429,12 @@ function AddPrimaryUserTeam(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
@@ -434,7 +445,7 @@ function AddPrimaryUserTeam(props) {
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
             </Button>
-          </DialogActions>
+          </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
 
