@@ -18,9 +18,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
-
 import Dialog from "@material-ui/core/Dialog";
-
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
@@ -29,7 +27,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -40,9 +37,9 @@ import SiteService from "../../services/siteService";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-
 import propTypes from "prop-types";
 import { connect } from "react-redux";
+import MuiTablePagination from "@material-ui/core/TablePagination";
 
 const styles = (theme) => ({
   root: {
@@ -128,7 +125,28 @@ function LocationDensity(props) {
       color: "#ffbf00",
     },
     {
-      id: "001",
+      id: "003",
+      name: "site2",
+      location: { id: "001", name: " Chennai" },
+      status: "Active",
+      color: "red",
+    },
+    {
+      id: "004",
+      name: "site2",
+      location: { id: "001", name: " Chennai" },
+      status: "Active",
+      color: "red",
+    },
+    {
+      id: "005",
+      name: "site2",
+      location: { id: "001", name: " Chennai" },
+      status: "Active",
+      color: "red",
+    },
+    {
+      id: "006",
       name: "site2",
       location: { id: "001", name: " Chennai" },
       status: "Active",
@@ -221,6 +239,39 @@ function LocationDensity(props) {
         </div>
       );
     },
+    customFooter: (
+      count,
+      page,
+      rowsPerPage,
+      changeRowsPerPage,
+      changePage,
+      textLabels
+    ) => {
+      return (
+        <CustomFooter
+          count={count}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          changeRowsPerPage={changeRowsPerPage}
+          changePage={changePage}
+          textLabels={textLabels}
+        />
+      );
+    },
+  };
+
+  const CustomFooter = (props) => {
+    return (
+      <MuiTablePagination
+        component="div"
+        count={props.count}
+        rowsPerPage={props.rowsPerPage}
+        page={props.page}
+        rowsPerPageOptions={[5, 10, 20, 100]}
+        // onChangePage={handlePageChange}
+        // onChangeRowsPerPage={handleRowChange}
+      />
+    );
   };
 
   function BreadcrumbNavigation(getRoute) {
