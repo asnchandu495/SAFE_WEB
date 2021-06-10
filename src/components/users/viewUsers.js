@@ -227,10 +227,9 @@ function ViewUser(props) {
           <div className={`global-form inline-form`}>
             <Grid container spacing={3} direction="row">
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>
-                    First Name <span>:</span>
-                  </label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>First Name</label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.firstName}</label>
