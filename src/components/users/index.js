@@ -855,7 +855,8 @@ function Users(props) {
                           : []
                       }
                       getOptionLabel={(option) => option.groupName}
-                      defaultValue={UserGroupData}
+                      defaultValue={UserGroupData ? UserGroupData : ""}
+                      value={UserGroupData ? UserGroupData : ""}
                       onChange={usergroupSelect}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -886,7 +887,10 @@ function Users(props) {
                             : []
                         }
                         getOptionLabel={(option) => option.description}
-                        defaultValue={RoleMasterData}
+                        defaultValue={
+                          RoleMasterData.length ? RoleMasterData : []
+                        }
+                        value={RoleMasterData.length ? RoleMasterData : []}
                         onChange={handleChangeUserRole}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -922,6 +926,7 @@ function Users(props) {
                       }
                       getOptionLabel={(option) => option.name}
                       defaultValue={designationMasterData}
+                      value={designationMasterData ? designationMasterData : ""}
                       onChange={handleChangeUserDesignation}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -953,6 +958,7 @@ function Users(props) {
                       }
                       getOptionLabel={(option) => option.name}
                       defaultValue={SiteMasterData}
+                      value={SiteMasterData.length > 0 ? SiteMasterData : []}
                       onChange={userSelectSite}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -985,6 +991,7 @@ function Users(props) {
                         getOptionLabel={(option) => option.stateName}
                         onChange={covidStateSelect}
                         defaultValue={covidStatelist}
+                        value={covidStatelist ? covidStatelist : ""}
                         name="covidState"
                         filterSelectedOptions
                         className="global-input autocomplete-select"
