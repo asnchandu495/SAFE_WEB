@@ -312,7 +312,11 @@ function ViewSite(props) {
               <span>
                 {/* {thisRowData[8]} - {thisRowData[7]} */}
                 {thisRowData[9]} -{" "}
-                {thisRowData[8] != -1 ? thisRowData[8] : <span>&#8734;</span>}
+                {thisRowData[8] != -1 ? (
+                  thisRowData[8]
+                ) : (
+                  <span className="infinity-symbol">&#8734;</span>
+                )}
               </span>
             );
           }
