@@ -131,6 +131,8 @@ function AddSecondaryUserToUserGroups(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
+  const [showsubmitLoadder, setshowsubmitLoadder] = useState(false);
+
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
     useState("");
@@ -253,8 +255,15 @@ function AddSecondaryUserToUserGroups(props) {
   function covidStateSelect(e, value) {
     setcovidStatelist(value);
   }
-  function resetFilterForm() {}
+  function resetFilterForm() {
+    setRoleMasterData([]);
+    setdesignationMasterData();
+    setSiteMasterData([]);
+    setUserGroupData();
+    setcovidStatelist();
+  }
   function AssignFiltersForm() {
+    setshowLoadder(true);
     let userfilterData = searchformData;
     if (RoleMasterData.length > 0) {
       let roleArr = RoleMasterData.map((item) => item.id);
@@ -433,7 +442,7 @@ function AddSecondaryUserToUserGroups(props) {
   }
 
   function assignUsers() {
-    setshowLoadder(true);
+    setshowsubmitLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
     let finalUsers = [];
@@ -491,6 +500,7 @@ function AddSecondaryUserToUserGroups(props) {
                       }
                       getOptionLabel={(option) => option.groupName}
                       defaultValue={UserGroupData}
+                      value={UserGroupData ? UserGroupData : ""}
                       onChange={usergroupSelect}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -522,6 +532,7 @@ function AddSecondaryUserToUserGroups(props) {
                         }
                         getOptionLabel={(option) => option.description}
                         defaultValue={RoleMasterData}
+                        value={RoleMasterData.length ? RoleMasterData : []}
                         onChange={handleChangeUserRole}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -558,6 +569,7 @@ function AddSecondaryUserToUserGroups(props) {
                       getOptionLabel={(option) => option.name}
                       defaultValue={designationMasterData}
                       onChange={handleChangeUserDesignation}
+                      value={designationMasterData ? designationMasterData : ""}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
                       renderInput={(params) => (
@@ -588,6 +600,7 @@ function AddSecondaryUserToUserGroups(props) {
                       }
                       getOptionLabel={(option) => option.name}
                       defaultValue={SiteMasterData}
+                      value={SiteMasterData.length ? SiteMasterData : []}
                       onChange={userSelectSite}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -620,6 +633,7 @@ function AddSecondaryUserToUserGroups(props) {
                         getOptionLabel={(option) => option.stateName}
                         onChange={covidStateSelect}
                         defaultValue={covidStatelist}
+                        value={covidStatelist ? covidStatelist : ""}
                         name="covidState"
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -709,7 +723,7 @@ function AddSecondaryUserToUserGroups(props) {
                   disabled={showLoadder}
                   onClick={assignUsers}
                 >
-                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                  {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
                 </Button>
                 <Button
                   variant="contained"

@@ -164,7 +164,9 @@ function AssignEmergencyContactToUserGroup(props) {
       [name]: value,
     }));
   }
-  function resetFilterForm() {}
+  function resetFilterForm() {
+    SetformData(resetformData);
+  }
   function AssignEmegencyContactForm() {
     if (
       formData.groupId &&

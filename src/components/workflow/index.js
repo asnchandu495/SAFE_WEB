@@ -89,6 +89,9 @@ function Workflow(props) {
     UserGroupId: "",
     IsActive: "",
   });
+  const [resetformData, SetresetformData] = useState({
+    IsActive: "",
+  });
 
   const userStatusData = [
     { id: true, name: "Active" },
@@ -332,21 +335,24 @@ function Workflow(props) {
     setselectedStatusData(value);
   }
 
-  function resetFilterForm() {}
   function resetFilterForm() {
-    setsearchformData({
-      UserGroupId: "",
-      IsActive: "",
-    });
-    setComponentLoadder(true);
     setselectedUserData();
-    props.LoadData().then((result) => {
-      setshowLoadder(false);
-      setModalOpen(false);
-      setComponentLoadder(false);
-    });
-    handleClose();
+    setsearchformData(resetformData);
   }
+  // function resetFilterForm() {
+  //   setsearchformData({
+  //     UserGroupId: "",
+  //     IsActive: "",
+  //   });
+  //   setComponentLoadder(true);
+  //   setselectedUserData();
+  //   props.LoadData().then((result) => {
+  //     setshowLoadder(false);
+  //     setModalOpen(false);
+  //     setComponentLoadder(false);
+  //   });
+  //   handleClose();
+  // }
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -476,6 +482,7 @@ function Workflow(props) {
                         }
                         getOptionLabel={(option) => option.groupName}
                         defaultValue={selectedUserData}
+                        value={selectedUserData ? selectedUserData : ""}
                         onChange={selectedUser}
                         name="UserGroupId"
                         filterSelectedOptions

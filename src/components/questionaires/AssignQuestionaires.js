@@ -166,7 +166,11 @@ function AssignQuestionaires(props) {
     SetformData(resetformData);
   }
 
-  function resetFilterForm() {}
+  function resetFilterForm() {
+    setselectedUserQuestionnaire();
+    setselectedUserData();
+    SetformData(resetformData);
+  }
   function handleChangeGroup(e, value) {
     setselectedUserData(value);
     if (value) {
@@ -539,6 +543,7 @@ function AssignQuestionaires(props) {
                         }
                         getOptionLabel={(option) => option.groupName}
                         defaultValue={selectedUserData}
+                        value={selectedUserData ? selectedUserData : ""}
                         onChange={handleChangeGroup}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -576,6 +581,11 @@ function AssignQuestionaires(props) {
                         }
                         getOptionLabel={(option) => option.name}
                         defaultValue={selectedUserQuestionnaire}
+                        value={
+                          selectedUserQuestionnaire
+                            ? selectedUserQuestionnaire
+                            : ""
+                        }
                         onChange={handleChangeQuestionnaire}
                         filterSelectedOptions
                         className="global-input autocomplete-select"

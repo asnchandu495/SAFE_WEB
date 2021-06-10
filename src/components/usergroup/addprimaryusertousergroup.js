@@ -125,6 +125,8 @@ function AddPrimaryUserToUserGroups(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
+  const [showsubmitLoadder, setshowsubmitLoadder] = useState(false);
+
   const [dialogshowLoadder, setdialogshowLoadder] = useState(false);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedGroupInfo, setSelectedGroupInfo] = useState();
@@ -410,7 +412,13 @@ function AddPrimaryUserToUserGroups(props) {
     setdesignationMasterData(value);
   }
 
-  function resetFilterForm() {}
+  function resetFilterForm() {
+    setRoleMasterData([]);
+    setdesignationMasterData();
+    setSiteMasterData([]);
+    setUserGroupData();
+    setcovidStatelist();
+  }
 
   function AssignFiltersForm() {
     if (searchformData) {
@@ -422,6 +430,7 @@ function AddPrimaryUserToUserGroups(props) {
   }
 
   function AssignFiltersForm() {
+    setshowLoadder(true);
     let userfilterData = searchformData;
     if (RoleMasterData.length > 0) {
       let roleArr = RoleMasterData.map((item) => item.id);
@@ -519,7 +528,7 @@ function AddPrimaryUserToUserGroups(props) {
   }
 
   function assignUsers() {
-    setshowLoadder(true);
+    setshowsubmitLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
     let finalUsers = [];
@@ -577,6 +586,7 @@ function AddPrimaryUserToUserGroups(props) {
                       }
                       getOptionLabel={(option) => option.groupName}
                       defaultValue={UserGroupData}
+                      value={UserGroupData ? UserGroupData : ""}
                       onChange={usergroupSelect}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -608,6 +618,7 @@ function AddPrimaryUserToUserGroups(props) {
                         }
                         getOptionLabel={(option) => option.description}
                         defaultValue={RoleMasterData}
+                        value={RoleMasterData.length ? RoleMasterData : []}
                         onChange={handleChangeUserRole}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -643,6 +654,7 @@ function AddPrimaryUserToUserGroups(props) {
                       }
                       getOptionLabel={(option) => option.name}
                       defaultValue={designationMasterData}
+                      value={designationMasterData ? designationMasterData : ""}
                       onChange={handleChangeUserDesignation}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -674,6 +686,7 @@ function AddPrimaryUserToUserGroups(props) {
                       }
                       getOptionLabel={(option) => option.name}
                       defaultValue={SiteMasterData}
+                      value={SiteMasterData.length ? SiteMasterData : []}
                       onChange={userSelectSite}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -706,6 +719,7 @@ function AddPrimaryUserToUserGroups(props) {
                         getOptionLabel={(option) => option.stateName}
                         onChange={covidStateSelect}
                         defaultValue={covidStatelist}
+                        value={covidStatelist ? covidStatelist : ""}
                         name="covidState"
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -795,7 +809,7 @@ function AddPrimaryUserToUserGroups(props) {
                   disabled={showLoadder}
                   onClick={assignUsers}
                 >
-                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                  {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
                 </Button>
                 <Button
                   variant="contained"

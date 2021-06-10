@@ -378,7 +378,11 @@ function AssignedFAQs(props) {
     setUserSelectStatus(e.target.value);
   }
 
-  function resetFilterForm() {}
+  function resetFilterForm() {
+    setUserSelectGroup();
+    setUserSelectFaqDoc();
+    setUserSelectStatus("");
+  }
 
   function assignToGroup(e) {
     e.preventDefault();
@@ -556,6 +560,7 @@ function AssignedFAQs(props) {
                     getOptionLabel={(option) => option.groupName}
                     onChange={handleChangeUserGroup}
                     defaultValue={UserSelectGroup}
+                    value={UserSelectGroup ? UserSelectGroup : ""}
                     filterSelectedOptions
                     renderInput={(params) => (
                       <TextField
@@ -586,6 +591,7 @@ function AssignedFAQs(props) {
                     getOptionLabel={(option) => option.title}
                     onChange={handleChangeFaqDoc}
                     defaultValue={UserSelectFaqDoc}
+                    value={UserSelectFaqDoc ? UserSelectFaqDoc : ""}
                     filterSelectedOptions
                     renderInput={(params) => (
                       <TextField
@@ -624,7 +630,7 @@ function AssignedFAQs(props) {
                       placeholder="Select status"
                       name="covidStateId"
                       onChange={handleChangeDocStatus}
-                      value={UserSelectStatus}
+                      value={UserSelectStatus ? UserSelectStatus : ""}
                       className="global-input single-select"
                     >
                       <MenuItem value="">None</MenuItem>

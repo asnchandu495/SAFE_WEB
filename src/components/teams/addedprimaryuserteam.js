@@ -91,6 +91,8 @@ function AddPrimaryUserTeam(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
+  const [showsubmitLoadder, setshowsubmitLoadder] = useState(false);
+
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedTeamInfo, setSelectedTeamInfo] = useState();
   const [selectedUsersToGroup, setSelectedUsersToTeam] = useState([]);
@@ -272,9 +274,13 @@ function AddPrimaryUserTeam(props) {
   const handleClose = () => {
     setModalOpen(false);
   };
-  function resetFilterForm() {}
+  function resetFilterForm() {
+    setselectedUserData("");
+    setselectedUserDesignation("");
+  }
+
   function assignUsers() {
-    setshowLoadder(true);
+    setshowsubmitLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
     let finalUsers = [];
@@ -380,6 +386,7 @@ function AddPrimaryUserTeam(props) {
                         }
                         getOptionLabel={(option) => option.groupName}
                         defaultValue={selectedUserData}
+                        value={selectedUserData ? selectedUserData : ""}
                         onChange={selectedUser}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -411,6 +418,9 @@ function AddPrimaryUserTeam(props) {
                         getOptionLabel={(option) => option.name}
                         defaultValue={selectedUserDesignation}
                         onChange={selectedDesignation}
+                        value={
+                          selectedUserDesignation ? selectedUserDesignation : ""
+                        }
                         filterSelectedOptions
                         className="global-input autocomplete-select"
                         renderInput={(params) => (
@@ -498,7 +508,7 @@ function AddPrimaryUserTeam(props) {
                   disabled={showLoadder}
                   onClick={assignUsers}
                 >
-                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                  {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
                 </Button>
                 <Button
                   variant="contained"

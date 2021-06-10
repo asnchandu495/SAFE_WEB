@@ -407,11 +407,8 @@ function ListSite(props) {
   }
 
   function resetFilterForm() {
-    // setRoleMasterData([]);
-    // setdesignationMasterData();
-    // setSiteMasterData([]);
-    // setUserGroupData();
-    // setcovidStatelist();
+    setUserSelectedSiteManager([]);
+    setUserSelectedSecurityManager([]);
   }
   function AssignFiltersForm() {
     let sitefilterData = searchformData;
@@ -474,7 +471,16 @@ function ListSite(props) {
                       options={siteManger}
                       getOptionLabel={(option) => option.name}
                       onChange={handleChangeSiteManager}
-                      defaultValue={userSelectedSiteManager}
+                      defaultValue={
+                        userSelectedSiteManager.length
+                          ? userSelectedSiteManager
+                          : []
+                      }
+                      value={
+                        userSelectedSiteManager.length
+                          ? userSelectedSiteManager
+                          : []
+                      }
                       filterSelectedOptions
                       className="global-input autocomplete-select"
                       renderInput={(params) => (
@@ -500,7 +506,16 @@ function ListSite(props) {
                         options={securityManger}
                         getOptionLabel={(option) => option.name}
                         onChange={handleChangeSecurityManager}
-                        defaultValue={userSelectedSecurityManager}
+                        defaultValue={
+                          userSelectedSecurityManager.length
+                            ? userSelectedSecurityManager
+                            : []
+                        }
+                        value={
+                          userSelectedSecurityManager.length
+                            ? userSelectedSecurityManager
+                            : []
+                        }
                         filterSelectedOptions
                         className="global-input autocomplete-select"
                         renderInput={(params) => (
