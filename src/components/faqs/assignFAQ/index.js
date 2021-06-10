@@ -202,7 +202,7 @@ function AssignedFAQs(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Assign emergency contact to user group">
+          <Tooltip title="Assign faq">
             <Button
               variant="contained"
               startIcon={<PostAddIcon />}

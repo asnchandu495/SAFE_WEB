@@ -290,7 +290,7 @@ function AddPrimaryUserTeam(props) {
       .assignUserGroups(data)
       .then((result) => {
         setStateSnackbar(true);
-        setToasterMessage("Users added to Team");
+        setToasterMessage(`Users updated to team ${selectedTeamInfo.name}`);
         settoasterServerity("success");
         setTimeout(() => {
           props.history.push("/teams/allteams");
