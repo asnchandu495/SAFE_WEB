@@ -309,7 +309,7 @@ function ViewSite(props) {
           var thisRowData = tableMeta.rowData;
           if (thisRowData) {
             return (
-              <span>
+              <span className="with-infinity-container">
                 {/* {thisRowData[8]} - {thisRowData[7]} */}
                 {thisRowData[9]} -{" "}
                 {thisRowData[8] != -1 ? (
