@@ -479,7 +479,7 @@ function Users(props) {
     customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: (value, tableMeta, updateValue) => {
       return (
-        <div className={`maingrid-actions`}>
+        <div className={`maingrid-actions action-buttons-container`}>
           <Tooltip title="Filter By User">
             <Button
               variant="contained"
@@ -488,23 +488,21 @@ function Users(props) {
               onClick={handleClickOpenModal}
             ></Button>
           </Tooltip>
-          {/* {RowsSelected.length ? (
-            <Tooltip title="Delete">
+          {RowsSelected.length ? (
+            <Tooltip title="Update covid state">
               <Button
                 variant="contained"
-                startIcon={<DeleteIcon />}
-                className={`delete-icon`}
+                startIcon={<LocalHospitalIcon />}
+                className={`edit-icon`}
                 onClick={() =>
-                  handleClickOpenConfirmationModalDelete(
-                    selectedUsersForCovidState
-                  )
+                  handleClickOpenCovidStateInfoModal()
                 }
               ></Button>
             </Tooltip>
           ) : (
             ""
           )}
-          {RowsSelected.length ? (
+          {/* {RowsSelected.length ? (
             <Tooltip title="covidstate">
               <Button
                 variant="contained"

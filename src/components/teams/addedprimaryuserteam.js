@@ -103,7 +103,7 @@ function AddPrimaryUserTeam(props) {
   const [userGroupList, setuserGroupList] = useState();
 
   const [Modalopen, setModalOpen] = useState(false);
-
+  const [Modalsubmit,setModalsubmit]=useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
@@ -280,6 +280,7 @@ function AddPrimaryUserTeam(props) {
   }
 
   function assignUsers() {
+    setModalsubmit(true);
     setshowsubmitLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
@@ -358,6 +359,107 @@ function AddPrimaryUserTeam(props) {
 
   return (
     <div className="innerpage-container">
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+        open={Modalopen}
+      >
+        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+          Filters
+        </DialogTitle>
+        <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
+          <DialogContent dividers>
+            {!componentLoadder ? (
+              <Grid container spacing={3}>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">User Group </label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          userGroupList && userGroupList.length > 0
+                            ? userGroupList
+                            : []
+                        }
+                        getOptionLabel={(option) => option.groupName}
+                        defaultValue={selectedUserData}
+                        value={selectedUserData ? selectedUserData : ""}
+                        onChange={selectedUser}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select usergroup"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">Designation</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <FormControl variant="outlined" fullWidth>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={
+                          designationMasterData &&
+                          designationMasterData.length > 0
+                            ? designationMasterData
+                            : []
+                        }
+                        getOptionLabel={(option) => option.name}
+                        defaultValue={selectedUserDesignation}
+                        onChange={selectedDesignation}
+                        value={
+                          selectedUserDesignation ? selectedUserDesignation : ""
+                        }
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select designation"
+                          />
+                        )}
+                      />{" "}
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </Grid>
+            ) : null}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              className="global-submit-btn"
+              disabled={showLoadder}
+            >
+              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+            </Button>
+            <Button onClick={handleClose} className="global-cancel-btn">
+              Cancel
+            </Button>
+          </DialogActions>{" "}
+        </ValidatorForm>
+      </Dialog>
+      
+
       {/* <Dialog open={Modalopen} onClose={handleClose} aria-labelledby="form-dialog-title"> */}
       <Dialog
         onClose={handleClose}
