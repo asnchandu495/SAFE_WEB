@@ -110,6 +110,7 @@ function TemperatureRange(props) {
       },
     ],
   });
+  const [stateCount, setStateCount] = useState(0);
 
   useEffect(() => {
     Promise.all([
@@ -415,37 +416,70 @@ function TemperatureRange(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
-                            validators={["required"]}
                             validators={
-                              tempsections.temperatureUnit == "C"
+                              i == 0
+                                ? tempsections.temperatureUnit == "C"
+                                  ? [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:45",
+                                      "minNumber:30",
+                                    ]
+                                  : [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:113",
+                                      "minNumber:86",
+                                    ]
+                                : tempsections.temperatureUnit == "C"
                                 ? [
                                     "required",
                                     "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-
                                     "maxNumber:45",
-                                    "minNumber:30",
+                                    `minNumber:${parseFloat(
+                                      tempsections.covidStates[i - 1].upperLimit
+                                    )}`,
                                   ]
                                 : [
                                     "required",
                                     "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-
                                     "maxNumber:113",
-                                    "minNumber:86",
+                                    `minNumber:${parseFloat(
+                                      tempsections.covidStates[i - 1].upperLimit
+                                    )}`,
                                   ]
                             }
                             errorMessages={
-                              tempsections.temperatureUnit == "C"
+                              i == 0
+                                ? tempsections.temperatureUnit == "C"
+                                  ? [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:45",
+                                      "minNumber:30",
+                                    ]
+                                  : [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:113",
+                                      "minNumber:86",
+                                    ]
+                                : tempsections.temperatureUnit == "C"
                                 ? [
                                     "Please enter lower limit",
                                     "Entered numbers are not valid",
                                     "Maximum allowed is 45",
-                                    "Minimum allowed is 30",
+                                    `Minimum allowed is ${parseFloat(
+                                      tempsections.covidStates[i - 1].upperLimit
+                                    )}`,
                                   ]
                                 : [
                                     "Please enter lower limit",
                                     "Entered numbers are not valid",
                                     "Maximum allowed is 113",
-                                    "Minimum allowed is 86",
+                                    `Minimum allowed is ${parseFloat(
+                                      tempsections.covidStates[i - 1].upperLimit
+                                    )}`,
                                   ]
                             }
                             id={`lowerLimit_${i}`}
@@ -478,7 +512,7 @@ function TemperatureRange(props) {
                                       `minNumber:${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit) + 1
+                                          : parseFloat(x.lowerLimit)
                                       }`,
                                     ]
                                   : [
@@ -488,7 +522,7 @@ function TemperatureRange(props) {
                                       `minNumber:${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit) + 1
+                                          : parseFloat(x.lowerLimit)
                                       }`,
                                     ]
                                 : x.isNoUpperLimit
@@ -498,7 +532,7 @@ function TemperatureRange(props) {
                                     `minNumber:${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(x.lowerLimit) + 1
+                                        : parseFloat(x.lowerLimit)
                                     }`,
                                   ]
                                 : [
@@ -508,7 +542,7 @@ function TemperatureRange(props) {
                                     `minNumber:${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(x.lowerLimit) + 1
+                                        : parseFloat(x.lowerLimit)
                                     }`,
                                   ]
                             }
@@ -523,7 +557,7 @@ function TemperatureRange(props) {
                                       `Minimum allowed is ${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit) + 1
+                                          : parseFloat(x.lowerLimit)
                                       }`,
                                     ]
                                   : [
@@ -535,7 +569,7 @@ function TemperatureRange(props) {
                                       `Minimum allowed is ${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit) + 1
+                                          : parseFloat(x.lowerLimit)
                                       }`,
                                     ]
                                 : x.isNoUpperLimit
@@ -547,7 +581,7 @@ function TemperatureRange(props) {
                                     `Minimum allowed is ${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(x.lowerLimit) + 1
+                                        : parseFloat(x.lowerLimit)
                                     }`,
                                   ]
                                 : [
@@ -559,7 +593,7 @@ function TemperatureRange(props) {
                                     `Minimum allowed is ${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(x.lowerLimit) + 1
+                                        : parseFloat(x.lowerLimit)
                                     }`,
                                   ]
                             }
