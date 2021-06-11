@@ -143,33 +143,31 @@ function CreateSite(props) {
       masterDataCallApi.getCountries(),
       siteApiCall.getSiteManagers(),
       siteApiCall.getLocationManagers(),
-      siteApiCall.getSiteById(siteId),
       props.LoadData(),
     ])
       .then(
-        ([
-          getCountries,
-          getSiteManagers,
-          getLocationManagers,
-          siteDetails,
-          loadData,
-        ]) => {
+        ([getCountries, getSiteManagers, getLocationManagers, loadData]) => {
           if (siteId) {
-            console.log(siteDetails);
-            setUserSelectedSecurityManager({
-              applicationUserId: siteDetails.securityManager,
-              name: siteDetails.securityManagerName,
-            });
-            setUserSelectedSiteManager({
-              applicationUserId: siteDetails.siteManager,
-              name: siteDetails.siteManagerName,
-            });
-            SetformData(siteDetails);
+            siteApiCall
+              .getSiteById(siteId)
+              .then((siteDetails) => {
+                setUserSelectedSecurityManager({
+                  applicationUserId: siteDetails.securityManager,
+                  name: siteDetails.securityManagerName,
+                });
+                setUserSelectedSiteManager({
+                  applicationUserId: siteDetails.siteManager,
+                  name: siteDetails.siteManagerName,
+                });
+                SetformData(siteDetails);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
           }
           setCountryMasterData(getCountries);
           setSiteManger(getSiteManagers);
           setSecurityManger(getLocationManagers);
-
           setComponentLoadder(false);
         }
       )
