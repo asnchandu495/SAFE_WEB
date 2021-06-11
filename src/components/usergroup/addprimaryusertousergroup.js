@@ -125,8 +125,10 @@ function AddPrimaryUserToUserGroups(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
+  
+  const [Modalsubmit,setModalsubmit]=useState(false);
+  const [ShowYesLoadder,setshowYesLoadder]=useState(false);
   const [showsubmitLoadder, setshowsubmitLoadder] = useState(false);
-
   const [dialogshowLoadder, setdialogshowLoadder] = useState(false);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedGroupInfo, setSelectedGroupInfo] = useState();
@@ -526,9 +528,20 @@ function AddPrimaryUserToUserGroups(props) {
         setshowLoadder(false);
       });
   }
+  const handlesubmitClose = () => {
+   
+    setModalsubmit(false);
+    setshowLoadder(false);
+    setshowsubmitLoadder(false)
+  };
 
   function assignUsers() {
     setshowsubmitLoadder(true);
+    setModalsubmit(true);
+  }
+  function handleClickYes(){
+    setshowYesLoadder(true);
+    setshowsubmitLoadder(false);
     settoasterServerity("");
     settoasterErrorMessageType("");
     let finalUsers = [];
@@ -560,6 +573,39 @@ function AddPrimaryUserToUserGroups(props) {
 
   return (
     <div className="innerpage-container">
+
+      <Dialog
+        onClose={handlesubmitClose}
+        aria-labelledby="customized-dialog-title"
+        open={Modalsubmit}
+        className="global-dialog confirmation-dialog global-form"
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handlesubmitClose}>
+          Assign user
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            Do you want to change the primary group of a user?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handlesubmitClose}
+            className="no-button"
+            disabled={showLoadder}
+          >
+            No
+          </Button>
+          <Button
+            onClick={handleClickYes}
+            className="yes-button"
+            disabled={showLoadder}
+          >
+            {ShowYesLoadder ? <ButtonLoadderComponent /> : "Yes"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Dialog
         onClose={handleClose}
         aria-labelledby="form-dialog-title"

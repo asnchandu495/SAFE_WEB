@@ -17,12 +17,85 @@ import UserGroupService from "../../services/userGroupService";
 import MasterService from "../../services/masterDataService";
 import ToasterMessageComponent from "../common/toaster";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import { withStyles } from "@material-ui/core/styles";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
+
+const theme1 = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        overflowX: "none",
+        height: "auto",
+        maxHeight: "calc(100vh - 310px) !important",
+      },
+    },
+  },
+});
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+  backButton: {
+    marginRight: theme.spacing(1),
+  },
+  instructions: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    padding: 25,
+  },
+  stepButtons: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  icon: {
+    marginRight: theme.spacing(0.5),
+    marginBottom: -3,
+    width: 20,
+    height: 20,
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: "100%",
+    margin: 0,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+  errorSpanMsg: {
+    color: "red",
+  },
+  HideGrid: {
+    display: "none",
+  },
+}));
 function AllocateUserToPrimaryGroup(props) {
   const usersApiCall = new UserService();
   const masterDataCallApi = new MasterService();
   const userGroupApiCall = new UserGroupService();
-
+  const classes = useStyles();
   const [BusinessTeamMasterData, setBusinessTeamMasterData] = useState();
   const [formFieldValidation, setformFieldValidation] = useState({
     primaryGroup: false,
@@ -42,6 +115,34 @@ function AllocateUserToPrimaryGroup(props) {
     groups: [],
   });
   const [resetComponent, setResetComponent] = useState("NO");
+  const [Modalsubmit,setModalsubmit]=useState(false);
+  const [showLoadder, setshowLoadder] = useState(false);
+  
+  const [ShowYesLoadder,setshowYesLoadder]=useState(false);
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -105,13 +206,23 @@ function AllocateUserToPrimaryGroup(props) {
   function UserPrimaryGroup() {
     SelecPrimaryGroupValidation();
     if (UserSelectedPrimaryGroupValue) {
-      UserPrimaryGroupSubmit();
+      setModalsubmit(true);
+      // UserPrimaryGroupSubmit();
+      
     } else {
       return false;
     }
   }
+  const handlesubmitClose = () => {
+    props.setActiveCard("");
+    setformFieldValidation({ primaryGroup: false });
+    setResetComponent("YES");
+    setModalsubmit(false);
+    
+  };
 
-  function UserPrimaryGroupSubmit() {
+  function handleClickYes() {
+    setshowYesLoadder(true);
     setbuttonloadder(true);
 
     settoasterServerity("");
@@ -142,6 +253,37 @@ function AllocateUserToPrimaryGroup(props) {
 
   return (
     <Card className="user-update-details-card">
+      <Dialog
+        onClose={handlesubmitClose}
+        aria-labelledby="customized-dialog-title"
+        open={Modalsubmit}
+        className="global-dialog confirmation-dialog global-form"
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handlesubmitClose}>
+          Assign user
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            Do you want to change the primary group of a user?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handlesubmitClose}
+            className="no-button"
+            disabled={showLoadder}
+          >
+            No
+          </Button>
+          <Button
+            onClick={handleClickYes}
+            className="yes-button"
+            disabled={showLoadder}
+          >
+            {ShowYesLoadder ? <ButtonLoadderComponent /> : "Yes"}
+          </Button>
+        </DialogActions>
+      </Dialog>
       {!componentLoadder ? (
         <ValidatorForm className={`global-form`} onSubmit={UserPrimaryGroup}>
           <CardContent>
