@@ -218,6 +218,7 @@ function UpdateCovidState(props) {
           setTimeout(() => {
             props.setopenCovidStateInfoModal(false);
             props.setSelectedUsersForCovidState([]);
+            props.setRowsSelected([]);
             props.setReloadPage("YES");
             resetCovidStateFormData();
             setshowLoadder(false);

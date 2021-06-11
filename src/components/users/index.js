@@ -494,9 +494,7 @@ function Users(props) {
                 variant="contained"
                 startIcon={<LocalHospitalIcon />}
                 className={`edit-icon`}
-                onClick={() =>
-                  handleClickOpenCovidStateInfoModal()
-                }
+                onClick={() => handleClickOpenCovidStateInfoModal()}
               ></Button>
             </Tooltip>
           ) : (
@@ -1071,6 +1069,7 @@ function Users(props) {
         selectedUsersForCovidState={selectedUsersForCovidState}
         setSelectedUsersForCovidState={setSelectedUsersForCovidState}
         setReloadPage={setReloadPage}
+        setRowsSelected={setRowsSelected}
       />
       <ShiftingInfo
         openshiftInfoModal={openshiftInfoModal}
