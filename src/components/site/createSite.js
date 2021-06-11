@@ -143,25 +143,33 @@ function CreateSite(props) {
       masterDataCallApi.getCountries(),
       siteApiCall.getSiteManagers(),
       siteApiCall.getLocationManagers(),
+      siteApiCall.getSiteById(siteId),
       props.LoadData(),
     ])
       .then(
-        ([getCountries, getSiteManagers, getLocationManagers, loadData]) => {
-          if (siteId && props.userSiteData) {
-            SetformData(props.userSiteData);
+        ([
+          getCountries,
+          getSiteManagers,
+          getLocationManagers,
+          siteDetails,
+          loadData,
+        ]) => {
+          if (siteId) {
+            console.log(siteDetails);
+            setUserSelectedSecurityManager({
+              applicationUserId: siteDetails.securityManager,
+              name: siteDetails.securityManagerName,
+            });
+            setUserSelectedSiteManager({
+              applicationUserId: siteDetails.siteManager,
+              name: siteDetails.siteManagerName,
+            });
+            SetformData(siteDetails);
           }
-
           setCountryMasterData(getCountries);
           setSiteManger(getSiteManagers);
           setSecurityManger(getLocationManagers);
-          setUserSelectedSecurityManager({
-            applicationUserId: props.userSiteData.securityManager,
-            name: props.userSiteData.securityManagerName,
-          });
-          setUserSelectedSiteManager({
-            applicationUserId: props.userSiteData.siteManager,
-            name: props.userSiteData.siteManagerName,
-          });
+
           setComponentLoadder(false);
         }
       )
@@ -266,13 +274,13 @@ function CreateSite(props) {
         });
     } else {
       // data.zipCode = parseInt(data.zipCode);
-      data.siteManager = userSelectedSiteManager.applicationUserId;
-      data.siteManagerName = userSelectedSiteManager.name;
+      formData.siteManager = userSelectedSiteManager.applicationUserId;
+      formData.siteManagerName = userSelectedSiteManager.name;
 
-      data.securityManager = userSelectedSecurityManager.applicationUserId;
-      data.securityManagerName = userSelectedSecurityManager.name;
+      formData.securityManager = userSelectedSecurityManager.applicationUserId;
+      formData.securityManagerName = userSelectedSecurityManager.name;
       props
-        .UpdateData(data)
+        .UpdateData(formData)
         .then((result) => {
           setStateSnackbar(true);
           setToasterMessage("Updated Site details.");
