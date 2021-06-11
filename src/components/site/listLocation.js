@@ -139,6 +139,7 @@ function ListSite(props) {
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
@@ -146,6 +147,9 @@ function ListSite(props) {
     textLabels: {
       body: {
         noMatch: "There are no locations",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
 

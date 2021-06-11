@@ -34,6 +34,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import CovidStateApiServices from "../../services/masterDataService";
 import * as UserGroupAction from "../../Redux/Action/userGroupAction";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -124,6 +125,8 @@ function AddPrimaryUserToUserGroups(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
+  const [showsubmitLoadder, setshowsubmitLoadder] = useState(false);
+
   const [dialogshowLoadder, setdialogshowLoadder] = useState(false);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [selectedGroupInfo, setSelectedGroupInfo] = useState();
@@ -262,6 +265,7 @@ function AddPrimaryUserToUserGroups(props) {
     rowsPerPage: currentRowsPerPage,
     onChangeRowsPerPage: handleRowsPerPageChange,
     print: false,
+    jumpToPage: true,
     viewColumns: false,
     download: false,
     disableToolbarSelect: true,
@@ -285,6 +289,9 @@ function AddPrimaryUserToUserGroups(props) {
       },
       body: {
         noMatch: "There are no users",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
 
@@ -405,6 +412,14 @@ function AddPrimaryUserToUserGroups(props) {
     setdesignationMasterData(value);
   }
 
+  function resetFilterForm() {
+    setRoleMasterData([]);
+    setdesignationMasterData();
+    setSiteMasterData([]);
+    setUserGroupData();
+    setcovidStatelist();
+  }
+
   function AssignFiltersForm() {
     if (searchformData) {
       submitAssignFilter();
@@ -415,6 +430,7 @@ function AddPrimaryUserToUserGroups(props) {
   }
 
   function AssignFiltersForm() {
+    setshowLoadder(true);
     let userfilterData = searchformData;
     if (RoleMasterData.length > 0) {
       let roleArr = RoleMasterData.map((item) => item.id);
@@ -512,7 +528,7 @@ function AddPrimaryUserToUserGroups(props) {
   }
 
   function assignUsers() {
-    setshowLoadder(true);
+    setshowsubmitLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
     let finalUsers = [];
@@ -570,6 +586,7 @@ function AddPrimaryUserToUserGroups(props) {
                       }
                       getOptionLabel={(option) => option.groupName}
                       defaultValue={UserGroupData}
+                      value={UserGroupData ? UserGroupData : ""}
                       onChange={usergroupSelect}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -601,6 +618,7 @@ function AddPrimaryUserToUserGroups(props) {
                         }
                         getOptionLabel={(option) => option.description}
                         defaultValue={RoleMasterData}
+                        value={RoleMasterData.length ? RoleMasterData : []}
                         onChange={handleChangeUserRole}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -636,6 +654,7 @@ function AddPrimaryUserToUserGroups(props) {
                       }
                       getOptionLabel={(option) => option.name}
                       defaultValue={designationMasterData}
+                      value={designationMasterData ? designationMasterData : ""}
                       onChange={handleChangeUserDesignation}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -667,6 +686,7 @@ function AddPrimaryUserToUserGroups(props) {
                       }
                       getOptionLabel={(option) => option.name}
                       defaultValue={SiteMasterData}
+                      value={SiteMasterData.length ? SiteMasterData : []}
                       onChange={userSelectSite}
                       filterSelectedOptions
                       className="global-input autocomplete-select"
@@ -699,6 +719,7 @@ function AddPrimaryUserToUserGroups(props) {
                         getOptionLabel={(option) => option.stateName}
                         onChange={covidStateSelect}
                         defaultValue={covidStatelist}
+                        value={covidStatelist ? covidStatelist : ""}
                         name="covidState"
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -719,17 +740,23 @@ function AddPrimaryUserToUserGroups(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
               disabled={showLoadder}
             >
-              {dialogshowLoadder ? <ButtonLoadderComponent /> : "Submit"}
+              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
             </Button>
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
             </Button>
-          </DialogActions>
+          </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
 
@@ -782,7 +809,7 @@ function AddPrimaryUserToUserGroups(props) {
                   disabled={showLoadder}
                   onClick={assignUsers}
                 >
-                  {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+                  {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
                 </Button>
                 <Button
                   variant="contained"

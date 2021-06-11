@@ -24,6 +24,7 @@ import FormControl from "@material-ui/core/FormControl";
 import * as AssignmentEmergencycontactAction from "../../Redux/Action/assignemergencycontactAction";
 import * as EmergencyContactAction from "../../Redux/Action/emergencyContactAction";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 const userStatusData = [
   { id: "001", name: "Active" },
@@ -163,7 +164,9 @@ function AssignEmergencyContactToUserGroup(props) {
       [name]: value,
     }));
   }
-
+  function resetFilterForm() {
+    SetformData(resetformData);
+  }
   function AssignEmegencyContactForm() {
     if (
       formData.groupId &&
@@ -364,6 +367,12 @@ function AssignEmergencyContactToUserGroup(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
@@ -374,7 +383,7 @@ function AssignEmergencyContactToUserGroup(props) {
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
             </Button>
-          </DialogActions>
+          </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
       <ToasterMessageComponent

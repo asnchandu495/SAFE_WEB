@@ -10,6 +10,9 @@ import { Link as LinkTo } from "react-router-dom";
 import AuthService from "../../../services/authService";
 import ToasterMessageComponent from "../../common/toaster";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import * as GridAction from "../../../Redux/Action/gridAction";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -21,7 +24,7 @@ const GreenCheckbox = withStyles({
   checked: {},
 })((props) => <Checkbox color="default" {...props} />);
 
-export default function Signin(props) {
+function Signin(props) {
   const authApiCall = new AuthService();
 
   const [formData, SetformData] = useState({
@@ -33,6 +36,18 @@ export default function Signin(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState("");
   const [toasterServerity, settoasterServerity] = useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
+  const [gridPages, setGridPages] = useState([
+    { name: "users", page: 1 },
+    { name: "sites", page: 1 },
+    { name: "designations", page: 1 },
+    { name: "covidStates", page: 1 },
+    { name: "faqs", page: 1 },
+    { name: "userGroups", page: 1 },
+    { name: "emergencyContacts", page: 1 },
+    { name: "teams", page: 1 },
+    { name: "questionnaire", page: 1 },
+    { name: "workflows", page: 1 },
+  ]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -61,6 +76,7 @@ export default function Signin(props) {
           authApiCall
             .login(loginData)
             .then((response) => {
+              props.loadGridsPages(gridPages);
               setshowLoadder(false);
               props.history.push("/home/dashboard");
             })
@@ -173,3 +189,19 @@ export default function Signin(props) {
     </>
   );
 }
+
+Signin.propTypes = {
+  loadGridsPages: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    GridData: state.gridHistory,
+  };
+}
+
+const mapDispatchToProps = {
+  loadGridsPages: GridAction.loadGridsPages,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

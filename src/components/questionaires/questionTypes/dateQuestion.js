@@ -748,7 +748,7 @@ function DateQuestion(props) {
               className="global-cancel-btn"
               variant="contained"
             >
-              Back
+              Cancel
             </Button>
             <Button
               variant="contained"

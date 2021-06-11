@@ -220,7 +220,10 @@ function MultipleJump(props) {
     setConditionalJump(list);
   };
   function handleCancel() {
-    setConditionalJump(cancelconditionalJump);
+    // setConditionalJump(cancelconditionalJump);
+    setTimeout(() => {
+      props.history.push(`/questionaires/view-questions/${surveyId}`);
+    }, 1000);
   }
   function submitForm(e) {
     e.preventDefault();
@@ -304,7 +307,7 @@ function MultipleJump(props) {
         <LinkTo
           color="textPrimary"
           href={"/questionaires/allquestionaires"}
-          to={`/questionaires/view-questions/`}
+          to={`/questionaires/allquestionaires`}
           className="inactive"
         >
           Questionnaires
@@ -517,7 +520,7 @@ function MultipleJump(props) {
                                   className="select-label"
                                 >
                                   {conditionalJump.elseGoToQuestionId == ""
-                                    ? "Select questionf"
+                                    ? "Select question"
                                     : ""}
                                 </InputLabel>
                                 <Select

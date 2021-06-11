@@ -195,6 +195,9 @@ function DateJump(props) {
   };
   function handleCancel() {
     setConditionalJump(cancelconditionalJump);
+    setTimeout(() => {
+      props.history.push(`/questionaires/view-questions/${surveyId}`);
+    }, 1000);
   }
 
   function submitForm(e) {

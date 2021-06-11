@@ -23,6 +23,7 @@ import GroupIcon from "@material-ui/icons/Group";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -42,27 +43,24 @@ function UserGroups(props) {
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    props
-      .LoadAllUserGroup()
-      .then((result) => {
+    Promise.all([props.LoadAllUserGroup(), props.LoadGridsPage()])
+
+      .then(([result, gridResult]) => {
         setcomponentLoadder(false);
       })
       .catch((err) => {
@@ -80,6 +78,22 @@ function UserGroups(props) {
     );
   }
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "userGroups";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -87,13 +101,25 @@ function UserGroups(props) {
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "userGroups", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     print: false,
     viewColumns: false,
     download: false,
     textLabels: {
       body: {
         noMatch: "There are no user groups",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
     // customToolbar: () => {
@@ -279,16 +305,22 @@ function UserGroups(props) {
 UserGroups.propTypes = {
   UserGroupData: PropTypes.array.isRequired,
   LoadAllUserGroup: PropTypes.func.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     UserGroupData: state.usergroup,
+    GridData: state.gridHistory,
   };
 }
 
 const mapDispatchToProps = {
   LoadAllUserGroup: UserGroupAction.loadUserGroup,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserGroups);

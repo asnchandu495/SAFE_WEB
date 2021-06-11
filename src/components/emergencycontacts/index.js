@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -33,28 +34,25 @@ function EmergencyContact(props) {
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
 
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
 
   const [SelectedRowDetails, setSelectedRowsDetails] = useState([]);
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
   useEffect(() => {
-    props
-      .LoadAllEmergencyContactList()
-      .then((result) => {
+    Promise.all([props.LoadAllEmergencyContactList(), props.LoadGridsPage()])
+
+      .then(([result, gridResult]) => {
         setcomponentLoadder(false);
       })
       .catch((err) => {
@@ -70,17 +68,50 @@ function EmergencyContact(props) {
     props.history.push(`/emergencycontacts/view-contact-details/${getId}`);
   }
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "emergencyContacts";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "simple",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "emergencyContacts", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     print: false,
     viewColumns: false,
     download: false,
     selectableRows: "none",
+    textLabels: {
+      body: {
+        noMatch: "There are no emergency contacts",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
+    },
   };
 
   const columns = [
@@ -247,17 +278,23 @@ function EmergencyContact(props) {
 EmergencyContact.propTypes = {
   loadEmergencyContacts: PropTypes.array.isRequired,
   LoadAllEmergencyContactList: PropTypes.func.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     loadEmergencyContacts: state.loadEmergencyContacts,
+    GridData: state.gridHistory,
   };
 }
 
 const mapDispatchToProps = {
   LoadAllEmergencyContactList:
     EmergencyContactAction.LoadAllEmergencyContactList,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EmergencyContact);

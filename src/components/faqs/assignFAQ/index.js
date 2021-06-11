@@ -33,6 +33,7 @@ import PostAddIcon from "@material-ui/icons/PostAdd";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -185,6 +186,7 @@ function AssignedFAQs(props) {
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
@@ -193,11 +195,14 @@ function AssignedFAQs(props) {
       body: {
         noMatch: "There are no allocations",
       },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
     },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Assign emergency contact to user group">
+          <Tooltip title="Assign faq">
             <Button
               variant="contained"
               startIcon={<PostAddIcon />}
@@ -371,6 +376,12 @@ function AssignedFAQs(props) {
 
   function handleChangeDocStatus(e) {
     setUserSelectStatus(e.target.value);
+  }
+
+  function resetFilterForm() {
+    setUserSelectGroup();
+    setUserSelectFaqDoc();
+    setUserSelectStatus("");
   }
 
   function assignToGroup(e) {
@@ -549,6 +560,7 @@ function AssignedFAQs(props) {
                     getOptionLabel={(option) => option.groupName}
                     onChange={handleChangeUserGroup}
                     defaultValue={UserSelectGroup}
+                    value={UserSelectGroup ? UserSelectGroup : ""}
                     filterSelectedOptions
                     renderInput={(params) => (
                       <TextField
@@ -579,6 +591,7 @@ function AssignedFAQs(props) {
                     getOptionLabel={(option) => option.title}
                     onChange={handleChangeFaqDoc}
                     defaultValue={UserSelectFaqDoc}
+                    value={UserSelectFaqDoc ? UserSelectFaqDoc : ""}
                     filterSelectedOptions
                     renderInput={(params) => (
                       <TextField
@@ -617,7 +630,7 @@ function AssignedFAQs(props) {
                       placeholder="Select status"
                       name="covidStateId"
                       onChange={handleChangeDocStatus}
-                      value={UserSelectStatus}
+                      value={UserSelectStatus ? UserSelectStatus : ""}
                       className="global-input single-select"
                     >
                       <MenuItem value="">None</MenuItem>
@@ -648,6 +661,12 @@ function AssignedFAQs(props) {
           </DialogContent>
           <DialogActions>
             <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
@@ -661,7 +680,7 @@ function AssignedFAQs(props) {
             >
               Cancel
             </Button>
-          </DialogActions>
+          </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
       <ConfirmationDialog

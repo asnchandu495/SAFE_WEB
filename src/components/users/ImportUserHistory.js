@@ -13,6 +13,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import fileUploadService from "../../services/fileUploadService";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import BackupIcon from "@material-ui/icons/Backup";
 import moment from "moment";
 
 const theme1 = createMuiTheme({
@@ -32,9 +33,8 @@ function ImportUserHistory(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
 
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [importuserHistoryDetails, setimportuserHistoryDetails] = useState([]);
@@ -58,6 +58,7 @@ function ImportUserHistory(props) {
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
@@ -66,6 +67,25 @@ function ImportUserHistory(props) {
       body: {
         noMatch: "There are no users",
       },
+      pagination: {
+        jumpToPage: "Goto page:",
+      },
+    },
+
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbar: (value, tableMeta, updateValue) => {
+      return (
+        <div className={`maingrid-actions`}>
+          <Tooltip title="Import  Users">
+            <Button
+              variant="contained"
+              startIcon={<BackupIcon />}
+              className={`add-icon`}
+              onClick={handleupload}
+            ></Button>
+          </Tooltip>
+        </div>
+      );
     },
   };
 
@@ -186,7 +206,9 @@ function ImportUserHistory(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  function handleupload() {
+    props.history.push("/users/import-users");
+  }
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">

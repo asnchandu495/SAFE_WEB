@@ -128,7 +128,7 @@ function FaqSections(props) {
   };
 
   function handleClickGoBackToPage() {
-    props.history.push("/emergencycontacts/view");
+    props.history.push("/faq/allfaqs");
   }
 
   function submitForm(e) {

@@ -227,80 +227,90 @@ function ViewUser(props) {
           <div className={`global-form inline-form`}>
             <Grid container spacing={3} direction="row">
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>First Name :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>First Name</label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.firstName}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Middle Name:</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Middle Name</label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.middleName}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Last Name :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Last Name </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.lastName}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
+                <Grid item xs={4} className="user-view-label">
                   <label>Gender :</label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.gender}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>User Id :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>User Id </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.userId}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Email Id :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Email Id </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.emailID}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Contact Number :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Contact Number </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.contactNumber}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Alternative Contact Number :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Alternative Contact Number </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.alternateContactNumber}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Designation :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Designation </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.designation.name}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Team :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Team </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   {renderapplicationUseTeamGroup(
@@ -309,8 +319,9 @@ function ViewUser(props) {
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Role :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Role </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   {renderapplicationUserRole(
@@ -320,24 +331,27 @@ function ViewUser(props) {
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Supervisor :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Supervisor </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.supervisor}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Primary Group :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Primary Group </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.group.groupName}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Secondary Group :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Secondary Group </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   {renderapplicationUserSecondaryGroup(
@@ -346,8 +360,9 @@ function ViewUser(props) {
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Site :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Site </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   {renderapplicationUserSite(
@@ -356,56 +371,63 @@ function ViewUser(props) {
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Country :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Country </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.country.name}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>State :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>State </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.state}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>City :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>City </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.city}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Address1 :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Address1 </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.address1}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Address2 :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Address2 </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.address2}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Zip Code :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Zip Code </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>{viewUserDetails.zipCode}</label>
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Temperature :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Temperature </label>
+                  <span>:</span>
                 </Grid>
 
                 <Grid item xs={8}>
@@ -453,8 +475,9 @@ function ViewUser(props) {
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Covid State :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Covid State </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>
@@ -465,8 +488,9 @@ function ViewUser(props) {
                 </Grid>
               </Grid>
               <Grid item xs={6} container>
-                <Grid item xs={4}>
-                  <label>Shift Info :</label>
+                <Grid item xs={4} className="user-view-label">
+                  <label>Shift Info </label>
+                  <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
                   <label>

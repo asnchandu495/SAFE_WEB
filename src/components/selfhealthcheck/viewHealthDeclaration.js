@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import HelpIcon from "@material-ui/icons/Help";
 import healthCheckService from "../../services/healthCheckService";
+import Button from "@material-ui/core/Button";
 
 function ViewHealthDeclaration(props) {
   var ResponseId = props.match.params.id;
@@ -39,7 +40,9 @@ function ViewHealthDeclaration(props) {
   const handleChangeAnswerSection = (panel) => (event, isExpanded) => {
     setExpandedFaq(isExpanded ? panel : false);
   };
-
+  function handleClickGoBack() {
+    props.history.push("/selfhealthcheck/configurehealth");
+  }
   function RenderAnswers(props) {
     switch (props.questionDetails.questionType) {
       case "Boolean":
@@ -216,6 +219,25 @@ function ViewHealthDeclaration(props) {
                 <p>No answers</p>
               )}
             </Paper>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            container
+            direction="row"
+            justify="flex-end"
+            alignItems="center"
+          >
+            <div className={`form-buttons-container`}>
+              <Button
+                variant="contained"
+                type="button"
+                onClick={handleClickGoBack}
+                className="global-cancel-btn"
+              >
+                Close
+              </Button>
+            </div>
           </Grid>
         </Grid>
       )}

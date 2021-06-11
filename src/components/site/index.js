@@ -39,6 +39,25 @@ import IconButton from "@material-ui/core/IconButton";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import * as GridAction from "../../Redux/Action/gridAction";
+
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import ReplayIcon from "@material-ui/icons/Replay";
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -97,6 +116,32 @@ function ListSite(props) {
     SiteManagerId: [],
     SecurityManagerId: [],
   });
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -104,9 +149,10 @@ function ListSite(props) {
       siteApiCall.getSiteManagers(),
       siteApiCall.getLocationManagers(),
       props.LoadData(),
+      props.LoadGridsPage(),
     ])
 
-      .then(([getSiteManagers, getLocationManagers, result]) => {
+      .then(([getSiteManagers, getLocationManagers, result, gridResult]) => {
         setcomponentLoadder(false);
         setSiteManger(getSiteManagers);
         setSecurityManger(getLocationManagers);
@@ -150,13 +196,39 @@ function ListSite(props) {
   const handleClose = () => {
     setModalOpen(false);
   };
+
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      return g.name == "sites";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "sites", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
     print: false,
     viewColumns: false,
     download: false,
@@ -164,6 +236,9 @@ function ListSite(props) {
     textLabels: {
       body: {
         noMatch: "There are no sites created",
+      },
+      pagination: {
+        jumpToPage: "Goto page:",
       },
     },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
@@ -331,6 +406,10 @@ function ListSite(props) {
     props.history.push(getRoute);
   }
 
+  function resetFilterForm() {
+    setUserSelectedSiteManager([]);
+    setUserSelectedSecurityManager([]);
+  }
   function AssignFiltersForm() {
     let sitefilterData = searchformData;
     if (userSelectedSiteManager.length > 0) {
@@ -392,7 +471,16 @@ function ListSite(props) {
                       options={siteManger}
                       getOptionLabel={(option) => option.name}
                       onChange={handleChangeSiteManager}
-                      defaultValue={userSelectedSiteManager}
+                      defaultValue={
+                        userSelectedSiteManager.length
+                          ? userSelectedSiteManager
+                          : []
+                      }
+                      value={
+                        userSelectedSiteManager.length
+                          ? userSelectedSiteManager
+                          : []
+                      }
                       filterSelectedOptions
                       className="global-input autocomplete-select"
                       renderInput={(params) => (
@@ -418,7 +506,16 @@ function ListSite(props) {
                         options={securityManger}
                         getOptionLabel={(option) => option.name}
                         onChange={handleChangeSecurityManager}
-                        defaultValue={userSelectedSecurityManager}
+                        defaultValue={
+                          userSelectedSecurityManager.length
+                            ? userSelectedSecurityManager
+                            : []
+                        }
+                        value={
+                          userSelectedSecurityManager.length
+                            ? userSelectedSecurityManager
+                            : []
+                        }
                         filterSelectedOptions
                         className="global-input autocomplete-select"
                         renderInput={(params) => (
@@ -437,6 +534,12 @@ function ListSite(props) {
             ) : null}
           </DialogContent>
           <DialogActions>
+            <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
             <Button
               variant="contained"
               type="submit"
@@ -522,11 +625,15 @@ ListSite.propTypes = {
   LoadEmptyData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
   SiteSecurityData: PropTypes.array.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     SiteData: state.SiteState,
+    GridData: state.gridHistory,
   };
 }
 
@@ -534,6 +641,8 @@ const mapDispatchToProps = {
   LoadData: UserSiteAction.loadSite,
   LoadEmptyData: AddFloorAction.loadFloorWithEmptyData,
   LoadSitebySecurity: UserSiteAction.loadSitesbySiteorSecurityManager,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListSite);

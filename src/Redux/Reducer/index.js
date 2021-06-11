@@ -38,7 +38,7 @@ const rootReducer = combineReducers({
   questionState: questionStates,
   workflowState: workflowStates,
   publishReducer: publishReducers,
-  gridState: gridState,
+  gridHistory: gridState,
 });
 
 export default rootReducer;
