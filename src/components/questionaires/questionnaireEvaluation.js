@@ -507,19 +507,73 @@ function QuestionnaireEvaluation(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
-                            validators={[
-                              "required",
-                              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-
-                              "maxNumber:45",
-                              "minNumber:30",
-                            ]}
-                            errorMessages={[
-                              "Please enter lower limit",
-                              "Entered numbers are not valid",
-                              "Maximum allowed is 45",
-                              "Minimum allowed is 30",
-                            ]}
+                           
+                            validators={
+                              i == 0
+                                ? temperatureConfigForm.positiveResponses
+                                  ? [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:45",
+                                      "minNumber:30",
+                                    ]
+                                  : [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:113",
+                                      "minNumber:86",
+                                    ]
+                                : temperatureConfigForm.positiveResponses
+                                ? [
+                                    "required",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                    "maxNumber:45",
+                                    `minNumber:${parseFloat(
+                                      temperatureConfigForm.positiveResponses[i - 1].upperLimit
+                                    )}`,
+                                  ]
+                                : [
+                                    "required",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                    "maxNumber:113",
+                                    `minNumber:${parseFloat(
+                                      temperatureConfigForm.positiveResponses[i - 1].upperLimit
+                                    )}`,
+                                  ]
+                            }
+                            errorMessages={
+                              i == 0
+                                ? temperatureConfigForm.positiveResponses
+                                  ? [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:45",
+                                      "minNumber:30",
+                                    ]
+                                  : [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:113",
+                                      "minNumber:86",
+                                    ]
+                                : temperatureConfigForm.positiveResponses
+                                ? [
+                                    "Please enter lower limit",
+                                    "Entered numbers are not valid",
+                                    "Maximum allowed is 45",
+                                    `Minimum allowed is ${parseFloat(
+                                      temperatureConfigForm.positiveResponses[i - 1].upperLimit
+                                    )}`,
+                                  ]
+                                : [
+                                    "Please enter lower limit",
+                                    "Entered numbers are not valid",
+                                    "Maximum allowed is 113",
+                                    `Minimum allowed is ${parseFloat(
+                                      temperatureConfigForm.positiveResponses[i - 1].upperLimit
+                                    )}`,
+                                  ]
+                            }
                             fullWidth
                             id={`lowerLimit_${i}`}
                             placeholder="Lower Limit"
@@ -534,26 +588,101 @@ function QuestionnaireEvaluation(props) {
                           <TextValidator
                             variant="outlined"
                             disabled={disableUpperLimit ? "true" : ""}
-                            validators={[
-                              "required",
-                              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                              "maxNumber:45",
-                              `minNumber:${
-                                x.isNoUpperLimit
-                                  ? 0
-                                  : parseFloat(x.lowerLimit) + 1
-                              }`,
-                            ]}
-                            errorMessages={[
-                              "Please enter lower limit",
-                              "Entered numbers are not valid",
-                              `Maximum allowed is ${x.isNoUpperLimit ? 0 : 45}`,
-                              `Minimum allowed is ${
-                                x.isNoUpperLimit
-                                  ? 0
-                                  : parseFloat(x.lowerLimit) + 1
-                              }`,
-                            ]}
+                            
+                            validators={
+                              temperatureConfigForm.positiveResponses
+                                ? x.isNoUpperLimit
+                                  ? [
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:45",
+                                      `minNumber:${
+                                        x.isNoUpperLimit
+                                          ? 0
+                                          : parseFloat(x.lowerLimit)
+                                      }`,
+                                    ]
+                                  : [
+                                      "required",
+                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                      "maxNumber:45",
+                                      `minNumber:${
+                                        x.isNoUpperLimit
+                                          ? 0
+                                          : parseFloat(x.lowerLimit)
+                                      }`,
+                                    ]
+                                : x.isNoUpperLimit
+                                ? [
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                    "maxNumber:113",
+                                    `minNumber:${
+                                      x.isNoUpperLimit
+                                        ? 0
+                                        : parseFloat(x.lowerLimit)
+                                    }`,
+                                  ]
+                                : [
+                                    "required",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                    "maxNumber:113",
+                                    `minNumber:${
+                                      x.isNoUpperLimit
+                                        ? 0
+                                        : parseFloat(x.lowerLimit)
+                                    }`,
+                                  ]
+                            }
+                            errorMessages={
+                              temperatureConfigForm.positiveResponses
+                                ? x.isNoUpperLimit
+                                  ? [
+                                      "Entered numbers are not valid",
+                                      `Maximum allowed is ${
+                                        x.isNoUpperLimit ? 0 : 45
+                                      }`,
+                                      `Minimum allowed is ${
+                                        x.isNoUpperLimit
+                                          ? 0
+                                          : parseFloat(x.lowerLimit)
+                                      }`,
+                                    ]
+                                  : [
+                                      "Please enter lower limit",
+                                      "Entered numbers are not valid",
+                                      `Maximum allowed is ${
+                                        x.isNoUpperLimit ? 0 : 45
+                                      }`,
+                                      `Minimum allowed is ${
+                                        x.isNoUpperLimit
+                                          ? 0
+                                          : parseFloat(x.lowerLimit)
+                                      }`,
+                                    ]
+                                : x.isNoUpperLimit
+                                ? [
+                                    "Entered numbers are not valid",
+                                    `Maximum allowed is ${
+                                      x.isNoUpperLimit ? 0 : 113
+                                    }`,
+                                    `Minimum allowed is ${
+                                      x.isNoUpperLimit
+                                        ? 0
+                                        : parseFloat(x.lowerLimit)
+                                    }`,
+                                  ]
+                                : [
+                                    "Please enter lower limit",
+                                    "Entered numbers are not valid",
+                                    `Maximum allowed is ${
+                                      x.isNoUpperLimit ? 0 : 113
+                                    }`,
+                                    `Minimum allowed is ${
+                                      x.isNoUpperLimit
+                                        ? 0
+                                        : parseFloat(x.lowerLimit)
+                                    }`,
+                                  ]
+                            }
                             fullWidth
                             id={`upperLimit_${i}`}
                             placeholder="Upper Limit"
