@@ -58,7 +58,7 @@ function ConfigureHealth(props) {
     fromDate: moment().toISOString(),
     toDate: moment().toISOString(),
   });
-  
+
   const [selectedUserDetails, setSelectedUserDetails] = useState();
 
   useEffect(() => {
@@ -350,7 +350,7 @@ function ConfigureHealth(props) {
                       required
                       value={searchForm.toDate}
                       minDate={searchForm.fromDate}
-                     disableFuture={true}
+                      disableFuture={true}
                       className="global-input"
                       KeyboardButtonProps={{
                         "aria-label": "change date",
@@ -378,7 +378,7 @@ function ConfigureHealth(props) {
                       <Button
                         variant="contained"
                         type="button"
-                        className="global-cancel-btn global-filter-reset-btn"
+                        className="global-cancel-btn global-filter-reset-btn-text"
                         onClick={resetFilterForm}
                       >
                         Reset

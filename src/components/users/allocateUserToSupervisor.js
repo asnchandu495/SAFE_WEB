@@ -47,15 +47,28 @@ function AllocateUserToSupervisor(props) {
     setcomponentLoadder(true);
     Promise.all([
       masterDataCallApi.getAllSuperVisor(),
-      usersApiCall.getProfileDetails(),
+      // usersApiCall.getProfileDetails(),
     ])
-      .then(([getAllSuperVisor, getUserloggedDetails]) => {
-        // setAllSupervisorRole(getAllSuperVisor);
-        setAllSupervisorRole(
-          getAllSuperVisor.filter(function (sup) {
-            return sup.applicationUserId != getUserloggedDetails.id;
-          })
-        );
+      .then(([getAllSuperVisor]) => {
+        // setAllSupervisorRole(
+        //   getAllSuperVisor.filter(function (sup) {
+        //     return sup.applicationUserId != getUserloggedDetails.id;
+        //   })
+        // );
+        let applicationUserToRole =
+          props.applicationUserData.applicationUserToRole;
+        if (applicationUserToRole.some((r) => r.id == "Supervisor")) {
+          setAllSupervisorRole(
+            getAllSuperVisor.filter(function (sup) {
+              return (
+                sup.applicationUserId != props.applicationUserData.id &&
+                sup.role == "Supervisor"
+              );
+            })
+          );
+        } else {
+          setAllSupervisorRole(getAllSuperVisor);
+        }
         setUserSelectSupervisorData({
           applicationUserId: props.applicationUserData.supervisorId,
           name: props.applicationUserData.supervisor,
