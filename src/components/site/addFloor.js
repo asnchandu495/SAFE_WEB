@@ -20,6 +20,7 @@ import UserService from "../../services/usersService";
 import MasterService from "../../services/masterDataService";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -103,12 +104,15 @@ function AddFloor(props) {
     id: "",
     floorName: "",
     locationCount: 0,
+    isRLAPActive: false,
+    rlapReferenceId: ""
   });
   const [resetformData, SetresetformData] = useState({
     siteId: "",
     id: "",
     floorName: "",
     locationCount: 0,
+    rlapReferenceId: ""
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -147,6 +151,13 @@ function AddFloor(props) {
       [name]: value,
     }));
   }
+  const handleChangecheckBox = (event) => {
+    SetformData((formData) => ({
+      ...formData,
+      ["isRLAPActive"]: event.target.checked,
+    }));
+  };
+
 
   function checkUnqueName(value) {
     if (props.SelectedRowId) {
@@ -289,6 +300,28 @@ function AddFloor(props) {
                       ""
                     )}
                   </Grid>
+
+
+                  <Grid item xs={12}>
+                  <Checkbox
+                    checked={formData.isRLAPActive}
+                    onChange={handleChangecheckBox}
+                    value={formData.isRLAPActive}
+                    inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                  />
+                  <label
+                        htmlFor="password"
+                        className="input-label "
+                      >
+                        RLAP
+                      </label>
+                  
+                    
+                  </Grid>
+
+
+
+
                 </Grid>
               </Grid>
             ) : null}

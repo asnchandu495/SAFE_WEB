@@ -24,6 +24,7 @@ import MasterService from "../../services/masterDataService";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import { Prompt } from "react-router-dom";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -158,6 +159,7 @@ function CreateUser(props) {
     supervisorId: "",
     supervisor: "",
     zipCode: null,
+    isRLAPActive: false
   });
 
   const [resetformData, SetresetformData] = useState({
@@ -184,6 +186,7 @@ function CreateUser(props) {
     supervisorId: "",
     supervisor: "",
     zipCode: null,
+    isRLAPActive: false
   });
 
   useEffect(() => {
@@ -531,6 +534,12 @@ function CreateUser(props) {
     props.history.push("/users/allusers");
   }
 
+  const handleChangecheckBox = (event) => {
+    SetformData((formData) => ({
+      ...formData,
+      ["isRLAPActive"]: event.target.checked,
+    }));
+  };
   return (
     <div className="innerpage-container">
       <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
@@ -1179,6 +1188,22 @@ function CreateUser(props) {
                       InputLabelProps={{ shrink: false }}
                     />
                   </Grid>
+                  
+                  <Grid item sm={4}>
+                  <Checkbox
+                    checked={formData.isRLAPActive}
+                    onChange={handleChangecheckBox}
+                    value={formData.isRLAPActive}
+                    inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                  />
+                    <label htmlFor="password" className="input-label ">
+                      RLAP
+                    </label>
+                   
+                  </Grid>
+
+
+
                   <Grid container>
                     <Grid item xs={12} className={`inner-table-buttons`}>
                       <div className={`form-buttons-container`}>

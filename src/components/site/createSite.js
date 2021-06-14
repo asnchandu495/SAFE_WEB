@@ -23,6 +23,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import MasterService from "../../services/masterDataService";
 import AlertBoxComponent from "../common/alert";
 import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from "react-dom";
+import Checkbox from "@material-ui/core/Checkbox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -129,6 +130,8 @@ function CreateSite(props) {
     securityManagerName: "",
     floors: [],
     locations: [],
+    isRLAPActive: false,
+  rlapReferenceId: ""
   });
 
   const [formFieldValidation, setformFieldValidation] = useState({
@@ -374,6 +377,12 @@ function CreateSite(props) {
   function redirectToViewUsersGroup() {
     props.history.push("/site/all-site");
   }
+  const handleChangecheckBox = (event) => {
+    SetformData((formData) => ({
+      ...formData,
+      ["isRLAPActive"]: event.target.checked,
+    }));
+  };
 
   return (
     <div className="innerpage-container">
@@ -680,6 +689,43 @@ function CreateSite(props) {
                         name="zipCode"
                         onChange={handleChange}
                         value={formData.zipCode}
+                        className="global-input"
+                        InputLabelProps={{ shrink: false }}
+                      />
+                    </Grid>
+
+                    <Grid item xs={4}>
+                      <label
+                        htmlFor="password"
+                        className="input-label "
+                      >
+                        RLAP
+                      </label>
+                      <Checkbox
+                    checked={formData.isRLAPActive}
+                    onChange={handleChangecheckBox}
+                    value={formData.isRLAPActive}
+                    inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                  />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <label
+                        htmlFor="password"
+                        className="input-label "
+                      >
+                        Reference Id
+                      </label>
+                      <TextValidator
+                        variant="outlined"
+                        validators={formData.isRLAPActive?["required"]:""}
+                        errorMessages={formData.isRLAPActive?["Please rlapReferenceId"]:""}
+                        fullWidth
+                        id="rlapReferenceId"
+                        disabled={!formData.isRLAPActive}
+                        placeholder="Enter rlapReferenceId "
+                        name="rlapReferenceId"
+                        onChange={handleChange}
+                        value={formData.rlapReferenceId}
                         className="global-input"
                         InputLabelProps={{ shrink: false }}
                       />
