@@ -58,12 +58,12 @@ function BooleanQuestion(props) {
 
   const PurpleSwitch = withStyles({
     switchBase: {
-      color: "#be1d56",
+      color: "red",
       "&$checked": {
-        color: "#26235d",
+        color: "green",
       },
       "&$checked + $track": {
-        backgroundColor: "#26235d",
+        backgroundColor: "green",
       },
     },
     checked: {},
@@ -224,6 +224,7 @@ function BooleanQuestion(props) {
                           onChange={handleChangeSwitch}
                         />
                       }
+                      label={addQuestionData.isMandatory ? "Yes" : "No"}
                     />
                   </Grid>
                 </Grid>
@@ -239,6 +240,11 @@ function BooleanQuestion(props) {
                           name="isPositiveConformityRedFlag"
                           onChange={handleChangeSwitch}
                         />
+                      }
+                      label={
+                        addQuestionData.isPositiveConformityRedFlag
+                          ? "Yes"
+                          : "No"
                       }
                     />
                   </Grid>

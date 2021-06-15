@@ -12,6 +12,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import ToasterMessageComponent from "../../common/toaster";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import Editor from "ckeditor5-custom-build/build/ckeditor";
 import FaqService from "../../../services/faqService";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +23,33 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const languages = [{ id: "English", language: "English" }];
+
+const editorConfiguration = {
+  toolbar: [
+    "heading",
+    "|",
+    "bold",
+    "italic",
+    "underline",
+    "bulletedList",
+    "numberedList",
+    "link",
+    "strikethrough",
+    "fontcolor",
+    "FontBackgroundColor",
+    "FontSize",
+    "Alignment",
+    "fontFamily",
+    "insertTable",
+  ],
+  fontSize: {
+    options: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+  },
+  fontFamily: {
+    options: ["default", "Arial", "Times New Roman"],
+    supportAllValues: true,
+  },
+};
 
 function FaqSections(props) {
   const faqApiCall = new FaqService();
@@ -107,6 +136,18 @@ function FaqSections(props) {
     setFaqSections(list);
   };
 
+  const handleTemplate = (e, editor, index, name) => {
+    const list = {
+      ...faqSections,
+      questions: [
+        ...faqSections.questions.map((con, conIndex) =>
+          conIndex == index ? { ...con, [name]: editor } : con
+        ),
+      ],
+    };
+    setFaqSections(list);
+  };
+
   const handleRemoveClickContacts = (j) => {
     const list = { ...faqSections };
     list.questions.splice(j, 1);
@@ -163,6 +204,7 @@ function FaqSections(props) {
                 },
               ],
             });
+            props.history.push("/faq/view-faq/" + props.match.params.id);
             setshowLoadder(false);
           }, 6000);
         })
@@ -317,7 +359,7 @@ function FaqSections(props) {
                                 </Grid>
 
                                 <Grid item xs={12} className="answer-input">
-                                  <TextValidator
+                                  {/* <TextValidator
                                     variant="outlined"
                                     validators={[
                                       "required",
@@ -337,6 +379,34 @@ function FaqSections(props) {
                                     }
                                     className="global-input"
                                     InputLabelProps={{ shrink: false }}
+                                  /> */}
+
+                                  <CKEditor
+                                    editor={Editor}
+                                    config={editorConfiguration}
+                                    data={x.answer}
+                                    id={`answer_${i}`}
+                                    name="answer"
+                                    onReady={(editor) => {
+                                      editor.editing.view.change((writer) => {
+                                        writer.setStyle(
+                                          "height",
+                                          "225px",
+                                          editor.editing.view.document.getRoot()
+                                        );
+                                      });
+                                    }}
+                                    onChange={(event, editor) => {
+                                      handleTemplate(
+                                        event,
+                                        editor.getData(),
+                                        i,
+                                        "answer"
+                                      );
+                                    }}
+                                    onFocus={(event, editor) => {
+                                      // setCurrentEditor(editor);
+                                    }}
                                   />
                                 </Grid>
                               </Grid>

@@ -86,6 +86,7 @@ function ListAssignedDesignation(props) {
 
   const options = {
     filter: false,
+    print: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,

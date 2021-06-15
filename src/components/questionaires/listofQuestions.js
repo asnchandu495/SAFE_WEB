@@ -127,25 +127,33 @@ function ListofQuestions(props) {
       {/* {selectedSurveyQuestions.map((ques, index) => { */}
       {props.ListofQuestionsData.map((ques, index) => {
         return (
-          <div
-            className="questionnairelistitems"
-            key={"questionnaire=" + ques.id}
-          >
-            <ListItem
-              button
-              selected={selectedIndex == ques.id}
-              onClick={() => handleListItemClick(ques.id, ques.questionType)}
-              alignItems="flex-start"
-            >
-              <ListItemAvatar>
-                <Avatar>{index + 1}</Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                secondary={<p className="question-name">{ques.question}</p>}
-              />
-            </ListItem>
-            <Divider component="li" />
-          </div>
+          <>
+            {!ques.isEndQuestion ? (
+              <div
+                className="questionnairelistitems"
+                key={"questionnaire=" + ques.id}
+              >
+                <ListItem
+                  button
+                  selected={selectedIndex == ques.id}
+                  onClick={() =>
+                    handleListItemClick(ques.id, ques.questionType)
+                  }
+                  alignItems="flex-start"
+                >
+                  <ListItemAvatar>
+                    <Avatar>{index + 1}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    secondary={<p className="question-name">{ques.question}</p>}
+                  />
+                </ListItem>
+                <Divider component="li" />
+              </div>
+            ) : (
+              ""
+            )}
+          </>
         );
       })}
     </List>

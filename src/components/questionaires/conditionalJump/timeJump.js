@@ -52,6 +52,7 @@ function TimeJump(props) {
         forAnswer: moment().toISOString(),
         forRangeEnd: moment().toISOString(),
         goToSurveyQuestionId: "",
+        isEndQuestion: false,
       },
     ],
     elseGoToQuestionId: "",
@@ -69,6 +70,7 @@ function TimeJump(props) {
         forAnswer: moment().toISOString(),
         forRangeEnd: moment().toISOString(),
         goToSurveyQuestionId: "",
+        isEndQuestion: false,
       },
     ],
     elseGoToQuestionId: "",
@@ -161,6 +163,7 @@ function TimeJump(props) {
       setConditionalJump(list);
     } else {
       const { name, value } = e.target;
+      console.log(name);
       const list = {
         ...conditionalJump,
         timeConditionalQuestions: [
@@ -185,6 +188,7 @@ function TimeJump(props) {
         forAnswer: moment().toISOString(),
         forRangeEnd: moment().toISOString(),
         goToSurveyQuestionId: "",
+        isEndQuestion: false,
       },
     ];
     setConditionalJump(list);

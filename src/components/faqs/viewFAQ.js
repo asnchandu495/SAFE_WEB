@@ -47,22 +47,17 @@ function ViewFaq(props) {
 
   const getFaqId = props.match.params.id;
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [selectedFaqDetails, setSelectedFaqDetails] = useState({});
   const [expandedFaq, setExpandedFaq] = useState("panel0");
@@ -250,7 +245,12 @@ function ViewFaq(props) {
                                       {x.questionName}
                                     </p>
                                     <p className="question-answer">
-                                      {x.answer}
+                                      {/* {x.answer} */}
+                                      <div
+                                        dangerouslySetInnerHTML={{
+                                          __html: x.answer,
+                                        }}
+                                      />
                                     </p>
                                   </Grid>
                                 </Grid>

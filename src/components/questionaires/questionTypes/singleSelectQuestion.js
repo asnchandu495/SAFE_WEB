@@ -81,12 +81,12 @@ function SingleSelectQuestion(props) {
 
   const PurpleSwitch = withStyles({
     switchBase: {
-      color: "#be1d56",
+      color: "red",
       "&$checked": {
-        color: "#26235d",
+        color: "green",
       },
       "&$checked + $track": {
-        backgroundColor: "#26235d",
+        backgroundColor: "green",
       },
     },
     checked: {},
@@ -509,6 +509,7 @@ function SingleSelectQuestion(props) {
                           onChange={handleChangeSwitch}
                         />
                       }
+                      label={addQuestionData.isMandatory ? "Yes" : "No"}
                     />
                   </Grid>
                 </Grid>
@@ -644,6 +645,11 @@ function SingleSelectQuestion(props) {
                                 name="isPositiveConfirmityRedFlag"
                                 onChange={handleChangeRedFlagSwitch}
                               />
+                            }
+                            label={
+                              choiceFlag.isPositiveConfirmityRedFlag
+                                ? "Yes"
+                                : "No"
                             }
                           />
                         </Grid>

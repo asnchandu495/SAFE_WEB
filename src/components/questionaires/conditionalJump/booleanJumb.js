@@ -29,6 +29,7 @@ function BooleanJump(props) {
     surveyQuestionId: questionId,
     positiveResponseQuestionId: "",
     negativeResponseQuestionId: "",
+    isEndQuestion: false,
   });
 
   const [cancelconditionalJump, setcancelConditionalJump] = useState({
@@ -36,6 +37,7 @@ function BooleanJump(props) {
     surveyQuestionId: questionId,
     positiveResponseQuestionId: "",
     negativeResponseQuestionId: "",
+    isEndQuestion: false,
   });
   const [surveyDetails, setsurveyDetails] = useState();
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
@@ -228,8 +230,7 @@ function BooleanJump(props) {
                                 shrink={false}
                                 className="select-label"
                               >
-                                {conditionalJump.positiveResponseQuestionId ==
-                                ""
+                                {!conditionalJump.positiveResponseQuestionId
                                   ? "Select question"
                                   : ""}
                               </InputLabel>
@@ -280,8 +281,7 @@ function BooleanJump(props) {
                                 shrink={false}
                                 className="select-label"
                               >
-                                {conditionalJump.negativeResponseQuestionId ==
-                                ""
+                                {!conditionalJump.negativeResponseQuestionId
                                   ? "Select question"
                                   : ""}
                               </InputLabel>

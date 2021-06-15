@@ -52,6 +52,7 @@ function DateJump(props) {
         forAnswer: moment().toISOString(),
         forRangeEnd: moment().toISOString(),
         goToSurveyQuestionId: "",
+        isEndQuestion: false,
       },
     ],
     elseGoToQuestionId: "",
@@ -68,6 +69,7 @@ function DateJump(props) {
         forAnswer: moment().toISOString(),
         forRangeEnd: moment().toISOString(),
         goToSurveyQuestionId: "",
+        isEndQuestion: false,
       },
     ],
     elseGoToQuestionId: "",
@@ -183,6 +185,7 @@ function DateJump(props) {
         forAnswer: moment().toISOString(),
         forRangeEnd: moment().toISOString(),
         goToSurveyQuestionId: "",
+        isEndQuestion: false,
       },
     ];
     setConditionalJump(list);
@@ -193,6 +196,7 @@ function DateJump(props) {
     list.dateTimeConditionalQuestions.splice(j, 1);
     setConditionalJump(list);
   };
+
   function handleCancel() {
     setConditionalJump(cancelconditionalJump);
     setTimeout(() => {

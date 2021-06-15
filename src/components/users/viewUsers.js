@@ -79,10 +79,10 @@ const DisplayFormControl = ({
     } else if (loadGlobalSettingsDataTemp != viewUserDetailsTempUnit) {
       if (loadGlobalSettingsDataTemp == "C") {
         let convertedTemp = ((viewUserDetailsTemp - 32) * 5) / 9;
-        return <span>{convertedTemp}-C</span>;
+        return <span>{convertedTemp.toFixed(2)}-C</span>;
       } else {
         let convertedTemp = viewUserDetailsTemp * (9 / 5) + 32;
-        return <span>{convertedTemp}-F</span>;
+        return <span>{convertedTemp.toFixed(2)}-F</span>;
       }
     } else {
       return viewUserDetailsTemp + "-" + viewUserDetailsTempUnit;
