@@ -29,7 +29,8 @@ function BooleanJump(props) {
     surveyQuestionId: questionId,
     positiveResponseQuestionId: "",
     negativeResponseQuestionId: "",
-    isEndQuestion: false,
+    isEndQuestionForPositiveResponseQuestion: false,
+    isEndQuestionForNegativeResponseQuestion: false
   });
 
   const [cancelconditionalJump, setcancelConditionalJump] = useState({
@@ -37,7 +38,8 @@ function BooleanJump(props) {
     surveyQuestionId: questionId,
     positiveResponseQuestionId: "",
     negativeResponseQuestionId: "",
-    isEndQuestion: false,
+    isEndQuestionForPositiveResponseQuestion: false,
+    isEndQuestionForNegativeResponseQuestion: false
   });
   const [surveyDetails, setsurveyDetails] = useState();
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
@@ -66,7 +68,6 @@ function BooleanJump(props) {
           let filteredQuestions = res.filter((r) => {
             return r.id != questionId;
           });
-          console.log(res);
           setSelectedSurveyQuestions(filteredQuestions);
           setselectedQuestionDetails(getBooleanDetails);
           setsurveyDetails(getsurveyDetails);
@@ -85,10 +86,28 @@ function BooleanJump(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setConditionalJump((conditionalJump) => ({
-      ...conditionalJump,
-      [name]: value,
-    }));
+    console.log(name);
+    if (name == 'positiveResponseQuestionId') {
+      let thisQuestion = selectedSurveyQuestions.find(que => que.id == value);
+      setConditionalJump((conditionalJump) => ({
+        ...conditionalJump,
+        [name]: value,
+        ["isEndQuestionForPositiveResponseQuestion"]: thisQuestion.isEndQuestion
+      }));
+    } else if (name == 'negativeResponseQuestionId') {
+      let thisQuestion = selectedSurveyQuestions.find(que => que.id == value);
+      setConditionalJump((conditionalJump) => ({
+        ...conditionalJump,
+        [name]: value,
+        ["isEndQuestionForNegativeResponseQuestion"]: thisQuestion.isEndQuestion
+      }));
+    } else {
+      setConditionalJump((conditionalJump) => ({
+        ...conditionalJump,
+        [name]: value,
+      }));
+    }
+
   };
 
   function handleCancel() {
