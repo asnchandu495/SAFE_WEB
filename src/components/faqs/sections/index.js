@@ -263,7 +263,7 @@ function FaqSections(props) {
           {faqTittle}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          {props.match.params.secId == 0 ? "Create section" : "Update section"}
+          {props.match.params.secId == 0 ? "Create Section" : "Update Section"}
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (

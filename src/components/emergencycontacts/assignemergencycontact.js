@@ -89,7 +89,7 @@ function AssignEmergencyContacts(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Assign emergency contact to user group">
+          <Tooltip title="Assign Emergency Contact To User Group">
             <Button
               variant="contained"
               startIcon={<AddIcon />}
@@ -196,7 +196,7 @@ function AssignEmergencyContacts(props) {
                   ></Button>
                 </Tooltip>
 
-                <Tooltip title="Change doc status">
+                <Tooltip title="Change Doc Status">
                   <Button
                     variant="contained"
                     color="default"
@@ -277,7 +277,7 @@ function AssignEmergencyContacts(props) {
               to={`/emergencycontacts/view`}
               className="inactive"
             >
-              Emergency contacts
+              Emergency Contacts
             </LinkTo>
             <LinkTo
               color="textPrimary"

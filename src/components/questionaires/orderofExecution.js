@@ -213,7 +213,7 @@ function OrderofExecution(props) {
           Questionnaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="inactive">
-          Order of execution
+          Order Of Execution
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           {surveyDetails ? surveyDetails.name : ""}

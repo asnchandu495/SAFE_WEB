@@ -197,7 +197,7 @@ function ViewQuestions(props) {
           {ViewQuestionaireDetails.name}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          View questions
+          View Question
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper main-paper-add-question">

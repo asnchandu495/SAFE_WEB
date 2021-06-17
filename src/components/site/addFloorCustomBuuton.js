@@ -11,7 +11,7 @@ function CustomToolbarAddFloor(props) {
 
   return (
     <div className={`maingrid-actions`}>
-      <Tooltip title="Add new floor">
+      <Tooltip title="Add New Floor">
         <Button
           variant="contained"
           startIcon={<AddIcon />}

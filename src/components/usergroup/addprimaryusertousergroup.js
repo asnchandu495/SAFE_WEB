@@ -125,9 +125,9 @@ function AddPrimaryUserToUserGroups(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
-  
-  const [Modalsubmit,setModalsubmit]=useState(false);
-  const [ShowYesLoadder,setshowYesLoadder]=useState(false);
+
+  const [Modalsubmit, setModalsubmit] = useState(false);
+  const [ShowYesLoadder, setshowYesLoadder] = useState(false);
   const [showsubmitLoadder, setshowsubmitLoadder] = useState(false);
   const [dialogshowLoadder, setdialogshowLoadder] = useState(false);
   const [applicationUsers, setApplicationUsers] = useState([]);
@@ -431,6 +431,11 @@ function AddPrimaryUserToUserGroups(props) {
     }
   }
 
+  function handleClickViewUsers() {
+    let value = userId;
+    props.history.push("/usergroups/view-usergroup/" + value);
+  }
+
   function AssignFiltersForm() {
     setshowLoadder(true);
     let userfilterData = searchformData;
@@ -529,17 +534,16 @@ function AddPrimaryUserToUserGroups(props) {
       });
   }
   const handlesubmitClose = () => {
-   
     setModalsubmit(false);
     setshowLoadder(false);
-    setshowsubmitLoadder(false)
+    setshowsubmitLoadder(false);
   };
 
   function assignUsers() {
     setshowsubmitLoadder(true);
     setModalsubmit(true);
   }
-  function handleClickYes(){
+  function handleClickYes() {
     setshowYesLoadder(true);
     setshowsubmitLoadder(false);
     settoasterServerity("");
@@ -573,7 +577,6 @@ function AddPrimaryUserToUserGroups(props) {
 
   return (
     <div className="innerpage-container">
-
       <Dialog
         onClose={handlesubmitClose}
         aria-labelledby="customized-dialog-title"
@@ -822,15 +825,23 @@ function AddPrimaryUserToUserGroups(props) {
             <LinkTo
               color="textPrimary"
               href="#"
-              to={`usergroups/allusergroups`}
+              to={`/usergroups/allusergroups`}
               className="inactive"
             >
               User groups
             </LinkTo>
-            <LinkTo color="textPrimary" href="#" className="inactive">
+            <LinkTo
+              color="textPrimary"
+              onClick={handleClickViewUsers}
+              className="inactive"
+            >
               {selectedGroupInfo.groupName}
             </LinkTo>
-            <LinkTo color="textPrimary" href="#" className="active">
+            <LinkTo
+              color="textPrimary"
+              style={{ cursor: "default" }}
+              className="active"
+            >
               Assign Primary Users
             </LinkTo>
           </Breadcrumbs>

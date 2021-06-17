@@ -140,7 +140,7 @@ function ViewSite(props) {
     },
     {
       name: "locationCount",
-      label: "No of locations",
+      label: "No of Locations",
       options: {
         filter: false,
         sort: true,
@@ -177,7 +177,7 @@ function ViewSite(props) {
     },
     {
       name: "isPinMicroActive",
-      label: "RLAP status",
+      label: "RLAP Status",
       options: {
         filter: false,
         sort: true,

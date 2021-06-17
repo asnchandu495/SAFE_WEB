@@ -289,7 +289,7 @@ function AddNewQuestion(props) {
           {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          {questionIdURL != 0 ? "Update question" : " Add new question"}
+          {questionIdURL != 0 ? "Update Question" : " Add New Question"}
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (

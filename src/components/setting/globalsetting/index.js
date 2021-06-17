@@ -423,7 +423,7 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">
-                    Frequencey to fetch the geo co ordinates:Once in every
+                    Frequencey to fetch the geo co ordinates:Once In Every
                   </label>
                 </Grid>
                 <Grid item xs={3}>
@@ -496,7 +496,7 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">
-                    Social distancing tolerance
+                    Social Distancing Tolerance
                   </label>
                 </Grid>
                 <Grid item xs={3}>
@@ -579,7 +579,7 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">
-                    Facial recognition tolerance
+                    Facial Recognition Tolerance
                   </label>
                 </Grid>
                 <Grid item xs={3}>
@@ -714,7 +714,7 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">
-                    File format to import users details:
+                    File Format To Import Users Details:
                   </label>
                 </Grid>
 
@@ -782,7 +782,7 @@ function GlobalSetting(props) {
               <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label className="required">
-                    Unlock duration of user account
+                    Unlock Duration Of User Account
                   </label>
                 </Grid>
                 <Grid item xs={3}>
@@ -826,7 +826,7 @@ function GlobalSetting(props) {
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label className="required">Automated check-out time</label>
+                  <label className="required">Automated Check-out Time</label>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -867,7 +867,7 @@ function GlobalSetting(props) {
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
-                  <label className="required">Minimum password length</label>
+                  <label className="required">Minimum Password Length</label>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -910,7 +910,7 @@ function GlobalSetting(props) {
               <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label className="required">
-                    Maximum filesize of userSelfie unit
+                    Maximum File Size Of User Selfie Unit
                   </label>
                 </Grid>
                 <Grid item xs={3}>
@@ -956,7 +956,7 @@ function GlobalSetting(props) {
                 spacing={1}
               >
                 <Grid item xs={3}>
-                  <label className="required">Self health check reminder</label>
+                  <label className="required">Self Health Check Reminder</label>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -1033,8 +1033,8 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label>
-                    Allow exceptional check-in when WFHL request is in pending
-                    status
+                    Allow Exceptional Check-in When WFHL Request Is In Pending
+                    Status
                   </label>
                 </Grid>
 
@@ -1057,8 +1057,8 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">
-                    Allow exceptional check-in when Profile selfie request is in
-                    pending status
+                    Allow Exceptional Check-in When Profile Selfie Request Is In
+                    Pending Status
                   </label>
                 </Grid>
 

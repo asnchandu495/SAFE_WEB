@@ -183,7 +183,7 @@ function UserGroups(props) {
                     onClick={() => handleClickDeleteUserGrup(thisRowData)}
                   ></Button>
                 </Tooltip>
-                <Tooltip title="Assign users as primary group">
+                <Tooltip title="Assign Users As Primary Group">
                   <Button
                     variant="contained"
                     color="default"
@@ -194,7 +194,7 @@ function UserGroups(props) {
                     }
                   ></Button>
                 </Tooltip>
-                <Tooltip title="Assign users as secondary group">
+                <Tooltip title="Assign Users As Secondary Group">
                   <Button
                     variant="contained"
                     color="default"

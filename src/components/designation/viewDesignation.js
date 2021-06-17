@@ -61,7 +61,11 @@ function CreateUserGroup(props) {
             >
               Designations
             </LinkTo>
-            <LinkTo color="textPrimary" href="#" className="active">
+            <LinkTo
+              color="textPrimary"
+              style={{ cursor: "default" }}
+              className="active"
+            >
               {formData.name}
             </LinkTo>
           </Breadcrumbs>

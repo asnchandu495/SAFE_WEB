@@ -202,7 +202,7 @@ function AssignedFAQs(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Assign faq">
+          <Tooltip title="Assign Faq">
             <Button
               variant="contained"
               startIcon={<PostAddIcon />}
@@ -285,7 +285,7 @@ function AssignedFAQs(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="Change doc status">
+                <Tooltip title="Change Doc Status">
                   <Button
                     variant="contained"
                     color="default"
@@ -294,7 +294,7 @@ function AssignedFAQs(props) {
                     onClick={() => handleClickChangeStatus(thisRowData)}
                   ></Button>
                 </Tooltip>
-                <Tooltip title="Remove association">
+                <Tooltip title="Remove Association">
                   <Button
                     variant="contained"
                     color="default"

@@ -59,19 +59,14 @@ export default function UserProfile() {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [loggedinUserDetails, setLoggedinUserDetails] = useState();
 
@@ -222,7 +217,7 @@ export default function UserProfile() {
                     </Grid>
                     <Grid className={classes.UserDeatils}>
                       <Typography gutterBottom variant="subtitle2">
-                        {loggedinUserDetails.address1} ,{" "}
+                        {loggedinUserDetails.address1},{" "}
                         {loggedinUserDetails.country.name},{" "}
                         {loggedinUserDetails.zipCode}
                       </Typography>

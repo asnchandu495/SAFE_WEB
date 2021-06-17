@@ -53,13 +53,13 @@ function QuestionType(props) {
     <Card className="question-type-card">
       <CardContent>
         <Typography gutterBottom variant="h6" component="h6">
-          Question type
+          Question Type
         </Typography>
         <div className="card-form">
           <Grid container item xs={12} spacing={3} direction="column">
             <Grid item xs={12} container>
               <Grid item xs={3}>
-                <label className="required">Question type</label>
+                <label className="required">Question Type</label>
               </Grid>
               <Grid item xs={3}>
                 <FormControl variant="outlined" fullWidth>
@@ -70,7 +70,7 @@ function QuestionType(props) {
                   >
                     {props.questionTypeForm.questionType != ""
                       ? ""
-                      : "Question type"}
+                      : "Question Type"}
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-outlined-label"

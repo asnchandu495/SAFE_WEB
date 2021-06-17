@@ -205,7 +205,7 @@ function ImportUsers(props) {
           aria-current="page"
           className="active"
         >
-          Import users
+          Import Users
         </LinkTo>
       </Breadcrumbs>
       {componentLoadder ? (
@@ -233,7 +233,7 @@ function ImportUsers(props) {
                     <div {...getRootProps({ className: classes.dropzone })}>
                       <input {...getInputProps()} />
                       <p className={classes.fileUploadParagraph}>
-                        upload Drag and drop or browse{" "}
+                        Drag and Drop or Browse{" "}
                         {fileFormat ? fileFormat : "xls"} file to upload
                       </p>
                       <div className={`fileuploadcontainer`}>

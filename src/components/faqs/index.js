@@ -165,7 +165,7 @@ function ViewAllFAQs(props) {
                     onClick={() => handleClickView(thisRowData)}
                   ></Button>
                 </Tooltip>
-                <Tooltip title="Add sections">
+                <Tooltip title="Add Section">
                   <Button
                     variant="contained"
                     color="default"

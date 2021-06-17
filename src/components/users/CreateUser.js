@@ -159,7 +159,7 @@ function CreateUser(props) {
     supervisorId: "",
     supervisor: "",
     zipCode: null,
-    isRLAPActive: false
+    isRLAPActive: false,
   });
 
   const [resetformData, SetresetformData] = useState({
@@ -186,7 +186,7 @@ function CreateUser(props) {
     supervisorId: "",
     supervisor: "",
     zipCode: null,
-    isRLAPActive: false
+    isRLAPActive: false,
   });
 
   useEffect(() => {
@@ -561,7 +561,7 @@ function CreateUser(props) {
           Users
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          {userId ? "Update basic info" : "Add new user"}
+          {userId ? "Update Basic Info" : "Add New User"}
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (
@@ -575,7 +575,7 @@ function CreateUser(props) {
                 <Grid item container spacing={1} sm={12}>
                   <Grid item sm={4}>
                     <label htmlFor="password" className="input-label required">
-                      First name
+                      First Name
                     </label>
                     <TextValidator
                       variant="outlined"
@@ -603,7 +603,7 @@ function CreateUser(props) {
                   </Grid>
                   <Grid item sm={4}>
                     <label htmlFor="password" className="input-label">
-                      Middle name
+                      Middle Name
                     </label>
                     <TextValidator
                       variant="outlined"
@@ -628,7 +628,7 @@ function CreateUser(props) {
                   </Grid>
                   <Grid item sm={4}>
                     <label htmlFor="password" className="input-label required">
-                      Last name
+                      Last Name
                     </label>
                     <TextValidator
                       variant="outlined"
@@ -693,7 +693,7 @@ function CreateUser(props) {
                   </Grid>
                   <Grid item sm={4}>
                     <label htmlFor="password" className="input-label required">
-                      Email id
+                      Email ID
                     </label>
                     <TextValidator
                       variant="outlined"
@@ -720,7 +720,7 @@ function CreateUser(props) {
                   </Grid>
                   <Grid item sm={4}>
                     <label htmlFor="password" className="input-label required">
-                      User id
+                      User ID
                     </label>
                     <TextValidator
                       disabled={userId ? true : false}
@@ -750,7 +750,7 @@ function CreateUser(props) {
                   </Grid>
                   <Grid item sm={4}>
                     <label htmlFor="password" className="input-label required">
-                      Mobile number
+                      Mobile Number
                     </label>
                     <TextValidator
                       variant="outlined"
@@ -779,7 +779,7 @@ function CreateUser(props) {
                   </Grid>
                   <Grid item sm={4}>
                     <label htmlFor="password" className="input-label">
-                      Alternate mobile number
+                      Alternate Mobile Number
                     </label>
                     <TextValidator
                       variant="outlined"
@@ -951,7 +951,7 @@ function CreateUser(props) {
                     className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <label htmlFor="password" className="input-label required">
-                      Primary group
+                      Primary Group
                     </label>
                     <Autocomplete
                       id="tags-outlined"
@@ -988,7 +988,7 @@ function CreateUser(props) {
                     className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <label htmlFor="password" className="input-label">
-                      Secondary group
+                      Secondary Group
                     </label>
                     <Autocomplete
                       multiple
@@ -1188,21 +1188,18 @@ function CreateUser(props) {
                       InputLabelProps={{ shrink: false }}
                     />
                   </Grid>
-                  
+
                   <Grid item sm={4}>
-                  <Checkbox
-                    checked={formData.isRLAPActive}
-                    onChange={handleChangecheckBox}
-                    value={formData.isRLAPActive}
-                    inputProps={{ "aria-label": "uncontrolled-checkbox" }}
-                  />
+                    <Checkbox
+                      checked={formData.isRLAPActive}
+                      onChange={handleChangecheckBox}
+                      value={formData.isRLAPActive}
+                      inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                    />
                     <label htmlFor="password" className="input-label ">
                       RLAP
                     </label>
-                   
                   </Grid>
-
-
 
                   <Grid container>
                     <Grid item xs={12} className={`inner-table-buttons`}>

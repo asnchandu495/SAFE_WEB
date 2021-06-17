@@ -236,7 +236,7 @@ function EmergencyContact(props) {
               aria-current="page"
               className="active"
             >
-              Emergency contacts
+              Emergency Contacts
             </LinkTo>
           </Breadcrumbs>
           <MuiThemeProvider theme={theme1}>

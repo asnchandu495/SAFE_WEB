@@ -289,7 +289,7 @@ function DateQuestion(props) {
         <Card className="question-card">
           <CardContent className="scrollable-card">
             <Typography gutterBottom variant="h6" component="h6">
-              Question details
+              Question Details
             </Typography>
             <Grid item xs={12} sm={12}>
               <Grid spacing={3} container className="question-details">
@@ -341,7 +341,7 @@ function DateQuestion(props) {
                 </Grid>
                 <Grid item container xs={12}>
                   <Grid item xs={2}>
-                    <label>Is mandatory?</label>
+                    <label>Is Mandatory?</label>
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel

@@ -312,7 +312,7 @@ function TemperatureRange(props) {
         >
           Home
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" to="#" className="inactive">
+        <LinkTo color="textPrimary" href="#" to="#" className="active">
           Temperature Range
         </LinkTo>
       </Breadcrumbs>

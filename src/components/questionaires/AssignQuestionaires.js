@@ -399,6 +399,7 @@ function AssignQuestionaires(props) {
       },
       pagination: {
         jumpToPage: "Goto page:",
+        rowsPerPage: "Rows Per Page",
       },
     },
 
@@ -488,7 +489,7 @@ function AssignQuestionaires(props) {
                   ></Button>
                 </Tooltip>
 
-                <Tooltip title="Change doc status">
+                <Tooltip title="Change Doc Status">
                   <Button
                     variant="contained"
                     color="default"
@@ -697,7 +698,7 @@ function AssignQuestionaires(props) {
             </LinkTo>
 
             <LinkTo color="textPrimary" href="#" className="active">
-              Assign users to group
+              Assign Users To Group
             </LinkTo>
           </Breadcrumbs>
           <MuiThemeProvider theme={theme1}>

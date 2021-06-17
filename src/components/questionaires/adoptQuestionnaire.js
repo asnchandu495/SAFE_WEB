@@ -166,7 +166,7 @@ function AdoptQuestionnaire(props) {
           Questionnaire
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          Adopt from existing Questionnaire
+          Adopt From Existing Questionnaire
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (

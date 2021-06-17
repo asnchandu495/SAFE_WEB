@@ -647,7 +647,7 @@ function Users(props) {
     },
     {
       name: "covidStateDetails",
-      label: "Covid state",
+      label: "Covid State",
       options: {
         filter: false,
         sort: true,
@@ -1120,16 +1120,16 @@ function Users(props) {
               <ClickAwayListener onClickAway={handleCloseMoreMenu}>
                 <MenuList id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   <MenuItem onClick={handleClickUpdateUserDetails}>
-                    Update other details
+                    Update Other Details
                   </MenuItem>
                   <MenuItem onClick={handleClickOpenCovidStateInfoModal}>
-                    Update covid state
+                    Update Covid State
                   </MenuItem>
                   <MenuItem onClick={handleClickOpenUserTempInfoModal}>
-                    Update temperature
+                    Update Temperature
                   </MenuItem>
                   <MenuItem onClick={handleClickOpenShiftInfoModal}>
-                    Update shift info
+                    Update Shift Info
                   </MenuItem>
                 </MenuList>
               </ClickAwayListener>

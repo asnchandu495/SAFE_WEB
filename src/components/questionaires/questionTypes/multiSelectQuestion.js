@@ -460,7 +460,7 @@ function MultiSelectQuestion(props) {
         <Card className="question-card">
           <CardContent>
             <Typography gutterBottom variant="h6" component="h6">
-              Question details
+              Question Details
             </Typography>
             <Grid item xs={12} sm={12}>
               <Grid spacing={3} container className="question-details">
@@ -512,7 +512,7 @@ function MultiSelectQuestion(props) {
                 </Grid>
                 <Grid item container xs={12}>
                   <Grid item xs={2}>
-                    <label>Is mandatory?</label>
+                    <label>Mandatory?</label>
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel
