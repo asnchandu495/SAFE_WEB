@@ -147,7 +147,7 @@ function ViewFaq(props) {
             <Paper className="main-paper">
               <Grid container spacing={3}>
                 <Grid item xs={12} className="faq-title">
-                  Basic info{" "}
+                  Basic Info{" "}
                   <Tooltip title="Edit basic details">
                     <Button
                       className="edit-icon-faq"
