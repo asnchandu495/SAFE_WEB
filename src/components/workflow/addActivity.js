@@ -345,7 +345,7 @@ function AddActivity(props) {
         className="modal-min-widtn"
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
-          Assign Activity
+          Add activity
         </DialogTitle>
         <ValidatorForm className={`global-form`} onSubmit={submitActivityForm}>
           <DialogContent dividers>
