@@ -216,7 +216,7 @@ function CreateNew(props) {
           to={`/emergencycontacts/view`}
           className="inactive"
         >
-          Emergency contacts
+          Emergency Contacts
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           {emergencyContactId != 0

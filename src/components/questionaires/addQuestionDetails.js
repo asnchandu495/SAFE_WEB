@@ -534,7 +534,7 @@ function AddQuestionDetails(props) {
           <Card className="question-card">
             <CardContent className="scrollable-card">
               <Typography gutterBottom variant="h6" component="h6">
-                Question details
+                Question Details
               </Typography>
               <Grid item xs={12} sm={12}>
                 <Grid spacing={3} container className="question-details">

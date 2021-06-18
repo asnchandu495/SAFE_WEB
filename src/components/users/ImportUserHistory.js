@@ -135,7 +135,7 @@ function ImportUserHistory(props) {
 
     {
       name: "totalRecords",
-      label: "No of new records",
+      label: "No Of New Records",
       options: {
         filter: false,
         sort: true,
@@ -143,7 +143,7 @@ function ImportUserHistory(props) {
     },
     {
       name: "processedRecords",
-      label: "No of new records updated",
+      label: "No Of New Records Updated",
       options: {
         filter: false,
         sort: true,
@@ -234,7 +234,7 @@ function ImportUserHistory(props) {
           aria-current="page"
           className="active"
         >
-          Import history
+          Import History
         </LinkTo>
       </Breadcrumbs>
       {componentLoadder ? (

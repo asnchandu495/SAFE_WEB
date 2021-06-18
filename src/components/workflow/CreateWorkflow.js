@@ -442,7 +442,7 @@ function CreateWorkflow(props) {
                         htmlFor="password"
                         className="input-label  required"
                       >
-                        COVID state from
+                        COVID State From
                       </label>
                     </Grid>
                     <Grid item xs={5}>
@@ -486,7 +486,7 @@ function CreateWorkflow(props) {
                         htmlFor="password"
                         className="input-label required "
                       >
-                        COVID state to
+                        COVID State To
                       </label>
                     </Grid>
                     <Grid item xs={5}>

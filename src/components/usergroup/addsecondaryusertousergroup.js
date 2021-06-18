@@ -262,6 +262,12 @@ function AddSecondaryUserToUserGroups(props) {
     setUserGroupData();
     setcovidStatelist();
   }
+
+  function handleClickViewUsers() {
+    let value = userId;
+    props.history.push("/usergroups/view-usergroup/" + value);
+  }
+
   function AssignFiltersForm() {
     setshowLoadder(true);
     let userfilterData = searchformData;
@@ -689,12 +695,16 @@ function AddSecondaryUserToUserGroups(props) {
             <LinkTo
               color="textPrimary"
               href="#"
-              to={`usergroups/allusergroups`}
+              to={`/usergroups/allusergroups`}
               className="inactive"
             >
               User groups
             </LinkTo>
-            <LinkTo color="textPrimary" href="#" className="inactive">
+            <LinkTo
+              color="textPrimary"
+              onClick={handleClickViewUsers}
+              className="inactive"
+            >
               {selectedGroupInfo.groupName}
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">

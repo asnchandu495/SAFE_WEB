@@ -150,7 +150,7 @@ function ViewWorkflow(props) {
             <Paper className="main-paper">
               <Grid container spacing={3}>
                 <Grid item xs={12} className="faq-title">
-                  Basic info
+                  Basic Info
                 </Grid>
                 <Grid item xs={12}>
                   <Grid container spacing={3}>

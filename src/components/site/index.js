@@ -278,7 +278,7 @@ function ListSite(props) {
     },
     {
       name: "floors",
-      label: "No of floors",
+      label: "No of Floors",
       options: {
         filter: false,
         sort: true,
@@ -462,7 +462,7 @@ function ListSite(props) {
               <Grid container spacing={3}>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className=""> Site manager</label>
+                    <label className=""> Site Manager</label>
                   </Grid>
                   <Grid item xs={8}>
                     <Autocomplete
@@ -496,7 +496,7 @@ function ListSite(props) {
                 </Grid>
                 <Grid item cs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Security manager </label>
+                    <label className="">Security Manager </label>
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>

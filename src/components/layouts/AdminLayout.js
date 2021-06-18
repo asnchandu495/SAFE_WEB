@@ -705,7 +705,7 @@ function AdminLayout(props) {
                     <ListItemIcon>
                       <ArrowForwardIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Create site" />
+                    <ListItemText primary="Create " />
                   </ListItem>
                 </List>
               </Collapse>

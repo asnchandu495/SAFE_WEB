@@ -107,7 +107,7 @@ function ViewUserGroup(props) {
     },
     {
       name: "emailId",
-      label: "Email Id",
+      label: "Email ID",
       options: {
         filter: true,
         sort: true,
@@ -139,7 +139,7 @@ function ViewUserGroup(props) {
           User groups
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-        {viewUserGroupDetails.groupName}
+          {viewUserGroupDetails.groupName}
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper">

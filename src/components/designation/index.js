@@ -134,7 +134,7 @@ function ListAssignedDesignation(props) {
     },
     {
       name: "attendanceGracetime",
-      label: "Attendance Grace times",
+      label: "Attendance Grace Time",
       options: {
         filter: false,
         sort: true,

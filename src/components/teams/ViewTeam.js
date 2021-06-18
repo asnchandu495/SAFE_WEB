@@ -111,7 +111,7 @@ function ViewTeam(props) {
     },
     {
       name: "emailId",
-      label: "Emailid",
+      label: "Email ID",
       options: {
         filter: true,
         sort: true,

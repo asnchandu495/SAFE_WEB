@@ -16,9 +16,8 @@ function ViewCovidState(props) {
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
   const [componentLoadder, setComponentLoadder] = useState(false);
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [formData, SetformData] = useState({
     id: "",
@@ -64,7 +63,7 @@ function ViewCovidState(props) {
               to={`/covidstate/all-covidstate`}
               className="inactive"
             >
-              Covid states
+              Covid States
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
               {formData.stateName}
@@ -99,7 +98,7 @@ function ViewCovidState(props) {
                 </Grid>
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
-                    <label>Background color :</label>
+                    <label>Background Color :</label>
                   </Grid>
                   <Grid item xs={8}>
                     <label>{formData.colorName}</label>

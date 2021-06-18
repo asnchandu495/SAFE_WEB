@@ -132,6 +132,10 @@ function ListSite(props) {
   function handleClickOpenAddFlocationPage() {
     props.history.push("/site/add-location");
   }
+  function handleClickViewUsers() {
+    let value = siteId;
+    props.history.push("/site/view-site/" + value);
+  }
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -361,7 +365,7 @@ function ListSite(props) {
             </LinkTo>
             <LinkTo
               color="textPrimary"
-              href="#"
+              onClick={handleClickViewUsers}
               aria-current="page"
               className="inactive"
             >
@@ -369,7 +373,7 @@ function ListSite(props) {
             </LinkTo>
             <LinkTo
               color="textPrimary"
-              href="#"
+              style={{ cursor: "default" }}
               aria-current="page"
               className="active"
             >

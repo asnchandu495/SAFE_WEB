@@ -188,7 +188,7 @@ function Teams(props) {
                   ></Button>
                 </Tooltip>
 
-                <Tooltip title="Assign users to team">
+                <Tooltip title="Assign Users To Team">
                   <Button
                     variant="contained"
                     color="default"

@@ -184,8 +184,8 @@ function AddDesignation(props) {
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">
               {designationIdFromURL != 0
-                ? "Update designation"
-                : "Create designation"}
+                ? "Update Designation"
+                : "Create Designation"}
             </LinkTo>
           </Breadcrumbs>
           <Paper className={`main-paper`}>
@@ -228,7 +228,7 @@ function AddDesignation(props) {
                 </Grid>
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
-                    <label className="required">Attendance grace time</label>
+                    <label className="required">Attendance Grace Time</label>
                   </Grid>
                   <Grid item xs={2}>
                     <FormControl variant="outlined">

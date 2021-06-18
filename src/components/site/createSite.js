@@ -131,7 +131,7 @@ function CreateSite(props) {
     floors: [],
     locations: [],
     isRLAPActive: false,
-  rlapReferenceId: ""
+    rlapReferenceId: "",
   });
 
   const [formFieldValidation, setformFieldValidation] = useState({
@@ -428,7 +428,7 @@ function CreateSite(props) {
                         htmlFor="password"
                         className="input-label required"
                       >
-                        Site name
+                        Site Name
                       </label>
                       <TextValidator
                         variant="outlined"
@@ -465,7 +465,7 @@ function CreateSite(props) {
                         htmlFor="password"
                         className="input-label required"
                       >
-                        Site manager
+                        Site Manager
                       </label>
                       <Autocomplete
                         id="tags-outlined"
@@ -496,7 +496,7 @@ function CreateSite(props) {
                         htmlFor="password"
                         className="input-label required"
                       >
-                        Security manager
+                        Security Manager
                       </label>
                       <Autocomplete
                         id="tags-outlined"
@@ -590,7 +590,7 @@ function CreateSite(props) {
                     </Grid>
                     <Grid item xs={4}>
                       <label htmlFor="password" className="input-label">
-                        City name
+                        City
                       </label>
                       <TextValidator
                         variant="outlined"
@@ -608,7 +608,7 @@ function CreateSite(props) {
                     </Grid>
                     <Grid item xs={4}>
                       <label htmlFor="password" className="input-label">
-                        State name
+                        State
                       </label>
                       <TextValidator
                         variant="outlined"
@@ -677,7 +677,7 @@ function CreateSite(props) {
                         htmlFor="password"
                         className="input-label required"
                       >
-                        Enter postal code
+                        Zip Code
                       </label>
                       <TextValidator
                         variant="outlined"
@@ -695,30 +695,28 @@ function CreateSite(props) {
                     </Grid>
 
                     <Grid item xs={4}>
-                      <label
-                        htmlFor="password"
-                        className="input-label "
-                      >
+                      <label htmlFor="password" className="input-label ">
                         RLAP
                       </label>
                       <Checkbox
-                    checked={formData.isRLAPActive}
-                    onChange={handleChangecheckBox}
-                    value={formData.isRLAPActive}
-                    inputProps={{ "aria-label": "uncontrolled-checkbox" }}
-                  />
+                        checked={formData.isRLAPActive}
+                        onChange={handleChangecheckBox}
+                        value={formData.isRLAPActive}
+                        inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                      />
                     </Grid>
                     <Grid item xs={4}>
-                      <label
-                        htmlFor="password"
-                        className="input-label "
-                      >
+                      <label htmlFor="password" className="input-label ">
                         Reference Id
                       </label>
                       <TextValidator
                         variant="outlined"
-                        validators={formData.isRLAPActive?["required"]:""}
-                        errorMessages={formData.isRLAPActive?["Please rlapReferenceId"]:""}
+                        validators={formData.isRLAPActive ? ["required"] : ""}
+                        errorMessages={
+                          formData.isRLAPActive
+                            ? ["Please rlapReferenceId"]
+                            : ""
+                        }
                         fullWidth
                         id="rlapReferenceId"
                         disabled={!formData.isRLAPActive}

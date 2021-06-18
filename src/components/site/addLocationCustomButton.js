@@ -10,7 +10,7 @@ function CustomToolbarAddFlocation(props) {
 
   return (
     <div className={`maingrid-actions`}>
-      <Tooltip title="Add new location">
+      <Tooltip title="Add New Location">
         <Button
           variant="contained"
           startIcon={<AddIcon />}

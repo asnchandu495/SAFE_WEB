@@ -520,7 +520,7 @@ function AddLocation(props) {
                 <Grid item cs={12} container>
                   <Grid item xs={12}>
                     <label className={classes.DefineDensitySpan}>
-                      Define density threshold:
+                      Define Density Threshold:
                     </label>
                   </Grid>
                 </Grid>

@@ -30,9 +30,8 @@ function ViewEmergencyContactDetails(props) {
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
 
   useEffect(() => {
     if (emergencyContactId != 0) {
@@ -61,10 +60,10 @@ function ViewEmergencyContactDetails(props) {
           to={`/emergencycontacts/view`}
           className="inactive"
         >
-          Emergency contacts
+          Emergency Contacts
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-        {emergencyContact.title}
+          {emergencyContact.title}
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper">

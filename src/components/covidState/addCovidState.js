@@ -249,12 +249,12 @@ function CreateCovidState(props) {
                   to={`/covidstate/all-covidstate`}
                   className="inactive"
                 >
-                  Covid states
+                  Covid States
                 </LinkTo>
                 <LinkTo color="textPrimary" href="#" className="active">
                   {userGroupUpdateid
-                    ? "Update Covid state"
-                    : "Create Covid state"}
+                    ? "Update Covid State"
+                    : "Create Covid State"}
                 </LinkTo>
               </Breadcrumbs>
               <Paper className={`main-paper`}>
@@ -340,7 +340,7 @@ function CreateCovidState(props) {
                     </Grid>
                     <Grid item container xs={12}>
                       <Grid item xs={3}>
-                        <label>Message to display</label>
+                        <label>Message To Display</label>
                       </Grid>
                       <Grid item xs={5}>
                         <TextValidator
@@ -362,7 +362,7 @@ function CreateCovidState(props) {
                     </Grid>
                     <Grid item container xs={12}>
                       <Grid item xs={3}>
-                        <label>Backround colour of message</label>
+                        <label>Backround Colour Of Message</label>
                       </Grid>
                       <Grid item xs={2}>
                         <FormControl variant="outlined" fullWidth>

@@ -110,7 +110,7 @@ function ListofQuestions(props) {
           variant="outlined"
           fullWidth
           id="groupName"
-          placeholder="Search by question..."
+          placeholder="Search By Question..."
           name="groupName"
           onChange={searchQuestionnaire}
           InputLabelProps={{ shrink: false }}

@@ -264,7 +264,7 @@ function ViewUser(props) {
               </Grid>
               <Grid item xs={6} container>
                 <Grid item xs={4} className="user-view-label">
-                  <label>User Id </label>
+                  <label>User ID </label>
                   <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
@@ -273,7 +273,7 @@ function ViewUser(props) {
               </Grid>
               <Grid item xs={6} container>
                 <Grid item xs={4} className="user-view-label">
-                  <label>Email Id </label>
+                  <label>Email ID </label>
                   <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
@@ -282,7 +282,7 @@ function ViewUser(props) {
               </Grid>
               <Grid item xs={6} container>
                 <Grid item xs={4} className="user-view-label">
-                  <label>Contact Number </label>
+                  <label>Mobile Number </label>
                   <span>:</span>
                 </Grid>
                 <Grid item xs={8}>
@@ -291,7 +291,7 @@ function ViewUser(props) {
               </Grid>
               <Grid item xs={6} container>
                 <Grid item xs={4} className="user-view-label">
-                  <label>Alternative Contact Number </label>
+                  <label>Alternative Mobile Number </label>
                   <span>:</span>
                 </Grid>
                 <Grid item xs={8}>

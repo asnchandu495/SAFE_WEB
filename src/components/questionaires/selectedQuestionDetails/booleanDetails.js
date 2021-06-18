@@ -69,7 +69,7 @@ function BooleanDetails(props) {
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
         <Typography gutterBottom variant="h6" component="h6">
-          View question details
+          View Question Details
           <div className="action-buttons-container question-actions">
             <Tooltip title="Edit">
               <Button

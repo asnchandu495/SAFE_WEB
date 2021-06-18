@@ -181,7 +181,7 @@ function Questionaire(props) {
                     }
                   ></Button>
                 </Tooltip>
-                <Tooltip title="Add questions">
+                <Tooltip title="Add Question">
                   <Button
                     variant="contained"
                     color="default"
@@ -190,7 +190,7 @@ function Questionaire(props) {
                     onClick={() => gotoViewQuestion(thisRowData)}
                   ></Button>
                 </Tooltip>
-                <Tooltip title="Order of execution">
+                <Tooltip title="Order Of Execution">
                   <Button
                     variant="contained"
                     color="default"
@@ -263,6 +263,7 @@ function Questionaire(props) {
       },
       pagination: {
         jumpToPage: "Goto page:",
+        rowsPerPage: "Rows Per Page",
       },
     },
   };

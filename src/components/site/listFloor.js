@@ -109,6 +109,10 @@ function ListFloor(props) {
   function handleClickOpenAddFlocationPage() {
     props.history.push("/site/add-location");
   }
+  function handleClickViewUsers() {
+    let value = siteId;
+    props.history.push("/site/view-site/" + value);
+  }
 
   const options = {
     filter: false,
@@ -161,7 +165,7 @@ function ListFloor(props) {
     },
     {
       name: "locationCount",
-      label: "No of location",
+      label: "No of Location",
       options: {
         filter: true,
         sort: true,
@@ -251,7 +255,7 @@ function ListFloor(props) {
             </LinkTo>
             <LinkTo
               color="textPrimary"
-              href="#"
+              onClick={handleClickViewUsers}
               aria-current="page"
               className="inactive"
             >
@@ -259,7 +263,7 @@ function ListFloor(props) {
             </LinkTo>
             <LinkTo
               color="textPrimary"
-              href="#"
+              style={{ cursor: "default" }}
               aria-current="page"
               className="active"
             >

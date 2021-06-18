@@ -58,6 +58,11 @@ function ConfigureHealth(props) {
     fromDate: moment().toISOString(),
     toDate: moment().toISOString(),
   });
+  const [resetformData, SetresetformData] = useState({
+    userId: "",
+    fromDate: moment().toISOString(),
+    toDate: moment().toISOString(),
+  });
 
   const [selectedUserDetails, setSelectedUserDetails] = useState();
 
@@ -206,12 +211,13 @@ function ConfigureHealth(props) {
   };
 
   function resetFilterForm() {
+    setSelectedUserDetails();
     setSearchForm({
       userId: "",
       fromDate: moment().toISOString(),
       toDate: moment().toISOString(),
     });
-    setSelectedUserDetails();
+
     setSelfHealthChecks([]);
   }
 
@@ -270,7 +276,7 @@ function ConfigureHealth(props) {
           to={`/selfhealthcheck/configurehealth`}
           className="inactive"
         >
-          Configure self health-check
+          Configure Self Health-Check
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Health Declarations
@@ -291,7 +297,10 @@ function ConfigureHealth(props) {
                           UserList && UserList.length > 0 ? UserList : []
                         }
                         getOptionLabel={(option) => option.firstName}
-                        defaultValue={selectedUserDetails}
+                        defaultValue={
+                          selectedUserDetails ? selectedUserDetails : ""
+                        }
+                        value={selectedUserDetails ? selectedUserDetails : ""}
                         name="userId"
                         onChange={(e, v) => handleChangeSearchForm(v, "userId")}
                         filterSelectedOptions
