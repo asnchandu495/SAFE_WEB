@@ -34,6 +34,7 @@ function QuestionnaireEvaluation(props) {
   const classes = useStyles();
   const CovidStateApi = new CovidStateApiServices();
   const questionaireApiCall = new questionaireService();
+  const surveyIdURL = props.match.params.id;
   const { id } = useParams();
   const [showLoadder, setshowLoadder] = useState(false);
   const [questionaireDetails, setquestionaireDetails] = useState();
@@ -350,7 +351,7 @@ function QuestionnaireEvaluation(props) {
         <LinkTo
           color="textPrimary"
           href="#"
-          to={`/questionaires/allquestionaires`}
+          to={`/questionaires/view-questions/` + id}
           className="inactive"
         >
           {questionaireDetails ? questionaireDetails.name : ""}
@@ -507,7 +508,6 @@ function QuestionnaireEvaluation(props) {
                         <Grid item xs={2}>
                           <TextValidator
                             variant="outlined"
-                           
                             validators={
                               i == 0
                                 ? temperatureConfigForm.positiveResponses
@@ -529,7 +529,9 @@ function QuestionnaireEvaluation(props) {
                                     "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                                     "maxNumber:45",
                                     `minNumber:${parseFloat(
-                                      temperatureConfigForm.positiveResponses[i - 1].upperLimit
+                                      temperatureConfigForm.positiveResponses[
+                                        i - 1
+                                      ].upperLimit
                                     )}`,
                                   ]
                                 : [
@@ -537,7 +539,9 @@ function QuestionnaireEvaluation(props) {
                                     "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                                     "maxNumber:113",
                                     `minNumber:${parseFloat(
-                                      temperatureConfigForm.positiveResponses[i - 1].upperLimit
+                                      temperatureConfigForm.positiveResponses[
+                                        i - 1
+                                      ].upperLimit
                                     )}`,
                                   ]
                             }
@@ -562,7 +566,9 @@ function QuestionnaireEvaluation(props) {
                                     "Entered numbers are not valid",
                                     "Maximum allowed is 45",
                                     `Minimum allowed is ${parseFloat(
-                                      temperatureConfigForm.positiveResponses[i - 1].upperLimit
+                                      temperatureConfigForm.positiveResponses[
+                                        i - 1
+                                      ].upperLimit
                                     )}`,
                                   ]
                                 : [
@@ -570,7 +576,9 @@ function QuestionnaireEvaluation(props) {
                                     "Entered numbers are not valid",
                                     "Maximum allowed is 113",
                                     `Minimum allowed is ${parseFloat(
-                                      temperatureConfigForm.positiveResponses[i - 1].upperLimit
+                                      temperatureConfigForm.positiveResponses[
+                                        i - 1
+                                      ].upperLimit
                                     )}`,
                                   ]
                             }
@@ -588,7 +596,6 @@ function QuestionnaireEvaluation(props) {
                           <TextValidator
                             variant="outlined"
                             disabled={disableUpperLimit ? "true" : ""}
-                            
                             validators={
                               temperatureConfigForm.positiveResponses
                                 ? x.isNoUpperLimit

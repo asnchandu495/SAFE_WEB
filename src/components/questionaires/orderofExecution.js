@@ -212,11 +212,16 @@ function OrderofExecution(props) {
         >
           Questionnaire
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
-          Order Of Execution
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/questionaires/view-questions/` + surveyIdURL}
+          className="inactive"
+        >
+          {surveyDetails ? surveyDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          {surveyDetails ? surveyDetails.name : ""}
+          Order Of Execution
         </LinkTo>
       </Breadcrumbs>
       <Paper className="main-paper main-paper-add-question">

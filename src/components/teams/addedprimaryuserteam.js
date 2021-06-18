@@ -103,7 +103,7 @@ function AddPrimaryUserTeam(props) {
   const [userGroupList, setuserGroupList] = useState();
 
   const [Modalopen, setModalOpen] = useState(false);
-  const [Modalsubmit,setModalsubmit]=useState(false);
+  const [Modalsubmit, setModalsubmit] = useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
@@ -458,7 +458,6 @@ function AddPrimaryUserTeam(props) {
           </DialogActions>{" "}
         </ValidatorForm>
       </Dialog>
-      
 
       {/* <Dialog open={Modalopen} onClose={handleClose} aria-labelledby="form-dialog-title"> */}
       <Dialog
@@ -582,7 +581,12 @@ function AddPrimaryUserTeam(props) {
             >
               Teams
             </LinkTo>
-            <LinkTo color="textPrimary" href="#" className="inactive">
+            <LinkTo
+              color="textPrimary"
+              href="#"
+              to={`/teams/view-team/` + teamId}
+              className="inactive"
+            >
               {selectedTeamInfo.name}
             </LinkTo>
             <LinkTo color="textPrimary" href="#" className="active">

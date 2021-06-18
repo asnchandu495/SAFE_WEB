@@ -193,12 +193,12 @@ function ViewQuestions(props) {
         >
           Questionnaire
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
+        <LinkTo color="textPrimary" href="#" className="active">
           {ViewQuestionaireDetails.name}
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="active">
+        {/* <LinkTo color="textPrimary" href="#" className="active">
           View Question
-        </LinkTo>
+        </LinkTo> */}
       </Breadcrumbs>
       <Paper className="main-paper main-paper-add-question">
         <Grid container spacing={0}>

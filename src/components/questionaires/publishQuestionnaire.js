@@ -396,7 +396,12 @@ function PublishQuestionnaire(props) {
         >
           List
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/questionaires/view-questions/` + questionnaireId}
+          className="inactive"
+        >
           {ViewQuestionaireDetails.name}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">

@@ -152,7 +152,7 @@ function AdoptQuestionnaire(props) {
         <LinkTo
           color="inherit"
           href="#"
-          to={`home/dashboard`}
+          to={`/home/dashboard`}
           className="inactive"
         >
           Home
