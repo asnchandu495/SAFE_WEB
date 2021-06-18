@@ -160,7 +160,7 @@ function CreateUserGroup(props) {
         <LinkTo
           color="textPrimary"
           href="#"
-          to={`usergroups/allusergroups`}
+          to={`/usergroups/allusergroups`}
           className="inactive"
         >
           User Groups
