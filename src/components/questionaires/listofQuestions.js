@@ -128,7 +128,7 @@ function ListofQuestions(props) {
       {props.ListofQuestionsData.map((ques, index) => {
         return (
           <>
-            {ques.isEndQuestion || ques.order == -1 ? (
+            {ques.isEndQuestion ? (
               ""
             ) : (
               <div
