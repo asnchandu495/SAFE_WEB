@@ -476,7 +476,7 @@ function Users(props) {
         </span>
       );
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: (value, tableMeta, updateValue) => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -878,7 +878,7 @@ function Users(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                          BusinessUserRoleMasterData.length > 0
+                            BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -916,7 +916,7 @@ function Users(props) {
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                        BusinessDesingationData.length > 0
+                          BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -948,7 +948,7 @@ function Users(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                        BusinessSiteMasterData.length > 0
+                          BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -980,7 +980,7 @@ function Users(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                            BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }
@@ -1058,7 +1058,7 @@ function Users(props) {
             }
             columns={columns}
             options={options}
-            className="global-table"
+            className="global-table checkbox-grid"
           />
         </MuiThemeProvider>
       )}

@@ -83,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
+    overflowX: "auto"
   },
   nested: {
     paddingLeft: theme.spacing(4),
@@ -569,7 +570,7 @@ function AdminLayout(props) {
               }}
             />
           )}
-          // autoHeight
+        // autoHeight
         >
           <div className={`${classes.drawerContainer} side-menu`}>
             <List>

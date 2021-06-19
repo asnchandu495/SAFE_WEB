@@ -128,7 +128,9 @@ function ListofQuestions(props) {
       {props.ListofQuestionsData.map((ques, index) => {
         return (
           <>
-            {!ques.isEndQuestion ? (
+            {ques.isEndQuestion || ques.order == -1 ? (
+              ""
+            ) : (
               <div
                 className="questionnairelistitems"
                 key={"questionnaire=" + ques.id}
@@ -150,8 +152,6 @@ function ListofQuestions(props) {
                 </ListItem>
                 <Divider component="li" />
               </div>
-            ) : (
-              ""
             )}
           </>
         );

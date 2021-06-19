@@ -210,7 +210,7 @@ function NumericJump(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
-
+    console.log(conditionalJump);
     setshowLoadder(true);
     if (conditionalJump.id != "") {
       let newNumericConditionalQuestions =
@@ -226,10 +226,9 @@ function NumericJump(props) {
           question: con.question,
           questionType: con.questionType,
         }));
-      conditionalJump.updateNumericConditionalQuestions =
+      conditionalJump.numericConditionalQuestions =
         newNumericConditionalQuestions;
       conditionalJump.surveyQuestionId = questionId;
-      conditionalJump.id = "";
 
       questionaireApiCall
         .updateNumericConditionalJump(conditionalJump)

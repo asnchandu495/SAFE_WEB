@@ -812,7 +812,7 @@ function CreateUser(props) {
                       id="tags-outlined"
                       options={
                         designationMasterData &&
-                        designationMasterData.length > 0
+                          designationMasterData.length > 0
                           ? designationMasterData
                           : []
                       }
@@ -882,7 +882,7 @@ function CreateUser(props) {
                       id="tags-outlined"
                       options={
                         BusinessTeamMasterData &&
-                        BusinessTeamMasterData.length > 0
+                          BusinessTeamMasterData.length > 0
                           ? BusinessTeamMasterData
                           : []
                       }
@@ -920,7 +920,7 @@ function CreateUser(props) {
                       id="tags-outlined"
                       options={
                         BusinessUserRoleMasterData &&
-                        BusinessUserRoleMasterData.length > 0
+                          BusinessUserRoleMasterData.length > 0
                           ? BusinessUserRoleMasterData
                           : []
                       }
@@ -957,7 +957,7 @@ function CreateUser(props) {
                       id="tags-outlined"
                       options={
                         UserPrimaryGroupMasterData &&
-                        UserPrimaryGroupMasterData.length > 0
+                          UserPrimaryGroupMasterData.length > 0
                           ? UserPrimaryGroupMasterData
                           : []
                       }
@@ -996,7 +996,7 @@ function CreateUser(props) {
                       onChange={handleChangeUserSecondaryGroup}
                       options={
                         UserSecondaryGroupMasterData &&
-                        UserSecondaryGroupMasterData.length > 0
+                          UserSecondaryGroupMasterData.length > 0
                           ? UserSecondaryGroupMasterData
                           : []
                       }
@@ -1189,15 +1189,16 @@ function CreateUser(props) {
                     />
                   </Grid>
 
-                  <Grid item sm={4}>
+                  <Grid item sm={4} className="inline-form-checkbox">
                     <Checkbox
                       checked={formData.isRLAPActive}
                       onChange={handleChangecheckBox}
                       value={formData.isRLAPActive}
                       inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                      id="rlapactive"
                     />
-                    <label htmlFor="password" className="input-label ">
-                      RLAP
+                    <label htmlFor="rlapactive" className="input-label">
+                      RLAP active
                     </label>
                   </Grid>
 
