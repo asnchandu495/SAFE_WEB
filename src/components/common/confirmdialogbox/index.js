@@ -370,8 +370,10 @@ function CustomizedDialogs(props) {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted FAQ.");
           props.settoasterServerity("success");
-          props.setOpenConfirmationModal(false);
-          setshowLoadder(false);
+          setTimeout(() => {
+            props.setOpenConfirmationModal(false);
+            setshowLoadder(false);
+          }, 6000);
         })
         .catch((error) => {
           setshowLoadder(false);
@@ -735,7 +737,7 @@ CustomizedDialogs.propTypes = {
   DeleteDateQuestionData: PropTypes.func.isRequired,
   PublishFAQ: PropTypes.func.isRequired,
 };
-function mapStateToProps(state, ownProps) {}
+function mapStateToProps(state, ownProps) { }
 
 const mapDispatchToProps = {
   DeletEmergencyContactList: EmergencyContactAction.DeletEmergencyContactList,

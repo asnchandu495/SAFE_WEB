@@ -69,6 +69,16 @@ function PublishFAQ(props) {
     );
   };
 
+  const handleClickOpenConfirmationModalDelete = (value) => {
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteFaq");
+    setConfirmationHeaderTittle("Delete Faq");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${value[1]} ?`
+    );
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -129,6 +139,35 @@ function PublishFAQ(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
+                <Tooltip title="View">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<VisibilityIcon />}
+                    className={`edit-icon`}
+                    onClick={() => handleClickView(thisRowData)}
+                  ></Button>
+                </Tooltip>
+                <Tooltip title="Add Section">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<QuestionAnswerIcon />}
+                    className={`edit-icon`}
+                    onClick={() => handleClickAddSections(thisRowData)}
+                  ></Button>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<DeleteIcon />}
+                    className={`delete-icon`}
+                    onClick={() =>
+                      handleClickOpenConfirmationModalDelete(thisRowData)
+                    }
+                  ></Button>
+                </Tooltip>
                 <Tooltip title="Publish">
                   <Button
                     variant="contained"
