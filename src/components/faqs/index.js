@@ -118,6 +118,11 @@ function ViewAllFAQs(props) {
     );
   });
 
+  const [loadFormData, setloadFormData] = useState({
+    isSaveAsDraft: "false",
+    languageIds: [],
+  });
+
   const DialogActions = withStyles((theme) => ({
     root: {
       margin: 0,
@@ -126,7 +131,7 @@ function ViewAllFAQs(props) {
   }))(MuiDialogActions);
 
   useEffect(() => {
-    Promise.all([props.LoadData(), props.LoadGridsPage()])
+    Promise.all([props.LoadData(loadFormData), props.LoadGridsPage()])
 
       .then(([result, gridResult]) => {
         // setAllFaqs(result);

@@ -1,7 +1,10 @@
-import { PUBLISH_FAQ_SUCCESS, LOAD_FAQ_PUBLISH } from "../utilits";
+import {
+  PUBLISH_FAQ_SUCCESS,
+  LOAD_FAQ_PUBLISH,
+  DELETE_PUBLISH_FAQ,
+} from "../utilits";
 var intialState = [];
 export default function loadAssignFaqReducer(state = intialState, action) {
-  console.log(action);
   switch (action.type) {
     case PUBLISH_FAQ_SUCCESS:
       return state.map((FaQ) =>
@@ -21,6 +24,8 @@ export default function loadAssignFaqReducer(state = intialState, action) {
       } else {
         return state;
       }
+    case DELETE_PUBLISH_FAQ:
+      return state.filter((user) => user.id !== action.user);
 
     default:
       return state;

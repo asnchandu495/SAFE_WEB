@@ -112,35 +112,41 @@ function LocationDensity(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
-  const [locationDensityData, setlocationDensityData] = useState([
-    {
-      id: "001",
-      name: "site 0",
-      location: { id: "001", name: " Bengaluru" },
-      status: "Active",
-      color: "green",
-    },
-    {
-      id: "002",
-      name: "Site 1",
-      location: { id: "001", name: " Hyderabad" },
-      status: "Inctive",
-      color: "#ffbf00",
-    },
-    {
-      id: "003",
-      name: "site2",
-      location: { id: "001", name: " Chennai" },
-      status: "Active",
-      color: "red",
-    },
-  ]);
+  const [locationDensityData, setlocationDensityData] = useState();
+  //   [
+  //   {
+  //     id: "001",
+  //     name: "site 0",
+  //     location: { id: "001", name: " Bengaluru" },
+  //     status: "Active",
+  //     color: "green",
+  //   },
+  //   {
+  //     id: "002",
+  //     name: "Site 1",
+  //     location: { id: "001", name: " Hyderabad" },
+  //     status: "Inctive",
+  //     color: "#ffbf00",
+  //   },
+  //   {
+  //     id: "003",
+  //     name: "site2",
+  //     location: { id: "001", name: " Chennai" },
+  //     status: "Active",
+  //     color: "red",
+  //   },
+  // ]
   const locationData = [
     { id: "01", name: "Reception Area" },
     { id: "02", name: "Parking lot" },
     { id: "03", name: "Cafetaria lot" },
   ];
   const [reportTime, setReportTime] = useState("");
+  const [locationBySiteId, setlocationBySiteId] = useState();
+  const [formFieldValidation, setformFieldValidation] = useState({
+    SiteId: false,
+    LocationId: false,
+  });
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -324,29 +330,114 @@ function LocationDensity(props) {
   };
 
   const [searchForm, setSearchForm] = useState({
-    site: [],
-    location: [],
+    SiteId: "",
+    LocationId: [],
   });
 
   function selectedSite(e, value) {
     setselectedSiteData(value);
+    setformFieldValidation((ValidationForm) => ({
+      ...ValidationForm,
+      ["SiteId"]: false,
+    }));
+    if (value) {
+      let data = value.id;
+      siteApiCall
+        .getAllLocationsBySiteId(data)
+        .then((getResult) => {
+          console.log(getResult);
+          setlocationBySiteId(getResult);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
+
   function selectedLocation(e, value) {
     setselectedLocationData(value);
+    setformFieldValidation((ValidationForm) => ({
+      ...ValidationForm,
+      ["LocationId"]: false,
+    }));
+  }
+
+  function SelectSiteValidation() {
+    if (selectedSiteData) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["SiteId"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["SiteId"]: true,
+      }));
+    }
+  }
+  function SelectLocationValidation() {
+    if (selectedLocationData) {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["LocationId"]: false,
+      }));
+    } else {
+      setformFieldValidation((ValidationForm) => ({
+        ...ValidationForm,
+        ["LocationId"]: true,
+      }));
+    }
   }
 
   function submitForm(e) {
     e.preventDefault();
-    if (selectedSiteData) {
-      searchForm.site = selectedSiteData;
-    }
-    if (selectedLocation) {
-      searchForm.location = selectedLocationData;
-    }
-    console.log(searchForm);
     settoasterServerity("");
     settoasterErrorMessageType("");
-    setComponentLoadder(true);
+    SelectSiteValidation();
+    SelectSiteValidation();
+    SelectLocationValidation();
+    if (selectedSiteData != null && selectedLocationData != null) {
+      submitFormDensity();
+    } else {
+      return false;
+    }
+  }
+
+  function submitFormDensity() {
+    setshowLoadder(true);
+
+    if (selectedSiteData) {
+      searchForm.SiteId = selectedSiteData.rlapReferenceId;
+    }
+
+    if (selectedLocationData.length > 0) {
+      let locationArr = selectedLocationData.map(
+        (item) => item.rlapReferenceId
+      );
+      searchForm.LocationId = locationArr;
+    } else {
+      searchForm.LocationId = [];
+    }
+
+    siteApiCall
+      .getLocationBysiteReport(searchForm)
+      .then((result) => {
+        setStateSnackbar(true);
+        setToasterMessage("success");
+        settoasterServerity("success");
+        setlocationDensityData(result);
+        setTimeout(() => {
+          Modalopen(false);
+
+          setshowLoadder(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
 
   return (
@@ -367,12 +458,11 @@ function LocationDensity(props) {
               <Grid container spacing={3}>
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Site </label>
+                    <label className="required">Site </label>
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
                       <Autocomplete
-                        multiple
                         name="siteId"
                         id="tags-outlined"
                         options={
@@ -380,6 +470,7 @@ function LocationDensity(props) {
                         }
                         getOptionLabel={(option) => option.name}
                         defaultValue={selectedSiteData}
+                        value={selectedSiteData ? selectedSiteData : ""}
                         onChange={selectedSite}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -391,12 +482,19 @@ function LocationDensity(props) {
                           />
                         )}
                       />{" "}
+                      {formFieldValidation.SiteId ? (
+                        <FormHelperText className="error-msg">
+                          Please select site{" "}
+                        </FormHelperText>
+                      ) : (
+                        ""
+                      )}
                     </FormControl>
                   </Grid>
                 </Grid>
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
-                    <label className="">Location</label>
+                    <label className="required">Location</label>
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
@@ -404,12 +502,12 @@ function LocationDensity(props) {
                         multiple
                         id="tags-outlined"
                         options={
-                          locationData && locationData.length > 0
-                            ? locationData
+                          locationBySiteId && locationBySiteId.length > 0
+                            ? locationBySiteId
                             : []
                         }
                         name="location"
-                        getOptionLabel={(option) => option.name}
+                        getOptionLabel={(option) => option.locationName}
                         defaultValue={selectedLocationData}
                         onChange={selectedLocation}
                         filterSelectedOptions
@@ -422,6 +520,13 @@ function LocationDensity(props) {
                           />
                         )}
                       />
+                      {formFieldValidation.LocationId ? (
+                        <FormHelperText className="error-msg">
+                          Please select location{" "}
+                        </FormHelperText>
+                      ) : (
+                        ""
+                      )}
                     </FormControl>
                   </Grid>
                 </Grid>

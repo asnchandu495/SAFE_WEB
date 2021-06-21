@@ -1,4 +1,8 @@
-import { PUBLISH_FAQ_SUCCESS, LOAD_FAQ_PUBLISH } from "../utilits";
+import {
+  PUBLISH_FAQ_SUCCESS,
+  LOAD_FAQ_PUBLISH,
+  DELETE_PUBLISH_FAQ,
+} from "../utilits";
 
 import FaqService from "../../services/faqService";
 
@@ -10,6 +14,10 @@ export function PublishFAQSuccess(FaQ) {
 
 export function LoadFaqPublishSuccess(loadFaq) {
   return { type: LOAD_FAQ_PUBLISH, loadFaq };
+}
+
+export function DeletePublishFaqSuccess(user) {
+  return { type: DELETE_PUBLISH_FAQ, user };
 }
 
 export function PublishFAQ(data) {
@@ -25,13 +33,26 @@ export function PublishFAQ(data) {
   };
 }
 
-export function loadFaq() {
+export function loadFaq(jsonData) {
   return function (dispatch) {
-    let status = true;
+    // let status = true;
     return faqApiCall
-      .ListFAQs(status)
+      .ListFAQs(jsonData)
       .then((data) => {
         dispatch(LoadFaqPublishSuccess(data));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+}
+
+export function deletePublishFaq(publishdata) {
+  return function (dispatch) {
+    return faqApiCall
+      .deleteSelectedPublishFaq(publishdata)
+      .then((response) => {
+        dispatch(DeletePublishFaqSuccess(publishdata));
       })
       .catch((error) => {
         throw error;

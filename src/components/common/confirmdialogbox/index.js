@@ -379,6 +379,24 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
           toasterErrorMessage(error);
         });
+    } else if (props.ConfirmationModalActionType == "DeletePublishFaq") {
+      setshowLoadder(true);
+      var thisId = props.SelectedRowDetails[0];
+      props
+        .DeletePublishFaq(thisId)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted  publish FAQ.");
+          props.settoasterServerity("success");
+          setTimeout(() => {
+            props.setOpenConfirmationModal(false);
+            setshowLoadder(false);
+          }, 6000);
+        })
+        .catch((error) => {
+          setshowLoadder(false);
+          toasterErrorMessage(error);
+        });
     } else if (props.ConfirmationModalActionType == "DeleteSite") {
       setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
@@ -737,7 +755,7 @@ CustomizedDialogs.propTypes = {
   DeleteDateQuestionData: PropTypes.func.isRequired,
   PublishFAQ: PropTypes.func.isRequired,
 };
-function mapStateToProps(state, ownProps) { }
+function mapStateToProps(state, ownProps) {}
 
 const mapDispatchToProps = {
   DeletEmergencyContactList: EmergencyContactAction.DeletEmergencyContactList,
@@ -756,6 +774,7 @@ const mapDispatchToProps = {
   DelteUserDesignation: DesignationAction.deleteUserDesignation,
   DelteCovidState: CovidStateAction.deleteCovidState,
   DeleteFaq: FaqAction.deleteFaq,
+  DeletePublishFaq: PublishFAQAction.deletePublishFaq,
   DeleteSite: SiteAction.deleteSite,
   DeleteAssignFaq: AssignFaqAction.deleteAssignFaq,
   ChangAssignFaqStatus: AssignFaqAction.UpdateFaqAssign,

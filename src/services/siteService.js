@@ -18,6 +18,7 @@ export default class SiteService {
   getAllSitesbySiteorSecurityManager(data) {
     let SecurityManagerIds = "";
     let SiteManagerIds = "";
+
     if (data.SecurityManagerId.length > 0) {
       SecurityManagerIds = data.SecurityManagerId.map(function (el, idx) {
         return "SecurityManagerId=" + el;
@@ -50,6 +51,37 @@ export default class SiteService {
 
   getSiteById(id) {
     return this.fetch(`${this.baseURL}/Site/GetSiteById/` + id, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  getAllLocationsBySiteId(siteId) {
+    return this.fetch(
+      `${this.baseURL}/Site/GetAllLocationsBySiteId?SiteId=` + siteId,
+
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  getLocationBysiteReport(data) {
+    let SiteIds = "";
+    let LocationIds = "";
+
+    LocationIds = data.LocationId.map(function (el, idx) {
+      return "LocationId=" + el;
+    }).join("&");
+
+    SiteIds = "SiteId=" + data.SiteId;
+
+    let apiURL = `Reports/Density?${LocationIds}&${SiteIds}`;
+
+    return this.fetch(`${this.baseURL}/${apiURL}`, {
       method: "GET",
     }).then((res) => {
       return Promise.resolve(res);
