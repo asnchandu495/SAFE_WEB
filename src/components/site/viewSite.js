@@ -455,17 +455,11 @@ function ViewSite(props) {
                   <Grid item xs={8}></Grid>
                 </Grid>
 
-                <Grid item sm={6} container className="inner-page-grid">
+                <Grid item sm={12} container className="inner-page-grid">
                   <MuiThemeProvider theme={theme1}>
                     {" "}
                     <MUIDataTable
                       title={""}
-                      // data={
-                      //   viewSiteValue.sitetofloormappings &&
-                      //   viewSiteValue.sitetofloormappings.length > 0
-                      //     ? viewSiteValue.sitetofloormappings
-                      //     : []
-                      // }
                       data={
                         viewSiteValue.floors && viewSiteValue.floors.length > 0
                           ? viewSiteValue.floors
@@ -473,31 +467,25 @@ function ViewSite(props) {
                       }
                       columns={floorColumns}
                       options={floorOptions}
-                      className="global-table table-wo-action full-width-grid"
+                      className="global-table table-wo-action full-width-grid no-action-table"
                     />
                   </MuiThemeProvider>
                 </Grid>
 
-                <Grid item sm={6} container className="inner-page-grid">
+                <Grid item sm={12} container className="inner-page-grid">
                   <MuiThemeProvider theme={theme1}>
                     {" "}
                     <MUIDataTable
                       title={""}
-                      // data={
-                      //   viewSiteValue.locationSiteMappings &&
-                      //   viewSiteValue.locationSiteMappings.length > 0
-                      //     ? viewSiteValue.locationSiteMappings
-                      //     : []
-                      // }
                       data={
                         viewSiteValue.locations &&
-                        viewSiteValue.locations.length > 0
+                          viewSiteValue.locations.length > 0
                           ? viewSiteValue.locations
                           : []
                       }
                       columns={locationColumns}
                       options={locationOptions}
-                      className="global-table table-wo-action full-width-grid"
+                      className="global-table table-wo-action full-width-grid no-action-table"
                     />
                   </MuiThemeProvider>
                 </Grid>

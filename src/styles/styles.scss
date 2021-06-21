@@ -8,6 +8,10 @@ body,
   min-height: 100vh;
 }
 
+body{
+  overflow-y: hidden;
+}
+
 .global-form {
   .global-submit-btn {
     font: var(--unnamed-font-style-normal) normal bold
@@ -419,6 +423,7 @@ body,
       letter-spacing: var(--unnamed-character-spacing-0);
       color: var(--universal-black-000000);
       padding: 3px 5px;
+      white-space: nowrap;
       button {
         font: var(--unnamed-font-style-normal) normal bold
           var(--unnamed-font-size-14) var(--unnamed-font-family-proxima-nova);
@@ -440,6 +445,7 @@ body,
       color: var(--universal-black-000000);
       padding: 5px;
       border-bottom: 1px solid #dde1e6;
+      white-space: nowrap;
     }
     tr:nth-child(odd) {
       background-color: #ebebeb;
@@ -635,6 +641,9 @@ label.required {
   }
   .MuiGrid-grid-sm-4 {
     margin-bottom: 20px;
+  }
+  .inline-form-checkbox .MuiCheckbox-root{
+    padding: 0 5px 0 0;
   }
 }
 
@@ -1473,5 +1482,16 @@ label.required {
   .infinity-symbol {
     font-size: 23px;
     margin-left: 5px;
+  }
+}
+
+.checkbox-grid{
+  tbody {
+    tr:nth-child(odd) td:first-child {
+      background-color: #ebebeb;
+    }
+    tr:nth-child(even) td:first-child {
+      background-color: #fff;
+    }
   }
 }
