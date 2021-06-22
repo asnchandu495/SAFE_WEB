@@ -7,13 +7,12 @@ export default class FaqService {
     this.fetch = this.fetch.bind(this);
   }
 
-  ListFAQs(status) {
-    return this.fetch(
-      `${this.baseURL}/FAQ/GetAllFaqs?IsSaveAsDraft=` + status,
-      {
-        method: "GET",
-      }
-    ).then((res) => {
+  ListFAQs(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(`${this.baseURL}/FAQ/GetAllFaqs`, {
+      method: "POST",
+      body: finalData,
+    }).then((res) => {
       return Promise.resolve(res);
     });
   }
@@ -39,6 +38,14 @@ export default class FaqService {
   }
 
   deleteSelectedFaq(data) {
+    return this.fetch(`${this.baseURL}/FAQ/DeleteFaq/` + data, {
+      method: "DELETE",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  deleteSelectedPublishFaq(data) {
     return this.fetch(`${this.baseURL}/FAQ/DeleteFaq/` + data, {
       method: "DELETE",
     }).then((res) => {

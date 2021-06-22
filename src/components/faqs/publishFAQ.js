@@ -46,10 +46,14 @@ function PublishFAQ(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [loadFormData, setloadFormData] = useState({
+    isSaveAsDraft: "true",
+    languageIds: [],
+  });
 
   useEffect(() => {
     props
-      .LoadData()
+      .LoadData(loadFormData)
       .then((result) => {
         // setAllFaqs(result);
         setcomponentLoadder(false);
@@ -72,8 +76,8 @@ function PublishFAQ(props) {
   const handleClickOpenConfirmationModalDelete = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
-    setConfirmationModalActionType("DeleteFaq");
-    setConfirmationHeaderTittle("Delete Faq");
+    setConfirmationModalActionType("DeletePublishFaq");
+    setConfirmationHeaderTittle("Delete Publish Faq");
     setConfirmationDialogContextText(
       `Are you sure you want to delete ${value[1]} ?`
     );

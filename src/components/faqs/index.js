@@ -19,6 +19,45 @@ import { connect } from "react-redux";
 import * as faqAction from "../../Redux/Action/faqAction";
 import PropTypes from "prop-types";
 import * as GridAction from "../../Redux/Action/gridAction";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import ReplayIcon from "@material-ui/icons/Replay";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    margin: theme.spacing(1),
+    height: 20,
+    width: 20,
+    minHeight: 20,
+  },
+}));
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -33,6 +72,7 @@ const theme1 = createMuiTheme({
 });
 
 function ViewAllFAQs(props) {
+  const classes = useStyles();
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
     useState("");
@@ -48,9 +88,50 @@ function ViewAllFAQs(props) {
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
+  const [Modalopen, setModalOpen] = useState(false);
+  const [showLoadder, setshowLoadder] = useState(false);
+  const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
+  const [languageValue, setlanguageValue] = useState([]);
+
+  const [languageJson, setlanguageJson] = useState([
+    { name: "English", rank: "1", id: "tt0111161" },
+    { name: "Portugese", rank: "2", id: "tt0068646" },
+    { name: "Spanish: Part II", rank: "3", id: "tt0071562" },
+    { name: "Mandarin", rank: "4", id: "tt0110912" },
+    { name: "Bengali.", rank: "5", id: "tt0060196" },
+  ]);
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
+
+  const [loadFormData, setloadFormData] = useState({
+    isSaveAsDraft: "false",
+    languageIds: [],
+  });
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
 
   useEffect(() => {
-    Promise.all([props.LoadData(), props.LoadGridsPage()])
+    Promise.all([props.LoadData(loadFormData), props.LoadGridsPage()])
 
       .then(([result, gridResult]) => {
         // setAllFaqs(result);
@@ -87,6 +168,14 @@ function ViewAllFAQs(props) {
     }
   };
 
+  const handleClickOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -115,6 +204,21 @@ function ViewAllFAQs(props) {
       pagination: {
         jumpToPage: "Goto page:",
       },
+    },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbar: () => {
+      return (
+        <div className={`maingrid-actions`}>
+          <Tooltip title="Filter ">
+            <Button
+              variant="contained"
+              startIcon={<FilterListIcon />}
+              className={`add-icon`}
+              onClick={handleClickOpenModal}
+            ></Button>
+          </Tooltip>
+        </div>
+      );
     },
   };
 
@@ -212,8 +316,73 @@ function ViewAllFAQs(props) {
     props.history.push(getRoute);
   }
 
+  function handleChangeLanguage(event, value) {
+    setlanguageValue(value);
+  }
+
   return (
     <div className="innerpage-container">
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={Modalopen}
+        className="global-dialog confirmation-dialog global-form"
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Filters
+        </DialogTitle>
+
+        <ValidatorForm className={`global-form`} onSubmit="#">
+          <DialogContent dividers>
+            {!componentLoadder ? (
+              <Grid container spacing={3}>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className=""> Language</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={languageJson}
+                      getOptionLabel={(option) => option.name}
+                      onChange={handleChangeLanguage}
+                      defaultValue={languageValue.length ? languageValue : []}
+                      value={languageValue.length ? languageValue : []}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select "
+                        />
+                      )}
+                    />
+                    {""}
+                  </Grid>
+                </Grid>
+              </Grid>
+            ) : null}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick="#" className="global-filter-reset-btn">
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              className="global-submit-btn"
+              disabled={showLoadder}
+            >
+              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+            </Button>
+            <Button onClick={handleClose} className="global-cancel-btn">
+              Cancel
+            </Button>
+          </DialogActions>
+        </ValidatorForm>
+      </Dialog>
       {componentLoadder ? (
         <ComponentLoadderComponent />
       ) : (

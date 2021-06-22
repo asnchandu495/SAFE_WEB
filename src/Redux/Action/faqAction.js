@@ -12,11 +12,10 @@ export function DeleteFaqSuccess(userDesignation) {
   return { type: DELETE_FAQ_SUCCESS, userDesignation };
 }
 
-export function loadFaq() {
+export function loadFaq(jsondata) {
   return function (dispatch) {
-    let status = false;
     return faqApi
-      .ListFAQs(status)
+      .ListFAQs(jsondata)
       .then((data) => {
         dispatch(LoadFaqSuccess(data));
       })
