@@ -1505,3 +1505,30 @@ label.required {
     padding: 0 9px 0 0;
   }
 }
+
+/* Styles go here - D3 tree */
+#heap .node {
+  cursor: pointer;
+}
+
+#heap .node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+#heap .node text {
+  font: 10px sans-serif;
+}
+
+#heap .link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+#heap .node rect {
+    fill: none;
+    stroke: #636363;
+    stroke-width: 1.5px;
+}

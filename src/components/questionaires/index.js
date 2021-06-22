@@ -11,6 +11,7 @@ import ConfirmationDialog from "../common/confirmdialogbox";
 import QuestionAnswerOutlinedIcon from "@material-ui/icons/QuestionAnswerOutlined";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -95,6 +96,11 @@ function Questionaire(props) {
   function handleClickOrderofExecution(value) {
     var questionId = value[0];
     props.history.push(`/questionaires/order-of-execution/${questionId}`);
+  }
+
+  function handleClickViewWorkflow(value) {
+    var questionId = value[0];
+    props.history.push(`/questionaires/workflow-states/${questionId}`);
   }
 
   const columns = [
@@ -206,6 +212,15 @@ function Questionaire(props) {
                     startIcon={<PlaylistAddCheckIcon />}
                     className={`view-icon`}
                     onClick={() => questionaireEvaluation(thisRowData)}
+                  ></Button>
+                </Tooltip>
+                <Tooltip title="View Workflow">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<AccountTreeIcon />}
+                    className={`edit-icon`}
+                    onClick={() => handleClickViewWorkflow(thisRowData)}
                   ></Button>
                 </Tooltip>
               </div>
