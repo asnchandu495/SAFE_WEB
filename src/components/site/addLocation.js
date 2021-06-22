@@ -140,6 +140,8 @@ function AddLocation(props) {
     densityThreasholdMediumTo: 0,
     densityThreasholdHighFrom: 0,
     densityThreasholdHighTo: 0,
+    isRLAPActive: false,
+    rlapReferenceId: "",
   });
   const [resetformData, SetresetformData] = useState({
     siteId: "",
@@ -147,7 +149,7 @@ function AddLocation(props) {
     floorName: "",
     floorId: "",
     locationName: "",
-    isPinMicroActive: false,
+    isRLAPActive: false,
     densityThreasholdLowFrom: 0,
     densityThreasholdLowTo: 0,
     densityThreasholdMediumFrom: 0,
@@ -203,7 +205,7 @@ function AddLocation(props) {
     if (name == "locationName") {
       checkUnqueName(value);
     }
-    if (name == "isPinMicroActive") {
+    if (name == "isRLAPActive") {
       if (!e.target.checked) {
         SetformData((logInForm) => ({
           ...logInForm,
@@ -237,6 +239,10 @@ function AddLocation(props) {
       SetformData((logInForm) => ({
         ...logInForm,
         [name]: value,
+      }));
+      SetformData((logInForm) => ({
+        ...logInForm,
+        ["isRLAPActive"]: e.target.checked,
       }));
     }
   }
@@ -304,7 +310,7 @@ function AddLocation(props) {
   }
 
   function DensityRequiredFieldValidation() {
-    var microStatus = formData.isPinMicroActive;
+    var microStatus = formData.isRLAPActive;
     if (microStatus) {
       if (
         formData.densityThreasholdLowFrom &&
@@ -508,12 +514,45 @@ function AddLocation(props) {
                     <FormControlLabel
                       control={
                         <Checkbox
-                          checked={formData.isPinMicroActive}
+                          checked={formData.isRLAPActive}
                           onChange={handleChange}
-                          name="isPinMicroActive"
+                          value={formData.isRLAPActive}
+                          name="isRLAPActive"
+                          inputProps={{ "aria-label": "uncontrolled-checkbox" }}
                         />
                       }
                       label="RLAP Active"
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item container xs={12}>
+                  <Grid item xs={3}>
+                    <label
+                      className={`input-label ${
+                        formData.isRLAPActive ? "required" : ""
+                      }`}
+                    >
+                      Reference Id
+                    </label>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <TextValidator
+                      variant="outlined"
+                      validators={formData.isRLAPActive ? ["required"] : ""}
+                      errorMessages={
+                        formData.isRLAPActive
+                          ? ["Please enter RLAP ReferenceId"]
+                          : ""
+                      }
+                      fullWidth
+                      id="rlapReferenceId"
+                      disabled={!formData.isRLAPActive}
+                      placeholder="Enter rlapReferenceId "
+                      name="rlapReferenceId"
+                      onChange={handleChange}
+                      value={formData.rlapReferenceId}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
                     />
                   </Grid>
                 </Grid>
@@ -527,9 +566,9 @@ function AddLocation(props) {
                 <Grid item cs={12} container className="thershold-limits">
                   <Grid item xs={3}>
                     <label
-                      className={[
-                        formData.isPinMicroActive ? "required" : "",
-                      ].join(" ")}
+                      className={[formData.isRLAPActive ? "required" : ""].join(
+                        " "
+                      )}
                     >
                       Low
                     </label>
@@ -551,7 +590,7 @@ function AddLocation(props) {
                       value={formData.densityThreasholdLowFrom}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
-                      disabled={!formData.isPinMicroActive}
+                      disabled={!formData.isRLAPActive}
                     />
                   </Grid>
                   <Grid item xs={1} className={classes.temperatureRange}>
@@ -563,7 +602,7 @@ function AddLocation(props) {
                       validators={[
                         "matchRegexp:^[0-9]*$",
                         `minNumber:${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdLowFrom) + 1
                             : 0
                         }`,
@@ -571,7 +610,7 @@ function AddLocation(props) {
                       errorMessages={[
                         "Only  numbers are allowed",
                         `Minimum allowed ${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdLowFrom) + 1
                             : 0
                         }`,
@@ -585,16 +624,16 @@ function AddLocation(props) {
                       value={formData.densityThreasholdLowTo}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
-                      disabled={!formData.isPinMicroActive}
+                      disabled={!formData.isRLAPActive}
                     />
                   </Grid>
                 </Grid>
                 <Grid item cs={12} container className="thershold-limits">
                   <Grid item xs={3}>
                     <label
-                      className={[
-                        formData.isPinMicroActive ? "required" : "",
-                      ].join(" ")}
+                      className={[formData.isRLAPActive ? "required" : ""].join(
+                        " "
+                      )}
                     >
                       Medium
                     </label>
@@ -605,7 +644,7 @@ function AddLocation(props) {
                       validators={[
                         "matchRegexp:^[0-9]*$",
                         `minNumber:${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdLowTo) + 1
                             : 0
                         }`,
@@ -613,7 +652,7 @@ function AddLocation(props) {
                       errorMessages={[
                         "Only numbers are allowed",
                         `Minimum allowed ${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdLowTo) + 1
                             : 0
                         }`,
@@ -627,7 +666,7 @@ function AddLocation(props) {
                       value={formData.densityThreasholdMediumFrom}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
-                      disabled={!formData.isPinMicroActive}
+                      disabled={!formData.isRLAPActive}
                     />
                   </Grid>
                   <Grid item xs={1} className={classes.temperatureRange}>
@@ -639,7 +678,7 @@ function AddLocation(props) {
                       validators={[
                         "matchRegexp:^[0-9]*$",
                         `minNumber:${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdMediumFrom) + 1
                             : 0
                         }`,
@@ -647,7 +686,7 @@ function AddLocation(props) {
                       errorMessages={[
                         "Only numbers are allowed",
                         `Minimum allowed ${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdMediumFrom) + 1
                             : 0
                         }`,
@@ -661,16 +700,16 @@ function AddLocation(props) {
                       value={formData.densityThreasholdMediumTo}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
-                      disabled={!formData.isPinMicroActive}
+                      disabled={!formData.isRLAPActive}
                     />
                   </Grid>
                 </Grid>
                 <Grid item cs={12} container className="thershold-limits">
                   <Grid item xs={3}>
                     <label
-                      className={[
-                        formData.isPinMicroActive ? "required" : "",
-                      ].join(" ")}
+                      className={[formData.isRLAPActive ? "required" : ""].join(
+                        " "
+                      )}
                     >
                       High
                     </label>
@@ -681,7 +720,7 @@ function AddLocation(props) {
                       validators={[
                         "matchRegexp:^[0-9]*$",
                         `minNumber:${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdMediumTo) + 1
                             : 0
                         }`,
@@ -689,7 +728,7 @@ function AddLocation(props) {
                       errorMessages={[
                         "Only numbers are allowed",
                         `Minimum allowed ${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdMediumTo) + 1
                             : 0
                         }`,
@@ -703,7 +742,7 @@ function AddLocation(props) {
                       value={formData.densityThreasholdHighFrom}
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
-                      disabled={!formData.isPinMicroActive}
+                      disabled={!formData.isRLAPActive}
                     />
                   </Grid>
                   <Grid item xs={1} className={classes.temperatureRange}>
@@ -715,7 +754,7 @@ function AddLocation(props) {
                       validators={[
                         "matchRegexp:^[0-9]*$",
                         `minNumber:${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdHighFrom) + 1
                             : 0
                         }`,
@@ -723,7 +762,7 @@ function AddLocation(props) {
                       errorMessages={[
                         "Only numbers are allowed",
                         `Minimum allowed ${
-                          formData.isPinMicroActive
+                          formData.isRLAPActive
                             ? parseInt(formData.densityThreasholdHighFrom) + 1
                             : 0
                         }`,
@@ -743,7 +782,7 @@ function AddLocation(props) {
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
                       disabled={
-                        !formData.isPinMicroActive ||
+                        !formData.isRLAPActive ||
                         formData.HightTemperatureNoLimit
                       }
                     />
