@@ -20,6 +20,7 @@ import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import * as globalSettingAction from "../../../Redux/Action/globalSettingAction";
 import GlobalSettingApiServices from "../../../services/globalSettingService";
+import TooltipComponent from "../../common/tooltip";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -344,6 +345,10 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">Geo Fencing Tolerance</label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Maximum distance from approved WFHL allowed for user to move around while Checked In`}
+                  ></TooltipComponent>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -425,6 +430,10 @@ function GlobalSetting(props) {
                   <label className="required">
                     Frequencey to fetch the geo co ordinates:Once In Every
                   </label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Frequency to fetch user's live location, to optimise battery utilisation while user is Checked In.`}
+                  ></TooltipComponent>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -498,6 +507,10 @@ function GlobalSetting(props) {
                   <label className="required">
                     Social Distancing Tolerance
                   </label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Minimum physical distace to be maintained for "Social distancing" practice.`}
+                  ></TooltipComponent>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -581,6 +594,10 @@ function GlobalSetting(props) {
                   <label className="required">
                     Facial Recognition Tolerance
                   </label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Maximum difference between the selfie uploaded to Check In and the approved PPP for check in to be successful. `}
+                  ></TooltipComponent>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -615,6 +632,10 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">Date Format</label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Format to display date  on both web and mobile app.`}
+                  ></TooltipComponent>
                 </Grid>
 
                 <Grid item xs={3}>
@@ -666,6 +687,10 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">Times Format</label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Format to display time  on both web and mobile app.`}
+                  ></TooltipComponent>
                 </Grid>
 
                 <Grid item xs={3}>
@@ -784,6 +809,10 @@ function GlobalSetting(props) {
                   <label className="required">
                     Unlock Duration Of User Account
                   </label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Duration to  lock user's account after maximum invalid login attempt.User's account to be auto unlocked after the defined duration.`}
+                  ></TooltipComponent>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -827,6 +856,10 @@ function GlobalSetting(props) {
               <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label className="required">Automated Check-out Time</label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Maximum Check In time allowed for user, after system Checks Out user automatically .`}
+                  ></TooltipComponent>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -868,6 +901,10 @@ function GlobalSetting(props) {
               <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label className="required">Minimum Password Length</label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Minimum length of password to be set by the user for their account.`}
+                  ></TooltipComponent>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -912,6 +949,10 @@ function GlobalSetting(props) {
                   <label className="required">
                     Maximum File Size Of User Selfie Unit
                   </label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Maximum size of selfie allowed  to upload to Check In.`}
+                  ></TooltipComponent>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -957,6 +998,10 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">Self Health Check Reminder</label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`Remind user to submit self-health check before shift time.`}
+                  ></TooltipComponent>
                 </Grid>
                 <Grid item xs={3}>
                   <TextValidator
@@ -1035,7 +1080,11 @@ function GlobalSetting(props) {
                   <label>
                     Allow Exceptional Check-in When WFHL Request Is In Pending
                     Status
-                  </label>
+                  </label>{" "}
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`For user to be able to check in from  WFHL in "Pending" status, this setting must be selected .`}
+                  ></TooltipComponent>
                 </Grid>
 
                 <Grid item xs={2}>
@@ -1060,6 +1109,10 @@ function GlobalSetting(props) {
                     Allow Exceptional Check-in When Profile Selfie Request Is In
                     Pending Status
                   </label>
+                  <TooltipComponent
+                    isMarginBottom={false}
+                    tooltipMessage={`For user to be able to check in wrt PPP in "Pending" status, this setting must be selected .`}
+                  ></TooltipComponent>
                 </Grid>
 
                 <Grid item xs={2}>

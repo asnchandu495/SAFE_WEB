@@ -26,6 +26,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import questionaireService from "../../../services/questionaireService";
+import TooltipComponent from "../../common/tooltip";
 
 function SingleSelectQuestion(props) {
   const questionaireApiCall = new questionaireService();
@@ -499,6 +500,10 @@ function SingleSelectQuestion(props) {
                 <Grid item container xs={12}>
                   <Grid item xs={2}>
                     <label>Is Mandatory?</label>
+                    <TooltipComponent
+                      isMarginBottom={false}
+                      tooltipMessage={`Questions for which "Is Mandatory" is ON is mandatory to be answered. Questions for which "Is Mandatory" is OFF can be skipped.`}
+                    ></TooltipComponent>
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel

@@ -16,6 +16,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import AlertBoxComponent from "../common/alert";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import TooltipComponent from "../common/tooltip";
 
 function AddDesignation(props) {
   const designationIdFromURL = props.match.params.id;
@@ -229,6 +230,10 @@ function AddDesignation(props) {
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
                     <label className="required">Attendance Grace Time</label>
+                    <TooltipComponent
+                      isMarginBottom={false}
+                      tooltipMessage={`If there is no Check In by user  within the Grace Time(Considered from user's shift  start time") ,  user to be reminded to Check In, if  notification configured for the event.`}
+                    ></TooltipComponent>
                   </Grid>
                   <Grid item xs={2}>
                     <FormControl variant="outlined">

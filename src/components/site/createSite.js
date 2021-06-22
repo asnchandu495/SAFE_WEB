@@ -658,10 +658,10 @@ function CreateSite(props) {
                           <MenuItem value="">None</MenuItem>
                           {CountryMasterData && CountryMasterData.length > 0
                             ? CountryMasterData.map((lan) => {
-                              return (
-                                <MenuItem value={lan.id}>{lan.name}</MenuItem>
-                              );
-                            })
+                                return (
+                                  <MenuItem value={lan.id}>{lan.name}</MenuItem>
+                                );
+                              })
                             : ""}
                         </Select>
                       </FormControl>
@@ -706,14 +706,24 @@ function CreateSite(props) {
                       <label htmlFor="rlapactive" className="input-label ">
                         RLAP active
                       </label>
-                      <TooltipComponent isMarginBottom={false} tooltipMessage={`Idicates if user's real time location tracking  is implemented  in the  Site.`}></TooltipComponent>
+                      <TooltipComponent
+                        isMarginBottom={false}
+                        tooltipMessage={`Indicates if user's real time location tracking  is implemented  in the  Site.`}
+                      ></TooltipComponent>
                     </Grid>
 
                     <Grid item xs={4}>
-                      <label className={`input-label ${formData.isRLAPActive ? 'required' : ''}`}>
-                        Reference Id
+                      <label
+                        className={`input-label ${
+                          formData.isRLAPActive ? "required" : ""
+                        }`}
+                      >
+                        RLAP Site ID
                       </label>
-                      <TooltipComponent isMarginBottom={true} tooltipMessage={`Unique reference ID  of site as maintained in RLAP  platform . This is required for technical implementation, to fetch the site specific data from RLAP platform.`}></TooltipComponent>
+                      <TooltipComponent
+                        isMarginBottom={true}
+                        tooltipMessage={`Unique reference ID  of site as maintained in RLAP  platform . This is required for technical implementation, to fetch the site specific data from RLAP platform.`}
+                      ></TooltipComponent>
                       <TextValidator
                         variant="outlined"
                         validators={formData.isRLAPActive ? ["required"] : ""}

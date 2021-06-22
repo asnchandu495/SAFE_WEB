@@ -34,6 +34,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import ReplayIcon from "@material-ui/icons/Replay";
+import TooltipComponent from "../../common/tooltip";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -152,10 +153,14 @@ function AssignedFAQs(props) {
     faqId: "",
   });
 
+  const [loadFormData, setloadFormData] = useState({
+    isSaveAsDraft: "false",
+    languageIds: [],
+  });
   useEffect(() => {
     Promise.all([
       props.LoadData(),
-      faqApiCall.ListFAQs(false),
+      faqApiCall.ListFAQs(loadFormData),
       userGroupApiCall.loadUserGroup(),
     ])
       .then(([faqUserGroups, faqDocs, userGroups]) => {
