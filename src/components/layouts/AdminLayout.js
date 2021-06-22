@@ -47,15 +47,38 @@ import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 import * as GridAction from "../../Redux/Action/gridAction";
 import WorkIcon from "@material-ui/icons/Work";
 import Popover from "@material-ui/core/Popover";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
+import MuiDialogContent from "@material-ui/core/DialogContent";
 
 const drawerWidth = 240;
-
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexGrow: 1,
     height: "100vh",
   },
+
   menuButton: {
     marginRight: theme.spacing(2),
   },
@@ -83,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    overflowX: "auto"
+    overflowX: "auto",
   },
   nested: {
     paddingLeft: theme.spacing(4),
@@ -156,7 +179,44 @@ function AdminLayout(props) {
   const [openTeamMenu, setTeamMenu] = useState(false);
   const [openQuestionaires, setOpenQuestionaires] = useState(false);
   const [openWorkflow, setOpenWorkflow] = useState(false);
+  const [Modalopen, setModalOpen] = useState(false);
   const [openReports, setOpenReports] = useState(false);
+  const [NotificationMessage, setNotificationMessage] = useState({});
+
+  const dislayNotificationMessage = (data) => {
+    setNotificationMessage(data);
+    console.log(data);
+    setModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+  const [showLoadder, setshowLoadder] = useState(false);
+  const [notificationList, setnotificationList] = useState([
+    {
+      id: "1",
+      name: "Saravana",
+      message: "has requested a change of WFM location",
+    },
+    {
+      id: "2",
+      name: "Sunil",
+      message: " has requested a change of WFM location.",
+    },
+    { id: "3", name: "Hajira", message: "has submitted a new profile selfie." },
+    {
+      id: "4",
+      name: "Saravana",
+      message: "has requested a change of WFM location.",
+    },
+    {
+      id: "5",
+      name: "Sunil",
+      message: "has requested a change of WFM location",
+    },
+    { id: "6", name: "Hajira", message: "has submitted a new profile selfie." },
+  ]);
   const [gridPages, setGridPages] = useState([
     { name: "users", page: 1 },
     { name: "sites", page: 1 },
@@ -429,9 +489,54 @@ function AdminLayout(props) {
   const handleCloseNotifications = () => {
     setAnchorElNotifications(null);
   };
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
 
+  const DialogContent = withStyles((theme) => ({
+    root: {
+      padding: theme.spacing(2),
+    },
+  }))(MuiDialogContent);
+
+  const DialogActions = withStyles((theme) => ({
+    root: {
+      margin: 0,
+      padding: theme.spacing(1),
+    },
+  }))(MuiDialogActions);
   return (
     <div className={`${classes.root} top-header`}>
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={Modalopen}
+        className="global-dialog confirmation-dialog global-form"
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Message
+        </DialogTitle>
+        <DialogContent dividers>
+          <Typography gutterBottom>
+            <b>{NotificationMessage.name}</b> {""}
+            {NotificationMessage.message}
+          </Typography>
+        </DialogContent>
+      </Dialog>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
@@ -491,24 +596,11 @@ function AdminLayout(props) {
                 className="notification-container"
               >
                 <ul>
-                  <li>
-                    <b>Saravana</b> has requested a change of WFM location.
-                  </li>
-                  <li>
-                    <b>Sunil</b> has requested a change of WFM location.
-                  </li>
-                  <li>
-                    <b>Hajira</b> has submitted a new profile selfie.
-                  </li>
-                  <li>
-                    <b>Saravana</b> has requested a change of WFM location.
-                  </li>
-                  <li>
-                    <b>Sunil</b> has requested a change of WFM location.
-                  </li>
-                  <li>
-                    <b>Hajira</b> has submitted a new profile selfie.
-                  </li>
+                  {notificationList.map((data) => (
+                    <li onClick={() => dislayNotificationMessage(data)}>
+                      <b>{data.name}</b>;{data.message}
+                    </li>
+                  ))}
                 </ul>
               </Popover>
             </Badge>
@@ -570,7 +662,7 @@ function AdminLayout(props) {
               }}
             />
           )}
-        // autoHeight
+          // autoHeight
         >
           <div className={`${classes.drawerContainer} side-menu`}>
             <List>
