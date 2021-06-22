@@ -214,7 +214,7 @@ function AssignedFAQs(props) {
               className={`add-icon`}
               onClick={openAssignNewModal}
             ></Button>
-          </Tooltip>
+          </Tooltip>{" "}
         </div>
       );
     },
@@ -551,6 +551,10 @@ function AssignedFAQs(props) {
             onClose={handleCloseAssignFaq}
           >
             Assign FAQ doc to group
+            <TooltipComponent
+              isMarginBottom={true}
+              tooltipMessage={`FAQ  assigned to a user group in "Active" state will be available for users for whom the selected user group is primary user group. Only One FAQ can be assigned in active state to a user group.`}
+            ></TooltipComponent>
           </DialogTitle>
           <DialogContent dividers>
             <Grid container spacing={3}>

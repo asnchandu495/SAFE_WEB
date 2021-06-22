@@ -216,7 +216,7 @@ function BooleanQuestion(props) {
                   <Grid item xs={2}>
                     <label>Is Mandatory?</label>
                     <TooltipComponent
-                      isMarginBottom={false}
+                      isMarginBottom={true}
                       tooltipMessage={`Questions for which "Is Mandatory" is ON is mandatory to be answered. Questions for which "Is Mandatory" is OFF can be skipped.`}
                     ></TooltipComponent>
                   </Grid>

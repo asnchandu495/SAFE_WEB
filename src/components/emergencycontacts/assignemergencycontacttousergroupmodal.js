@@ -25,6 +25,7 @@ import * as AssignmentEmergencycontactAction from "../../Redux/Action/assignemer
 import * as EmergencyContactAction from "../../Redux/Action/emergencyContactAction";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ReplayIcon from "@material-ui/icons/Replay";
+import TooltipComponent from "../common/tooltip";
 
 const userStatusData = [
   { id: "001", name: "Active" },
@@ -216,6 +217,10 @@ function AssignEmergencyContactToUserGroup(props) {
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           Assign emergency contact to group
+          <TooltipComponent
+            isMarginBottom={true}
+            tooltipMessage={`Emergency Contacts  assigned to a user group in "Active" state will be available for users for whom the selected user group is primary user group. Only One Emergency Contacts list can be assigned in active state to a user group.`}
+          ></TooltipComponent>
         </DialogTitle>
         <ValidatorForm
           className={`global-form`}

@@ -316,7 +316,7 @@ function AddFloor(props) {
                       inputProps={{ "aria-label": "uncontrolled-checkbox" }}
                     />
                     <label htmlFor="password" className="input-label ">
-                      RLAP active
+                      RLAP Active
                     </label>
                     <TooltipComponent
                       isMarginBottom={false}
