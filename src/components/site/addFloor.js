@@ -151,6 +151,7 @@ function AddFloor(props) {
       [name]: value,
     }));
   }
+
   const handleChangecheckBox = (event) => {
     SetformData((formData) => ({
       ...formData,
@@ -247,7 +248,7 @@ function AddFloor(props) {
   function updateSiteFloorData(value) {
     props
       .UpdateSiteFloor(value)
-      .then((result) => {})
+      .then((result) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -259,7 +260,7 @@ function AddFloor(props) {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={props.openaddFloorModal}
-        className="global-dialog"
+        className="global-dialog modal-min-widtn"
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           {props.SelectedRowId ? "Update Floor" : "Add Floor"}
@@ -268,8 +269,11 @@ function AddFloor(props) {
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
-                <Grid item cs={12} container>
-                  <Grid item xs={12}>
+                <Grid item container xs={12}>
+                  <Grid item xs={3}>
+                    <label className="input-label required">Floor Name</label>
+                  </Grid>
+                  <Grid item xs={5}>
                     <TextValidator
                       variant="outlined"
                       validators={[
@@ -282,7 +286,6 @@ function AddFloor(props) {
                         "Special charcters are not allowed",
                         "Maximum 60 characters",
                       ]}
-                      margin="normal"
                       fullWidth
                       id="floorName"
                       placeholder="Enter floor name"
@@ -300,28 +303,52 @@ function AddFloor(props) {
                       ""
                     )}
                   </Grid>
-
-
-                  <Grid item xs={12}>
-                  <Checkbox
-                    checked={formData.isRLAPActive}
-                    onChange={handleChangecheckBox}
-                    value={formData.isRLAPActive}
-                    inputProps={{ "aria-label": "uncontrolled-checkbox" }}
-                  />
-                  <label
-                        htmlFor="password"
-                        className="input-label "
-                      >
-                        RLAP
-                      </label>
-                  
-                    
+                </Grid>
+                <Grid item container xs={12}>
+                  <Grid item xs={3}>
+                    <label className="input-label">&nbsp;</label>
                   </Grid>
-
-
-
-
+                  <Grid item xs={5} className="no-padding-checkbox">
+                    <Checkbox
+                      checked={formData.isRLAPActive}
+                      onChange={handleChangecheckBox}
+                      value={formData.isRLAPActive}
+                      inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                    />
+                    <label
+                      htmlFor="password"
+                      className="input-label "
+                    >
+                      RLAP active
+                    </label>
+                  </Grid>
+                </Grid>
+                <Grid item container xs={12}>
+                  <Grid item xs={3}>
+                    <label className={`input-label ${formData.isRLAPActive ? 'required' : ''}`}>
+                      Reference Id
+                    </label>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <TextValidator
+                      variant="outlined"
+                      validators={formData.isRLAPActive ? ["required"] : ""}
+                      errorMessages={
+                        formData.isRLAPActive
+                          ? ["Please enter RLAP ReferenceId"]
+                          : ""
+                      }
+                      fullWidth
+                      id="rlapReferenceId"
+                      disabled={!formData.isRLAPActive}
+                      placeholder="Enter rlapReferenceId "
+                      name="rlapReferenceId"
+                      onChange={handleChange}
+                      value={formData.rlapReferenceId}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
             ) : null}

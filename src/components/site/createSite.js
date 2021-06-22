@@ -657,10 +657,10 @@ function CreateSite(props) {
                           <MenuItem value="">None</MenuItem>
                           {CountryMasterData && CountryMasterData.length > 0
                             ? CountryMasterData.map((lan) => {
-                                return (
-                                  <MenuItem value={lan.id}>{lan.name}</MenuItem>
-                                );
-                              })
+                              return (
+                                <MenuItem value={lan.id}>{lan.name}</MenuItem>
+                              );
+                            })
                             : ""}
                         </Select>
                       </FormControl>
@@ -694,19 +694,21 @@ function CreateSite(props) {
                       />
                     </Grid>
 
-                    <Grid item xs={4}>
-                      <label htmlFor="password" className="input-label ">
-                        RLAP
-                      </label>
+                    <Grid item xs={4} className="inline-form-checkbox">
                       <Checkbox
                         checked={formData.isRLAPActive}
                         onChange={handleChangecheckBox}
                         value={formData.isRLAPActive}
                         inputProps={{ "aria-label": "uncontrolled-checkbox" }}
+                        id="rlapactive"
                       />
+                      <label htmlFor="rlapactive" className="input-label ">
+                        RLAP active
+                      </label>
                     </Grid>
+
                     <Grid item xs={4}>
-                      <label htmlFor="password" className="input-label ">
+                      <label className={`input-label ${formData.isRLAPActive ? 'required' : ''}`}>
                         Reference Id
                       </label>
                       <TextValidator
@@ -714,7 +716,7 @@ function CreateSite(props) {
                         validators={formData.isRLAPActive ? ["required"] : ""}
                         errorMessages={
                           formData.isRLAPActive
-                            ? ["Please rlapReferenceId"]
+                            ? ["Please enter RLAP ReferenceId"]
                             : ""
                         }
                         fullWidth
