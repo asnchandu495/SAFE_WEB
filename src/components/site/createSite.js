@@ -22,6 +22,7 @@ import SiteService from "../../services/siteService";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import MasterService from "../../services/masterDataService";
 import AlertBoxComponent from "../common/alert";
+import TooltipComponent from "../common/tooltip";
 import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from "react-dom";
 import Checkbox from "@material-ui/core/Checkbox";
 
@@ -705,12 +706,14 @@ function CreateSite(props) {
                       <label htmlFor="rlapactive" className="input-label ">
                         RLAP active
                       </label>
+                      <TooltipComponent isMarginBottom={false} tooltipMessage={`Idicates if user's real time location tracking  is implemented  in the  Site.`}></TooltipComponent>
                     </Grid>
 
                     <Grid item xs={4}>
                       <label className={`input-label ${formData.isRLAPActive ? 'required' : ''}`}>
                         Reference Id
                       </label>
+                      <TooltipComponent isMarginBottom={true} tooltipMessage={`Unique reference ID  of site as maintained in RLAP  platform . This is required for technical implementation, to fetch the site specific data from RLAP platform.`}></TooltipComponent>
                       <TextValidator
                         variant="outlined"
                         validators={formData.isRLAPActive ? ["required"] : ""}

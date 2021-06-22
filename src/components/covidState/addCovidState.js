@@ -25,6 +25,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AlertBoxComponent from "../common/alert";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
+import TooltipComponent from "../common/tooltip";
 
 const defaultTheme = createMuiTheme();
 const theme = createMuiTheme({
@@ -95,7 +96,7 @@ function CreateCovidState(props) {
     }
     props
       .LoadData()
-      .then((result) => {})
+      .then((result) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -331,11 +332,7 @@ function CreateCovidState(props) {
                         <label className={classes.selfHealthTooltip}>
                           Self-Health Check Message :
                         </label>
-                        <MuiThemeProvider theme={theme}>
-                          <Tooltip title="Message to be shown to the user on mobile app on submitting answers to self-health check questions.">
-                            <InfoIcon className={classes.infoIconSize} />
-                          </Tooltip>
-                        </MuiThemeProvider>
+                        <TooltipComponent isMarginBottom={true} tooltipMessage={`Message to be shown to the user on mobile app on submitting answers to self-health check questions.`}></TooltipComponent>
                       </Grid>
                     </Grid>
                     <Grid item container xs={12}>
@@ -387,15 +384,15 @@ function CreateCovidState(props) {
                             <MenuItem value="">None</MenuItem>
                             {backgroundcolor.length > 0
                               ? backgroundcolor.map((value) => {
-                                  return (
-                                    <MenuItem
-                                      value={value.id}
-                                      key={value.colorName}
-                                    >
-                                      {value.colorName}
-                                    </MenuItem>
-                                  );
-                                })
+                                return (
+                                  <MenuItem
+                                    value={value.id}
+                                    key={value.colorName}
+                                  >
+                                    {value.colorName}
+                                  </MenuItem>
+                                );
+                              })
                               : ""}
                           </Select>
                         </FormControl>
