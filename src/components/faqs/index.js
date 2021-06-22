@@ -36,6 +36,7 @@ import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import MasterDataService from "../../services/masterDataService";
 
 const styles = (theme) => ({
   root: {
@@ -73,6 +74,7 @@ const theme1 = createMuiTheme({
 
 function ViewAllFAQs(props) {
   const classes = useStyles();
+  const masterApiCall = new MasterDataService();
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
     useState("");
@@ -92,6 +94,7 @@ function ViewAllFAQs(props) {
   const [showLoadder, setshowLoadder] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [languageValue, setlanguageValue] = useState([]);
+  const [allLanguages, setAllLanguages] = useState([]);
 
   const [languageJson, setlanguageJson] = useState([
     { name: "English", rank: "1", id: "tt0111161" },
@@ -131,10 +134,15 @@ function ViewAllFAQs(props) {
   }))(MuiDialogActions);
 
   useEffect(() => {
-    Promise.all([props.LoadData(loadFormData), props.LoadGridsPage()])
+    Promise.all([
+      props.LoadData(loadFormData),
+      masterApiCall.getAllLanguages(),
+      props.LoadGridsPage(),
+    ])
 
-      .then(([result, gridResult]) => {
+      .then(([result, getLanguages, gridResult]) => {
         // setAllFaqs(result);
+        setAllLanguages(getLanguages);
         setcomponentLoadder(false);
       })
       .catch((err) => {
@@ -344,7 +352,7 @@ function ViewAllFAQs(props) {
                     <Autocomplete
                       multiple
                       id="tags-outlined"
-                      options={languageJson}
+                      options={allLanguages}
                       getOptionLabel={(option) => option.name}
                       onChange={handleChangeLanguage}
                       defaultValue={languageValue.length ? languageValue : []}

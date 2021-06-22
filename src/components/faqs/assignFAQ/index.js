@@ -34,7 +34,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import ReplayIcon from "@material-ui/icons/Replay";
-import TooltipComponent from "../../common/tooltip";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -142,6 +141,11 @@ function AssignedFAQs(props) {
     faqDoc: false,
     assignStatus: false,
   });
+  const [loadFormData, setloadFormData] = useState({
+    isSaveAsDraft: "false",
+    languageIds: [],
+  });
+
   const [UserSelectGroup, setUserSelectGroup] = useState();
   const [UserSelectFaqDoc, setUserSelectFaqDoc] = useState();
   const [UserSelectStatus, setUserSelectStatus] = useState("");
@@ -153,10 +157,6 @@ function AssignedFAQs(props) {
     faqId: "",
   });
 
-  const [loadFormData, setloadFormData] = useState({
-    isSaveAsDraft: "false",
-    languageIds: [],
-  });
   useEffect(() => {
     Promise.all([
       props.LoadData(),
@@ -214,7 +214,7 @@ function AssignedFAQs(props) {
               className={`add-icon`}
               onClick={openAssignNewModal}
             ></Button>
-          </Tooltip>{" "}
+          </Tooltip>
         </div>
       );
     },
@@ -551,10 +551,6 @@ function AssignedFAQs(props) {
             onClose={handleCloseAssignFaq}
           >
             Assign FAQ doc to group
-            <TooltipComponent
-              isMarginBottom={true}
-              tooltipMessage={`FAQ  assigned to a user group in "Active" state will be available for users for whom the selected user group is primary user group. Only One FAQ can be assigned in active state to a user group.`}
-            ></TooltipComponent>
           </DialogTitle>
           <DialogContent dividers>
             <Grid container spacing={3}>

@@ -20,6 +20,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
+import TooltipComponent from "../../common/tooltip";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -163,13 +164,21 @@ function TimeJump(props) {
       setConditionalJump(list);
     } else {
       const { name, value } = e.target;
-      if (name == 'goToSurveyQuestionId') {
-        let thisQuestion = selectedSurveyQuestions.find(que => que.id == value);
+      if (name == "goToSurveyQuestionId") {
+        let thisQuestion = selectedSurveyQuestions.find(
+          (que) => que.id == value
+        );
         const list = {
           ...conditionalJump,
           timeConditionalQuestions: [
             ...conditionalJump.timeConditionalQuestions.map((con, conIndex) =>
-              conIndex == index ? { ...con, [name]: value, ["isEndQuestion"]: thisQuestion.isEndQuestion } : con
+              conIndex == index
+                ? {
+                    ...con,
+                    [name]: value,
+                    ["isEndQuestion"]: thisQuestion.isEndQuestion,
+                  }
+                : con
             ),
           ],
         };
@@ -297,6 +306,13 @@ function TimeJump(props) {
           Conditional Jump
         </LinkTo>
       </Breadcrumbs>
+      <span style={{ float: "right" }}>
+        <TooltipComponent
+          isMarginBottom={true}
+          tooltipMessage={`To define the follow up question in the questionnaire depending on user's response to a question. Defined at question level.
+          `}
+        ></TooltipComponent>
+      </span>
       <div className="main-paper-add-question">
         <div className="add-new-question">
           {!componentLoadder ? (
@@ -337,245 +353,245 @@ function TimeJump(props) {
                         <Grid container sm={10} spacing={2}>
                           {conditionalJump.timeConditionalQuestions.length > 0
                             ? conditionalJump.timeConditionalQuestions.map(
-                              (x, i) => {
-                                return (
-                                  <Grid
-                                    spacing={1}
-                                    container
-                                    sm={12}
-                                    key={`answer-logic-container${i}`}
-                                    className="answer-logic-container"
-                                  >
+                                (x, i) => {
+                                  return (
                                     <Grid
-                                      item
-                                      xs={2}
-                                      className="center-align-w-padding-v"
+                                      spacing={1}
+                                      container
+                                      sm={12}
+                                      key={`answer-logic-container${i}`}
+                                      className="answer-logic-container"
                                     >
-                                      <FormControl
-                                        variant="outlined"
-                                        fullWidth
+                                      <Grid
+                                        item
+                                        xs={2}
+                                        className="center-align-w-padding-v"
                                       >
-                                        <InputLabel
-                                          id={`demo-simple-select-outlined-label${i}`}
-                                          shrink={false}
-                                          className="select-label"
+                                        <FormControl
+                                          variant="outlined"
+                                          fullWidth
                                         >
-                                          {x.numericExpressionType &&
+                                          <InputLabel
+                                            id={`demo-simple-select-outlined-label${i}`}
+                                            shrink={false}
+                                            className="select-label"
+                                          >
+                                            {x.numericExpressionType &&
                                             x.numericExpressionType != ""
-                                            ? ""
-                                            : "Expression type"}
-                                        </InputLabel>
-                                        <Select
-                                          required
-                                          labelId={`demo-simple-select-outlined-label${i}`}
-                                          id={`demo-simple-select-outlined${i}`}
-                                          value={
-                                            x.numericExpressionType
-                                              ? x.numericExpressionType
-                                              : ""
-                                          }
-                                          name="numericExpressionType"
-                                          onChange={(e) =>
-                                            handleChangeLogicAnswer(
-                                              null,
-                                              null,
-                                              e,
-                                              i
-                                            )
-                                          }
-                                          placeholder="Select expression"
-                                          InputLabelProps={{
-                                            shrink: false,
-                                          }}
-                                          className="global-input single-select"
-                                        >
-                                          <MenuItem value="">
-                                            <em>None</em>
-                                          </MenuItem>
-                                          {allAnswerExpressions.map(
-                                            (aType) => {
-                                              return (
-                                                <MenuItem
-                                                  value={aType.id}
-                                                  key={`atypered_${aType.id}`}
-                                                >
-                                                  {aType.name}
-                                                </MenuItem>
-                                              );
+                                              ? ""
+                                              : "Expression type"}
+                                          </InputLabel>
+                                          <Select
+                                            required
+                                            labelId={`demo-simple-select-outlined-label${i}`}
+                                            id={`demo-simple-select-outlined${i}`}
+                                            value={
+                                              x.numericExpressionType
+                                                ? x.numericExpressionType
+                                                : ""
                                             }
-                                          )}
-                                        </Select>
-                                      </FormControl>
-                                    </Grid>
-                                    <Grid
-                                      item
-                                      xs={2}
-                                      className="date-time-pickers"
-                                    >
-                                      <KeyboardTimePicker
-                                        format={
-                                          props.loadGlobalSettingsData
-                                            ? props.loadGlobalSettingsData
-                                              .timeFormat != null
-                                              ? props.loadGlobalSettingsData
-                                                .timeFormat
-                                              : "hh:mm"
-                                            : "hh:mm"
-                                        }
-                                        ampm={
-                                          props.loadGlobalSettingsData
-                                            ? props.loadGlobalSettingsData
-                                              .timeFormat != null
-                                              ? props.loadGlobalSettingsData.timeFormat.includes(
-                                                "HH"
-                                              )
-                                                ? false
-                                                : true
-                                              : true
-                                            : true
-                                        }
-                                        fullWidth
-                                        id={`forAnswerR${i}`}
-                                        placeholder="Your answer"
-                                        name="forAnswer"
-                                        label={
-                                          conditionalJump
-                                            .timeConditionalQuestions[i]
-                                            .numericExpressionType == "RANGE"
-                                            ? "From"
-                                            : "Answer"
-                                        }
-                                        value={x.forAnswer}
-                                        onChange={(date, event, e) =>
-                                          handleChangeLogicAnswer(
-                                            date,
-                                            "forAnswer",
-                                            null,
-                                            i
-                                          )
-                                        }
-                                        className="global-input"
-                                        KeyboardButtonProps={{
-                                          "aria-label": "change date",
-                                        }}
-                                      />
-                                    </Grid>
-                                    {conditionalJump.timeConditionalQuestions[
-                                      i
-                                    ].numericExpressionType == "RANGE" ? (
-                                      <>
-                                        <Grid
-                                          item
-                                          xs={2}
-                                          className="date-time-pickers"
-                                        >
-                                          <KeyboardTimePicker
-                                            format={
-                                              props.loadGlobalSettingsData
-                                                ? props.loadGlobalSettingsData
-                                                  .timeFormat != null
-                                                  ? props
-                                                    .loadGlobalSettingsData
-                                                    .timeFormat
-                                                  : "hh:mm"
-                                                : "hh:mm"
-                                            }
-                                            ampm={
-                                              props.loadGlobalSettingsData
-                                                ? props.loadGlobalSettingsData
-                                                  .timeFormat != null
-                                                  ? props.loadGlobalSettingsData.timeFormat.includes(
-                                                    "HH"
-                                                  )
-                                                    ? false
-                                                    : true
-                                                  : true
-                                                : true
-                                            }
-                                            fullWidth
-                                            id={`forRangeEndR${i}`}
-                                            placeholder="Your answer"
-                                            name="forRangeEnd"
-                                            label="To"
-                                            value={x.forRangeEnd}
-                                            onChange={(date, event, e) =>
+                                            name="numericExpressionType"
+                                            onChange={(e) =>
                                               handleChangeLogicAnswer(
-                                                date,
-                                                "forRangeEnd",
                                                 null,
+                                                null,
+                                                e,
                                                 i
                                               )
                                             }
-                                            className="global-input"
-                                            KeyboardButtonProps={{
-                                              "aria-label": "change date",
+                                            placeholder="Select expression"
+                                            InputLabelProps={{
+                                              shrink: false,
                                             }}
-                                          />
-                                        </Grid>
-                                      </>
-                                    ) : (
-                                      <></>
-                                    )}
-                                    <Grid item xs={5}>
-                                      <FormControl
-                                        variant="outlined"
-                                        fullWidth
+                                            className="global-input single-select"
+                                          >
+                                            <MenuItem value="">
+                                              <em>None</em>
+                                            </MenuItem>
+                                            {allAnswerExpressions.map(
+                                              (aType) => {
+                                                return (
+                                                  <MenuItem
+                                                    value={aType.id}
+                                                    key={`atypered_${aType.id}`}
+                                                  >
+                                                    {aType.name}
+                                                  </MenuItem>
+                                                );
+                                              }
+                                            )}
+                                          </Select>
+                                        </FormControl>
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        xs={2}
+                                        className="date-time-pickers"
                                       >
-                                        <InputLabel
-                                          id="demo-simple-select-outlined-label"
-                                          shrink={false}
-                                          className="select-label"
-                                        >
-                                          {x.goToSurveyQuestionId == ""
-                                            ? "Select question"
-                                            : ""}
-                                        </InputLabel>
-                                        <Select
-                                          required
-                                          labelId="demo-simple-select-outlined-label"
-                                          id="demo-simple-select-outlined"
-                                          value={x.goToSurveyQuestionId}
-                                          name="goToSurveyQuestionId"
-                                          onChange={(e) =>
+                                        <KeyboardTimePicker
+                                          format={
+                                            props.loadGlobalSettingsData
+                                              ? props.loadGlobalSettingsData
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData
+                                                    .timeFormat
+                                                : "hh:mm"
+                                              : "hh:mm"
+                                          }
+                                          ampm={
+                                            props.loadGlobalSettingsData
+                                              ? props.loadGlobalSettingsData
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                    "HH"
+                                                  )
+                                                  ? false
+                                                  : true
+                                                : true
+                                              : true
+                                          }
+                                          fullWidth
+                                          id={`forAnswerR${i}`}
+                                          placeholder="Your answer"
+                                          name="forAnswer"
+                                          label={
+                                            conditionalJump
+                                              .timeConditionalQuestions[i]
+                                              .numericExpressionType == "RANGE"
+                                              ? "From"
+                                              : "Answer"
+                                          }
+                                          value={x.forAnswer}
+                                          onChange={(date, event, e) =>
                                             handleChangeLogicAnswer(
+                                              date,
+                                              "forAnswer",
                                               null,
-                                              null,
-                                              e,
                                               i
                                             )
                                           }
-                                          placeholder="Select question"
-                                          InputLabelProps={{
-                                            shrink: false,
+                                          className="global-input"
+                                          KeyboardButtonProps={{
+                                            "aria-label": "change date",
                                           }}
-                                          className="global-input single-select"
+                                        />
+                                      </Grid>
+                                      {conditionalJump.timeConditionalQuestions[
+                                        i
+                                      ].numericExpressionType == "RANGE" ? (
+                                        <>
+                                          <Grid
+                                            item
+                                            xs={2}
+                                            className="date-time-pickers"
+                                          >
+                                            <KeyboardTimePicker
+                                              format={
+                                                props.loadGlobalSettingsData
+                                                  ? props.loadGlobalSettingsData
+                                                      .timeFormat != null
+                                                    ? props
+                                                        .loadGlobalSettingsData
+                                                        .timeFormat
+                                                    : "hh:mm"
+                                                  : "hh:mm"
+                                              }
+                                              ampm={
+                                                props.loadGlobalSettingsData
+                                                  ? props.loadGlobalSettingsData
+                                                      .timeFormat != null
+                                                    ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                        "HH"
+                                                      )
+                                                      ? false
+                                                      : true
+                                                    : true
+                                                  : true
+                                              }
+                                              fullWidth
+                                              id={`forRangeEndR${i}`}
+                                              placeholder="Your answer"
+                                              name="forRangeEnd"
+                                              label="To"
+                                              value={x.forRangeEnd}
+                                              onChange={(date, event, e) =>
+                                                handleChangeLogicAnswer(
+                                                  date,
+                                                  "forRangeEnd",
+                                                  null,
+                                                  i
+                                                )
+                                              }
+                                              className="global-input"
+                                              KeyboardButtonProps={{
+                                                "aria-label": "change date",
+                                              }}
+                                            />
+                                          </Grid>
+                                        </>
+                                      ) : (
+                                        <></>
+                                      )}
+                                      <Grid item xs={5}>
+                                        <FormControl
+                                          variant="outlined"
+                                          fullWidth
                                         >
-                                          <MenuItem value="">
-                                            <em>None</em>
-                                          </MenuItem>
-                                          {selectedSurveyQuestions.map(
-                                            (ans) => {
-                                              return (
-                                                <MenuItem
-                                                  value={ans.id}
-                                                  key={`atypered_${ans.id}`}
-                                                >
-                                                  {ans.question}
-                                                </MenuItem>
-                                              );
+                                          <InputLabel
+                                            id="demo-simple-select-outlined-label"
+                                            shrink={false}
+                                            className="select-label"
+                                          >
+                                            {x.goToSurveyQuestionId == ""
+                                              ? "Select question"
+                                              : ""}
+                                          </InputLabel>
+                                          <Select
+                                            required
+                                            labelId="demo-simple-select-outlined-label"
+                                            id="demo-simple-select-outlined"
+                                            value={x.goToSurveyQuestionId}
+                                            name="goToSurveyQuestionId"
+                                            onChange={(e) =>
+                                              handleChangeLogicAnswer(
+                                                null,
+                                                null,
+                                                e,
+                                                i
+                                              )
                                             }
-                                          )}
-                                        </Select>
-                                      </FormControl>
-                                    </Grid>
-                                    <Grid
-                                      item
-                                      xs={1}
-                                      className="row-icons-container"
-                                    >
-                                      {conditionalJump
-                                        .timeConditionalQuestions.length !==
-                                        1 && (
+                                            placeholder="Select question"
+                                            InputLabelProps={{
+                                              shrink: false,
+                                            }}
+                                            className="global-input single-select"
+                                          >
+                                            <MenuItem value="">
+                                              <em>None</em>
+                                            </MenuItem>
+                                            {selectedSurveyQuestions.map(
+                                              (ans) => {
+                                                return (
+                                                  <MenuItem
+                                                    value={ans.id}
+                                                    key={`atypered_${ans.id}`}
+                                                  >
+                                                    {ans.question}
+                                                  </MenuItem>
+                                                );
+                                              }
+                                            )}
+                                          </Select>
+                                        </FormControl>
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        xs={1}
+                                        className="row-icons-container"
+                                      >
+                                        {conditionalJump
+                                          .timeConditionalQuestions.length !==
+                                          1 && (
                                           <Tooltip title="Remove">
                                             <CancelIcon
                                               className={`delete-row-icon`}
@@ -585,10 +601,10 @@ function TimeJump(props) {
                                             ></CancelIcon>
                                           </Tooltip>
                                         )}
-                                      {conditionalJump
-                                        .timeConditionalQuestions.length -
-                                        1 ===
-                                        i && (
+                                        {conditionalJump
+                                          .timeConditionalQuestions.length -
+                                          1 ===
+                                          i && (
                                           <Tooltip title="Add">
                                             <AddCircleIcon
                                               className={`add-row-icon`}
@@ -598,11 +614,11 @@ function TimeJump(props) {
                                             ></AddCircleIcon>
                                           </Tooltip>
                                         )}
+                                      </Grid>
                                     </Grid>
-                                  </Grid>
-                                );
-                              }
-                            )
+                                  );
+                                }
+                              )
                             : ""}
                         </Grid>
                       </Grid>
