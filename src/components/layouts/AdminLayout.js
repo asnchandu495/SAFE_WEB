@@ -536,6 +536,15 @@ function AdminLayout(props) {
             {NotificationMessage.message}
           </Typography>
         </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            className="no-button"
+            disabled={showLoadder}
+          >
+            Ok
+          </Button>
+        </DialogActions>
       </Dialog>
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
