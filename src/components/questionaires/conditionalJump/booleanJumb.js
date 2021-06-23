@@ -17,6 +17,8 @@ import questionaireService from "../../../services/questionaireService";
 import ToasterMessageComponent from "../../common/toaster";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 
+import TooltipComponent from "../../common/tooltip";
+
 function BooleanJump(props) {
   const surveyId = props.match.params.id;
   const questionId = props.match.params.qid;
@@ -30,7 +32,7 @@ function BooleanJump(props) {
     positiveResponseQuestionId: "",
     negativeResponseQuestionId: "",
     isEndQuestionForPositiveResponseQuestion: false,
-    isEndQuestionForNegativeResponseQuestion: false
+    isEndQuestionForNegativeResponseQuestion: false,
   });
 
   const [cancelconditionalJump, setcancelConditionalJump] = useState({
@@ -39,7 +41,7 @@ function BooleanJump(props) {
     positiveResponseQuestionId: "",
     negativeResponseQuestionId: "",
     isEndQuestionForPositiveResponseQuestion: false,
-    isEndQuestionForNegativeResponseQuestion: false
+    isEndQuestionForNegativeResponseQuestion: false,
   });
   const [surveyDetails, setsurveyDetails] = useState();
   const [selectedQuestionDetails, setselectedQuestionDetails] = useState();
@@ -87,19 +89,21 @@ function BooleanJump(props) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log(name);
-    if (name == 'positiveResponseQuestionId') {
-      let thisQuestion = selectedSurveyQuestions.find(que => que.id == value);
+    if (name == "positiveResponseQuestionId") {
+      let thisQuestion = selectedSurveyQuestions.find((que) => que.id == value);
       setConditionalJump((conditionalJump) => ({
         ...conditionalJump,
         [name]: value,
-        ["isEndQuestionForPositiveResponseQuestion"]: thisQuestion.isEndQuestion
+        ["isEndQuestionForPositiveResponseQuestion"]:
+          thisQuestion.isEndQuestion,
       }));
-    } else if (name == 'negativeResponseQuestionId') {
-      let thisQuestion = selectedSurveyQuestions.find(que => que.id == value);
+    } else if (name == "negativeResponseQuestionId") {
+      let thisQuestion = selectedSurveyQuestions.find((que) => que.id == value);
       setConditionalJump((conditionalJump) => ({
         ...conditionalJump,
         [name]: value,
-        ["isEndQuestionForNegativeResponseQuestion"]: thisQuestion.isEndQuestion
+        ["isEndQuestionForNegativeResponseQuestion"]:
+          thisQuestion.isEndQuestion,
       }));
     } else {
       setConditionalJump((conditionalJump) => ({
@@ -107,7 +111,6 @@ function BooleanJump(props) {
         [name]: value,
       }));
     }
-
   };
 
   function handleCancel() {
@@ -196,6 +199,14 @@ function BooleanJump(props) {
           Conditional Jump
         </LinkTo>
       </Breadcrumbs>
+      <span style={{ float: "right" }}>
+        <TooltipComponent
+          isMarginBottom={true}
+          tooltipMessage={`To define the follow up question in the questionnaire depending on user's response to a question. Defined at question level.
+          `}
+        ></TooltipComponent>
+      </span>
+
       <div className="main-paper-add-question">
         <div className="add-new-question">
           {!componentLoadder ? (

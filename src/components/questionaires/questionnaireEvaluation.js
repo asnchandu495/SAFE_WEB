@@ -23,6 +23,7 @@ import questionaireService from "../../services/questionaireService";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
+import TooltipComponent from "../common/tooltip";
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -360,6 +361,12 @@ function QuestionnaireEvaluation(props) {
           Questionnaire Evaluation
         </LinkTo>
       </Breadcrumbs>
+      <span style={{ float: "right" }}>
+        <TooltipComponent
+          isMarginBottom={true}
+          tooltipMessage={`Logic defined to determined user's COVID state from their responses to questionnaire.`}
+        ></TooltipComponent>
+      </span>
       <Paper className={`main-paper`}>
         {componentLoadder ? (
           <ComponentLoadderComponent />

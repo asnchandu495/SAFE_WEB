@@ -24,7 +24,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import questionaireService from "../../../services/questionaireService";
-
+import TooltipComponent from "../../common/tooltip";
 function FreetextQuestion(props) {
   const questionaireApiCall = new questionaireService();
 
@@ -206,6 +206,10 @@ function FreetextQuestion(props) {
                 <Grid item container xs={12}>
                   <Grid item xs={2}>
                     <label>Is Mandatory?</label>
+                    <TooltipComponent
+                      isMarginBottom={false}
+                      tooltipMessage={`Questions for which "Is Mandatory" is ON is mandatory to be answered. Questions for which "Is Mandatory" is OFF can be skipped.`}
+                    ></TooltipComponent>
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel

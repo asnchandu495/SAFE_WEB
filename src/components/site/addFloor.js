@@ -21,6 +21,7 @@ import MasterService from "../../services/masterDataService";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
+import TooltipComponent from "../common/tooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,14 +106,14 @@ function AddFloor(props) {
     floorName: "",
     locationCount: 0,
     isRLAPActive: false,
-    rlapReferenceId: ""
+    rlapReferenceId: "",
   });
   const [resetformData, SetresetformData] = useState({
     siteId: "",
     id: "",
     floorName: "",
     locationCount: 0,
-    rlapReferenceId: ""
+    rlapReferenceId: "",
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
@@ -158,7 +159,6 @@ function AddFloor(props) {
       ["isRLAPActive"]: event.target.checked,
     }));
   };
-
 
   function checkUnqueName(value) {
     if (props.SelectedRowId) {
@@ -248,7 +248,7 @@ function AddFloor(props) {
   function updateSiteFloorData(value) {
     props
       .UpdateSiteFloor(value)
-      .then((result) => { })
+      .then((result) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -315,19 +315,28 @@ function AddFloor(props) {
                       value={formData.isRLAPActive}
                       inputProps={{ "aria-label": "uncontrolled-checkbox" }}
                     />
-                    <label
-                      htmlFor="password"
-                      className="input-label "
-                    >
-                      RLAP active
+                    <label htmlFor="password" className="input-label ">
+                      RLAP Active
                     </label>
+                    <TooltipComponent
+                      isMarginBottom={false}
+                      tooltipMessage={`Indicates if user's real time location tracking  is implemented for any of locations in the floorIdicates if user's real time location tracking  is implemented  in the  Site.`}
+                    ></TooltipComponent>
                   </Grid>
                 </Grid>
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
-                    <label className={`input-label ${formData.isRLAPActive ? 'required' : ''}`}>
-                      Reference Id
-                    </label>
+                    <label
+                      className={`input-label ${
+                        formData.isRLAPActive ? "required" : ""
+                      }`}
+                    >
+                      RLAP Floor ID
+                    </label>{" "}
+                    <TooltipComponent
+                      isMarginBottom={true}
+                      tooltipMessage={`Unique reference ID  of floor  as maintained in RLAP  platform . This ID will be used for technical implementation, to fetch the floor specific data from RLAP platform.Unique reference ID  of floor  as maintained in RLAP  platform . This ID will be used for technical implementation, to fetch the floor specific data from RLAP platform. reference ID  of site as maintained in RLAP  platform . This is required for technical implementation, to fetch the site specific data from RLAP platform.`}
+                    ></TooltipComponent>
                   </Grid>
                   <Grid item xs={5}>
                     <TextValidator

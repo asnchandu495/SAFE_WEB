@@ -141,6 +141,11 @@ function AssignedFAQs(props) {
     faqDoc: false,
     assignStatus: false,
   });
+  const [loadFormData, setloadFormData] = useState({
+    isSaveAsDraft: "false",
+    languageIds: [],
+  });
+
   const [UserSelectGroup, setUserSelectGroup] = useState();
   const [UserSelectFaqDoc, setUserSelectFaqDoc] = useState();
   const [UserSelectStatus, setUserSelectStatus] = useState("");
@@ -155,7 +160,7 @@ function AssignedFAQs(props) {
   useEffect(() => {
     Promise.all([
       props.LoadData(),
-      faqApiCall.ListFAQs(false),
+      faqApiCall.ListFAQs(loadFormData),
       userGroupApiCall.loadUserGroup(),
     ])
       .then(([faqUserGroups, faqDocs, userGroups]) => {

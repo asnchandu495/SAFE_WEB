@@ -24,6 +24,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import questionaireService from "../../../services/questionaireService";
+import TooltipComponent from "../../common/tooltip";
 
 function NumericQuestion(props) {
   const questionaireApiCall = new questionaireService();
@@ -376,6 +377,10 @@ function NumericQuestion(props) {
                 <Grid item container xs={12}>
                   <Grid item xs={2}>
                     <label>Is Mandatory?</label>
+                    <TooltipComponent
+                      isMarginBottom={false}
+                      tooltipMessage={`Questions for which "Is Mandatory" is ON is mandatory to be answered. Questions for which "Is Mandatory" is OFF can be skipped.`}
+                    ></TooltipComponent>
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel
@@ -393,6 +398,10 @@ function NumericQuestion(props) {
                 <Grid item container xs={12}>
                   <Grid item xs={2}>
                     <label className="required">Red Flag</label>
+                    <TooltipComponent
+                      isMarginBottom={false}
+                      tooltipMessage={`If user's reponse to the question matches the "Red Flag" answer, logic defined to determine COVID state for  red flag answers will override the logic defined to determine COVID state using positive conformity score`}
+                    ></TooltipComponent>
                   </Grid>
                   <Grid item xs={6}>
                     <FormControlLabel
@@ -600,6 +609,11 @@ function NumericQuestion(props) {
                 >
                   <Grid item xs={2}>
                     <label className="required">Positive Conformity</label>
+                    <TooltipComponent
+                      isMarginBottom={false}
+                      tooltipMessage={` If user's response to question matches "Positive Comformity" answer, the score defined for "POsitive Comformity answers" will be added to user's evaluation result. In absence of "Red Flag" answers , user's "Total Positive Comformity Score" will be used to determine COVID state of user.
+                      `}
+                    ></TooltipComponent>
                   </Grid>
                   <Grid item xs={10}>
                     {addQuestionData.positiveConformityForNumber &&

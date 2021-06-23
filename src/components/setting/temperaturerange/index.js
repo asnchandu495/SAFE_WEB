@@ -32,6 +32,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import GlobalSettingApiServices from "../../../services/globalSettingService";
 import AlertBoxComponent from "../../common/alert";
 import { SignalCellularNullTwoTone } from "@material-ui/icons";
+import TooltipComponent from "../../common/tooltip";
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -314,6 +315,10 @@ function TemperatureRange(props) {
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="active">
           Temperature Range
+          <TooltipComponent
+            isMarginBottom={true}
+            tooltipMessage={`Temperature range defined to determines user's COVID state depending on their body temperature.`}
+          ></TooltipComponent>
         </LinkTo>
       </Breadcrumbs>
       {!componentLoadder ? (

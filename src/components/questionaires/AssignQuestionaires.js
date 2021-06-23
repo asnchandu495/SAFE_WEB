@@ -52,6 +52,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import questionaireService from "../../services/questionaireService";
 import ReplayIcon from "@material-ui/icons/Replay";
+import TooltipComponent from "../common/tooltip";
 
 const QuestionaireApicall = new QuestionaireService();
 const userStatusData = [
@@ -524,6 +525,10 @@ function AssignQuestionaires(props) {
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Assign Questionnaire to User Group
+          <TooltipComponent
+            isMarginBottom={true}
+            tooltipMessage={`Questionnaire assigned to a user group in "Active" state will be available for users for whom the selected user group is primary user group to answer  for  "Self Health Check". Only One questionnaire  can be assigned in active state to a user group.`}
+          ></TooltipComponent>
         </DialogTitle>
         <ValidatorForm className={`global-form`} onSubmit={assignQuestionnaire}>
           <DialogContent dividers>

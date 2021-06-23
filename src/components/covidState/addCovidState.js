@@ -96,7 +96,7 @@ function CreateCovidState(props) {
     }
     props
       .LoadData()
-      .then((result) => { })
+      .then((result) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -332,7 +332,10 @@ function CreateCovidState(props) {
                         <label className={classes.selfHealthTooltip}>
                           Self-Health Check Message :
                         </label>
-                        <TooltipComponent isMarginBottom={true} tooltipMessage={`Message to be shown to the user on mobile app on submitting answers to self-health check questions.`}></TooltipComponent>
+                        <TooltipComponent
+                          isMarginBottom={true}
+                          tooltipMessage={`Message to be shown to the user on mobile app on submitting answers to self-health check questions.`}
+                        ></TooltipComponent>
                       </Grid>
                     </Grid>
                     <Grid item container xs={12}>
@@ -360,6 +363,11 @@ function CreateCovidState(props) {
                     <Grid item container xs={12}>
                       <Grid item xs={3}>
                         <label>Backround Colour Of Message</label>
+                        <TooltipComponent
+                          isMarginBottom={false}
+                          tooltipMessage={`Green: Indicates indicates  safe state
+                      Red:Indicates unsafe state.`}
+                        ></TooltipComponent>
                       </Grid>
                       <Grid item xs={2}>
                         <FormControl variant="outlined" fullWidth>
@@ -384,15 +392,15 @@ function CreateCovidState(props) {
                             <MenuItem value="">None</MenuItem>
                             {backgroundcolor.length > 0
                               ? backgroundcolor.map((value) => {
-                                return (
-                                  <MenuItem
-                                    value={value.id}
-                                    key={value.colorName}
-                                  >
-                                    {value.colorName}
-                                  </MenuItem>
-                                );
-                              })
+                                  return (
+                                    <MenuItem
+                                      value={value.id}
+                                      key={value.colorName}
+                                    >
+                                      {value.colorName}
+                                    </MenuItem>
+                                  );
+                                })
                               : ""}
                           </Select>
                         </FormControl>

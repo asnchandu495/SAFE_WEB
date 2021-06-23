@@ -14,6 +14,7 @@ import questionaireService from "../../services/questionaireService";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
 import Button from "@material-ui/core/Button";
+import TooltipComponent from "../common/tooltip";
 
 function OrderofExecution(props) {
   const surveyIdURL = props.match.params.id;
@@ -224,6 +225,13 @@ function OrderofExecution(props) {
           Order Of Execution
         </LinkTo>
       </Breadcrumbs>
+      <span style={{ float: "right" }}>
+        <TooltipComponent
+          isMarginBottom={true}
+          tooltipMessage={`To define sequential order  in which questions appear to answer. `}
+        ></TooltipComponent>
+      </span>
+
       <Paper className="main-paper main-paper-add-question">
         <Grid container spacing={0}>
           <Grid item xs={12} sm={12} className="list-questions-container">

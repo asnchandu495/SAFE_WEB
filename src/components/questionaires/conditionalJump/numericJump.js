@@ -25,6 +25,7 @@ import questionaireService from "../../../services/questionaireService";
 import ToasterMessageComponent from "../../common/toaster";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import { IndeterminateCheckBoxTwoTone } from "@material-ui/icons";
+import TooltipComponent from "../../common/tooltip";
 
 function NumericJump(props) {
   const surveyId = props.match.params.id;
@@ -46,7 +47,7 @@ function NumericJump(props) {
         forAnswer: 0,
         forRangeEnd: 0,
         goToSurveyQuestionId: "",
-        isEndQuestion: false
+        isEndQuestion: false,
       },
     ],
     elseGoToQuestionId: "",
@@ -64,7 +65,7 @@ function NumericJump(props) {
         forAnswer: 0,
         forRangeEnd: 0,
         goToSurveyQuestionId: "",
-        isEndQuestion: false
+        isEndQuestion: false,
       },
     ],
     elseGoToQuestionId: "",
@@ -150,14 +151,20 @@ function NumericJump(props) {
       thisVal = value;
     }
 
-    if (name == 'goToSurveyQuestionId') {
-      let thisQuestion = selectedSurveyQuestions.find(que => que.id == value);
+    if (name == "goToSurveyQuestionId") {
+      let thisQuestion = selectedSurveyQuestions.find((que) => que.id == value);
 
       const list = {
         ...conditionalJump,
         numericConditionalQuestions: [
           ...conditionalJump.numericConditionalQuestions.map((con, conIndex) =>
-            conIndex == index ? { ...con, [name]: thisVal, ["isEndQuestion"]: thisQuestion.isEndQuestion } : con
+            conIndex == index
+              ? {
+                  ...con,
+                  [name]: thisVal,
+                  ["isEndQuestion"]: thisQuestion.isEndQuestion,
+                }
+              : con
           ),
         ],
       };
@@ -187,7 +194,7 @@ function NumericJump(props) {
         forAnswer: 0,
         forRangeEnd: 0,
         goToSurveyQuestionId: "",
-        isEndQuestion: false
+        isEndQuestion: false,
       },
     ];
     setConditionalJump(list);
@@ -317,6 +324,13 @@ function NumericJump(props) {
           Conditional Jump
         </LinkTo>
       </Breadcrumbs>
+      <span style={{ float: "right" }}>
+        <TooltipComponent
+          isMarginBottom={true}
+          tooltipMessage={`To define the follow up question in the questionnaire depending on user's response to a question. Defined at question level.
+          `}
+        ></TooltipComponent>
+      </span>
       <div className="main-paper-add-question">
         <div className="add-new-question">
           {!componentLoadder ? (
@@ -356,171 +370,171 @@ function NumericJump(props) {
                       <Grid container sm={10} spacing={2}>
                         {conditionalJump.numericConditionalQuestions.length > 0
                           ? conditionalJump.numericConditionalQuestions.map(
-                            (x, i) => {
-                              return (
-                                <Grid
-                                  spacing={1}
-                                  container
-                                  sm={12}
-                                  key={`answer-logic-container${i}`}
-                                  className="answer-logic-container"
-                                >
+                              (x, i) => {
+                                return (
                                   <Grid
-                                    item
-                                    xs={2}
-                                    className="center-align-w-padding-v"
+                                    spacing={1}
+                                    container
+                                    sm={12}
+                                    key={`answer-logic-container${i}`}
+                                    className="answer-logic-container"
                                   >
-                                    <FormControl variant="outlined" fullWidth>
-                                      <InputLabel
-                                        id={`demo-simple-select-outlined-label${i}`}
-                                        shrink={false}
-                                        className="select-label"
-                                      >
-                                        {x.numericExpressionType &&
+                                    <Grid
+                                      item
+                                      xs={2}
+                                      className="center-align-w-padding-v"
+                                    >
+                                      <FormControl variant="outlined" fullWidth>
+                                        <InputLabel
+                                          id={`demo-simple-select-outlined-label${i}`}
+                                          shrink={false}
+                                          className="select-label"
+                                        >
+                                          {x.numericExpressionType &&
                                           x.numericExpressionType != ""
-                                          ? ""
-                                          : "Expression type"}
-                                      </InputLabel>
-                                      <Select
-                                        required
-                                        labelId={`demo-simple-select-outlined-label${i}`}
-                                        id={`demo-simple-select-outlined${i}`}
-                                        value={
-                                          x.numericExpressionType
-                                            ? x.numericExpressionType
-                                            : ""
-                                        }
-                                        name="numericExpressionType"
-                                        onChange={(e) =>
-                                          handleChangeLogicAnswer(e, i)
-                                        }
-                                        placeholder="Select expression"
-                                        InputLabelProps={{
-                                          shrink: false,
-                                        }}
-                                        className="global-input single-select"
-                                      >
-                                        <MenuItem value="">
-                                          <em>None</em>
-                                        </MenuItem>
-                                        {allAnswerExpressions.map((aType) => {
-                                          return (
-                                            <MenuItem
-                                              value={aType.id}
-                                              key={`atypered_${aType.id}`}
-                                            >
-                                              {aType.name}
-                                            </MenuItem>
-                                          );
-                                        })}
-                                      </Select>
-                                    </FormControl>
-                                  </Grid>
-                                  <Grid item xs={2}>
-                                    <TextValidator
-                                      variant="outlined"
-                                      type="text"
-                                      validators={[
-                                        "required",
-                                        "matchRegexp:^[0-9]+.?[0-9]*$",
-                                      ]}
-                                      errorMessages={[
-                                        "Please enter answer",
-                                        "Numbers and decimal point",
-                                      ]}
-                                      fullWidth
-                                      id={`forAnswerR${i}`}
-                                      placeholder="Your answer"
-                                      name="forAnswer"
-                                      label={
-                                        conditionalJump
-                                          .numericConditionalQuestions[i]
-                                          .numericExpressionType == "RANGE"
-                                          ? "From"
-                                          : "Answer"
-                                      }
-                                      value={x.forAnswer}
-                                      onChange={(e) =>
-                                        handleChangeLogicAnswer(e, i)
-                                      }
-                                      className="global-input global-input-outlined"
-                                    />
-                                  </Grid>
-                                  {conditionalJump
-                                    .numericConditionalQuestions[i]
-                                    .numericExpressionType == "RANGE" ? (
-                                    <>
-                                      <Grid item xs={2}>
-                                        <TextValidator
-                                          variant="outlined"
-                                          fullWidth
-                                          id={`forRangeEndR${i}`}
-                                          placeholder="Your answer"
-                                          name="forRangeEnd"
-                                          label="To"
-                                          value={x.forRangeEnd}
+                                            ? ""
+                                            : "Expression type"}
+                                        </InputLabel>
+                                        <Select
+                                          required
+                                          labelId={`demo-simple-select-outlined-label${i}`}
+                                          id={`demo-simple-select-outlined${i}`}
+                                          value={
+                                            x.numericExpressionType
+                                              ? x.numericExpressionType
+                                              : ""
+                                          }
+                                          name="numericExpressionType"
                                           onChange={(e) =>
                                             handleChangeLogicAnswer(e, i)
                                           }
-                                          className="global-input global-input-outlined"
-                                        />
-                                      </Grid>
-                                    </>
-                                  ) : (
-                                    <></>
-                                  )}
-                                  <Grid item xs={5}>
-                                    <FormControl variant="outlined" fullWidth>
-                                      <InputLabel
-                                        id="demo-simple-select-outlined-label"
-                                        shrink={false}
-                                        className="select-label"
-                                      >
-                                        {x.goToSurveyQuestionId == ""
-                                          ? "Select question"
-                                          : ""}
-                                      </InputLabel>
-                                      <Select
-                                        required
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        value={x.goToSurveyQuestionId}
-                                        name="goToSurveyQuestionId"
+                                          placeholder="Select expression"
+                                          InputLabelProps={{
+                                            shrink: false,
+                                          }}
+                                          className="global-input single-select"
+                                        >
+                                          <MenuItem value="">
+                                            <em>None</em>
+                                          </MenuItem>
+                                          {allAnswerExpressions.map((aType) => {
+                                            return (
+                                              <MenuItem
+                                                value={aType.id}
+                                                key={`atypered_${aType.id}`}
+                                              >
+                                                {aType.name}
+                                              </MenuItem>
+                                            );
+                                          })}
+                                        </Select>
+                                      </FormControl>
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                      <TextValidator
+                                        variant="outlined"
+                                        type="text"
+                                        validators={[
+                                          "required",
+                                          "matchRegexp:^[0-9]+.?[0-9]*$",
+                                        ]}
+                                        errorMessages={[
+                                          "Please enter answer",
+                                          "Numbers and decimal point",
+                                        ]}
+                                        fullWidth
+                                        id={`forAnswerR${i}`}
+                                        placeholder="Your answer"
+                                        name="forAnswer"
+                                        label={
+                                          conditionalJump
+                                            .numericConditionalQuestions[i]
+                                            .numericExpressionType == "RANGE"
+                                            ? "From"
+                                            : "Answer"
+                                        }
+                                        value={x.forAnswer}
                                         onChange={(e) =>
                                           handleChangeLogicAnswer(e, i)
                                         }
-                                        placeholder="Select question"
-                                        InputLabelProps={{
-                                          shrink: false,
-                                        }}
-                                        className="global-input single-select"
-                                      >
-                                        <MenuItem value="">
-                                          <em>None</em>
-                                        </MenuItem>
-                                        {selectedSurveyQuestions.map(
-                                          (ans) => {
-                                            return (
-                                              <MenuItem
-                                                value={ans.id}
-                                                key={`atypered_${ans.id}`}
-                                              >
-                                                {ans.question}
-                                              </MenuItem>
-                                            );
-                                          }
-                                        )}
-                                      </Select>
-                                    </FormControl>
-                                  </Grid>
-                                  <Grid
-                                    item
-                                    xs={1}
-                                    className="row-icons-container"
-                                  >
+                                        className="global-input global-input-outlined"
+                                      />
+                                    </Grid>
                                     {conditionalJump
-                                      .numericConditionalQuestions.length !==
-                                      1 && (
+                                      .numericConditionalQuestions[i]
+                                      .numericExpressionType == "RANGE" ? (
+                                      <>
+                                        <Grid item xs={2}>
+                                          <TextValidator
+                                            variant="outlined"
+                                            fullWidth
+                                            id={`forRangeEndR${i}`}
+                                            placeholder="Your answer"
+                                            name="forRangeEnd"
+                                            label="To"
+                                            value={x.forRangeEnd}
+                                            onChange={(e) =>
+                                              handleChangeLogicAnswer(e, i)
+                                            }
+                                            className="global-input global-input-outlined"
+                                          />
+                                        </Grid>
+                                      </>
+                                    ) : (
+                                      <></>
+                                    )}
+                                    <Grid item xs={5}>
+                                      <FormControl variant="outlined" fullWidth>
+                                        <InputLabel
+                                          id="demo-simple-select-outlined-label"
+                                          shrink={false}
+                                          className="select-label"
+                                        >
+                                          {x.goToSurveyQuestionId == ""
+                                            ? "Select question"
+                                            : ""}
+                                        </InputLabel>
+                                        <Select
+                                          required
+                                          labelId="demo-simple-select-outlined-label"
+                                          id="demo-simple-select-outlined"
+                                          value={x.goToSurveyQuestionId}
+                                          name="goToSurveyQuestionId"
+                                          onChange={(e) =>
+                                            handleChangeLogicAnswer(e, i)
+                                          }
+                                          placeholder="Select question"
+                                          InputLabelProps={{
+                                            shrink: false,
+                                          }}
+                                          className="global-input single-select"
+                                        >
+                                          <MenuItem value="">
+                                            <em>None</em>
+                                          </MenuItem>
+                                          {selectedSurveyQuestions.map(
+                                            (ans) => {
+                                              return (
+                                                <MenuItem
+                                                  value={ans.id}
+                                                  key={`atypered_${ans.id}`}
+                                                >
+                                                  {ans.question}
+                                                </MenuItem>
+                                              );
+                                            }
+                                          )}
+                                        </Select>
+                                      </FormControl>
+                                    </Grid>
+                                    <Grid
+                                      item
+                                      xs={1}
+                                      className="row-icons-container"
+                                    >
+                                      {conditionalJump
+                                        .numericConditionalQuestions.length !==
+                                        1 && (
                                         <Tooltip title="Remove">
                                           <CancelIcon
                                             className={`delete-row-icon`}
@@ -530,10 +544,10 @@ function NumericJump(props) {
                                           ></CancelIcon>
                                         </Tooltip>
                                       )}
-                                    {conditionalJump
-                                      .numericConditionalQuestions.length -
-                                      1 ===
-                                      i && (
+                                      {conditionalJump
+                                        .numericConditionalQuestions.length -
+                                        1 ===
+                                        i && (
                                         <Tooltip title="Add">
                                           <AddCircleIcon
                                             className={`add-row-icon`}
@@ -541,11 +555,11 @@ function NumericJump(props) {
                                           ></AddCircleIcon>
                                         </Tooltip>
                                       )}
+                                    </Grid>
                                   </Grid>
-                                </Grid>
-                              );
-                            }
-                          )
+                                );
+                              }
+                            )
                           : ""}
                       </Grid>
                     </Grid>

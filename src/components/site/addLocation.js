@@ -25,6 +25,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import TooltipComponent from "../common/tooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -451,12 +452,12 @@ function AddLocation(props) {
                         <MenuItem value="">None</MenuItem>
                         {floorInfoData.length > 0
                           ? floorInfoData.map((lan) => {
-                            return (
-                              <MenuItem value={lan.id}>
-                                {lan.floorName}
-                              </MenuItem>
-                            );
-                          })
+                              return (
+                                <MenuItem value={lan.id}>
+                                  {lan.floorName}
+                                </MenuItem>
+                              );
+                            })
                           : ""}
                       </Select>
                     </FormControl>
@@ -524,16 +525,25 @@ function AddLocation(props) {
                       }
                       label="RLAP Active"
                     />
+                    <TooltipComponent
+                      isMarginBottom={false}
+                      tooltipMessage={`Indicates if user's real time location tracking  is implemented in the locations . "Density Threshold" details of the location to be maintained only if  RLAP is active in the location.`}
+                    ></TooltipComponent>
                   </Grid>
                 </Grid>
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
                     <label
-                      className={`input-label ${formData.isRLAPActive ? "required" : ""
-                        }`}
+                      className={`input-label ${
+                        formData.isRLAPActive ? "required" : ""
+                      }`}
                     >
-                      Reference Id
+                      RLAP Location ID
                     </label>
+                    <TooltipComponent
+                      isMarginBottom={true}
+                      tooltipMessage={`Unique reference ID  of floor  as maintained in RLAP  platform . This ID will be used for technical implementation, to fetch the floor specific data from RLAP platform.Unique reference ID  of floor  as maintained in RLAP  platform . This ID will be used for technical implementation, to fetch the floor specific data from RLAP platform. reference ID  of site as maintained in RLAP  platform . This is required for technical implementation, to fetch the site specific data from RLAP platform.`}
+                    ></TooltipComponent>
                   </Grid>
                   <Grid item xs={5}>
                     <TextValidator
@@ -601,16 +611,18 @@ function AddLocation(props) {
                       variant="outlined"
                       validators={[
                         "matchRegexp:^[0-9]*$",
-                        `minNumber:${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdLowFrom) + 1
-                          : 0
+                        `minNumber:${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdLowFrom) + 1
+                            : 0
                         }`,
                       ]}
                       errorMessages={[
                         "Only  numbers are allowed",
-                        `Minimum allowed ${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdLowFrom) + 1
-                          : 0
+                        `Minimum allowed ${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdLowFrom) + 1
+                            : 0
                         }`,
                       ]}
                       type="number"
@@ -641,16 +653,18 @@ function AddLocation(props) {
                       variant="outlined"
                       validators={[
                         "matchRegexp:^[0-9]*$",
-                        `minNumber:${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdLowTo) + 1
-                          : 0
+                        `minNumber:${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdLowTo) + 1
+                            : 0
                         }`,
                       ]}
                       errorMessages={[
                         "Only numbers are allowed",
-                        `Minimum allowed ${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdLowTo) + 1
-                          : 0
+                        `Minimum allowed ${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdLowTo) + 1
+                            : 0
                         }`,
                       ]}
                       type="number"
@@ -673,16 +687,18 @@ function AddLocation(props) {
                       variant="outlined"
                       validators={[
                         "matchRegexp:^[0-9]*$",
-                        `minNumber:${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdMediumFrom) + 1
-                          : 0
+                        `minNumber:${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdMediumFrom) + 1
+                            : 0
                         }`,
                       ]}
                       errorMessages={[
                         "Only numbers are allowed",
-                        `Minimum allowed ${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdMediumFrom) + 1
-                          : 0
+                        `Minimum allowed ${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdMediumFrom) + 1
+                            : 0
                         }`,
                       ]}
                       type="number"
@@ -713,16 +729,18 @@ function AddLocation(props) {
                       variant="outlined"
                       validators={[
                         "matchRegexp:^[0-9]*$",
-                        `minNumber:${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdMediumTo) + 1
-                          : 0
+                        `minNumber:${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdMediumTo) + 1
+                            : 0
                         }`,
                       ]}
                       errorMessages={[
                         "Only numbers are allowed",
-                        `Minimum allowed ${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdMediumTo) + 1
-                          : 0
+                        `Minimum allowed ${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdMediumTo) + 1
+                            : 0
                         }`,
                       ]}
                       type="number"
@@ -745,16 +763,18 @@ function AddLocation(props) {
                       variant="outlined"
                       validators={[
                         "matchRegexp:^[0-9]*$",
-                        `minNumber:${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdHighFrom) + 1
-                          : 0
+                        `minNumber:${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdHighFrom) + 1
+                            : 0
                         }`,
                       ]}
                       errorMessages={[
                         "Only numbers are allowed",
-                        `Minimum allowed ${formData.isRLAPActive
-                          ? parseInt(formData.densityThreasholdHighFrom) + 1
-                          : 0
+                        `Minimum allowed ${
+                          formData.isRLAPActive
+                            ? parseInt(formData.densityThreasholdHighFrom) + 1
+                            : 0
                         }`,
                       ]}
                       disabled={formData.HightTemperatureNoLimit}
