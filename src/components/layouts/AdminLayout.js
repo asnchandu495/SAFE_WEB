@@ -45,6 +45,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 import * as GridAction from "../../Redux/Action/gridAction";
+import * as AcmAction from "../../Redux/Action/acmAction";
 import WorkIcon from "@material-ui/icons/Work";
 import Popover from "@material-ui/core/Popover";
 import Dialog from "@material-ui/core/Dialog";
@@ -229,6 +230,333 @@ function AdminLayout(props) {
     { name: "questionnaire", page: 1 },
     { name: "workflows", page: 1 },
   ]);
+  const [acm, setAcm] = useState([
+    {
+      "module": "user",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "site",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "designation",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "covidState",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "faq",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "settings",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "userGroup",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "emergencyContact",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "team",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "questionnaire",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "healthCheck",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "workflow",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "report",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    }
+  ]);
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const [anchorElNotifications, setAnchorElNotifications] = useState(null);
@@ -241,6 +569,7 @@ function AdminLayout(props) {
     }
     props.loadGlobalSetting();
     props.loadGridsPages(gridPages);
+    props.loadACM(acm);
 
     if (window.performance) {
       if (performance.type == 1) {
@@ -671,7 +1000,7 @@ function AdminLayout(props) {
               }}
             />
           )}
-          // autoHeight
+        // autoHeight
         >
           <div className={`${classes.drawerContainer} side-menu`}>
             <List>
@@ -1457,17 +1786,20 @@ function AdminLayout(props) {
 AdminLayout.propTypes = {
   loadGlobalSetting: PropTypes.func.isRequired,
   loadGridsPages: PropTypes.func.isRequired,
+  loadACM: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     loadGlobalSettingsData: state.loadGlobalSettingsData,
+    acmData: state.acmData,
   };
 }
 
 const mapDispatchToProps = {
   loadGlobalSetting: globalSettingAction.loadGlobalSetting,
   loadGridsPages: GridAction.loadGridsPages,
+  loadACM: AcmAction.loadACM,
 };
 
 export default connect(

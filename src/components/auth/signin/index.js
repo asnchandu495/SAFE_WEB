@@ -13,6 +13,7 @@ import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as GridAction from "../../../Redux/Action/gridAction";
+import * as AcmAction from "../../../Redux/Action/acmAction";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -48,6 +49,333 @@ function Signin(props) {
     { name: "questionnaire", page: 1 },
     { name: "workflows", page: 1 },
   ]);
+  const [acm, setAcm] = useState([
+    {
+      "module": "user",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "site",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "designation",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "covidState",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "faq",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "settings",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "userGroup",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "emergencyContact",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "team",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "questionnaire",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "healthCheck",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "workflow",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    },
+    {
+      "module": "report",
+      "permissions": [
+        {
+          "entity": "list",
+          "isAccess": true
+        },
+        {
+          "entity": "view",
+          "isAccess": true
+        },
+        {
+          "entity": "create",
+          "isAccess": true
+        },
+        {
+          "entity": "update",
+          "isAccess": true
+        },
+        {
+          "entity": "delete",
+          "isAccess": true
+        }
+      ]
+    }
+  ]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -77,6 +405,7 @@ function Signin(props) {
             .login(loginData)
             .then((response) => {
               props.loadGridsPages(gridPages);
+              props.loadACM(acm);
               setshowLoadder(false);
               props.history.push("/home/dashboard");
             })
@@ -192,16 +521,19 @@ function Signin(props) {
 
 Signin.propTypes = {
   loadGridsPages: PropTypes.func.isRequired,
+  loadACM: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     GridData: state.gridHistory,
+    acmData: state.acmData,
   };
 }
 
 const mapDispatchToProps = {
   loadGridsPages: GridAction.loadGridsPages,
+  loadACM: AcmAction.loadACM,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

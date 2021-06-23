@@ -40,7 +40,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import * as GridAction from "../../Redux/Action/gridAction";
-
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
@@ -149,7 +148,7 @@ function ListSite(props) {
       siteApiCall.getSiteManagers(),
       siteApiCall.getLocationManagers(),
       props.LoadData(),
-      props.LoadGridsPage(),
+      props.LoadGridsPage()
     ])
 
       .then(([getSiteManagers, getLocationManagers, result, gridResult]) => {
@@ -241,7 +240,7 @@ function ListSite(props) {
         jumpToPage: "Goto page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -332,6 +331,7 @@ function ListSite(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
+                {props.acmData.length}
                 <Tooltip title="Edit">
                   <Button
                     variant="contained"
@@ -627,13 +627,14 @@ ListSite.propTypes = {
   SiteSecurityData: PropTypes.array.isRequired,
   getGridsPages: PropTypes.func.isRequired,
   gridState: PropTypes.array.isRequired,
-  updateGridsPages: PropTypes.func.isRequired,
+  updateGridsPages: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
   return {
     SiteData: state.SiteState,
     GridData: state.gridHistory,
+    acmData: state.acmData,
   };
 }
 
@@ -642,7 +643,7 @@ const mapDispatchToProps = {
   LoadEmptyData: AddFloorAction.loadFloorWithEmptyData,
   LoadSitebySecurity: UserSiteAction.loadSitesbySiteorSecurityManager,
   LoadGridsPage: GridAction.getGridsPages,
-  UpdateGridsPage: GridAction.updateGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListSite);
