@@ -59,6 +59,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
+  DateTimePicker,
 } from "@material-ui/pickers";
 
 const styles = (theme) => ({
@@ -466,7 +467,7 @@ function GeoFencingBreaches(props) {
                       <label className="">From</label>
                     </Grid>
                     <Grid item xs={8} className="date-time-pickers">
-                      <KeyboardDatePicker
+                      <DateTimePicker
                         fullWidth
                         name="fromDate"
                         id=""
@@ -488,7 +489,7 @@ function GeoFencingBreaches(props) {
                     <Grid item xs={8} className="date-time-pickers">
                       {/* {formData.isActive != "" ? "Select status" : ""} */}
 
-                      <KeyboardDatePicker
+                      <DateTimePicker
                         fullWidth
                         name="toDate"
                         id=""

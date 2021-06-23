@@ -52,6 +52,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
+  DateTimePicker,
 } from "@material-ui/pickers";
 
 const styles = (theme) => ({
@@ -473,14 +474,14 @@ function OfficeStaff(props) {
                       xs={8}
                       className="date-time-pickers fromdate-container"
                     >
-                      <KeyboardDatePicker
+                      <DateTimePicker
                         fullWidth
                         name="fromDate"
                         id=""
-                        format="dd/MM/yyyy"
+                        // format="dd/MM/yyyy"
                         value={selectedDate}
                         className="global-input"
-                        onChange={handleChangeSearchForm}
+                        onChange={handleDateChange}
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
@@ -493,14 +494,14 @@ function OfficeStaff(props) {
                       <label className="">To</label>
                     </Grid>
                     <Grid item xs={8} className="date-time-pickers">
-                      <KeyboardDatePicker
+                      <DateTimePicker
                         fullWidth
-                        name="fromDate"
+                        name="toDate"
                         id=""
-                        format="dd/MM/yyyy"
+                        // format="dd/MM/yyyy"
                         value={selectedDate}
                         className="global-input"
-                        onChange={handleChangeSearchForm}
+                        onChange={handleDateChange}
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}

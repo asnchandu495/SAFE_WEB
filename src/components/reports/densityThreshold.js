@@ -45,6 +45,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
+  DateTimePicker,
 } from "@material-ui/pickers";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -457,11 +458,11 @@ function DensityThreshold(props) {
                       <label className="">From</label>
                     </Grid>
                     <Grid item xs={8} className="date-time-pickers">
-                      <KeyboardDatePicker
+                      <DateTimePicker
                         fullWidth
                         name="fromDate"
                         id=""
-                        format="dd/MM/yyyy"
+                        // format="dd/MM/yyyy"
                         value={selectedDate}
                         className="global-input"
                         onChange={handleDateChange}
@@ -477,11 +478,11 @@ function DensityThreshold(props) {
                       <label className="">To</label>
                     </Grid>
                     <Grid item xs={8} className="date-time-pickers">
-                      <KeyboardDatePicker
+                      <DateTimePicker
                         fullWidth
                         name="toDate"
                         id=""
-                        format="dd/MM/yyyy"
+                        // format="dd/MM/yyyy"
                         value={selectedDate}
                         className="global-input"
                         onChange={handleDateChange}

@@ -58,6 +58,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
+  DateTimePicker,
 } from "@material-ui/pickers";
 
 const styles = (theme) => ({
@@ -775,7 +776,7 @@ function ContactTracing(props) {
                     <Grid item xs={8} className="date-time-pickers">
                       {/* {formData.isActive != "" ? "Select status" : ""} */}
 
-                      <KeyboardDatePicker
+                      <DateTimePicker
                         fullWidth
                         name="fromDate"
                         id=""
@@ -797,7 +798,7 @@ function ContactTracing(props) {
                     <Grid item xs={8} className="date-time-pickers">
                       {/* {formData.isActive != "" ? "Select status" : ""} */}
 
-                      <KeyboardDatePicker
+                      <DateTimePicker
                         fullWidth
                         name="fromDate"
                         id=""
