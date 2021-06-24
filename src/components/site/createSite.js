@@ -729,13 +729,13 @@ function CreateSite(props) {
                         validators={formData.isRLAPActive ? ["required"] : ""}
                         errorMessages={
                           formData.isRLAPActive
-                            ? ["Please enter RLAP ReferenceId"]
+                            ? ["Please enter  Reference ID"]
                             : ""
                         }
                         fullWidth
                         id="rlapReferenceId"
                         disabled={!formData.isRLAPActive}
-                        placeholder="Enter rlapReferenceId "
+                        placeholder="Enter Reference ID "
                         name="rlapReferenceId"
                         onChange={handleChange}
                         value={formData.rlapReferenceId}

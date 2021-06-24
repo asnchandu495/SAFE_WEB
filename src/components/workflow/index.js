@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
@@ -48,6 +48,7 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import * as GridAction from "../../Redux/Action/gridAction";
 import ReplayIcon from "@material-ui/icons/Replay";
+import covidState from "../covidState";
 
 const styles = (theme) => ({
   root: {
@@ -63,6 +64,7 @@ const styles = (theme) => ({
 });
 
 function Workflow(props) {
+  const anchorRef = useRef(null);
   const UserGroup = new UserGroupService();
   const workflowApiCall = new workflowService();
   const [userGroupList, setuserGroupList] = useState();
@@ -152,40 +154,19 @@ function Workflow(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          let worflowACM = props.acmData.find((acm) => {
+            return acm.module == "workflow";
+          });
+
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick={() => handleClickViewWorkflow(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Edit">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    disabled={thisRowData[3]}
-                    startIcon={<EditIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickUpdateWorkflow(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    disabled={thisRowData[3]}
-                    startIcon={<DeleteIcon />}
-                    className={`delete-icon`}
-                    onClick={() =>
-                      handleClickOpenConfirmationModal(thisRowData)
-                    }
-                  ></Button>
-                </Tooltip>
+                <LoadActions
+                  thisRowData={thisRowData}
+                  modulePermission={worflowACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
+
                 <Tooltip title="Assign Activity">
                   <Button
                     variant="contained"
@@ -218,6 +199,67 @@ function Workflow(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "view":
+          return entity.isAccess ? (
+            <Tooltip title="View">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<VisibilityIcon />}
+                className={`view-icon`}
+                onClick={() => handleClickViewWorkflow(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "update":
+          return entity.isAccess ? (
+            <>
+              <Tooltip title="Edit">
+                <Button
+                  variant="contained"
+                  color="default"
+                  disabled={props.thisRowData[3]}
+                  startIcon={<EditIcon />}
+                  className={`edit-icon`}
+                  onClick={() => handleClickUpdateWorkflow(props.thisRowData)}
+                ></Button>
+              </Tooltip>
+            </>
+          ) : (
+            ""
+          );
+          break;
+
+        case "delete":
+          return entity.isAccess ? (
+            <Tooltip title="Delete">
+              <Button
+                variant="contained"
+                color="default"
+                disabled={props.thisRowData[3]}
+                startIcon={<DeleteIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModal(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        default:
+          return "";
+      }
+    });
+  };
 
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
@@ -621,6 +663,7 @@ function mapStateToProps(state, ownProps) {
   return {
     WorkflowData: state.workflowState,
     GridData: state.gridHistory,
+    acmData: state.acmData,
   };
 }
 

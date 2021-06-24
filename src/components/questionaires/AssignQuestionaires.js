@@ -703,7 +703,7 @@ function AssignQuestionaires(props) {
             </LinkTo>
 
             <LinkTo color="textPrimary" href="#" className="active">
-              Assign Users To Group
+              Assign Questionnaire To User Group
             </LinkTo>
           </Breadcrumbs>
           <MuiThemeProvider theme={theme1}>

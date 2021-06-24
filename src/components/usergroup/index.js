@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import Typography from "@material-ui/core/Typography";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
@@ -38,6 +38,7 @@ const theme1 = createMuiTheme({
 });
 
 function UserGroups(props) {
+  const anchorRef = useRef(null);
   const [responsive, setResponsive] = useState("vertical");
   const [tableBodyHeight, setTableBodyHeight] = useState("300px");
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
@@ -153,36 +154,19 @@ function UserGroups(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          let usergroupACM = props.acmData.find((acm) => {
+            return acm.module == "userGroup";
+          });
+
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="Edit">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<EditIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickUpdateUserGroup(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick={() => handleClickViewUserGroup(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<DeleteIcon />}
-                    className={`delete-icon`}
-                    onClick={() => handleClickDeleteUserGrup(thisRowData)}
-                  ></Button>
-                </Tooltip>
+                <LoadActions
+                  thisRowData={thisRowData}
+                  modulePermission={usergroupACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
+
                 <Tooltip title="Assign Users As Primary Group">
                   <Button
                     variant="contained"
@@ -217,6 +201,63 @@ function UserGroups(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "view":
+          return entity.isAccess ? (
+            <Tooltip title="View">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<VisibilityIcon />}
+                className={`view-icon`}
+                onClick={() => handleClickViewUserGroup(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "update":
+          return entity.isAccess ? (
+            <>
+              <Tooltip title="Edit">
+                <Button
+                  variant="contained"
+                  color="default"
+                  startIcon={<EditIcon />}
+                  className={`edit-icon`}
+                  onClick={() => handleClickUpdateUserGroup(props.thisRowData)}
+                ></Button>
+              </Tooltip>
+            </>
+          ) : (
+            ""
+          );
+          break;
+
+        case "delete":
+          return entity.isAccess ? (
+            <Tooltip title="Delete">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<DeleteIcon />}
+                className={`delete-icon`}
+                onClick={() => handleClickDeleteUserGrup(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        default:
+          return "";
+      }
+    });
+  };
 
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
@@ -314,6 +355,7 @@ function mapStateToProps(state, ownProps) {
   return {
     UserGroupData: state.usergroup,
     GridData: state.gridHistory,
+    acmData: state.acmData,
   };
 }
 

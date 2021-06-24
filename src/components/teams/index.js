@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import MUIDataTable from "mui-datatables";
 import { Link as LinkTo } from "react-router-dom";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
@@ -34,6 +34,7 @@ const theme1 = createMuiTheme({
 });
 
 function Teams(props) {
+  const anchorRef = useRef(null);
   const teamApiCall = new teamService();
   const [teamList, setTeamList] = useState([]);
   let history = useHistory();
@@ -154,39 +155,18 @@ function Teams(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          let teamACM = props.acmData.find((acm) => {
+            return acm.module == "team";
+          });
+
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick={() => handleClickViewTeams(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Edit">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<EditIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickUpdateTeams(thisRowData)}
-                  ></Button>
-                </Tooltip>
-
-                <Tooltip title="Delete">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<DeleteIcon />}
-                    className={`delete-icon`}
-                    onClick={() =>
-                      handleClickOpenConfirmationModal(thisRowData)
-                    }
-                  ></Button>
-                </Tooltip>
+                <LoadActions
+                  thisRowData={thisRowData}
+                  modulePermission={teamACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
 
                 <Tooltip title="Assign Users To Team">
                   <Button
@@ -209,6 +189,65 @@ function Teams(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "view":
+          return entity.isAccess ? (
+            <Tooltip title="View">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<VisibilityIcon />}
+                className={`view-icon`}
+                onClick={() => handleClickViewTeams(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "update":
+          return entity.isAccess ? (
+            <>
+              <Tooltip title="Edit">
+                <Button
+                  variant="contained"
+                  color="default"
+                  startIcon={<EditIcon />}
+                  className={`edit-icon`}
+                  onClick={() => handleClickUpdateTeams(props.thisRowData)}
+                ></Button>
+              </Tooltip>
+            </>
+          ) : (
+            ""
+          );
+          break;
+
+        case "delete":
+          return entity.isAccess ? (
+            <Tooltip title="Delete">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<DeleteIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModal(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        default:
+          return "";
+      }
+    });
+  };
 
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
@@ -350,6 +389,7 @@ function mapStateToProps(state, ownProps) {
   return {
     TeamData: state.team,
     GridData: state.gridHistory,
+    acmData: state.acmData,
   };
 }
 
