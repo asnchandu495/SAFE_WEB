@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -81,7 +81,7 @@ const theme1 = createMuiTheme({
 
 function ListSite(props) {
   const classes = useStyles();
-
+  const anchorRef = useRef(null);
   const usersApiCall = new UserService();
   const siteApiCall = new SiteService();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
@@ -328,39 +328,22 @@ function ListSite(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+
+          let sitesACM = props.acmData.find((acm) => {
+            return acm.module == "site";
+          });
+          console.log(sitesACM.permissions);
+          var thisRowData = tableMeta.rowData;
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                {props.acmData.length}
-                <Tooltip title="Edit">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<EditIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickUpdateUser(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick={() => handleClickViewUsers(thisRowData[0])}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<DeleteIcon />}
-                    className={`delete-icon`}
-                    onClick={() =>
-                      handleClickOpenConfirmationModal(thisRowData)
-                    }
-                  ></Button>
-                </Tooltip>
+                {/* {props.acmData.length} */}
+                <LoadActions
+                  thisRowData={thisRowData}
+                  modulePermission={sitesACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
+
                 <Tooltip title="Add Floor">
                   <Button
                     variant="contained"
@@ -391,6 +374,65 @@ function ListSite(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "view":
+          return entity.isAccess ? (
+            <Tooltip title="View">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<VisibilityIcon />}
+                className={`view-icon`}
+                onClick={() => handleClickViewUsers(props.thisRowData[0])}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "update":
+          return entity.isAccess ? (
+            <>
+              <Tooltip title="Edit">
+                <Button
+                  variant="contained"
+                  color="default"
+                  ref={anchorRef}
+                  startIcon={<EditIcon />}
+                  className={`edit-icon`}
+                  onClick={() => handleClickUpdateUser(props.thisRowData)}
+                ></Button>
+              </Tooltip>
+            </>
+          ) : (
+            ""
+          );
+          break;
+        case "delete":
+          return entity.isAccess ? (
+            <Tooltip title="Delete">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<DeleteIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModal(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        default:
+          return "";
+      }
+    });
+  };
 
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);

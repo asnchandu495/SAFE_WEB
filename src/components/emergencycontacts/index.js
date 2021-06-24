@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -29,6 +29,7 @@ const theme1 = createMuiTheme({
 });
 
 function EmergencyContact(props) {
+  const anchorRef = useRef(null);
   const [responsive, setResponsive] = useState("vertical");
   const [tableBodyHeight, setTableBodyHeight] = useState("300px");
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
@@ -156,42 +157,18 @@ function EmergencyContact(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          let emergencyContactACM = props.acmData.find((acm) => {
+            return acm.module == "emergencyContact";
+          });
+
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick={() =>
-                      handleClickOpenViewEmergencyContact(thisRowData[0])
-                    }
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Edit">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<EditIcon />}
-                    className={`edit-icon`}
-                    onClick={() =>
-                      handleClickOpenEditEmergencyContact(thisRowData[0])
-                    }
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<DeleteIcon />}
-                    className={`delete-icon`}
-                    onClick={() =>
-                      handleClickOpenConfirmationModal(thisRowData)
-                    }
-                  ></Button>
-                </Tooltip>
+                <LoadActions
+                  thisRowData={thisRowData}
+                  modulePermission={emergencyContactACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
               </div>
             );
           }
@@ -204,6 +181,69 @@ function EmergencyContact(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "view":
+          return entity.isAccess ? (
+            <Tooltip title="View">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<VisibilityIcon />}
+                className={`view-icon`}
+                onClick={() =>
+                  handleClickOpenViewEmergencyContact(props.thisRowData[0])
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "update":
+          return entity.isAccess ? (
+            <>
+              <Tooltip title="Edit">
+                <Button
+                  variant="contained"
+                  color="default"
+                  startIcon={<EditIcon />}
+                  className={`edit-icon`}
+                  onClick={() =>
+                    handleClickOpenEditEmergencyContact(props.thisRowData[0])
+                  }
+                ></Button>
+              </Tooltip>
+            </>
+          ) : (
+            ""
+          );
+          break;
+
+        case "delete":
+          return entity.isAccess ? (
+            <Tooltip title="Delete">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<DeleteIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModal(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        default:
+          return "";
+      }
+    });
+  };
 
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowsDetails(value);
@@ -287,6 +327,7 @@ function mapStateToProps(state, ownProps) {
   return {
     loadEmergencyContacts: state.loadEmergencyContacts,
     GridData: state.gridHistory,
+    acmData: state.acmData,
   };
 }
 

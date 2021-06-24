@@ -726,7 +726,9 @@ function Users(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+
           let usersACM = props.acmData.find((acm) => {
+            console.log(acm.module);
             return acm.module == "user";
           });
           if (thisRowData) {
@@ -765,6 +767,7 @@ function Users(props) {
 
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
+      console.log(entity.entity);
       switch (entity.entity) {
         case "view":
           return entity.isAccess ? (

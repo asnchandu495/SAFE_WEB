@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -73,6 +73,7 @@ const theme1 = createMuiTheme({
 });
 
 function ViewAllFAQs(props) {
+  const anchorRef = useRef(null);
   const classes = useStyles();
   const masterApiCall = new MasterDataService();
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
@@ -265,18 +266,19 @@ function ViewAllFAQs(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          let faqACM = props.acmData.find((acm) => {
+            return acm.module == "faq";
+          });
+
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickView(thisRowData)}
-                  ></Button>
-                </Tooltip>
+                <LoadActions
+                  thisRowData={thisRowData}
+                  modulePermission={faqACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
+
                 <Tooltip title="Add Section">
                   <Button
                     variant="contained"
@@ -284,17 +286,6 @@ function ViewAllFAQs(props) {
                     startIcon={<QuestionAnswerIcon />}
                     className={`edit-icon`}
                     onClick={() => handleClickAddSections(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<DeleteIcon />}
-                    className={`delete-icon`}
-                    onClick={() =>
-                      handleClickOpenConfirmationModal(thisRowData)
-                    }
                   ></Button>
                 </Tooltip>
               </div>
@@ -309,6 +300,48 @@ function ViewAllFAQs(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "view":
+          return entity.isAccess ? (
+            <Tooltip title="View">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<VisibilityIcon />}
+                className={`edit-icon`}
+                onClick={() => handleClickView(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+
+        case "delete":
+          return entity.isAccess ? (
+            <Tooltip title="Delete">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<DeleteIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModal(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        default:
+          return "";
+      }
+    });
+  };
 
   function handleClickAddSections(value) {
     var faqId = value[0];
@@ -462,6 +495,7 @@ function mapStateToProps(state, ownProps) {
   return {
     FaqData: state.faqState,
     GridData: state.gridHistory,
+    acmData: state.acmData,
   };
 }
 

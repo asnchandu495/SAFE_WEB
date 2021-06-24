@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MUIDataTable from "mui-datatables";
 import { Link as LinkTo } from "react-router-dom";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
@@ -11,7 +11,7 @@ import ConfirmationDialog from "../common/confirmdialogbox";
 import QuestionAnswerOutlinedIcon from "@material-ui/icons/QuestionAnswerOutlined";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
-import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -37,6 +37,7 @@ const theme1 = createMuiTheme({
 });
 
 function Questionaire(props) {
+  const anchorRef = useRef(null);
   const questionaireApiCall = new questionaireService();
   const [questionaireList, setQuestionaireList] = useState([]);
 
@@ -148,9 +149,18 @@ function Questionaire(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          let questionnaireACM = props.acmData.find((acm) => {
+            console.log(acm.module);
+            return acm.module == "questionnaire";
+          });
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
+                <LoadActions
+                  thisRowData={thisRowData}
+                  modulePermission={questionnaireACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
                 {/* {thisRowData[3] ? ( */}
                 <Tooltip title="Publish">
                   <Button
@@ -165,37 +175,7 @@ function Questionaire(props) {
                 {/* ) : (
                   ""
                 )} */}
-                <Tooltip title="Edit">
-                  <Button
-                    disabled={thisRowData[2]}
-                    variant="contained"
-                    color="default"
-                    startIcon={<EditIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickUpdateQuestions(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <Button
-                    disabled={thisRowData[2]}
-                    variant="contained"
-                    color="default"
-                    startIcon={<DeleteIcon />}
-                    className={`delete-icon`}
-                    onClick={() =>
-                      handleClickOpenConfirmationModal(thisRowData)
-                    }
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Add Question">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<QuestionAnswerOutlinedIcon />}
-                    className={`edit-icon`}
-                    onClick={() => gotoViewQuestion(thisRowData)}
-                  ></Button>
-                </Tooltip>
+
                 <Tooltip title="Order Of Execution">
                   <Button
                     variant="contained"
@@ -235,6 +215,68 @@ function Questionaire(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "view":
+          return entity.isAccess ? (
+            <Tooltip title="Add Question">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<QuestionAnswerOutlinedIcon />}
+                className={`edit-icon`}
+                onClick={() => gotoViewQuestion(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "update":
+          return entity.isAccess ? (
+            <>
+              <Tooltip title="Edit">
+                <Button
+                  disabled={props.thisRowData[2]}
+                  variant="contained"
+                  color="default"
+                  startIcon={<EditIcon />}
+                  className={`edit-icon`}
+                  onClick={() =>
+                    handleClickUpdateQuestions(props.onTableInitthisRowData)
+                  }
+                ></Button>
+              </Tooltip>
+            </>
+          ) : (
+            ""
+          );
+          break;
+        case "delete":
+          return entity.isAccess ? (
+            <Tooltip title="Delete">
+              <Button
+                disabled={props.thisRowData[2]}
+                variant="contained"
+                color="default"
+                startIcon={<DeleteIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModal(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        default:
+          return "";
+      }
+    });
+  };
 
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
@@ -369,6 +411,7 @@ function mapStateToProps(state, ownProps) {
   return {
     QuestionaireData: state.questionaireState,
     GridData: state.gridHistory,
+    acmData: state.acmData,
   };
 }
 
