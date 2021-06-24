@@ -19,10 +19,8 @@ import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
 import PublishIcon from "@material-ui/icons/Publish";
-
 import CovidStateApiServices from "../../services/masterDataService";
 import Dialog from "@material-ui/core/Dialog";
-
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
@@ -31,7 +29,6 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -60,6 +57,10 @@ import {
   KeyboardDatePicker,
   DateTimePicker,
 } from "@material-ui/pickers";
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 
 const styles = (theme) => ({
   root: {
@@ -144,8 +145,7 @@ function ContactTracing(props) {
   const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
   const [searchForm, setSearchForm] = useState({
     userid: "",
-    firstname: "",
-    lastname: "",
+    reportType: "",
     fromDate: moment().toISOString(),
     toDate: moment().toISOString(),
   });
@@ -371,7 +371,7 @@ function ContactTracing(props) {
         noMatch: "There are no reports",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -421,7 +421,7 @@ function ContactTracing(props) {
         noMatch: "There are no reports",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
   };
 
   function BreadcrumbNavigation(getRoute) {
@@ -573,7 +573,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                        BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
@@ -638,7 +638,7 @@ function ContactTracing(props) {
                     id="tags-outlined"
                     options={
                       BusinessCovidStateData &&
-                      BusinessCovidStateData.length > 0
+                        BusinessCovidStateData.length > 0
                         ? BusinessCovidStateData
                         : []
                     }

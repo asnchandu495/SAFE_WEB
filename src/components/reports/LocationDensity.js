@@ -112,36 +112,8 @@ function LocationDensity(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
-  const [locationDensityData, setlocationDensityData] = useState();
-  //   [
-  //   {
-  //     id: "001",
-  //     name: "site 0",
-  //     location: { id: "001", name: " Bengaluru" },
-  //     status: "Active",
-  //     color: "green",
-  //   },
-  //   {
-  //     id: "002",
-  //     name: "Site 1",
-  //     location: { id: "001", name: " Hyderabad" },
-  //     status: "Inctive",
-  //     color: "#ffbf00",
-  //   },
-  //   {
-  //     id: "003",
-  //     name: "site2",
-  //     location: { id: "001", name: " Chennai" },
-  //     status: "Active",
-  //     color: "red",
-  //   },
-  // ]
-  const locationData = [
-    { id: "01", name: "Reception Area" },
-    { id: "02", name: "Parking lot" },
-    { id: "03", name: "Cafetaria lot" },
-  ];
-  const [reportTime, setReportTime] = useState("");
+  const [locationDensityData, setlocationDensityData] = useState([]);
+  const [reportTime, setReportTime] = useState(moment().toISOString());
   const [locationBySiteId, setlocationBySiteId] = useState();
   const [formFieldValidation, setformFieldValidation] = useState({
     SiteId: false,
@@ -153,7 +125,6 @@ function LocationDensity(props) {
     Promise.all([
       siteApiCall.getListSite(),
       siteApiCall.getLocationManagers(),
-      //   props.LoadData(),
     ])
       .then(([getAllSites, result]) => {
         setComponentLoadder(false);
@@ -162,17 +133,11 @@ function LocationDensity(props) {
       .catch((err) => {
         console.log(err);
       });
-    const timer = setInterval(() => {
-      setReportTime(moment().toISOString()); // <-- Change this line!
-    }, 1000);
-    return () => {
-      clearInterval(timer);
-    };
   }, []);
 
   const columns = [
     {
-      name: "id",
+      name: "rlapReferenceId",
       label: "Id",
       options: {
         display: "excluded",
@@ -182,7 +147,7 @@ function LocationDensity(props) {
     },
     {
       label: "Site ",
-      name: "name",
+      name: "siteName",
       options: {
         filter: false,
         sort: true,
@@ -190,31 +155,33 @@ function LocationDensity(props) {
     },
     {
       label: "Location",
-      name: "location",
+      name: "locationName",
       options: {
         filter: false,
         sort: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return <span>{thisRowData[2].name}</span>;
-          }
-        },
         setCellProps: (value, rowIndex) => {
           var thisRowData = locationDensityData[rowIndex];
           return {
-            style: { backgroundColor: thisRowData.color, color: "#fff" },
+            style: { backgroundColor: thisRowData.colorCode, color: "#fff" },
           };
         },
       },
     },
     {
-      name: "color",
+      name: "colorCode",
       label: "Color",
       options: {
         display: "excluded",
         print: false,
         filter: false,
+      },
+    },
+    {
+      label: "Count ",
+      name: "count",
+      options: {
+        filter: false,
+        sort: true,
       },
     },
   ];
@@ -236,7 +203,7 @@ function LocationDensity(props) {
         noMatch: "There are no reports",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -407,12 +374,12 @@ function LocationDensity(props) {
     setshowLoadder(true);
 
     if (selectedSiteData) {
-      searchForm.SiteId = selectedSiteData.rlapReferenceId;
+      searchForm.SiteId = selectedSiteData.id;
     }
 
     if (selectedLocationData.length > 0) {
       let locationArr = selectedLocationData.map(
-        (item) => item.rlapReferenceId
+        (item) => item.id
       );
       searchForm.LocationId = locationArr;
     } else {
@@ -427,8 +394,8 @@ function LocationDensity(props) {
         settoasterServerity("success");
         setlocationDensityData(result);
         setTimeout(() => {
+          setReportTime(moment().toISOString());
           Modalopen(false);
-
           setshowLoadder(false);
         }, 3000);
       })

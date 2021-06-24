@@ -18,18 +18,15 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
-
 import Dialog from "@material-ui/core/Dialog";
-
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -37,6 +34,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import SiteService from "../../services/siteService";
+import UserService from "../../services/usersService";
+import ReportService from "../../services/reportService";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
@@ -44,16 +43,14 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import moment from "moment";
+import propTypes from "prop-types";
+import { connect } from "react-redux";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-
-import propTypes from "prop-types";
-import { connect } from "react-redux";
-
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -109,8 +106,10 @@ const DialogActions = withStyles((theme) => ({
 function GeoFencingBreaches(props) {
   const UserGroup = new UserGroupService();
   const siteApiCall = new SiteService();
-  const [userGroupList, setuserGroupList] = useState();
+  const userApiCall = new UserService();
+  const reportApiCall = new ReportService();
 
+  const [userGroupList, setuserGroupList] = useState();
   const [Modalopen, setModalOpen] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
@@ -134,72 +133,49 @@ function GeoFencingBreaches(props) {
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedLocationData, setselectedLocationData] = useState();
   const [searchForm, setSearchForm] = useState({
-    fromDate: moment().toISOString(),
-    toDate: moment().toISOString(),
-    users: "",
+    userId: null,
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
   });
   const [selectedValue, setSelectedValue] = React.useState("a");
-  const [locationDensityData, setlocationDensityData] = useState([
+  const [geoFencingData, setGeoFencingData] = useState([
     {
-      id: "001",
-      name: "User1",
-      location: { id: "001", name: " Bengaluru" },
-      status: "00",
-      userid: "567899",
-      emailid: "user1@sutherland.com",
-      usersList: [
+      "applicationUserId": "001",
+      "userName": "Saravanan",
+      "emailId": "saravana@gmail.com",
+      "numberOfInstance": 12,
+      "usersBreach": [
         {
-          location: "username",
-
-          timestamp: "1-9-2020: 10:32",
+          "location": "Conference Hall",
+          "createdDate": "2021-06-23T04:10:58.328Z"
         },
         {
-          location: "username",
-        },
-      ],
-    },
-    {
-      id: "002",
-      name: "User 2",
-      location: { id: "001", name: " Hyderabad" },
-      status: "02",
-      userid: "124643",
-      emailid: "user2@sutherland.com",
-      usersList: [
-        {
-          location: "sana super mart bg road",
-
-          timestamp: "1-9-2020: 10:32",
-        },
-        {
-          location: "username",
-        },
-      ],
-    },
-    {
-      id: "001",
-      name: "User 3",
-      location: { id: "001", name: " Chennai" },
-      status: "00",
-      userid: "098765",
-      emailid: "user3@sutherland.com",
-      usersList: [
-        {
-          location: "day to day fresh bsk 3rd stage",
-
-          timestamp: "1-9-2020: 10:32",
-        },
-        {
-          location: " 2nd stage btm layout",
-        },
-      ],
-    },
+          "location": "Cafetaria",
+          "createdDate": "2021-06-23T04:10:58.328Z"
+        }
+      ]
+    }
   ]);
-  const locationData = [
-    { id: "01", name: "Reception Area" },
-    { id: "02", name: "Parking lot" },
-    { id: "03", name: "Cafetaria lot" },
-  ];
+  const [applicationUsers, setApplicationUsers] = useState([]);
+
+  useEffect(() => {
+    setComponentLoadder(true);
+    userApiCall.getProfileDetails()
+      .then((loggedinUserDetails) => {
+        userApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id)
+          .then((getUsers) => {
+            setApplicationUsers(getUsers);
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const columns = [
     {
       name: "id",
@@ -211,24 +187,24 @@ function GeoFencingBreaches(props) {
       },
     },
     {
-      label: "User Name ",
-      name: "name",
+      label: "UserId ",
+      name: "applicationUserId",
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      label: "User ID",
-      name: "userid",
+      label: "EmailId",
+      name: "emailId",
       options: {
         filter: false,
-        sort: true,
+        sort: false,
       },
     },
     {
-      name: "usersList",
-      label: "UsersList",
+      name: "usersBreach",
+      label: "usersBreach",
       options: {
         display: "excluded",
         print: false,
@@ -236,53 +212,11 @@ function GeoFencingBreaches(props) {
       },
     },
     {
-      label: "Email ID",
-      name: "emailid",
-      options: {
-        filter: false,
-        sort: true,
-      },
-    },
-
-    {
       label: " # of instances ",
-      name: "status",
-      options: {
-        filter: false,
-        sort: true,
-      },
-    },
-
-    {
-      label: "Action",
-      name: "",
+      name: "numberOfInstance",
       options: {
         filter: false,
         sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return (
-              <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick="#"
-                  ></Button>
-                </Tooltip>
-              </div>
-            );
-          }
-        },
-
-        setCellProps: (value) => {
-          return {
-            style: { width: "250px", minWidth: "250px", textAlign: "center" },
-          };
-        },
       },
     },
   ];
@@ -307,18 +241,18 @@ function GeoFencingBreaches(props) {
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Timestamp</TableCell>
                     <TableCell>Location</TableCell>
+                    <TableCell>Timestamp</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                        <TableRow key={row.id}>
-                          <TableCell>{row.timestamp}</TableCell>
-                          <TableCell>{row.location}</TableCell>
-                        </TableRow>
-                      ))
+                      <TableRow key={row.location}>
+                        <TableCell>{row.location}</TableCell>
+                        <TableCell>{moment(row.createdDate).format('DD/MM/yyyy hh:mm a')}</TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -328,17 +262,10 @@ function GeoFencingBreaches(props) {
       );
     },
     page: 1,
-
     print: false,
     viewColumns: false,
     download: false,
-    selectableRows: false,
-    textLabels: {
-      body: {
-        noMatch: "There are no reports",
-      },
-    },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -367,56 +294,47 @@ function GeoFencingBreaches(props) {
     setModalOpen(false);
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleChangeSearchForm = (getSelectedVal, name) => {
+    if (name == "userId") {
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        [name]: getSelectedVal,
+      }));
+    } else {
+      let thisValue = moment(getSelectedVal).toISOString();
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        [name]: thisValue,
+      }));
+    }
+
   };
-
-  // const handleChange = (event) => {
-  //   setSelectedValue(event.target.value);
-  // };
-  function selectedSite(e, value) {
-    setselectedSiteData(value);
-  }
-  function selectedLocation(e, value) {
-    setselectedLocationData(value);
-  }
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setSearchForm((logInForm) => ({
-      ...logInForm,
-      [name]: value,
-    }));
-  }
-  useEffect(() => {
-    setComponentLoadder(true);
-    Promise.all([
-      siteApiCall.getListSite(),
-      siteApiCall.getLocationManagers(),
-      //   props.LoadData(),
-    ])
-
-      .then(([getAllSites, result]) => {
-        setComponentLoadder(false);
-        setAllSites(getAllSites);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   function submitForm(e) {
     e.preventDefault();
-    if (selectedSiteData) {
-      searchForm.site = selectedSiteData;
-    }
-    if (selectedLocation) {
-      searchForm.location = selectedLocationData;
-    }
-    console.log(searchForm);
     settoasterServerity("");
     settoasterErrorMessageType("");
-    setComponentLoadder(true);
+    setshowLoadder(true);
+    reportApiCall
+      .getGeoFencingReport(searchForm)
+      .then((result) => {
+        setGeoFencingData(result);
+        setTimeout(() => {
+          setModalOpen(false);
+          setshowLoadder(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
+
+  const filterOptions = createFilterOptions({
+    stringify: ({ firstName, lastName, userId }) => `${firstName} ${lastName} ${userId}`
+  });
 
   return (
     <div className="innerpage-container">
@@ -435,71 +353,91 @@ function GeoFencingBreaches(props) {
             <DialogContent dividers>
               {!componentLoadder ? (
                 <Grid container spacing={3}>
-                  <Grid item xs={12} container>
-                    <Grid item xs={4} className="">
-                      <label>Select User</label>
+                  <Grid item cs={12} container>
+                    <Grid item xs={4}>
+                      <label className="">User ID </label>
                     </Grid>
-
-                    <Grid item xs={8} className="">
-                      <Radio
-                        label=""
-                        checked={selectedValue === "a"}
-                        onChange={handleChange}
-                        value="a"
-                        name="users"
-                        inputProps={{ "aria-label": "A" }}
-                      />
-                      <label className=""> All users reporting to me </label>
-                      <Radio
-                        checked={selectedValue === "b"}
-                        onChange={handleChange}
-                        value="b"
-                        name="users"
-                        label=""
-                        inputProps={{ "aria-label": "B" }}
-                      />
-                      <label className=""> Specific users </label>
+                    <Grid item xs={8}>
+                      <FormControl variant="outlined" fullWidth>
+                        <Autocomplete
+                          name="userId"
+                          id="tags-outlined"
+                          options={
+                            applicationUsers && applicationUsers.length > 0 ? applicationUsers : []
+                          }
+                          getOptionLabel={({ firstName, lastName }) => {
+                            return `${firstName} ${lastName}`;
+                          }}
+                          defaultValue={searchForm.userId}
+                          value={searchForm.userId ? searchForm.userId : null}
+                          onChange={(e, v) => handleChangeSearchForm(v, "userId")}
+                          filterSelectedOptions
+                          className="global-input autocomplete-select"
+                          filterOptions={filterOptions}
+                          renderOption={({ firstName, lastName, userId }) => {
+                            return (
+                              <div>
+                                <div>
+                                  {`${firstName} `}
+                                  {lastName}
+                                </div>
+                                <span>{userId}</span>
+                              </div>
+                            );
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              required
+                              variant="outlined"
+                              placeholder="Select User by UserId or UserName"
+                            />
+                          )}
+                        />
+                      </FormControl>
                     </Grid>
                   </Grid>
-
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">From</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers">
+                    <Grid item xs={8} className="date-time-pickers report-pickers">
                       <DateTimePicker
                         fullWidth
-                        name="fromDate"
+                        name="startDate"
                         id=""
-                        format="dd/MM/yyyy"
-                        value={selectedDate}
+                        format="dd/MM/yyyy hh:mm a"
+                        value={searchForm.startDate}
                         className="global-input"
-                        onChange={handleDateChange}
+                        onChange={(date, event, e) =>
+                          handleChangeSearchForm(date, "startDate")
+                        }
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
+                        required
                       />
                     </Grid>
                   </Grid>
-
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">To</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers">
-                      {/* {formData.isActive != "" ? "Select status" : ""} */}
-
+                    <Grid item xs={8} className="date-time-pickers report-pickers">
                       <DateTimePicker
                         fullWidth
-                        name="toDate"
+                        name="endDate"
                         id=""
-                        format="dd/MM/yyyy"
-                        value={selectedDate}
+                        format="dd/MM/yyyy hh:mm a"
+                        value={searchForm.endDate}
                         className="global-input"
-                        onChange={handleDateChange}
+                        onChange={(date, event, e) =>
+                          handleChangeSearchForm(date, "endDate")
+                        }
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
+                        required
                       />
                     </Grid>
                   </Grid>
@@ -542,7 +480,7 @@ function GeoFencingBreaches(props) {
 
       <MUIDataTable
         title={""}
-        data={locationDensityData}
+        data={geoFencingData}
         columns={columns}
         options={options}
         className="global-table reports-table no-action-table"

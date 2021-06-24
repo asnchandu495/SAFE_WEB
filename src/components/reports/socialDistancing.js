@@ -18,18 +18,15 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
-
 import Dialog from "@material-ui/core/Dialog";
-
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -37,6 +34,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import SiteService from "../../services/siteService";
+import UserService from "../../services/usersService";
+import ReportService from "../../services/reportService";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
@@ -44,7 +43,6 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import moment from "moment";
-
 import propTypes from "prop-types";
 import { connect } from "react-redux";
 import Table from "@material-ui/core/Table";
@@ -53,7 +51,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -109,8 +106,10 @@ const DialogActions = withStyles((theme) => ({
 function SocailDistancing(props) {
   const UserGroup = new UserGroupService();
   const siteApiCall = new SiteService();
-  const [userGroupList, setuserGroupList] = useState();
+  const userApiCall = new UserService();
+  const reportApiCall = new ReportService();
 
+  const [userGroupList, setuserGroupList] = useState();
   const [Modalopen, setModalOpen] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
@@ -134,86 +133,49 @@ function SocailDistancing(props) {
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedLocationData, setselectedLocationData] = useState();
   const [searchForm, setSearchForm] = useState({
-    site: [],
-    location: [],
-    fromDate: moment().toISOString(),
-    toDate: moment().toISOString(),
-    reporttype: "",
+    userId: null,
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
   });
   const [selectedValue, setSelectedValue] = React.useState("a");
-  const [locationDensityData, setlocationDensityData] = useState([
+  const [socialDistancingData, setSocialDistancingData] = useState([
     {
-      id: "001",
-      name: "site 0",
-      location: { id: "001", name: " Bengaluru" },
-      status: "00",
-      usersList: [
+      "applicationUserId": "001",
+      "userName": "Saravanan",
+      "emailId": "saravana@gmail.com",
+      "numberOfInstance": 12,
+      "usersBreach": [
         {
-          id: "08",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
+          "location": "Conference Hall",
+          "createdDate": "2021-06-23T04:10:58.328Z"
         },
         {
-          id: "09",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
-        },
-      ],
-    },
-    {
-      id: "002",
-      name: "Site 1",
-      location: { id: "001", name: " Hyderabad" },
-      status: "02",
-      usersList: [
-        {
-          id: "08",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
-        },
-        {
-          id: "09",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
-        },
-      ],
-    },
-    {
-      id: "001",
-      name: "site2",
-      location: { id: "001", name: " Chennai" },
-      status: "00",
-      usersList: [
-        {
-          id: "08",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
-        },
-        {
-          id: "09",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
-        },
-      ],
-    },
+          "location": "Cafetaria",
+          "createdDate": "2021-06-23T04:10:58.328Z"
+        }
+      ]
+    }
   ]);
-  const locationData = [
-    { id: "01", name: "Reception Area" },
-    { id: "02", name: "Parking lot" },
-    { id: "03", name: "Cafetaria lot" },
-  ];
+  const [applicationUsers, setApplicationUsers] = useState([]);
+
+  useEffect(() => {
+    setComponentLoadder(true);
+    userApiCall.getProfileDetails()
+      .then((loggedinUserDetails) => {
+        userApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id)
+          .then((getUsers) => {
+            setApplicationUsers(getUsers);
+            setComponentLoadder(false);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const columns = [
     {
       name: "id",
@@ -225,30 +187,24 @@ function SocailDistancing(props) {
       },
     },
     {
-      label: "Site ",
-      name: "name",
+      label: "UserId ",
+      name: "applicationUserId",
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      label: "Location",
-      name: "location",
+      label: "EmailId",
+      name: "emailId",
       options: {
         filter: false,
         sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return <span>{thisRowData[2] ? thisRowData[2].name : ""}</span>;
-          }
-        },
       },
     },
     {
-      name: "usersList",
-      label: "UsersList",
+      name: "usersBreach",
+      label: "usersBreach",
       options: {
         display: "excluded",
         print: false,
@@ -257,43 +213,10 @@ function SocailDistancing(props) {
     },
     {
       label: " # of instances ",
-      name: "status",
+      name: "numberOfInstance",
       options: {
         filter: false,
         sort: false,
-      },
-    },
-
-    {
-      label: "Action",
-      name: "",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return (
-              <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick="#"
-                  ></Button>
-                </Tooltip>
-              </div>
-            );
-          }
-        },
-
-        setCellProps: (value) => {
-          return {
-            style: { width: "250px", minWidth: "250px", textAlign: "center" },
-          };
-        },
       },
     },
   ];
@@ -318,22 +241,18 @@ function SocailDistancing(props) {
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>User Name</TableCell>
-                    <TableCell>User ID&nbsp;</TableCell>
-                    <TableCell>Email ID&nbsp;</TableCell>
+                    <TableCell>Location</TableCell>
                     <TableCell>Timestamp</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                        <TableRow key={row.id}>
-                          <TableCell>{row.name}</TableCell>
-                          <TableCell>{row.userid}</TableCell>
-                          <TableCell>{row.emailid}</TableCell>
-                          <TableCell>{row.timestamp}</TableCell>
-                        </TableRow>
-                      ))
+                      <TableRow key={row.location}>
+                        <TableCell>{row.location}</TableCell>
+                        <TableCell>{moment(row.createdDate).format('DD/MM/yyyy hh:mm a')}</TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -346,7 +265,7 @@ function SocailDistancing(props) {
     print: false,
     viewColumns: false,
     download: false,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -375,56 +294,47 @@ function SocailDistancing(props) {
     setModalOpen(false);
   };
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleChangeSearchForm = (getSelectedVal, name) => {
+    if (name == "userId") {
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        [name]: getSelectedVal,
+      }));
+    } else {
+      let thisValue = moment(getSelectedVal).toISOString();
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        [name]: thisValue,
+      }));
+    }
+
   };
-
-  // const handleChange = (event) => {
-  //   setSelectedValue(event.target.value);
-  // };
-  function selectedSite(e, value) {
-    setselectedSiteData(value);
-  }
-  function selectedLocation(e, value) {
-    setselectedLocationData(value);
-  }
-  function handleChange(e) {
-    const { name, value } = e.target;
-    setSearchForm((logInForm) => ({
-      ...logInForm,
-      [name]: value,
-    }));
-  }
-  useEffect(() => {
-    setComponentLoadder(true);
-    Promise.all([
-      siteApiCall.getListSite(),
-      siteApiCall.getLocationManagers(),
-      //   props.LoadData(),
-    ])
-
-      .then(([getAllSites, result]) => {
-        setComponentLoadder(false);
-        setAllSites(getAllSites);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   function submitForm(e) {
     e.preventDefault();
-    if (selectedSiteData) {
-      searchForm.site = selectedSiteData;
-    }
-    if (selectedLocation) {
-      searchForm.location = selectedLocationData;
-    }
-    console.log(searchForm);
     settoasterServerity("");
     settoasterErrorMessageType("");
-    setComponentLoadder(true);
+    setshowLoadder(true);
+    reportApiCall
+      .getSocialDistancingReport(searchForm)
+      .then((result) => {
+        setSocialDistancingData(result);
+        setTimeout(() => {
+          setModalOpen(false);
+          setshowLoadder(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
+
+  const filterOptions = createFilterOptions({
+    stringify: ({ firstName, lastName, userId }) => `${firstName} ${lastName} ${userId}`
+  });
 
   return (
     <div className="innerpage-container">
@@ -443,138 +353,91 @@ function SocailDistancing(props) {
             <DialogContent dividers>
               {!componentLoadder ? (
                 <Grid container spacing={3}>
-                  <Grid item xs={12} container>
-                    <Grid item xs={4} className="">
-                      <label>Type</label>
-                    </Grid>
-
-                    <Grid item xs={8} className="">
-                      <Radio
-                        label=""
-                        checked={selectedValue === "a"}
-                        onChange={handleChange}
-                        value="a"
-                        name="reporttype"
-                        inputProps={{ "aria-label": "A" }}
-                      />
-                      <label className=""> Indoor Report </label>
-                      <Radio
-                        checked={selectedValue === "b"}
-                        onChange={handleChange}
-                        value="b"
-                        name="reporttype"
-                        label=""
-                        inputProps={{ "aria-label": "B" }}
-                      />
-                      <label className=""> Outdoor Report </label>
-                    </Grid>
-                  </Grid>
-
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Site </label>
+                      <label className="">User ID </label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
                         <Autocomplete
-                          multiple
+                          name="userId"
                           id="tags-outlined"
                           options={
-                            allSites && allSites.length > 0 ? allSites : []
+                            applicationUsers && applicationUsers.length > 0 ? applicationUsers : []
                           }
-                          getOptionLabel={(option) => option.name}
-                          defaultValue={selectedSiteData}
-                          onChange={selectedSite}
+                          getOptionLabel={({ firstName, lastName }) => {
+                            return `${firstName} ${lastName}`;
+                          }}
+                          defaultValue={searchForm.userId}
+                          value={searchForm.userId ? searchForm.userId : null}
+                          onChange={(e, v) => handleChangeSearchForm(v, "userId")}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
+                          filterOptions={filterOptions}
+                          renderOption={({ firstName, lastName, userId }) => {
+                            return (
+                              <div>
+                                <div>
+                                  {`${firstName} `}
+                                  {lastName}
+                                </div>
+                                <span>{userId}</span>
+                              </div>
+                            );
+                          }}
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              required
                               variant="outlined"
-                              placeholder="Select Site"
-                            />
-                          )}
-                        />{" "}
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12} container>
-                    <Grid item xs={4}>
-                      <label className="">Location</label>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <FormControl variant="outlined" fullWidth>
-                        <InputLabel
-                          id="demo-simple-select-outlined-label"
-                          shrink={false}
-                          className="select-label"
-                        >
-                          {/* {formData.isActive != "" ? "Select status" : ""} */}
-                        </InputLabel>
-
-                        <Autocomplete
-                          multiple
-                          id="tags-outlined"
-                          options={
-                            locationData && locationData.length > 0
-                              ? locationData
-                              : []
-                          }
-                          getOptionLabel={(option) => option.name}
-                          defaultValue={selectedLocationData}
-                          onChange={selectedLocation}
-                          filterSelectedOptions
-                          className="global-input autocomplete-select"
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              variant="outlined"
-                              placeholder="Select Location"
+                              placeholder="Select User by UserId or UserName"
                             />
                           )}
                         />
                       </FormControl>
                     </Grid>
                   </Grid>
-
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">From</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers">
+                    <Grid item xs={8} className="date-time-pickers report-pickers">
                       <DateTimePicker
                         fullWidth
-                        name="fromDate"
+                        name="startDate"
                         id=""
-                        format="dd/MM/yyyy"
-                        value={selectedDate}
+                        format="dd/MM/yyyy hh:mm a"
+                        value={searchForm.startDate}
                         className="global-input"
-                        onChange={handleDateChange}
+                        onChange={(date, event, e) =>
+                          handleChangeSearchForm(date, "startDate")
+                        }
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
+                        required
                       />
                     </Grid>
                   </Grid>
-
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">To</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers">
-                      {/* {formData.isActive != "" ? "Select status" : ""} */}
-
+                    <Grid item xs={8} className="date-time-pickers report-pickers">
                       <DateTimePicker
                         fullWidth
-                        name="toDate"
+                        name="endDate"
                         id=""
-                        format="dd/MM/yyyy"
-                        value={selectedDate}
+                        format="dd/MM/yyyy hh:mm a"
+                        value={searchForm.endDate}
                         className="global-input"
-                        onChange={handleDateChange}
+                        onChange={(date, event, e) =>
+                          handleChangeSearchForm(date, "endDate")
+                        }
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
+                        required
                       />
                     </Grid>
                   </Grid>
@@ -617,7 +480,7 @@ function SocailDistancing(props) {
 
       <MUIDataTable
         title={""}
-        data={locationDensityData}
+        data={socialDistancingData}
         columns={columns}
         options={options}
         className="global-table reports-table no-action-table"
