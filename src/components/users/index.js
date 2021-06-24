@@ -210,6 +210,7 @@ function Users(props) {
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
   const [userData, setUserData] = useState([]);
+  const [modulePermission, setModulePermission] = useState([]);
 
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
@@ -272,6 +273,10 @@ function Users(props) {
           setBusinessCovidStateData(getCovidState);
           setglobalData(getLoadGlobalSetting);
           setUserData(props.UserData);
+          // let usersACM = props.acmData.find(acm => {
+          //   return acm.module == 'user';
+          // });
+          // setModulePermission(usersACM.permissions);
           setcomponentLoadder(false);
         }
       )
@@ -691,7 +696,6 @@ function Users(props) {
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
-
           if (thisRowData && thisRowData[6]) {
             return (
               <DisplayFormControl
@@ -722,50 +726,13 @@ function Users(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          let usersACM = props.acmData.find(acm => {
+            return acm.module == 'user';
+          });
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <Tooltip title="Edit">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<EditIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickUpdateUser(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick={() => handleClickViewUsers(thisRowData[0])}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Delete">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<DeleteIcon />}
-                    className={`delete-icon`}
-                    onClick={() =>
-                      handleClickOpenConfirmationModal(thisRowData)
-                    }
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="More">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<MoreHorizIcon />}
-                    className={`more-icon`}
-                    ref={anchorRef}
-                    aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
-                    aria-haspopup="true"
-                    onClick={(e) => handleToggleMoreMenu(thisRowData, e)}
-                  ></Button>
-                </Tooltip>
+                <LoadActions thisRowData={thisRowData} modulePermission={usersACM.permissions}></LoadActions>
               </div>
             );
           }
@@ -778,6 +745,61 @@ function Users(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "view":
+          return entity.isAccess ? <Tooltip title="View">
+            <Button
+              variant="contained"
+              color="default"
+              startIcon={<VisibilityIcon />}
+              className={`view-icon`}
+              onClick={() => handleClickViewUsers(props.thisRowData[0])}
+            ></Button>
+          </Tooltip> : ""
+          break;
+        case "update":
+          return entity.isAccess ? <><Tooltip title="Edit">
+            <Button
+              variant="contained"
+              color="default"
+              startIcon={<EditIcon />}
+              className={`edit-icon`}
+              onClick={() => handleClickUpdateUser(props.thisRowData)}
+            ></Button>
+          </Tooltip><Tooltip title="More">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<MoreHorizIcon />}
+                className={`more-icon`}
+                ref={anchorRef}
+                aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
+                aria-haspopup="true"
+                onClick={(e) => handleToggleMoreMenu(props.thisRowData, e)}
+              ></Button>
+            </Tooltip></> : ""
+          break;
+        case "delete":
+          return entity.isAccess ? <Tooltip title="Delete">
+            <Button
+              variant="contained"
+              color="default"
+              startIcon={<DeleteIcon />}
+              className={`delete-icon`}
+              onClick={() =>
+                handleClickOpenConfirmationModal(props.thisRowData)
+              }
+            ></Button>
+          </Tooltip> : ""
+          break;
+        default:
+          return "";
+      }
+    });
+  }
 
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
@@ -1153,6 +1175,7 @@ function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
     GridData: state.gridHistory,
+    acmData: state.acmData,
   };
 }
 

@@ -18,6 +18,7 @@ import questionStates from "./questionReducer";
 import workflowStates from "./workflowReducer";
 import publishReducers from "./publishFaqReducer";
 import gridState from "./gridReducer";
+import acmState from "./acmReducer";
 
 const rootReducer = combineReducers({
   user: userState,
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   workflowState: workflowStates,
   publishReducer: publishReducers,
   gridHistory: gridState,
+  acmData: acmState
 });
 
 export default rootReducer;
