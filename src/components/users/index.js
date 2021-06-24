@@ -732,7 +732,19 @@ function Users(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <LoadActions thisRowData={thisRowData} modulePermission={usersACM.permissions}></LoadActions>
+                <LoadActions thisRowData={thisRowData} modulePermission={usersACM.permissions} anchorRef={anchorRef} openMoreMenu={openMoreMenu}></LoadActions>
+                <Tooltip title="More">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<MoreHorizIcon />}
+                    className={`more-icon`}
+                    ref={anchorRef}
+                    aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
+                    aria-haspopup="true"
+                    onClick={(e) => handleToggleMoreMenu(thisRowData, e)}
+                  ></Button>
+                </Tooltip>
               </div>
             );
           }
@@ -769,18 +781,20 @@ function Users(props) {
               className={`edit-icon`}
               onClick={() => handleClickUpdateUser(props.thisRowData)}
             ></Button>
-          </Tooltip><Tooltip title="More">
+          </Tooltip>
+            {/* <Tooltip title="More">
               <Button
                 variant="contained"
                 color="default"
                 startIcon={<MoreHorizIcon />}
                 className={`more-icon`}
-                ref={anchorRef}
-                aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
+                ref={props.anchorRef}
+                aria-controls={props.openMoreMenu ? "menu-list-grow" : undefined}
                 aria-haspopup="true"
                 onClick={(e) => handleToggleMoreMenu(props.thisRowData, e)}
               ></Button>
-            </Tooltip></> : ""
+            </Tooltip> */}
+          </> : ""
           break;
         case "delete":
           return entity.isAccess ? <Tooltip title="Delete">
