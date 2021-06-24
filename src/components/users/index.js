@@ -735,7 +735,21 @@ function Users(props) {
                 <LoadActions
                   thisRowData={thisRowData}
                   modulePermission={usersACM.permissions}
+                  anchorRef={anchorRef}
+                  openMoreMenu={openMoreMenu}
                 ></LoadActions>
+                <Tooltip title="More">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<MoreHorizIcon />}
+                    className={`more-icon`}
+                    ref={anchorRef}
+                    aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
+                    aria-haspopup="true"
+                    onClick={(e) => handleToggleMoreMenu(thisRowData, e)}
+                  ></Button>
+                </Tooltip>
               </div>
             );
           }
@@ -779,18 +793,18 @@ function Users(props) {
                   onClick={() => handleClickUpdateUser(props.thisRowData)}
                 ></Button>
               </Tooltip>
-              <Tooltip title="More">
-                <Button
-                  variant="contained"
-                  color="default"
-                  startIcon={<MoreHorizIcon />}
-                  className={`more-icon`}
-                  ref={anchorRef}
-                  aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
-                  aria-haspopup="true"
-                  onClick={(e) => handleToggleMoreMenu(props.thisRowData, e)}
-                ></Button>
-              </Tooltip>
+              {/* <Tooltip title="More">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<MoreHorizIcon />}
+                className={`more-icon`}
+                ref={props.anchorRef}
+                aria-controls={props.openMoreMenu ? "menu-list-grow" : undefined}
+                aria-haspopup="true"
+                onClick={(e) => handleToggleMoreMenu(props.thisRowData, e)}
+              ></Button>
+            </Tooltip> */}
             </>
           ) : (
             ""

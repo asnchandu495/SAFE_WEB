@@ -115,10 +115,10 @@ function AllocateUserToPrimaryGroup(props) {
     groups: [],
   });
   const [resetComponent, setResetComponent] = useState("NO");
-  const [Modalsubmit,setModalsubmit]=useState(false);
+  const [Modalsubmit, setModalsubmit] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
-  
-  const [ShowYesLoadder,setshowYesLoadder]=useState(false);
+
+  const [ShowYesLoadder, setshowYesLoadder] = useState(false);
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
     return (
@@ -208,7 +208,7 @@ function AllocateUserToPrimaryGroup(props) {
     if (UserSelectedPrimaryGroupValue) {
       setModalsubmit(true);
       // UserPrimaryGroupSubmit();
-      
+
     } else {
       return false;
     }
@@ -218,7 +218,7 @@ function AllocateUserToPrimaryGroup(props) {
     setformFieldValidation({ primaryGroup: false });
     setResetComponent("YES");
     setModalsubmit(false);
-    
+
   };
 
   function handleClickYes() {
@@ -264,7 +264,7 @@ function AllocateUserToPrimaryGroup(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Do you want to change the primary group of a user?
+            Whichever FAQ , Questionnaire , Emergency Contact and Workflow is assigned to this user group, will be applicable for the selected user(s). Are you sure you want to go ahead with the change ?
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -297,7 +297,7 @@ function AllocateUserToPrimaryGroup(props) {
                     id="tags-outlined"
                     options={
                       BusinessTeamMasterData &&
-                      BusinessTeamMasterData.length > 0
+                        BusinessTeamMasterData.length > 0
                         ? BusinessTeamMasterData
                         : []
                     }
