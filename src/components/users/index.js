@@ -481,7 +481,7 @@ function Users(props) {
         </span>
       );
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: (value, tableMeta, updateValue) => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -726,13 +726,16 @@ function Users(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
-          let usersACM = props.acmData.find(acm => {
-            return acm.module == 'user';
+          let usersACM = props.acmData.find((acm) => {
+            return acm.module == "user";
           });
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
-                <LoadActions thisRowData={thisRowData} modulePermission={usersACM.permissions}></LoadActions>
+                <LoadActions
+                  thisRowData={thisRowData}
+                  modulePermission={usersACM.permissions}
+                ></LoadActions>
               </div>
             );
           }
@@ -750,56 +753,71 @@ function Users(props) {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
         case "view":
-          return entity.isAccess ? <Tooltip title="View">
-            <Button
-              variant="contained"
-              color="default"
-              startIcon={<VisibilityIcon />}
-              className={`view-icon`}
-              onClick={() => handleClickViewUsers(props.thisRowData[0])}
-            ></Button>
-          </Tooltip> : ""
-          break;
-        case "update":
-          return entity.isAccess ? <><Tooltip title="Edit">
-            <Button
-              variant="contained"
-              color="default"
-              startIcon={<EditIcon />}
-              className={`edit-icon`}
-              onClick={() => handleClickUpdateUser(props.thisRowData)}
-            ></Button>
-          </Tooltip><Tooltip title="More">
+          return entity.isAccess ? (
+            <Tooltip title="View">
               <Button
                 variant="contained"
                 color="default"
-                startIcon={<MoreHorizIcon />}
-                className={`more-icon`}
-                ref={anchorRef}
-                aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
-                aria-haspopup="true"
-                onClick={(e) => handleToggleMoreMenu(props.thisRowData, e)}
+                startIcon={<VisibilityIcon />}
+                className={`view-icon`}
+                onClick={() => handleClickViewUsers(props.thisRowData[0])}
               ></Button>
-            </Tooltip></> : ""
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "update":
+          return entity.isAccess ? (
+            <>
+              <Tooltip title="Edit">
+                <Button
+                  variant="contained"
+                  color="default"
+                  startIcon={<EditIcon />}
+                  className={`edit-icon`}
+                  onClick={() => handleClickUpdateUser(props.thisRowData)}
+                ></Button>
+              </Tooltip>
+              <Tooltip title="More">
+                <Button
+                  variant="contained"
+                  color="default"
+                  startIcon={<MoreHorizIcon />}
+                  className={`more-icon`}
+                  ref={anchorRef}
+                  aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
+                  aria-haspopup="true"
+                  onClick={(e) => handleToggleMoreMenu(props.thisRowData, e)}
+                ></Button>
+              </Tooltip>
+            </>
+          ) : (
+            ""
+          );
           break;
         case "delete":
-          return entity.isAccess ? <Tooltip title="Delete">
-            <Button
-              variant="contained"
-              color="default"
-              startIcon={<DeleteIcon />}
-              className={`delete-icon`}
-              onClick={() =>
-                handleClickOpenConfirmationModal(props.thisRowData)
-              }
-            ></Button>
-          </Tooltip> : ""
+          return entity.isAccess ? (
+            <Tooltip title="Delete">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<DeleteIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickOpenConfirmationModal(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
@@ -900,7 +918,7 @@ function Users(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                            BusinessUserRoleMasterData.length > 0
+                          BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -938,7 +956,7 @@ function Users(props) {
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                          BusinessDesingationData.length > 0
+                        BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -970,7 +988,7 @@ function Users(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                          BusinessSiteMasterData.length > 0
+                        BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -1002,7 +1020,7 @@ function Users(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                            BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }
