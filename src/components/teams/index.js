@@ -167,16 +167,6 @@ function Teams(props) {
                   modulePermission={teamACM.permissions}
                   anchorRef={anchorRef}
                 ></LoadActions>
-
-                <Tooltip title="Assign Users To Team">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<GroupAddIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickaddedsecondaryteams(thisRowData)}
-                  ></Button>
-                </Tooltip>
               </div>
             );
           }
@@ -236,6 +226,23 @@ function Teams(props) {
                 className={`delete-icon`}
                 onClick={() =>
                   handleClickOpenConfirmationModal(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "assignUserList":
+          return entity.isAccess ? (
+            <Tooltip title="Assign Users To Team">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<GroupAddIcon />}
+                className={`edit-icon`}
+                onClick={() =>
+                  handleClickaddedsecondaryteams(props.thisRowData)
                 }
               ></Button>
             </Tooltip>
@@ -310,7 +317,7 @@ function Teams(props) {
       });
       return isFound;
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
   };
 
   return (

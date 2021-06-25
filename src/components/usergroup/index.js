@@ -166,29 +166,6 @@ function UserGroups(props) {
                   modulePermission={usergroupACM.permissions}
                   anchorRef={anchorRef}
                 ></LoadActions>
-
-                <Tooltip title="Assign Users As Primary Group">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<GroupAddIcon />}
-                    className={`edit-icon`}
-                    onClick={() =>
-                      handleClickaddedprimaryusertousergroup(thisRowData)
-                    }
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Assign Users As Secondary Group">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<GroupAddIcon />}
-                    className={`delete-icon`}
-                    onClick={() =>
-                      handleClickaddedsecondaryusertousergroup(thisRowData)
-                    }
-                  ></Button>
-                </Tooltip>
               </div>
             );
           }
@@ -247,6 +224,40 @@ function UserGroups(props) {
                 startIcon={<DeleteIcon />}
                 className={`delete-icon`}
                 onClick={() => handleClickDeleteUserGrup(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "assignPrimaryList":
+          return entity.isAccess ? (
+            <Tooltip title="Assign Users As Primary Group">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<GroupAddIcon />}
+                className={`edit-icon`}
+                onClick={() =>
+                  handleClickaddedprimaryusertousergroup(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "assignSecondaryList":
+          return entity.isAccess ? (
+            <Tooltip title="Assign Users As Secondary Group">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<GroupAddIcon />}
+                className={`delete-icon`}
+                onClick={() =>
+                  handleClickaddedsecondaryusertousergroup(props.thisRowData)
+                }
               ></Button>
             </Tooltip>
           ) : (

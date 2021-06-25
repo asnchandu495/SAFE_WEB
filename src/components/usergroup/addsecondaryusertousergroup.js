@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -97,6 +97,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AddSecondaryUserToUserGroups(props) {
+  const anchorRef = useRef(null);
+  const usergroupACM = props.acmData.find((acm) => {
+    return acm.module == "userGroup";
+  });
   const userGroupUpdateid = props.match.params.id;
   const userId = props.match.params.id;
   const classes = useStyles();
@@ -360,7 +364,7 @@ function AddSecondaryUserToUserGroups(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: (value, tableMeta, updateValue) => {
       console.log("id");
       console.log(selectedUsersForCovidState);
@@ -442,6 +446,31 @@ function AddSecondaryUserToUserGroups(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "assignSecondary":
+          return entity.isAccess ? (
+            <Button
+              variant="contained"
+              type="button"
+              className="global-submit-btn"
+              disabled={showLoadder}
+              onClick={assignUsers}
+            >
+              {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
+            </Button>
+          ) : (
+            ""
+          );
+          break;
+
+        default:
+          return "";
+      }
+    });
+  };
 
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
@@ -532,7 +561,7 @@ function AddSecondaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                            BusinessUserRoleMasterData.length > 0
+                          BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -562,13 +591,13 @@ function AddSecondaryUserToUserGroups(props) {
                   <Grid
                     item
                     sm={8}
-                  // className={[userId ? classes.HideGrid : ""].join(" ")}
+                    // className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <Autocomplete
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                          BusinessDesingationData.length > 0
+                        BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -600,7 +629,7 @@ function AddSecondaryUserToUserGroups(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                          BusinessSiteMasterData.length > 0
+                        BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -632,7 +661,7 @@ function AddSecondaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                            BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }
@@ -726,15 +755,11 @@ function AddSecondaryUserToUserGroups(props) {
           <Grid container>
             <Grid item xs={12} className={`global-form inner-table-buttons`}>
               <div className={`form-buttons-container`}>
-                <Button
-                  variant="contained"
-                  type="button"
-                  className="global-submit-btn"
-                  disabled={showLoadder}
-                  onClick={assignUsers}
-                >
-                  {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                </Button>
+                <LoadActions
+                  modulePermission={usergroupACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
+
                 <Button
                   variant="contained"
                   type="reset"
@@ -769,6 +794,7 @@ AddSecondaryUserToUserGroups.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
+    acmData: state.acmData,
   };
 }
 

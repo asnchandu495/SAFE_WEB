@@ -498,7 +498,7 @@ function AdminLayout(props) {
         },
         {
           entity: "assignSecondary",
-          isAccess: true,
+          isAccess: false,
         },
         {
           entity: "assignSecondaryList",
@@ -572,10 +572,10 @@ function AdminLayout(props) {
         },
         {
           entity: "assignUser",
-          isAccess: true,
+          isAccess: false,
         },
         {
-          entity: "assignPrimaryList",
+          entity: "assignUserList",
           isAccess: true,
         },
       ],
