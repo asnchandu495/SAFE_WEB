@@ -732,13 +732,11 @@ function CreateUser(props) {
                         "required",
                         "matchRegexp:^[0-9]*$",
                         "maxNumber:9999999999",
-                        "minNumber:999999999",
                       ]}
                       errorMessages={[
                         "Please enter user id",
                         "Only numbers are allowed",
                         "Maximum allowed 10 digits",
-                        "Minimum alled 10 digits",
                       ]}
                       name="userId"
                       autoComplete="userId"

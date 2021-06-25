@@ -147,6 +147,14 @@ function UserGroups(props) {
       },
     },
     {
+      name: "uniqueKey",
+      label: "Unique Key",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
       label: "Actions",
       name: "",
       options: {

@@ -23,6 +23,49 @@ export default class ReportService {
         });
     }
 
+    getContactTracingRlapReport(getData) {
+        return this.fetch(`${this.baseURL}/Reports/ContactTrace/rlap?StartDate=${getData.startDate}&EndDate=${getData.endDate}&UserBaseAccountId=${getData.userId.userId}`, {
+            method: "GET",
+        }).then((res) => {
+            return Promise.resolve(res);
+        });
+    }
+
+    getContactTracingBleReport(getData) {
+        return this.fetch(`${this.baseURL}/ApplicationUser/GetContactTracingInfoForBLE?FromDate=${getData.startDate}&ToDate=${getData.endDate}&UserId=${getData.userId.userId}`, {
+            method: "GET",
+        }).then((res) => {
+            return Promise.resolve(res);
+        });
+    }
+
+    getAccessBreachReport(data) {
+        let SiteIds = "";
+        let LocationIds = "";
+
+        LocationIds = data.LocationId.map(function (el, idx) {
+            return "LocationId=" + el;
+        }).join("&");
+
+        SiteIds = "SiteId=" + data.SiteId;
+
+        let apiURL = `ApplicationUser/GetAllAccessBreaches?${LocationIds}&${SiteIds}&StartDate=${data.StartDate}&EndDate=${data.EndDate}`;
+
+        return this.fetch(`${this.baseURL}/${apiURL}`, {
+            method: "GET",
+        }).then((res) => {
+            return Promise.resolve(res);
+        });
+    }
+
+    getGeoFencingReport(getData) {
+        return this.fetch(`${this.baseURL}/ApplicationUser/GetAllSocialDistancingBreaches?FromDate=${getData.startDate}&ToDate=${getData.endDate}&UserId=${getData.userId.userId}`, {
+            method: "GET",
+        }).then((res) => {
+            return Promise.resolve(res);
+        });
+    }
+
     getToken() {
         // Retrieves the user token from localStorage
         return localStorage.getItem("id_token");

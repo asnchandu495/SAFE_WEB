@@ -41,7 +41,6 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import moment from "moment";
-
 import propTypes from "prop-types";
 import { connect } from "react-redux";
 import Table from "@material-ui/core/Table";
@@ -50,7 +49,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -58,6 +56,7 @@ import {
   KeyboardDatePicker,
   DateTimePicker,
 } from "@material-ui/pickers";
+import ReportService from "../../services/reportService";
 
 const styles = (theme) => ({
   root: {
@@ -106,6 +105,7 @@ function AccessBreaches(props) {
   const UserGroup = new UserGroupService();
   const siteApiCall = new SiteService();
   const [userGroupList, setuserGroupList] = useState();
+  const reportApiCall = new ReportService();
 
   const [Modalopen, setModalOpen] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
@@ -130,97 +130,63 @@ function AccessBreaches(props) {
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedLocationData, setselectedLocationData] = useState();
   const [searchForm, setSearchForm] = useState({
-    site: [],
-    location: [],
-    fromDate: moment().toISOString(),
-    toDate: moment().toISOString(),
+    SiteId: "",
+    LocationId: [],
+    StartDate: moment().toISOString(),
+    EndDate: moment().toISOString(),
   });
   const [locationDensityData, setlocationDensityData] = useState([
     {
-      id: "001",
-      name: "site 0",
-      location: { id: "001", name: " Bengaluru" },
-      status: "00",
-      usersList: [
+      SiteName: "Hyderabad",
+      locationName: "cafe",
+      numberOfInstance: 2,
+      accessBreaches: [
         {
-          id: "08",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
+          userName: "string",
+          userId: "string",
+          emailId: "string",
+          createdDate: "2021-06-25T11:00:49.625Z",
         },
         {
-          id: "09",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
+          userName: "string",
+          userId: "string",
+          emailId: "string",
+          createdDate: "2021-06-25T11:00:49.625Z",
         },
       ],
     },
     {
-      id: "002",
-      name: "Site 1",
-      location: { id: "001", name: " Hyderabad" },
-      status: "02",
-      usersList: [
+      SiteName: "Hyderabad",
+      locationName: "server room",
+      numberOfInstance: 1,
+      accessBreaches: [
         {
-          id: "08",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
-        },
-        {
-          id: "09",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
-        },
-      ],
-    },
-    {
-      id: "001",
-      name: "site2",
-      location: { id: "001", name: " Chennai" },
-      status: "00",
-      usersList: [
-        {
-          id: "08",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
-        },
-        {
-          id: "09",
-          name: "username",
-          emailid: "username@gmail.com",
-          userid: "UID001",
-          timestamp: "1-9-2020: 10:32",
+          userName: "string",
+          userId: "string",
+          emailId: "string",
+          createdDate: "2021-06-25T11:00:49.625Z",
         },
       ],
     },
   ]);
-  const locationData = [
-    { id: "01", name: "Reception Area" },
-    { id: "02", name: "Parking lot" },
-    { id: "03", name: "Cafetaria lot" },
-  ];
+  const [locationData, setLocationData] = useState([]);
+
+  useEffect(() => {
+    setComponentLoadder(true);
+    Promise.all([siteApiCall.getListSite()])
+      .then(([getAllSites]) => {
+        setAllSites(getAllSites);
+        setComponentLoadder(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const columns = [
     {
-      name: "id",
-      label: "Id",
-      options: {
-        display: "excluded",
-        print: false,
-        filter: false,
-      },
-    },
-    {
-      label: "Site ",
-      name: "name",
+      label: "Site",
+      name: "SiteName",
       options: {
         filter: false,
         sort: true,
@@ -228,21 +194,15 @@ function AccessBreaches(props) {
     },
     {
       label: "Location",
-      name: "location",
+      name: "locationName",
       options: {
         filter: false,
         sort: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return <span>{thisRowData[2].name}</span>;
-          }
-        },
       },
     },
     {
-      name: "usersList",
-      label: "UsersList",
+      name: "accessBreaches",
+      label: "accessBreaches",
       options: {
         display: "excluded",
         print: false,
@@ -251,43 +211,10 @@ function AccessBreaches(props) {
     },
     {
       label: " # of instances ",
-      name: "status",
+      name: "numberOfInstance",
       options: {
         filter: false,
         sort: true,
-      },
-    },
-
-    {
-      label: "Action",
-      name: "",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return (
-              <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick="#"
-                  ></Button>
-                </Tooltip>
-              </div>
-            );
-          }
-        },
-
-        setCellProps: (value) => {
-          return {
-            style: { width: "250px", minWidth: "250px", textAlign: "center" },
-          };
-        },
       },
     },
   ];
@@ -319,13 +246,17 @@ function AccessBreaches(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rowData[3]
-                    ? rowData[3].map((row) => (
-                        <TableRow key={row.id}>
-                          <TableCell>{row.name}</TableCell>
-                          <TableCell>{row.userid}</TableCell>
-                          <TableCell>{row.emailid}</TableCell>
-                          <TableCell>{row.timestamp}</TableCell>
+                  {rowData[2]
+                    ? rowData[2].map((row) => (
+                        <TableRow key={row.userId}>
+                          <TableCell>{row.userName}</TableCell>
+                          <TableCell>{row.userId}</TableCell>
+                          <TableCell>{row.emailId}</TableCell>
+                          <TableCell>
+                            {moment(row.createdDate).format(
+                              "DD-MM-YYYY hh:mm:ss a"
+                            )}
+                          </TableCell>
                         </TableRow>
                       ))
                     : []}
@@ -381,7 +312,19 @@ function AccessBreaches(props) {
 
   function selectedSite(e, value) {
     setselectedSiteData(value);
+    if (value) {
+      let data = value.id;
+      siteApiCall
+        .getAllLocationsBySiteId(data)
+        .then((getResult) => {
+          setLocationData(getResult);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
+
   function selectedLocation(e, value) {
     setselectedLocationData(value);
   }
@@ -396,29 +339,55 @@ function AccessBreaches(props) {
       siteApiCall.getListSite(),
       siteApiCall.getLocationManagers(),
       //   props.LoadData(),
-    ])
-
-      .then(([getAllSites, result]) => {
-        setComponentLoadder(false);
-        setAllSites(getAllSites);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    ]);
+  });
+  const handleChangeSearchForm = (getSelectedVal, name) => {
+    if (name == "userId") {
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        [name]: getSelectedVal,
+      }));
+    } else {
+      let thisValue = moment(getSelectedVal).toISOString();
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        [name]: thisValue,
+      }));
+    }
+  };
 
   function submitForm(e) {
     e.preventDefault();
-    if (selectedSiteData) {
-      searchForm.site = selectedSiteData;
-    }
-    if (selectedLocation) {
-      searchForm.location = selectedLocationData;
-    }
-    console.log(searchForm);
     settoasterServerity("");
     settoasterErrorMessageType("");
-    setComponentLoadder(true);
+
+    if (selectedSiteData) {
+      searchForm.SiteId = selectedSiteData.id;
+    }
+
+    if (selectedLocationData.length > 0) {
+      let locationArr = selectedLocationData.map((item) => item.id);
+      searchForm.LocationId = locationArr;
+    } else {
+      searchForm.LocationId = [];
+    }
+    console.log(searchForm);
+    setshowLoadder(true);
+    reportApiCall
+      .getAccessBreachReport(searchForm)
+      .then((result) => {
+        setlocationDensityData(result);
+        setTimeout(() => {
+          setModalOpen(false);
+          setshowLoadder(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
 
   return (
@@ -445,7 +414,6 @@ function AccessBreaches(props) {
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
                         <Autocomplete
-                          multiple
                           id="tags-outlined"
                           options={
                             allSites && allSites.length > 0 ? allSites : []
@@ -461,6 +429,7 @@ function AccessBreaches(props) {
                               {...params}
                               variant="outlined"
                               placeholder="Select Site"
+                              required
                             />
                           )}
                         />{" "}
@@ -478,7 +447,6 @@ function AccessBreaches(props) {
                           shrink={false}
                           className="select-label"
                         ></InputLabel>
-
                         <Autocomplete
                           multiple
                           id="tags-outlined"
@@ -487,7 +455,7 @@ function AccessBreaches(props) {
                               ? locationData
                               : []
                           }
-                          getOptionLabel={(option) => option.name}
+                          getOptionLabel={(option) => option.locationName}
                           defaultValue={selectedLocationData}
                           value={
                             selectedLocationData ? selectedLocationData : []
@@ -511,18 +479,25 @@ function AccessBreaches(props) {
                     <Grid item xs={4}>
                       <label className="">From</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers">
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
-                        name="fromDate"
+                        name="startDate"
                         id=""
-                        format="dd/MM/yyyy"
-                        value={selectedDate}
+                        format="dd/MM/yyyy hh:mm a"
+                        value={searchForm.startDate}
                         className="global-input"
-                        onChange={handleDateChange}
+                        onChange={(date, event, e) =>
+                          handleChangeSearchForm(date, "startDate")
+                        }
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
+                        required
                       />
                     </Grid>
                   </Grid>
@@ -531,20 +506,25 @@ function AccessBreaches(props) {
                     <Grid item xs={4}>
                       <label className="">To</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers">
-                      {/* {formData.isActive != "" ? "Select status" : ""} */}
-
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
-                        name="toDate"
+                        name="endDate"
                         id=""
-                        format="dd/MM/yyyy"
-                        value={selectedDate}
+                        format="dd/MM/yyyy hh:mm a"
+                        value={searchForm.endDate}
                         className="global-input"
-                        onChange={handleDateChange}
+                        onChange={(date, event, e) =>
+                          handleChangeSearchForm(date, "endDate")
+                        }
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
+                        required
                       />
                     </Grid>
                   </Grid>

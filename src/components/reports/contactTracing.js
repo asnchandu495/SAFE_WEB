@@ -321,21 +321,39 @@ function ContactTracing(props) {
     settoasterServerity("");
     settoasterErrorMessageType("");
     setshowLoadder(true);
-    reportApiCall
-      .getSocialDistancingReport(searchForm)
-      .then((result) => {
-        setContactTracingData(result);
-        setTimeout(() => {
-          setModalOpen(false);
+    if (selectedReportType == 'rlap') {
+      reportApiCall
+        .getContactTracingRlapReport(searchForm)
+        .then((result) => {
+          setContactTracingData(result);
+          setTimeout(() => {
+            setModalOpen(false);
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
           setshowLoadder(false);
-        }, 3000);
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
-      });
+        });
+    } else {
+      reportApiCall
+        .getContactTracingBleReport(searchForm)
+        .then((result) => {
+          setContactTracingData(result);
+          setTimeout(() => {
+            setModalOpen(false);
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
   }
 
   const filterOptions = createFilterOptions({
