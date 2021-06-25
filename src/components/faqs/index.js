@@ -97,13 +97,6 @@ function ViewAllFAQs(props) {
   const [languageValue, setlanguageValue] = useState([]);
   const [allLanguages, setAllLanguages] = useState([]);
 
-  const [languageJson, setlanguageJson] = useState([
-    { name: "English", rank: "1", id: "tt0111161" },
-    { name: "Portugese", rank: "2", id: "tt0068646" },
-    { name: "Spanish: Part II", rank: "3", id: "tt0071562" },
-    { name: "Mandarin", rank: "4", id: "tt0110912" },
-    { name: "Bengali.", rank: "5", id: "tt0060196" },
-  ]);
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
     return (
@@ -366,6 +359,34 @@ function ViewAllFAQs(props) {
     setlanguageValue(value);
   }
 
+  function submitLanguage() {
+    console.log(loadFormData);
+    let submitFilterdata = loadFormData;
+    if (languageValue.length > 0) {
+      let languageArr = languageValue.map((item) => item.id);
+      submitFilterdata.languageIds = languageArr;
+    } else {
+      submitFilterdata.languageIds = [];
+    }
+    console.log(submitFilterdata);
+
+    setshowLoadder(true);
+
+    props
+      .LoadData(submitFilterdata)
+
+      .then((result) => {
+        setshowLoadder(false);
+        setModalOpen(false);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
+  }
+
   return (
     <div className="innerpage-container">
       <Dialog
@@ -378,7 +399,7 @@ function ViewAllFAQs(props) {
           Filters
         </DialogTitle>
 
-        <ValidatorForm className={`global-form`} onSubmit="#">
+        <ValidatorForm className={`global-form`} onSubmit={submitLanguage}>
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
