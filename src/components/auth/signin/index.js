@@ -51,330 +51,570 @@ function Signin(props) {
   ]);
   const [acm, setAcm] = useState([
     {
-      "module": "user",
-      "permissions": [
+      module: "user",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+        {
+          entity: "updateUserCovidState",
+          isAccess: true,
+        },
+        {
+          entity: "updateUserTemp",
+          isAccess: true,
+        },
+        {
+          entity: "updateUserShift",
+          isAccess: true,
+        },
+        {
+          entity: "import",
+          isAccess: true,
+        },
+        {
+          entity: "viewImportHistory",
+          isAccess: true,
+        },
+        {
+          entity: "downloadTemplate",
+          isAccess: true,
+        },
+        {
+          entity: "downloadImportData",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "site",
-      "permissions": [
+      module: "site",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+        {
+          entity: "floorList",
+          isAccess: true,
+        },
+        {
+          entity: "floorView",
+          isAccess: true,
+        },
+        {
+          entity: "floorUpdate",
+          isAccess: true,
+        },
+        {
+          entity: "floorDelete",
+          isAccess: true,
+        },
+        {
+          entity: "floorCreate",
+          isAccess: true,
+        },
+        {
+          entity: "locationList",
+          isAccess: true,
+        },
+        {
+          entity: "locationView",
+          isAccess: true,
+        },
+        {
+          entity: "locationUpdate",
+          isAccess: true,
+        },
+        {
+          entity: "locationdelete",
+          isAccess: true,
+        },
+        {
+          entity: "locationCreate",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "designation",
-      "permissions": [
+      module: "designation",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "covidState",
-      "permissions": [
+      module: "covidState",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "faq",
-      "permissions": [
+      module: "faq",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+        {
+          entity: "sectionCreate",
+          isAccess: true,
+        },
+        {
+          entity: "assign",
+          isAccess: true,
+        },
+        {
+          entity: "assignCancel",
+          isAccess: true,
+        },
+        {
+          entity: "changeDoc",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "settings",
-      "permissions": [
+      module: "settings",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "userGroup",
-      "permissions": [
+      module: "userGroup",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+        {
+          entity: "assignPrimary",
+          isAccess: true,
+        },
+        {
+          entity: "assignPrimaryList",
+          isAccess: true,
+        },
+        {
+          entity: "assignSecondary",
+          isAccess: true,
+        },
+        {
+          entity: "assignSecondaryList",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "emergencyContact",
-      "permissions": [
+      module: "emergencyContact",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+        {
+          entity: "assignUser",
+          isAccess: true,
+        },
+        {
+          entity: "assignUserCancel",
+          isAccess: true,
+        },
+        {
+          entity: "changeDoc",
+          isAccess: true,
+        },
+        {
+          entity: "assignUserList",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "team",
-      "permissions": [
+      module: "team",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+        {
+          entity: "assignUser",
+          isAccess: true,
+        },
+        {
+          entity: "assignPrimaryList",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "questionnaire",
-      "permissions": [
+      module: "questionnaire",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+        {
+          entity: "adopt",
+          isAccess: true,
+        },
+        {
+          entity: "publish",
+          isAccess: true,
+        },
+        {
+          entity: "orderExecution",
+          isAccess: true,
+        },
+        {
+          entity: "evaluation",
+          isAccess: true,
+        },
+        {
+          entity: "addQuestion",
+          isAccess: true,
+        },
+        {
+          entity: "viewQuestion",
+          isAccess: true,
+        },
+        {
+          entity: "updateQuestion",
+          isAccess: true,
+        },
+        {
+          entity: "deleteQuestion",
+          isAccess: true,
+        },
+        {
+          entity: "jump",
+          isAccess: true,
+        },
+        {
+          entity: "assignUserGroupList",
+          isAccess: true,
+        },
+        {
+          entity: "assignUserGroupCancel",
+          isAccess: true,
+        },
+        {
+          entity: "assignUserGroup",
+          isAccess: true,
+        },
+        {
+          entity: "changeDoc",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "healthCheck",
-      "permissions": [
+      module: "healthCheck",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "workflow",
-      "permissions": [
+      module: "workflow",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
+          entity: "delete",
+          isAccess: true,
+        },
+        {
+          entity: "activate",
+          isAccess: true,
+        },
+        {
+          entity: "deactivate",
+          isAccess: true,
+        },
+        {
+          entity: "activityList",
+          isAccess: true,
+        },
+        {
+          entity: "activityRevoke",
+          isAccess: true,
+        },
+        {
+          entity: "activityAssign",
+          isAccess: true,
+        },
+        {
+          entity: "optionList",
+          isAccess: true,
+        },
+        {
+          entity: "optionAssign",
+          isAccess: true,
+        },
+        {
+          entity: "optionRevoke",
+          isAccess: true,
+        },
+        {
+          entity: "optionUpdate",
+          isAccess: true,
+        },
+      ],
     },
     {
-      "module": "report",
-      "permissions": [
+      module: "report",
+      permissions: [
         {
-          "entity": "list",
-          "isAccess": true
+          entity: "list",
+          isAccess: true,
         },
         {
-          "entity": "view",
-          "isAccess": true
+          entity: "view",
+          isAccess: true,
         },
         {
-          "entity": "create",
-          "isAccess": true
+          entity: "create",
+          isAccess: true,
         },
         {
-          "entity": "update",
-          "isAccess": true
+          entity: "update",
+          isAccess: true,
         },
         {
-          "entity": "delete",
-          "isAccess": true
-        }
-      ]
-    }
+          entity: "delete",
+          isAccess: true,
+        },
+        {
+          entity: "density",
+          isAccess: true,
+        },
+        {
+          entity: "densityBreach",
+          isAccess: true,
+        },
+        {
+          entity: "staffInOffice",
+          isAccess: true,
+        },
+        {
+          entity: "socialBreach",
+          isAccess: true,
+        },
+        {
+          entity: "accessBreach",
+          isAccess: true,
+        },
+        {
+          entity: "geoBreach",
+          isAccess: true,
+        },
+        {
+          entity: "contactTrace",
+          isAccess: true,
+        },
+      ],
+    },
   ]);
 
   function handleChange(e) {
