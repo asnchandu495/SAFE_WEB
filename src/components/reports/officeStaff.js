@@ -43,6 +43,7 @@ import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import MasterService from "../../services/masterDataService";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 import propTypes from "prop-types";
 import { connect } from "react-redux";
@@ -325,6 +326,13 @@ function OfficeStaff(props) {
     toDate: moment().toISOString(),
     frequency: "",
   });
+  const [resetForm, setresetForm] = useState({
+    site: [],
+    team: [],
+    fromDate: moment().toISOString(),
+    toDate: moment().toISOString(),
+    frequency: "",
+  });
 
   function handleChange(e) {
     setisAlertBoxOpened(true);
@@ -353,7 +361,12 @@ function OfficeStaff(props) {
       [name]: thisValue,
     }));
   };
-
+  function resetFilterForm() {
+    setselectedSiteData([]);
+    setselectedTeamData([]);
+    setSelectedDate();
+    setSearchForm(resetForm);
+  }
   function submitForm(e) {
     e.preventDefault();
     if (selectedSiteData) {
@@ -416,6 +429,7 @@ function OfficeStaff(props) {
                           }
                           getOptionLabel={(option) => option.name}
                           defaultValue={selectedSiteData}
+                          value={selectedSiteData ? selectedSiteData : []}
                           onChange={selectedSite}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
@@ -450,6 +464,7 @@ function OfficeStaff(props) {
                           }
                           getOptionLabel={(option) => option.name}
                           defaultValue={selectedTeamData}
+                          value={selectedTeamData ? selectedTeamData : []}
                           onChange={selectedTeam}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
@@ -550,6 +565,12 @@ function OfficeStaff(props) {
               ) : null}
             </DialogContent>
             <DialogActions>
+              <Button
+                onClick={resetFilterForm}
+                className="global-filter-reset-btn"
+              >
+                <ReplayIcon></ReplayIcon>
+              </Button>
               <Button
                 variant="contained"
                 type="submit"

@@ -18,7 +18,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
-
+import ReplayIcon from "@material-ui/icons/Replay";
 import Dialog from "@material-ui/core/Dialog";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -386,6 +386,10 @@ function AccessBreaches(props) {
     setselectedLocationData(value);
   }
 
+  // function resetFilterForm() {
+  //   setselectedSiteData();
+  //   setselectedLocationData([]);
+  // }
   useEffect(() => {
     setComponentLoadder(true);
     Promise.all([
@@ -448,6 +452,7 @@ function AccessBreaches(props) {
                           }
                           getOptionLabel={(option) => option.name}
                           defaultValue={selectedSiteData}
+                          value={selectedSiteData ? selectedSiteData : ""}
                           onChange={selectedSite}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
@@ -484,6 +489,9 @@ function AccessBreaches(props) {
                           }
                           getOptionLabel={(option) => option.name}
                           defaultValue={selectedLocationData}
+                          value={
+                            selectedLocationData ? selectedLocationData : []
+                          }
                           onChange={selectedLocation}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
@@ -544,6 +552,12 @@ function AccessBreaches(props) {
               ) : null}
             </DialogContent>
             <DialogActions>
+              <Button
+                // onClick={resetFilterForm}
+                className="global-filter-reset-btn"
+              >
+                <ReplayIcon></ReplayIcon>
+              </Button>
               <Button
                 variant="contained"
                 type="submit"

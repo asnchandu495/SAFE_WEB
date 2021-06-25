@@ -53,6 +53,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import ReplayIcon from "@material-ui/icons/Replay";
 
 const styles = (theme) => ({
   root: {
@@ -358,6 +359,13 @@ function DensityThreshold(props) {
         console.log(err);
       });
   }, []);
+
+  function resetFilterForm() {
+    setselectedSiteData();
+    setselectedLocationData();
+    setSelectedDate();
+    // setSearchForm(resetformData);
+  }
   function submitForm(e) {
     e.preventDefault();
     if (selectedSiteData) {
@@ -402,6 +410,7 @@ function DensityThreshold(props) {
                           }
                           getOptionLabel={(option) => option.name}
                           defaultValue={selectedSiteData}
+                          value={selectedSiteData ? selectedSiteData : []}
                           onChange={selectedSite}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
@@ -438,6 +447,9 @@ function DensityThreshold(props) {
                           }
                           getOptionLabel={(option) => option.name}
                           defaultValue={selectedLocationData}
+                          value={
+                            selectedLocationData ? selectedLocationData : []
+                          }
                           onChange={selectedLocation}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
@@ -496,6 +508,12 @@ function DensityThreshold(props) {
               ) : null}
             </DialogContent>
             <DialogActions>
+              <Button
+                onClick={resetFilterForm}
+                className="global-filter-reset-btn"
+              >
+                <ReplayIcon></ReplayIcon>
+              </Button>
               <Button
                 variant="contained"
                 type="submit"

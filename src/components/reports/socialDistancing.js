@@ -23,7 +23,9 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
+import Autocomplete, {
+  createFilterOptions,
+} from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -52,6 +54,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import DateFnsUtils from "@date-io/date-fns";
+import ReplayIcon from "@material-ui/icons/Replay";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -137,32 +140,40 @@ function SocailDistancing(props) {
     startDate: moment().toISOString(),
     endDate: moment().toISOString(),
   });
+  const [resetForm, setResetForm] = useState({
+    userId: null,
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
+  });
+
   const [selectedValue, setSelectedValue] = React.useState("a");
   const [socialDistancingData, setSocialDistancingData] = useState([
     {
-      "applicationUserId": "001",
-      "userName": "Saravanan",
-      "emailId": "saravana@gmail.com",
-      "numberOfInstance": 12,
-      "usersBreach": [
+      applicationUserId: "001",
+      userName: "Saravanan",
+      emailId: "saravana@gmail.com",
+      numberOfInstance: 12,
+      usersBreach: [
         {
-          "location": "Conference Hall",
-          "createdDate": "2021-06-23T04:10:58.328Z"
+          location: "Conference Hall",
+          createdDate: "2021-06-23T04:10:58.328Z",
         },
         {
-          "location": "Cafetaria",
-          "createdDate": "2021-06-23T04:10:58.328Z"
-        }
-      ]
-    }
+          location: "Cafetaria",
+          createdDate: "2021-06-23T04:10:58.328Z",
+        },
+      ],
+    },
   ]);
   const [applicationUsers, setApplicationUsers] = useState([]);
 
   useEffect(() => {
     setComponentLoadder(true);
-    userApiCall.getProfileDetails()
+    userApiCall
+      .getProfileDetails()
       .then((loggedinUserDetails) => {
-        userApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id)
+        userApiCall
+          .GetAllUsersForSupervisor(loggedinUserDetails.id)
           .then((getUsers) => {
             setApplicationUsers(getUsers);
             setComponentLoadder(false);
@@ -248,11 +259,15 @@ function SocailDistancing(props) {
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                      <TableRow key={row.location}>
-                        <TableCell>{row.location}</TableCell>
-                        <TableCell>{moment(row.createdDate).format('DD/MM/yyyy hh:mm a')}</TableCell>
-                      </TableRow>
-                    ))
+                        <TableRow key={row.location}>
+                          <TableCell>{row.location}</TableCell>
+                          <TableCell>
+                            {moment(row.createdDate).format(
+                              "DD/MM/yyyy hh:mm a"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -265,7 +280,7 @@ function SocailDistancing(props) {
     print: false,
     viewColumns: false,
     download: false,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -307,9 +322,11 @@ function SocailDistancing(props) {
         [name]: thisValue,
       }));
     }
-
   };
 
+  function resetFilterForm() {
+    setSearchForm(resetForm);
+  }
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -333,7 +350,8 @@ function SocailDistancing(props) {
   }
 
   const filterOptions = createFilterOptions({
-    stringify: ({ firstName, lastName, userId }) => `${firstName} ${lastName} ${userId}`
+    stringify: ({ firstName, lastName, userId }) =>
+      `${firstName} ${lastName} ${userId}`,
   });
 
   return (
@@ -363,14 +381,18 @@ function SocailDistancing(props) {
                           name="userId"
                           id="tags-outlined"
                           options={
-                            applicationUsers && applicationUsers.length > 0 ? applicationUsers : []
+                            applicationUsers && applicationUsers.length > 0
+                              ? applicationUsers
+                              : []
                           }
                           getOptionLabel={({ firstName, lastName }) => {
                             return `${firstName} ${lastName}`;
                           }}
                           defaultValue={searchForm.userId}
                           value={searchForm.userId ? searchForm.userId : null}
-                          onChange={(e, v) => handleChangeSearchForm(v, "userId")}
+                          onChange={(e, v) =>
+                            handleChangeSearchForm(v, "userId")
+                          }
                           filterSelectedOptions
                           className="global-input autocomplete-select"
                           filterOptions={filterOptions}
@@ -401,7 +423,11 @@ function SocailDistancing(props) {
                     <Grid item xs={4}>
                       <label className="">From</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers report-pickers">
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
                         name="startDate"
@@ -423,7 +449,11 @@ function SocailDistancing(props) {
                     <Grid item xs={4}>
                       <label className="">To</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers report-pickers">
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
                         name="endDate"
@@ -445,6 +475,12 @@ function SocailDistancing(props) {
               ) : null}
             </DialogContent>
             <DialogActions>
+              <Button
+                onClick={resetFilterForm}
+                className="global-filter-reset-btn"
+              >
+                <ReplayIcon></ReplayIcon>
+              </Button>
               <Button
                 variant="contained"
                 type="submit"

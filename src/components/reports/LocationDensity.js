@@ -40,6 +40,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
 import MuiTablePagination from "@material-ui/core/TablePagination";
+import ReplayIcon from "@material-ui/icons/Replay";
 import moment from "moment";
 
 const styles = (theme) => ({
@@ -122,10 +123,7 @@ function LocationDensity(props) {
 
   useEffect(() => {
     setComponentLoadder(true);
-    Promise.all([
-      siteApiCall.getListSite(),
-      siteApiCall.getLocationManagers(),
-    ])
+    Promise.all([siteApiCall.getListSite(), siteApiCall.getLocationManagers()])
       .then(([getAllSites, result]) => {
         setComponentLoadder(false);
         setAllSites(getAllSites);
@@ -203,7 +201,7 @@ function LocationDensity(props) {
         noMatch: "There are no reports",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -300,6 +298,10 @@ function LocationDensity(props) {
     SiteId: "",
     LocationId: [],
   });
+  const [resetformData, SetresetformData] = useState({
+    SiteId: "",
+    LocationId: [],
+  });
 
   function selectedSite(e, value) {
     setselectedSiteData(value);
@@ -370,6 +372,13 @@ function LocationDensity(props) {
     }
   }
 
+  function resetFilterForm() {
+    setselectedSiteData();
+    setselectedLocationData();
+
+    setSearchForm(resetformData);
+  }
+
   function submitFormDensity() {
     setshowLoadder(true);
 
@@ -378,9 +387,7 @@ function LocationDensity(props) {
     }
 
     if (selectedLocationData.length > 0) {
-      let locationArr = selectedLocationData.map(
-        (item) => item.id
-      );
+      let locationArr = selectedLocationData.map((item) => item.id);
       searchForm.LocationId = locationArr;
     } else {
       searchForm.LocationId = [];
@@ -476,6 +483,7 @@ function LocationDensity(props) {
                         name="location"
                         getOptionLabel={(option) => option.locationName}
                         defaultValue={selectedLocationData}
+                        value={selectedLocationData ? selectedLocationData : []}
                         onChange={selectedLocation}
                         filterSelectedOptions
                         className="global-input autocomplete-select"
@@ -501,6 +509,12 @@ function LocationDensity(props) {
             ) : null}
           </DialogContent>
           <DialogActions>
+            <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
             <Button
               variant="contained"
               type="submit"

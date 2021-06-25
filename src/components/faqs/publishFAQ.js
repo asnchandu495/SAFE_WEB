@@ -299,6 +299,10 @@ function PublishFAQ(props) {
     setlanguageValue(value);
   }
 
+  function resetFilterForm() {
+    setlanguageValue([]);
+  }
+
   function submitLanguage() {
     console.log(loadFormData);
     let submitFilterdata = loadFormData;
@@ -373,7 +377,10 @@ function PublishFAQ(props) {
             ) : null}
           </DialogContent>
           <DialogActions>
-            <Button onClick="#" className="global-filter-reset-btn">
+            <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
               <ReplayIcon></ReplayIcon>
             </Button>
             <Button
