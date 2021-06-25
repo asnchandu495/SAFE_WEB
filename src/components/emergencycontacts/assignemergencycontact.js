@@ -82,7 +82,7 @@ function AssignEmergencyContacts(props) {
         noMatch: "There are no emergency contact assigned",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
     // searchOpen: true,

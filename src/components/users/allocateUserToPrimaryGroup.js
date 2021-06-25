@@ -260,7 +260,7 @@ function AllocateUserToPrimaryGroup(props) {
         className="global-dialog confirmation-dialog global-form"
       >
         <DialogTitle id="customized-dialog-title" onClose={handlesubmitClose}>
-          Assign user
+          Assign User To User Group
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>

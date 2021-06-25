@@ -290,7 +290,7 @@ function Teams(props) {
         noMatch: "There are no users  teams",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
     customSearch: (searchQuery, currentRow, columns) => {
@@ -310,7 +310,7 @@ function Teams(props) {
       });
       return isFound;
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
   };
 
   return (

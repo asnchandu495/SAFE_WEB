@@ -319,7 +319,7 @@ function Questionaire(props) {
         noMatch: "There are no questionnaire",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
         rowsPerPage: "Rows Per Page",
       },
     },

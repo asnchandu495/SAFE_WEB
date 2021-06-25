@@ -211,10 +211,10 @@ function ViewAllFAQs(props) {
         noMatch: "There are no FAQs. Add one now",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>

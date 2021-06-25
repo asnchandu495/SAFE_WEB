@@ -201,7 +201,7 @@ function AssignedFAQs(props) {
         noMatch: "There are no allocations",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
     customToolbar: () => {
@@ -641,15 +641,15 @@ function AssignedFAQs(props) {
                       <MenuItem value="">None</MenuItem>
                       {docStatus && docStatus.length > 0
                         ? docStatus.map((docStatus) => {
-                            return (
-                              <MenuItem
-                                value={docStatus.id}
-                                key={docStatus.id + "_status"}
-                              >
-                                {docStatus.name}
-                              </MenuItem>
-                            );
-                          })
+                          return (
+                            <MenuItem
+                              value={docStatus.id}
+                              key={docStatus.id + "_status"}
+                            >
+                              {docStatus.name}
+                            </MenuItem>
+                          );
+                        })
                         : ""}
                     </Select>
                   </FormControl>

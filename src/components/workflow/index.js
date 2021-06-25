@@ -302,7 +302,7 @@ function Workflow(props) {
         noMatch: "No matching records found",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
     customSearch: (searchQuery, currentRow, columns) => {
@@ -326,7 +326,7 @@ function Workflow(props) {
       });
       return isFound;
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -564,12 +564,12 @@ function Workflow(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                              return (
-                                <MenuItem value={UserStatus.id}>
-                                  {UserStatus.name}
-                                </MenuItem>
-                              );
-                            })
+                            return (
+                              <MenuItem value={UserStatus.id}>
+                                {UserStatus.name}
+                              </MenuItem>
+                            );
+                          })
                           : ""}
                       </Select>
                     </FormControl>

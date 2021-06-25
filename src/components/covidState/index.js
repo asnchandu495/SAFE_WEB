@@ -116,7 +116,7 @@ function CovidState(props) {
         noMatch: "No COVID states found",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
   };

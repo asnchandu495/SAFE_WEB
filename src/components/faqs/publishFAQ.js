@@ -100,7 +100,7 @@ function PublishFAQ(props) {
         noMatch: "There are no Drafts.",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
   };

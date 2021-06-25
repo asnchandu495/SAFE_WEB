@@ -131,7 +131,7 @@ function ListFloor(props) {
         noMatch: "There are no floors",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
 

@@ -214,11 +214,11 @@ function AddPrimaryUserTeam(props) {
         noMatch: "There are no users",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
 
     customToolbar: () => {
       return (
@@ -411,7 +411,7 @@ function AddPrimaryUserTeam(props) {
                         id="tags-outlined"
                         options={
                           designationMasterData &&
-                          designationMasterData.length > 0
+                            designationMasterData.length > 0
                             ? designationMasterData
                             : []
                         }
@@ -512,7 +512,7 @@ function AddPrimaryUserTeam(props) {
                         id="tags-outlined"
                         options={
                           designationMasterData &&
-                          designationMasterData.length > 0
+                            designationMasterData.length > 0
                             ? designationMasterData
                             : []
                         }

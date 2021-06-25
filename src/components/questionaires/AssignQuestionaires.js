@@ -399,12 +399,12 @@ function AssignQuestionaires(props) {
         noMatch: "There are no  assigned users",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
         rowsPerPage: "Rows Per Page",
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
 
     customToolbar: () => {
       return (
@@ -521,7 +521,7 @@ function AssignQuestionaires(props) {
         aria-labelledby="form-dialog-title"
         open={Modalopen}
         className="global-dialog"
-        // open={props.Modalopen}
+      // open={props.Modalopen}
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Assign Questionnaire to User Group
@@ -638,12 +638,12 @@ function AssignQuestionaires(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                              return (
-                                <MenuItem value={UserStatus.id}>
-                                  {UserStatus.name}
-                                </MenuItem>
-                              );
-                            })
+                            return (
+                              <MenuItem value={UserStatus.id}>
+                                {UserStatus.name}
+                              </MenuItem>
+                            );
+                          })
                           : ""}
                       </Select>
                     </FormControl>

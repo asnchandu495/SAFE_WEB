@@ -153,7 +153,7 @@ function ListSite(props) {
         noMatch: "There are no locations",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
 

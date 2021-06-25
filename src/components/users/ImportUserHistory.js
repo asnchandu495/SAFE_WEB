@@ -68,11 +68,11 @@ function ImportUserHistory(props) {
         noMatch: "There are no users",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: (value, tableMeta, updateValue) => {
       return (
         <div className={`maingrid-actions`}>

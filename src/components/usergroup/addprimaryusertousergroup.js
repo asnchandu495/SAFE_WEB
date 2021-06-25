@@ -293,7 +293,7 @@ function AddPrimaryUserToUserGroups(props) {
         noMatch: "There are no users",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
 

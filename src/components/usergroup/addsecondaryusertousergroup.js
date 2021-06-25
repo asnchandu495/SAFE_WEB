@@ -356,11 +356,11 @@ function AddSecondaryUserToUserGroups(props) {
         noMatch: "There are no users",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: (value, tableMeta, updateValue) => {
       console.log("id");
       console.log(selectedUsersForCovidState);
@@ -532,7 +532,7 @@ function AddSecondaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                          BusinessUserRoleMasterData.length > 0
+                            BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -562,13 +562,13 @@ function AddSecondaryUserToUserGroups(props) {
                   <Grid
                     item
                     sm={8}
-                    // className={[userId ? classes.HideGrid : ""].join(" ")}
+                  // className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <Autocomplete
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                        BusinessDesingationData.length > 0
+                          BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -600,7 +600,7 @@ function AddSecondaryUserToUserGroups(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                        BusinessSiteMasterData.length > 0
+                          BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -632,7 +632,7 @@ function AddSecondaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                            BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }

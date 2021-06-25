@@ -110,7 +110,7 @@ function EmergencyContact(props) {
         noMatch: "There are no emergency contacts",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
   };

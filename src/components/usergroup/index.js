@@ -120,7 +120,7 @@ function UserGroups(props) {
         noMatch: "There are no user groups",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
     // customToolbar: () => {

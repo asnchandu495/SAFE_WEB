@@ -110,7 +110,7 @@ function ListAssignedDesignation(props) {
         noMatch: "There are no users assign designation",
       },
       pagination: {
-        jumpToPage: "Goto page:",
+        jumpToPage: "Go to page:",
       },
     },
   };
