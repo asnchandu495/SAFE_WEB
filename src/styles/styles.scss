@@ -1414,6 +1414,12 @@ label.required {
   }
 }
 
+.no-action-checkbox-table{
+  tbody td {
+    padding: 5px !important;
+  }
+}
+
 .modal-min-width {
   .MuiDialog-paper {
     min-width: 450px;

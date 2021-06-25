@@ -35,6 +35,7 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import SiteService from "../../services/siteService";
 import UserService from "../../services/usersService";
+import CovidStateApiServices from "../../services/masterDataService";
 import ReportService from "../../services/reportService";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -51,6 +52,8 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import NotificationImportantIcon from "@material-ui/icons/NotificationImportant";
+import ChangeStatusIcon from "@material-ui/icons/SyncAlt";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -108,6 +111,7 @@ function ContactTracing(props) {
   const siteApiCall = new SiteService();
   const userApiCall = new UserService();
   const reportApiCall = new ReportService();
+  const mastersApiCall = new CovidStateApiServices();
 
   const [userGroupList, setuserGroupList] = useState();
   const [Modalopen, setModalOpen] = useState(false);
@@ -138,33 +142,36 @@ function ContactTracing(props) {
     endDate: moment().toISOString(),
   });
   const [selectedValue, setSelectedValue] = React.useState("a");
-  const [socialDistancingData, setSocialDistancingData] = useState([
+  const [contactTracingData, setContactTracingData] = useState([
     {
-      "applicationUserId": "001",
-      "userName": "Saravanan",
-      "emailId": "saravana@gmail.com",
-      "numberOfInstance": 12,
-      "usersBreach": [
-        {
-          "location": "Conference Hall",
-          "createdDate": "2021-06-23T04:10:58.328Z"
-        },
-        {
-          "location": "Cafetaria",
-          "createdDate": "2021-06-23T04:10:58.328Z"
-        }
-      ]
+      "name": "Saravanan",
+      "userId": "0012345",
+      "userBaseAccountId": "2345110",
     }
   ]);
   const [applicationUsers, setApplicationUsers] = useState([]);
+  const [RowsSelected, setRowsSelected] = useState([]);
+  const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
+    []
+  );
+  const [modalChangeValue, setmodalChangeValue] = useState();
+  const [ChangeModalOpen, setChangeModalOpen] = useState(false);
+  const [BulkModalOpen, setBulkModalOpen] = useState(false);
+  const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
+  const [covidStatelist, setcovidStatelist] = useState();
+  const [selectedReportType, setSelectedReportType] = useState("");
 
   useEffect(() => {
     setComponentLoadder(true);
     userApiCall.getProfileDetails()
       .then((loggedinUserDetails) => {
-        userApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id)
-          .then((getUsers) => {
+        Promise.all([
+          userApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id),
+          mastersApiCall.getCOVIDStates(),
+        ])
+          .then(([getUsers, getCovidStates]) => {
             setApplicationUsers(getUsers);
+            setBusinessCovidStateData(getCovidStates);
             setComponentLoadder(false);
           })
           .catch((err) => {
@@ -178,45 +185,27 @@ function ContactTracing(props) {
 
   const columns = [
     {
-      name: "id",
-      label: "Id",
-      options: {
-        display: "excluded",
-        print: false,
-        filter: false,
-      },
-    },
-    {
-      label: "UserId ",
-      name: "applicationUserId",
+      label: "Name",
+      name: "name",
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      label: "EmailId",
-      name: "emailId",
+      label: "UserId",
+      name: "userId",
       options: {
         filter: false,
         sort: false,
       },
     },
     {
-      name: "usersBreach",
-      label: "usersBreach",
+      name: "userBaseAccountId",
+      label: "User Base AccountId",
       options: {
-        display: "excluded",
         print: false,
         filter: false,
-      },
-    },
-    {
-      label: " # of instances ",
-      name: "numberOfInstance",
-      options: {
-        filter: false,
-        sort: false,
       },
     },
   ];
@@ -230,45 +219,35 @@ function ContactTracing(props) {
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
     rowsPerPage: 5,
-    expandableRows: true,
-    expandableRowsHeader: false,
-    renderExpandableRow: (rowData, rowMeta) => {
-      console.log(rowData);
-      return (
-        <tr>
-          <td colSpan={6}>
-            <TableContainer className="inner-table">
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Location</TableCell>
-                    <TableCell>Timestamp</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rowData[3]
-                    ? rowData[3].map((row) => (
-                      <TableRow key={row.location}>
-                        <TableCell>{row.location}</TableCell>
-                        <TableCell>{moment(row.createdDate).format('DD/MM/yyyy hh:mm a')}</TableCell>
-                      </TableRow>
-                    ))
-                    : []}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </td>
-        </tr>
-      );
-    },
     page: 1,
     print: false,
     viewColumns: false,
     download: false,
+    selectableRows: "multiple",
+    disableToolbarSelect: true,
+    onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
+      console.log("rows");
+      console.log(currentRowSelected);
+      var setRowsSelectedArray = [];
+      allRowsSelected.map((user, i) => {
+        setRowsSelectedArray.push(user.dataIndex);
+      });
+      setRowsSelected(setRowsSelectedArray);
+      var selectedUsersToCovidStateArray = [];
+      allRowsSelected.map((user, i) => {
+        selectedUsersToCovidStateArray.push(user.dataIndex);
+      });
+      let finalUsers = [];
+      selectedUsersToCovidStateArray.map((user) => {
+        finalUsers.push({ id: user.id });
+      });
+      console.log(finalUsers);
+      setSelectedUsersForCovidState(finalUsers);
+    },
     customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
-        <div className={`maingrid-actions`}>
+        <div className={`maingrid-actions action-buttons-container`}>
           <Tooltip title="Filter ">
             <Button
               variant="contained"
@@ -277,6 +256,33 @@ function ContactTracing(props) {
               onClick={handleClickOpenModal}
             ></Button>
           </Tooltip>
+          {RowsSelected.length ? (
+            <>
+              <Tooltip title="Alert">
+                <Button
+                  variant="contained"
+                  color="default"
+                  startIcon={<NotificationImportantIcon />}
+                  className={["delete-icon"].join(" ")}
+                  onClick={() =>
+                    handleClickOpenConfirmationModal(selectedUsersForCovidState)
+                  }
+                ></Button>
+              </Tooltip>
+              <Tooltip title="Change Covid State">
+                <Button
+                  variant="contained"
+                  startIcon={<ChangeStatusIcon />}
+                  className={`edit-icon`}
+                  onClick={() =>
+                    handleClickOpenBulkModal(selectedUsersForCovidState)
+                  }
+                ></Button>
+              </Tooltip>
+            </>
+          ) : (
+            ""
+          )}
         </div>
       );
     },
@@ -318,7 +324,7 @@ function ContactTracing(props) {
     reportApiCall
       .getSocialDistancingReport(searchForm)
       .then((result) => {
-        setSocialDistancingData(result);
+        setContactTracingData(result);
         setTimeout(() => {
           setModalOpen(false);
           setshowLoadder(false);
@@ -336,8 +342,106 @@ function ContactTracing(props) {
     stringify: ({ firstName, lastName, userId }) => `${firstName} ${lastName} ${userId}`
   });
 
+  const handleClickOpenConfirmationModal = (value) => {
+    var user = value[1];
+    setSelectedRowDetails(value);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("alertreport");
+    setConfirmationHeaderTittle("Alert");
+    setConfirmationDialogContextText(
+      `Alert! ${user} has been reported as Covid positive. As a precautionary step, please WFH for next 2 week. Contact your supervisor for more information.`
+    );
+  };
+
+  const handleChangeState = (row) => {
+    console.log(row[0]);
+    setmodalChangeValue(row[0]);
+    setChangeModalOpen(true);
+  };
+
+  const handleClickOpenBulkModal = () => {
+    setBulkModalOpen(true);
+  };
+
+  const handleClickCloseBulkModal = () => {
+    setBulkModalOpen(false);
+  };
+
+  function covidStateSelect(e, value) {
+    setcovidStatelist(value);
+  }
+
+  const handleChangeReport = (e) => {
+    setSelectedReportType(e.target.value);
+  }
+
   return (
     <div className="innerpage-container">
+      <Dialog
+        onClose={handleClickCloseBulkModal}
+        aria-labelledby="customized-dialog-title"
+        className="global-dialog confirmation-dialog global-form bulk-covidstate-update-reports"
+        aria-labelledby="form-dialog-title"
+        open={BulkModalOpen}
+      >
+        <DialogTitle
+          id="customized-dialog-title"
+          onClose={handleClickCloseBulkModal}
+        >
+          Change covid state of users
+        </DialogTitle>
+        <ValidatorForm className={`global-form`} onSubmit="#">
+          <DialogContent dividers>
+            {!componentLoadder ? (
+              <Grid container spacing={3}>
+                <Grid item xs={12} container>
+                  <Grid item xs={3}>
+                    <label className="">Covid State</label>
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Autocomplete
+                      id="tags-outlined"
+                      options={
+                        BusinessCovidStateData &&
+                          BusinessCovidStateData.length > 0
+                          ? BusinessCovidStateData
+                          : []
+                      }
+                      getOptionLabel={(option) => option.stateName}
+                      onChange={covidStateSelect}
+                      defaultValue={covidStatelist}
+                      name="covidState"
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select  covid state"
+                        />
+                      )}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            ) : null}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              type="submit"
+              className="global-submit-btn"
+              disabled={showLoadder}
+            >
+              {showLoadder ? <ButtonLoadderComponent /> : "Save"}
+            </Button>
+            <Button onClick={handleClose} className="global-cancel-btn">
+              Cancel
+            </Button>
+          </DialogActions>
+        </ValidatorForm>{" "}
+      </Dialog>
+
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -355,7 +459,18 @@ function ContactTracing(props) {
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">User ID </label>
+                      <label className="">Report Type</label>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <RadioGroup row aria-label="gender" name="report_type" value={selectedReportType} onChange={handleChangeReport}>
+                        <FormControlLabel value="rlap" control={<Radio />} label="RLAP" />
+                        <FormControlLabel value="ble" control={<Radio />} label="BLE" />
+                      </RadioGroup>
+                    </Grid>
+                  </Grid>
+                  <Grid item cs={12} container>
+                    <Grid item xs={4}>
+                      <label className="">User</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -480,10 +595,10 @@ function ContactTracing(props) {
 
       <MUIDataTable
         title={""}
-        data={socialDistancingData}
+        data={contactTracingData}
         columns={columns}
         options={options}
-        className="global-table reports-table no-action-table"
+        className="global-table reports-table no-action-table no-action-checkbox-table"
       />
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
