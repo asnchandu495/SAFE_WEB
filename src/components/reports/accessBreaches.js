@@ -135,6 +135,12 @@ function AccessBreaches(props) {
     StartDate: moment().toISOString(),
     EndDate: moment().toISOString(),
   });
+  const [resetForm, setResetForm] = useState({
+    SiteId: "",
+    LocationId: [],
+    StartDate: moment().toISOString(),
+    EndDate: moment().toISOString(),
+  });
   const [locationDensityData, setlocationDensityData] = useState([
     {
       SiteName: "Hyderabad",
@@ -344,6 +350,12 @@ function AccessBreaches(props) {
     }
   };
 
+  function resetFilterForm() {
+    setselectedSiteData();
+    setselectedLocationData();
+    setSearchForm(resetForm);
+  }
+
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -521,7 +533,7 @@ function AccessBreaches(props) {
             </DialogContent>
             <DialogActions>
               <Button
-                // onClick={resetFilterForm}
+                onClick={resetFilterForm}
                 className="global-filter-reset-btn"
               >
                 <ReplayIcon></ReplayIcon>
