@@ -285,7 +285,7 @@ function AssignEmergencyContacts(props) {
               aria-current="page"
               className="active"
             >
-              Assign Emergency Contact doc to group
+              Assign Emergency Contact Doc To Group
             </LinkTo>
           </Breadcrumbs>
           <MuiThemeProvider theme={theme1}>

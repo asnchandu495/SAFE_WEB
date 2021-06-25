@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -35,6 +35,7 @@ import CovidStateApiServices from "../../services/masterDataService";
 import * as UserGroupAction from "../../Redux/Action/userGroupAction";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import ReplayIcon from "@material-ui/icons/Replay";
+import * as GridAction from "../../Redux/Action/gridAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -100,6 +101,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AddPrimaryUserToUserGroups(props) {
+  const anchorRef = useRef(null);
+
+  const usergroupACM = props.acmData.find((acm) => {
+    return acm.module == "userGroup";
+  });
+
   const userId = props.match.params.id;
   const classes = useStyles();
   const userGroupUpdateid = props.match.params.id;
@@ -297,7 +304,7 @@ function AddPrimaryUserToUserGroups(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -349,6 +356,31 @@ function AddPrimaryUserToUserGroups(props) {
       },
     },
   ];
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "assignPrimary":
+          return entity.isAccess ? (
+            <Button
+              variant="contained"
+              type="button"
+              className="global-submit-btn"
+              disabled={showLoadder}
+              onClick={assignUsers}
+            >
+              {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
+            </Button>
+          ) : (
+            ""
+          );
+          break;
+
+        default:
+          return "";
+      }
+    });
+  };
 
   const handleClickOpenModal = () => {
     setModalOpen(true);
@@ -588,7 +620,9 @@ function AddPrimaryUserToUserGroups(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Whichever FAQ , Questionnaire , Emergency Contact and Workflow is assigned to this user group, will be applicable for the selected user(s). Are you sure you want to go ahead with the change ?
+            Whichever FAQ , Questionnaire , Emergency Contact and Workflow is
+            assigned to this user group, will be applicable for the selected
+            user(s). Are you sure you want to go ahead with the change ?
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -661,7 +695,7 @@ function AddPrimaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                            BusinessUserRoleMasterData.length > 0
+                          BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -691,13 +725,13 @@ function AddPrimaryUserToUserGroups(props) {
                   <Grid
                     item
                     sm={8}
-                  // className={[userId ? classes.HideGrid : ""].join(" ")}
+                    // className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <Autocomplete
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                          BusinessDesingationData.length > 0
+                        BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -729,7 +763,7 @@ function AddPrimaryUserToUserGroups(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                          BusinessSiteMasterData.length > 0
+                        BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -761,7 +795,7 @@ function AddPrimaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                            BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }
@@ -802,6 +836,7 @@ function AddPrimaryUserToUserGroups(props) {
             >
               {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
             </Button>
+
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
             </Button>
@@ -859,7 +894,11 @@ function AddPrimaryUserToUserGroups(props) {
           <Grid container>
             <Grid item xs={12} className={`global-form inner-table-buttons`}>
               <div className={`form-buttons-container`}>
-                <Button
+                <LoadActions
+                  modulePermission={usergroupACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
+                {/* <Button
                   variant="contained"
                   type="button"
                   className="global-submit-btn"
@@ -867,7 +906,7 @@ function AddPrimaryUserToUserGroups(props) {
                   onClick={assignUsers}
                 >
                   {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                </Button>
+                </Button> */}
                 <Button
                   variant="contained"
                   type="reset"
@@ -902,6 +941,7 @@ AddPrimaryUserToUserGroups.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     UserGroupData: state.usergroup,
+    acmData: state.acmData,
   };
 }
 

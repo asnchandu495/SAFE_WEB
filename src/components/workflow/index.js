@@ -167,16 +167,6 @@ function Workflow(props) {
                   anchorRef={anchorRef}
                 ></LoadActions>
 
-                <Tooltip title="Assign Activity">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    disabled={thisRowData[3]}
-                    startIcon={<AddIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleViewActivity(thisRowData)}
-                  ></Button>
-                </Tooltip>
                 <Tooltip title={thisRowData[3] ? "Deactivate" : "Activate"}>
                   <Button
                     variant="contained"
@@ -255,6 +245,38 @@ function Workflow(props) {
             ""
           );
           break;
+        case "activityList":
+          return entity.isAccess ? (
+            <Tooltip title="Assign Activity">
+              <Button
+                variant="contained"
+                color="default"
+                disabled={props.thisRowData[3]}
+                startIcon={<AddIcon />}
+                className={`edit-icon`}
+                onClick={() => handleViewActivity(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case props.thisRowData[3] ? "Deactivate" : "Activate":
+          return entity.isAccess ? (
+            <Tooltip title={props.thisRowData[3] ? "Deactivate" : "Activate"}>
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={props.thisRowData[3] ? <ClearIcon /> : <CheckIcon />}
+                className={props.thisRowData[3] ? "delete-icon" : "view-icon"}
+                onClick={() => handlePublishModal(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+
         default:
           return "";
       }
@@ -326,7 +348,7 @@ function Workflow(props) {
       });
       return isFound;
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -564,12 +586,12 @@ function Workflow(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                            return (
-                              <MenuItem value={UserStatus.id}>
-                                {UserStatus.name}
-                              </MenuItem>
-                            );
-                          })
+                              return (
+                                <MenuItem value={UserStatus.id}>
+                                  {UserStatus.name}
+                                </MenuItem>
+                              );
+                            })
                           : ""}
                       </Select>
                     </FormControl>

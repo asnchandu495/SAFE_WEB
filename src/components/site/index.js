@@ -240,7 +240,7 @@ function ListSite(props) {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -343,25 +343,6 @@ function ListSite(props) {
                   modulePermission={sitesACM.permissions}
                   anchorRef={anchorRef}
                 ></LoadActions>
-
-                <Tooltip title="Add Floor">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<ApartmentIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickOpenAddFloorPage(thisRowData)}
-                  ></Button>
-                </Tooltip>
-                <Tooltip title="Add Location">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<RoomIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickOpenAddFlocationPage(thisRowData)}
-                  ></Button>
-                </Tooltip>
               </div>
             );
           }
@@ -421,6 +402,38 @@ function ListSite(props) {
                 className={`delete-icon`}
                 onClick={() =>
                   handleClickOpenConfirmationModal(props.thisRowData)
+                }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "floorCreate":
+          return entity.isAccess ? (
+            <Tooltip title="Add Floor">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<ApartmentIcon />}
+                className={`edit-icon`}
+                onClick={() => handleClickOpenAddFloorPage(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "locationCreate":
+          return entity.isAccess ? (
+            <Tooltip title="Add Location">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<RoomIcon />}
+                className={`edit-icon`}
+                onClick={() =>
+                  handleClickOpenAddFlocationPage(props.thisRowData)
                 }
               ></Button>
             </Tooltip>

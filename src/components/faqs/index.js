@@ -214,7 +214,7 @@ function ViewAllFAQs(props) {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -278,16 +278,6 @@ function ViewAllFAQs(props) {
                   modulePermission={faqACM.permissions}
                   anchorRef={anchorRef}
                 ></LoadActions>
-
-                <Tooltip title="Add Section">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<QuestionAnswerIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickAddSections(thisRowData)}
-                  ></Button>
-                </Tooltip>
               </div>
             );
           }
@@ -331,6 +321,21 @@ function ViewAllFAQs(props) {
                 onClick={() =>
                   handleClickOpenConfirmationModal(props.thisRowData)
                 }
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+        case "sectionCreate":
+          return entity.isAccess ? (
+            <Tooltip title="Add Section">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<QuestionAnswerIcon />}
+                className={`edit-icon`}
+                onClick={() => handleClickAddSections(props.thisRowData)}
               ></Button>
             </Tooltip>
           ) : (

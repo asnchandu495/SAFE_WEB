@@ -259,7 +259,12 @@ function FaqSections(props) {
         >
           FAQs
         </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="inactive">
+        <LinkTo
+          color="textPrimary"
+          href="#"
+          to={`/faq/view-faq/` + getFaqId}
+          className="inactive"
+        >
           {faqTittle}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
@@ -69,6 +69,11 @@ const theme1 = createMuiTheme({
 });
 
 function AddPrimaryUserTeam(props) {
+  const anchorRef = useRef(null);
+  const teamACM = props.acmData.find((acm) => {
+    return acm.module == "team";
+  });
+  console.log(teamACM ? teamACM.permissions : "kjk");
   const teamApiCall = new teamService();
   const teamId = props.match.params.id;
   const UserGroupApi = new UserGroupApiServices();
@@ -218,7 +223,7 @@ function AddPrimaryUserTeam(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
 
     customToolbar: () => {
       return (
@@ -330,6 +335,31 @@ function AddPrimaryUserTeam(props) {
   //   }
   // }
 
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "assignUser":
+          return entity.isAccess ? (
+            <Button
+              variant="contained"
+              type="button"
+              className="global-submit-btn"
+              disabled={showLoadder}
+              onClick={assignUsers}
+            >
+              {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
+            </Button>
+          ) : (
+            ""
+          );
+          break;
+
+        default:
+          return "";
+      }
+    });
+  };
+
   function AssignFiltersForm() {
     settoasterServerity("");
     settoasterErrorMessageType("");
@@ -411,7 +441,7 @@ function AddPrimaryUserTeam(props) {
                         id="tags-outlined"
                         options={
                           designationMasterData &&
-                            designationMasterData.length > 0
+                          designationMasterData.length > 0
                             ? designationMasterData
                             : []
                         }
@@ -512,7 +542,7 @@ function AddPrimaryUserTeam(props) {
                         id="tags-outlined"
                         options={
                           designationMasterData &&
-                            designationMasterData.length > 0
+                          designationMasterData.length > 0
                             ? designationMasterData
                             : []
                         }
@@ -545,6 +575,7 @@ function AddPrimaryUserTeam(props) {
             >
               <ReplayIcon></ReplayIcon>
             </Button>
+
             <Button
               variant="contained"
               type="submit"
@@ -607,15 +638,11 @@ function AddPrimaryUserTeam(props) {
           <Grid container>
             <Grid item xs={12} className={`global-form inner-table-buttons`}>
               <div className={`form-buttons-container`}>
-                <Button
-                  variant="contained"
-                  type="button"
-                  className="global-submit-btn"
-                  disabled={showLoadder}
-                  onClick={assignUsers}
-                >
-                  {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}
-                </Button>
+                <LoadActions
+                  modulePermission={teamACM.permissions}
+                  anchorRef={anchorRef}
+                ></LoadActions>
+
                 <Button
                   variant="contained"
                   type="reset"
@@ -649,6 +676,7 @@ AddPrimaryUserTeam.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
+    acmData: state.acmData,
   };
 }
 

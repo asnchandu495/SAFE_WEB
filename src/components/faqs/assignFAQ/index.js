@@ -550,7 +550,7 @@ function AssignedFAQs(props) {
             id="customized-dialog-title"
             onClose={handleCloseAssignFaq}
           >
-            Assign FAQ doc to group
+            Assign FAQ Doc To Group
           </DialogTitle>
           <DialogContent dividers>
             <Grid container spacing={3}>
@@ -641,15 +641,15 @@ function AssignedFAQs(props) {
                       <MenuItem value="">None</MenuItem>
                       {docStatus && docStatus.length > 0
                         ? docStatus.map((docStatus) => {
-                          return (
-                            <MenuItem
-                              value={docStatus.id}
-                              key={docStatus.id + "_status"}
-                            >
-                              {docStatus.name}
-                            </MenuItem>
-                          );
-                        })
+                            return (
+                              <MenuItem
+                                value={docStatus.id}
+                                key={docStatus.id + "_status"}
+                              >
+                                {docStatus.name}
+                              </MenuItem>
+                            );
+                          })
                         : ""}
                     </Select>
                   </FormControl>
