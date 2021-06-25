@@ -329,18 +329,6 @@ function AccessBreaches(props) {
     setselectedLocationData(value);
   }
 
-  // function resetFilterForm() {
-  //   setselectedSiteData();
-  //   setselectedLocationData([]);
-  // }
-  useEffect(() => {
-    setComponentLoadder(true);
-    Promise.all([
-      siteApiCall.getListSite(),
-      siteApiCall.getLocationManagers(),
-      //   props.LoadData(),
-    ]);
-  });
   const handleChangeSearchForm = (getSelectedVal, name) => {
     if (name == "userId") {
       setSearchForm((searchForm) => ({

@@ -123,8 +123,10 @@ function LocationDensity(props) {
 
   useEffect(() => {
     setComponentLoadder(true);
-    Promise.all([siteApiCall.getListSite(), siteApiCall.getLocationManagers()])
-      .then(([getAllSites, result]) => {
+    // Promise.all([siteApiCall.getListSite(), siteApiCall.getLocationManagers()])
+    //   .then(([getAllSites, result]) => {
+    Promise.all([siteApiCall.getListSite()])
+      .then(([getAllSites]) => {
         setComponentLoadder(false);
         setAllSites(getAllSites);
       })
