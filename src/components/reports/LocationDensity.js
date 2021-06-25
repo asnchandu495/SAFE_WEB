@@ -124,9 +124,8 @@ function LocationDensity(props) {
     setComponentLoadder(true);
     Promise.all([
       siteApiCall.getListSite(),
-      siteApiCall.getLocationManagers(),
     ])
-      .then(([getAllSites, result]) => {
+      .then(([getAllSites]) => {
         setComponentLoadder(false);
         setAllSites(getAllSites);
       })
