@@ -76,7 +76,7 @@ function QuestionnaireEvaluation(props) {
           id: "",
           stateName: "",
         },
-        isNoUpperLimit: true,
+        isNoUpperLimit: false,
       },
     ],
   });
@@ -167,9 +167,9 @@ function QuestionnaireEvaluation(props) {
         ...temperatureConfigForm.positiveResponses.map((con, conIndex) =>
           conIndex == index
             ? {
-                ...con,
-                ["covidState"]: thisValue,
-              }
+              ...con,
+              ["covidState"]: thisValue,
+            }
             : con
         ),
       ],
@@ -358,15 +358,13 @@ function QuestionnaireEvaluation(props) {
           {questionaireDetails ? questionaireDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          Questionnaire Evaluation
+          Questionnaire Evaluation <TooltipComponent
+            isMarginBottom={true}
+            tooltipMessage={`Logic defined to determined user's COVID state from their responses to questionnaire.`}
+          ></TooltipComponent>
         </LinkTo>
       </Breadcrumbs>
-      <span style={{ float: "right" }}>
-        <TooltipComponent
-          isMarginBottom={true}
-          tooltipMessage={`Logic defined to determined user's COVID state from their responses to questionnaire.`}
-        ></TooltipComponent>
-      </span>
+
       <Paper className={`main-paper`}>
         {componentLoadder ? (
           <ComponentLoadderComponent />
@@ -457,258 +455,206 @@ function QuestionnaireEvaluation(props) {
               </Grid>
             </Grid>
             {temperatureConfigForm.positiveResponses &&
-            temperatureConfigForm.positiveResponses.length > 0
+              temperatureConfigForm.positiveResponses.length > 0
               ? temperatureConfigForm.positiveResponses.map((x, i) => {
-                  return (
+                return (
+                  <Grid
+                    container
+                    spacing={3}
+                    className="evaluate-dynamic-rows"
+                  >
                     <Grid
+                      item
+                      xs={12}
+                      className={[classes.gridDispaly].join(" ")}
                       container
-                      spacing={3}
-                      className="evaluate-dynamic-rows"
+                      spacing={1}
                     >
-                      <Grid
-                        item
-                        xs={12}
-                        className={[classes.gridDispaly].join(" ")}
-                        container
-                        spacing={1}
-                      >
-                        <Grid item xs={3}>
-                          <label className="required">
-                            {" "}
-                            Covid state based on positive conformity score
-                          </label>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <FormControl variant="outlined" fullWidth>
-                            <Autocomplete
-                              id="tags-outlined"
-                              options={
-                                covidStatelist && covidStatelist.length > 0
-                                  ? covidStatelist
-                                  : []
-                              }
-                              getOptionLabel={(option) => option.stateName}
-                              onChange={(e, v) =>
-                                handleChangeCovidState(e, v, i)
-                              }
-                              defaultValue={
-                                temperatureConfigForm.positiveResponses
-                                  ? temperatureConfigForm.positiveResponses
-                                  : ""
-                              }
-                              name="covidState"
-                              defaultValue={x.covidState}
-                              filterSelectedOptions
-                              className="global-input autocomplete-select"
-                              required
-                              renderInput={(params) => (
-                                <TextField
-                                  required
-                                  {...params}
-                                  variant="outlined"
-                                  placeholder="Select  covid state"
-                                />
-                              )}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <TextValidator
-                            variant="outlined"
-                            validators={
-                              i == 0
-                                ? temperatureConfigForm.positiveResponses
-                                  ? [
-                                      "required",
-                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                      "maxNumber:45",
-                                      "minNumber:30",
-                                    ]
-                                  : [
-                                      "required",
-                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                      "maxNumber:113",
-                                      "minNumber:86",
-                                    ]
-                                : temperatureConfigForm.positiveResponses
-                                ? [
-                                    "required",
-                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                    "maxNumber:45",
-                                    `minNumber:${parseFloat(
-                                      temperatureConfigForm.positiveResponses[
-                                        i - 1
-                                      ].upperLimit
-                                    )}`,
-                                  ]
-                                : [
-                                    "required",
-                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                    "maxNumber:113",
-                                    `minNumber:${parseFloat(
-                                      temperatureConfigForm.positiveResponses[
-                                        i - 1
-                                      ].upperLimit
-                                    )}`,
-                                  ]
+                      <Grid item xs={3}>
+                        <label className="required">
+                          {" "}
+                          Covid state based on positive conformity score
+                        </label>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <FormControl variant="outlined" fullWidth>
+                          <Autocomplete
+                            id="tags-outlined"
+                            options={
+                              covidStatelist && covidStatelist.length > 0
+                                ? covidStatelist
+                                : []
                             }
-                            errorMessages={
-                              i == 0
-                                ? temperatureConfigForm.positiveResponses
-                                  ? [
-                                      "required",
-                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                      "maxNumber:45",
-                                      "minNumber:30",
-                                    ]
-                                  : [
-                                      "required",
-                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                      "maxNumber:113",
-                                      "minNumber:86",
-                                    ]
-                                : temperatureConfigForm.positiveResponses
-                                ? [
-                                    "Please enter lower limit",
-                                    "Entered numbers are not valid",
-                                    "Maximum allowed is 45",
-                                    `Minimum allowed is ${parseFloat(
-                                      temperatureConfigForm.positiveResponses[
-                                        i - 1
-                                      ].upperLimit
-                                    )}`,
-                                  ]
-                                : [
-                                    "Please enter lower limit",
-                                    "Entered numbers are not valid",
-                                    "Maximum allowed is 113",
-                                    `Minimum allowed is ${parseFloat(
-                                      temperatureConfigForm.positiveResponses[
-                                        i - 1
-                                      ].upperLimit
-                                    )}`,
-                                  ]
+                            getOptionLabel={(option) => option.stateName}
+                            onChange={(e, v) =>
+                              handleChangeCovidState(e, v, i)
                             }
-                            fullWidth
-                            id={`lowerLimit_${i}`}
-                            placeholder="Lower Limit"
-                            name="lowerLimit"
-                            value={x.lowerLimit}
-                            className="global-input"
-                            onChange={(e) => handleInputChange(e, i)}
-                            InputLabelProps={{ shrink: false }}
-                          />
-                        </Grid>
-                        <Grid item xs={2}>
-                          <TextValidator
-                            variant="outlined"
-                            disabled={disableUpperLimit ? "true" : ""}
-                            validators={
+                            defaultValue={
                               temperatureConfigForm.positiveResponses
-                                ? x.isNoUpperLimit
-                                  ? [
-                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                      "maxNumber:45",
-                                      `minNumber:${
-                                        x.isNoUpperLimit
-                                          ? 0
-                                          : parseFloat(x.lowerLimit)
-                                      }`,
-                                    ]
-                                  : [
-                                      "required",
-                                      "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                      "maxNumber:45",
-                                      `minNumber:${
-                                        x.isNoUpperLimit
-                                          ? 0
-                                          : parseFloat(x.lowerLimit)
-                                      }`,
-                                    ]
-                                : x.isNoUpperLimit
-                                ? [
-                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                    "maxNumber:113",
-                                    `minNumber:${
-                                      x.isNoUpperLimit
-                                        ? 0
-                                        : parseFloat(x.lowerLimit)
-                                    }`,
-                                  ]
-                                : [
-                                    "required",
-                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                    "maxNumber:113",
-                                    `minNumber:${
-                                      x.isNoUpperLimit
-                                        ? 0
-                                        : parseFloat(x.lowerLimit)
-                                    }`,
-                                  ]
+                                ? temperatureConfigForm.positiveResponses
+                                : ""
                             }
-                            errorMessages={
-                              temperatureConfigForm.positiveResponses
-                                ? x.isNoUpperLimit
-                                  ? [
-                                      "Entered numbers are not valid",
-                                      `Maximum allowed is ${
-                                        x.isNoUpperLimit ? 0 : 45
-                                      }`,
-                                      `Minimum allowed is ${
-                                        x.isNoUpperLimit
-                                          ? 0
-                                          : parseFloat(x.lowerLimit)
-                                      }`,
-                                    ]
-                                  : [
-                                      "Please enter lower limit",
-                                      "Entered numbers are not valid",
-                                      `Maximum allowed is ${
-                                        x.isNoUpperLimit ? 0 : 45
-                                      }`,
-                                      `Minimum allowed is ${
-                                        x.isNoUpperLimit
-                                          ? 0
-                                          : parseFloat(x.lowerLimit)
-                                      }`,
-                                    ]
-                                : x.isNoUpperLimit
-                                ? [
-                                    "Entered numbers are not valid",
-                                    `Maximum allowed is ${
-                                      x.isNoUpperLimit ? 0 : 113
-                                    }`,
-                                    `Minimum allowed is ${
-                                      x.isNoUpperLimit
-                                        ? 0
-                                        : parseFloat(x.lowerLimit)
-                                    }`,
-                                  ]
-                                : [
-                                    "Please enter lower limit",
-                                    "Entered numbers are not valid",
-                                    `Maximum allowed is ${
-                                      x.isNoUpperLimit ? 0 : 113
-                                    }`,
-                                    `Minimum allowed is ${
-                                      x.isNoUpperLimit
-                                        ? 0
-                                        : parseFloat(x.lowerLimit)
-                                    }`,
-                                  ]
-                            }
-                            fullWidth
-                            id={`upperLimit_${i}`}
-                            placeholder="Upper Limit"
-                            name="upperLimit"
-                            disabled={x.isNoUpperLimit}
-                            value={x.upperLimit}
-                            className="global-input"
-                            onChange={(e) => handleInputChange(e, i)}
+                            name="covidState"
+                            defaultValue={x.covidState}
+                            filterSelectedOptions
+                            className="global-input autocomplete-select"
+                            required
+                            renderInput={(params) => (
+                              <TextField
+                                required
+                                {...params}
+                                variant="outlined"
+                                placeholder="Select  covid state"
+                              />
+                            )}
                           />
-                        </Grid>
-                        {temperatureConfigForm.positiveResponses.length - 1 ===
-                          i && (
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextValidator
+                          variant="outlined"
+                          validators={
+                            i == 0
+                              ? [
+                                "required",
+                                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                "minNumber:1"
+                              ]
+                              : [
+                                "required",
+                                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                `minNumber:${parseFloat(
+                                  temperatureConfigForm.positiveResponses[
+                                    i - 1
+                                  ].upperLimit
+                                )}`,
+                              ]
+                          }
+                          errorMessages={
+                            i == 0
+                              ? [
+                                "Please enter lower limit",
+                                "Entered numbers are not valid",
+                                "Maximum allowed is 0",
+                              ]
+                              : [
+                                "Please enter lower limit",
+                                "Entered numbers are not valid",
+                                `Minimum allowed is ${parseFloat(
+                                  temperatureConfigForm.positiveResponses[
+                                    i - 1
+                                  ].upperLimit
+                                )}`,
+                              ]
+                          }
+                          fullWidth
+                          id={`lowerLimit_${i}`}
+                          placeholder="Lower Limit"
+                          name="lowerLimit"
+                          value={x.lowerLimit}
+                          className="global-input"
+                          onChange={(e) => handleInputChange(e, i)}
+                          InputLabelProps={{ shrink: false }}
+                        />
+                      </Grid>
+                      <Grid item xs={2}>
+                        <TextValidator
+                          variant="outlined"
+                          disabled={disableUpperLimit ? "true" : ""}
+                          validators={
+                            temperatureConfigForm.positiveResponses
+                              ? x.isNoUpperLimit
+                                ? [
+                                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                  "maxNumber:45",
+                                  `minNumber:${x.isNoUpperLimit
+                                    ? 0
+                                    : parseFloat(x.lowerLimit)
+                                  }`,
+                                ]
+                                : [
+                                  "required",
+                                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                  "maxNumber:45",
+                                  `minNumber:${x.isNoUpperLimit
+                                    ? 0
+                                    : parseFloat(x.lowerLimit)
+                                  }`,
+                                ]
+                              : x.isNoUpperLimit
+                                ? [
+                                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                  "maxNumber:113",
+                                  `minNumber:${x.isNoUpperLimit
+                                    ? 0
+                                    : parseFloat(x.lowerLimit)
+                                  }`,
+                                ]
+                                : [
+                                  "required",
+                                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                  "maxNumber:113",
+                                  `minNumber:${x.isNoUpperLimit
+                                    ? 0
+                                    : parseFloat(x.lowerLimit)
+                                  }`,
+                                ]
+                          }
+                          errorMessages={
+                            temperatureConfigForm.positiveResponses
+                              ? x.isNoUpperLimit
+                                ? [
+                                  "Entered numbers are not valid",
+                                  `Maximum allowed is ${x.isNoUpperLimit ? 0 : 45
+                                  }`,
+                                  `Minimum allowed is ${x.isNoUpperLimit
+                                    ? 0
+                                    : parseFloat(x.lowerLimit)
+                                  }`,
+                                ]
+                                : [
+                                  "Please enter lower limit",
+                                  "Entered numbers are not valid",
+                                  `Maximum allowed is ${x.isNoUpperLimit ? 0 : 45
+                                  }`,
+                                  `Minimum allowed is ${x.isNoUpperLimit
+                                    ? 0
+                                    : parseFloat(x.lowerLimit)
+                                  }`,
+                                ]
+                              : x.isNoUpperLimit
+                                ? [
+                                  "Entered numbers are not valid",
+                                  `Maximum allowed is ${x.isNoUpperLimit ? 0 : 113
+                                  }`,
+                                  `Minimum allowed is ${x.isNoUpperLimit
+                                    ? 0
+                                    : parseFloat(x.lowerLimit)
+                                  }`,
+                                ]
+                                : [
+                                  "Please enter lower limit",
+                                  "Entered numbers are not valid",
+                                  `Maximum allowed is ${x.isNoUpperLimit ? 0 : 113
+                                  }`,
+                                  `Minimum allowed is ${x.isNoUpperLimit
+                                    ? 0
+                                    : parseFloat(x.lowerLimit)
+                                  }`,
+                                ]
+                          }
+                          fullWidth
+                          id={`upperLimit_${i}`}
+                          placeholder="Upper Limit"
+                          name="upperLimit"
+                          disabled={x.isNoUpperLimit}
+                          value={x.upperLimit}
+                          className="global-input"
+                          onChange={(e) => handleInputChange(e, i)}
+                        />
+                      </Grid>
+                      {temperatureConfigForm.positiveResponses.length - 1 ===
+                        i && (
                           <Grid item xs={2} className="row-icons-container">
                             {
                               <FormControlLabel
@@ -722,9 +668,9 @@ function QuestionnaireEvaluation(props) {
                             }
                           </Grid>
                         )}
-                        <Grid item xs={1} className="row-icons-container">
-                          {temperatureConfigForm.positiveResponses.length !==
-                            1 && (
+                      <Grid item xs={1} className="row-icons-container">
+                        {temperatureConfigForm.positiveResponses.length !==
+                          1 && (
                             <Tooltip title="Remove">
                               <CancelIcon
                                 className={`delete-row-icon`}
@@ -732,23 +678,23 @@ function QuestionnaireEvaluation(props) {
                               ></CancelIcon>
                             </Tooltip>
                           )}
-                          {!flagStatus
-                            ? temperatureConfigForm.positiveResponses.length -
-                                1 ===
-                                i && (
-                                <Tooltip title="Add">
-                                  <AddCircleIcon
-                                    className={`add-row-icon`}
-                                    onClick={handleAddClick}
-                                  ></AddCircleIcon>
-                                </Tooltip>
-                              )
-                            : ""}
-                        </Grid>
+                        {!x.isNoUpperLimit
+                          ? temperatureConfigForm.positiveResponses.length -
+                          1 ===
+                          i && (
+                            <Tooltip title="Add">
+                              <AddCircleIcon
+                                className={`add-row-icon`}
+                                onClick={handleAddClick}
+                              ></AddCircleIcon>
+                            </Tooltip>
+                          )
+                          : ""}
                       </Grid>
                     </Grid>
-                  );
-                })
+                  </Grid>
+                );
+              })
               : ""}
             <br />
             <Grid item container xs={12}>
