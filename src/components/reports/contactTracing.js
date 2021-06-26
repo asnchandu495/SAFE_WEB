@@ -150,23 +150,7 @@ function ContactTracing(props) {
     endDate: moment().toISOString(),
   });
   const [selectedValue, setSelectedValue] = React.useState("a");
-  const [contactTracingData, setContactTracingData] = useState([
-    {
-      name: "Saravanan",
-      userId: "0012345",
-      userBaseAccountId: "2345110",
-    },
-    {
-      name: "Hajira",
-      userId: "0012345",
-      userBaseAccountId: "1234567",
-    },
-    {
-      name: "Joinee",
-      userId: "0012345",
-      userBaseAccountId: "876543",
-    },
-  ]);
+  const [contactTracingData, setContactTracingData] = useState([]);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [RowsSelected, setRowsSelected] = useState([]);
   const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
@@ -298,7 +282,7 @@ function ContactTracing(props) {
       setSelectedUsersForCovidState(finalUsers);
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -524,7 +508,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                        BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }

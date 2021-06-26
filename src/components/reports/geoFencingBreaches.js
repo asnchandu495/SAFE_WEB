@@ -146,24 +146,7 @@ function GeoFencingBreaches(props) {
     endDate: moment().toISOString(),
   });
   const [selectedValue, setSelectedValue] = React.useState("a");
-  const [geoFencingData, setGeoFencingData] = useState([
-    {
-      applicationUserId: "001",
-      userName: "Saravanan",
-      emailId: "saravana@gmail.com",
-      numberOfInstance: 12,
-      usersBreach: [
-        {
-          location: "Conference Hall",
-          createdDate: "2021-06-23T04:10:58.328Z",
-        },
-        {
-          location: "Cafetaria",
-          createdDate: "2021-06-23T04:10:58.328Z",
-        },
-      ],
-    },
-  ]);
+  const [geoFencingData, setGeoFencingData] = useState([]);
   const [applicationUsers, setApplicationUsers] = useState([]);
 
   useEffect(() => {
@@ -258,15 +241,15 @@ function GeoFencingBreaches(props) {
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                        <TableRow key={row.location}>
-                          <TableCell>{row.location}</TableCell>
-                          <TableCell>
-                            {moment(row.createdDate).format(
-                              "DD/MM/yyyy hh:mm a"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
+                      <TableRow key={row.location}>
+                        <TableCell>{row.location}</TableCell>
+                        <TableCell>
+                          {moment(row.createdDate).format(
+                            "DD/MM/yyyy hh:mm a"
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -279,7 +262,7 @@ function GeoFencingBreaches(props) {
     print: false,
     viewColumns: false,
     download: false,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
