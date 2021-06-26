@@ -59,6 +59,7 @@ import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import MuiDialogContent from "@material-ui/core/DialogContent";
+import NotificationService from "../../services/notificationService";
 
 const drawerWidth = 240;
 const styles = (theme) => ({
@@ -169,6 +170,7 @@ function AdminLayout(props) {
   const { children } = props;
   const classes = useStyles();
   const authApiCall = new AuthService();
+  const notificationApiCall = new NotificationService();
   const [openUsers, setOpenUsers] = useState(false);
   const [openSetting, setopenSetting] = useState(false);
   const [openUserManagment, setopenUserManagment] = useState(false);
@@ -808,10 +810,16 @@ function AdminLayout(props) {
     if (!authApiCall.loggedIn()) {
       props.history.push("/");
     }
-    props.loadGlobalSetting();
-    props.loadGridsPages(gridPages);
-    props.loadACM(acm);
-
+    Promise.all([
+      props.loadGlobalSetting(),
+      props.loadGridsPages(gridPages),
+      props.loadACM(acm),
+      notificationApiCall.GetAllUserCommunicationsForLoggedInUser(),
+    ])
+      .then(([loadsetting, loadgrid, loadacm, getNotificationDetails]) => {
+        // setnotificationList(getNotificationDetails);
+      })
+      .catch((err) => {});
     if (window.performance) {
       if (performance.type == 1) {
         props.loadGlobalSetting();
