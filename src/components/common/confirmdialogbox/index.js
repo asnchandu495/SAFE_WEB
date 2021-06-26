@@ -335,7 +335,7 @@ function CustomizedDialogs(props) {
       console.log(props.SelectedRowDetails[2]);
       setshowLoadder(true);
       let data = {
-        id: props.SelectedRowDetails[2],
+        userId: props.SelectedRowDetails[2],
       };
 
       reportServiceCall
@@ -777,7 +777,7 @@ CustomizedDialogs.propTypes = {
   DeleteDateQuestionData: PropTypes.func.isRequired,
   PublishFAQ: PropTypes.func.isRequired,
 };
-function mapStateToProps(state, ownProps) {}
+function mapStateToProps(state, ownProps) { }
 
 const mapDispatchToProps = {
   DeletEmergencyContactList: EmergencyContactAction.DeletEmergencyContactList,

@@ -186,40 +186,8 @@ function AdminLayout(props) {
   const [openReports, setOpenReports] = useState(false);
   const [NotificationMessage, setNotificationMessage] = useState({});
 
-  const dislayNotificationMessage = (data) => {
-    setNotificationMessage(data);
-    console.log(data);
-    setModalOpen(true);
-  };
-
-  const handleClose = () => {
-    setModalOpen(false);
-  };
   const [showLoadder, setshowLoadder] = useState(false);
-  const [notificationList, setnotificationList] = useState([
-    {
-      id: "1",
-      name: "Saravana",
-      message: "has requested a change of WFM location",
-    },
-    {
-      id: "2",
-      name: "Sunil",
-      message: " has requested a change of WFM location.",
-    },
-    { id: "3", name: "Hajira", message: "has submitted a new profile selfie." },
-    {
-      id: "4",
-      name: "Saravana",
-      message: "has requested a change of WFM location.",
-    },
-    {
-      id: "5",
-      name: "Sunil",
-      message: "has requested a change of WFM location",
-    },
-    { id: "6", name: "Hajira", message: "has submitted a new profile selfie." },
-  ]);
+  const [notificationList, setnotificationList] = useState();
   const [gridPages, setGridPages] = useState([
     { name: "users", page: 1 },
     { name: "sites", page: 1 },
@@ -817,9 +785,9 @@ function AdminLayout(props) {
       notificationApiCall.GetAllUserCommunicationsForLoggedInUser(),
     ])
       .then(([loadsetting, loadgrid, loadacm, getNotificationDetails]) => {
-        // setnotificationList(getNotificationDetails);
+        setnotificationList(getNotificationDetails);
       })
-      .catch((err) => {});
+      .catch((err) => { });
     if (window.performance) {
       if (performance.type == 1) {
         props.loadGlobalSetting();
@@ -1067,6 +1035,7 @@ function AdminLayout(props) {
   const handleCloseNotifications = () => {
     setAnchorElNotifications(null);
   };
+
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
     return (
@@ -1097,6 +1066,28 @@ function AdminLayout(props) {
       padding: theme.spacing(1),
     },
   }))(MuiDialogActions);
+
+  const dislayNotificationMessage = (data) => {
+    setNotificationMessage(data);
+    setModalOpen(true);
+    setAnchorElNotifications(null);
+  };
+
+  const handleClose = () => {
+    let sendData = { id: NotificationMessage.id, isRead: true };
+    notificationApiCall.markAsRead(sendData)
+      .then((response) => {
+        if (!NotificationMessage.isRead) {
+          let data = notificationList.getAllList.map(not => not.id == NotificationMessage.id ? { ...not, isRead: true } : not);
+          let newCount = notificationList.unreadCount - 1;
+          let newNotifications = { unreadCount: newCount, getAllList: data };
+          setnotificationList(newNotifications);
+        }
+        setModalOpen(false);
+      })
+      .catch((err) => { });
+  };
+
   return (
     <div className={`${classes.root} top-header`}>
       <Dialog
@@ -1110,7 +1101,6 @@ function AdminLayout(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            <b>{NotificationMessage.name}</b> {""}
             {NotificationMessage.message}
           </Typography>
         </DialogContent>
@@ -1165,7 +1155,7 @@ function AdminLayout(props) {
             )} */}
           </Typography>
           <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={5} color="secondary">
+            <Badge badgeContent={notificationList ? notificationList.unreadCount : 0} color="secondary">
               <NotificationsIcon onClick={handleClickNotifications} />
               <Popover
                 id={idNotifications}
@@ -1183,11 +1173,11 @@ function AdminLayout(props) {
                 className="notification-container"
               >
                 <ul>
-                  {notificationList.map((data) => (
-                    <li onClick={() => dislayNotificationMessage(data)}>
-                      <b>{data.name}</b>;{data.message}
+                  {notificationList ? notificationList.getAllList.map((data) => (
+                    <li className={`${data.isRead ? '' : 'notification-unread'}`} onClick={() => dislayNotificationMessage(data)} key={`notification_${data.id}`}>
+                      {data.message.substring(0, 70) + '...'}
                     </li>
-                  ))}
+                  )) : ""}
                 </ul>
               </Popover>
             </Badge>
@@ -1249,7 +1239,7 @@ function AdminLayout(props) {
               }}
             />
           )}
-          // autoHeight
+        // autoHeight
         >
           <div className={`${classes.drawerContainer} side-menu`}>
             <List>

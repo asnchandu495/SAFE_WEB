@@ -9,7 +9,7 @@ export default class NotificationService {
 
   GetAllUserCommunicationsForLoggedInUser() {
     return this.fetch(
-      `${this.baseURL}/UserCommunication/GetAllUserCommunicationsForLoggedInUser?IsRead=true`,
+      `${this.baseURL}/UserCommunication/GetAllUserCommunicationsForLoggedInUser`,
       {
         method: "GET",
       }
@@ -18,10 +18,10 @@ export default class NotificationService {
     });
   }
 
-  AddAssignedDesignation(getData) {
+  markAsRead(getData) {
     var finalData = JSON.stringify(getData);
-    return this.fetch(`${this.baseURL}/Designation/AddDesignation`, {
-      method: "POST",
+    return this.fetch(`${this.baseURL}/UserCommunication/MarkNotificationAsRead`, {
+      method: "PUT",
       body: finalData,
     }).then((res) => {
       return Promise.resolve(res);

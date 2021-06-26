@@ -92,7 +92,7 @@ export default class ReportService {
   notifyContactTracingBLE(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(
-      `${this.baseURL}/ApplicationUser/NotifyContactTracingBLE`,
+      `${this.baseURL}/ApplicationUser/SendAlertToContact`,
       {
         method: "POST",
         body: finalData,
