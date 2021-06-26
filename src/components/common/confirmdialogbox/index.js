@@ -28,6 +28,7 @@ import * as QuestionaireAction from "../../../Redux/Action/questionaireAction";
 import * as QuestionAction from "../../../Redux/Action/questionAction";
 import * as AssignquestionaireAction from "../../../Redux/Action/assignquestionaireAction";
 import questionaireService from "../../../services/questionaireService";
+import reportServices from "../../../services/reportService";
 import * as WorkflowAction from "../../../Redux/Action/workflowAction";
 import workflowService from "../../../services/workflowService";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
@@ -80,6 +81,7 @@ const DialogActions = withStyles((theme) => ({
 function CustomizedDialogs(props) {
   const faqApiCall = new FaqService();
   const teamApiCall = new teamService();
+  const reportServiceCall = new reportServices();
   const questionaireApiCall = new questionaireService();
   const workflowApiCall = new workflowService();
   const [showLoadder, setshowLoadder] = useState(false);
@@ -321,6 +323,26 @@ function CustomizedDialogs(props) {
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Published");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+          setshowLoadder(false);
+        })
+        .catch((error) => {
+          setshowLoadder(false);
+          toasterErrorMessage(error);
+        });
+    } else if (props.ConfirmationModalActionType == "alertreport") {
+      console.log(props.SelectedRowDetails[2]);
+      setshowLoadder(true);
+      let data = {
+        id: props.SelectedRowDetails[2],
+      };
+
+      reportServiceCall
+        .notifyContactTracingBLE(data)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Notified");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
           setshowLoadder(false);
@@ -791,6 +813,7 @@ const mapDispatchToProps = {
   DeleteSinglechoiceQuestionData: QuestionAction.DeleteSinglechoiceQuestion,
   DeleteWorkflow: WorkflowAction.deleteWorkflowData,
   PublishWorkflow: WorkflowAction.PublishWorkflow,
+
   PublishFAQ: PublishFAQAction.PublishFAQ,
 };
 

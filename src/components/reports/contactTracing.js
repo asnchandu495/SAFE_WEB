@@ -156,6 +156,16 @@ function ContactTracing(props) {
       userId: "0012345",
       userBaseAccountId: "2345110",
     },
+    {
+      name: "Hajira",
+      userId: "0012345",
+      userBaseAccountId: "1234567",
+    },
+    {
+      name: "Joinee",
+      userId: "0012345",
+      userBaseAccountId: "876543",
+    },
   ]);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [RowsSelected, setRowsSelected] = useState([]);
@@ -217,6 +227,39 @@ function ContactTracing(props) {
         filter: false,
       },
     },
+    {
+      label: "Actions",
+      name: "",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return (
+              <div className={`action-buttons-container`}>
+                <Tooltip title="Alert">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<NotificationImportantIcon />}
+                    className={["delete-icon"].join(" ")}
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
+                  ></Button>
+                </Tooltip>
+              </div>
+            );
+          }
+        },
+        setCellProps: (value) => {
+          return {
+            style: { width: "250px", minWidth: "250px", textAlign: "center" },
+          };
+        },
+      },
+    },
   ];
 
   const options = {
@@ -241,6 +284,7 @@ function ContactTracing(props) {
       allRowsSelected.map((user, i) => {
         setRowsSelectedArray.push(user.dataIndex);
       });
+
       setRowsSelected(setRowsSelectedArray);
       var selectedUsersToCovidStateArray = [];
       allRowsSelected.map((user, i) => {
@@ -250,9 +294,10 @@ function ContactTracing(props) {
       selectedUsersToCovidStateArray.map((user) => {
         finalUsers.push({ id: user.id });
       });
-      console.log(finalUsers);
+
       setSelectedUsersForCovidState(finalUsers);
     },
+
     customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
@@ -267,7 +312,7 @@ function ContactTracing(props) {
           </Tooltip>
           {RowsSelected.length ? (
             <>
-              <Tooltip title="Alert">
+              {/* <Tooltip title="Alert">
                 <Button
                   variant="contained"
                   color="default"
@@ -277,15 +322,13 @@ function ContactTracing(props) {
                     handleClickOpenConfirmationModal(selectedUsersForCovidState)
                   }
                 ></Button>
-              </Tooltip>
+              </Tooltip> */}
               <Tooltip title="Change Covid State">
                 <Button
                   variant="contained"
                   startIcon={<ChangeStatusIcon />}
                   className={`edit-icon`}
-                  onClick={() =>
-                    handleClickOpenBulkModal(selectedUsersForCovidState)
-                  }
+                  onClick={() => handleClickOpenBulkModal()}
                 ></Button>
               </Tooltip>
             </>
@@ -375,7 +418,7 @@ function ContactTracing(props) {
   });
 
   const handleClickOpenConfirmationModal = (value) => {
-    var user = value[1];
+    var user = value[2];
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("alertreport");
@@ -406,7 +449,50 @@ function ContactTracing(props) {
   const handleChangeReport = (e) => {
     setSelectedReportType(e.target.value);
   };
+  function submitUserCovidInformation() {
+    console.log(props.selectedUsersForCovidState);
+    setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
+    var data = searchForm;
+    console.log(covidStatelist);
+    let getId = covidStatelist.id;
+    if (covidStatelist) {
+      let updateCOVIDStatusbyUsersList = [];
 
+      updateCOVIDStatusbyUsersList.push({
+        id: covidStatelist.id,
+        covidStateId: covidStatelist.id,
+      });
+
+      let sendData = {
+        updateCOVIDStatusbyUsersList: updateCOVIDStatusbyUsersList,
+      };
+      userApiCall
+        .UpdateUserCovidStateBulk(sendData)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Covid state update to the selected users");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.setopenCovidStateInfoModal(false);
+            props.setSelectedUsersForCovidState([]);
+            props.setRowsSelected([]);
+            props.setReloadPage("YES");
+
+            setshowLoadder(false);
+            // window.location.reload();
+          }, 6000);
+        })
+        .catch((err) => {
+          console.log(err);
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
+  }
   return (
     <div className="innerpage-container">
       <Dialog
@@ -422,7 +508,10 @@ function ContactTracing(props) {
         >
           Change covid state of users
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit="#">
+        <ValidatorForm
+          className={`global-form`}
+          onSubmit={submitUserCovidInformation}
+        >
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
