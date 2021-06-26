@@ -147,24 +147,7 @@ function SocailDistancing(props) {
   });
 
   const [selectedValue, setSelectedValue] = React.useState("a");
-  const [socialDistancingData, setSocialDistancingData] = useState([
-    {
-      applicationUserId: "001",
-      userName: "Saravanan",
-      emailId: "saravana@gmail.com",
-      numberOfInstance: 12,
-      usersBreach: [
-        {
-          location: "Conference Hall",
-          createdDate: "2021-06-23T04:10:58.328Z",
-        },
-        {
-          location: "Cafetaria",
-          createdDate: "2021-06-23T04:10:58.328Z",
-        },
-      ],
-    },
-  ]);
+  const [socialDistancingData, setSocialDistancingData] = useState([]);
   const [applicationUsers, setApplicationUsers] = useState([]);
 
   useEffect(() => {
@@ -259,15 +242,15 @@ function SocailDistancing(props) {
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                        <TableRow key={row.location}>
-                          <TableCell>{row.location}</TableCell>
-                          <TableCell>
-                            {moment(row.createdDate).format(
-                              "DD/MM/yyyy hh:mm a"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
+                      <TableRow key={row.location}>
+                        <TableCell>{row.location}</TableCell>
+                        <TableCell>
+                          {moment(row.createdDate).format(
+                            "DD/MM/yyyy hh:mm a"
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -280,7 +263,7 @@ function SocailDistancing(props) {
     print: false,
     viewColumns: false,
     download: false,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
