@@ -23,7 +23,9 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
+import Autocomplete, {
+  createFilterOptions,
+} from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -55,6 +57,7 @@ import TableRow from "@material-ui/core/TableRow";
 import NotificationImportantIcon from "@material-ui/icons/NotificationImportant";
 import ChangeStatusIcon from "@material-ui/icons/SyncAlt";
 import DateFnsUtils from "@date-io/date-fns";
+import ReplayIcon from "@material-ui/icons/Replay";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -141,13 +144,28 @@ function ContactTracing(props) {
     startDate: moment().toISOString(),
     endDate: moment().toISOString(),
   });
+  const [resetForm, setResetForm] = useState({
+    userId: null,
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
+  });
   const [selectedValue, setSelectedValue] = React.useState("a");
   const [contactTracingData, setContactTracingData] = useState([
     {
-      "name": "Saravanan",
-      "userId": "0012345",
-      "userBaseAccountId": "2345110",
-    }
+      name: "Saravanan",
+      userId: "0012345",
+      userBaseAccountId: "2345110",
+    },
+    {
+      name: "Hajira",
+      userId: "0012345",
+      userBaseAccountId: "1234567",
+    },
+    {
+      name: "Joinee",
+      userId: "0012345",
+      userBaseAccountId: "876543",
+    },
   ]);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [RowsSelected, setRowsSelected] = useState([]);
@@ -163,7 +181,8 @@ function ContactTracing(props) {
 
   useEffect(() => {
     setComponentLoadder(true);
-    userApiCall.getProfileDetails()
+    userApiCall
+      .getProfileDetails()
       .then((loggedinUserDetails) => {
         Promise.all([
           userApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id),
@@ -208,6 +227,39 @@ function ContactTracing(props) {
         filter: false,
       },
     },
+    {
+      label: "Actions",
+      name: "",
+      options: {
+        filter: false,
+        sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return (
+              <div className={`action-buttons-container`}>
+                <Tooltip title="Alert">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<NotificationImportantIcon />}
+                    className={["delete-icon"].join(" ")}
+                    onClick={() =>
+                      handleClickOpenConfirmationModal(thisRowData)
+                    }
+                  ></Button>
+                </Tooltip>
+              </div>
+            );
+          }
+        },
+        setCellProps: (value) => {
+          return {
+            style: { width: "250px", minWidth: "250px", textAlign: "center" },
+          };
+        },
+      },
+    },
   ];
 
   const options = {
@@ -232,6 +284,7 @@ function ContactTracing(props) {
       allRowsSelected.map((user, i) => {
         setRowsSelectedArray.push(user.dataIndex);
       });
+
       setRowsSelected(setRowsSelectedArray);
       var selectedUsersToCovidStateArray = [];
       allRowsSelected.map((user, i) => {
@@ -241,10 +294,11 @@ function ContactTracing(props) {
       selectedUsersToCovidStateArray.map((user) => {
         finalUsers.push({ id: user.id });
       });
-      console.log(finalUsers);
+
       setSelectedUsersForCovidState(finalUsers);
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -258,7 +312,7 @@ function ContactTracing(props) {
           </Tooltip>
           {RowsSelected.length ? (
             <>
-              <Tooltip title="Alert">
+              {/* <Tooltip title="Alert">
                 <Button
                   variant="contained"
                   color="default"
@@ -268,15 +322,13 @@ function ContactTracing(props) {
                     handleClickOpenConfirmationModal(selectedUsersForCovidState)
                   }
                 ></Button>
-              </Tooltip>
+              </Tooltip> */}
               <Tooltip title="Change Covid State">
                 <Button
                   variant="contained"
                   startIcon={<ChangeStatusIcon />}
                   className={`edit-icon`}
-                  onClick={() =>
-                    handleClickOpenBulkModal(selectedUsersForCovidState)
-                  }
+                  onClick={() => handleClickOpenBulkModal()}
                 ></Button>
               </Tooltip>
             </>
@@ -313,15 +365,19 @@ function ContactTracing(props) {
         [name]: thisValue,
       }));
     }
-
   };
+  function resetFilterForm() {
+    setselectedSiteData();
+    setselectedLocationData();
+    setSearchForm(resetForm);
+  }
 
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
     setshowLoadder(true);
-    if (selectedReportType == 'rlap') {
+    if (selectedReportType == "rlap") {
       reportApiCall
         .getContactTracingRlapReport(searchForm)
         .then((result) => {
@@ -357,11 +413,12 @@ function ContactTracing(props) {
   }
 
   const filterOptions = createFilterOptions({
-    stringify: ({ firstName, lastName, userId }) => `${firstName} ${lastName} ${userId}`
+    stringify: ({ firstName, lastName, userId }) =>
+      `${firstName} ${lastName} ${userId}`,
   });
 
   const handleClickOpenConfirmationModal = (value) => {
-    var user = value[1];
+    var user = value[2];
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("alertreport");
@@ -391,8 +448,51 @@ function ContactTracing(props) {
 
   const handleChangeReport = (e) => {
     setSelectedReportType(e.target.value);
-  }
+  };
+  function submitUserCovidInformation() {
+    console.log(props.selectedUsersForCovidState);
+    setshowLoadder(true);
+    settoasterServerity("");
+    settoasterErrorMessageType("");
+    var data = searchForm;
+    console.log(covidStatelist);
+    let getId = covidStatelist.id;
+    if (covidStatelist) {
+      let updateCOVIDStatusbyUsersList = [];
 
+      updateCOVIDStatusbyUsersList.push({
+        id: covidStatelist.id,
+        covidStateId: covidStatelist.id,
+      });
+
+      let sendData = {
+        updateCOVIDStatusbyUsersList: updateCOVIDStatusbyUsersList,
+      };
+      userApiCall
+        .UpdateUserCovidStateBulk(sendData)
+        .then((result) => {
+          setStateSnackbar(true);
+          setToasterMessage("Covid state update to the selected users");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.setopenCovidStateInfoModal(false);
+            props.setSelectedUsersForCovidState([]);
+            props.setRowsSelected([]);
+            props.setReloadPage("YES");
+
+            setshowLoadder(false);
+            // window.location.reload();
+          }, 6000);
+        })
+        .catch((err) => {
+          console.log(err);
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
+  }
   return (
     <div className="innerpage-container">
       <Dialog
@@ -408,7 +508,10 @@ function ContactTracing(props) {
         >
           Change covid state of users
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit="#">
+        <ValidatorForm
+          className={`global-form`}
+          onSubmit={submitUserCovidInformation}
+        >
           <DialogContent dividers>
             {!componentLoadder ? (
               <Grid container spacing={3}>
@@ -421,7 +524,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                        BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
@@ -445,6 +548,12 @@ function ContactTracing(props) {
             ) : null}
           </DialogContent>
           <DialogActions>
+            <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
             <Button
               variant="contained"
               type="submit"
@@ -480,9 +589,23 @@ function ContactTracing(props) {
                       <label className="">Report Type</label>
                     </Grid>
                     <Grid item xs={8}>
-                      <RadioGroup row aria-label="gender" name="report_type" value={selectedReportType} onChange={handleChangeReport}>
-                        <FormControlLabel value="rlap" control={<Radio />} label="RLAP" />
-                        <FormControlLabel value="ble" control={<Radio />} label="BLE" />
+                      <RadioGroup
+                        row
+                        aria-label="gender"
+                        name="report_type"
+                        value={selectedReportType}
+                        onChange={handleChangeReport}
+                      >
+                        <FormControlLabel
+                          value="rlap"
+                          control={<Radio />}
+                          label="RLAP"
+                        />
+                        <FormControlLabel
+                          value="ble"
+                          control={<Radio />}
+                          label="BLE"
+                        />
                       </RadioGroup>
                     </Grid>
                   </Grid>
@@ -496,14 +619,18 @@ function ContactTracing(props) {
                           name="userId"
                           id="tags-outlined"
                           options={
-                            applicationUsers && applicationUsers.length > 0 ? applicationUsers : []
+                            applicationUsers && applicationUsers.length > 0
+                              ? applicationUsers
+                              : []
                           }
                           getOptionLabel={({ firstName, lastName }) => {
                             return `${firstName} ${lastName}`;
                           }}
                           defaultValue={searchForm.userId}
                           value={searchForm.userId ? searchForm.userId : null}
-                          onChange={(e, v) => handleChangeSearchForm(v, "userId")}
+                          onChange={(e, v) =>
+                            handleChangeSearchForm(v, "userId")
+                          }
                           filterSelectedOptions
                           className="global-input autocomplete-select"
                           filterOptions={filterOptions}
@@ -534,7 +661,11 @@ function ContactTracing(props) {
                     <Grid item xs={4}>
                       <label className="">From</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers report-pickers">
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
                         name="startDate"
@@ -556,7 +687,11 @@ function ContactTracing(props) {
                     <Grid item xs={4}>
                       <label className="">To</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers report-pickers">
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
                         name="endDate"
@@ -578,6 +713,12 @@ function ContactTracing(props) {
               ) : null}
             </DialogContent>
             <DialogActions>
+              <Button
+                onClick={resetFilterForm}
+                className="global-filter-reset-btn"
+              >
+                <ReplayIcon></ReplayIcon>
+              </Button>
               <Button
                 variant="contained"
                 type="submit"

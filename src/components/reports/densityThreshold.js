@@ -18,15 +18,18 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
+import ReplayIcon from "@material-ui/icons/Replay";
 import Dialog from "@material-ui/core/Dialog";
+
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
-import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ToasterMessageComponent from "../common/toaster";
@@ -34,14 +37,9 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import SiteService from "../../services/siteService";
-import UserService from "../../services/usersService";
-import ReportService from "../../services/reportService";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import MuiDialogActions from "@material-ui/core/DialogActions";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import moment from "moment";
 import propTypes from "prop-types";
 import { connect } from "react-redux";
@@ -58,6 +56,7 @@ import {
   KeyboardDatePicker,
   DateTimePicker,
 } from "@material-ui/pickers";
+import ReportService from "../../services/reportService";
 
 const styles = (theme) => ({
   root: {
@@ -106,10 +105,9 @@ const DialogActions = withStyles((theme) => ({
 function DensityThreshold(props) {
   const UserGroup = new UserGroupService();
   const siteApiCall = new SiteService();
-  const userApiCall = new UserService();
+  const [userGroupList, setuserGroupList] = useState();
   const reportApiCall = new ReportService();
 
-  const [userGroupList, setuserGroupList] = useState();
   const [Modalopen, setModalOpen] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
@@ -133,78 +131,85 @@ function DensityThreshold(props) {
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedLocationData, setselectedLocationData] = useState();
   const [searchForm, setSearchForm] = useState({
-    userId: null,
-    startDate: moment().toISOString(),
-    endDate: moment().toISOString(),
+    SiteId: "",
+    LocationId: [],
+    StartDate: moment().toISOString(),
+    EndDate: moment().toISOString(),
   });
-  const [selectedValue, setSelectedValue] = React.useState("a");
+  const [resetForm, setResetForm] = useState({
+    SiteId: "",
+    LocationId: [],
+    StartDate: moment().toISOString(),
+    EndDate: moment().toISOString(),
+  });
   const [densityThresholdData, setDensityThresholdData] = useState([
     {
-      "applicationUserId": "001",
-      "userName": "Saravanan",
-      "emailId": "saravana@gmail.com",
-      "numberOfInstance": 12,
-      "usersBreach": [
+      SiteName: "Hyderabad",
+      locationName: "cafe",
+      numberOfInstance: 2,
+      accessBreaches: [
         {
-          "location": "Conference Hall",
-          "createdDate": "2021-06-23T04:10:58.328Z"
+          userName: "string",
+          userId: "string",
+          emailId: "string",
+          createdDate: "2021-06-25T11:00:49.625Z",
         },
         {
-          "location": "Cafetaria",
-          "createdDate": "2021-06-23T04:10:58.328Z"
-        }
-      ]
-    }
+          userName: "string",
+          userId: "string",
+          emailId: "string",
+          createdDate: "2021-06-25T11:00:49.625Z",
+        },
+      ],
+    },
+    {
+      SiteName: "Hyderabad",
+      locationName: "server room",
+      numberOfInstance: 1,
+      accessBreaches: [
+        {
+          userName: "string",
+          userId: "string",
+          emailId: "string",
+          createdDate: "2021-06-25T11:00:49.625Z",
+        },
+      ],
+    },
   ]);
-  const [applicationUsers, setApplicationUsers] = useState([]);
+  const [locationData, setLocationData] = useState([]);
 
   useEffect(() => {
     setComponentLoadder(true);
-    userApiCall.getProfileDetails()
-      .then((loggedinUserDetails) => {
-        userApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id)
-          .then((getUsers) => {
-            setApplicationUsers(getUsers);
-            setComponentLoadder(false);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+    Promise.all([siteApiCall.getListSite()])
+      .then(([getAllSites]) => {
+        setAllSites(getAllSites);
+        setComponentLoadder(false);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.log(err);
       });
   }, []);
 
   const columns = [
     {
-      name: "id",
-      label: "Id",
-      options: {
-        display: "excluded",
-        print: false,
-        filter: false,
-      },
-    },
-    {
-      label: "UserId ",
-      name: "applicationUserId",
+      label: "Site",
+      name: "SiteName",
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      label: "EmailId",
-      name: "emailId",
+      label: "Location",
+      name: "locationName",
       options: {
         filter: false,
-        sort: false,
+        sort: true,
       },
     },
     {
-      name: "usersBreach",
-      label: "usersBreach",
+      name: "accessBreaches",
+      label: "accessBreaches",
       options: {
         display: "excluded",
         print: false,
@@ -216,7 +221,7 @@ function DensityThreshold(props) {
       name: "numberOfInstance",
       options: {
         filter: false,
-        sort: false,
+        sort: true,
       },
     },
   ];
@@ -241,16 +246,24 @@ function DensityThreshold(props) {
               <Table aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Location</TableCell>
+                    <TableCell>User Name</TableCell>
+                    <TableCell>User ID&nbsp;</TableCell>
+                    <TableCell>Email ID&nbsp;</TableCell>
                     <TableCell>Timestamp</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rowData[3]
-                    ? rowData[3].map((row) => (
-                      <TableRow key={row.location}>
-                        <TableCell>{row.location}</TableCell>
-                        <TableCell>{moment(row.createdDate).format('DD/MM/yyyy hh:mm a')}</TableCell>
+                  {rowData[2]
+                    ? rowData[2].map((row) => (
+                      <TableRow key={row.userId}>
+                        <TableCell>{row.userName}</TableCell>
+                        <TableCell>{row.userId}</TableCell>
+                        <TableCell>{row.emailId}</TableCell>
+                        <TableCell>
+                          {moment(row.createdDate).format(
+                            "DD-MM-YYYY hh:mm:ss a"
+                          )}
+                        </TableCell>
                       </TableRow>
                     ))
                     : []}
@@ -265,11 +278,17 @@ function DensityThreshold(props) {
     print: false,
     viewColumns: false,
     download: false,
+    selectableRows: false,
+    textLabels: {
+      body: {
+        noMatch: "There are no reports",
+      },
+    },
     customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Filter ">
+          <Tooltip title="Filter">
             <Button
               variant="contained"
               startIcon={<FilterListIcon />}
@@ -294,6 +313,29 @@ function DensityThreshold(props) {
     setModalOpen(false);
   };
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  function selectedSite(e, value) {
+    setselectedSiteData(value);
+    if (value) {
+      let data = value.id;
+      siteApiCall
+        .getAllLocationsBySiteId(data)
+        .then((getResult) => {
+          setLocationData(getResult);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
+  function selectedLocation(e, value) {
+    setselectedLocationData(value);
+  }
+
   const handleChangeSearchForm = (getSelectedVal, name) => {
     if (name == "userId") {
       setSearchForm((searchForm) => ({
@@ -307,16 +349,33 @@ function DensityThreshold(props) {
         [name]: thisValue,
       }));
     }
-
   };
+
+  function resetFilterForm() {
+    setselectedSiteData();
+    setselectedLocationData();
+    setSearchForm(resetForm);
+  }
 
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+
+    if (selectedSiteData) {
+      searchForm.SiteId = selectedSiteData.id;
+    }
+
+    if (selectedLocationData.length > 0) {
+      let locationArr = selectedLocationData.map((item) => item.id);
+      searchForm.LocationId = locationArr;
+    } else {
+      searchForm.LocationId = [];
+    }
+    console.log(searchForm);
     setshowLoadder(true);
     reportApiCall
-      .getGeoFencingReport(searchForm)
+      .getDensityThresholdReport(searchForm)
       .then((result) => {
         setDensityThresholdData(result);
         setTimeout(() => {
@@ -331,10 +390,6 @@ function DensityThreshold(props) {
         setshowLoadder(false);
       });
   }
-
-  const filterOptions = createFilterOptions({
-    stringify: ({ firstName, lastName, userId }) => `${firstName} ${lastName} ${userId}`
-  });
 
   return (
     <div className="innerpage-container">
@@ -355,53 +410,81 @@ function DensityThreshold(props) {
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">User ID </label>
+                      <label className="">Site </label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
                         <Autocomplete
-                          name="userId"
                           id="tags-outlined"
                           options={
-                            applicationUsers && applicationUsers.length > 0 ? applicationUsers : []
+                            allSites && allSites.length > 0 ? allSites : []
                           }
-                          getOptionLabel={({ firstName, lastName }) => {
-                            return `${firstName} ${lastName}`;
-                          }}
-                          defaultValue={searchForm.userId}
-                          value={searchForm.userId ? searchForm.userId : null}
-                          onChange={(e, v) => handleChangeSearchForm(v, "userId")}
+                          getOptionLabel={(option) => option.name}
+                          defaultValue={selectedSiteData}
+                          value={selectedSiteData ? selectedSiteData : ""}
+                          onChange={selectedSite}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
-                          filterOptions={filterOptions}
-                          renderOption={({ firstName, lastName, userId }) => {
-                            return (
-                              <div>
-                                <div>
-                                  {`${firstName} `}
-                                  {lastName}
-                                </div>
-                                <span>{userId}</span>
-                              </div>
-                            );
-                          }}
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              required
                               variant="outlined"
-                              placeholder="Select User by UserId or UserName"
+                              placeholder="Select Site"
+                              required
+                            />
+                          )}
+                        />{" "}
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} container>
+                    <Grid item xs={4}>
+                      <label className="">Location</label>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <FormControl variant="outlined" fullWidth>
+                        <InputLabel
+                          id="demo-simple-select-outlined-label"
+                          shrink={false}
+                          className="select-label"
+                        ></InputLabel>
+                        <Autocomplete
+                          multiple
+                          id="tags-outlined"
+                          options={
+                            locationData && locationData.length > 0
+                              ? locationData
+                              : []
+                          }
+                          getOptionLabel={(option) => option.locationName}
+                          defaultValue={selectedLocationData}
+                          value={
+                            selectedLocationData ? selectedLocationData : []
+                          }
+                          onChange={selectedLocation}
+                          filterSelectedOptions
+                          className="global-input autocomplete-select"
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              variant="outlined"
+                              placeholder="Select Location"
                             />
                           )}
                         />
                       </FormControl>
                     </Grid>
                   </Grid>
+
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">From</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers report-pickers">
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
                         name="startDate"
@@ -419,11 +502,16 @@ function DensityThreshold(props) {
                       />
                     </Grid>
                   </Grid>
+
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">To</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers report-pickers">
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
                         name="endDate"
@@ -445,6 +533,12 @@ function DensityThreshold(props) {
               ) : null}
             </DialogContent>
             <DialogActions>
+              <Button
+                onClick={resetFilterForm}
+                className="global-filter-reset-btn"
+              >
+                <ReplayIcon></ReplayIcon>
+              </Button>
               <Button
                 variant="contained"
                 type="submit"
@@ -474,7 +568,7 @@ function DensityThreshold(props) {
           Reports
         </LinkTo>
         <LinkTo color="textPrimary" href="#" to="#" className="inactive">
-          Geo Fencing Threshold Breaches
+          Density Threshold Breaches
         </LinkTo>
       </Breadcrumbs>
 

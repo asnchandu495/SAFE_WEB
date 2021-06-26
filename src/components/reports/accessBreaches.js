@@ -18,7 +18,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import UserGroupService from "../../services/userGroupService";
 import ConfirmationDialog from "../common/confirmdialogbox";
 import { withStyles } from "@material-ui/core/styles";
-
+import ReplayIcon from "@material-ui/icons/Replay";
 import Dialog from "@material-ui/core/Dialog";
 
 import IconButton from "@material-ui/core/IconButton";
@@ -135,47 +135,51 @@ function AccessBreaches(props) {
     StartDate: moment().toISOString(),
     EndDate: moment().toISOString(),
   });
+  const [resetForm, setResetForm] = useState({
+    SiteId: "",
+    LocationId: [],
+    StartDate: moment().toISOString(),
+    EndDate: moment().toISOString(),
+  });
   const [locationDensityData, setlocationDensityData] = useState([
     {
-      "SiteName": "Hyderabad",
-      "locationName": "cafe",
-      "numberOfInstance": 2,
-      "accessBreaches": [
+      SiteName: "Hyderabad",
+      locationName: "cafe",
+      numberOfInstance: 2,
+      accessBreaches: [
         {
-          "userName": "string",
-          "userId": "string",
-          "emailId": "string",
-          "createdDate": "2021-06-25T11:00:49.625Z"
+          userName: "string",
+          userId: "string",
+          emailId: "string",
+          createdDate: "2021-06-25T11:00:49.625Z",
         },
         {
-          "userName": "string",
-          "userId": "string",
-          "emailId": "string",
-          "createdDate": "2021-06-25T11:00:49.625Z"
-        }
-      ]
+          userName: "string",
+          userId: "string",
+          emailId: "string",
+          createdDate: "2021-06-25T11:00:49.625Z",
+        },
+      ],
     },
     {
-      "SiteName": "Hyderabad",
-      "locationName": "server room",
-      "numberOfInstance": 1,
-      "accessBreaches": [
+      SiteName: "Hyderabad",
+      locationName: "server room",
+      numberOfInstance: 1,
+      accessBreaches: [
         {
-          "userName": "string",
-          "userId": "string",
-          "emailId": "string",
-          "createdDate": "2021-06-25T11:00:49.625Z"
-        }
-      ]
-    }
+          userName: "string",
+          userId: "string",
+          emailId: "string",
+          createdDate: "2021-06-25T11:00:49.625Z",
+        },
+      ],
+    },
   ]);
   const [locationData, setLocationData] = useState([]);
 
   useEffect(() => {
     setComponentLoadder(true);
-    Promise.all([
-      siteApiCall.getListSite(),
-    ])
+    Promise.all([siteApiCall.getListSite()])
       .then(([getAllSites]) => {
         setAllSites(getAllSites);
         setComponentLoadder(false);
@@ -250,13 +254,17 @@ function AccessBreaches(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                      <TableRow key={row.userId}>
-                        <TableCell>{row.userName}</TableCell>
-                        <TableCell>{row.userId}</TableCell>
-                        <TableCell>{row.emailId}</TableCell>
-                        <TableCell>{moment(row.createdDate).format("DD-MM-YYYY hh:mm:ss a")}</TableCell>
-                      </TableRow>
-                    ))
+                        <TableRow key={row.userId}>
+                          <TableCell>{row.userName}</TableCell>
+                          <TableCell>{row.userId}</TableCell>
+                          <TableCell>{row.emailId}</TableCell>
+                          <TableCell>
+                            {moment(row.createdDate).format(
+                              "DD-MM-YYYY hh:mm:ss a"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -275,7 +283,7 @@ function AccessBreaches(props) {
         noMatch: "There are no reports",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -340,8 +348,13 @@ function AccessBreaches(props) {
         [name]: thisValue,
       }));
     }
-
   };
+
+  function resetFilterForm() {
+    setselectedSiteData();
+    setselectedLocationData();
+    setSearchForm(resetForm);
+  }
 
   function submitForm(e) {
     e.preventDefault();
@@ -353,9 +366,7 @@ function AccessBreaches(props) {
     }
 
     if (selectedLocationData.length > 0) {
-      let locationArr = selectedLocationData.map(
-        (item) => item.id
-      );
+      let locationArr = selectedLocationData.map((item) => item.id);
       searchForm.LocationId = locationArr;
     } else {
       searchForm.LocationId = [];
@@ -409,6 +420,7 @@ function AccessBreaches(props) {
                           }
                           getOptionLabel={(option) => option.name}
                           defaultValue={selectedSiteData}
+                          value={selectedSiteData ? selectedSiteData : ""}
                           onChange={selectedSite}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
@@ -445,6 +457,9 @@ function AccessBreaches(props) {
                           }
                           getOptionLabel={(option) => option.locationName}
                           defaultValue={selectedLocationData}
+                          value={
+                            selectedLocationData ? selectedLocationData : []
+                          }
                           onChange={selectedLocation}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
@@ -464,7 +479,11 @@ function AccessBreaches(props) {
                     <Grid item xs={4}>
                       <label className="">From</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers report-pickers">
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
                         name="startDate"
@@ -487,7 +506,11 @@ function AccessBreaches(props) {
                     <Grid item xs={4}>
                       <label className="">To</label>
                     </Grid>
-                    <Grid item xs={8} className="date-time-pickers report-pickers">
+                    <Grid
+                      item
+                      xs={8}
+                      className="date-time-pickers report-pickers"
+                    >
                       <DateTimePicker
                         fullWidth
                         name="endDate"
@@ -509,6 +532,12 @@ function AccessBreaches(props) {
               ) : null}
             </DialogContent>
             <DialogActions>
+              <Button
+                onClick={resetFilterForm}
+                className="global-filter-reset-btn"
+              >
+                <ReplayIcon></ReplayIcon>
+              </Button>
               <Button
                 variant="contained"
                 type="submit"

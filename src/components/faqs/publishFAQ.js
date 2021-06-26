@@ -20,6 +20,47 @@ import * as faqAction from "../../Redux/Action/faqAction";
 import BackupIcon from "@material-ui/icons/Backup";
 import PropTypes from "prop-types";
 import * as publishFAQAction from "../../Redux/Action/publishFAQAction";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import MuiDialogTitle from "@material-ui/core/DialogTitle";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import IconButton from "@material-ui/core/IconButton";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import ReplayIcon from "@material-ui/icons/Replay";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import MasterDataService from "../../services/masterDataService";
+import FilterListIcon from "@material-ui/icons/FilterList";
+
+const styles = (theme) => ({
+  root: {
+    margin: 0,
+    padding: theme.spacing(2),
+  },
+  closeButton: {
+    position: "absolute",
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    margin: theme.spacing(1),
+    height: 20,
+    width: 20,
+    minHeight: 20,
+  },
+}));
+
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -34,6 +75,8 @@ const theme1 = createMuiTheme({
 
 function PublishFAQ(props) {
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const masterApiCall = new MasterDataService();
+  const [showLoadder, setshowLoadder] = useState(false);
   const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
     useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
@@ -46,16 +89,36 @@ function PublishFAQ(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [componentLoadder, setcomponentLoadder] = useState(true);
+  const [Modalopen, setModalOpen] = useState(false);
+  const [languageValue, setlanguageValue] = useState([]);
+  const [allLanguages, setAllLanguages] = useState([]);
   const [loadFormData, setloadFormData] = useState({
     isSaveAsDraft: "true",
     languageIds: [],
   });
+  const DialogTitle = withStyles(styles)((props) => {
+    const { children, classes, onClose, ...other } = props;
+    return (
+      <MuiDialogTitle disableTypography className={classes.root} {...other}>
+        <Typography variant="h6">{children}</Typography>
+        {onClose ? (
+          <IconButton
+            aria-label="close"
+            className={classes.closeButton}
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
+      </MuiDialogTitle>
+    );
+  });
 
   useEffect(() => {
-    props
-      .LoadData(loadFormData)
-      .then((result) => {
+    Promise.all([props.LoadData(loadFormData), masterApiCall.getAllLanguages()])
+      .then(([result, getLanguages]) => {
         // setAllFaqs(result);
+        setAllLanguages(getLanguages);
         setcomponentLoadder(false);
       })
       .catch((err) => {
@@ -102,6 +165,21 @@ function PublishFAQ(props) {
       pagination: {
         jumpToPage: "Go to page:",
       },
+    },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbar: () => {
+      return (
+        <div className={`maingrid-actions`}>
+          <Tooltip title="Filter ">
+            <Button
+              variant="contained"
+              startIcon={<FilterListIcon />}
+              className={`add-icon`}
+              onClick={handleClickOpenModal}
+            ></Button>
+          </Tooltip>
+        </div>
+      );
     },
   };
 
@@ -210,8 +288,115 @@ function PublishFAQ(props) {
     props.history.push(getRoute);
   }
 
+  const handleClickOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
+  };
+  function handleChangeLanguage(event, value) {
+    setlanguageValue(value);
+  }
+
+  function resetFilterForm() {
+    setlanguageValue([]);
+  }
+
+  function submitLanguage() {
+    console.log(loadFormData);
+    let submitFilterdata = loadFormData;
+    if (languageValue.length > 0) {
+      let languageArr = languageValue.map((item) => item.id);
+      submitFilterdata.languageIds = languageArr;
+    } else {
+      submitFilterdata.languageIds = [];
+    }
+    console.log(submitFilterdata);
+
+    setshowLoadder(true);
+
+    props
+      .LoadData(submitFilterdata)
+
+      .then((result) => {
+        setshowLoadder(false);
+        setModalOpen(false);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
+  }
+
   return (
     <div className="innerpage-container">
+      <Dialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={Modalopen}
+        className="global-dialog confirmation-dialog global-form"
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Filters
+        </DialogTitle>
+
+        <ValidatorForm className={`global-form`} onSubmit={submitLanguage}>
+          <DialogContent dividers>
+            {!componentLoadder ? (
+              <Grid container spacing={3}>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className=""> Language</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={allLanguages}
+                      getOptionLabel={(option) => option.name}
+                      onChange={handleChangeLanguage}
+                      defaultValue={languageValue.length ? languageValue : []}
+                      value={languageValue.length ? languageValue : []}
+                      filterSelectedOptions
+                      className="global-input autocomplete-select"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          placeholder="Select "
+                        />
+                      )}
+                    />
+                    {""}
+                  </Grid>
+                </Grid>
+              </Grid>
+            ) : null}
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={resetFilterForm}
+              className="global-filter-reset-btn"
+            >
+              <ReplayIcon></ReplayIcon>
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              className="global-submit-btn"
+              disabled={showLoadder}
+            >
+              {showLoadder ? <ButtonLoadderComponent /> : "Submit"}
+            </Button>
+            <Button onClick={handleClose} className="global-cancel-btn">
+              Cancel
+            </Button>
+          </DialogActions>
+        </ValidatorForm>
+      </Dialog>
       {componentLoadder ? (
         <ComponentLoadderComponent />
       ) : (
