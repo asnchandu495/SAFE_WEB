@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as GridAction from "../../../Redux/Action/gridAction";
 import * as AcmAction from "../../../Redux/Action/acmAction";
+import NotificationService from "../../../services/notificationService";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -27,7 +28,7 @@ const GreenCheckbox = withStyles({
 
 function Signin(props) {
   const authApiCall = new AuthService();
-
+  const notificationApiCall = new NotificationService();
   const [formData, SetformData] = useState({
     username: "",
     password: "",
@@ -37,6 +38,8 @@ function Signin(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] = useState("");
   const [toasterServerity, settoasterServerity] = useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
+  const [applicationUsers, setApplicationUsers] = useState([]);
+  const [componentLoadder, setComponentLoadder] = useState(true);
   const [gridPages, setGridPages] = useState([
     { name: "users", page: 1 },
     { name: "sites", page: 1 },
@@ -616,6 +619,20 @@ function Signin(props) {
       ],
     },
   ]);
+
+  useEffect(() => {
+    setComponentLoadder(true);
+    notificationApiCall
+      .GetAllUserCommunicationsForLoggedInUser()
+      .then((loggedinUserDetails) => {
+        setApplicationUsers(loggedinUserDetails);
+
+        setComponentLoadder(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   function handleChange(e) {
     const { name, value } = e.target;
