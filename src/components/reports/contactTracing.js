@@ -216,15 +216,15 @@ function ContactTracing(props) {
       name: "userId",
       options: {
         filter: false,
-        sort: false,
+        sort: true,
       },
     },
     {
       name: "userBaseAccountId",
       label: "User Base AccountId",
       options: {
-        print: false,
         filter: false,
+        sort: true,
       },
     },
     {
@@ -748,7 +748,7 @@ function ContactTracing(props) {
         data={contactTracingData}
         columns={columns}
         options={options}
-        className="global-table reports-table no-action-table no-action-checkbox-table"
+        className="global-table reports-table"
       />
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
