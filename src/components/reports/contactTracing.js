@@ -265,7 +265,6 @@ function ContactTracing(props) {
   const options = {
     filter: false,
     onFilterChange: (changedColumn, filterList) => {
-      console.log(changedColumn, filterList);
     },
     selectableRows: false,
     filterType: "dropdown",
@@ -278,8 +277,6 @@ function ContactTracing(props) {
     selectableRows: "multiple",
     disableToolbarSelect: true,
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
-      console.log("rows");
-      console.log(currentRowSelected);
       var setRowsSelectedArray = [];
       allRowsSelected.map((user, i) => {
         setRowsSelectedArray.push(user.dataIndex);
@@ -292,13 +289,13 @@ function ContactTracing(props) {
       });
       let finalUsers = [];
       selectedUsersToCovidStateArray.map((user) => {
-        finalUsers.push({ id: user.id });
+        finalUsers.push({ id: contactTracingData[user].userBaseAccountId });
       });
 
       setSelectedUsersForCovidState(finalUsers);
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -429,7 +426,6 @@ function ContactTracing(props) {
   };
 
   const handleChangeState = (row) => {
-    console.log(row[0]);
     setmodalChangeValue(row[0]);
     setChangeModalOpen(true);
   };
@@ -449,25 +445,24 @@ function ContactTracing(props) {
   const handleChangeReport = (e) => {
     setSelectedReportType(e.target.value);
   };
+
   function submitUserCovidInformation() {
-    console.log(props.selectedUsersForCovidState);
     setshowLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
-    var data = searchForm;
-    console.log(covidStatelist);
-    let getId = covidStatelist.id;
     if (covidStatelist) {
       let updateCOVIDStatusbyUsersList = [];
-
-      updateCOVIDStatusbyUsersList.push({
-        id: covidStatelist.id,
-        covidStateId: covidStatelist.id,
+      selectedUsersForCovidState.map((user) => {
+        updateCOVIDStatusbyUsersList.push({
+          id: user.id,
+          covidStateId: covidStatelist.id,
+        });
       });
 
       let sendData = {
         updateCOVIDStatusbyUsersList: updateCOVIDStatusbyUsersList,
       };
+
       userApiCall
         .UpdateUserCovidStateBulk(sendData)
         .then((result) => {
@@ -475,17 +470,13 @@ function ContactTracing(props) {
           setToasterMessage("Covid state update to the selected users");
           settoasterServerity("success");
           setTimeout(() => {
-            props.setopenCovidStateInfoModal(false);
-            props.setSelectedUsersForCovidState([]);
-            props.setRowsSelected([]);
-            props.setReloadPage("YES");
-
+            setBulkModalOpen(false);
+            setSelectedUsersForCovidState([]);
+            setRowsSelected([]);
             setshowLoadder(false);
-            // window.location.reload();
           }, 6000);
         })
         .catch((err) => {
-          console.log(err);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
@@ -524,7 +515,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                        BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }

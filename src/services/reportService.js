@@ -70,17 +70,6 @@ export default class ReportService {
     });
   }
 
-  getGeoFencingReport(getData) {
-    return this.fetch(
-      `${this.baseURL}/ApplicationUser/GetAllSocialDistancingBreaches?FromDate=${getData.startDate}&ToDate=${getData.endDate}&UserId=${getData.userId.userId}`,
-      {
-        method: "GET",
-      }
-    ).then((res) => {
-      return Promise.resolve(res);
-    });
-  }
-
   getDensityThresholdReport(data) {
     let SiteIds = "";
     let LocationIds = "";
