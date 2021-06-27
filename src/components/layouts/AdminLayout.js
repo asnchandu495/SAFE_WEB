@@ -858,7 +858,7 @@ function AdminLayout(props) {
           let questionnaireResult = module.permissions.every(function (e) {
             return !e.isAccess;
           });
-          if (questionnaireResult) {
+          if (!questionnaireResult) {
             return null;
           } else {
             return <>
@@ -1370,7 +1370,7 @@ function AdminLayout(props) {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
+          return !entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}
@@ -1409,7 +1409,7 @@ function AdminLayout(props) {
           </ListItem> : "";
           break;
         case "assignUserGroupList":
-          return entity.isAccess ? <ListItem
+          return !entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}

@@ -194,15 +194,6 @@ function Questionaire(props) {
                     onClick={() => questionaireEvaluation(thisRowData)}
                   ></Button>
                 </Tooltip>
-                <Tooltip title="View Workflow">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<AccountTreeIcon />}
-                    className={`edit-icon`}
-                    onClick={() => handleClickViewWorkflow(thisRowData)}
-                  ></Button>
-                </Tooltip>
               </div>
             );
           }

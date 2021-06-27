@@ -29,7 +29,7 @@ import TextField from "@material-ui/core/TextField";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-
+import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import MasterService from "../../services/masterDataService";
@@ -501,6 +501,16 @@ function AssignQuestionaires(props) {
                     }
                   ></Button>
                 </Tooltip>
+
+                <Tooltip title="View Workflows">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<AccountTreeIcon />}
+                    className={`edit-icon`}
+                    onClick={() => handleClickViewWorkflow(thisRowData)}
+                  ></Button>
+                </Tooltip>
               </div>
             );
           }
@@ -513,6 +523,11 @@ function AssignQuestionaires(props) {
       },
     },
   ];
+
+  function handleClickViewWorkflow(value) {
+    var groupDetails = value[2];
+    props.history.push(`/questionaires/workflow-states/${groupDetails['id']}`);
+  }
 
   return (
     <div className="innerpage-container">

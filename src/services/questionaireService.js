@@ -934,6 +934,14 @@ export default class questionaireService {
     });
   }
 
+  getGroupStates(id) {
+    return this.fetch(`${this.baseURL}/ApplicationUser/GetAllWorkFlowsById?GroupId=${id}`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");
