@@ -1647,7 +1647,7 @@ function AdminLayout(props) {
                 className="notification-container"
               >
                 <ul>
-                  {notificationList ? notificationList.getAllList.map((data) => (
+                  {notificationList && notificationList.getAllList ? notificationList.getAllList.map((data) => (
                     <li className={`${data.isRead ? '' : 'notification-unread'}`} onClick={() => dislayNotificationMessage(data)} key={`notification_${data.id}`}>
                       {data.message.substring(0, 70) + '...'}
                     </li>
