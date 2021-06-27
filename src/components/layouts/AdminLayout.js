@@ -858,7 +858,7 @@ function AdminLayout(props) {
           let questionnaireResult = module.permissions.every(function (e) {
             return !e.isAccess;
           });
-          if (!questionnaireResult) {
+          if (questionnaireResult) {
             return null;
           } else {
             return <>
@@ -1370,7 +1370,7 @@ function AdminLayout(props) {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return !entity.isAccess ? <ListItem
+          return entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}
@@ -1409,7 +1409,7 @@ function AdminLayout(props) {
           </ListItem> : "";
           break;
         case "assignUserGroupList":
-          return !entity.isAccess ? <ListItem
+          return entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}
@@ -1466,7 +1466,7 @@ function AdminLayout(props) {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "density":
-          return !entity.isAccess ? <ListItem
+          return entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}
@@ -1479,7 +1479,7 @@ function AdminLayout(props) {
           </ListItem> : "";
           break;
         case "accessBreach":
-          return !entity.isAccess ? <ListItem
+          return entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}
@@ -1492,7 +1492,7 @@ function AdminLayout(props) {
           </ListItem> : "";
           break;
         case "socialBreach":
-          return !entity.isAccess ? <ListItem
+          return entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}
@@ -1505,7 +1505,7 @@ function AdminLayout(props) {
           </ListItem> : "";
           break;
         case "staffInOffice":
-          return !entity.isAccess ? <ListItem
+          return entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}
@@ -1518,7 +1518,7 @@ function AdminLayout(props) {
           </ListItem> : "";
           break;
         case "densityBreach":
-          return !entity.isAccess ? <ListItem
+          return entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}
@@ -1531,7 +1531,7 @@ function AdminLayout(props) {
           </ListItem> : "";
           break;
         case "contactTrace":
-          return !entity.isAccess ? <ListItem
+          return entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}
