@@ -216,7 +216,7 @@ function AssignEmergencyContactToUserGroup(props) {
         className="global-dialog assign-emergency-contact"
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Assign emergency contact to group
+          Assign Emergency Contact To Group
           <TooltipComponent
             isMarginBottom={true}
             tooltipMessage={`Emergency Contacts  assigned to a user group in "Active" state will be available for users for whom the selected user group is primary user group. Only One Emergency Contacts list can be assigned in active state to a user group.`}

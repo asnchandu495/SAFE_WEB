@@ -57,6 +57,21 @@ import {
   DateTimePicker,
 } from "@material-ui/pickers";
 import ReportService from "../../services/reportService";
+import * as GridAction from "../../Redux/Action/gridAction";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import MuiTablePagination from "@material-ui/core/TablePagination";
+
+const theme1 = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        overflowX: "none",
+        height: "auto",
+        maxHeight: "calc(100vh - 290px) !important",
+      },
+    },
+  },
+});
 
 const styles = (theme) => ({
   root: {
@@ -129,7 +144,7 @@ function DensityThreshold(props) {
     new Date("2014-08-18T21:11:54")
   );
   const [selectedSiteData, setselectedSiteData] = useState();
-  const [selectedLocationData, setselectedLocationData] = useState();
+  const [selectedLocationData, setselectedLocationData] = useState([]);
   const [searchForm, setSearchForm] = useState({
     SiteId: "",
     LocationId: [],
@@ -177,11 +192,13 @@ function DensityThreshold(props) {
     },
   ]);
   const [locationData, setLocationData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
 
   useEffect(() => {
     setComponentLoadder(true);
-    Promise.all([siteApiCall.getListSite()])
-      .then(([getAllSites]) => {
+    Promise.all([siteApiCall.getListSite(), props.LoadGridsPage()])
+      .then(([getAllSites, gridResult]) => {
         setAllSites(getAllSites);
         setComponentLoadder(false);
       })
@@ -226,6 +243,19 @@ function DensityThreshold(props) {
     },
   ];
 
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      console.log(thisPage);
+      return g.name == "report";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     onFilterChange: (changedColumn, filterList) => {
@@ -234,7 +264,11 @@ function DensityThreshold(props) {
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
-    rowsPerPage: 5,
+    rowsPerPageOptions: [5, 10, 15, 100],
+
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
     expandableRows: true,
     expandableRowsHeader: false,
     renderExpandableRow: (rowData, rowMeta) => {
@@ -255,17 +289,17 @@ function DensityThreshold(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                      <TableRow key={row.userId}>
-                        <TableCell>{row.userName}</TableCell>
-                        <TableCell>{row.userId}</TableCell>
-                        <TableCell>{row.emailId}</TableCell>
-                        <TableCell>
-                          {moment(row.createdDate).format(
-                            "DD-MM-YYYY hh:mm:ss a"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
+                        <TableRow key={row.userId}>
+                          <TableCell>{row.userName}</TableCell>
+                          <TableCell>{row.userId}</TableCell>
+                          <TableCell>{row.emailId}</TableCell>
+                          <TableCell>
+                            {moment(row.createdDate).format(
+                              "DD-MM-YYYY hh:mm:ss a"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -274,7 +308,7 @@ function DensityThreshold(props) {
         </tr>
       );
     },
-    page: 1,
+    page: currentPage,
     print: false,
     viewColumns: false,
     download: false,
@@ -283,8 +317,43 @@ function DensityThreshold(props) {
       body: {
         noMatch: "There are no reports",
       },
+      pagination: {
+        jumpToPage: "Go to page:",
+      },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customSearch: (searchQuery, currentRow, columns) => {
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col !== "undefined" && col !== null) {
+          if (typeof col === "object") {
+            if (col.name) {
+              if (col.name.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+            if (col.stateName) {
+              if (col.stateName.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+          } else {
+            if (col.toString().indexOf(searchQuery) >= 0) {
+              isFound = true;
+            }
+          }
+        }
+      });
+
+      return isFound;
+    },
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "report", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -299,6 +368,33 @@ function DensityThreshold(props) {
         </div>
       );
     },
+  };
+  const CustomFooter = (props) => {
+    return (
+      <div className="custom-pagination-report">
+        <MuiTablePagination
+          component="div"
+          count={props.count}
+          rowsPerPage={props.rowsPerPage}
+          page={props.page}
+          rowsPerPageOptions={[5, 10, 20, 100]}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowChange}
+        />
+      </div>
+    );
+  };
+
+  const handlePageChange = (_, page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+  const handleRowChange = (e) => {
+    console.log(e.target.value);
+    setCurrentRowsPerPage(e.target.value);
   };
 
   function BreadcrumbNavigation(getRoute) {
@@ -410,7 +506,7 @@ function DensityThreshold(props) {
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Site </label>
+                      <label className="required">Site </label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -429,6 +525,7 @@ function DensityThreshold(props) {
                             <TextField
                               {...params}
                               variant="outlined"
+                              required
                               placeholder="Select Site"
                               required
                             />
@@ -439,7 +536,7 @@ function DensityThreshold(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Location</label>
+                      <label className="required">Location</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -467,6 +564,10 @@ function DensityThreshold(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              inputProps={{
+                                ...params.inputProps,
+                                required: selectedLocationData.length === 0,
+                              }}
                               variant="outlined"
                               placeholder="Select Location"
                             />
@@ -571,14 +672,20 @@ function DensityThreshold(props) {
           Density Threshold Breaches
         </LinkTo>
       </Breadcrumbs>
-
-      <MUIDataTable
-        title={""}
-        data={densityThresholdData}
-        columns={columns}
-        options={options}
-        className="global-table reports-table no-action-table"
-      />
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <MuiThemeProvider theme={theme1}>
+          {" "}
+          <MUIDataTable
+            title={""}
+            data={densityThresholdData}
+            columns={columns}
+            options={options}
+            className="global-table reports-table no-action-table"
+          />{" "}
+        </MuiThemeProvider>
+      )}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
         ConfirmationHeaderTittle={ConfirmationHeaderTittle}
@@ -601,4 +708,16 @@ function DensityThreshold(props) {
   );
 }
 
-export default DensityThreshold;
+// export default DensityThreshold;
+function mapStateToProps(state, ownProps) {
+  return {
+    GridData: state.gridHistory,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DensityThreshold);

@@ -57,6 +57,21 @@ import {
   DateTimePicker,
 } from "@material-ui/pickers";
 import ReportService from "../../services/reportService";
+import * as GridAction from "../../Redux/Action/gridAction";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import MuiTablePagination from "@material-ui/core/TablePagination";
+
+const theme1 = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        overflowX: "none",
+        height: "auto",
+        maxHeight: "calc(100vh - 290px) !important",
+      },
+    },
+  },
+});
 
 const styles = (theme) => ({
   root: {
@@ -128,7 +143,7 @@ function AccessBreaches(props) {
     new Date("2014-08-18T21:11:54")
   );
   const [selectedSiteData, setselectedSiteData] = useState();
-  const [selectedLocationData, setselectedLocationData] = useState();
+  const [selectedLocationData, setselectedLocationData] = useState([]);
   const [searchForm, setSearchForm] = useState({
     SiteId: "",
     LocationId: [],
@@ -144,10 +159,13 @@ function AccessBreaches(props) {
   const [locationDensityData, setlocationDensityData] = useState([]);
   const [locationData, setLocationData] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+
   useEffect(() => {
     setComponentLoadder(true);
-    Promise.all([siteApiCall.getListSite()])
-      .then(([getAllSites]) => {
+    Promise.all([siteApiCall.getListSite(), props.LoadGridsPage()])
+      .then(([getAllSites, gridResult]) => {
         setAllSites(getAllSites);
         setComponentLoadder(false);
       })
@@ -191,17 +209,35 @@ function AccessBreaches(props) {
       },
     },
   ];
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      console.log(thisPage);
+      return g.name == "report";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
 
   const options = {
     filter: false,
+    filterType: "dropdown",
+    responsive: "scrollMaxHeight",
+    fixedHeader: true,
+    rowsPerPageOptions: [5, 10, 15, 100],
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
     onFilterChange: (changedColumn, filterList) => {
       console.log(changedColumn, filterList);
     },
     selectableRows: false,
-    filterType: "dropdown",
-    responsive: "scrollMaxHeight",
-    rowsPerPage: 5,
+
     expandableRows: true,
+
+    page: currentPage,
     expandableRowsHeader: false,
     renderExpandableRow: (rowData, rowMeta) => {
       console.log(rowData);
@@ -221,17 +257,17 @@ function AccessBreaches(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                      <TableRow key={row.userId}>
-                        <TableCell>{row.userName}</TableCell>
-                        <TableCell>{row.userId}</TableCell>
-                        <TableCell>{row.emailId}</TableCell>
-                        <TableCell>
-                          {moment(row.createdDate).format(
-                            "DD-MM-YYYY hh:mm:ss a"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
+                        <TableRow key={row.userId}>
+                          <TableCell>{row.userName}</TableCell>
+                          <TableCell>{row.userId}</TableCell>
+                          <TableCell>{row.emailId}</TableCell>
+                          <TableCell>
+                            {moment(row.createdDate).format(
+                              "DD-MM-YYYY hh:mm:ss a"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -240,17 +276,20 @@ function AccessBreaches(props) {
         </tr>
       );
     },
-    page: 1,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
-    selectableRows: false,
+
     textLabels: {
       body: {
         noMatch: "There are no reports",
       },
+      pagination: {
+        jumpToPage: "Go to page:",
+      },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -265,6 +304,66 @@ function AccessBreaches(props) {
         </div>
       );
     },
+    customSearch: (searchQuery, currentRow, columns) => {
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col !== "undefined" && col !== null) {
+          if (typeof col === "object") {
+            if (col.name) {
+              if (col.name.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+            if (col.stateName) {
+              if (col.stateName.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+          } else {
+            if (col.toString().indexOf(searchQuery) >= 0) {
+              isFound = true;
+            }
+          }
+        }
+      });
+
+      return isFound;
+    },
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "report", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
+  };
+
+  const CustomFooter = (props) => {
+    return (
+      <div className="custom-pagination-report">
+        <MuiTablePagination
+          component="div"
+          count={props.count}
+          rowsPerPage={props.rowsPerPage}
+          page={props.page}
+          rowsPerPageOptions={[5, 10, 20, 100]}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowChange}
+        />
+      </div>
+    );
+  };
+
+  const handlePageChange = (_, page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+  const handleRowChange = (e) => {
+    console.log(e.target.value);
+    setCurrentRowsPerPage(e.target.value);
   };
 
   function BreadcrumbNavigation(getRoute) {
@@ -375,8 +474,8 @@ function AccessBreaches(props) {
               {!componentLoadder ? (
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
-                    <Grid item xs={4}>
-                      <label className="">Site </label>
+                    <Grid item xs={4} className="">
+                      <label className="required">Site </label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -394,6 +493,7 @@ function AccessBreaches(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              required
                               variant="outlined"
                               placeholder="Select Site"
                               required
@@ -405,7 +505,7 @@ function AccessBreaches(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Location</label>
+                      <label className="required">Location</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -433,6 +533,10 @@ function AccessBreaches(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              inputProps={{
+                                ...params.inputProps,
+                                required: selectedLocationData.length === 0,
+                              }}
                               variant="outlined"
                               placeholder="Select Location"
                             />
@@ -464,7 +568,6 @@ function AccessBreaches(props) {
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
-                        required
                       />
                     </Grid>
                   </Grid>
@@ -520,7 +623,6 @@ function AccessBreaches(props) {
           </ValidatorForm>{" "}
         </MuiPickersUtilsProvider>
       </Dialog>
-
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
         <LinkTo
           color="inherit"
@@ -537,14 +639,20 @@ function AccessBreaches(props) {
           Access Breaches
         </LinkTo>
       </Breadcrumbs>
-
-      <MUIDataTable
-        title={""}
-        data={locationDensityData}
-        columns={columns}
-        options={options}
-        className="global-table reports-table no-action-table"
-      />
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <MuiThemeProvider theme={theme1}>
+          {" "}
+          <MUIDataTable
+            title={""}
+            data={locationDensityData}
+            columns={columns}
+            options={options}
+            className="global-table reports-table no-action-table"
+          />{" "}
+        </MuiThemeProvider>
+      )}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
         ConfirmationHeaderTittle={ConfirmationHeaderTittle}
@@ -567,4 +675,16 @@ function AccessBreaches(props) {
   );
 }
 
-export default AccessBreaches;
+// export default AccessBreaches;
+function mapStateToProps(state, ownProps) {
+  return {
+    GridData: state.gridHistory,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccessBreaches);

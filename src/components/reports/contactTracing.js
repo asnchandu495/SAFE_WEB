@@ -64,6 +64,21 @@ import {
   KeyboardDatePicker,
   DateTimePicker,
 } from "@material-ui/pickers";
+import * as GridAction from "../../Redux/Action/gridAction";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import MuiTablePagination from "@material-ui/core/TablePagination";
+
+const theme1 = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        overflowX: "none",
+        height: "auto",
+        maxHeight: "calc(100vh - 290px) !important",
+      },
+    },
+  },
+});
 
 const styles = (theme) => ({
   root: {
@@ -162,12 +177,14 @@ function ContactTracing(props) {
   const [BusinessCovidStateData, setBusinessCovidStateData] = useState();
   const [covidStatelist, setcovidStatelist] = useState();
   const [selectedReportType, setSelectedReportType] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
 
   useEffect(() => {
     setComponentLoadder(true);
-    userApiCall
-      .getProfileDetails()
-      .then((loggedinUserDetails) => {
+    Promise.all([userApiCall.getProfileDetails(), props.LoadGridsPage()])
+
+      .then(([loggedinUserDetails, gridResult]) => {
         Promise.all([
           userApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id),
           mastersApiCall.getCOVIDStates(),
@@ -246,15 +263,38 @@ function ContactTracing(props) {
     },
   ];
 
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      console.log(thisPage);
+      return g.name == "report";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
-    onFilterChange: (changedColumn, filterList) => {
-    },
+    onFilterChange: (changedColumn, filterList) => {},
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
-    rowsPerPage: 5,
-    page: 1,
+    rowsPerPageOptions: [5, 10, 15, 100],
+
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
+    textLabels: {
+      body: {
+        noMatch: "There are no reports",
+      },
+      pagination: {
+        jumpToPage: "Go to page:",
+      },
+    },
     print: false,
     viewColumns: false,
     download: false,
@@ -278,8 +318,39 @@ function ContactTracing(props) {
 
       setSelectedUsersForCovidState(finalUsers);
     },
+    customSearch: (searchQuery, currentRow, columns) => {
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col !== "undefined" && col !== null) {
+          if (typeof col === "object") {
+            if (col.name) {
+              if (col.name.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+            if (col.stateName) {
+              if (col.stateName.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+          } else {
+            if (col.toString().indexOf(searchQuery) >= 0) {
+              isFound = true;
+            }
+          }
+        }
+      });
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+      return isFound;
+    },
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "report", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -320,6 +391,33 @@ function ContactTracing(props) {
       );
     },
   };
+  const CustomFooter = (props) => {
+    return (
+      <div className="custom-pagination-report">
+        <MuiTablePagination
+          component="div"
+          count={props.count}
+          rowsPerPage={props.rowsPerPage}
+          page={props.page}
+          rowsPerPageOptions={[5, 10, 20, 100]}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowChange}
+        />
+      </div>
+    );
+  };
+
+  const handlePageChange = (_, page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+  const handleRowChange = (e) => {
+    console.log(e.target.value);
+    setCurrentRowsPerPage(e.target.value);
+  };
 
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
@@ -350,6 +448,7 @@ function ContactTracing(props) {
   function resetFilterForm() {
     setselectedSiteData();
     setselectedLocationData();
+    setSelectedReportType("");
     setSearchForm(resetForm);
   }
 
@@ -499,7 +598,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                        BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
@@ -535,7 +634,7 @@ function ContactTracing(props) {
               className="global-submit-btn"
               disabled={showLoadder}
             >
-              {showLoadder ? <ButtonLoadderComponent /> : "Save"}
+              {showLoadder ? <ButtonLoadderComponent /> : "Generate"}
             </Button>
             <Button onClick={handleClose} className="global-cancel-btn">
               Cancel
@@ -726,14 +825,20 @@ function ContactTracing(props) {
           Contact Trace History
         </LinkTo>
       </Breadcrumbs>
-
-      <MUIDataTable
-        title={""}
-        data={contactTracingData}
-        columns={columns}
-        options={options}
-        className="global-table reports-table"
-      />
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <MuiThemeProvider theme={theme1}>
+          {" "}
+          <MUIDataTable
+            title={""}
+            data={contactTracingData}
+            columns={columns}
+            options={options}
+            className="global-table reports-table"
+          />{" "}
+        </MuiThemeProvider>
+      )}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
         ConfirmationHeaderTittle={ConfirmationHeaderTittle}
@@ -756,4 +861,16 @@ function ContactTracing(props) {
   );
 }
 
-export default ContactTracing;
+// export default ContactTracing;
+function mapStateToProps(state, ownProps) {
+  return {
+    GridData: state.gridHistory,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactTracing);
