@@ -1505,7 +1505,7 @@ function AdminLayout(props) {
           </ListItem> : "";
           break;
         case "staffInOffice":
-          return entity.isAccess ? <ListItem
+          return !entity.isAccess ? <ListItem
             button
             className={classes.nested}
             component={Link}

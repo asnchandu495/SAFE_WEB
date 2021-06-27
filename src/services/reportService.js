@@ -102,6 +102,25 @@ export default class ReportService {
     });
   }
 
+  getOfficeStaffReport(data) {
+    let SiteIds = "";
+    let TeamIds = "";
+
+    TeamIds = data.Teams.map(function (el, idx) {
+      return "Teams=" + el;
+    }).join("&");
+
+    SiteIds = "SiteId=" + data.site;
+
+    let apiURL = `ApplicationUser/GetAllDensityThresholdBreaches?${TeamIds}&${SiteIds}&FilterDate=${data.FilterDate}&Frequency=${parseInt(data.Frequency)}`;
+
+    return this.fetch(`${this.baseURL}/${apiURL}`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

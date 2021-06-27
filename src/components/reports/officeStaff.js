@@ -55,6 +55,7 @@ import {
   KeyboardDatePicker,
   DateTimePicker,
 } from "@material-ui/pickers";
+import ReportService from "../../services/reportService";
 
 const styles = (theme) => ({
   root: {
@@ -105,6 +106,7 @@ function OfficeStaff(props) {
   const siteApiCall = new SiteService();
   const masterDataCallApi = new MasterService();
   const [userGroupList, setuserGroupList] = useState();
+  const reportApiCall = new ReportService();
 
   const [Modalopen, setModalOpen] = useState(false);
   const [showLoadder, setshowLoadder] = useState(false);
@@ -129,60 +131,56 @@ function OfficeStaff(props) {
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedTeamData, setselectedTeamData] = useState();
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
-  const [locationDensityData, setlocationDensityData] = useState([
+  const [officeStaffeData, setOfficeStaffeData] = useState([
     {
-      id: "001",
-      name: "site 0",
-      location: { id: "001", name: " Bengaluru" },
-      status: "00",
-      date: "1/9/2020",
+      siteName: "site 0",
+      teamName: "Flex",
+      numberOfStaff: "00",
+      createdDate: "1/9/2020",
       time: "10:00",
-      team: "Team 001",
-    },
-    {
-      id: "002",
-      name: "Site 1",
-      location: { id: "001", name: " Hyderabad" },
-      status: "02",
-      date: "1/9/2020",
-      time: "10:00",
-      team: "Audit 360 Dev Team",
-    },
-    {
-      id: "001",
-      name: "site2",
-      location: { id: "001", name: " Chennai" },
-      status: "00",
-      date: "1/9/2020",
-      time: "10:00",
-      team: "New Team",
     },
   ]);
-  const locationData = [
-    { id: "01", name: "Reception Area" },
-    { id: "02", name: "Parking lot" },
-    { id: "03", name: "Cafetaria lot" },
-  ];
+  const [searchForm, setSearchForm] = useState({
+    site: "",
+    team: [],
+    FilterDate: moment().toISOString(),
+    frequency: 0,
+  });
+
+  const [resetForm, setresetForm] = useState({
+    site: [],
+    team: [],
+    FilterDate: moment().toISOString(),
+    frequency: "",
+  });
+
+  useEffect(() => {
+    setComponentLoadder(true);
+    Promise.all([
+      siteApiCall.getListSite(),
+      masterDataCallApi.getTeams(),
+    ])
+      .then(([getAllSites, getTeamsData]) => {
+        setAllSites(getAllSites);
+        setTeamData(getTeamsData);
+        setComponentLoadder(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const columns = [
     {
-      name: "id",
-      label: "Id",
-      options: {
-        display: "excluded",
-        print: false,
-        filter: false,
-      },
-    },
-    {
-      label: "Date ",
-      name: "date",
+      label: "Date",
+      name: "createdDate",
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      label: "Time ",
+      label: "Time",
       name: "time",
       options: {
         filter: false,
@@ -190,75 +188,27 @@ function OfficeStaff(props) {
       },
     },
     {
-      label: "Site ",
-      name: "name",
+      label: "Site",
+      name: "siteName",
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      label: "Team ",
-      name: "team",
+      label: "Team",
+      name: "teamName",
       options: {
         filter: false,
         sort: true,
       },
     },
     {
-      label: "Location",
-      name: "location",
-      options: {
-        filter: false,
-        display: "excluded",
-        sort: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return <span>{thisRowData[2].name}</span>;
-          }
-        },
-      },
-    },
-    {
-      label: "# of instances ",
-      name: "status",
+      label: "# of staff",
+      name: "numberOfStaff",
       options: {
         filter: false,
         sort: true,
-      },
-    },
-
-    {
-      label: "Action",
-      name: "",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
-            return (
-              <div className={`action-buttons-container`}>
-                <Tooltip title="View">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<VisibilityIcon />}
-                    className={`view-icon`}
-                    onClick="#"
-                  ></Button>
-                </Tooltip>
-              </div>
-            );
-          }
-        },
-
-        setCellProps: (value) => {
-          return {
-            style: { width: "250px", minWidth: "250px", textAlign: "center" },
-          };
-        },
       },
     },
   ];
@@ -280,7 +230,7 @@ function OfficeStaff(props) {
         noMatch: "There are no reports",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -311,93 +261,71 @@ function OfficeStaff(props) {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-  };
+  }
+
   function selectedSite(e, value) {
     setselectedSiteData(value);
   }
+
   function selectedTeam(e, value) {
     setselectedTeamData(value);
   }
 
-  const [searchForm, setSearchForm] = useState({
-    site: [],
-    team: [],
-    fromDate: moment().toISOString(),
-    toDate: moment().toISOString(),
-    frequency: "",
-  });
-  const [resetForm, setresetForm] = useState({
-    site: [],
-    team: [],
-    fromDate: moment().toISOString(),
-    toDate: moment().toISOString(),
-    frequency: "",
-  });
-
   function handleChange(e) {
-    setisAlertBoxOpened(true);
     const { name, value } = e.target;
-    setSearchForm((logInForm) => ({
-      ...logInForm,
+    setSearchForm((searchForm) => ({
+      ...searchForm,
       [name]: value,
     }));
   }
 
   const handleChangeSearchForm = (getSelectedVal, name) => {
-    let thisValue = "";
-    var nextday = "";
-    if (name == "userId") {
-      if (getSelectedVal) {
-        thisValue = getSelectedVal.id;
-        setSelectedUserDetails(getSelectedVal);
-      } else {
-        thisValue = "";
-      }
-    } else {
-      thisValue = moment(getSelectedVal).toISOString();
-    }
+    let thisValue = moment(getSelectedVal).toISOString();
     setSearchForm((searchForm) => ({
       ...searchForm,
       [name]: thisValue,
     }));
   };
+
   function resetFilterForm() {
-    setselectedSiteData([]);
+    setselectedSiteData();
     setselectedTeamData([]);
-    setSelectedDate();
     setSearchForm(resetForm);
   }
+
   function submitForm(e) {
     e.preventDefault();
-    if (selectedSiteData) {
-      searchForm.site = selectedSiteData;
-    }
-    if (selectedTeamData) {
-      searchForm.team = selectedTeamData;
-    }
-    console.log(searchForm);
     settoasterServerity("");
     settoasterErrorMessageType("");
-    setComponentLoadder(true);
-  }
-  useEffect(() => {
-    setComponentLoadder(true);
-    Promise.all([
-      siteApiCall.getListSite(),
-      siteApiCall.getLocationManagers(),
-      masterDataCallApi.getTeams(),
-      //   props.LoadData(),
-    ])
+    setshowLoadder(true);
+    if (selectedSiteData) {
+      searchForm.site = selectedSiteData.id;
+    }
 
-      .then(([getAllSites, result, getTeamsData]) => {
-        setComponentLoadder(false);
-        setAllSites(getAllSites);
-        setTeamData(getTeamsData);
+    if (selectedTeamData.length > 0) {
+      let teamArr = selectedTeamData.map((item) => item.id);
+      searchForm.Teams = teamArr;
+    } else {
+      searchForm.Teams = [];
+    }
+    console.log(searchForm);
+    reportApiCall
+      .getOfficeStaffReport(searchForm)
+      .then((result) => {
+        setOfficeStaffeData(result);
+        setTimeout(() => {
+          setModalOpen(false);
+          setshowLoadder(false);
+        }, 3000);
       })
       .catch((err) => {
-        console.log(err);
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
       });
-  }, []);
+  }
+
   return (
     <div className="innerpage-container">
       <Dialog
@@ -422,7 +350,6 @@ function OfficeStaff(props) {
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
                         <Autocomplete
-                          multiple
                           id="tags-outlined"
                           options={
                             allSites && allSites.length > 0 ? allSites : []
@@ -438,6 +365,7 @@ function OfficeStaff(props) {
                               {...params}
                               variant="outlined"
                               placeholder="Select Site"
+                              required
                             />
                           )}
                         />{" "}
@@ -482,48 +410,30 @@ function OfficeStaff(props) {
 
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">From</label>
+                      <label className="">Date</label>
                     </Grid>
                     <Grid
                       item
                       xs={8}
-                      className="date-time-pickers fromdate-container"
+                      className="date-time-pickers report-pickers"
                     >
                       <DateTimePicker
                         fullWidth
-                        name="fromDate"
+                        name="FilterDate"
                         id=""
-                        // format="dd/MM/yyyy"
-                        value={selectedDate}
+                        format="dd/MM/yyyy hh:mm a"
+                        value={searchForm.FilterDate}
                         className="global-input"
-                        onChange={handleDateChange}
+                        onChange={(date, event, e) =>
+                          handleChangeSearchForm(date, "startDate")
+                        }
                         KeyboardButtonProps={{
                           "aria-label": "change date",
                         }}
+                        required
                       />
                     </Grid>
                   </Grid>
-
-                  <Grid item xs={12} container>
-                    <Grid item xs={4}>
-                      <label className="">To</label>
-                    </Grid>
-                    <Grid item xs={8} className="date-time-pickers">
-                      <DateTimePicker
-                        fullWidth
-                        name="toDate"
-                        id=""
-                        // format="dd/MM/yyyy"
-                        value={selectedDate}
-                        className="global-input"
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                          "aria-label": "change date",
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">Frequency</label>
@@ -533,14 +443,12 @@ function OfficeStaff(props) {
                         fullWidth
                         variant="outlined"
                         validators={[
-                          // "required",
+                          "required",
                           "matchRegexp:^[0-9]*$",
-                          "maxNumber:999",
                         ]}
                         errorMessages={[
-                          // "Please enter frequencey ",
+                          "Please enter frequencey ",
                           "Only numbers are allowed",
-                          "Maximum allowed 3 digits",
                         ]}
                         name="frequency"
                         type={"text"}
@@ -606,10 +514,10 @@ function OfficeStaff(props) {
 
       <MUIDataTable
         title={""}
-        data={locationDensityData}
+        data={officeStaffeData}
         columns={columns}
         options={options}
-        className="global-table"
+        className="global-table reports-table no-action-table"
       />
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
