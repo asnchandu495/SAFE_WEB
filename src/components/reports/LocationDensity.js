@@ -41,8 +41,21 @@ import propTypes from "prop-types";
 import { connect } from "react-redux";
 import MuiTablePagination from "@material-ui/core/TablePagination";
 import ReplayIcon from "@material-ui/icons/Replay";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import moment from "moment";
+import * as GridAction from "../../Redux/Action/gridAction";
 
+const theme1 = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        overflowX: "none",
+        height: "auto",
+        maxHeight: "calc(100vh - 290px) !important",
+      },
+    },
+  },
+});
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -109,7 +122,7 @@ function LocationDensity(props) {
 
   const [allSites, setAllSites] = useState();
   const [selectedSiteData, setselectedSiteData] = useState();
-  const [selectedLocationData, setselectedLocationData] = useState();
+  const [selectedLocationData, setselectedLocationData] = useState([]);
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
@@ -122,13 +135,13 @@ function LocationDensity(props) {
   });
 
   useEffect(() => {
-    setComponentLoadder(true);
     // Promise.all([siteApiCall.getListSite(), siteApiCall.getLocationManagers()])
     //   .then(([getAllSites, result]) => {
-    Promise.all([siteApiCall.getListSite()])
-      .then(([getAllSites]) => {
-        setComponentLoadder(false);
+    Promise.all([siteApiCall.getListSite(), props.LoadGridsPage()])
+      .then(([getAllSites, gridResult]) => {
         setAllSites(getAllSites);
+        setComponentLoadder(false);
+        setlocationDensityData();
       })
       .catch((err) => {
         console.log(err);
@@ -185,7 +198,18 @@ function LocationDensity(props) {
       },
     },
   ];
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      console.log(thisPage);
+      return g.name == "report";
+    });
 
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -193,14 +217,19 @@ function LocationDensity(props) {
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
     page: currentPage,
     print: false,
+    jumpToPage: true,
     viewColumns: false,
     download: false,
     selectableRows: false,
     textLabels: {
       body: {
         noMatch: "There are no reports",
+      },
+      pagination: {
+        jumpToPage: "Go to page:",
       },
     },
     customToolbarSelect: (value, tableMeta, updateValue) => {},
@@ -218,25 +247,57 @@ function LocationDensity(props) {
         </div>
       );
     },
-    customFooter: (
-      count,
-      page,
-      rowsPerPage,
-      changeRowsPerPage,
-      changePage,
-      textLabels
-    ) => {
-      return (
-        <CustomFooter
-          count={count}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          changeRowsPerPage={changeRowsPerPage}
-          changePage={changePage}
-          textLabels={textLabels}
-        />
-      );
+    customSearch: (searchQuery, currentRow, columns) => {
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col !== "undefined" && col !== null) {
+          if (typeof col === "object") {
+            if (col.name) {
+              if (col.name.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+            if (col.stateName) {
+              if (col.stateName.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+          } else {
+            if (col.toString().indexOf(searchQuery) >= 0) {
+              isFound = true;
+            }
+          }
+        }
+      });
+
+      return isFound;
     },
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "report", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
+    // customFooter: (
+    //   count,
+    //   page,
+    //   rowsPerPage,
+    //   changeRowsPerPage,
+    //   changePage,
+    //   textLabels
+    // ) => {
+    //   return (
+    //     <CustomFooter
+    //       count={count}
+    //       page={page}
+    //       rowsPerPage={rowsPerPage}
+    //       changeRowsPerPage={changeRowsPerPage}
+    //       changePage={changePage}
+    //       textLabels={textLabels}
+    //     />
+    //   );
+    // },
   };
 
   const CustomFooter = (props) => {
@@ -304,6 +365,9 @@ function LocationDensity(props) {
     SiteId: "",
     LocationId: [],
   });
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
 
   function selectedSite(e, value) {
     setselectedSiteData(value);
@@ -452,19 +516,20 @@ function LocationDensity(props) {
                         className="global-input autocomplete-select"
                         renderInput={(params) => (
                           <TextField
+                            required
                             {...params}
                             variant="outlined"
                             placeholder="Select Site"
                           />
                         )}
                       />{" "}
-                      {formFieldValidation.SiteId ? (
+                      {/* {formFieldValidation.SiteId ? (
                         <FormHelperText className="error-msg">
                           Please select site{" "}
                         </FormHelperText>
                       ) : (
                         ""
-                      )}
+                      )} */}
                     </FormControl>
                   </Grid>
                 </Grid>
@@ -492,18 +557,22 @@ function LocationDensity(props) {
                         renderInput={(params) => (
                           <TextField
                             {...params}
+                            inputProps={{
+                              ...params.inputProps,
+                              required: selectedLocationData.length === 0,
+                            }}
                             variant="outlined"
                             placeholder="Select Location"
                           />
                         )}
                       />
-                      {formFieldValidation.LocationId ? (
+                      {/* {formFieldValidation.LocationId ? (
                         <FormHelperText className="error-msg">
                           Please select location{" "}
                         </FormHelperText>
                       ) : (
                         ""
-                      )}
+                      )} */}
                     </FormControl>
                   </Grid>
                 </Grid>
@@ -548,14 +617,20 @@ function LocationDensity(props) {
           Location density
         </LinkTo>
       </Breadcrumbs>
-
-      <MUIDataTable
-        title={""}
-        data={locationDensityData}
-        columns={columns}
-        options={options}
-        className="global-table no-action-table"
-      />
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <MuiThemeProvider theme={theme1}>
+          {" "}
+          <MUIDataTable
+            title={""}
+            data={locationDensityData}
+            columns={columns}
+            options={options}
+            className="global-table no-action-table"
+          />{" "}
+        </MuiThemeProvider>
+      )}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
         ConfirmationHeaderTittle={ConfirmationHeaderTittle}
@@ -577,5 +652,17 @@ function LocationDensity(props) {
     </div>
   );
 }
+function mapStateToProps(state, ownProps) {
+  return {
+    GridData: state.gridHistory,
+  };
+}
 
-export default LocationDensity;
+const mapDispatchToProps = {
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
+};
+
+// export default LocationDensity;s
+
+export default connect(mapStateToProps, mapDispatchToProps)(LocationDensity);

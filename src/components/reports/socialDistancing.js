@@ -55,12 +55,27 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import DateFnsUtils from "@date-io/date-fns";
 import ReplayIcon from "@material-ui/icons/Replay";
+import * as GridAction from "../../Redux/Action/gridAction";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import MuiTablePagination from "@material-ui/core/TablePagination";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
   KeyboardDatePicker,
   DateTimePicker,
 } from "@material-ui/pickers";
+
+const theme1 = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        overflowX: "none",
+        height: "auto",
+        maxHeight: "calc(100vh - 290px) !important",
+      },
+    },
+  },
+});
 
 const styles = (theme) => ({
   root: {
@@ -149,12 +164,14 @@ function SocailDistancing(props) {
   const [selectedValue, setSelectedValue] = React.useState("a");
   const [socialDistancingData, setSocialDistancingData] = useState([]);
   const [applicationUsers, setApplicationUsers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
 
   useEffect(() => {
     setComponentLoadder(true);
-    userApiCall
-      .getProfileDetails()
-      .then((loggedinUserDetails) => {
+
+    Promise.all([userApiCall.getProfileDetails(), props.LoadGridsPage()])
+      .then(([loggedinUserDetails, gridResult]) => {
         userApiCall
           .GetAllUsersForSupervisor(loggedinUserDetails.id)
           .then((getUsers) => {
@@ -215,6 +232,18 @@ function SocailDistancing(props) {
     },
   ];
 
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      console.log(thisPage);
+      return g.name == "report";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
   const options = {
     filter: false,
     onFilterChange: (changedColumn, filterList) => {
@@ -223,7 +252,10 @@ function SocailDistancing(props) {
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
-    rowsPerPage: 5,
+    rowsPerPageOptions: [5, 10, 15, 100],
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+
     expandableRows: true,
     expandableRowsHeader: false,
     renderExpandableRow: (rowData, rowMeta) => {
@@ -242,15 +274,15 @@ function SocailDistancing(props) {
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                      <TableRow key={row.location}>
-                        <TableCell>{row.location}</TableCell>
-                        <TableCell>
-                          {moment(row.createdDate).format(
-                            "DD/MM/yyyy hh:mm a"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
+                        <TableRow key={row.location}>
+                          <TableCell>{row.location}</TableCell>
+                          <TableCell>
+                            {moment(row.createdDate).format(
+                              "DD/MM/yyyy hh:mm a"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -259,11 +291,51 @@ function SocailDistancing(props) {
         </tr>
       );
     },
-    page: 1,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    textLabels: {
+      body: {
+        noMatch: "There are no reports",
+      },
+      pagination: {
+        jumpToPage: "Go to page:",
+      },
+    },
+    customSearch: (searchQuery, currentRow, columns) => {
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col !== "undefined" && col !== null) {
+          if (typeof col === "object") {
+            if (col.name) {
+              if (col.name.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+            if (col.stateName) {
+              if (col.stateName.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+          } else {
+            if (col.toString().indexOf(searchQuery) >= 0) {
+              isFound = true;
+            }
+          }
+        }
+      });
+
+      return isFound;
+    },
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "report", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -278,6 +350,34 @@ function SocailDistancing(props) {
         </div>
       );
     },
+  };
+
+  const CustomFooter = (props) => {
+    return (
+      <div className="custom-pagination-report">
+        <MuiTablePagination
+          component="div"
+          count={props.count}
+          rowsPerPage={props.rowsPerPage}
+          page={props.page}
+          rowsPerPageOptions={[5, 10, 20, 100]}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowChange}
+        />
+      </div>
+    );
+  };
+
+  const handlePageChange = (_, page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+  const handleRowChange = (e) => {
+    console.log(e.target.value);
+    setCurrentRowsPerPage(e.target.value);
   };
 
   function BreadcrumbNavigation(getRoute) {
@@ -356,7 +456,7 @@ function SocailDistancing(props) {
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">User ID </label>
+                      <label className="required">User ID </label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -392,6 +492,7 @@ function SocailDistancing(props) {
                           }}
                           renderInput={(params) => (
                             <TextField
+                              required
                               {...params}
                               required
                               variant="outlined"
@@ -496,14 +597,20 @@ function SocailDistancing(props) {
           Social Distancing Breaches
         </LinkTo>
       </Breadcrumbs>
-
-      <MUIDataTable
-        title={""}
-        data={socialDistancingData}
-        columns={columns}
-        options={options}
-        className="global-table reports-table no-action-table"
-      />
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <MuiThemeProvider theme={theme1}>
+          {" "}
+          <MUIDataTable
+            title={""}
+            data={socialDistancingData}
+            columns={columns}
+            options={options}
+            className="global-table reports-table no-action-table"
+          />{" "}
+        </MuiThemeProvider>
+      )}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
         ConfirmationHeaderTittle={ConfirmationHeaderTittle}
@@ -525,5 +632,16 @@ function SocailDistancing(props) {
     </div>
   );
 }
+function mapStateToProps(state, ownProps) {
+  return {
+    GridData: state.gridHistory,
+  };
+}
 
-export default SocailDistancing;
+const mapDispatchToProps = {
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SocailDistancing);
+// export default SocailDistancing;

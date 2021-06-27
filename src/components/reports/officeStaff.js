@@ -44,6 +44,9 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import MasterService from "../../services/masterDataService";
 import ReplayIcon from "@material-ui/icons/Replay";
+import * as GridAction from "../../Redux/Action/gridAction";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import MuiTablePagination from "@material-ui/core/TablePagination";
 
 import propTypes from "prop-types";
 import { connect } from "react-redux";
@@ -57,6 +60,17 @@ import {
 } from "@material-ui/pickers";
 import ReportService from "../../services/reportService";
 
+const theme1 = createMuiTheme({
+  overrides: {
+    MUIDataTable: {
+      responsiveScroll: {
+        overflowX: "none",
+        height: "auto",
+        maxHeight: "calc(100vh - 290px) !important",
+      },
+    },
+  },
+});
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -129,7 +143,7 @@ function OfficeStaff(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [selectedDate, setSelectedDate] = useState();
   const [selectedSiteData, setselectedSiteData] = useState();
-  const [selectedTeamData, setselectedTeamData] = useState();
+  const [selectedTeamData, setselectedTeamData] = useState([]);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [officeStaffeData, setOfficeStaffeData] = useState([
     {
@@ -153,14 +167,16 @@ function OfficeStaff(props) {
     FilterDate: moment().toISOString(),
     frequency: "",
   });
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
 
   useEffect(() => {
-    setComponentLoadder(true);
     Promise.all([
       siteApiCall.getListSite(),
       masterDataCallApi.getTeams(),
+      props.LoadGridsPage(),
     ])
-      .then(([getAllSites, getTeamsData]) => {
+      .then(([getAllSites, getTeamsData, gridResult]) => {
         setAllSites(getAllSites);
         setTeamData(getTeamsData);
         setComponentLoadder(false);
@@ -213,14 +229,29 @@ function OfficeStaff(props) {
     },
   ];
 
+  const tableInitiate = () => {
+    let thisPage = props.GridData.find((g) => {
+      console.log(thisPage);
+      return g.name == "report";
+    });
+
+    if (thisPage) {
+      setCurrentPage(thisPage.page - 1);
+    } else {
+      return 0;
+    }
+  };
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
 
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
+    jumpToPage: true,
     print: false,
     viewColumns: false,
     download: false,
@@ -229,8 +260,43 @@ function OfficeStaff(props) {
       body: {
         noMatch: "There are no reports",
       },
+      pagination: {
+        jumpToPage: "Go to page:",
+      },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customSearch: (searchQuery, currentRow, columns) => {
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col !== "undefined" && col !== null) {
+          if (typeof col === "object") {
+            if (col.name) {
+              if (col.name.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+            if (col.stateName) {
+              if (col.stateName.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+          } else {
+            if (col.toString().indexOf(searchQuery) >= 0) {
+              isFound = true;
+            }
+          }
+        }
+      });
+
+      return isFound;
+    },
+    page: currentPage,
+    onChangePage: (currentPage) => {
+      setCurrentPage(currentPage);
+      let sendData = { name: "report", page: currentPage + 1 };
+      props.UpdateGridsPage(sendData);
+    },
+    onTableInit: tableInitiate,
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -245,6 +311,33 @@ function OfficeStaff(props) {
         </div>
       );
     },
+  };
+  const CustomFooter = (props) => {
+    return (
+      <div className="custom-pagination-report">
+        <MuiTablePagination
+          component="div"
+          count={props.count}
+          rowsPerPage={props.rowsPerPage}
+          page={props.page}
+          rowsPerPageOptions={[5, 10, 20, 100]}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowChange}
+        />
+      </div>
+    );
+  };
+
+  const handlePageChange = (_, page) => {
+    console.log(page);
+    setCurrentPage(page);
+  };
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+  const handleRowChange = (e) => {
+    console.log(e.target.value);
+    setCurrentRowsPerPage(e.target.value);
   };
 
   function BreadcrumbNavigation(getRoute) {
@@ -261,7 +354,7 @@ function OfficeStaff(props) {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-  }
+  };
 
   function selectedSite(e, value) {
     setselectedSiteData(value);
@@ -345,7 +438,7 @@ function OfficeStaff(props) {
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Site </label>
+                      <label className="required">Site </label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -363,6 +456,7 @@ function OfficeStaff(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              required
                               variant="outlined"
                               placeholder="Select Site"
                               required
@@ -374,7 +468,7 @@ function OfficeStaff(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Teams</label>
+                      <label className="required">Teams</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -399,6 +493,10 @@ function OfficeStaff(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
+                              inputProps={{
+                                ...params.inputProps,
+                                required: selectedTeamData.length === 0,
+                              }}
                               variant="outlined"
                               placeholder="Select Teams"
                             />
@@ -442,10 +540,7 @@ function OfficeStaff(props) {
                       <TextValidator
                         fullWidth
                         variant="outlined"
-                        validators={[
-                          "required",
-                          "matchRegexp:^[0-9]*$",
-                        ]}
+                        validators={["required", "matchRegexp:^[0-9]*$"]}
                         errorMessages={[
                           "Please enter frequencey ",
                           "Only numbers are allowed",
@@ -511,14 +606,20 @@ function OfficeStaff(props) {
           Number of staff in office
         </LinkTo>
       </Breadcrumbs>
-
-      <MUIDataTable
-        title={""}
-        data={officeStaffeData}
-        columns={columns}
-        options={options}
-        className="global-table reports-table no-action-table"
-      />
+      {componentLoadder ? (
+        <ComponentLoadderComponent />
+      ) : (
+        <MuiThemeProvider theme={theme1}>
+          {" "}
+          <MUIDataTable
+            title={""}
+            data={officeStaffeData}
+            columns={columns}
+            options={options}
+            className="global-table reports-table no-action-table"
+          />{" "}
+        </MuiThemeProvider>
+      )}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
         ConfirmationHeaderTittle={ConfirmationHeaderTittle}
@@ -540,4 +641,16 @@ function OfficeStaff(props) {
     </div>
   );
 }
-export default OfficeStaff;
+// export default OfficeStaff;
+function mapStateToProps(state, ownProps) {
+  return {
+    GridData: state.gridHistory,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OfficeStaff);
