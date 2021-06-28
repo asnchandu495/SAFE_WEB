@@ -86,13 +86,27 @@ function ViewWorkflows(props) {
             questionaireApiCall.getGroupStates(groupIdURL),
         ])
             .then(([grupStates]) => {
-                setWorkflowStateDetails(grupStates);
+                setWorkflowStateDetails([{
+                    "id": "39fc7bbbdf9838dd8cd51287974e8af8",
+                    "userGroupId": "string",
+                    "userGroupName": "string",
+                    "name": "string",
+                    "fromStateId": "string",
+                    "toStateId": "string",
+                    "fromState": "string",
+                    "toState": "string"
+                }]);
                 setComponentLoadder(false);
             })
             .catch((err) => {
                 console.log(err);
             });
     }, []);
+
+    function handleClickViewWorkflow(value) {
+        var workflowId = value[0];
+        props.history.push(`/questionaires/workflow-state/${groupIdURL}/${workflowId}`);
+    }
 
     const columns = [
         {
@@ -154,7 +168,7 @@ function ViewWorkflows(props) {
                                         color="default"
                                         startIcon={<AccountTreeIcon />}
                                         className={`edit-icon`}
-                                    //   onClick={() => handleClickViewWorkflow(thisRowData)}
+                                        onClick={() => handleClickViewWorkflow(thisRowData)}
                                     ></Button>
                                 </Tooltip>
                             </div>
