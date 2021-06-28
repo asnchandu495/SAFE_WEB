@@ -218,7 +218,6 @@ function LocationDensity(props) {
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: currentRowsPerPage,
     onChangeRowsPerPage: handleRowsPerPageChange,
-    page: currentPage,
     print: false,
     jumpToPage: true,
     viewColumns: false,
@@ -232,7 +231,7 @@ function LocationDensity(props) {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -279,28 +278,29 @@ function LocationDensity(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    // customFooter: (
-    //   count,
-    //   page,
-    //   rowsPerPage,
-    //   changeRowsPerPage,
-    //   changePage,
-    //   textLabels
-    // ) => {
-    //   return (
-    //     <CustomFooter
-    //       count={count}
-    //       page={page}
-    //       rowsPerPage={rowsPerPage}
-    //       changeRowsPerPage={changeRowsPerPage}
-    //       changePage={changePage}
-    //       textLabels={textLabels}
-    //     />
-    //   );
-    // },
+    customFooter: (
+      count,
+      page,
+      rowsPerPage,
+      changeRowsPerPage,
+      changePage,
+      textLabels,
+    ) => {
+      return (
+        <CustomFooter
+          count={count}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          changeRowsPerPage={changeRowsPerPage}
+          changePage={changePage}
+          textLabels={textLabels}
+        />
+      );
+    },
   };
 
   const CustomFooter = (props) => {
+    console.log(props);
     return (
       <div className="custom-pagination-report">
         <div className="legend-container">
@@ -469,7 +469,7 @@ function LocationDensity(props) {
         setlocationDensityData(result);
         setTimeout(() => {
           setReportTime(moment().toISOString());
-          Modalopen(false);
+          setModalOpen(false);
           setshowLoadder(false);
         }, 3000);
       })
@@ -560,7 +560,7 @@ function LocationDensity(props) {
                             {...params}
                             inputProps={{
                               ...params.inputProps,
-                              required: selectedLocationData.length === 0,
+                              required: selectedLocationData ? selectedLocationData.length === 0 : true,
                             }}
                             variant="outlined"
                             placeholder="Select Location"
