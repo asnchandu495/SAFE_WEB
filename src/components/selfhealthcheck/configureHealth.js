@@ -70,7 +70,7 @@ function ConfigureHealth(props) {
     props.loadGlobalSettingWithoutAPICall();
     UserApiCall.getProfileDetails()
       .then((loggedinUserDetails) => {
-        UserApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id)
+        UserApiCall.ListApplicationUsers(loggedinUserDetails.id)
           .then((getUsers) => {
             setUserList(getUsers);
             setComponentLoadder(false);
