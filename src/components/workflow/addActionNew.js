@@ -39,6 +39,7 @@ function AddActionsNew(props) {
     useState("array");
   const [selectedActivityDetails, setSelectedActivityDetails] = useState();
   const [selectedActionList, setSelectedActionList] = useState();
+  const [disableActions, setDisableActions] = useState(false);
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -134,6 +135,8 @@ function AddActionsNew(props) {
                   reloadPage={reloadPage}
                   setSelectedActionList={setSelectedActionList}
                   selectedActionList={selectedActionList}
+                  disableActions={disableActions}
+                  setDisableActions={setDisableActions}
                 ></ActionList>
               </Paper>
             </Grid>
@@ -146,6 +149,8 @@ function AddActionsNew(props) {
                     reloadPage={reloadPage}
                     setSelectedActionList={setSelectedActionList}
                     selectedActionList={selectedActionList}
+                    disableActions={disableActions}
+                    setDisableActions={setDisableActions}
                   ></ActionFormNew>
                 ) : (
                   <>

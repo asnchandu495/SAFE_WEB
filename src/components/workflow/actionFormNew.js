@@ -218,6 +218,7 @@ function ActionFormNew(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+    props.setDisableActions(true);
     if (formData.id == "") {
       workflowApiCall
         .addOptions(formData)
@@ -226,12 +227,14 @@ function ActionFormNew(props) {
           setToasterMessage("Option details added");
           settoasterServerity("success");
           setTimeout(() => {
+            props.setDisableActions(false);
             setshowLoadder(false);
             props.setReloadPage("YES");
             props.setSelectedActionList(props.selectedAction.uniqueActivityId);
           }, 10000);
         })
         .catch((err) => {
+          props.setDisableActions(false);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
@@ -245,12 +248,14 @@ function ActionFormNew(props) {
           setToasterMessage("Option details updated");
           settoasterServerity("success");
           setTimeout(() => {
+            props.setDisableActions(false);
             setshowLoadder(false);
             props.setReloadPage("YES");
             props.setSelectedActionList(props.selectedAction.uniqueActivityId);
           }, 10000);
         })
         .catch((err) => {
+          props.setDisableActions(false);
           setToasterMessage(err.data.errors);
           settoasterServerity("error");
           setStateSnackbar(true);
@@ -349,165 +354,165 @@ function ActionFormNew(props) {
               <div className="card-form">
                 <Grid container item xs={12} spacing={3} direction="column">
                   {formData.configurationDataList &&
-                  formData.configurationDataList.length > 0
+                    formData.configurationDataList.length > 0
                     ? formData.configurationDataList.map((act, index) => {
-                        if (act.inputType == "Text") {
-                          return (
+                      if (act.inputType == "Text") {
+                        return (
+                          <Grid
+                            item
+                            xs={12}
+                            container
+                            key={`inputText_${index}`}
+                          >
+                            <Grid item xs={3}>
+                              <label>{act.remarksForInput}</label>
+                            </Grid>
                             <Grid
                               item
-                              xs={12}
-                              container
-                              key={`inputText_${index}`}
+                              xs={9}
+                              onContextMenu={handleClickContextMenuText}
                             >
-                              <Grid item xs={3}>
-                                <label>{act.remarksForInput}</label>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={9}
-                                onContextMenu={handleClickContextMenuText}
-                              >
-                                <TextValidator
-                                  variant="outlined"
-                                  // validators={["required"]}
-                                  // errorMessages={[
-                                  //   `Please enter ${act.remarksForInput}`,
-                                  // ]}
-                                  fullWidth
-                                  id={`${act.name}_${index}`}
-                                  placeholder={act.remarksForInput}
-                                  name="value"
-                                  onChange={(e) => handleInputChange(e, index)}
-                                  value={act.value}
-                                  InputLabelProps={{ shrink: false }}
-                                  className="global-input action-form-input"
-                                  onFocus={(e) => {
-                                    setCurrentInputText(e);
-                                  }}
-                                />
-                                <Menu
-                                  keepMounted
-                                  open={stateContextMenuText.mouseY !== null}
-                                  onClose={handleCloseContextMenuText}
-                                  anchorReference="anchorPosition"
-                                  anchorPosition={
-                                    stateContextMenuText.mouseY !== null &&
+                              <TextValidator
+                                variant="outlined"
+                                // validators={["required"]}
+                                // errorMessages={[
+                                //   `Please enter ${act.remarksForInput}`,
+                                // ]}
+                                fullWidth
+                                id={`${act.name}_${index}`}
+                                placeholder={act.remarksForInput}
+                                name="value"
+                                onChange={(e) => handleInputChange(e, index)}
+                                value={act.value}
+                                InputLabelProps={{ shrink: false }}
+                                className="global-input action-form-input"
+                                onFocus={(e) => {
+                                  setCurrentInputText(e);
+                                }}
+                              />
+                              <Menu
+                                keepMounted
+                                open={stateContextMenuText.mouseY !== null}
+                                onClose={handleCloseContextMenuText}
+                                anchorReference="anchorPosition"
+                                anchorPosition={
+                                  stateContextMenuText.mouseY !== null &&
                                     stateContextMenuText.mouseX !== null
-                                      ? {
-                                          top: stateContextMenuText.mouseY,
-                                          left: stateContextMenuText.mouseX,
+                                    ? {
+                                      top: stateContextMenuText.mouseY,
+                                      left: stateContextMenuText.mouseX,
+                                    }
+                                    : undefined
+                                }
+                              >
+                                {act.inputIntelliSenseOptions.length > 0 ? (
+                                  act.inputIntelliSenseOptions.map((opt) => {
+                                    return (
+                                      <MenuItem
+                                        onClick={() =>
+                                          handleClickContextMenuOptionText(
+                                            opt,
+                                            index,
+                                            "value"
+                                          )
                                         }
-                                      : undefined
-                                  }
-                                >
-                                  {act.inputIntelliSenseOptions.length > 0 ? (
-                                    act.inputIntelliSenseOptions.map((opt) => {
-                                      return (
-                                        <MenuItem
-                                          onClick={() =>
-                                            handleClickContextMenuOptionText(
-                                              opt,
-                                              index,
-                                              "value"
-                                            )
-                                          }
-                                        >
-                                          {opt}
-                                        </MenuItem>
-                                      );
-                                    })
-                                  ) : (
-                                    <MenuItem>No options</MenuItem>
-                                  )}
-                                </Menu>
-                              </Grid>
+                                      >
+                                        {opt}
+                                      </MenuItem>
+                                    );
+                                  })
+                                ) : (
+                                  <MenuItem>No options</MenuItem>
+                                )}
+                              </Menu>
                             </Grid>
-                          );
-                        }
-                        if (act.inputType == "Template") {
-                          return (
+                          </Grid>
+                        );
+                      }
+                      if (act.inputType == "Template") {
+                        return (
+                          <Grid
+                            item
+                            xs={12}
+                            container
+                            key={`inputTemplate_${index}`}
+                            className="overflow-hidden-editor"
+                          >
+                            <Grid item xs={3}>
+                              <label>{act.remarksForInput}</label>
+                            </Grid>
                             <Grid
                               item
-                              xs={12}
-                              container
-                              key={`inputTemplate_${index}`}
-                              className="overflow-hidden-editor"
+                              xs={9}
+                              onContextMenu={handleClickContextMenu}
                             >
-                              <Grid item xs={3}>
-                                <label>{act.remarksForInput}</label>
-                              </Grid>
-                              <Grid
-                                item
-                                xs={9}
-                                onContextMenu={handleClickContextMenu}
-                              >
-                                <CKEditor
-                                  editor={Editor}
-                                  config={editorConfiguration}
-                                  data={act.value}
-                                  id={act.name}
-                                  name="value"
-                                  onReady={(editor) => {
-                                    editor.editing.view.change((writer) => {
-                                      writer.setStyle(
-                                        "height",
-                                        "225px",
-                                        editor.editing.view.document.getRoot()
-                                      );
-                                    });
-                                  }}
-                                  onChange={(event, editor) => {
-                                    handleTemplate(
-                                      event,
-                                      editor.getData(),
-                                      index,
-                                      "value"
+                              <CKEditor
+                                editor={Editor}
+                                config={editorConfiguration}
+                                data={act.value}
+                                id={act.name}
+                                name="value"
+                                onReady={(editor) => {
+                                  editor.editing.view.change((writer) => {
+                                    writer.setStyle(
+                                      "height",
+                                      "225px",
+                                      editor.editing.view.document.getRoot()
                                     );
-                                  }}
-                                  onFocus={(event, editor) => {
-                                    setCurrentEditor(editor);
-                                  }}
-                                />
-                                <Menu
-                                  keepMounted
-                                  open={stateContextMenu.mouseY !== null}
-                                  onClose={handleCloseContextMenu}
-                                  anchorReference="anchorPosition"
-                                  anchorPosition={
-                                    stateContextMenu.mouseY !== null &&
+                                  });
+                                }}
+                                onChange={(event, editor) => {
+                                  handleTemplate(
+                                    event,
+                                    editor.getData(),
+                                    index,
+                                    "value"
+                                  );
+                                }}
+                                onFocus={(event, editor) => {
+                                  setCurrentEditor(editor);
+                                }}
+                              />
+                              <Menu
+                                keepMounted
+                                open={stateContextMenu.mouseY !== null}
+                                onClose={handleCloseContextMenu}
+                                anchorReference="anchorPosition"
+                                anchorPosition={
+                                  stateContextMenu.mouseY !== null &&
                                     stateContextMenu.mouseX !== null
-                                      ? {
-                                          top: stateContextMenu.mouseY,
-                                          left: stateContextMenu.mouseX,
+                                    ? {
+                                      top: stateContextMenu.mouseY,
+                                      left: stateContextMenu.mouseX,
+                                    }
+                                    : undefined
+                                }
+                              >
+                                {act.inputIntelliSenseOptions.length > 0 ? (
+                                  act.inputIntelliSenseOptions.map((opt) => {
+                                    return (
+                                      <MenuItem
+                                        onClick={() =>
+                                          handleClickContextMenuOption(
+                                            opt,
+                                            index,
+                                            "value"
+                                          )
                                         }
-                                      : undefined
-                                  }
-                                >
-                                  {act.inputIntelliSenseOptions.length > 0 ? (
-                                    act.inputIntelliSenseOptions.map((opt) => {
-                                      return (
-                                        <MenuItem
-                                          onClick={() =>
-                                            handleClickContextMenuOption(
-                                              opt,
-                                              index,
-                                              "value"
-                                            )
-                                          }
-                                        >
-                                          {opt}
-                                        </MenuItem>
-                                      );
-                                    })
-                                  ) : (
-                                    <MenuItem>No options</MenuItem>
-                                  )}
-                                </Menu>
-                              </Grid>
+                                      >
+                                        {opt}
+                                      </MenuItem>
+                                    );
+                                  })
+                                ) : (
+                                  <MenuItem>No options</MenuItem>
+                                )}
+                              </Menu>
                             </Grid>
-                          );
-                        }
-                      })
+                          </Grid>
+                        );
+                      }
+                    })
                     : ""}
                 </Grid>
               </div>
