@@ -370,6 +370,7 @@ function LocationDensity(props) {
   }
 
   function selectedSite(e, value) {
+    setselectedLocationData([]);
     setselectedSiteData(value);
     setformFieldValidation((ValidationForm) => ({
       ...ValidationForm,
