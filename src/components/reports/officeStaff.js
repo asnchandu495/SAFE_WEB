@@ -288,7 +288,7 @@ function OfficeStaff(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -512,6 +512,7 @@ function OfficeStaff(props) {
                         name="FilterDate"
                         id=""
                         format="dd/MM/yyyy hh:mm a"
+                        disableFuture={true}
                         value={searchForm.FilterDate}
                         className="global-input"
                         onChange={(date, event, e) =>

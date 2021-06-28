@@ -256,17 +256,17 @@ function DensityThreshold(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                      <TableRow key={row.userId}>
-                        <TableCell>{row.userName}</TableCell>
-                        <TableCell>{row.userId}</TableCell>
-                        <TableCell>{row.emailId}</TableCell>
-                        <TableCell>
-                          {moment(row.createdDate).format(
-                            "DD-MM-YYYY hh:mm:ss a"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
+                        <TableRow key={row.userId}>
+                          <TableCell>{row.userName}</TableCell>
+                          <TableCell>{row.userId}</TableCell>
+                          <TableCell>{row.emailId}</TableCell>
+                          <TableCell>
+                            {moment(row.createdDate).format(
+                              "DD-MM-YYYY hh:mm:ss a"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -320,7 +320,7 @@ function DensityThreshold(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -560,6 +560,7 @@ function DensityThreshold(props) {
                         format="dd/MM/yyyy hh:mm a"
                         value={searchForm.startDate}
                         className="global-input"
+                        disableFuture={true}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "startDate")
                         }
@@ -585,6 +586,7 @@ function DensityThreshold(props) {
                         name="endDate"
                         id=""
                         format="dd/MM/yyyy hh:mm a"
+                        disableFuture={true}
                         value={searchForm.endDate}
                         className="global-input"
                         onChange={(date, event, e) =>
