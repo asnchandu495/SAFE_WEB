@@ -173,7 +173,7 @@ function SocailDistancing(props) {
     Promise.all([userApiCall.getProfileDetails(), props.LoadGridsPage()])
       .then(([loggedinUserDetails, gridResult]) => {
         userApiCall
-          .GetAllUsersForSupervisor(loggedinUserDetails.id)
+          .ListApplicationUsers(loggedinUserDetails.id)
           .then((getUsers) => {
             setApplicationUsers(getUsers);
             setComponentLoadder(false);
@@ -274,15 +274,15 @@ function SocailDistancing(props) {
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                        <TableRow key={row.location}>
-                          <TableCell>{row.location}</TableCell>
-                          <TableCell>
-                            {moment(row.createdDate).format(
-                              "DD/MM/yyyy hh:mm a"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
+                      <TableRow key={row.location}>
+                        <TableCell>{row.location}</TableCell>
+                        <TableCell>
+                          {moment(row.createdDate).format(
+                            "DD/MM/yyyy hh:mm a"
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -335,7 +335,7 @@ function SocailDistancing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>

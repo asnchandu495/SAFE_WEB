@@ -61,7 +61,7 @@ export default class ReportService {
 
     SiteIds = "SiteId=" + data.SiteId;
 
-    let apiURL = `ApplicationUser/GetAllAccessBreaches?${LocationIds}&${SiteIds}&StartDate=${data.StartDate}&EndDate=${data.EndDate}`;
+    let apiURL = `Reports/GetAllAccessBreaches?${LocationIds}&${SiteIds}&StartDate=${data.StartDate}&EndDate=${data.EndDate}`;
 
     return this.fetch(`${this.baseURL}/${apiURL}`, {
       method: "GET",
