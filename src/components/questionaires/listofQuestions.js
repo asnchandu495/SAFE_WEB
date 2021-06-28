@@ -103,7 +103,9 @@ function ListofQuestions(props) {
     }
   }
 
-  return (
+  return componentLoadder ? (
+    <ComponentLoadderComponent />
+  ) : (
     <List component="nav">
       <ListItem className="search-list-input">
         <TextField
@@ -124,7 +126,6 @@ function ListofQuestions(props) {
         />
       </ListItem>
 
-      {/* {selectedSurveyQuestions.map((ques, index) => { */}
       {props.ListofQuestionsData.map((ques, index) => {
         return (
           <>

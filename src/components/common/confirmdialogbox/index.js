@@ -224,7 +224,7 @@ function CustomizedDialogs(props) {
         .DeleteQuestionaireUsergroup(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
-          props.setToasterMessage("Deleted Questionaire.");
+          props.setToasterMessage("Deleted Questionnaire.");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
           setshowLoadder(false);
@@ -777,7 +777,7 @@ CustomizedDialogs.propTypes = {
   DeleteDateQuestionData: PropTypes.func.isRequired,
   PublishFAQ: PropTypes.func.isRequired,
 };
-function mapStateToProps(state, ownProps) { }
+function mapStateToProps(state, ownProps) {}
 
 const mapDispatchToProps = {
   DeletEmergencyContactList: EmergencyContactAction.DeletEmergencyContactList,

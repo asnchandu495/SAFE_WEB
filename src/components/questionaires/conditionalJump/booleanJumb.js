@@ -88,23 +88,39 @@ function BooleanJump(props) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name);
+
     if (name == "positiveResponseQuestionId") {
       let thisQuestion = selectedSurveyQuestions.find((que) => que.id == value);
-      setConditionalJump((conditionalJump) => ({
-        ...conditionalJump,
-        [name]: value,
-        ["isEndQuestionForPositiveResponseQuestion"]:
-          thisQuestion.isEndQuestion,
-      }));
+
+      if (thisQuestion != undefined) {
+        setConditionalJump((conditionalJump) => ({
+          ...conditionalJump,
+          [name]: value,
+
+          ["isEndQuestionForPositiveResponseQuestion"]:
+            thisQuestion.isEndQuestion,
+        }));
+      } else {
+        setConditionalJump((conditionalJump) => ({
+          ...conditionalJump,
+          [name]: "",
+        }));
+      }
     } else if (name == "negativeResponseQuestionId") {
       let thisQuestion = selectedSurveyQuestions.find((que) => que.id == value);
-      setConditionalJump((conditionalJump) => ({
-        ...conditionalJump,
-        [name]: value,
-        ["isEndQuestionForNegativeResponseQuestion"]:
-          thisQuestion.isEndQuestion,
-      }));
+      if (thisQuestion != undefined) {
+        setConditionalJump((conditionalJump) => ({
+          ...conditionalJump,
+          [name]: value,
+          ["isEndQuestionForNegativeResponseQuestion"]:
+            thisQuestion.isEndQuestion,
+        }));
+      } else {
+        setConditionalJump((conditionalJump) => ({
+          ...conditionalJump,
+          [name]: "",
+        }));
+      }
     } else {
       setConditionalJump((conditionalJump) => ({
         ...conditionalJump,

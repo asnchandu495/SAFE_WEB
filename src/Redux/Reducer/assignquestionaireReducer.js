@@ -7,6 +7,7 @@ import {
 
 var intialState = [];
 export default function loadQuestionaireReducer(state = intialState, action) {
+  console.log(action);
   switch (action.type) {
     case ASSIGN_USERGROUP_QUESTIONAIRE:
       return action.loadAssignQuestionnaire;
@@ -27,7 +28,7 @@ export default function loadQuestionaireReducer(state = intialState, action) {
     case DELETE_QUESTIONAIRE_USERGROUP:
       return state.filter(
         (deleteQuestionaire) =>
-          deleteQuestionaire.id != action.deleteQuestionaireUsergroupData.id
+          deleteQuestionaire.id != action.deleteQuestionaireUsergroupData
       );
     default:
       return state;
