@@ -518,7 +518,7 @@ function QuestionnaireEvaluation(props) {
                               ? [
                                 "required",
                                 "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                "minNumber:1"
+                                "minNumber:0"
                               ]
                               : [
                                 "required",
@@ -527,7 +527,7 @@ function QuestionnaireEvaluation(props) {
                                   temperatureConfigForm.positiveResponses[
                                     i - 1
                                   ].upperLimit
-                                )}`,
+                                ) + 1}`,
                               ]
                           }
                           errorMessages={
@@ -535,7 +535,7 @@ function QuestionnaireEvaluation(props) {
                               ? [
                                 "Please enter lower limit",
                                 "Entered numbers are not valid",
-                                "Maximum allowed is 0",
+                                "Minimum allowed is 0",
                               ]
                               : [
                                 "Please enter lower limit",
@@ -544,7 +544,7 @@ function QuestionnaireEvaluation(props) {
                                   temperatureConfigForm.positiveResponses[
                                     i - 1
                                   ].upperLimit
-                                )}`,
+                                ) + 1}`,
                               ]
                           }
                           fullWidth
@@ -566,37 +566,33 @@ function QuestionnaireEvaluation(props) {
                               ? x.isNoUpperLimit
                                 ? [
                                   "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                  "maxNumber:45",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit)
+                                    : parseFloat(x.lowerLimit) + 1
                                   }`,
                                 ]
                                 : [
                                   "required",
                                   "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                  "maxNumber:45",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit)
+                                    : parseFloat(x.lowerLimit) + 1
                                   }`,
                                 ]
                               : x.isNoUpperLimit
                                 ? [
                                   "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                  "maxNumber:113",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit)
+                                    : parseFloat(x.lowerLimit) + 1
                                   }`,
                                 ]
                                 : [
                                   "required",
                                   "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                                  "maxNumber:113",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit)
+                                    : parseFloat(x.lowerLimit) + 1
                                   }`,
                                 ]
                           }
@@ -605,41 +601,33 @@ function QuestionnaireEvaluation(props) {
                               ? x.isNoUpperLimit
                                 ? [
                                   "Entered numbers are not valid",
-                                  `Maximum allowed is ${x.isNoUpperLimit ? 0 : 45
-                                  }`,
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit)
+                                    : parseFloat(x.lowerLimit) + 1
                                   }`,
                                 ]
                                 : [
                                   "Please enter lower limit",
                                   "Entered numbers are not valid",
-                                  `Maximum allowed is ${x.isNoUpperLimit ? 0 : 45
-                                  }`,
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit)
+                                    : parseFloat(x.lowerLimit) + 1
                                   }`,
                                 ]
                               : x.isNoUpperLimit
                                 ? [
                                   "Entered numbers are not valid",
-                                  `Maximum allowed is ${x.isNoUpperLimit ? 0 : 113
-                                  }`,
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit)
+                                    : parseFloat(x.lowerLimit) + 1
                                   }`,
                                 ]
                                 : [
                                   "Please enter lower limit",
                                   "Entered numbers are not valid",
-                                  `Maximum allowed is ${x.isNoUpperLimit ? 0 : 113
-                                  }`,
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit)
+                                    : parseFloat(x.lowerLimit) + 1
                                   }`,
                                 ]
                           }
