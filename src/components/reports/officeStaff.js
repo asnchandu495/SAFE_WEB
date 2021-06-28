@@ -145,15 +145,7 @@ function OfficeStaff(props) {
   const [selectedSiteData, setselectedSiteData] = useState();
   const [selectedTeamData, setselectedTeamData] = useState([]);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
-  const [officeStaffeData, setOfficeStaffeData] = useState([
-    {
-      siteName: "site 0",
-      teamName: "Flex",
-      numberOfStaff: "00",
-      createdDate: "1/9/2020",
-      time: "10:00",
-    },
-  ]);
+  const [officeStaffeData, setOfficeStaffeData] = useState([]);
   const [searchForm, setSearchForm] = useState({
     site: "",
     team: [],
@@ -296,7 +288,7 @@ function OfficeStaff(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
