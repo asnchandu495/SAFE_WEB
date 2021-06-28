@@ -554,6 +554,9 @@ function DateJump(props) {
                                                   <MenuItem
                                                     value={ans.id}
                                                     key={`atypered_${ans.id}`}
+                                                    disabled={
+                                                      ans.hasConditionalOrder
+                                                    }
                                                   >
                                                     {ans.question}
                                                   </MenuItem>
