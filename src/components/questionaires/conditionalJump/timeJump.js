@@ -168,21 +168,38 @@ function TimeJump(props) {
         let thisQuestion = selectedSurveyQuestions.find(
           (que) => que.id == value
         );
-        const list = {
-          ...conditionalJump,
-          timeConditionalQuestions: [
-            ...conditionalJump.timeConditionalQuestions.map((con, conIndex) =>
-              conIndex == index
-                ? {
-                    ...con,
-                    [name]: value,
-                    ["isEndQuestion"]: thisQuestion.isEndQuestion,
-                  }
-                : con
-            ),
-          ],
-        };
-        setConditionalJump(list);
+        if (thisQuestion) {
+          const list = {
+            ...conditionalJump,
+            timeConditionalQuestions: [
+              ...conditionalJump.timeConditionalQuestions.map((con, conIndex) =>
+                conIndex == index
+                  ? {
+                      ...con,
+                      [name]: value,
+                      ["isEndQuestion"]: thisQuestion.isEndQuestion,
+                    }
+                  : con
+              ),
+            ],
+          };
+          setConditionalJump(list);
+        } else {
+          const list = {
+            ...conditionalJump,
+            timeConditionalQuestions: [
+              ...conditionalJump.timeConditionalQuestions.map((con, conIndex) =>
+                conIndex == index
+                  ? {
+                      ...con,
+                      [name]: "",
+                    }
+                  : con
+              ),
+            ],
+          };
+          setConditionalJump(list);
+        }
       } else {
         const list = {
           ...conditionalJump,

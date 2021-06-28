@@ -167,22 +167,40 @@ function DateJump(props) {
         let thisQuestion = selectedSurveyQuestions.find(
           (que) => que.id == value
         );
-        const list = {
-          ...conditionalJump,
-          dateTimeConditionalQuestions: [
-            ...conditionalJump.dateTimeConditionalQuestions.map(
-              (con, conIndex) =>
-                conIndex == index
-                  ? {
-                      ...con,
-                      [name]: value,
-                      ["isEndQuestion"]: thisQuestion.isEndQuestion,
-                    }
-                  : con
-            ),
-          ],
-        };
-        setConditionalJump(list);
+        if (thisQuestion) {
+          const list = {
+            ...conditionalJump,
+            dateTimeConditionalQuestions: [
+              ...conditionalJump.dateTimeConditionalQuestions.map(
+                (con, conIndex) =>
+                  conIndex == index
+                    ? {
+                        ...con,
+                        [name]: value,
+                        ["isEndQuestion"]: thisQuestion.isEndQuestion,
+                      }
+                    : con
+              ),
+            ],
+          };
+          setConditionalJump(list);
+        } else {
+          const list = {
+            ...conditionalJump,
+            dateTimeConditionalQuestions: [
+              ...conditionalJump.dateTimeConditionalQuestions.map(
+                (con, conIndex) =>
+                  conIndex == index
+                    ? {
+                        ...con,
+                        [name]: "",
+                      }
+                    : con
+              ),
+            ],
+          };
+          setConditionalJump(list);
+        }
       } else {
         const list = {
           ...conditionalJump,

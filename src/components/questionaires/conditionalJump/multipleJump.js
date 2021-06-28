@@ -170,22 +170,40 @@ function MultipleJump(props) {
     const { name, value } = e.target;
     if (name == "goToSurveyQuestionId") {
       let thisQuestion = selectedSurveyQuestions.find((que) => que.id == value);
-      const list = {
-        ...conditionalJump,
-        multiChoiceConditionalQuestions: [
-          ...conditionalJump.multiChoiceConditionalQuestions.map(
-            (con, conIndex) =>
-              conIndex == index
-                ? {
-                    ...con,
-                    [name]: value,
-                    ["isEndQuestion"]: thisQuestion.isEndQuestion,
-                  }
-                : con
-          ),
-        ],
-      };
-      setConditionalJump(list);
+      if (thisQuestion) {
+        const list = {
+          ...conditionalJump,
+          multiChoiceConditionalQuestions: [
+            ...conditionalJump.multiChoiceConditionalQuestions.map(
+              (con, conIndex) =>
+                conIndex == index
+                  ? {
+                      ...con,
+                      [name]: value,
+                      ["isEndQuestion"]: thisQuestion.isEndQuestion,
+                    }
+                  : con
+            ),
+          ],
+        };
+        setConditionalJump(list);
+      } else {
+        const list = {
+          ...conditionalJump,
+          multiChoiceConditionalQuestions: [
+            ...conditionalJump.multiChoiceConditionalQuestions.map(
+              (con, conIndex) =>
+                conIndex == index
+                  ? {
+                      ...con,
+                      [name]: "",
+                    }
+                  : con
+            ),
+          ],
+        };
+        setConditionalJump(list);
+      }
     } else {
       const list = {
         ...conditionalJump,
