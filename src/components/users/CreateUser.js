@@ -160,6 +160,7 @@ function CreateUser(props) {
     supervisor: "",
     zipCode: null,
     isRLAPActive: false,
+    rlapUserReferenceId: ""
   });
 
   const [resetformData, SetresetformData] = useState({
@@ -187,6 +188,7 @@ function CreateUser(props) {
     supervisor: "",
     zipCode: null,
     isRLAPActive: false,
+    rlapUserReferenceId: ""
   });
 
   useEffect(() => {
@@ -1198,6 +1200,33 @@ function CreateUser(props) {
                     <label htmlFor="rlapactive" className="input-label">
                       RLAP active
                     </label>
+                  </Grid>
+
+                  <Grid item xs={4}>
+                    <label
+                      className={`input-label ${formData.isRLAPActive ? "required" : ""
+                        }`}
+                    >
+                      RLAP User ID
+                    </label>
+                    <TextValidator
+                      variant="outlined"
+                      validators={formData.isRLAPActive ? ["required"] : ""}
+                      errorMessages={
+                        formData.isRLAPActive
+                          ? ["Please enter  Reference ID"]
+                          : ""
+                      }
+                      fullWidth
+                      id="rlapUserReferenceId"
+                      disabled={!formData.isRLAPActive}
+                      placeholder="Enter Reference ID "
+                      name="rlapReferenceId"
+                      onChange={handleChange}
+                      value={formData.rlapUserReferenceId}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                    />
                   </Grid>
 
                   <Grid container>

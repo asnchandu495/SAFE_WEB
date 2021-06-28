@@ -104,47 +104,47 @@ function ActionList(props) {
         </ListItem>
         {props.allActivityOptions && props.allActivityOptions.length > 0
           ? props.allActivityOptions.map((act, index) => {
-              let thisFormData = assignedActivities.find(
-                (sAct) => sAct.uniqueActivityId == act.uniqueActivityId
-              );
-              return (
-                <div
-                  className="actionlistitems"
-                  key={"action=" + act.uniqueActivityId}
+            let thisFormData = assignedActivities.find(
+              (sAct) => sAct.uniqueActivityId == act.uniqueActivityId
+            );
+            return (
+              <div
+                className={`actionlistitems ${props.disableActions ? 'no-pointer-events' : ''}`}
+                key={"action=" + act.uniqueActivityId}
+              >
+                <ListItem
+                  button
+                  selected={props.selectedActionList == act.uniqueActivityId}
+                  alignItems="flex-start"
                 >
-                  <ListItem
-                    button
-                    selected={props.selectedActionList == act.uniqueActivityId}
-                    alignItems="flex-start"
-                  >
-                    <ListItemText
-                      onClick={() => handleListItemClick(act)}
-                      secondary={
-                        <p className="question-name">{act.friendlyName}</p>
-                      }
-                    />
-                    {thisFormData ? (
-                      <>
-                        <Tooltip title="Action is configured">
-                          <DoneAllIcon className="already-saved"></DoneAllIcon>
-                        </Tooltip>
-                        <Tooltip title="Revert action">
-                          <SettingsBackupRestoreIcon
-                            className="already-configured"
-                            onClick={() =>
-                              handleClickOpenConfirmationModal(thisFormData)
-                            }
-                          ></SettingsBackupRestoreIcon>
-                        </Tooltip>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                  </ListItem>
-                  <Divider component="li" />
-                </div>
-              );
-            })
+                  <ListItemText
+                    onClick={() => handleListItemClick(act)}
+                    secondary={
+                      <p className="question-name">{act.friendlyName}</p>
+                    }
+                  />
+                  {thisFormData ? (
+                    <>
+                      <Tooltip title="Action is configured">
+                        <DoneAllIcon className="already-saved"></DoneAllIcon>
+                      </Tooltip>
+                      <Tooltip title="Revert action">
+                        <SettingsBackupRestoreIcon
+                          className="already-configured"
+                          onClick={() =>
+                            handleClickOpenConfirmationModal(thisFormData)
+                          }
+                        ></SettingsBackupRestoreIcon>
+                      </Tooltip>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </ListItem>
+                <Divider component="li" />
+              </div>
+            );
+          })
           : ""}
       </List>
       <ConfirmationDialog

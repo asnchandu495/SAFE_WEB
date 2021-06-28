@@ -186,7 +186,7 @@ function ContactTracing(props) {
 
       .then(([loggedinUserDetails, gridResult]) => {
         Promise.all([
-          userApiCall.GetAllUsersForSupervisor(loggedinUserDetails.id),
+          userApiCall.ListApplicationUsers(loggedinUserDetails.id),
           mastersApiCall.getCOVIDStates(),
         ])
           .then(([getUsers, getCovidStates]) => {
@@ -278,7 +278,7 @@ function ContactTracing(props) {
 
   const options = {
     filter: false,
-    onFilterChange: (changedColumn, filterList) => {},
+    onFilterChange: (changedColumn, filterList) => { },
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
@@ -350,7 +350,7 @@ function ContactTracing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -598,7 +598,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                        BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
