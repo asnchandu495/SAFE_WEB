@@ -447,7 +447,7 @@ function ContactTracing(props) {
   };
   function resetFilterForm() {
     setselectedSiteData();
-    setselectedLocationData();
+    setselectedLocationData([]);
     setSelectedReportType("");
     setSearchForm(resetForm);
   }
@@ -802,7 +802,7 @@ function ContactTracing(props) {
                 {showLoadder ? <ButtonLoadderComponent /> : "Generate"}
               </Button>
               <Button onClick={handleClose} className="global-cancel-btn">
-                Reset
+                Cancel
               </Button>
             </DialogActions>
           </ValidatorForm>{" "}

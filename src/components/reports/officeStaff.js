@@ -583,7 +583,7 @@ function OfficeStaff(props) {
                 {showLoadder ? <ButtonLoadderComponent /> : "Generate"}
               </Button>
               <Button onClick={handleClose} className="global-cancel-btn">
-                Reset
+                Cancel
               </Button>
             </DialogActions>
           </ValidatorForm>{" "}
