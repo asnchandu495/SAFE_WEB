@@ -16,31 +16,6 @@ import ToasterMessageComponent from "../../common/toaster";
 import Button from "@material-ui/core/Button";
 import * as d3 from "d3";
 
-const myTreeData = {
-    "name": "Safe to Confirmed",
-    "children": [
-        {
-            "name": "SendEmailActivity",
-            "children": [
-                { "name": "SendEMailToContacts" },
-                { "name": "SendEMailToSelf" },
-                { "name": "SendEmailToSecurityManager" },
-                { "name": "SendEmailToSiteManager" },
-                { "name": "SendEmailToSupervisor" },
-                { "name": "SendEmailToSiteBHR" },
-            ]
-        },
-        {
-            "name": "SendPushNotification",
-            "children": []
-        },
-        {
-            "name": "SendInAppNotification",
-            "children": [{ "name": "SendInAppNotificationToSecurityManager" }]
-        },
-    ]
-};
-
 function WorkflowState(props) {
     const groupIdURL = props.match.params.id;
     const workflowIdURL = props.match.params.wid;

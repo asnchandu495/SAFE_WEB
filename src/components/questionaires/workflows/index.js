@@ -86,16 +86,7 @@ function ViewWorkflows(props) {
             questionaireApiCall.getGroupStates(groupIdURL),
         ])
             .then(([grupStates]) => {
-                setWorkflowStateDetails([{
-                    "id": "39fc7bbbdf9838dd8cd51287974e8af8",
-                    "userGroupId": "string",
-                    "userGroupName": "string",
-                    "name": "string",
-                    "fromStateId": "string",
-                    "toStateId": "string",
-                    "fromState": "string",
-                    "toState": "string"
-                }]);
+                setWorkflowStateDetails(grupStates);
                 setComponentLoadder(false);
             })
             .catch((err) => {
