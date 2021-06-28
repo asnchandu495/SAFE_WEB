@@ -773,6 +773,7 @@ function ContactTracing(props) {
                         id=""
                         format="dd/MM/yyyy hh:mm a"
                         disableFuture={true}
+                        minDate={searchForm.startDate}
                         value={searchForm.endDate}
                         className="global-input"
                         onChange={(date, event, e) =>

@@ -589,6 +589,7 @@ function AccessBreaches(props) {
                         format="dd/MM/yyyy hh:mm a"
                         value={searchForm.endDate}
                         className="global-input"
+                        minDate={searchForm.startDate}
                         disableFuture={true}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "endDate")
