@@ -85,6 +85,7 @@ import AccessBreaches from "./components/reports/accessBreaches";
 import ContactTracing from "./components/reports/contactTracing";
 import GeoFencingBreaches from "./components/reports/geoFencingBreaches";
 import ViewWorkflows from "./components/questionaires/workflows";
+import WorkflowState from "./components/questionaires/workflows/workflowState";
 
 function App(props) {
   const AuthContainer = () => {
@@ -364,6 +365,11 @@ function App(props) {
           exact
           path="/questionaires/workflow-states/:id"
           component={ViewWorkflows}
+        ></Route>
+        <Route
+          exact
+          path="/questionaires/workflow-state/:id/:wid"
+          component={WorkflowState}
         ></Route>
       </AdminLayout>
     );
@@ -645,6 +651,11 @@ function App(props) {
         <Route
           exact
           path="/questionaires/workflow-states/:id"
+          component={AdminContainer}
+        ></Route>
+        <Route
+          exact
+          path="/questionaires/workflow-state/:id/:wid"
           component={AdminContainer}
         ></Route>
         <Route path="/InternalServerError" component={ErrorPageContainer} />

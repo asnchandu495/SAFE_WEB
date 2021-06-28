@@ -94,6 +94,11 @@ function ViewWorkflows(props) {
             });
     }, []);
 
+    function handleClickViewWorkflow(value) {
+        var workflowId = value[0];
+        props.history.push(`/questionaires/workflow-state/${groupIdURL}/${workflowId}`);
+    }
+
     const columns = [
         {
             name: "id",
@@ -154,7 +159,7 @@ function ViewWorkflows(props) {
                                         color="default"
                                         startIcon={<AccountTreeIcon />}
                                         className={`edit-icon`}
-                                    //   onClick={() => handleClickViewWorkflow(thisRowData)}
+                                        onClick={() => handleClickViewWorkflow(thisRowData)}
                                     ></Button>
                                 </Tooltip>
                             </div>
