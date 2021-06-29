@@ -1221,7 +1221,7 @@ function CreateUser(props) {
                       id="rlapUserReferenceId"
                       disabled={!formData.isRLAPActive}
                       placeholder="Enter Reference ID "
-                      name="rlapReferenceId"
+                      name="rlapUserReferenceId"
                       onChange={handleChange}
                       value={formData.rlapUserReferenceId}
                       className="global-input"
