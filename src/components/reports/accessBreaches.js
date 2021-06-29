@@ -147,20 +147,22 @@ function AccessBreaches(props) {
   const [searchForm, setSearchForm] = useState({
     SiteId: "",
     LocationId: [],
-    StartDate: moment().toISOString(),
-    EndDate: moment().toISOString(),
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
   });
   const [resetForm, setResetForm] = useState({
     SiteId: "",
     LocationId: [],
-    StartDate: moment().toISOString(),
-    EndDate: moment().toISOString(),
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
   });
   const [locationDensityData, setlocationDensityData] = useState([]);
   const [locationData, setLocationData] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [searchFormOld, setSearchFormOld] = useState();
+  const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
+  const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -177,7 +179,7 @@ function AccessBreaches(props) {
   const columns = [
     {
       label: "Site",
-      name: "SiteName",
+      name: "siteName",
       options: {
         filter: false,
         sort: true,
@@ -257,17 +259,17 @@ function AccessBreaches(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                        <TableRow key={row.userId}>
-                          <TableCell>{row.userName}</TableCell>
-                          <TableCell>{row.userId}</TableCell>
-                          <TableCell>{row.emailId}</TableCell>
-                          <TableCell>
-                            {moment(row.createdDate).format(
-                              "DD-MM-YYYY hh:mm:ss a"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
+                      <TableRow key={row.userId}>
+                        <TableCell>{row.userName}</TableCell>
+                        <TableCell>{row.userId}</TableCell>
+                        <TableCell>{row.emailId}</TableCell>
+                        <TableCell>
+                          {moment(row.createdDate).format(
+                            "DD-MM-YYYY hh:mm:ss a"
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -289,7 +291,7 @@ function AccessBreaches(props) {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -371,6 +373,18 @@ function AccessBreaches(props) {
   }
 
   const handleClickOpenModal = () => {
+    if (searchFormOld) {
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        ['startDate']: searchFormOld.startDate, ['endDate']: searchFormOld.endDate,
+      }));
+    }
+    if (selectedSiteDataOld) {
+      setselectedSiteData(selectedSiteDataOld);
+    }
+    if (selectedLocationDataOld.length > 0) {
+      setselectedLocationData(selectedLocationDataOld);
+    }
     setModalOpen(true);
   };
 
@@ -408,6 +422,7 @@ function AccessBreaches(props) {
         [name]: getSelectedVal,
       }));
     } else {
+      console.log(getSelectedVal);
       let thisValue = moment(getSelectedVal).toISOString();
       setSearchForm((searchForm) => ({
         ...searchForm,
@@ -426,6 +441,10 @@ function AccessBreaches(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+
+    setSearchFormOld(searchForm);
+    setselectedSiteDataOld(selectedSiteData);
+    setselectedLocationDataOld(selectedLocationData);
 
     if (selectedSiteData) {
       searchForm.SiteId = selectedSiteData.id;

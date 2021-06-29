@@ -387,7 +387,6 @@ function TemperatureRange(props) {
                           options={
                             covidStatelist && covidStatelist.length > 0
                               ? covidStatelist.filter((cstate) => {
-                                debugger;
                                 console.log(cstate);
                                 return !tempsections.covidStates.find(
                                   (sselected) => {

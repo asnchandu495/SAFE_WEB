@@ -90,7 +90,7 @@ export default class AuthService {
 
   LoggedInUserDetails() {
     return this.fetch(
-      `${this.flexstudioURL}/ApplicationUser/GetLoggedInUserDetails`,
+      `${this.baseURL}/ApplicationUser/GetLoggedInUserDetails`,
       {
         method: "GET",
       }
@@ -149,6 +149,16 @@ export default class AuthService {
     });
   }
 
+  UpdateConcurrentLoginForAuth(getData) {
+    var finalData = JSON.stringify(getData);
+    return this.fetch(`${this.baseURL}/ApplicationUser/UpdateConcurrentLoginForAuth`, {
+      method: "PUT",
+      body: finalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   isTokenExpired(Expiry) {
     try {
       const tokenExpiry = Expiry;
@@ -198,6 +208,7 @@ export default class AuthService {
 
     if (this.loggedIn()) {
       headers["Authorization"] = "Bearer " + this.getToken();
+      headers["Content-Type"] = "application/json";
       headers["Accept"] = "application/json";
       headers["Access-Control-Allow-Origin"] = "*";
     } else {

@@ -401,10 +401,17 @@ function AdminLayout(props) {
   };
 
   const UseLogOut = () => {
-    setAnchorEl(null);
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("id_tokenExpiry");
-    props.history.push("/");
+    let authLoginData = { "isLoggedOut": true };
+    authApiCall
+      .UpdateConcurrentLoginForAuth(authLoginData)
+      .then((response) => {
+        setAnchorEl(null);
+        localStorage.removeItem("id_token");
+        localStorage.removeItem("id_tokenExpiry");
+        props.history.push("/");
+      }).catch((err) => {
+
+      })
   };
 
   const menuId = "primary-search-account-menu";

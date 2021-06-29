@@ -95,10 +95,17 @@ function Signin(props) {
           authApiCall
             .login(loginData)
             .then((response) => {
-              props.loadGridsPages(gridPages);
-              props.loadACM();
-              setshowLoadder(false);
-              props.history.push("/home/dashboard");
+              let authLoginData = { "isLoggedOut": false };
+              authApiCall
+                .UpdateConcurrentLoginForAuth(authLoginData)
+                .then((response) => {
+                  props.loadGridsPages(gridPages);
+                  props.loadACM();
+                  setshowLoadder(false);
+                  props.history.push("/home/dashboard");
+                }).catch((err) => {
+
+                })
             })
             .catch((err) => {
               setToasterMessage(err.data.error);
