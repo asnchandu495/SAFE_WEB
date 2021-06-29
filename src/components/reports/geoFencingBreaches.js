@@ -198,8 +198,8 @@ function GeoFencingBreaches(props) {
       },
     },
     {
-      label: "UserId ",
-      name: "applicationUserId",
+      label: "Name",
+      name: "userName",
       options: {
         filter: false,
         sort: true,
@@ -214,7 +214,7 @@ function GeoFencingBreaches(props) {
       },
     },
     {
-      name: "usersBreach",
+      name: "userBreaches",
       label: "usersBreach",
       options: {
         display: "excluded",
@@ -275,15 +275,15 @@ function GeoFencingBreaches(props) {
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                        <TableRow key={row.location}>
-                          <TableCell>{row.location}</TableCell>
-                          <TableCell>
-                            {moment(row.createdDate).format(
-                              "DD/MM/yyyy hh:mm a"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
+                      <TableRow key={row.location}>
+                        <TableCell>{row.location}</TableCell>
+                        <TableCell>
+                          {moment(row.createdDate).format(
+                            "DD/MM/yyyy hh:mm a"
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -335,7 +335,7 @@ function GeoFencingBreaches(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>

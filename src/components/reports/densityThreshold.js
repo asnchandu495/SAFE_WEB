@@ -177,7 +177,7 @@ function DensityThreshold(props) {
   const columns = [
     {
       label: "Site",
-      name: "SiteName",
+      name: "siteName",
       options: {
         filter: false,
         sort: true,
@@ -256,17 +256,17 @@ function DensityThreshold(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                        <TableRow key={row.userId}>
-                          <TableCell>{row.userName}</TableCell>
-                          <TableCell>{row.userId}</TableCell>
-                          <TableCell>{row.emailId}</TableCell>
-                          <TableCell>
-                            {moment(row.createdDate).format(
-                              "DD-MM-YYYY hh:mm:ss a"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
+                      <TableRow key={row.userId}>
+                        <TableCell>{row.userName}</TableCell>
+                        <TableCell>{row.userId}</TableCell>
+                        <TableCell>{row.emailId}</TableCell>
+                        <TableCell>
+                          {moment(row.createdDate).format(
+                            "DD-MM-YYYY hh:mm:ss a"
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -320,7 +320,7 @@ function DensityThreshold(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
