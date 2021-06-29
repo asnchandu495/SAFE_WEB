@@ -192,8 +192,8 @@ function DensityThreshold(props) {
       },
     },
     {
-      name: "accessBreaches",
-      label: "accessBreaches",
+      name: "densityBreaches",
+      label: "densityBreaches",
       options: {
         display: "excluded",
         print: false,
