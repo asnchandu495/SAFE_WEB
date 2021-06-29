@@ -31,7 +31,7 @@ export default class ReportService {
 
   getContactTracingRlapReport(getData) {
     return this.fetch(
-      `${this.baseURL}/Reports/ContactTrace/rlap?StartDate=${getData.startDate}&EndDate=${getData.endDate}&UserBaseAccountId=${getData.userId.userId}`,
+      `${this.baseURL}/Reports/ContactTrace/rlap?StartDate=${getData.startDate}&EndDate=${getData.endDate}&UserId=${getData.userId.userId}`,
       {
         method: "GET",
       }
@@ -42,7 +42,7 @@ export default class ReportService {
 
   getContactTracingBleReport(getData) {
     return this.fetch(
-      `${this.baseURL}/ApplicationUser/GetContactTracingInfoForBLE?FromDate=${getData.startDate}&ToDate=${getData.endDate}&UserId=${getData.userId.userId}`,
+      `${this.baseURL}/ApplicationUser/GetContactTracingInfoForBLE?StartDate=${getData.startDate}&EndDate=${getData.endDate}&UserBaseAccountId=${getData.userId.userId}`,
       {
         method: "GET",
       }
