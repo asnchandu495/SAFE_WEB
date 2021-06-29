@@ -179,6 +179,9 @@ function ContactTracing(props) {
   const [selectedReportType, setSelectedReportType] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [searchFormOld, setSearchFormOld] = useState();
+  const [selectedReportTypeDataOld, setselectedReportTypeDataOld] =
+    useState("");
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -424,6 +427,15 @@ function ContactTracing(props) {
   }
 
   const handleClickOpenModal = () => {
+    if (searchFormOld) {
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        ["userId"]: searchFormOld.userId,
+        ["startDate"]: searchFormOld.startDate,
+        ["endDate"]: searchFormOld.endDate,
+      }));
+    }
+    setSelectedReportType(selectedReportTypeDataOld);
     setModalOpen(true);
   };
 
@@ -456,6 +468,9 @@ function ContactTracing(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+    setSearchFormOld(searchForm);
+    setselectedReportTypeDataOld(selectedReportType);
+
     setshowLoadder(true);
     if (selectedReportType == "rlap") {
       reportApiCall

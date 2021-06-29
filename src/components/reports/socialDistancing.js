@@ -166,6 +166,7 @@ function SocailDistancing(props) {
   const [applicationUsers, setApplicationUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [searchFormOld, setSearchFormOld] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -385,6 +386,14 @@ function SocailDistancing(props) {
   }
 
   const handleClickOpenModal = () => {
+    if (searchFormOld) {
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        ["userId"]: searchFormOld.userId,
+        ["startDate"]: searchFormOld.startDate,
+        ["endDate"]: searchFormOld.endDate,
+      }));
+    }
     setModalOpen(true);
   };
 
@@ -414,6 +423,7 @@ function SocailDistancing(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+    setSearchFormOld(searchForm);
     setshowLoadder(true);
     reportApiCall
       .getSocialDistancingReport(searchForm)

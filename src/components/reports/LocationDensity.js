@@ -133,6 +133,9 @@ function LocationDensity(props) {
     SiteId: false,
     LocationId: false,
   });
+  const [searchFormOld, setSearchFormOld] = useState();
+  const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
+  const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
 
   useEffect(() => {
     // Promise.all([siteApiCall.getListSite(), siteApiCall.getLocationManagers()])
@@ -218,6 +221,7 @@ function LocationDensity(props) {
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: currentRowsPerPage,
     onChangeRowsPerPage: handleRowsPerPageChange,
+
     print: false,
     jumpToPage: true,
     viewColumns: false,
@@ -231,7 +235,7 @@ function LocationDensity(props) {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -284,7 +288,7 @@ function LocationDensity(props) {
       rowsPerPage,
       changeRowsPerPage,
       changePage,
-      textLabels,
+      textLabels
     ) => {
       return (
         <CustomFooter
@@ -350,6 +354,12 @@ function LocationDensity(props) {
   }
 
   const handleClickOpenModal = () => {
+    if (selectedSiteDataOld) {
+      setselectedSiteData(selectedSiteDataOld);
+    }
+    if (selectedLocationDataOld.length > 0) {
+      setselectedLocationData(selectedLocationDataOld);
+    }
     setModalOpen(true);
   };
 
@@ -429,6 +439,10 @@ function LocationDensity(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+
+    setSearchFormOld(searchForm);
+    setselectedSiteDataOld(selectedSiteData);
+    setselectedLocationDataOld(selectedLocationData);
     SelectSiteValidation();
     SelectSiteValidation();
     SelectLocationValidation();
@@ -560,7 +574,9 @@ function LocationDensity(props) {
                             {...params}
                             inputProps={{
                               ...params.inputProps,
-                              required: selectedLocationData ? selectedLocationData.length === 0 : true,
+                              required: selectedLocationData
+                                ? selectedLocationData.length === 0
+                                : true,
                             }}
                             variant="outlined"
                             placeholder="Select Location"

@@ -161,6 +161,9 @@ function DensityThreshold(props) {
   const [locationData, setLocationData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [searchFormOld, setSearchFormOld] = useState();
+  const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
+  const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -256,17 +259,17 @@ function DensityThreshold(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                      <TableRow key={row.userId}>
-                        <TableCell>{row.userName}</TableCell>
-                        <TableCell>{row.userId}</TableCell>
-                        <TableCell>{row.emailId}</TableCell>
-                        <TableCell>
-                          {moment(row.createdDate).format(
-                            "DD-MM-YYYY hh:mm:ss a"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
+                        <TableRow key={row.userId}>
+                          <TableCell>{row.userName}</TableCell>
+                          <TableCell>{row.userId}</TableCell>
+                          <TableCell>{row.emailId}</TableCell>
+                          <TableCell>
+                            {moment(row.createdDate).format(
+                              "DD-MM-YYYY hh:mm:ss a"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -320,7 +323,7 @@ function DensityThreshold(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -369,6 +372,19 @@ function DensityThreshold(props) {
   }
 
   const handleClickOpenModal = () => {
+    if (searchFormOld) {
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        ["startDate"]: searchFormOld.startDate,
+        ["endDate"]: searchFormOld.endDate,
+      }));
+    }
+    if (selectedSiteDataOld) {
+      setselectedSiteData(selectedSiteDataOld);
+    }
+    if (selectedLocationDataOld.length > 0) {
+      setselectedLocationData(selectedLocationDataOld);
+    }
     setModalOpen(true);
   };
 
@@ -424,6 +440,9 @@ function DensityThreshold(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+    setSearchFormOld(searchForm);
+    setselectedSiteDataOld(selectedSiteData);
+    setselectedLocationDataOld(selectedLocationData);
 
     if (selectedSiteData) {
       searchForm.SiteId = selectedSiteData.id;

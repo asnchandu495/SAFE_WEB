@@ -154,13 +154,16 @@ function OfficeStaff(props) {
   });
 
   const [resetForm, setresetForm] = useState({
-    site: [],
+    site: "",
     team: [],
     FilterDate: moment().toISOString(),
-    frequency: "",
+    frequency: 0,
   });
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+  const [searchFormOld, setSearchFormOld] = useState();
+  const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
+  const [selectedTeamDataOld, setselectedTeamDataOld] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -337,6 +340,20 @@ function OfficeStaff(props) {
   }
 
   const handleClickOpenModal = () => {
+    if (searchFormOld) {
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        ["frequency"]: searchFormOld.userId,
+        ["startDate"]: searchFormOld.startDate,
+        ["endDate"]: searchFormOld.endDate,
+      }));
+    }
+    if (selectedSiteDataOld) {
+      setselectedSiteData(selectedSiteDataOld);
+    }
+    if (selectedTeamDataOld.length > 0) {
+      setselectedTeamData(selectedTeamDataOld);
+    }
     setModalOpen(true);
   };
 
@@ -382,6 +399,9 @@ function OfficeStaff(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+    setSearchFormOld(searchForm);
+    setselectedSiteDataOld(selectedSiteData);
+    setselectedTeamDataOld(selectedTeamData);
     setshowLoadder(true);
     if (selectedSiteData) {
       searchForm.site = selectedSiteData.id;
@@ -393,7 +413,7 @@ function OfficeStaff(props) {
     } else {
       searchForm.Teams = [];
     }
-    console.log(searchForm);
+
     reportApiCall
       .getOfficeStaffReport(searchForm)
       .then((result) => {
@@ -539,7 +559,7 @@ function OfficeStaff(props) {
                           "Only numbers are allowed",
                         ]}
                         name="frequency"
-                        type={"text"}
+                        type={"number"}
                         value={searchForm.frequency}
                         onChange={handleChange}
                         className="global-input"
