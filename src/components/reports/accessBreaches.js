@@ -60,6 +60,7 @@ import ReportService from "../../services/reportService";
 import * as GridAction from "../../Redux/Action/gridAction";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import MuiTablePagination from "@material-ui/core/TablePagination";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -163,13 +164,19 @@ function AccessBreaches(props) {
   const [searchFormOld, setSearchFormOld] = useState();
   const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
   const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
+  const [viewUserDetails, setviewUserDetails] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
-    Promise.all([siteApiCall.getListSite(), props.LoadGridsPage()])
-      .then(([getAllSites, gridResult]) => {
+    Promise.all([
+      siteApiCall.getListSite(),
+      props.LoadGridsPage(),
+      props.loadGlobalSettingWithoutAPICall(),
+    ])
+      .then(([getAllSites, gridResult, result]) => {
         setAllSites(getAllSites);
         setComponentLoadder(false);
+        // setviewUserDetails(result);
       })
       .catch((err) => {
         console.log(err);
@@ -259,17 +266,24 @@ function AccessBreaches(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                      <TableRow key={row.userId}>
-                        <TableCell>{row.userName}</TableCell>
-                        <TableCell>{row.userId}</TableCell>
-                        <TableCell>{row.emailId}</TableCell>
-                        <TableCell>
-                          {moment(row.createdDate).format(
-                            "DD-MM-YYYY hh:mm:ss a"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
+                        <TableRow key={row.userId}>
+                          <TableCell>{row.userName}</TableCell>
+                          <TableCell>{row.userId}</TableCell>
+                          <TableCell>{row.emailId}</TableCell>
+                          <TableCell>
+                            {/* {moment(row.createdDate).format(
+                              "DD-MM-YYYY hh:mm:ss a"
+                            )} */}
+                            {moment(row.createdDate).format(
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.dateFormat +
+                                    "  " +
+                                    props.loadGlobalSettingsData.timeFormat
+                                : "hh:mm"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -291,7 +305,7 @@ function AccessBreaches(props) {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -376,7 +390,8 @@ function AccessBreaches(props) {
     if (searchFormOld) {
       setSearchForm((searchForm) => ({
         ...searchForm,
-        ['startDate']: searchFormOld.startDate, ['endDate']: searchFormOld.endDate,
+        ["startDate"]: searchFormOld.startDate,
+        ["endDate"]: searchFormOld.endDate,
       }));
     }
     if (selectedSiteDataOld) {
@@ -581,7 +596,10 @@ function AccessBreaches(props) {
                         format="dd/MM/yyyy hh:mm a"
                         value={searchForm.startDate}
                         className="global-input"
-                        minDate={moment(searchForm.startDate).subtract(6, 'months')}
+                        minDate={moment(searchForm.startDate).subtract(
+                          6,
+                          "months"
+                        )}
                         disableFuture={true}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "startDate")
@@ -609,7 +627,7 @@ function AccessBreaches(props) {
                         format="dd/MM/yyyy hh:mm a"
                         value={searchForm.endDate}
                         className="global-input"
-                        maxDate={moment(searchForm.startDate).add(1, 'months')}
+                        maxDate={moment(searchForm.startDate).add(1, "months")}
                         minDate={moment(searchForm.startDate)}
                         disableFuture={true}
                         onChange={(date, event, e) =>
@@ -703,12 +721,15 @@ function AccessBreaches(props) {
 function mapStateToProps(state, ownProps) {
   return {
     GridData: state.gridHistory,
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
 
 const mapDispatchToProps = {
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccessBreaches);

@@ -763,6 +763,10 @@ function ContactTracing(props) {
                         disableFuture={true}
                         value={searchForm.startDate}
                         className="global-input"
+                        minDate={moment(searchForm.startDate).subtract(
+                          6,
+                          "months"
+                        )}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "startDate")
                         }
@@ -788,7 +792,8 @@ function ContactTracing(props) {
                         id=""
                         format="dd/MM/yyyy hh:mm a"
                         disableFuture={true}
-                        minDate={searchForm.startDate}
+                        maxDate={moment(searchForm.startDate).add(1, "months")}
+                        minDate={moment(searchForm.startDate)}
                         value={searchForm.endDate}
                         className="global-input"
                         onChange={(date, event, e) =>

@@ -64,6 +64,7 @@ import {
 import * as GridAction from "../../Redux/Action/gridAction";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import MuiTablePagination from "@material-ui/core/TablePagination";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -171,8 +172,12 @@ function GeoFencingBreaches(props) {
     setComponentLoadder(true);
     // userApiCall
     //   .getProfileDetails()
-    Promise.all([userApiCall.getProfileDetails(), props.LoadGridsPage()])
-      .then(([loggedinUserDetails, gridResult]) => {
+    Promise.all([
+      userApiCall.getProfileDetails(),
+      props.LoadGridsPage(),
+      props.loadGlobalSettingWithoutAPICall(),
+    ])
+      .then(([loggedinUserDetails, gridResult, result]) => {
         userApiCall
           .ListApplicationUsers(loggedinUserDetails.id)
           .then((getUsers) => {
@@ -280,7 +285,11 @@ function GeoFencingBreaches(props) {
                           <TableCell>{row.location}</TableCell>
                           <TableCell>
                             {moment(row.createdDate).format(
-                              "DD/MM/yyyy hh:mm a"
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.dateFormat +
+                                    "  " +
+                                    props.loadGlobalSettingsData.timeFormat
+                                : "hh:mm"
                             )}
                           </TableCell>
                         </TableRow>
@@ -528,6 +537,10 @@ function GeoFencingBreaches(props) {
                         disableFuture={true}
                         value={searchForm.startDate}
                         className="global-input"
+                        minDate={moment(searchForm.startDate).subtract(
+                          6,
+                          "months"
+                        )}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "startDate")
                         }
@@ -556,6 +569,8 @@ function GeoFencingBreaches(props) {
                         minDate={searchForm.startDate}
                         value={searchForm.endDate}
                         className="global-input"
+                        maxDate={moment(searchForm.startDate).add(1, "months")}
+                        minDate={moment(searchForm.startDate)}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "endDate")
                         }
@@ -648,12 +663,15 @@ function GeoFencingBreaches(props) {
 function mapStateToProps(state, ownProps) {
   return {
     GridData: state.gridHistory,
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
 
 const mapDispatchToProps = {
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GeoFencingBreaches);

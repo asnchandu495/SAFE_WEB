@@ -59,6 +59,7 @@ import {
   DateTimePicker,
 } from "@material-ui/pickers";
 import ReportService from "../../services/reportService";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -150,14 +151,14 @@ function OfficeStaff(props) {
     site: "",
     team: [],
     FilterDate: moment().toISOString(),
-    frequency: 0,
+    frequency: 1,
   });
 
   const [resetForm, setresetForm] = useState({
     site: "",
     team: [],
     FilterDate: moment().toISOString(),
-    frequency: 0,
+    frequency: 1,
   });
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
@@ -170,8 +171,9 @@ function OfficeStaff(props) {
       siteApiCall.getListSite(),
       masterDataCallApi.getTeams(),
       props.LoadGridsPage(),
+      props.loadGlobalSettingWithoutAPICall(),
     ])
-      .then(([getAllSites, getTeamsData, gridResult]) => {
+      .then(([getAllSites, getTeamsData, gridResult, result]) => {
         setAllSites(getAllSites);
         setTeamData(getTeamsData);
         setComponentLoadder(false);
@@ -188,6 +190,18 @@ function OfficeStaff(props) {
       options: {
         filter: false,
         sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          return (
+            <div>
+              {moment(thisRowData[0]).format(
+                props.loadGlobalSettingsData
+                  ? props.loadGlobalSettingsData.dateFormat
+                  : "hh:mm"
+              )}
+            </div>
+          );
+        },
       },
     },
     {
@@ -196,6 +210,18 @@ function OfficeStaff(props) {
       options: {
         filter: false,
         sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          return (
+            <div>
+              {moment(thisRowData[0]).format(
+                props.loadGlobalSettingsData
+                  ? props.loadGlobalSettingsData.timeFormat
+                  : "hh:mm"
+              )}
+            </div>
+          );
+        },
       },
     },
     {
@@ -552,10 +578,15 @@ function OfficeStaff(props) {
                       <TextValidator
                         fullWidth
                         variant="outlined"
-                        validators={["required", "matchRegexp:^[0-9]*$"]}
+                        validators={[
+                          "required",
+                          "matchRegexp:^[0-9]*$",
+                          `minNumber:1`,
+                        ]}
                         errorMessages={[
                           "Please enter frequencey ",
                           "Only numbers are allowed",
+                          "Minimum  allowed is 1",
                         ]}
                         name="frequency"
                         type={"number"}
@@ -657,12 +688,15 @@ function OfficeStaff(props) {
 function mapStateToProps(state, ownProps) {
   return {
     GridData: state.gridHistory,
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
 
 const mapDispatchToProps = {
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OfficeStaff);

@@ -60,6 +60,7 @@ import ReportService from "../../services/reportService";
 import * as GridAction from "../../Redux/Action/gridAction";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import MuiTablePagination from "@material-ui/core/TablePagination";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -167,7 +168,11 @@ function DensityThreshold(props) {
 
   useEffect(() => {
     setComponentLoadder(true);
-    Promise.all([siteApiCall.getListSite(), props.LoadGridsPage()])
+    Promise.all([
+      siteApiCall.getListSite(),
+      props.LoadGridsPage(),
+      props.loadGlobalSettingWithoutAPICall(),
+    ])
       .then(([getAllSites, gridResult]) => {
         setAllSites(getAllSites);
         setComponentLoadder(false);
@@ -264,8 +269,15 @@ function DensityThreshold(props) {
                           <TableCell>{row.userId}</TableCell>
                           <TableCell>{row.emailId}</TableCell>
                           <TableCell>
-                            {moment(row.createdDate).format(
+                            {/* {moment(row.createdDate).format(
                               "DD-MM-YYYY hh:mm:ss a"
+                            )} */}
+                            {moment(row.createdDate).format(
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.dateFormat +
+                                    "  " +
+                                    props.loadGlobalSettingsData.timeFormat
+                                : "hh:mm"
                             )}
                           </TableCell>
                         </TableRow>
@@ -579,6 +591,10 @@ function DensityThreshold(props) {
                         format="dd/MM/yyyy hh:mm a"
                         value={searchForm.startDate}
                         className="global-input"
+                        minDate={moment(searchForm.startDate).subtract(
+                          6,
+                          "months"
+                        )}
                         disableFuture={true}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "startDate")
@@ -606,7 +622,8 @@ function DensityThreshold(props) {
                         id=""
                         format="dd/MM/yyyy hh:mm a"
                         disableFuture={true}
-                        minDate={searchForm.startDate}
+                        maxDate={moment(searchForm.startDate).add(1, "months")}
+                        minDate={moment(searchForm.startDate)}
                         value={searchForm.endDate}
                         className="global-input"
                         onChange={(date, event, e) =>
@@ -701,12 +718,15 @@ function DensityThreshold(props) {
 function mapStateToProps(state, ownProps) {
   return {
     GridData: state.gridHistory,
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
 
 const mapDispatchToProps = {
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DensityThreshold);

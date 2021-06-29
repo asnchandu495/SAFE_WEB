@@ -64,6 +64,7 @@ import {
   KeyboardDatePicker,
   DateTimePicker,
 } from "@material-ui/pickers";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -171,8 +172,12 @@ function SocailDistancing(props) {
   useEffect(() => {
     setComponentLoadder(true);
 
-    Promise.all([userApiCall.getProfileDetails(), props.LoadGridsPage()])
-      .then(([loggedinUserDetails, gridResult]) => {
+    Promise.all([
+      userApiCall.getProfileDetails(),
+      props.LoadGridsPage(),
+      props.loadGlobalSettingWithoutAPICall(),
+    ])
+      .then(([loggedinUserDetails, gridResult, result]) => {
         userApiCall
           .ListApplicationUsers(loggedinUserDetails.id)
           .then((getUsers) => {
@@ -278,8 +283,15 @@ function SocailDistancing(props) {
                         <TableRow key={row.location}>
                           <TableCell>{row.location}</TableCell>
                           <TableCell>
-                            {moment(row.createdDate).format(
+                            {/* {moment(row.createdDate).format(
                               "DD/MM/yyyy hh:mm a"
+                            )} */}
+                            {moment(row.createdDate).format(
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.dateFormat +
+                                    "  " +
+                                    props.loadGlobalSettingsData.timeFormat
+                                : "hh:mm"
                             )}
                           </TableCell>
                         </TableRow>
@@ -530,6 +542,10 @@ function SocailDistancing(props) {
                         value={searchForm.startDate}
                         disableFuture={true}
                         className="global-input"
+                        minDate={moment(searchForm.startDate).subtract(
+                          6,
+                          "months"
+                        )}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "startDate")
                         }
@@ -556,7 +572,8 @@ function SocailDistancing(props) {
                         format="dd/MM/yyyy hh:mm a"
                         value={searchForm.endDate}
                         className="global-input"
-                        minDate={searchForm.startDate}
+                        maxDate={moment(searchForm.startDate).add(1, "months")}
+                        minDate={moment(searchForm.startDate)}
                         disableFuture={true}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "endDate")
@@ -648,12 +665,15 @@ function SocailDistancing(props) {
 function mapStateToProps(state, ownProps) {
   return {
     GridData: state.gridHistory,
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
 
 const mapDispatchToProps = {
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SocailDistancing);
