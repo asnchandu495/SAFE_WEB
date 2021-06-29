@@ -343,9 +343,8 @@ function OfficeStaff(props) {
     if (searchFormOld) {
       setSearchForm((searchForm) => ({
         ...searchForm,
-        ["frequency"]: searchFormOld.userId,
-        ["startDate"]: searchFormOld.startDate,
-        ["endDate"]: searchFormOld.endDate,
+        ["frequency"]: searchFormOld.frequency,
+        ["FilterDate"]: searchFormOld.FilterDate,
       }));
     }
     if (selectedSiteDataOld) {
@@ -536,7 +535,7 @@ function OfficeStaff(props) {
                         value={searchForm.FilterDate}
                         className="global-input"
                         onChange={(date, event, e) =>
-                          handleChangeSearchForm(date, "startDate")
+                          handleChangeSearchForm(date, "FilterDate")
                         }
                         KeyboardButtonProps={{
                           "aria-label": "change date",
