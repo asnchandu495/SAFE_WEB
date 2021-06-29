@@ -496,22 +496,33 @@ function ViewUser(props) {
                   <label>
                     {viewUserDetails.userShiftInfo
                       ? moment(viewUserDetails.userShiftInfo.startTime).format(
-                          props.loadGlobalSettingsData
-                            ? props.loadGlobalSettingsData.timeFormat
-                            : "hh:mm"
-                        )
+                        props.loadGlobalSettingsData
+                          ? props.loadGlobalSettingsData.timeFormat
+                          : "hh:mm"
+                      )
                       : "-"}{" "}
                     -{" "}
                     {viewUserDetails.userShiftInfo
                       ? moment(viewUserDetails.userShiftInfo.endTime).format(
-                          props.loadGlobalSettingsData
-                            ? props.loadGlobalSettingsData.timeFormat
-                            : "hh:mm"
-                        )
+                        props.loadGlobalSettingsData
+                          ? props.loadGlobalSettingsData.timeFormat
+                          : "hh:mm"
+                      )
                       : ""}
                   </label>
                 </Grid>
               </Grid>
+              {viewUserDetails.rlapUserReferenceId ? <Grid item xs={6} container>
+                <Grid item xs={4} className="user-view-label">
+                  <label>RLAP User ID</label>
+                  <span>:</span>
+                </Grid>
+                <Grid item xs={8}>
+                  <label>
+                    {viewUserDetails.rlapUserReferenceId}
+                  </label>
+                </Grid>
+              </Grid> : ""}
               <Grid
                 item
                 xs={12}
