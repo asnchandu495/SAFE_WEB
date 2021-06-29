@@ -237,7 +237,7 @@ function BooleanQuestion(props) {
                   <Grid item xs={2}>
                     <label className="required">Red Flag</label>
                     <TooltipComponent
-                      isMarginBottom={false}
+                      isMarginBottom={true}
                       tooltipMessage={`If user's reponse to the question matches the "Red Flag" answer, logic defined to determine COVID state for  red flag answers will override the logic defined to determine COVID state using positive conformity score`}
                     ></TooltipComponent>
                   </Grid>
@@ -281,7 +281,7 @@ function BooleanQuestion(props) {
                       <FormControl variant="outlined" fullWidth>
                         <InputLabel
                           id="demo-simple-select-outlined-label"
-                          shrink={false}
+                          shrink={true}
                           className="select-label"
                         >
                           {addQuestionData.positiveResponse != ""
@@ -330,7 +330,7 @@ function BooleanQuestion(props) {
                   <Grid item xs={2}>
                     <label className="required">Positive Conformity</label>
                     <TooltipComponent
-                      isMarginBottom={false}
+                      isMarginBottom={true}
                       tooltipMessage={` If user's response to question matches "Positive Comformity" answer, the score defined for "POsitive Comformity answers" will be added to user's evaluation result. In absence of "Red Flag" answers , user's "Total Positive Comformity Score" will be used to determine COVID state of user.
                       `}
                     ></TooltipComponent>
