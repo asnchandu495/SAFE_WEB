@@ -581,6 +581,7 @@ function AccessBreaches(props) {
                         format="dd/MM/yyyy hh:mm a"
                         value={searchForm.startDate}
                         className="global-input"
+                        minDate={moment(searchForm.startDate).subtract(6, 'months')}
                         disableFuture={true}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "startDate")
@@ -608,7 +609,8 @@ function AccessBreaches(props) {
                         format="dd/MM/yyyy hh:mm a"
                         value={searchForm.endDate}
                         className="global-input"
-                        minDate={searchForm.startDate}
+                        maxDate={moment(searchForm.startDate).add(1, 'months')}
+                        minDate={moment(searchForm.startDate)}
                         disableFuture={true}
                         onChange={(date, event, e) =>
                           handleChangeSearchForm(date, "endDate")

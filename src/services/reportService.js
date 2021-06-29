@@ -112,7 +112,7 @@ export default class ReportService {
 
     SiteIds = "SiteId=" + data.site;
 
-    let apiURL = `ApplicationUser/GetAllDensityThresholdBreaches?${TeamIds}&${SiteIds}&FilterDate=${data.FilterDate}&Frequency=${parseInt(data.Frequency)}`;
+    let apiURL = `ApplicationUser/GetAllNumberOfStaffInTheOffice?${TeamIds}&${SiteIds}&FilterDate=${data.FilterDate}&Frequency=${parseInt(data.frequency)}`;
 
     return this.fetch(`${this.baseURL}/${apiURL}`, {
       method: "GET",
