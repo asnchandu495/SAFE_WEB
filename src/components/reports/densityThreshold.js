@@ -177,7 +177,7 @@ function DensityThreshold(props) {
   const columns = [
     {
       label: "Site",
-      name: "SiteName",
+      name: "siteName",
       options: {
         filter: false,
         sort: true,
