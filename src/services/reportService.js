@@ -61,7 +61,7 @@ export default class ReportService {
 
     SiteIds = "SiteId=" + data.SiteId;
 
-    let apiURL = `Reports/GetAllAccessBreaches?${LocationIds}&${SiteIds}&StartDate=${data.StartDate}&EndDate=${data.EndDate}`;
+    let apiURL = `Reports/GetAllAccessBreaches?${LocationIds}&${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
 
     return this.fetch(`${this.baseURL}/${apiURL}`, {
       method: "GET",
@@ -80,7 +80,7 @@ export default class ReportService {
 
     SiteIds = "SiteId=" + data.SiteId;
 
-    let apiURL = `ApplicationUser/GetAllDensityThresholdBreaches?${LocationIds}&${SiteIds}&StartDate=${data.StartDate}&EndDate=${data.EndDate}`;
+    let apiURL = `ApplicationUser/GetAllDensityThresholdBreaches?${LocationIds}&${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
 
     return this.fetch(`${this.baseURL}/${apiURL}`, {
       method: "GET",

@@ -148,14 +148,14 @@ function DensityThreshold(props) {
   const [searchForm, setSearchForm] = useState({
     SiteId: "",
     LocationId: [],
-    StartDate: moment().toISOString(),
-    EndDate: moment().toISOString(),
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
   });
   const [resetForm, setResetForm] = useState({
     SiteId: "",
     LocationId: [],
-    StartDate: moment().toISOString(),
-    EndDate: moment().toISOString(),
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
   });
   const [densityThresholdData, setDensityThresholdData] = useState([]);
   const [locationData, setLocationData] = useState([]);

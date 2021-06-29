@@ -147,14 +147,14 @@ function AccessBreaches(props) {
   const [searchForm, setSearchForm] = useState({
     SiteId: "",
     LocationId: [],
-    StartDate: moment().toISOString(),
-    EndDate: moment().toISOString(),
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
   });
   const [resetForm, setResetForm] = useState({
     SiteId: "",
     LocationId: [],
-    StartDate: moment().toISOString(),
-    EndDate: moment().toISOString(),
+    startDate: moment().toISOString(),
+    endDate: moment().toISOString(),
   });
   const [locationDensityData, setlocationDensityData] = useState([]);
   const [locationData, setLocationData] = useState([]);
@@ -373,6 +373,18 @@ function AccessBreaches(props) {
   }
 
   const handleClickOpenModal = () => {
+    if (searchFormOld) {
+      setSearchForm((searchForm) => ({
+        ...searchForm,
+        ['startDate']: searchFormOld.startDate, ['endDate']: searchFormOld.endDate,
+      }));
+    }
+    if (selectedSiteDataOld) {
+      setselectedSiteData(selectedSiteDataOld);
+    }
+    if (selectedLocationDataOld.length > 0) {
+      setselectedLocationData(selectedLocationDataOld);
+    }
     setModalOpen(true);
   };
 
@@ -410,6 +422,7 @@ function AccessBreaches(props) {
         [name]: getSelectedVal,
       }));
     } else {
+      console.log(getSelectedVal);
       let thisValue = moment(getSelectedVal).toISOString();
       setSearchForm((searchForm) => ({
         ...searchForm,
