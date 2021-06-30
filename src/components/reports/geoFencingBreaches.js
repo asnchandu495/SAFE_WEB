@@ -282,19 +282,19 @@ function GeoFencingBreaches(props) {
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                        <TableRow key={row.location}>
-                          <TableCell>{row.location}</TableCell>
-                          <TableCell>
-                            {moment(row.createdDate).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.dateFormat +
-                                    "  " +
-                                    props.loadGlobalSettingsData.timeFormat
-                                : "hh:mm"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
+                      <TableRow key={row.location}>
+                        <TableCell>{row.location}</TableCell>
+                        <TableCell>
+                          {moment(row.createdDate).format(
+                            props.loadGlobalSettingsData
+                              ? props.loadGlobalSettingsData.dateFormat +
+                              "  " +
+                              props.loadGlobalSettingsData.timeFormat
+                              : "hh:mm"
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -346,7 +346,7 @@ function GeoFencingBreaches(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -587,6 +587,7 @@ function GeoFencingBreaches(props) {
                           "aria-label": "change date",
                         }}
                         required
+                        minDateMessage='Select max 1 month duration'
                       />
                     </Grid>
                   </Grid>
