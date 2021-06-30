@@ -58,6 +58,7 @@ import {
   KeyboardDatePicker,
   DateTimePicker,
 } from "@material-ui/pickers";
+import TooltipComponent from "../common/tooltip";
 import ReportService from "../../services/reportService";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
@@ -317,7 +318,7 @@ function OfficeStaff(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -546,17 +547,25 @@ function OfficeStaff(props) {
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">Date</label>
+                      <TooltipComponent
+                        isMarginBottom={true}
+                        tooltipMessage={`This report is available for maximum  period of 3 months.`}
+                      ></TooltipComponent>
                     </Grid>
                     <Grid
                       item
                       xs={8}
                       className="date-time-pickers report-pickers"
                     >
-                      <DateTimePicker
+                      <KeyboardDatePicker
                         fullWidth
                         name="FilterDate"
                         id=""
-                        format="dd/MM/yyyy hh:mm a"
+                        format="dd/MM/yyyy"
+                        minDate={moment(searchForm.startDate).subtract(
+                          3,
+                          "months"
+                        )}
                         disableFuture={true}
                         value={searchForm.FilterDate}
                         className="global-input"
