@@ -281,7 +281,7 @@ function ContactTracing(props) {
 
   const options = {
     filter: false,
-    onFilterChange: (changedColumn, filterList) => {},
+    onFilterChange: (changedColumn, filterList) => { },
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
@@ -353,7 +353,7 @@ function ContactTracing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -613,7 +613,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                        BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
@@ -684,15 +684,16 @@ function ContactTracing(props) {
                         name="report_type"
                         value={selectedReportType}
                         onChange={handleChangeReport}
+
                       >
                         <FormControlLabel
                           value="rlap"
-                          control={<Radio />}
+                          control={<Radio required />}
                           label="RLAP"
                         />
                         <FormControlLabel
                           value="ble"
-                          control={<Radio />}
+                          control={<Radio required />}
                           label="BLE"
                         />
                       </RadioGroup>
