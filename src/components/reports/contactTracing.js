@@ -67,6 +67,7 @@ import {
 import * as GridAction from "../../Redux/Action/gridAction";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import MuiTablePagination from "@material-ui/core/TablePagination";
+import TooltipComponent from "../common/tooltip";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -216,7 +217,7 @@ function ContactTracing(props) {
       },
     },
     {
-      label: "UserId",
+      label: "User ID",
       name: "userId",
       options: {
         filter: false,
@@ -225,8 +226,9 @@ function ContactTracing(props) {
     },
     {
       name: "userBaseAccountId",
-      label: "User Base AccountId",
+      label: "# Of Instances",
       options: {
+        display: "excluded",
         filter: false,
         sort: true,
       },
@@ -281,7 +283,7 @@ function ContactTracing(props) {
 
   const options = {
     filter: false,
-    onFilterChange: (changedColumn, filterList) => { },
+    onFilterChange: (changedColumn, filterList) => {},
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
@@ -353,7 +355,7 @@ function ContactTracing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -613,7 +615,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                        BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
@@ -675,7 +677,7 @@ function ContactTracing(props) {
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Report Type</label>
+                      <label className="">Data Source</label>
                     </Grid>
                     <Grid item xs={8}>
                       <RadioGroup
@@ -684,7 +686,6 @@ function ContactTracing(props) {
                         name="report_type"
                         value={selectedReportType}
                         onChange={handleChangeReport}
-
                       >
                         <FormControlLabel
                           value="rlap"
@@ -750,6 +751,10 @@ function ContactTracing(props) {
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">From</label>
+                      <TooltipComponent
+                        isMarginBottom={true}
+                        tooltipMessage={`This report is available for a maximum period of 6 months .`}
+                      ></TooltipComponent>
                     </Grid>
                     <Grid
                       item
@@ -781,6 +786,11 @@ function ContactTracing(props) {
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">To</label>
+
+                      <TooltipComponent
+                        isMarginBottom={true}
+                        tooltipMessage={`This report is available for a maximum period of 6 months .`}
+                      ></TooltipComponent>
                     </Grid>
                     <Grid
                       item

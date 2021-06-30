@@ -167,6 +167,22 @@ function OfficeStaff(props) {
   const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
   const [selectedTeamDataOld, setselectedTeamDataOld] = useState([]);
 
+  const [frequencyJSON] = useState([
+    {
+      id: "1",
+      value: "1",
+    },
+    { id: 2, value: "2" },
+    { id: 3, value: "3" },
+    { id: 4, value: "4" },
+    { id: 5, value: "5" },
+    { id: 6, value: "6" },
+    { id: 7, value: "7" },
+    { id: 8, value: "8" },
+    { id: 9, value: "9" },
+    { id: 10, value: "10" },
+  ]);
+  const [frequencyValue, setfrequencyValue] = useState("");
   useEffect(() => {
     Promise.all([
       siteApiCall.getListSite(),
@@ -211,18 +227,6 @@ function OfficeStaff(props) {
       options: {
         filter: false,
         sort: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          var thisRowData = tableMeta.rowData;
-          return (
-            <div>
-              {moment(thisRowData[0]).format(
-                props.loadGlobalSettingsData
-                  ? props.loadGlobalSettingsData.timeFormat
-                  : "hh:mm"
-              )}
-            </div>
-          );
-        },
       },
     },
     {
@@ -318,7 +322,7 @@ function OfficeStaff(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -405,6 +409,7 @@ function OfficeStaff(props) {
       ...searchForm,
       [name]: value,
     }));
+    // setfrequencyValue(value);
   }
 
   const handleChangeSearchForm = (getSelectedVal, name) => {
@@ -438,6 +443,9 @@ function OfficeStaff(props) {
       searchForm.Teams = teamArr;
     } else {
       searchForm.Teams = [];
+    }
+    if (frequencyValue) {
+      searchForm.frequency = frequencyValue.id;
     }
 
     reportApiCall
@@ -549,7 +557,7 @@ function OfficeStaff(props) {
                       <label className="">Date</label>
                       <TooltipComponent
                         isMarginBottom={true}
-                        tooltipMessage={`This report is available for maximum  period of 3 months.`}
+                        tooltipMessage={`This report is available for a maximum period of 6 months .`}
                       ></TooltipComponent>
                     </Grid>
                     <Grid
@@ -583,8 +591,33 @@ function OfficeStaff(props) {
                     <Grid item xs={4}>
                       <label className="">Frequency</label>
                     </Grid>
-                    <Grid item xs={8} className="">
-                      <TextValidator
+                    <Grid item xs={8}>
+                      <FormControl variant="outlined" fullWidth>
+                        <InputLabel
+                          id="demo-simple-select-outlined-label"
+                          shrink={false}
+                          className="select-label"
+                        ></InputLabel>
+
+                        <Select
+                          labelId="demo-simple-select-outlined-label"
+                          id="demo-simple-select-outlined"
+                          name="frequency"
+                          required
+                          value={searchForm.frequency}
+                          onChange={handleChange}
+                          className="global-input single-select"
+                        >
+                          {frequencyJSON.map((data) => {
+                            return (
+                              <MenuItem key={data.id} value={data.value}>
+                                {data.value}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                      {/* <TextValidator
                         fullWidth
                         variant="outlined"
                         validators={[
@@ -613,7 +646,7 @@ function OfficeStaff(props) {
                             <InputAdornment position="end">Hour</InputAdornment>
                           ),
                         }}
-                      />
+                      /> */}
                     </Grid>
                   </Grid>
                 </Grid>
