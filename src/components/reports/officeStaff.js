@@ -166,10 +166,9 @@ function OfficeStaff(props) {
   const [searchFormOld, setSearchFormOld] = useState();
   const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
   const [selectedTeamDataOld, setselectedTeamDataOld] = useState([]);
-  const [frequencyJSON], setFrequencyJson = useState([
+  const [frequencyJSON, setFrequencyJson] = useState([
     {
-      id: "1",
-      value: "1",
+      id: "1", value: "1",
     },
     { id: 2, value: "2" },
     { id: 3, value: "3" },
