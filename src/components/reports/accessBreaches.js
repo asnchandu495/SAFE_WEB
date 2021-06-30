@@ -266,24 +266,24 @@ function AccessBreaches(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                        <TableRow key={row.userId}>
-                          <TableCell>{row.userName}</TableCell>
-                          <TableCell>{row.userId}</TableCell>
-                          <TableCell>{row.emailId}</TableCell>
-                          <TableCell>
-                            {/* {moment(row.createdDate).format(
+                      <TableRow key={row.userId}>
+                        <TableCell>{row.userName}</TableCell>
+                        <TableCell>{row.userId}</TableCell>
+                        <TableCell>{row.emailId}</TableCell>
+                        <TableCell>
+                          {/* {moment(row.createdDate).format(
                               "DD-MM-YYYY hh:mm:ss a"
                             )} */}
-                            {moment(row.createdDate).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.dateFormat +
-                                    "  " +
-                                    props.loadGlobalSettingsData.timeFormat
-                                : "hh:mm"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
+                          {moment(row.createdDate).format(
+                            props.loadGlobalSettingsData
+                              ? props.loadGlobalSettingsData.dateFormat +
+                              "  " +
+                              props.loadGlobalSettingsData.timeFormat
+                              : "hh:mm"
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
                     : []}
                 </TableBody>
               </Table>
@@ -305,7 +305,7 @@ function AccessBreaches(props) {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -637,6 +637,7 @@ function AccessBreaches(props) {
                           "aria-label": "change date",
                         }}
                         required
+                        minDateMessage='Select max 1 month duration'
                       />
                     </Grid>
                   </Grid>
