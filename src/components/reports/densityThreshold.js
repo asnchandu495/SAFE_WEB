@@ -61,6 +61,7 @@ import * as GridAction from "../../Redux/Action/gridAction";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import MuiTablePagination from "@material-ui/core/TablePagination";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
+import TooltipComponent from "../common/tooltip";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -209,7 +210,7 @@ function DensityThreshold(props) {
       },
     },
     {
-      label: " # of instances ",
+      label: " # Of Instances ",
       name: "numberOfInstance",
       options: {
         filter: false,
@@ -409,6 +410,7 @@ function DensityThreshold(props) {
   };
 
   function selectedSite(e, value) {
+    setselectedLocationData([]);
     setselectedSiteData(value);
     if (value) {
       let data = value.id;
@@ -578,6 +580,10 @@ function DensityThreshold(props) {
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">From</label>
+                      <TooltipComponent
+                        isMarginBottom={true}
+                        tooltipMessage={`This report is available for a maximum period of 6 months .`}
+                      ></TooltipComponent>
                     </Grid>
                     <Grid
                       item
@@ -610,6 +616,10 @@ function DensityThreshold(props) {
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">To</label>
+                      <TooltipComponent
+                        isMarginBottom={true}
+                        tooltipMessage={`This report is available for a maximum period of 6 months .`}
+                      ></TooltipComponent>
                     </Grid>
                     <Grid
                       item

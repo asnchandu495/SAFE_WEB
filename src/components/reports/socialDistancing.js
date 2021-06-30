@@ -65,6 +65,7 @@ import {
   DateTimePicker,
 } from "@material-ui/pickers";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
+import TooltipComponent from "../common/tooltip";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -204,7 +205,7 @@ function SocailDistancing(props) {
       },
     },
     {
-      label: "UserId ",
+      label: "User ID ",
       name: "applicationUserId",
       options: {
         filter: false,
@@ -212,7 +213,7 @@ function SocailDistancing(props) {
       },
     },
     {
-      label: "EmailId",
+      label: "Email ID",
       name: "emailId",
       options: {
         filter: false,
@@ -229,7 +230,7 @@ function SocailDistancing(props) {
       },
     },
     {
-      label: " # of instances ",
+      label: " # Of Instances ",
       name: "numberOfInstance",
       options: {
         filter: false,
@@ -528,6 +529,10 @@ function SocailDistancing(props) {
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">From</label>
+                      <TooltipComponent
+                        isMarginBottom={true}
+                        tooltipMessage={`This report is available for a maximum period of 6 months .`}
+                      ></TooltipComponent>
                     </Grid>
                     <Grid
                       item
@@ -559,6 +564,10 @@ function SocailDistancing(props) {
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="">To</label>
+                      <TooltipComponent
+                        isMarginBottom={true}
+                        tooltipMessage={`This report is available for a maximum period of 6 months .`}
+                      ></TooltipComponent>
                     </Grid>
                     <Grid
                       item
