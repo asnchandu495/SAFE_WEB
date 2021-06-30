@@ -166,8 +166,7 @@ function OfficeStaff(props) {
   const [searchFormOld, setSearchFormOld] = useState();
   const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
   const [selectedTeamDataOld, setselectedTeamDataOld] = useState([]);
-
-  const [frequencyJSON] = useState([
+  const [frequencyJSON], setFrequencyJson = useState([
     {
       id: "1",
       value: "1",
@@ -181,11 +180,27 @@ function OfficeStaff(props) {
     { id: 8, value: "8" },
     { id: 9, value: "9" },
     { id: 10, value: "10" },
+    { id: 11, value: "11" },
+    { id: 12, value: "12" },
+    { id: 13, value: "13" },
+    { id: 14, value: "14" },
+    { id: 15, value: "15" },
+    { id: 16, value: "16" },
+    { id: 17, value: "17" },
+    { id: 18, value: "18" },
+    { id: 19, value: "19" },
+    { id: 20, value: "20" },
+    { id: 21, value: "21" },
+    { id: 22, value: "22" },
+    { id: 23, value: "23" },
+    { id: 24, value: "24" },
   ]);
   const [frequencyValue, setfrequencyValue] = useState("");
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
+
   useEffect(() => {
     Promise.all([
-      siteApiCall.getListSite(),
+      siteApiCall.getListSiteSupervisor(),
       masterDataCallApi.getTeams(),
       props.LoadGridsPage(),
       props.loadGlobalSettingWithoutAPICall(),
@@ -284,7 +299,7 @@ function OfficeStaff(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no reports",
+        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -322,7 +337,7 @@ function OfficeStaff(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -451,6 +466,7 @@ function OfficeStaff(props) {
     reportApiCall
       .getOfficeStaffReport(searchForm)
       .then((result) => {
+        setIsFilterSelected(true);
         setOfficeStaffeData(result);
         setTimeout(() => {
           setModalOpen(false);

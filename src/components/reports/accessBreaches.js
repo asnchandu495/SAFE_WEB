@@ -166,11 +166,12 @@ function AccessBreaches(props) {
   const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
   const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
   const [viewUserDetails, setviewUserDetails] = useState();
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
 
   useEffect(() => {
     setComponentLoadder(true);
     Promise.all([
-      siteApiCall.getListSite(),
+      siteApiCall.getListSiteSupervisor(),
       props.LoadGridsPage(),
       props.loadGlobalSettingWithoutAPICall(),
     ])
@@ -300,7 +301,7 @@ function AccessBreaches(props) {
 
     textLabels: {
       body: {
-        noMatch: "There are no reports",
+        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -478,6 +479,7 @@ function AccessBreaches(props) {
     reportApiCall
       .getAccessBreachReport(searchForm)
       .then((result) => {
+        setIsFilterSelected(true);
         setlocationDensityData(result);
         setTimeout(() => {
           setModalOpen(false);

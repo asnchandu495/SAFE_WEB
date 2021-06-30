@@ -15,6 +15,14 @@ export default class SiteService {
     });
   }
 
+  getListSiteSupervisor() {
+    return this.fetch(`${this.baseURL}/Reports/GetSites`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getAllSitesbySiteorSecurityManager(data) {
     let SecurityManagerIds = "";
     let SiteManagerIds = "";

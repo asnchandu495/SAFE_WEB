@@ -168,6 +168,7 @@ function GeoFencingBreaches(props) {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [searchFormOld, setSearchFormOld] = useState();
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -305,7 +306,7 @@ function GeoFencingBreaches(props) {
     },
     textLabels: {
       body: {
-        noMatch: "There are no reports",
+        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -437,6 +438,7 @@ function GeoFencingBreaches(props) {
     reportApiCall
       .getGeoFencingReport(searchForm)
       .then((result) => {
+        setIsFilterSelected(true);
         setGeoFencingData(result);
         setTimeout(() => {
           setModalOpen(false);

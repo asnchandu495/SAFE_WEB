@@ -136,11 +136,12 @@ function LocationDensity(props) {
   const [searchFormOld, setSearchFormOld] = useState();
   const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
   const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
 
   useEffect(() => {
     // Promise.all([siteApiCall.getListSite(), siteApiCall.getLocationManagers()])
     //   .then(([getAllSites, result]) => {
-    Promise.all([siteApiCall.getListSite(), props.LoadGridsPage()])
+    Promise.all([siteApiCall.getListSiteSupervisor(), props.LoadGridsPage()])
       .then(([getAllSites, gridResult]) => {
         setAllSites(getAllSites);
         setComponentLoadder(false);
@@ -229,13 +230,13 @@ function LocationDensity(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no reports",
+        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
       },
       pagination: {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -477,6 +478,7 @@ function LocationDensity(props) {
     siteApiCall
       .getLocationBysiteReport(searchForm)
       .then((result) => {
+        setIsFilterSelected(true);
         setStateSnackbar(true);
         setToasterMessage("success");
         settoasterServerity("success");
@@ -500,7 +502,7 @@ function LocationDensity(props) {
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        className="global-dialog confirmation-dialog global-form"
+        className="global-dialog confirmation-dialog global-form modal-min-widtn"
         aria-labelledby="form-dialog-title"
         open={Modalopen}
       >

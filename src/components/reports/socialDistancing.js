@@ -221,7 +221,7 @@ function SocailDistancing(props) {
       },
     },
     {
-      name: "usersBreach",
+      name: "userBreaches",
       label: "usersBreach",
       options: {
         display: "excluded",

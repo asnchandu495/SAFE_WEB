@@ -166,11 +166,12 @@ function DensityThreshold(props) {
   const [searchFormOld, setSearchFormOld] = useState();
   const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
   const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
 
   useEffect(() => {
     setComponentLoadder(true);
     Promise.all([
-      siteApiCall.getListSite(),
+      siteApiCall.getListSiteSupervisor(),
       props.LoadGridsPage(),
       props.loadGlobalSettingWithoutAPICall(),
     ])
@@ -298,7 +299,7 @@ function DensityThreshold(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: "There are no reports",
+        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -473,6 +474,7 @@ function DensityThreshold(props) {
     reportApiCall
       .getDensityThresholdReport(searchForm)
       .then((result) => {
+        setIsFilterSelected(true);
         setDensityThresholdData(result);
         setTimeout(() => {
           setModalOpen(false);

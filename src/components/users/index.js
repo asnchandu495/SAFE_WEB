@@ -728,9 +728,13 @@ function Users(props) {
           var thisRowData = tableMeta.rowData;
 
           let usersACM = props.acmData.find((acm) => {
-            console.log(acm.module);
             return acm.module == "user";
           });
+          console.log(usersACM.permissions);
+          let updateInfo = usersACM.permissions.find(ua => ua.entity == 'update');
+          let updateShiftInfo = usersACM.permissions.find(ua => ua.entity == "updateUserShift");
+          let updateCovidInfo = usersACM.permissions.find(ua => ua.entity == "updateUserCovidState");
+          let updateTemperatureInfo = usersACM.permissions.find(ua => ua.entity == "updateUserTemp");
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
@@ -767,7 +771,6 @@ function Users(props) {
 
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
-      console.log(entity.entity);
       switch (entity.entity) {
         case "view":
           return entity.isAccess ? (
