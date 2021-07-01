@@ -199,7 +199,7 @@ function SocailDistancing(props) {
   const columns = [
     {
       name: "userName",
-      label: "User name",
+      label: "User Name",
       options: {
         filter: false,
         sort: true,
