@@ -184,6 +184,7 @@ function ContactTracing(props) {
   const [selectedReportTypeDataOld, setselectedReportTypeDataOld] =
     useState("");
   const [isFilterSelected, setIsFilterSelected] = useState(false);
+  const [rowClickCovidState, setRowClickCovidState] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -550,10 +551,9 @@ function ContactTracing(props) {
 
   const handleClickOpenBulkModal = (thisRowData) => {
     if (thisRowData) {
-      let finalUsers = [{ id: thisRowData[2] }];
+      setRowClickCovidState({ id: thisRowData[2] });
       let selecteduserDtails = applicationUsers.find(usr => usr.id == thisRowData[2]);
       setcovidStatelist(selecteduserDtails.covidStateDetails);
-      setSelectedUsersForCovidState(finalUsers);
     }
     setBulkModalOpen(true);
   };
@@ -575,37 +575,66 @@ function ContactTracing(props) {
     settoasterServerity("");
     settoasterErrorMessageType("");
     if (covidStatelist) {
-      let updateCOVIDStatusbyUsersList = [];
-      selectedUsersForCovidState.map((user) => {
-        updateCOVIDStatusbyUsersList.push({
-          id: user.id,
-          covidStateId: covidStatelist.id,
-        });
-      });
+      if (rowClickCovidState) {
+        let sendData = {
+          id: rowClickCovidState.id,
+          covidStateId: covidStatelist.id
+        };
 
-      let sendData = {
-        updateCOVIDStatusbyUsersList: updateCOVIDStatusbyUsersList,
-      };
-
-      userApiCall
-        .UpdateUserCovidStateBulk(sendData)
-        .then((result) => {
-          setStateSnackbar(true);
-          setToasterMessage("Covid state update to the selected users");
-          settoasterServerity("success");
-          setTimeout(() => {
-            setBulkModalOpen(false);
-            setSelectedUsersForCovidState([]);
-            setRowsSelected([]);
+        userApiCall
+          .UpdateUserCovidState(sendData)
+          .then((result) => {
+            setStateSnackbar(true);
+            setToasterMessage("Covid state updated");
+            settoasterServerity("success");
+            setTimeout(() => {
+              setRowClickCovidState();
+              setBulkModalOpen(false);
+              setSelectedUsersForCovidState([]);
+              setRowsSelected([]);
+              setshowLoadder(false);
+            }, 6000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
             setshowLoadder(false);
-          }, 6000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
+          });
+      } else {
+        let updateCOVIDStatusbyUsersList = [];
+        selectedUsersForCovidState.map((user) => {
+          updateCOVIDStatusbyUsersList.push({
+            id: user.id,
+            covidStateId: covidStatelist.id,
+          });
         });
+
+        let sendData = {
+          updateCOVIDStatusbyUsersList: updateCOVIDStatusbyUsersList,
+        };
+
+        userApiCall
+          .UpdateUserCovidStateBulk(sendData)
+          .then((result) => {
+            setStateSnackbar(true);
+            setToasterMessage("Covid state update to the selected users");
+            settoasterServerity("success");
+            setTimeout(() => {
+              setBulkModalOpen(false);
+              setSelectedUsersForCovidState([]);
+              setRowsSelected([]);
+              setshowLoadder(false);
+            }, 6000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
+            setshowLoadder(false);
+          });
+      }
+
     }
   }
   return (

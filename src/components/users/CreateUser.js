@@ -1196,6 +1196,32 @@ function CreateUser(props) {
                       RLAP active
                     </label>
                   </Grid>
+                  {userId ? <Grid item xs={4}>
+                    <label
+                      className={`input-label ${formData.isRLAPActive ? "required" : ""
+                        }`}
+                    >
+                      RLAP User ID
+                    </label>
+                    <TextValidator
+                      variant="outlined"
+                      validators={formData.isRLAPActive ? ["required"] : ""}
+                      errorMessages={
+                        formData.isRLAPActive
+                          ? ["Please enter  Reference ID"]
+                          : ""
+                      }
+                      fullWidth
+                      id="rlapUserReferenceId"
+                      disabled={!formData.isRLAPActive}
+                      placeholder="Enter Reference ID "
+                      name="rlapUserReferenceId"
+                      onChange={handleChange}
+                      value={formData.rlapUserReferenceId}
+                      className="global-input"
+                      InputLabelProps={{ shrink: false }}
+                    />
+                  </Grid> : ""}
 
                   {/* <Grid item xs={4}>
                     <label
