@@ -213,7 +213,7 @@ function GeoFencingBreaches(props) {
     },
     {
       name: "applicationUserId",
-      label: "User Id",
+      label: "User ID",
       options: {
         sort: true,
         filter: false,

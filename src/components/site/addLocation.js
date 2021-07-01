@@ -570,10 +570,11 @@ function AddLocation(props) {
                   <Grid item xs={12}>
                     <label className={classes.DefineDensitySpan}>
                       Define Density Threshold:
-                    </label>{" "}
+                    </label>
                     <TooltipComponent
                       isMarginBottom={true}
-                      tooltipMessage={`ID will be used for technical implementation, to fetch the floor specific data from RLAP platform.`}
+                      tooltipMessage={`Density Threshold will be  used in the "Density Information" report to show live density of a location using color codes: Green -Low, Amber- Medium , Red-High
+                      Edited.`}
                     ></TooltipComponent>
                   </Grid>
                 </Grid>
