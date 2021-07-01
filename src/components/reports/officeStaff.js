@@ -613,7 +613,6 @@ function OfficeStaff(props) {
                           shrink={false}
                           className="select-label"
                         ></InputLabel>
-
                         <Select
                           labelId="demo-simple-select-outlined-label"
                           id="demo-simple-select-outlined"
@@ -621,7 +620,11 @@ function OfficeStaff(props) {
                           required
                           value={searchForm.frequency}
                           onChange={handleChange}
-                          className="global-input single-select"
+                          className="global-input single-select adorment-select"
+                          startAdornment={<InputAdornment position="start">
+                            Every
+                          </InputAdornment>}
+                          endAdornment={<InputAdornment position="end">Hour</InputAdornment>}
                         >
                           {frequencyJSON.map((data) => {
                             return (

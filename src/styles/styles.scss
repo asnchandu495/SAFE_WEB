@@ -1554,3 +1554,9 @@ label.required {
     cursor: not-allowed !important;
   }
 }
+
+.adorment-select{
+  .MuiSelect-icon{
+    right: 50px;
+  }
+}

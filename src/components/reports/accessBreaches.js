@@ -649,7 +649,6 @@ function AccessBreaches(props) {
                           "aria-label": "change date",
                         }}
                         required
-                        minDateMessage='Select max 1 month duration'
                       />
                     </Grid>
                   </Grid>
