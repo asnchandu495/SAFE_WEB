@@ -353,6 +353,8 @@ function CustomizedDialogs(props) {
           props.setToasterMessage("Notified");
           props.settoasterServerity("success");
           props.setOpenConfirmationModal(false);
+          props.setSelectedUsersForCovidState([]);
+          props.setRowsSelected([]);
           setshowLoadder(false);
         })
         .catch((error) => {

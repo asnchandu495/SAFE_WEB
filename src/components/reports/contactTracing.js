@@ -900,6 +900,8 @@ function ContactTracing(props) {
         SelectedRowDetails={SelectedRowDetails}
         selectedUsersForCovidState={selectedUsersForCovidState}
         searchUserId={searchForm.userId ? searchForm.userId.id : ""}
+        setSelectedUsersForCovidState={setSelectedUsersForCovidState}
+        setRowsSelected={setRowsSelected}
       />
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}
