@@ -319,7 +319,7 @@ function AddFloor(props) {
                       RLAP Active
                     </label>
                     <TooltipComponent
-                      isMarginBottom={false}
+                      isMarginBottom={true}
                       tooltipMessage={`Indicates if user's real time location tracking  is implemented for any of locations in the floorIdicates if user's real time location tracking  is implemented  in the  Site.`}
                     ></TooltipComponent>
                   </Grid>

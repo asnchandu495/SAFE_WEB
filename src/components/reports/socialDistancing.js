@@ -182,7 +182,12 @@ function SocailDistancing(props) {
         userApiCall
           .ListApplicationUsers(loggedinUserDetails.id)
           .then((getUsers) => {
-            let allOption = { id: 'all', firstName: "All Users", lastName: "", userId: "" };
+            let allOption = {
+              id: "all",
+              firstName: "All Users",
+              lastName: "",
+              userId: "",
+            };
             getUsers.unshift(allOption);
             setApplicationUsers(getUsers);
             setComponentLoadder(false);
@@ -282,22 +287,22 @@ function SocailDistancing(props) {
                 <TableBody>
                   {rowData[3]
                     ? rowData[3].map((row) => (
-                      <TableRow key={row.location}>
-                        <TableCell>{row.location}</TableCell>
-                        <TableCell>
-                          {/* {moment(row.createdDate).format(
+                        <TableRow key={row.location}>
+                          <TableCell>{row.location}</TableCell>
+                          <TableCell>
+                            {/* {moment(row.createdDate).format(
                               "DD/MM/yyyy hh:mm a"
                             )} */}
-                          {moment(row.createdDate).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.dateFormat +
-                              "  " +
-                              props.loadGlobalSettingsData.timeFormat
-                              : "hh:mm"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
+                            {moment(row.createdDate).format(
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.dateFormat +
+                                    "  " +
+                                    props.loadGlobalSettingsData.timeFormat
+                                : "hh:mm"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -350,7 +355,7 @@ function SocailDistancing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -529,7 +534,7 @@ function SocailDistancing(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">From</label>
+                      <label className="required">From</label>
                       <TooltipComponent
                         isMarginBottom={true}
                         tooltipMessage={`This report is available for a maximum period of 6 months .`}
@@ -564,7 +569,7 @@ function SocailDistancing(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">To</label>
+                      <label className="required">To</label>
                       <TooltipComponent
                         isMarginBottom={true}
                         tooltipMessage={`This report is available for a maximum period of 6 months .`}

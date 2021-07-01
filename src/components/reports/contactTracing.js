@@ -295,7 +295,7 @@ function ContactTracing(props) {
 
   const options = {
     filter: false,
-    onFilterChange: (changedColumn, filterList) => { },
+    onFilterChange: (changedColumn, filterList) => {},
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
@@ -306,7 +306,11 @@ function ContactTracing(props) {
     jumpToPage: true,
     textLabels: {
       body: {
-        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
+        noMatch: `${
+          isFilterSelected
+            ? "There are no reports"
+            : "Please select filters to generate report"
+        }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -367,7 +371,7 @@ function ContactTracing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -636,7 +640,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                        BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
@@ -692,7 +696,7 @@ function ContactTracing(props) {
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Data Source</label>
+                      <label className="required">Data Source</label>
                     </Grid>
                     <Grid item xs={8}>
                       <RadioGroup
@@ -717,7 +721,7 @@ function ContactTracing(props) {
                   </Grid>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">User</label>
+                      <label className="required">User</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -765,7 +769,7 @@ function ContactTracing(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">From</label>
+                      <label className="required">From</label>
                       <TooltipComponent
                         isMarginBottom={true}
                         tooltipMessage={`This report is available for a maximum period of 6 months .`}
@@ -800,7 +804,7 @@ function ContactTracing(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">To</label>
+                      <label className="required">To</label>
 
                       <TooltipComponent
                         isMarginBottom={true}

@@ -34,6 +34,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import ReplayIcon from "@material-ui/icons/Replay";
+import TooltipComponent from "../../common/tooltip";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -551,6 +552,10 @@ function AssignedFAQs(props) {
             onClose={handleCloseAssignFaq}
           >
             Assign FAQ Doc To Group
+            <TooltipComponent
+              isMarginBottom={true}
+              tooltipMessage={`FAQ  assigned to a user group in "Active" state will be available for users for whom the selected user group is primary user group. Only One FAQ can be assigned in active state to a user group.`}
+            ></TooltipComponent>
           </DialogTitle>
           <DialogContent dividers>
             <Grid container spacing={3}>

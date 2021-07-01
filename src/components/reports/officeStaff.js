@@ -168,7 +168,8 @@ function OfficeStaff(props) {
   const [selectedTeamDataOld, setselectedTeamDataOld] = useState([]);
   const [frequencyJSON, setFrequencyJson] = useState([
     {
-      id: "1", value: "1",
+      id: "1",
+      value: "1",
     },
     { id: 2, value: "2" },
     { id: 3, value: "3" },
@@ -298,7 +299,11 @@ function OfficeStaff(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
+        noMatch: `${
+          isFilterSelected
+            ? "There are no reports"
+            : "Please select filters to generate report"
+        }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -336,7 +341,7 @@ function OfficeStaff(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -569,7 +574,7 @@ function OfficeStaff(props) {
 
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Date</label>
+                      <label className="required">Date</label>
                       <TooltipComponent
                         isMarginBottom={true}
                         tooltipMessage={`This report is available for a maximum period of 6 months .`}
@@ -604,7 +609,7 @@ function OfficeStaff(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Frequency</label>
+                      <label className="required">Frequency</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -621,10 +626,14 @@ function OfficeStaff(props) {
                           value={searchForm.frequency}
                           onChange={handleChange}
                           className="global-input single-select adorment-select"
-                          startAdornment={<InputAdornment position="start">
-                            Every
-                          </InputAdornment>}
-                          endAdornment={<InputAdornment position="end">Hour</InputAdornment>}
+                          startAdornment={
+                            <InputAdornment position="start">
+                              Every
+                            </InputAdornment>
+                          }
+                          endAdornment={
+                            <InputAdornment position="end">Hour</InputAdornment>
+                          }
                         >
                           {frequencyJSON.map((data) => {
                             return (

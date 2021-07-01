@@ -231,7 +231,7 @@ function AddDesignation(props) {
                   <Grid item xs={3}>
                     <label className="required">Attendance Grace Time</label>
                     <TooltipComponent
-                      isMarginBottom={false}
+                      isMarginBottom={true}
                       tooltipMessage={`If there is no Check In by user  within the Grace Time(Considered from user's shift  start time") ,  user to be reminded to Check In, if  notification configured for the event.`}
                     ></TooltipComponent>
                   </Grid>

@@ -268,24 +268,24 @@ function AccessBreaches(props) {
                 <TableBody>
                   {rowData[2]
                     ? rowData[2].map((row) => (
-                      <TableRow key={row.userId}>
-                        <TableCell>{row.userName}</TableCell>
-                        <TableCell>{row.userId}</TableCell>
-                        <TableCell>{row.emailId}</TableCell>
-                        <TableCell>
-                          {/* {moment(row.createdDate).format(
+                        <TableRow key={row.userId}>
+                          <TableCell>{row.userName}</TableCell>
+                          <TableCell>{row.userId}</TableCell>
+                          <TableCell>{row.emailId}</TableCell>
+                          <TableCell>
+                            {/* {moment(row.createdDate).format(
                               "DD-MM-YYYY hh:mm:ss a"
                             )} */}
-                          {moment(row.createdDate).format(
-                            props.loadGlobalSettingsData
-                              ? props.loadGlobalSettingsData.dateFormat +
-                              "  " +
-                              props.loadGlobalSettingsData.timeFormat
-                              : "hh:mm"
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))
+                            {moment(row.createdDate).format(
+                              props.loadGlobalSettingsData
+                                ? props.loadGlobalSettingsData.dateFormat +
+                                    "  " +
+                                    props.loadGlobalSettingsData.timeFormat
+                                : "hh:mm"
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : []}
                 </TableBody>
               </Table>
@@ -301,13 +301,17 @@ function AccessBreaches(props) {
 
     textLabels: {
       body: {
-        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
+        noMatch: `${
+          isFilterSelected
+            ? "There are no reports"
+            : "Please select filters to generate report"
+        }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -586,7 +590,7 @@ function AccessBreaches(props) {
 
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">From</label>
+                      <label className="required">From</label>
                       <TooltipComponent
                         isMarginBottom={true}
                         tooltipMessage={`This report is available for a maximum period of 6 months .`}
@@ -621,7 +625,7 @@ function AccessBreaches(props) {
 
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">To</label>
+                      <label className="required">To</label>
                       <TooltipComponent
                         isMarginBottom={true}
                         tooltipMessage={`This report is available for a maximum period of 6 months .`}
