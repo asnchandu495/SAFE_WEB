@@ -522,7 +522,7 @@ function ContactTracing(props) {
   });
 
   const handleClickOpenConfirmationModal = (value) => {
-    var user = value[2];
+    var user = value[0];
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("alertreport");
@@ -821,7 +821,6 @@ function ContactTracing(props) {
                           "aria-label": "change date",
                         }}
                         required
-                        minDateMessage="Select max 1 month duration"
                       />
                     </Grid>
                   </Grid>

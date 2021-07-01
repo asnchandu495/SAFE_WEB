@@ -183,6 +183,8 @@ function GeoFencingBreaches(props) {
         userApiCall
           .ListApplicationUsers(loggedinUserDetails.id)
           .then((getUsers) => {
+            let allOption = { id: 'all', firstName: "All Users", lastName: "", userId: "" };
+            getUsers.unshift(allOption);
             setApplicationUsers(getUsers);
             setComponentLoadder(false);
           })
@@ -197,11 +199,10 @@ function GeoFencingBreaches(props) {
 
   const columns = [
     {
-      name: "id",
+      name: "applicationUserId",
       label: "Id",
       options: {
-        display: "excluded",
-        print: false,
+        sort: true,
         filter: false,
       },
     },
@@ -589,7 +590,6 @@ function GeoFencingBreaches(props) {
                           "aria-label": "change date",
                         }}
                         required
-                        minDateMessage='Select max 1 month duration'
                       />
                     </Grid>
                   </Grid>

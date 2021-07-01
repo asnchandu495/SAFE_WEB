@@ -182,6 +182,8 @@ function SocailDistancing(props) {
         userApiCall
           .ListApplicationUsers(loggedinUserDetails.id)
           .then((getUsers) => {
+            let allOption = { id: 'all', firstName: "All Users", lastName: "", userId: "" };
+            getUsers.unshift(allOption);
             setApplicationUsers(getUsers);
             setComponentLoadder(false);
           })
@@ -196,12 +198,11 @@ function SocailDistancing(props) {
 
   const columns = [
     {
-      name: "id",
-      label: "Id",
+      name: "userName",
+      label: "User name",
       options: {
-        display: "excluded",
-        print: false,
         filter: false,
+        sort: true,
       },
     },
     {
@@ -591,7 +592,6 @@ function SocailDistancing(props) {
                           "aria-label": "change date",
                         }}
                         required
-                        minDateMessage='Select max 1 month duration'
                       />
                     </Grid>
                   </Grid>
