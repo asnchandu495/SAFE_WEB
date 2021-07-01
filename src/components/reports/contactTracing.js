@@ -684,7 +684,7 @@ function ContactTracing(props) {
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">Data Source</label>
+                      <label className="required">Data Source</label>
                     </Grid>
                     <Grid item xs={8}>
                       <RadioGroup
@@ -709,7 +709,7 @@ function ContactTracing(props) {
                   </Grid>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="">User</label>
+                      <label className="required">User</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -757,7 +757,7 @@ function ContactTracing(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">From</label>
+                      <label className="required">From</label>
                       <TooltipComponent
                         isMarginBottom={true}
                         tooltipMessage={`This report is available for a maximum period of 6 months .`}
@@ -792,7 +792,7 @@ function ContactTracing(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="">To</label>
+                      <label className="required">To</label>
 
                       <TooltipComponent
                         isMarginBottom={true}
