@@ -199,19 +199,19 @@ function GeoFencingBreaches(props) {
 
   const columns = [
     {
-      name: "applicationUserId",
-      label: "Id",
-      options: {
-        sort: true,
-        filter: false,
-      },
-    },
-    {
-      label: "Name",
+      label: "User Name",
       name: "userName",
       options: {
         filter: false,
         sort: true,
+      },
+    },
+    {
+      name: "applicationUserId",
+      label: "User Id",
+      options: {
+        sort: true,
+        filter: false,
       },
     },
     {
