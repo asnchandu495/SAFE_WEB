@@ -273,10 +273,14 @@ function Users(props) {
           setBusinessCovidStateData(getCovidState);
           setglobalData(getLoadGlobalSetting);
           setUserData(props.UserData);
-          // let usersACM = props.acmData.find(acm => {
-          //   return acm.module == 'user';
-          // });
-          // setModulePermission(usersACM.permissions);
+          let usersACM = props.acmData.find((acm) => {
+            return acm.module == "user";
+          });
+          console.log(usersACM.permissions);
+          const updateInfo = usersACM.permissions.find(ua => ua.entity == 'update');
+          const updateShiftInfo = usersACM.permissions.find(ua => ua.entity == "updateUserShift");
+          const updateCovidInfo = usersACM.permissions.find(ua => ua.entity == "updateUserCovidState");
+          const updateTemperatureInfo = usersACM.permissions.find(ua => ua.entity == "updateUserTemp");
           setcomponentLoadder(false);
         }
       )
@@ -744,7 +748,7 @@ function Users(props) {
                   anchorRef={anchorRef}
                   openMoreMenu={openMoreMenu}
                 ></LoadActions>
-                <Tooltip title="More">
+                {updateInfo.isAccess || updateShiftInfo.isAccess || updateCovidInfo.isAccess || updateTemperatureInfo.isAccess ? <Tooltip title="More">
                   <Button
                     variant="contained"
                     color="default"
@@ -755,7 +759,8 @@ function Users(props) {
                     aria-haspopup="true"
                     onClick={(e) => handleToggleMoreMenu(thisRowData, e)}
                   ></Button>
-                </Tooltip>
+                </Tooltip> : ""}
+
               </div>
             );
           }
