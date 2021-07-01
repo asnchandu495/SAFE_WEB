@@ -243,54 +243,60 @@ function OrderofExecution(props) {
                   <ReactDragListView {...dragProps}>
                     {selectedSurveyQuestions.map((ques, index = index + 1) => {
                       return (
-                        <ListItem
-                          alignItems="flex-start"
-                          key={index}
-                          className={
-                            ques.hasConditionalOrder
-                              ? "conditional-order-li queslist"
-                              : "queslist"
-                          }
-                        >
-                          <Grid
-                            item
-                            xs={12}
-                            className="question-container-full"
-                          >
-                            <Avatar>{ques.order}</Avatar>
-                            <p className="question-name">{ques.question}</p>
-                            {ques.hasConditionalOrder ? (
-                              <Avatar
-                                className="viewlist"
-                                onClick={() => showDIveList(index, ques)}
-                              >
-                                <VisibilityIcon></VisibilityIcon>
-                              </Avatar>
-                            ) : (
-                              ""
-                            )}
-                          </Grid>
-                          {displayListDiv == `dis${index}` ? (
-                            <Grid
-                              item
-                              xs={12}
-                              className="question-container-full sublist"
-                            >
-                              {selectedParentQuestions &&
-                              selectedParentQuestions.length > 0
-                                ? selectedParentQuestions.map((q, i) => {
-                                    return (
-                                      <p>
-                                        {i + 1} ) {q.question}
-                                      </p>
-                                    );
-                                  })
-                                : ""}
-                            </Grid>
-                          ) : (
+                        <>
+                          {ques.isEndQuestion ? (
                             ""
+                          ) : (
+                            <ListItem
+                              alignItems="flex-start"
+                              key={index}
+                              className={
+                                ques.hasConditionalOrder
+                                  ? "conditional-order-li queslist"
+                                  : "queslist"
+                              }
+                            >
+                              <Grid
+                                item
+                                xs={12}
+                                className="question-container-full"
+                              >
+                                <Avatar>{ques.order}</Avatar>
+                                <p className="question-name">{ques.question}</p>
+                                {ques.hasConditionalOrder ? (
+                                  <Avatar
+                                    className="viewlist"
+                                    onClick={() => showDIveList(index, ques)}
+                                  >
+                                    <VisibilityIcon></VisibilityIcon>
+                                  </Avatar>
+                                ) : (
+                                  ""
+                                )}
+                              </Grid>
+                              {displayListDiv == `dis${index}` ? (
+                                <Grid
+                                  item
+                                  xs={12}
+                                  className="question-container-full sublist"
+                                >
+                                  {selectedParentQuestions &&
+                                    selectedParentQuestions.length > 0
+                                    ? selectedParentQuestions.map((q, i) => {
+                                      return (
+                                        <p>
+                                          {i + 1} ) {q.question}
+                                        </p>
+                                      );
+                                    })
+                                    : ""}
+                                </Grid>
+                              ) : (
+                                ""
+                              )}
+                            </ListItem>
                           )}
-                        </ListItem>
+                        </>
                       );
                     })}
                   </ReactDragListView>
@@ -300,7 +306,7 @@ function OrderofExecution(props) {
 
             <Grid
               item
-              className={`global-form inline-form`}
+              className={`global-form inline-form close-container-order-execution`}
               xs={12}
               container
               direction="row"

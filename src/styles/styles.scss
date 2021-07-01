@@ -1225,6 +1225,7 @@ label.required {
 }
 
 .order-change {
+  height: auto !important;
   .MuiAvatar-root {
     background: var(--primary-26235d) 0% 0% no-repeat padding-box;
     height: 28px;
@@ -1569,4 +1570,10 @@ label.required {
   .MuiSelect-icon{
     right: 50px;
   }
+}
+
+.close-container-order-execution{
+  height: auto !important;
+  margin-top: 25px !important;
+  padding-right: 25px !important;
 }
