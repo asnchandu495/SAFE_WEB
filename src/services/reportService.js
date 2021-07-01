@@ -9,7 +9,7 @@ export default class ReportService {
 
   getSocialDistancingReport(getData) {
     return this.fetch(
-      `${this.baseURL}/ApplicationUser/GetAllSocialDistancingBreaches?FromDate=${getData.startDate}&ToDate=${getData.endDate}${getData.userId.id != "all" ? '&UserId' + getData.userId.userId : ''}`,
+      `${this.baseURL}/ApplicationUser/GetAllSocialDistancingBreaches?FromDate=${getData.startDate}&ToDate=${getData.endDate}${getData.userId.id != "all" ? '&UserId=' + getData.userId.userId : ''}`,
       {
         method: "GET",
       }
@@ -20,7 +20,7 @@ export default class ReportService {
 
   getGeoFencingReport(getData) {
     return this.fetch(
-      `${this.baseURL}/ApplicationUserGeoBreach/GetAllGeoBreach?FromDate=${getData.startDate}&ToDate=${getData.endDate}${getData.userId.id != "all" ? '&UserId' + getData.userId.userId : ''}`,
+      `${this.baseURL}/ApplicationUserGeoBreach/GetAllGeoBreach?FromDate=${getData.startDate}&ToDate=${getData.endDate}${getData.userId.id != "all" ? '&UserId=' + getData.userId.userId : ''}`,
       {
         method: "GET",
       }
@@ -92,7 +92,7 @@ export default class ReportService {
   notifyContactTracingBLE(getData) {
     var finalData = JSON.stringify(getData);
     return this.fetch(
-      `${this.baseURL}/ApplicationUser/SendAlertToContact`,
+      `${this.baseURL}/ApplicationUser/AlertToContactList`,
       {
         method: "POST",
         body: finalData,

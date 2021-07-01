@@ -1468,7 +1468,17 @@ label.required {
         line-height: 1;
       }
       li.high::before {
-        background: red;
+        background: #ff0000;
+        content: ".";
+        display: inline-block;
+        height: 15px;
+        margin: 0 5px 0 0;
+        text-indent: -10000px;
+        width: 15px;
+        line-height: 1;
+      }
+      li.nodata::before {
+        background: #c5c7c5;
         content: ".";
         display: inline-block;
         height: 15px;

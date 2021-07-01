@@ -313,6 +313,7 @@ function LocationDensity(props) {
             <li className="low">Low</li>
             <li className="medium">Medium</li>
             <li className="high">High</li>
+            <li className="nodata">RLAP Inactive</li>
             <li>
               {reportTime != "" ? (
                 <>
