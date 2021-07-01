@@ -284,7 +284,7 @@ function ContactTracing(props) {
 
   const options = {
     filter: false,
-    onFilterChange: (changedColumn, filterList) => { },
+    onFilterChange: (changedColumn, filterList) => {},
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
@@ -295,7 +295,11 @@ function ContactTracing(props) {
     jumpToPage: true,
     textLabels: {
       body: {
-        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
+        noMatch: `${
+          isFilterSelected
+            ? "There are no reports"
+            : "Please select filters to generate report"
+        }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -356,7 +360,7 @@ function ContactTracing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -618,7 +622,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                        BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
@@ -817,7 +821,7 @@ function ContactTracing(props) {
                           "aria-label": "change date",
                         }}
                         required
-                        minDateMessage='Select max 1 month duration'
+                        minDateMessage="Select max 1 month duration"
                       />
                     </Grid>
                   </Grid>
