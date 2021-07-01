@@ -291,7 +291,7 @@ function ViewUser(props) {
               </Grid>
               <Grid item xs={6} container>
                 <Grid item xs={4} className="user-view-label">
-                  <label>Alternative Mobile Number </label>
+                  <label>Alternate Mobile Number </label>
                   <span>:</span>
                 </Grid>
                 <Grid item xs={8}>

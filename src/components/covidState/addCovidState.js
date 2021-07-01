@@ -96,7 +96,7 @@ function CreateCovidState(props) {
     }
     props
       .LoadData()
-      .then((result) => {})
+      .then((result) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -392,15 +392,15 @@ function CreateCovidState(props) {
                             <MenuItem value="">None</MenuItem>
                             {backgroundcolor.length > 0
                               ? backgroundcolor.map((value) => {
-                                  return (
-                                    <MenuItem
-                                      value={value.id}
-                                      key={value.colorName}
-                                    >
-                                      {value.colorName}
-                                    </MenuItem>
-                                  );
-                                })
+                                return (
+                                  <MenuItem
+                                    value={value.id}
+                                    key={value.colorName}
+                                  >
+                                    {value.colorName}
+                                  </MenuItem>
+                                );
+                              })
                               : ""}
                           </Select>
                         </FormControl>

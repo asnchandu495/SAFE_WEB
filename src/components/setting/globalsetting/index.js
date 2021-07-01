@@ -398,15 +398,15 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {toleranceUnits.length > 0
                         ? toleranceUnits.map((tol) => {
-                            return (
-                              <MenuItem
-                                key={`factol_${tol.geoFencingToleranceUnit}`}
-                                value={tol.geoFencingToleranceUnit}
-                              >
-                                {tol.geoFencingToleranceUnit}
-                              </MenuItem>
-                            );
-                          })
+                          return (
+                            <MenuItem
+                              key={`factol_${tol.geoFencingToleranceUnit}`}
+                              value={tol.geoFencingToleranceUnit}
+                            >
+                              {tol.geoFencingToleranceUnit}
+                            </MenuItem>
+                          );
+                        })
                         : ""}
                     </Select>
                   </FormControl>
@@ -428,7 +428,7 @@ function GlobalSetting(props) {
               >
                 <Grid item xs={3}>
                   <label className="required">
-                    Frequencey To Fetch The Geo Coordinates:Once In Every
+                    Frequencey To Fetch The Geo Coordinates : Once In Every
                   </label>
                   <TooltipComponent
                     isMarginBottom={false}
@@ -562,15 +562,15 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {toleranceUnits.length > 0
                         ? toleranceUnits.map((tol) => {
-                            return (
-                              <MenuItem
-                                key={`soctol_${tol.geoFencingToleranceUnit}`}
-                                value={tol.geoFencingToleranceUnit}
-                              >
-                                {tol.geoFencingToleranceUnit}
-                              </MenuItem>
-                            );
-                          })
+                          return (
+                            <MenuItem
+                              key={`soctol_${tol.geoFencingToleranceUnit}`}
+                              value={tol.geoFencingToleranceUnit}
+                            >
+                              {tol.geoFencingToleranceUnit}
+                            </MenuItem>
+                          );
+                        })
                         : ""}
                     </Select>
                   </FormControl>
@@ -656,15 +656,15 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {datesFormat.length > 0
                         ? datesFormat.map((datevalue) => {
-                            return (
-                              <MenuItem
-                                key={datevalue.id}
-                                value={datevalue.formatvalue}
-                              >
-                                {datevalue.formatvalue}
-                              </MenuItem>
-                            );
-                          })
+                          return (
+                            <MenuItem
+                              key={datevalue.id}
+                              value={datevalue.formatvalue}
+                            >
+                              {datevalue.formatvalue}
+                            </MenuItem>
+                          );
+                        })
                         : ""}
                     </Select>
                   </FormControl>
@@ -711,12 +711,12 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {timesFormat.length > 0
                         ? timesFormat.map((timevalue) => {
-                            return (
-                              <MenuItem key={timevalue.id} value={timevalue.id}>
-                                {timevalue.value}
-                              </MenuItem>
-                            );
-                          })
+                          return (
+                            <MenuItem key={timevalue.id} value={timevalue.id}>
+                              {timevalue.value}
+                            </MenuItem>
+                          );
+                        })
                         : ""}
                     </Select>
                   </FormControl>
@@ -785,12 +785,12 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {fileFormat.length > 0
                         ? fileFormat.map((fol) => {
-                            return (
-                              <MenuItem key={fol.id} value={fol.format}>
-                                {fol.format}
-                              </MenuItem>
-                            );
-                          })
+                          return (
+                            <MenuItem key={fol.id} value={fol.format}>
+                              {fol.format}
+                            </MenuItem>
+                          );
+                        })
                         : ""}
                     </Select>
                   </FormControl>
@@ -1050,12 +1050,12 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {selfReminder.length > 0
                         ? selfReminder.map((tol) => {
-                            return (
-                              <MenuItem key={tol.id} value={tol.selfvalue}>
-                                {tol.selfvalue}
-                              </MenuItem>
-                            );
-                          })
+                          return (
+                            <MenuItem key={tol.id} value={tol.selfvalue}>
+                              {tol.selfvalue}
+                            </MenuItem>
+                          );
+                        })
                         : ""}
                     </Select>
                   </FormControl>

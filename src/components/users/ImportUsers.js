@@ -233,7 +233,7 @@ function ImportUsers(props) {
                     <div {...getRootProps({ className: classes.dropzone })}>
                       <input {...getInputProps()} />
                       <p className={classes.fileUploadParagraph}>
-                        Drag and Drop or Browse{" "}
+                        Drag and Drop OR Browse{" "}
                         {fileFormat ? fileFormat : "xls"} file to upload
                       </p>
                       <div className={`fileuploadcontainer`}>
