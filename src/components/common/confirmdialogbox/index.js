@@ -332,11 +332,19 @@ function CustomizedDialogs(props) {
           toasterErrorMessage(error);
         });
     } else if (props.ConfirmationModalActionType == "alertreport") {
-      console.log(props.SelectedRowDetails[2]);
-      setshowLoadder(true);
+      let contactUserIds = [];
+      if (props.selectedUsersForCovidState && props.selectedUsersForCovidState.length > 0) {
+        contactUserIds = props.selectedUsersForCovidState.map(function (item) {
+          return item['id'];
+        });
+      } else {
+        contactUserIds.push(props.SelectedRowDetails[2]);
+      }
       let data = {
-        userId: props.SelectedRowDetails[2],
+        "applicationUserId": props.searchUserId,
+        "contactUserIds": contactUserIds
       };
+      setshowLoadder(true);
 
       reportServiceCall
         .notifyContactTracingBLE(data)
@@ -777,7 +785,7 @@ CustomizedDialogs.propTypes = {
   DeleteDateQuestionData: PropTypes.func.isRequired,
   PublishFAQ: PropTypes.func.isRequired,
 };
-function mapStateToProps(state, ownProps) {}
+function mapStateToProps(state, ownProps) { }
 
 const mapDispatchToProps = {
   DeletEmergencyContactList: EmergencyContactAction.DeletEmergencyContactList,

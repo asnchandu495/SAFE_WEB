@@ -245,6 +245,17 @@ function ContactTracing(props) {
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
+                <Tooltip title="Change Covid State">
+                  <Button
+                    variant="contained"
+                    color="default"
+                    startIcon={<ChangeStatusIcon />}
+                    className={["edit-icon"].join(" ")}
+                    onClick={() =>
+                      handleClickOpenBulkModal(thisRowData)
+                    }
+                  ></Button>
+                </Tooltip>
                 <Tooltip title="Alert">
                   <Button
                     variant="contained"
@@ -370,7 +381,7 @@ function ContactTracing(props) {
           </Tooltip>
           {RowsSelected.length ? (
             <>
-              {/* <Tooltip title="Alert">
+              <Tooltip title="Alert">
                 <Button
                   variant="contained"
                   color="default"
@@ -380,7 +391,7 @@ function ContactTracing(props) {
                     handleClickOpenConfirmationModal(selectedUsersForCovidState)
                   }
                 ></Button>
-              </Tooltip> */}
+              </Tooltip>
               <Tooltip title="Change Covid State">
                 <Button
                   variant="contained"
@@ -518,13 +529,14 @@ function ContactTracing(props) {
   });
 
   const handleClickOpenConfirmationModal = (value) => {
-    var user = value[0];
+    let selecteduserDtails = applicationUsers.find(usr => usr.id == searchForm.userId.id);
+    // selectedUsersForCovidState
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("alertreport");
     setConfirmationHeaderTittle("Alert");
     setConfirmationDialogContextText(
-      `Alert! ${user} has been reported as Covid positive. As a precautionary step, please WFH for next 2 week. Contact your supervisor for more information.`
+      `Alert! ${selecteduserDtails.firstName} ${selecteduserDtails.lastName} has been reported as ${selecteduserDtails.covidStateDetails.stateName}. As a precautionary step, please WFH for next 2 week. Contact your supervisor for more information.`
     );
   };
 
@@ -533,7 +545,13 @@ function ContactTracing(props) {
     setChangeModalOpen(true);
   };
 
-  const handleClickOpenBulkModal = () => {
+  const handleClickOpenBulkModal = (thisRowData) => {
+    if (thisRowData) {
+      let finalUsers = [{ id: thisRowData[2] }];
+      let selecteduserDtails = applicationUsers.find(usr => usr.id == thisRowData[2]);
+      setcovidStatelist(selecteduserDtails.covidStateDetails);
+      setSelectedUsersForCovidState(finalUsers);
+    }
     setBulkModalOpen(true);
   };
 
@@ -643,20 +661,14 @@ function ContactTracing(props) {
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={resetFilterForm}
-              className="global-filter-reset-btn"
-            >
-              <ReplayIcon></ReplayIcon>
-            </Button>
-            <Button
               variant="contained"
               type="submit"
               className="global-submit-btn"
               disabled={showLoadder}
             >
-              {showLoadder ? <ButtonLoadderComponent /> : "Generate"}
+              {showLoadder ? <ButtonLoadderComponent /> : "Update"}
             </Button>
-            <Button onClick={handleClose} className="global-cancel-btn">
+            <Button onClick={handleClickCloseBulkModal} className="global-cancel-btn">
               Cancel
             </Button>
           </DialogActions>
@@ -886,6 +898,8 @@ function ContactTracing(props) {
         settoasterServerity={settoasterServerity}
         ConfirmationModalActionType={ConfirmationModalActionType}
         SelectedRowDetails={SelectedRowDetails}
+        selectedUsersForCovidState={selectedUsersForCovidState}
+        searchUserId={searchForm.userId ? searchForm.userId.id : ""}
       />
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}

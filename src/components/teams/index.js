@@ -310,14 +310,14 @@ function Teams(props) {
           } else {
             getValue = col;
           }
-          if (getValue.toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+          if (getValue && getValue.toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
             isFound = true;
           }
         }
       });
       return isFound;
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
   };
 
   return (
