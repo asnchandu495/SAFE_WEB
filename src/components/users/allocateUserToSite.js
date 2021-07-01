@@ -43,7 +43,7 @@ function AllocateUserToSite(props) {
 
   useEffect(() => {
     setcomponentLoadder(true);
-    setUserSelectedTeamValue(props.siteData);
+    setUserSelectedTeamValue(props.siteData[0]);
     Promise.all([masterDataCallApi.getSites()])
       .then(([getTeams]) => {
         setBusinessTeamMasterData(getTeams);
@@ -78,7 +78,7 @@ function AllocateUserToSite(props) {
   }
 
   function SelectSiteValidation() {
-    if (UserSelectedTeamValue.length > 0) {
+    if (UserSelectedTeamValue) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["site"]: false,
@@ -93,7 +93,7 @@ function AllocateUserToSite(props) {
 
   function UserSitesUpdate() {
     SelectSiteValidation();
-    if (UserSelectedTeamValue.length > 0) {
+    if (UserSelectedTeamValue) {
       UserSitesUpdateSubmit();
     } else {
       return false;
@@ -106,7 +106,7 @@ function AllocateUserToSite(props) {
     settoasterErrorMessageType("");
     var data = formData;
     data.applicationUserId = props.applicationUserId;
-    data.sites = UserSelectedTeamValue;
+    data.sites = [UserSelectedTeamValue];
     usersApiCall
       .UpdateSitesToUser(data)
       .then((result) => {
@@ -137,20 +137,15 @@ function AllocateUserToSite(props) {
               <Grid container spacing={3}>
                 <Grid item sm={9}>
                   <Autocomplete
-                    multiple
                     id="tags-outlined"
                     options={
                       BusinessTeamMasterData &&
-                      BusinessTeamMasterData.length > 0
+                        BusinessTeamMasterData.length > 0
                         ? BusinessTeamMasterData
                         : []
                     }
                     getOptionLabel={(option) => option.name}
-                    defaultValue={BusinessTeamMasterData.filter((site) => {
-                      return UserSelectedTeamValue.find((selectedSite) => {
-                        return selectedSite.id == site.id;
-                      });
-                    })}
+                    defaultValue={UserSelectedTeamValue}
                     onChange={handleChangeTeam}
                     filterSelectedOptions
                     className="global-input autocomplete-select"

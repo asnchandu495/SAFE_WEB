@@ -211,6 +211,10 @@ function Users(props) {
   const [currentPage, setCurrentPage] = useState(0);
   const [userData, setUserData] = useState([]);
   const [modulePermission, setModulePermission] = useState([]);
+  const [updateInfo, setUpdateInfo] = useState();
+  const [updateShiftInfo, setUpdateShiftInfo] = useState();
+  const [updateCovidInfo, setUpdateCovidInfo] = useState();
+  const [updateTemperatureInfo, setUpdateTemperatureInfo] = useState();
 
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
@@ -276,16 +280,14 @@ function Users(props) {
           let usersACM = props.acmData.find((acm) => {
             return acm.module == "user";
           });
-          console.log(usersACM.permissions);
-          const updateInfo = usersACM.permissions.find(ua => ua.entity == 'update');
-          const updateShiftInfo = usersACM.permissions.find(ua => ua.entity == "updateUserShift");
-          const updateCovidInfo = usersACM.permissions.find(ua => ua.entity == "updateUserCovidState");
-          const updateTemperatureInfo = usersACM.permissions.find(ua => ua.entity == "updateUserTemp");
+          setUpdateInfo(usersACM.permissions.find(ua => ua.entity == 'update'));
+          setUpdateShiftInfo(usersACM.permissions.find(ua => ua.entity == "updateUserShift"));
+          setUpdateCovidInfo(usersACM.permissions.find(ua => ua.entity == "updateUserCovidState"));
+          setUpdateTemperatureInfo(usersACM.permissions.find(ua => ua.entity == "updateUserTemp"));
           setcomponentLoadder(false);
         }
       )
       .catch((err) => {
-        console.log(err);
       });
   }, [reloadPage]);
 
@@ -734,11 +736,7 @@ function Users(props) {
           let usersACM = props.acmData.find((acm) => {
             return acm.module == "user";
           });
-          console.log(usersACM.permissions);
-          let updateInfo = usersACM.permissions.find(ua => ua.entity == 'update');
-          let updateShiftInfo = usersACM.permissions.find(ua => ua.entity == "updateUserShift");
-          let updateCovidInfo = usersACM.permissions.find(ua => ua.entity == "updateUserCovidState");
-          let updateTemperatureInfo = usersACM.permissions.find(ua => ua.entity == "updateUserTemp");
+
           if (thisRowData) {
             return (
               <div className={`action-buttons-container`}>
@@ -748,7 +746,7 @@ function Users(props) {
                   anchorRef={anchorRef}
                   openMoreMenu={openMoreMenu}
                 ></LoadActions>
-                {updateInfo.isAccess || updateShiftInfo.isAccess || updateCovidInfo.isAccess || updateTemperatureInfo.isAccess ? <Tooltip title="More">
+                {updateInfo && updateInfo.isAccess || updateShiftInfo && updateShiftInfo.isAccess || updateCovidInfo && updateCovidInfo.isAccess || updateTemperatureInfo && updateTemperatureInfo.isAccess ? <Tooltip title="More">
                   <Button
                     variant="contained"
                     color="default"
@@ -1184,18 +1182,18 @@ function Users(props) {
             <Paper className="user-list-more-options">
               <ClickAwayListener onClickAway={handleCloseMoreMenu}>
                 <MenuList id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                  <MenuItem onClick={handleClickUpdateUserDetails}>
+                  {updateInfo && updateInfo.isAccess ? <MenuItem onClick={handleClickUpdateUserDetails}>
                     Update Other Details
-                  </MenuItem>
-                  <MenuItem onClick={handleClickOpenCovidStateInfoModal}>
+                  </MenuItem> : ""}
+                  {updateCovidInfo && updateCovidInfo.isAccess ? <MenuItem onClick={handleClickOpenCovidStateInfoModal}>
                     Update Covid State
-                  </MenuItem>
-                  <MenuItem onClick={handleClickOpenUserTempInfoModal}>
+                  </MenuItem> : ""}
+                  {updateTemperatureInfo && updateTemperatureInfo.isAccess ? <MenuItem onClick={handleClickOpenUserTempInfoModal}>
                     Update Temperature
-                  </MenuItem>
-                  <MenuItem onClick={handleClickOpenShiftInfoModal}>
+                  </MenuItem> : ""}
+                  {updateShiftInfo && updateShiftInfo.isAccess ? <MenuItem onClick={handleClickOpenShiftInfoModal}>
                     Update Shift Info
-                  </MenuItem>
+                  </MenuItem> : ""}
                 </MenuList>
               </ClickAwayListener>
             </Paper>

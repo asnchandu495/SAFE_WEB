@@ -196,10 +196,10 @@ function CreateUser(props) {
     if (userId) {
       usersApiCall.GetApplicationUsersById(userId).then((userData) => {
         SetformData(userData);
-        setUserSelectedTeamValue(userData.applicationUserToTeamMapping);
+        setUserSelectedTeamValue(userData.applicationUserToTeamMapping[0]);
         setUserSelectedDesignationValue(userData.designation);
         setUserSelectedRoleValue(userData.applicationUserToRole);
-        setUserSelectSiteValue(userData.applicationUserToSite);
+        setUserSelectSiteValue(userData.applicationUserToSite[0]);
         setUserSelectedPrimaryGroupValue(userData.group);
         setUserSelectedSecondaryGroupValue(
           userData.applicationUserToSecondaryGroup
@@ -281,12 +281,12 @@ function CreateUser(props) {
       if (
         formData.gender &&
         UserSelectedRoleValue.length > 0 &&
-        UserSelectedTeamValue.length > 0 &&
+        UserSelectedTeamValue &&
         UserSelectedPrimaryGroupValue &&
         UserSelectedDesignationValue &&
         UserSelectSupervisorData &&
         UserSelectCountry &&
-        UserSelectSiteValue.length > 0
+        UserSelectSiteValue
       ) {
         SubmitUserForm();
       } else {
@@ -306,11 +306,6 @@ function CreateUser(props) {
         id: UserSelectedDesignationValue.id,
         name: UserSelectedDesignationValue.name,
       };
-      // formData.zipCode = parseInt(formData.zipCode);
-      console.log(UserSelectedDesignationValue);
-      console.log(formData);
-      // data.supervisor = UserSelectSupervisorData;
-      // data.supervisorId = UserSelectSupervisorData.id;
       props
         .UpdateUser(formData)
         .then((result) => {
@@ -332,13 +327,12 @@ function CreateUser(props) {
       data.group = UserSelectedPrimaryGroupValue;
       data.applicationUserToSecondaryGroup = UserSelectedSecondaryGroupValue;
       data.country = UserSelectCountry;
-      data.applicationUserToSite = UserSelectSiteValue;
-      data.applicationUserToTeamMapping = UserSelectedTeamValue;
+      data.applicationUserToSite = [UserSelectSiteValue];
+      data.applicationUserToTeamMapping = [UserSelectedTeamValue];
       data.designation = UserSelectedDesignationValue;
-      // data.zipCode = parseInt(data.zipCode);
       data.supervisor = UserSelectSupervisorData;
       data.supervisorId = UserSelectSupervisorData.applicationUserId;
-
+      console.log(data);
       props
         .AddUser(data)
         .then((result) => {
@@ -403,7 +397,7 @@ function CreateUser(props) {
   }
 
   function SelectTeamValidation() {
-    if (UserSelectedTeamValue.length > 0) {
+    if (UserSelectedTeamValue) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["Team"]: false,
@@ -459,7 +453,7 @@ function CreateUser(props) {
   }
 
   function SelectUserSiteValidation() {
-    if (UserSelectSiteValue.length > 0) {
+    if (UserSelectSiteValue) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["site"]: false,
@@ -476,6 +470,7 @@ function CreateUser(props) {
     setisAlertBoxOpened(true);
     setUserSelectedTeamValue(value);
   }
+
   function userSelectSite(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectSiteValue(value);
@@ -878,7 +873,7 @@ function CreateUser(props) {
                       Teams
                     </label>
                     <Autocomplete
-                      multiple
+
                       id="tags-outlined"
                       options={
                         BusinessTeamMasterData &&
@@ -1022,7 +1017,7 @@ function CreateUser(props) {
                       Sites
                     </label>
                     <Autocomplete
-                      multiple
+
                       id="tags-outlined"
                       options={
                         SiteMasterData && SiteMasterData.length > 0
@@ -1202,7 +1197,7 @@ function CreateUser(props) {
                     </label>
                   </Grid>
 
-                  <Grid item xs={4}>
+                  {/* <Grid item xs={4}>
                     <label
                       className={`input-label ${formData.isRLAPActive ? "required" : ""
                         }`}
@@ -1227,7 +1222,7 @@ function CreateUser(props) {
                       className="global-input"
                       InputLabelProps={{ shrink: false }}
                     />
-                  </Grid>
+                  </Grid> */}
 
                   <Grid container>
                     <Grid item xs={12} className={`inner-table-buttons`}>

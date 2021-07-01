@@ -42,7 +42,7 @@ function AllocateUserToTeam(props) {
   const [resetComponent, setResetComponent] = useState("NO");
   useEffect(() => {
     setcomponentLoadder(true);
-    setUserSelectedTeamValue(props.siteTeamData);
+    setUserSelectedTeamValue(props.siteTeamData[0]);
     Promise.all([masterDataCallApi.getTeams()])
       .then(([getTeams]) => {
         setBusinessTeamMasterData(getTeams);
@@ -71,7 +71,7 @@ function AllocateUserToTeam(props) {
   }
 
   function SelectTeamValidation() {
-    if (UserSelectedTeamValue.length > 0) {
+    if (UserSelectedTeamValue) {
       setformFieldValidation((ValidationForm) => ({
         ...ValidationForm,
         ["team"]: false,
@@ -93,7 +93,7 @@ function AllocateUserToTeam(props) {
   // }
   function UserTeamUpdate() {
     SelectTeamValidation();
-    if (UserSelectedTeamValue.length > 0) {
+    if (UserSelectedTeamValue) {
       UserTeamUpdateSubmit();
     } else {
       return false;
@@ -106,7 +106,7 @@ function AllocateUserToTeam(props) {
     settoasterErrorMessageType("");
     var data = formData;
     data.applicationUserId = props.applicationUserId;
-    data.applicationUserToTeamMapping = UserSelectedTeamValue;
+    data.applicationUserToTeamMapping = [UserSelectedTeamValue];
     usersApiCall
       .UpdateApplicationUserTeam(data)
       .then((result) => {
@@ -142,20 +142,15 @@ function AllocateUserToTeam(props) {
               <Grid container spacing={3}>
                 <Grid item sm={9}>
                   <Autocomplete
-                    multiple
                     id="tags-outlined"
                     options={
                       BusinessTeamMasterData &&
-                      BusinessTeamMasterData.length > 0
+                        BusinessTeamMasterData.length > 0
                         ? BusinessTeamMasterData
                         : []
                     }
                     getOptionLabel={(option) => option.name}
-                    defaultValue={BusinessTeamMasterData.filter((team) => {
-                      return UserSelectedTeamValue.find((selectedTeam) => {
-                        return selectedTeam.id == team.id;
-                      });
-                    })}
+                    defaultValue={UserSelectedTeamValue}
                     onChange={handleChangeTeam}
                     filterSelectedOptions
                     className="global-input autocomplete-select"
