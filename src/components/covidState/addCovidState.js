@@ -362,7 +362,7 @@ function CreateCovidState(props) {
                     </Grid>
                     <Grid item container xs={12}>
                       <Grid item xs={3}>
-                        <label>Backround Colour Of Message</label>
+                        <label>Background Color Of Message</label>
                         <TooltipComponent
                           isMarginBottom={true}
                           tooltipMessage={`Green: Indicates indicates  safe state

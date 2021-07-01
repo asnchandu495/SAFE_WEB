@@ -176,7 +176,7 @@ function ViewWorkflow(props) {
                     </Grid>
                     <Grid item container xs={12}>
                       <Grid item xs={3}>
-                        <label>COVID state from</label>
+                        <label>COVID State From</label>
                       </Grid>
                       <Grid item xs={5}>
                         <span>
@@ -186,7 +186,7 @@ function ViewWorkflow(props) {
                     </Grid>
                     <Grid item container xs={12}>
                       <Grid item xs={3}>
-                        <label> COVID state to</label>
+                        <label> COVID State To</label>
                       </Grid>
                       <Grid item xs={5}>
                         <span>
