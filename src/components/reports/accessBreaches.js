@@ -251,45 +251,88 @@ function AccessBreaches(props) {
     page: currentPage,
     expandableRowsHeader: false,
     renderExpandableRow: (rowData, rowMeta) => {
-      console.log(rowData);
+      const options = {
+        filter: false,
+        filterType: "dropdown",
+        responsive: "scroll",
+        fixedHeader: true,
+        rowsPerPageOptions: [5, 10, 15, 100],
+        rowsPerPage: 5,
+        jumpToPage: true,
+        page: 0,
+        print: false,
+        viewColumns: false,
+        download: false,
+        selectableRows: false,
+        textLabels: {
+          body: {
+            noMatch: "There are no breaches",
+          },
+          pagination: {
+            jumpToPage: "Go to page:",
+          },
+        },
+      };
+
+      const columns = [
+        {
+          name: "userName",
+          label: "User Name",
+          options: {
+            print: false,
+            filter: true,
+          },
+        },
+        {
+          name: "userId",
+          label: "User Id",
+          options: {
+            print: false,
+            filter: true,
+          },
+        },
+        {
+          name: "emailId",
+          label: "EmailId",
+          options: {
+            print: false,
+            filter: true,
+          },
+        },
+        {
+          name: "createdDate",
+          label: "Timestamp",
+          options: {
+            print: false,
+            filter: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+              var thisRowData = tableMeta.rowData;
+              if (thisRowData && thisRowData[3] != null) {
+                return <span>{moment(thisRowData[3]).format(
+                  props.loadGlobalSettingsData
+                    ? props.loadGlobalSettingsData.dateFormat +
+                    "  " +
+                    props.loadGlobalSettingsData.timeFormat
+                    : "hh:mm"
+                )}</span>;
+              } else {
+                return <span></span>;
+              }
+            },
+          },
+        },
+      ];
+
       return (
         <tr>
           <td colSpan={6}>
-            <TableContainer className="inner-table">
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>User Name</TableCell>
-                    <TableCell>User ID&nbsp;</TableCell>
-                    <TableCell>Email ID&nbsp;</TableCell>
-                    <TableCell>Timestamp</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rowData[2]
-                    ? rowData[2].map((row) => (
-                        <TableRow key={row.userId}>
-                          <TableCell>{row.userName}</TableCell>
-                          <TableCell>{row.userId}</TableCell>
-                          <TableCell>{row.emailId}</TableCell>
-                          <TableCell>
-                            {/* {moment(row.createdDate).format(
-                              "DD-MM-YYYY hh:mm:ss a"
-                            )} */}
-                            {moment(row.createdDate).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.dateFormat +
-                                    "  " +
-                                    props.loadGlobalSettingsData.timeFormat
-                                : "hh:mm"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    : []}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <MUIDataTable
+              title={""}
+              data={rowData[2]}
+              columns={columns}
+              options={options}
+              className="global-table no-action-table nested-table"
+            />
           </td>
         </tr>
       );
@@ -301,17 +344,16 @@ function AccessBreaches(props) {
 
     textLabels: {
       body: {
-        noMatch: `${
-          isFilterSelected
-            ? "There are no reports"
-            : "Please select filters to generate report"
-        }`,
+        noMatch: `${isFilterSelected
+          ? "There are no reports"
+          : "Please select filters to generate report"
+          }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>

@@ -1577,3 +1577,13 @@ label.required {
   margin-top: 25px !important;
   padding-right: 25px !important;
 }
+
+.nested-table{
+  tfoot{
+    tr{
+      td{
+        padding: 0;
+      }
+    }
+  }
+}
