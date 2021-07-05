@@ -164,15 +164,20 @@ function CreateSite(props) {
                   name: siteDetails.siteManagerName,
                 });
                 SetformData(siteDetails);
+                setCountryMasterData(getCountries);
+                setSiteManger(getSiteManagers);
+                setSecurityManger(getLocationManagers);
+                setComponentLoadder(false);
               })
               .catch((error) => {
                 console.log(error);
               });
+          } else {
+            setCountryMasterData(getCountries);
+            setSiteManger(getSiteManagers);
+            setSecurityManger(getLocationManagers);
+            setComponentLoadder(false);
           }
-          setCountryMasterData(getCountries);
-          setSiteManger(getSiteManagers);
-          setSecurityManger(getLocationManagers);
-          setComponentLoadder(false);
         }
       )
       .catch((error) => {
@@ -658,10 +663,10 @@ function CreateSite(props) {
                           <MenuItem value="">None</MenuItem>
                           {CountryMasterData && CountryMasterData.length > 0
                             ? CountryMasterData.map((lan) => {
-                                return (
-                                  <MenuItem value={lan.id}>{lan.name}</MenuItem>
-                                );
-                              })
+                              return (
+                                <MenuItem value={lan.id}>{lan.name}</MenuItem>
+                              );
+                            })
                             : ""}
                         </Select>
                       </FormControl>
@@ -714,9 +719,8 @@ function CreateSite(props) {
 
                     <Grid item xs={4}>
                       <label
-                        className={`input-label ${
-                          formData.isRLAPActive ? "required" : ""
-                        }`}
+                        className={`input-label ${formData.isRLAPActive ? "required" : ""
+                          }`}
                       >
                         RLAP Site ID
                       </label>
