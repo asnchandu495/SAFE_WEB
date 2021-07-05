@@ -232,7 +232,7 @@ function AddFloor(props) {
             props.setopenaddFloorModal(false);
             resetCovidStateFormData();
             setIsDuplicate(false);
-            updateSiteFloorData(formData);
+            // updateSiteFloorData(formData);
           }, 3000);
         })
         .catch((err) => {
@@ -248,7 +248,7 @@ function AddFloor(props) {
   function updateSiteFloorData(value) {
     props
       .UpdateSiteFloor(value)
-      .then((result) => {})
+      .then((result) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -327,9 +327,8 @@ function AddFloor(props) {
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
                     <label
-                      className={`input-label ${
-                        formData.isRLAPActive ? "required" : ""
-                      }`}
+                      className={`input-label ${formData.isRLAPActive ? "required" : ""
+                        }`}
                     >
                       RLAP Floor ID
                     </label>{" "}
