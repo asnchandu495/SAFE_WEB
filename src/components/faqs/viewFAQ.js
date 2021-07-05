@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import HomeIcon from "@material-ui/icons/Home";
@@ -6,6 +6,9 @@ import { Link as LinkTo } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
+import { connect } from "react-redux";
+import * as GridAction from "../../Redux/Action/gridAction";
+import * as faqAction from "../../Redux/Action/faqAction";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import ConfirmationDialog from "../common/confirmdialogbox";
@@ -25,6 +28,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import InfoIcon from "@material-ui/icons/Info";
 import FaqService from "../../services/faqService";
 import { Delete } from "@material-ui/icons";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -41,6 +45,10 @@ const useStyles = makeStyles((theme) => ({
 const languages = [{ id: "English", language: "English" }];
 
 function ViewFaq(props) {
+  const anchorRef = useRef(null);
+  const faqACM = props.acmData.find((acm) => {
+    return acm.module == "faq";
+  });
   const faqApiCall = new FaqService();
 
   const classes = useStyles();
@@ -73,6 +81,30 @@ function ViewFaq(props) {
         console.log(err);
       });
   }, []);
+
+  const LoadActions = (props) => {
+    return props.modulePermission.map((entity) => {
+      switch (entity.entity) {
+        case "sectionCreate":
+          return entity.isAccess ? (
+            <Tooltip title="Add new section">
+              <Button
+                className="create-icon-faq"
+                type="button"
+                startIcon={<AddIcon />}
+                onClick={addNewSection}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
+
+        default:
+          return "";
+      }
+    });
+  };
 
   function handleClickGoBackToPage() {
     props.history.push("/emergencycontacts/view");
@@ -156,14 +188,18 @@ function ViewFaq(props) {
                       onClick={editFaqBasics}
                     ></Button>
                   </Tooltip>
-                  <Tooltip title="Add new section">
+                  <LoadActions
+                    modulePermission={faqACM.permissions}
+                    anchorRef={anchorRef}
+                  ></LoadActions>
+                  {/* <Tooltip title="Add new section">
                     <Button
                       className="create-icon-faq"
                       type="button"
                       startIcon={<AddIcon />}
                       onClick={addNewSection}
                     ></Button>
-                  </Tooltip>
+                  </Tooltip> */}
                 </Grid>
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
@@ -277,4 +313,27 @@ function ViewFaq(props) {
   );
 }
 
-export default ViewFaq;
+ViewFaq.propTypes = {
+  FaqData: PropTypes.array.isRequired,
+  LoadData: PropTypes.func.isRequired,
+  getGridsPages: PropTypes.func.isRequired,
+  gridState: PropTypes.array.isRequired,
+  updateGridsPages: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state, ownProps) {
+  return {
+    FaqData: state.faqState,
+    GridData: state.gridHistory,
+    acmData: state.acmData,
+  };
+}
+
+const mapDispatchToProps = {
+  LoadData: faqAction.loadFaq,
+  LoadGridsPage: GridAction.getGridsPages,
+  UpdateGridsPage: GridAction.updateGridsPages,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ViewFaq);
+// export default ViewFaq;

@@ -304,7 +304,7 @@ function AddPrimaryUserToUserGroups(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -695,7 +695,7 @@ function AddPrimaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                            BusinessUserRoleMasterData.length > 0
+                          BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -725,13 +725,13 @@ function AddPrimaryUserToUserGroups(props) {
                   <Grid
                     item
                     sm={8}
-                  // className={[userId ? classes.HideGrid : ""].join(" ")}
+                    // className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <Autocomplete
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                          BusinessDesingationData.length > 0
+                        BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -763,7 +763,7 @@ function AddPrimaryUserToUserGroups(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                          BusinessSiteMasterData.length > 0
+                        BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -795,7 +795,7 @@ function AddPrimaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                            BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }

@@ -37,6 +37,7 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import MasterDataService from "../../services/masterDataService";
+import EditIcon from "@material-ui/icons/Edit";
 
 const styles = (theme) => ({
   root: {
@@ -335,6 +336,21 @@ function ViewAllFAQs(props) {
             ""
           );
           break;
+        case "update":
+          return entity.isAccess ? (
+            <Tooltip title="Edit">
+              <Button
+                variant="contained"
+                color="default"
+                startIcon={<EditIcon />}
+                className={`edit-icon`}
+                onClick={() => handleClickEditSections(props.thisRowData)}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
         default:
           return "";
       }
@@ -344,6 +360,11 @@ function ViewAllFAQs(props) {
   function handleClickAddSections(value) {
     var faqId = value[0];
     props.history.push(`/faq/faq-sections/${faqId}/0`);
+  }
+
+  function handleClickEditSections(value) {
+    var faqId = value[0];
+    props.history.push(`/faq/add-faq/${faqId}`);
   }
 
   function handleClickView(value) {
