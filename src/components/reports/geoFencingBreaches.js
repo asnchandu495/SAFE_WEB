@@ -346,40 +346,6 @@ function GeoFencingBreaches(props) {
           </td>
         </tr>
       );
-      // return (
-      //   <tr>
-      //     <td colSpan={6}>
-      //       <TableContainer className="inner-table">
-      //         <Table aria-label="simple table">
-      //           <TableHead>
-      //             <TableRow>
-      //               <TableCell>Location</TableCell>
-      //               <TableCell>Timestamp</TableCell>
-      //             </TableRow>
-      //           </TableHead>
-      //           <TableBody>
-      //             {rowData[3]
-      //               ? rowData[3].map((row) => (
-      //                   <TableRow key={row.location}>
-      //                     <TableCell>{row.location}</TableCell>
-      //                     <TableCell>
-      //                       {moment(row.createdDate).format(
-      //                         props.loadGlobalSettingsData
-      //                           ? props.loadGlobalSettingsData.dateFormat +
-      //                               "  " +
-      //                               props.loadGlobalSettingsData.timeFormat
-      //                           : "hh:mm"
-      //                       )}
-      //                     </TableCell>
-      //                   </TableRow>
-      //                 ))
-      //               : []}
-      //           </TableBody>
-      //         </Table>
-      //       </TableContainer>
-      //     </td>
-      //   </tr>
-      // );
     },
     jumpToPage: true,
     print: false,

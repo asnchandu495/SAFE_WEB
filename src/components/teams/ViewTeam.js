@@ -119,9 +119,9 @@ function ViewTeam(props) {
     },
   ];
 
-  function BreadcrumbNavigation(getRoute) {
-    props.history.push(getRoute);
-  }
+  // function BreadcrumbNavigation(getRoute) {
+  //   props.history.push(getRoute);
+  // }
 
   return (
     <div className="innerpage-container">
@@ -237,18 +237,18 @@ function ViewTeam(props) {
   );
 }
 
-ViewTeam.propTypes = {
-  UserGroupData: PropTypes.array.isRequired,
-};
+// ViewTeam.propTypes = {
+//   UserGroupData: PropTypes.array.isRequired,
+// };
 
-function mapStateToProps(state, ownProps) {
-  return {
-    UserGroupData: state.usergroup,
-  };
-}
+// function mapStateToProps(state, ownProps) {
+//   return {
+//     UserGroupData: state.usergroup,
+//   };
+// }
 
-const mapDispatchToProps = {
-  LoadAllUserGroup: UserGroupAction.loadUserGroup,
-};
+// const mapDispatchToProps = {
+//   LoadAllUserGroup: UserGroupAction.loadUserGroup,
+// };
 
 export default ViewTeam;
