@@ -336,65 +336,8 @@ function DensityThreshold(props) {
           </td>
         </tr>
       );
-      // return (
-      //   <tr>
-      //     <td colSpan={6}>
-      //       <TableContainer className="inner-table">
-      //         <Table aria-label="simple table">
-      //           <TableHead>
-      //             <TableRow>
-      //               <TableCell>User Name</TableCell>
-      //               <TableCell>User ID&nbsp;</TableCell>
-      //               <TableCell>Email ID&nbsp;</TableCell>
-      //               <TableCell>Timestamp</TableCell>
-      //             </TableRow>
-      //           </TableHead>
-      //           <TableBody>
-      //             {rowData[2]
-      //               ? rowData[2].map((row) => (
-      //                   <TableRow key={row.userId}>
-      //                     <TableCell>{row.userName}</TableCell>
-      //                     <TableCell>{row.userId}</TableCell>
-      //                     <TableCell>{row.emailId}</TableCell>
-      //                     <TableCell>
-      //                       {/* {moment(row.createdDate).format(
-      //                         "DD-MM-YYYY hh:mm:ss a"
-      //                       )} */}
-      //                       {moment(row.createdDate).format(
-      //                         props.loadGlobalSettingsData
-      //                           ? props.loadGlobalSettingsData.dateFormat +
-      //                               "  " +
-      //                               props.loadGlobalSettingsData.timeFormat
-      //                           : "hh:mm"
-      //                       )}
-      //                     </TableCell>
-      //                   </TableRow>
-      //                 ))
-      //               : []}
-      //           </TableBody>
-      //         </Table>
-      //       </TableContainer>
-      //     </td>
-      //   </tr>
-      // );
     },
-    // page: currentPage,
-    // print: false,
-    // viewColumns: false,
-    // download: false,
-    // selectableRows: false,
-    // textLabels: {
-    //   body: {
-    //     noMatch: `${
-    //       isFilterSelected
-    //         ? "There are no reports"
-    //         : "Please select filters to generate report"
-    //     }`,
-    //   },
-    //   pagination: {
-    //     jumpToPage: "Go to page:",
-    //   },
-    // },
+
     jumpToPage: true,
     print: false,
     viewColumns: false,

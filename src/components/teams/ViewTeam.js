@@ -14,6 +14,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Box from "@material-ui/core/Box";
 import UserGroupApiServices from "../../services/userGroupService";
 import teamService from "../../services/teamService";
+import ComponentLoadderComponent from "../common/loadder/componentloadder";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -57,17 +58,19 @@ function ViewTeam(props) {
   const [tableBodyHeight, setTableBodyHeight] = useState("300px");
   const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
   const [ViewTeamDetails, setViewTeamDetails] = useState([]);
+  const [componentLoadder, setcomponentLoadder] = useState(true);
 
-  const [componentLoadder, setComponentLoadder] = useState(true);
   const [tabValue, setTabValue] = useState(0);
   const [applicationUsers, setApplicationUsers] = useState([]);
   const teamApiCall = new teamService();
 
   useEffect(() => {
+    setcomponentLoadder(true);
     teamApiCall
       .viewApplicationUserByTeamId(userGroupId)
       .then((teamInfo) => {
         setViewTeamDetails(teamInfo);
+        setcomponentLoadder(false);
       })
       .catch((error) => {
         console.log(error);
@@ -119,38 +122,40 @@ function ViewTeam(props) {
     },
   ];
 
-  function BreadcrumbNavigation(getRoute) {
-    props.history.push(getRoute);
-  }
+  // function BreadcrumbNavigation(getRoute) {
+  //   props.history.push(getRoute);
+  // }
 
   return (
     <div className="innerpage-container">
-      <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
-        <LinkTo
-          color="inherit"
-          href="#"
-          to={`/home/dashboard`}
-          className="inactive"
-        >
-          Home
-        </LinkTo>
-        <LinkTo
-          color="textPrimary"
-          href="#"
-          to={`/teams/allteams`}
-          className="inactive"
-        >
-          Teams
-        </LinkTo>
-        <LinkTo color="textPrimary" href="#" className="active">
-          {ViewTeamDetails.name}
-        </LinkTo>
-      </Breadcrumbs>
-      <Paper className="main-paper">
-        <form className={`global-form`}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} container spacing={3} direction="row">
-              <Grid container item xs={12} spacing={3} direction="column">
+      {!componentLoadder ? (
+        <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
+          <LinkTo
+            color="inherit"
+            href="#"
+            to={`/home/dashboard`}
+            className="inactive"
+          >
+            Home
+          </LinkTo>
+          <LinkTo
+            color="textPrimary"
+            href="#"
+            to={`/teams/allteams`}
+            className="inactive"
+          >
+            Teams
+          </LinkTo>
+          <LinkTo color="textPrimary" href="#" className="active">
+            {ViewTeamDetails.name}
+          </LinkTo>
+        </Breadcrumbs>
+      ) : null}
+      {!componentLoadder ? (
+        <Paper className="main-paper">
+          <form className={`global-form`}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} container spacing={3} direction="row">
                 <Grid item xs={12} container>
                   <Grid item xs={3}>
                     <label>Team Name :</label>
@@ -230,9 +235,11 @@ function ViewTeam(props) {
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </Paper>
+          </form>
+        </Paper>
+      ) : (
+        <ComponentLoadderComponent />
+      )}
     </div>
   );
 }
