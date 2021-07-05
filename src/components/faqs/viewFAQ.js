@@ -99,6 +99,20 @@ function ViewFaq(props) {
             ""
           );
           break;
+        case "update":
+          return entity.isAccess ? (
+            <Tooltip title="Edit basic details">
+              <Button
+                className="edit-icon-faq"
+                type="button"
+                startIcon={<EditIcon />}
+                onClick={editFaqBasics}
+              ></Button>
+            </Tooltip>
+          ) : (
+            ""
+          );
+          break;
 
         default:
           return "";
@@ -180,14 +194,14 @@ function ViewFaq(props) {
               <Grid container spacing={3}>
                 <Grid item xs={12} className="faq-title">
                   Basic Info{" "}
-                  <Tooltip title="Edit basic details">
+                  {/* <Tooltip title="Edit basic details">
                     <Button
                       className="edit-icon-faq"
                       type="button"
                       startIcon={<EditIcon />}
                       onClick={editFaqBasics}
                     ></Button>
-                  </Tooltip>
+                  </Tooltip> */}
                   <LoadActions
                     modulePermission={faqACM.permissions}
                     anchorRef={anchorRef}
