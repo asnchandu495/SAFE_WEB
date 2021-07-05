@@ -1582,3 +1582,13 @@ label.required {
   opacity: 0.5;
   font-size: 12px;
 }
+
+.nested-table {
+  tfoot {
+    tr {
+      td {
+        padding: 0;
+      }
+    }
+  }
+}
