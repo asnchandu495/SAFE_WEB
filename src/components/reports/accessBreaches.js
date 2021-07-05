@@ -285,7 +285,7 @@ function AccessBreaches(props) {
         },
         {
           name: "userId",
-          label: "User Id",
+          label: "User ID",
           options: {
             print: false,
             filter: true,
@@ -293,7 +293,7 @@ function AccessBreaches(props) {
         },
         {
           name: "emailId",
-          label: "EmailId",
+          label: "Email ID",
           options: {
             print: false,
             filter: true,
@@ -308,13 +308,17 @@ function AccessBreaches(props) {
             customBodyRender: (value, tableMeta, updateValue) => {
               var thisRowData = tableMeta.rowData;
               if (thisRowData && thisRowData[3] != null) {
-                return <span>{moment(thisRowData[3]).format(
-                  props.loadGlobalSettingsData
-                    ? props.loadGlobalSettingsData.dateFormat +
-                    "  " +
-                    props.loadGlobalSettingsData.timeFormat
-                    : "hh:mm"
-                )}</span>;
+                return (
+                  <span>
+                    {moment(thisRowData[3]).format(
+                      props.loadGlobalSettingsData
+                        ? props.loadGlobalSettingsData.dateFormat +
+                            "  " +
+                            props.loadGlobalSettingsData.timeFormat
+                        : "hh:mm"
+                    )}
+                  </span>
+                );
               } else {
                 return <span></span>;
               }
@@ -344,16 +348,17 @@ function AccessBreaches(props) {
 
     textLabels: {
       body: {
-        noMatch: `${isFilterSelected
-          ? "There are no reports"
-          : "Please select filters to generate report"
-          }`,
+        noMatch: `${
+          isFilterSelected
+            ? "There are no reports"
+            : "Please select filters to generate report"
+        }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>

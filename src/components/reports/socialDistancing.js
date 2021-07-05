@@ -272,44 +272,116 @@ function SocailDistancing(props) {
     expandableRows: true,
     expandableRowsHeader: false,
     renderExpandableRow: (rowData, rowMeta) => {
-      console.log(rowData);
+      const options = {
+        filter: false,
+        filterType: "dropdown",
+        responsive: "scroll",
+        fixedHeader: true,
+        rowsPerPageOptions: [5, 10, 15, 100],
+        rowsPerPage: 5,
+        jumpToPage: true,
+        page: 0,
+        print: false,
+        viewColumns: false,
+        download: false,
+        selectableRows: false,
+        textLabels: {
+          body: {
+            noMatch: "There are no breaches",
+          },
+          pagination: {
+            jumpToPage: "Go to page:",
+          },
+        },
+      };
+      const columns = [
+        {
+          label: "Location",
+          name: "location",
+          options: {
+            filter: false,
+            sort: true,
+          },
+        },
+        {
+          name: "createdDate",
+          label: "Timestamp",
+          options: {
+            print: false,
+            filter: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+              var thisRowData = tableMeta.rowData;
+
+              if (thisRowData && thisRowData[1] != null) {
+                return (
+                  <span>
+                    {moment(thisRowData[1]).format(
+                      props.loadGlobalSettingsData
+                        ? props.loadGlobalSettingsData.dateFormat +
+                            "  " +
+                            props.loadGlobalSettingsData.timeFormat
+                        : "hh:mm"
+                    )}
+                  </span>
+                );
+              } else {
+                return <span></span>;
+              }
+            },
+          },
+        },
+      ];
       return (
         <tr>
           <td colSpan={6}>
-            <TableContainer className="inner-table">
-              <Table aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Location</TableCell>
-                    <TableCell>Timestamp</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rowData[3]
-                    ? rowData[3].map((row) => (
-                        <TableRow key={row.location}>
-                          <TableCell>{row.location}</TableCell>
-                          <TableCell>
-                            {/* {moment(row.createdDate).format(
-                              "DD/MM/yyyy hh:mm a"
-                            )} */}
-                            {moment(row.createdDate).format(
-                              props.loadGlobalSettingsData
-                                ? props.loadGlobalSettingsData.dateFormat +
-                                    "  " +
-                                    props.loadGlobalSettingsData.timeFormat
-                                : "hh:mm"
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    : []}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <MUIDataTable
+              title={""}
+              data={rowData[3]}
+              columns={columns}
+              options={options}
+              className="global-table no-action-table nested-table"
+            />
           </td>
         </tr>
       );
+
+      // return (
+      //   <tr>
+      //     <td colSpan={6}>
+      //       <TableContainer className="inner-table">
+      //         <Table aria-label="simple table">
+      //           <TableHead>
+      //             <TableRow>
+      //               <TableCell>Location</TableCell>
+      //               <TableCell>Timestamp</TableCell>
+      //             </TableRow>
+      //           </TableHead>
+      //           <TableBody>
+      //             {rowData[3]
+      //               ? rowData[3].map((row) => (
+      //                   <TableRow key={row.location}>
+      //                     <TableCell>{row.location}</TableCell>
+      //                     <TableCell>
+      //                       {/* {moment(row.createdDate).format(
+      //                         "DD/MM/yyyy hh:mm a"
+      //                       )} */}
+      //                       {moment(row.createdDate).format(
+      //                         props.loadGlobalSettingsData
+      //                           ? props.loadGlobalSettingsData.dateFormat +
+      //                               "  " +
+      //                               props.loadGlobalSettingsData.timeFormat
+      //                           : "hh:mm"
+      //                       )}
+      //                     </TableCell>
+      //                   </TableRow>
+      //                 ))
+      //               : []}
+      //           </TableBody>
+      //         </Table>
+      //       </TableContainer>
+      //     </td>
+      //   </tr>
+      // );
     },
     jumpToPage: true,
     print: false,
@@ -322,6 +394,21 @@ function SocailDistancing(props) {
       pagination: {
         jumpToPage: "Go to page:",
       },
+    },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbar: () => {
+      return (
+        <div className={`maingrid-actions`}>
+          <Tooltip title="Filter ">
+            <Button
+              variant="contained"
+              startIcon={<FilterListIcon />}
+              className={`add-icon`}
+              onClick={handleClickOpenModal}
+            ></Button>
+          </Tooltip>
+        </div>
+      );
     },
     customSearch: (searchQuery, currentRow, columns) => {
       let isFound = false;
@@ -355,21 +442,6 @@ function SocailDistancing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
-    customToolbar: () => {
-      return (
-        <div className={`maingrid-actions`}>
-          <Tooltip title="Filter ">
-            <Button
-              variant="contained"
-              startIcon={<FilterListIcon />}
-              className={`add-icon`}
-              onClick={handleClickOpenModal}
-            ></Button>
-          </Tooltip>
-        </div>
-      );
-    },
   };
 
   const CustomFooter = (props) => {

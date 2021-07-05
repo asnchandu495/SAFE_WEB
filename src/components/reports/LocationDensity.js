@@ -44,6 +44,7 @@ import ReplayIcon from "@material-ui/icons/Replay";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import moment from "moment";
 import * as GridAction from "../../Redux/Action/gridAction";
+import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -231,13 +232,17 @@ function LocationDensity(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: `${isFilterSelected ? 'There are no reports' : 'Please select filters to generate report'}`,
+        noMatch: `${
+          isFilterSelected
+            ? "There are no reports"
+            : "Please select filters to generate report"
+        }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -642,7 +647,6 @@ function LocationDensity(props) {
         <ComponentLoadderComponent />
       ) : (
         <>
-
           <MuiThemeProvider theme={theme1}>
             {" "}
             <MUIDataTable
@@ -666,7 +670,14 @@ function LocationDensity(props) {
                       <>
                         Report as on :{" "}
                         <span className="live-time">
-                          {moment(reportTime).format("DD-MM-YYYY hh:mm:ss a")}
+                          {/* {moment(reportTime).format("DD-MM-YYYY hh:mm:ss a")} */}
+                          {moment(reportTime).format(
+                            props.loadGlobalSettingsData
+                              ? props.loadGlobalSettingsData.dateFormat +
+                                  "  " +
+                                  props.loadGlobalSettingsData.timeFormat
+                              : "hh:mm"
+                          )}
                         </span>
                       </>
                     ) : (
@@ -703,12 +714,15 @@ function LocationDensity(props) {
 function mapStateToProps(state, ownProps) {
   return {
     GridData: state.gridHistory,
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
 
 const mapDispatchToProps = {
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
+  loadGlobalSettingWithoutAPICall:
+    globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
 
 // export default LocationDensity;s
