@@ -222,7 +222,8 @@ function LocationDensity(props) {
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: currentRowsPerPage,
     onChangeRowsPerPage: handleRowsPerPageChange,
-
+    // search: false,
+    // searchOpen: true,
     print: false,
     jumpToPage: true,
     viewColumns: false,
@@ -277,31 +278,31 @@ function LocationDensity(props) {
       return isFound;
     },
     page: currentPage,
-    onChangePage: (currentPage) => {
-      setCurrentPage(currentPage);
-      let sendData = { name: "report", page: currentPage + 1 };
-      props.UpdateGridsPage(sendData);
-    },
-    onTableInit: tableInitiate,
-    customFooter: (
-      count,
-      page,
-      rowsPerPage,
-      changeRowsPerPage,
-      changePage,
-      textLabels
-    ) => {
-      return (
-        <CustomFooter
-          count={count}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          changeRowsPerPage={changeRowsPerPage}
-          changePage={changePage}
-          textLabels={textLabels}
-        />
-      );
-    },
+    // onChangePage: (currentPage) => {
+    //   setCurrentPage(currentPage);
+    //   let sendData = { name: "report", page: currentPage + 1 };
+    //   props.UpdateGridsPage(sendData);
+    // },
+    // onTableInit: tableInitiate,
+    // customFooter: (
+    //   count,
+    //   page,
+    //   rowsPerPage,
+    //   changeRowsPerPage,
+    //   changePage,
+    //   textLabels
+    // ) => {
+    //   return (
+    //     <CustomFooter
+    //       count={count}
+    //       page={page}
+    //       rowsPerPage={rowsPerPage}
+    //       changeRowsPerPage={changeRowsPerPage}
+    //       changePage={changePage}
+    //       textLabels={textLabels}
+    //     />
+    //   );
+    // },
   };
 
   const CustomFooter = (props) => {
@@ -640,16 +641,43 @@ function LocationDensity(props) {
       {componentLoadder ? (
         <ComponentLoadderComponent />
       ) : (
-        <MuiThemeProvider theme={theme1}>
-          {" "}
-          <MUIDataTable
-            title={""}
-            data={locationDensityData}
-            columns={columns}
-            options={options}
-            className="global-table no-action-table"
-          />{" "}
-        </MuiThemeProvider>
+        <>
+
+          <MuiThemeProvider theme={theme1}>
+            {" "}
+            <MUIDataTable
+              title={""}
+              data={locationDensityData}
+              columns={columns}
+              options={options}
+              className="global-table no-action-table"
+            />{" "}
+          </MuiThemeProvider>
+          <div>
+            <div className="custom-pagination-report">
+              <div className="legend-container">
+                <ul className="legends">
+                  <li className="low">Low</li>
+                  <li className="medium">Medium</li>
+                  <li className="high">High</li>
+                  <li className="nodata">RLAP Inactive</li>
+                  <li>
+                    {reportTime != "" ? (
+                      <>
+                        Report as on :{" "}
+                        <span className="live-time">
+                          {moment(reportTime).format("DD-MM-YYYY hh:mm:ss a")}
+                        </span>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </>
       )}
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
