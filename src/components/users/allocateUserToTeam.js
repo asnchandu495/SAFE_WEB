@@ -137,7 +137,9 @@ function AllocateUserToTeam(props) {
       {!componentLoadder ? (
         <ValidatorForm className={`global-form`} onSubmit={UserTeamUpdate}>
           <CardContent>
-            <Typography className="card-heading">Update Teams</Typography>
+            <Typography className="card-heading">
+              <label className="required">Update Teams</label>
+            </Typography>
             <div className="card-form">
               <Grid container spacing={3}>
                 <Grid item sm={9}>
@@ -145,7 +147,7 @@ function AllocateUserToTeam(props) {
                     id="tags-outlined"
                     options={
                       BusinessTeamMasterData &&
-                        BusinessTeamMasterData.length > 0
+                      BusinessTeamMasterData.length > 0
                         ? BusinessTeamMasterData
                         : []
                     }

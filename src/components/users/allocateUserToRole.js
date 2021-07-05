@@ -137,7 +137,10 @@ function AllocateUserToRole(props) {
       {!componentLoadder ? (
         <ValidatorForm className={`global-form`} onSubmit={UserRoleUpdate}>
           <CardContent>
-            <Typography className="card-heading">Update Roles</Typography>
+            <Typography className="card-heading">
+              {" "}
+              <label className="required">Update Roles</label>
+            </Typography>
             <div className="card-form">
               <Grid container spacing={3}>
                 <Grid item sm={9}>

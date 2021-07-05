@@ -60,6 +60,7 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import MuiDialogContent from "@material-ui/core/DialogContent";
 import NotificationService from "../../services/notificationService";
+import moment from "moment";
 
 const drawerWidth = 240;
 const styles = (theme) => ({
@@ -209,7 +210,7 @@ function AdminLayout(props) {
       .then(([loadsetting, loadgrid, loadacm, getNotificationDetails]) => {
         setnotificationList(getNotificationDetails);
       })
-      .catch((err) => { });
+      .catch((err) => {});
     if (window.performance) {
       if (performance.type == 1) {
         props.loadGlobalSetting();
@@ -401,7 +402,7 @@ function AdminLayout(props) {
   };
 
   const UseLogOut = () => {
-    let authLoginData = { "isLoggedOut": true };
+    let authLoginData = { isLoggedOut: true };
     authApiCall
       .UpdateConcurrentLoginForAuth(authLoginData)
       .then((response) => {
@@ -409,9 +410,8 @@ function AdminLayout(props) {
         localStorage.removeItem("id_token");
         localStorage.removeItem("id_tokenExpiry");
         props.history.push("/");
-      }).catch((err) => {
-
       })
+      .catch((err) => {});
   };
 
   const menuId = "primary-search-account-menu";
@@ -504,17 +504,20 @@ function AdminLayout(props) {
 
   const handleClose = () => {
     let sendData = { id: NotificationMessage.id, isRead: true };
-    notificationApiCall.markAsRead(sendData)
+    notificationApiCall
+      .markAsRead(sendData)
       .then((response) => {
         if (!NotificationMessage.isRead) {
-          let data = notificationList.getAllList.map(not => not.id == NotificationMessage.id ? { ...not, isRead: true } : not);
+          let data = notificationList.getAllList.map((not) =>
+            not.id == NotificationMessage.id ? { ...not, isRead: true } : not
+          );
           let newCount = notificationList.unreadCount - 1;
           let newNotifications = { unreadCount: newCount, getAllList: data };
           setnotificationList(newNotifications);
         }
         setModalOpen(false);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   const LoadMenus = (props) => {
@@ -527,35 +530,38 @@ function AdminLayout(props) {
           if (userResult) {
             return null;
           } else {
-            return <><ListItem button onClick={handleClickLevelMenu}>
-              <ListItemIcon>
-                <GroupIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Users"
-                className={clsx({
-                  [classes.hide]: !openDrawer,
-                })}
-              />
-              {openUsers ? (
-                <ExpandLess className="exp-coll-icon" />
-              ) : (
-                <ExpandMore className="exp-coll-icon" />
-              )}
-            </ListItem>
-              <Collapse in={openUsers} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadUsersMenu module={module.permissions}></LoadUsersMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickLevelMenu}>
+                  <ListItemIcon>
+                    <GroupIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Users"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openUsers ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openUsers} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadUsersMenu module={module.permissions}></LoadUsersMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "site":
           let siteResult = module.permissions.every(function (e) {
@@ -564,36 +570,38 @@ function AdminLayout(props) {
           if (siteResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickLevelSiteMenu}>
-                <ListItemIcon>
-                  <LocationCityIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Site"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openSiteMenu ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openSiteMenu} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadSitesMenu module={module.permissions}></LoadSitesMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickLevelSiteMenu}>
+                  <ListItemIcon>
+                    <LocationCityIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Site"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openSiteMenu ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openSiteMenu} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadSitesMenu module={module.permissions}></LoadSitesMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "designation":
           let designationResult = module.permissions.every(function (e) {
@@ -602,36 +610,47 @@ function AdminLayout(props) {
           if (designationResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickLevelMenuForOpenDesignation}>
-                <ListItemIcon>
-                  <DesignationIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Designation"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openDesiginationMenu ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openDesiginationMenu} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
+            return (
+              <>
+                <ListItem
+                  button
+                  onClick={handleClickLevelMenuForOpenDesignation}
                 >
-                  <LoadDesignationsMenu module={module.permissions}></LoadDesignationsMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+                  <ListItemIcon>
+                    <DesignationIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Designation"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openDesiginationMenu ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse
+                  in={openDesiginationMenu}
+                  timeout="auto"
+                  unmountOnExit
+                >
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadDesignationsMenu
+                      module={module.permissions}
+                    ></LoadDesignationsMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "covidState":
           let covidStateResult = module.permissions.every(function (e) {
@@ -640,36 +659,40 @@ function AdminLayout(props) {
           if (covidStateResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickLevelMenuCovidState}>
-                <ListItemIcon>
-                  <LocalHospitalIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Covid State"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openCovidStateMenu ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openCovidStateMenu} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadCovidStateMenu module={module.permissions}></LoadCovidStateMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickLevelMenuCovidState}>
+                  <ListItemIcon>
+                    <LocalHospitalIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Covid State"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openCovidStateMenu ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openCovidStateMenu} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadCovidStateMenu
+                      module={module.permissions}
+                    ></LoadCovidStateMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "faq":
           let faqResult = module.permissions.every(function (e) {
@@ -678,36 +701,38 @@ function AdminLayout(props) {
           if (faqResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickLevelMenuFAQ}>
-                <ListItemIcon>
-                  <LiveHelpIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="FAQ"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openFAQMenu ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openFAQMenu} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadFaqMenu module={module.permissions}></LoadFaqMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickLevelMenuFAQ}>
+                  <ListItemIcon>
+                    <LiveHelpIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="FAQ"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openFAQMenu ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openFAQMenu} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadFaqMenu module={module.permissions}></LoadFaqMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "settings":
           let settingsResult = module.permissions.every(function (e) {
@@ -716,36 +741,40 @@ function AdminLayout(props) {
           if (settingsResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickSetting}>
-                <ListItemIcon>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Settings"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openSetting ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openSetting} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadSettingsMenu module={module.permissions}></LoadSettingsMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickSetting}>
+                  <ListItemIcon>
+                    <SettingsIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Settings"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openSetting ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openSetting} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadSettingsMenu
+                      module={module.permissions}
+                    ></LoadSettingsMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "userGroup":
           let usergroupResult = module.permissions.every(function (e) {
@@ -754,36 +783,40 @@ function AdminLayout(props) {
           if (usergroupResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickUserManagment}>
-                <ListItemIcon>
-                  <GroupAddIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="User Groups"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openUserManagment ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openUserManagment} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadUserGroupMenu module={module.permissions}></LoadUserGroupMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickUserManagment}>
+                  <ListItemIcon>
+                    <GroupAddIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="User Groups"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openUserManagment ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openUserManagment} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadUserGroupMenu
+                      module={module.permissions}
+                    ></LoadUserGroupMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "emergencyContact":
           let emergencyContactResult = module.permissions.every(function (e) {
@@ -792,36 +825,44 @@ function AdminLayout(props) {
           if (emergencyContactResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickEmergencyContact}>
-                <ListItemIcon>
-                  <ContactPhoneIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Emergency Contacts"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openEmergencyContact ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openEmergencyContact} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
+            return (
+              <>
+                <ListItem button onClick={handleClickEmergencyContact}>
+                  <ListItemIcon>
+                    <ContactPhoneIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Emergency Contacts"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openEmergencyContact ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse
+                  in={openEmergencyContact}
+                  timeout="auto"
+                  unmountOnExit
                 >
-                  <LoadEmergencyContactMenu module={module.permissions}></LoadEmergencyContactMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadEmergencyContactMenu
+                      module={module.permissions}
+                    ></LoadEmergencyContactMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "team":
           let teamResult = module.permissions.every(function (e) {
@@ -830,36 +871,38 @@ function AdminLayout(props) {
           if (teamResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickTeams}>
-                <ListItemIcon>
-                  <GroupWorkIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Teams"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openTeamMenu ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openTeamMenu} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadTeamsMenu module={module.permissions}></LoadTeamsMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickTeams}>
+                  <ListItemIcon>
+                    <GroupWorkIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Teams"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openTeamMenu ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openTeamMenu} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadTeamsMenu module={module.permissions}></LoadTeamsMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "questionnaire":
           let questionnaireResult = module.permissions.every(function (e) {
@@ -868,36 +911,40 @@ function AdminLayout(props) {
           if (questionnaireResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickopenQuestionaire}>
-                <ListItemIcon>
-                  <ListAltIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Questionnaire"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openQuestionaires ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openQuestionaires} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadQuestionnaireMenu module={module.permissions}></LoadQuestionnaireMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickopenQuestionaire}>
+                  <ListItemIcon>
+                    <ListAltIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Questionnaire"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openQuestionaires ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openQuestionaires} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadQuestionnaireMenu
+                      module={module.permissions}
+                    ></LoadQuestionnaireMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "healthCheck":
           let healthCheckResult = module.permissions.every(function (e) {
@@ -906,25 +953,27 @@ function AdminLayout(props) {
           if (healthCheckResult) {
             return null;
           } else {
-            return <>
-              <ListItem
-                button
-                component={Link}
-                to="/selfhealthcheck/configurehealth"
-                onClick={collapseAllMenu}
-              >
-                <ListItemIcon>
-                  <HealingIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Health check"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-              </ListItem>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem
+                  button
+                  component={Link}
+                  to="/selfhealthcheck/configurehealth"
+                  onClick={collapseAllMenu}
+                >
+                  <ListItemIcon>
+                    <HealingIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Health check"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                </ListItem>
+                <Divider></Divider>
+              </>
+            );
           }
         case "workflow":
           let workflowResult = module.permissions.every(function (e) {
@@ -933,36 +982,40 @@ function AdminLayout(props) {
           if (workflowResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickopenWorkflow}>
-                <ListItemIcon>
-                  <WorkIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Workflow"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openWorkflow ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openWorkflow} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadWorkflowMenu module={module.permissions}></LoadWorkflowMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickopenWorkflow}>
+                  <ListItemIcon>
+                    <WorkIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Workflow"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openWorkflow ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openWorkflow} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadWorkflowMenu
+                      module={module.permissions}
+                    ></LoadWorkflowMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
         case "report":
           let reportResult = module.permissions.every(function (e) {
@@ -971,603 +1024,747 @@ function AdminLayout(props) {
           if (reportResult) {
             return null;
           } else {
-            return <>
-              <ListItem button onClick={handleClickopenReports}>
-                <ListItemIcon>
-                  <AssessmentIcon />
-                </ListItemIcon>
-                <ListItemText
-                  primary="Reports"
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                />
-                {openReports ? (
-                  <ExpandLess className="exp-coll-icon" />
-                ) : (
-                  <ExpandMore className="exp-coll-icon" />
-                )}
-              </ListItem>
-              <Collapse in={openReports} timeout="auto" unmountOnExit>
-                <List
-                  component="div"
-                  disablePadding
-                  className={clsx({
-                    [classes.hide]: !openDrawer,
-                  })}
-                >
-                  <LoadReportMenu module={module.permissions}></LoadReportMenu>
-                </List>
-              </Collapse>
-              <Divider></Divider>
-            </>
+            return (
+              <>
+                <ListItem button onClick={handleClickopenReports}>
+                  <ListItemIcon>
+                    <AssessmentIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Reports"
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  />
+                  {openReports ? (
+                    <ExpandLess className="exp-coll-icon" />
+                  ) : (
+                    <ExpandMore className="exp-coll-icon" />
+                  )}
+                </ListItem>
+                <Collapse in={openReports} timeout="auto" unmountOnExit>
+                  <List
+                    component="div"
+                    disablePadding
+                    className={clsx({
+                      [classes.hide]: !openDrawer,
+                    })}
+                  >
+                    <LoadReportMenu
+                      module={module.permissions}
+                    ></LoadReportMenu>
+                  </List>
+                </Collapse>
+                <Divider></Divider>
+              </>
+            );
           }
       }
     });
-  }
+  };
 
   const LoadUsersMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/users/allusers"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/users/allusers"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/users/add-user"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Create" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/users/add-user"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "viewImportHistory":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/users/import-users-history"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Import" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/users/import-users-history"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Import" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadSitesMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/site/all-site"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/site/all-site"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/site/create-site"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Create " />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/site/create-site"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create " />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadDesignationsMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/designation/all-designation"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/designation/all-designation"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/designation/create-designation/0"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Create" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/designation/create-designation/0"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadCovidStateMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/covidstate/all-covidstate"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/covidstate/all-covidstate"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/covidstate/add-covidstate"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Create" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/covidstate/add-covidstate"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadFaqMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/faq/allfaqs"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/faq/allfaqs"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/faq/add-faq/0"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Create" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/faq/add-faq/0"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "assign":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/faq/assigned-faqs"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Assign" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/faq/assigned-faqs"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Assign" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "publish":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/faq/publish-faqs"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Drafts" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/faq/publish-faqs"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Drafts" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadSettingsMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "globalSetting":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/setting/global-setting"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Global Setting" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/setting/global-setting"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Global Setting" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "tempRange":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/setting/temperature-range"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Temperature Range" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/setting/temperature-range"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Temperature Range" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadUserGroupMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/usergroups/allusergroups"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/usergroups/allusergroups"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/usergroups/add-usergroup/0"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Create" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/usergroups/add-usergroup/0"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadEmergencyContactMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/emergencycontacts/view"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/emergencycontacts/view"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/emergencycontacts/create/0"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Create" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/emergencycontacts/create/0"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "assignUserList":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/emergencycontacts/assign"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Assign" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/emergencycontacts/assign"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Assign" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadTeamsMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/teams/allteams"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />{" "}
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/teams/allteams"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />{" "}
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/teams/add-teams/0"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="CREATE" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/teams/add-teams/0"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="CREATE" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadQuestionnaireMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/questionaires/allquestionaires"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/questionaires/allquestionaires"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/questionaires/create-questionaire/0"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Create" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/questionaires/create-questionaire/0"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "adopt":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/questionaires/adopt-questionaire"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Adopt from Existing" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/questionaires/adopt-questionaire"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Adopt from Existing" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "assignUserGroupList":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/questionaires/assign"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Assign" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/questionaires/assign"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Assign" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadWorkflowMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "list":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/workflow/allWorkflow"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />{" "}
-            </ListItemIcon>
-            <ListItemText primary="View" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/workflow/allWorkflow"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />{" "}
+              </ListItemIcon>
+              <ListItemText primary="View" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "create":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/workflow/create-workflow/0"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="CREATE" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/workflow/create-workflow/0"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="CREATE" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   const LoadReportMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
         case "density":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/reports/locationdensity"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />{" "}
-            </ListItemIcon>
-            <ListItemText primary="Location Density" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/reports/locationdensity"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />{" "}
+              </ListItemIcon>
+              <ListItemText primary="Location Density" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "accessBreach":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/reports/access-breaches"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Access Breaches" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/reports/access-breaches"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Access Breaches" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "socialBreach":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/reports/social-distancing"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Social Distancing Breaches" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/reports/social-distancing"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Social Distancing Breaches" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "staffInOffice":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/reports/office-staff"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Number Of Staff In Office" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/reports/office-staff"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Number Of Staff In Office" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "densityBreach":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/reports/densitythreshold"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Density Threshold Breaches" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/reports/densitythreshold"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Density Threshold Breaches" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "contactTrace":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/reports/contact-trace-history"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Contact Trace History" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/reports/contact-trace-history"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Contact Trace History" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         case "geoBreach":
-          return entity.isAccess ? <ListItem
-            button
-            className={classes.nested}
-            component={Link}
-            to="/reports/geo-fencing-breaches"
-          >
-            <ListItemIcon>
-              <ArrowForwardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Geo Fencing Threshold Breaches" />
-          </ListItem> : "";
+          return entity.isAccess ? (
+            <ListItem
+              button
+              className={classes.nested}
+              component={Link}
+              to="/reports/geo-fencing-breaches"
+            >
+              <ListItemIcon>
+                <ArrowForwardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Geo Fencing Threshold Breaches" />
+            </ListItem>
+          ) : (
+            ""
+          );
           break;
         default:
           return "";
       }
     });
-  }
+  };
 
   return (
     <div className={`${classes.root} top-header`}>
@@ -1581,9 +1778,7 @@ function AdminLayout(props) {
           Message
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            {NotificationMessage.message}
-          </Typography>
+          <Typography gutterBottom>{NotificationMessage.message}</Typography>
         </DialogContent>
         <DialogActions>
           <Button
@@ -1636,7 +1831,10 @@ function AdminLayout(props) {
             )} */}
           </Typography>
           <IconButton aria-label="show 17 new notifications" color="inherit">
-            <Badge badgeContent={notificationList ? notificationList.unreadCount : 0} color="secondary">
+            <Badge
+              badgeContent={notificationList ? notificationList.unreadCount : 0}
+              color="secondary"
+            >
               <NotificationsIcon onClick={handleClickNotifications} />
               <Popover
                 id={idNotifications}
@@ -1654,11 +1852,23 @@ function AdminLayout(props) {
                 className="notification-container"
               >
                 <ul>
-                  {notificationList && notificationList.getAllList ? notificationList.getAllList.map((data) => (
-                    <li className={`${data.isRead ? '' : 'notification-unread'}`} onClick={() => dislayNotificationMessage(data)} key={`notification_${data.id}`}>
-                      {data.message.substring(0, 70) + '...'}
-                    </li>
-                  )) : ""}
+                  {notificationList && notificationList.getAllList
+                    ? notificationList.getAllList.map((data) => (
+                        <li
+                          className={`${
+                            data.isRead ? "" : "notification-unread"
+                          }`}
+                          onClick={() => dislayNotificationMessage(data)}
+                          key={`notification_${data.id}`}
+                        >
+                          {data.message.substring(0, 70) + "..."}
+                          <br />
+                          <span className="notificationSettings" style={{}}>
+                            {moment.parseZone(data.messageDateTime).fromNow()}
+                          </span>
+                        </li>
+                      ))
+                    : "There are no notifications"}
                 </ul>
               </Popover>
             </Badge>
@@ -1720,7 +1930,7 @@ function AdminLayout(props) {
               }}
             />
           )}
-        // autoHeight
+          // autoHeight
         >
           <div className={`${classes.drawerContainer} side-menu`}>
             <List>

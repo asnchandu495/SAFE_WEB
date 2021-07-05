@@ -132,7 +132,10 @@ function AllocateUserToSite(props) {
       {!componentLoadder ? (
         <ValidatorForm className={`global-form`} onSubmit={UserSitesUpdate}>
           <CardContent>
-            <Typography className="card-heading">Update Sites</Typography>
+            <Typography className="card-heading">
+              {" "}
+              <label className="required">Update Sites</label>
+            </Typography>
             <div className="card-form">
               <Grid container spacing={3}>
                 <Grid item sm={9}>
@@ -140,7 +143,7 @@ function AllocateUserToSite(props) {
                     id="tags-outlined"
                     options={
                       BusinessTeamMasterData &&
-                        BusinessTeamMasterData.length > 0
+                      BusinessTeamMasterData.length > 0
                         ? BusinessTeamMasterData
                         : []
                     }

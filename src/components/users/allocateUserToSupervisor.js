@@ -158,7 +158,10 @@ function AllocateUserToSupervisor(props) {
       {!componentLoadder ? (
         <ValidatorForm className={`global-form`} onSubmit={UserSupervisor}>
           <CardContent>
-            <Typography className="card-heading">Update Supervisor</Typography>
+            <Typography className="card-heading">
+              {" "}
+              <label className="required">Update Supervisor</label>
+            </Typography>
             <div className="card-form">
               <Grid container spacing={3}>
                 <Grid item sm={9}>

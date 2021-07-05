@@ -404,7 +404,7 @@ function AssignQuestionaires(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
 
     customToolbar: () => {
       return (
@@ -490,7 +490,7 @@ function AssignQuestionaires(props) {
                   ></Button>
                 </Tooltip>
 
-                <Tooltip title="Change Doc Status">
+                <Tooltip title="Change  Status">
                   <Button
                     variant="contained"
                     color="default"
@@ -526,7 +526,7 @@ function AssignQuestionaires(props) {
 
   function handleClickViewWorkflow(value) {
     var groupDetails = value[2];
-    props.history.push(`/questionaires/workflow-states/${groupDetails['id']}`);
+    props.history.push(`/questionaires/workflow-states/${groupDetails["id"]}`);
   }
 
   return (
@@ -536,7 +536,7 @@ function AssignQuestionaires(props) {
         aria-labelledby="form-dialog-title"
         open={Modalopen}
         className="global-dialog"
-      // open={props.Modalopen}
+        // open={props.Modalopen}
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Assign Questionnaire to User Group
@@ -653,12 +653,12 @@ function AssignQuestionaires(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                            return (
-                              <MenuItem value={UserStatus.id}>
-                                {UserStatus.name}
-                              </MenuItem>
-                            );
-                          })
+                              return (
+                                <MenuItem value={UserStatus.id}>
+                                  {UserStatus.name}
+                                </MenuItem>
+                              );
+                            })
                           : ""}
                       </Select>
                     </FormControl>

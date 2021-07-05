@@ -28,7 +28,6 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
-
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -208,7 +207,6 @@ function AllocateUserToPrimaryGroup(props) {
     if (UserSelectedPrimaryGroupValue) {
       setModalsubmit(true);
       // UserPrimaryGroupSubmit();
-
     } else {
       return false;
     }
@@ -218,7 +216,6 @@ function AllocateUserToPrimaryGroup(props) {
     setformFieldValidation({ primaryGroup: false });
     setResetComponent("YES");
     setModalsubmit(false);
-
   };
 
   function handleClickYes() {
@@ -264,7 +261,9 @@ function AllocateUserToPrimaryGroup(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Whichever FAQ , Questionnaire , Emergency Contact and Workflow is assigned to this user group, will be applicable for the selected user(s). Are you sure you want to go ahead with the change ?
+            Whichever FAQ , Questionnaire , Emergency Contact and Workflow is
+            assigned to this user group, will be applicable for the selected
+            user(s). Are you sure you want to go ahead with the change ?
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -288,7 +287,7 @@ function AllocateUserToPrimaryGroup(props) {
         <ValidatorForm className={`global-form`} onSubmit={UserPrimaryGroup}>
           <CardContent>
             <Typography className="card-heading">
-              Update Primary Group
+              <label className="required">Update Primary Group</label>
             </Typography>
             <div className="card-form">
               <Grid container spacing={3}>
@@ -297,7 +296,7 @@ function AllocateUserToPrimaryGroup(props) {
                     id="tags-outlined"
                     options={
                       BusinessTeamMasterData &&
-                        BusinessTeamMasterData.length > 0
+                      BusinessTeamMasterData.length > 0
                         ? BusinessTeamMasterData
                         : []
                     }
