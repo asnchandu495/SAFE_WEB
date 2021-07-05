@@ -1863,7 +1863,7 @@ function AdminLayout(props) {
                         >
                           {data.message.substring(0, 70) + "..."}
                           <br />
-                          <span className="notificationSettings" style={{}}>
+                          <span className="notification-Settings">
                             {moment.parseZone(data.messageDateTime).fromNow()}
                           </span>
                         </li>

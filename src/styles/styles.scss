@@ -8,7 +8,7 @@ body,
   min-height: 100vh;
 }
 
-body{
+body {
   overflow-y: hidden;
 }
 
@@ -642,10 +642,10 @@ label.required {
   .MuiGrid-grid-sm-4 {
     margin-bottom: 20px;
   }
-  .inline-form-checkbox{
+  .inline-form-checkbox {
     display: flex;
     align-items: center;
-    .MuiCheckbox-root{
+    .MuiCheckbox-root {
       padding: 0 5px 0 0;
     }
   }
@@ -761,7 +761,7 @@ label.required {
     }
   }
   .submit-button {
-    margin-top: 10px;
+    margin-top: 37px;
     button {
       width: 100% !important;
     }
@@ -1184,7 +1184,7 @@ label.required {
   }
 }
 
-.report-pickers{
+.report-pickers {
   .MuiInputBase-input {
     padding: 10px !important;
   }
@@ -1415,7 +1415,7 @@ label.required {
   }
 }
 
-.no-action-checkbox-table{
+.no-action-checkbox-table {
   tbody td {
     padding: 5px !important;
   }
@@ -1512,7 +1512,7 @@ label.required {
   }
 }
 
-.checkbox-grid{
+.checkbox-grid {
   tbody {
     tr:nth-child(odd) td:first-child {
       background-color: #ebebeb;
@@ -1523,8 +1523,8 @@ label.required {
   }
 }
 
-.no-padding-checkbox{
-  .MuiCheckbox-root{
+.no-padding-checkbox {
+  .MuiCheckbox-root {
     padding: 0 9px 0 0;
   }
 }
@@ -1551,29 +1551,34 @@ label.required {
 }
 
 #heap .node rect {
-    fill: none;
-    stroke: #636363;
-    stroke-width: 1.5px;
+  fill: none;
+  stroke: #636363;
+  stroke-width: 1.5px;
 }
 
-.notification-unread{
+.notification-unread {
   font-weight: 600 !important;
 }
 
-.no-pointer-events{
-  .MuiListItem-root{
+.no-pointer-events {
+  .MuiListItem-root {
     cursor: not-allowed !important;
   }
 }
 
-.adorment-select{
-  .MuiSelect-icon{
+.adorment-select {
+  .MuiSelect-icon {
     right: 50px;
   }
 }
 
-.close-container-order-execution{
+.close-container-order-execution {
   height: auto !important;
   margin-top: 25px !important;
   padding-right: 25px !important;
+}
+.notification-Settings {
+  color: #26235d;
+  opacity: 0.5;
+  font-size: 12px;
 }

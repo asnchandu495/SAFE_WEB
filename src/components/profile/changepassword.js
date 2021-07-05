@@ -124,13 +124,13 @@ export default function ChangePassword(props) {
                   variant="outlined"
                   validators={[
                     "required",
-
-                    "matchRegexp:^.{" + passwordLength + ",}$",
+                    "matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?_-])[A-Za-z\\d#$@!%&*?]{" +
+                      passwordLength +
+                      ",}$",
                   ]}
                   errorMessages={[
                     "Please enter new password",
-
-                    "Minimum 8 characters",
+                    `One upper case letter, One lower case letter, One digit, One special character, Minimum ${passwordLength} in length`,
                   ]}
                   fullWidth
                   name="newPassword"
@@ -151,12 +151,14 @@ export default function ChangePassword(props) {
                     "required",
                     "isPasswordMatch",
 
-                    "matchRegexp:^.{" + passwordLength + ",}$",
+                    "matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?_-])[A-Za-z\\d#$@!%&*?]{" +
+                      passwordLength +
+                      ",}$",
                   ]}
                   errorMessages={[
                     "Please re-enter password",
                     "Password mismatch",
-                    "Minimum 8 characters",
+                    `One upper case letter, One lower case letter, One digit, One special character, Minimum ${passwordLength} in length`,
                   ]}
                   fullWidth
                   name="confirmPassword"
@@ -171,6 +173,7 @@ export default function ChangePassword(props) {
                 />
               </Grid>
             </Grid>
+
             <Grid item xs={12} className="submit-button">
               <Button
                 variant="contained"
