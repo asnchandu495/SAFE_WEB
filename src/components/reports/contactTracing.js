@@ -488,20 +488,21 @@ function ContactTracing(props) {
   function submitFiltersFromSession() {
     let reportFilters = sessionStorage.getItem("contactTracing");
     let selectedReportFilter = JSON.parse(reportFilters);
-
+    console.log(selectedReportType);
     setSearchFormOld((searchFormOld) => ({
       ...searchFormOld,
       ["userId"]: selectedReportFilter.userId,
       ["startDate"]: selectedReportFilter.startDate,
       ["endDate"]: selectedReportFilter.endDate,
     }));
-
+    setselectedReportTypeDataOld(selectedReportFilter.selectedReportType);
     setSearchForm((searchForm) => ({
       ...searchForm,
       ["userId"]: selectedReportFilter.userId,
       ["startDate"]: selectedReportFilter.startDate,
       ["endDate"]: selectedReportFilter.endDate,
     }));
+    setSelectedReportType(selectedReportFilter.selectedReportType);
 
     let searchForm = {
       startDate: selectedReportFilter.startDate,
@@ -556,6 +557,7 @@ function ContactTracing(props) {
       userId: searchForm.userId,
       startDate: searchForm.startDate,
       endDate: searchForm.endDate,
+      selectedReportType: selectedReportType,
     };
     sessionStorage.setItem("contactTracing", JSON.stringify(storeFilters));
     setshowLoadder(true);
