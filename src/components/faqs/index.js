@@ -208,7 +208,7 @@ function ViewAllFAQs(props) {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -264,7 +264,7 @@ function ViewAllFAQs(props) {
             return acm.module == "faq";
           });
 
-          if (thisRowData) {
+          if (thisRowData && faqACM) {
             return (
               <div className={`action-buttons-container`}>
                 <LoadActions

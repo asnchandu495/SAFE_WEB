@@ -333,9 +333,9 @@ function ListSite(props) {
           let sitesACM = props.acmData.find((acm) => {
             return acm.module == "site";
           });
-          console.log(sitesACM.permissions);
+
           var thisRowData = tableMeta.rowData;
-          if (thisRowData) {
+          if (thisRowData && sitesACM) {
             return (
               <div className={`action-buttons-container`}>
                 {/* {props.acmData.length} */}

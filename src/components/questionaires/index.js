@@ -150,10 +150,9 @@ function Questionaire(props) {
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
           let questionnaireACM = props.acmData.find((acm) => {
-            console.log(acm.module);
             return acm.module == "questionnaire";
           });
-          if (thisRowData) {
+          if (thisRowData && questionnaireACM) {
             return (
               <div className={`action-buttons-container`}>
                 <LoadActions

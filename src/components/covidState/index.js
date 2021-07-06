@@ -59,7 +59,6 @@ function CovidState(props) {
 
   useEffect(() => {
     Promise.all([props.LoadData(), props.LoadGridsPage()])
-
       .then(([result, gridResult]) => {
         setcomponentLoadder(false);
       })
@@ -150,8 +149,7 @@ function CovidState(props) {
           let covidStateACM = props.acmData.find((acm) => {
             return acm.module == "covidState";
           });
-
-          if (thisRowData) {
+          if (thisRowData && covidStateACM) {
             return (
               <div className={`action-buttons-container`}>
                 <LoadActions

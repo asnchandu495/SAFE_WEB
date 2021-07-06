@@ -737,7 +737,7 @@ function Users(props) {
             return acm.module == "user";
           });
 
-          if (thisRowData) {
+          if (thisRowData && usersACM) {
             return (
               <div className={`action-buttons-container`}>
                 <LoadActions
