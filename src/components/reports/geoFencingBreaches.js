@@ -641,6 +641,8 @@ function GeoFencingBreaches(props) {
                           "aria-label": "change date",
                         }}
                         required
+                        minDateMessage="To date must be greater than FROM date"
+                        maxDateMessage="Select max 1 month duration"
                       />
                     </Grid>
                   </Grid>

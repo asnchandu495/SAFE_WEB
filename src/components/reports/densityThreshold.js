@@ -167,6 +167,7 @@ function DensityThreshold(props) {
   const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
   const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
   const [isFilterSelected, setIsFilterSelected] = useState(false);
+  const [isLocationLoading, setIsLocationLoading] = useState(false);
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -462,6 +463,7 @@ function DensityThreshold(props) {
 
   function selectedSite(e, value) {
     setselectedLocationData([]);
+    setIsLocationLoading(true);
     setselectedSiteData(value);
     if (value) {
       let data = value.id;
@@ -469,6 +471,7 @@ function DensityThreshold(props) {
         .getAllLocationsBySiteId(data)
         .then((getResult) => {
           setLocationData(getResult);
+          setIsLocationLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -599,6 +602,7 @@ function DensityThreshold(props) {
                         ></InputLabel>
                         <Autocomplete
                           multiple
+                          loading={isLocationLoading}
                           id="tags-outlined"
                           options={
                             locationData && locationData.length > 0
@@ -695,6 +699,8 @@ function DensityThreshold(props) {
                           "aria-label": "change date",
                         }}
                         required
+                        minDateMessage="To date must be greater than FROM date"
+                        maxDateMessage="Select max 1 month duration"
                       />
                     </Grid>
                   </Grid>
