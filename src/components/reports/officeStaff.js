@@ -304,11 +304,10 @@ function OfficeStaff(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: `${
-          isFilterSelected
-            ? "There are no reports"
-            : "Please select filters to generate report"
-        }`,
+        noMatch: `${isFilterSelected
+          ? "There are no reports"
+          : "Please select filters to generate report"
+          }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -346,7 +345,7 @@ function OfficeStaff(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -469,11 +468,13 @@ function OfficeStaff(props) {
     setselectedSiteData(selectedReportFilter.selectedSiteData);
     setselectedTeamData(selectedReportFilter.selectedTeamData);
 
+    console.log(selectedReportFilter);
+
     let searchForm = {
       FilterDate: selectedReportFilter.FilterDate,
       frequency: selectedReportFilter.frequency,
       site: selectedReportFilter.selectedSiteData.id,
-      team: selectedReportFilter.selectedTeamData.map((item) => item.id),
+      Teams: selectedReportFilter.selectedTeamData.map((item) => item.id),
     };
 
     reportApiCall
@@ -482,8 +483,7 @@ function OfficeStaff(props) {
         setIsFilterSelected(true);
         setOfficeStaffeData(result);
         setTimeout(() => {
-          setModalOpen(false);
-          setshowLoadder(false);
+          setComponentLoadder(false);
         }, 3000);
       })
       .catch((err) => {
