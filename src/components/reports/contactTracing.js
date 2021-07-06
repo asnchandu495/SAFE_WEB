@@ -198,6 +198,10 @@ function ContactTracing(props) {
           .then(([getUsers, getCovidStates]) => {
             setApplicationUsers(getUsers);
             setBusinessCovidStateData(getCovidStates);
+            let reportFilters = sessionStorage.getItem("contactTracing");
+            if (reportFilters) {
+              submitFiltersFromSession();
+            }
             setComponentLoadder(false);
           })
           .catch((err) => {
@@ -481,14 +485,81 @@ function ContactTracing(props) {
     setSearchForm(resetForm);
   }
 
+  function submitFiltersFromSession() {
+    let reportFilters = sessionStorage.getItem("contactTracing");
+    let selectedReportFilter = JSON.parse(reportFilters);
+
+    setSearchFormOld((searchFormOld) => ({
+      ...searchFormOld,
+      ["userId"]: selectedReportFilter.userId,
+      ["startDate"]: selectedReportFilter.startDate,
+      ["endDate"]: selectedReportFilter.endDate,
+    }));
+
+    setSearchForm((searchForm) => ({
+      ...searchForm,
+      ["userId"]: selectedReportFilter.userId,
+      ["startDate"]: selectedReportFilter.startDate,
+      ["endDate"]: selectedReportFilter.endDate,
+    }));
+
+    let searchForm = {
+      startDate: selectedReportFilter.startDate,
+      endDate: selectedReportFilter.endDate,
+      userId: selectedReportFilter.userId,
+    };
+
+    if (selectedReportType == "rlap") {
+      reportApiCall
+        .getContactTracingRlapReport(searchForm)
+        .then((result) => {
+          setIsFilterSelected(true);
+          setContactTracingData(result);
+          setTimeout(() => {
+            setModalOpen(false);
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    } else {
+      reportApiCall
+        .getContactTracingBleReport(searchForm)
+        .then((result) => {
+          setIsFilterSelected(true);
+          setContactTracingData(result);
+          setTimeout(() => {
+            setModalOpen(false);
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
+  }
+
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
     setSearchFormOld(searchForm);
     setselectedReportTypeDataOld(selectedReportType);
-
+    let storeFilters = {
+      userId: searchForm.userId,
+      startDate: searchForm.startDate,
+      endDate: searchForm.endDate,
+    };
+    sessionStorage.setItem("contactTracing", JSON.stringify(storeFilters));
     setshowLoadder(true);
+
     if (selectedReportType == "rlap") {
       reportApiCall
         .getContactTracingRlapReport(searchForm)
