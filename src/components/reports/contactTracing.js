@@ -252,9 +252,7 @@ function ContactTracing(props) {
                     color="default"
                     startIcon={<ChangeStatusIcon />}
                     className={["edit-icon"].join(" ")}
-                    onClick={() =>
-                      handleClickOpenBulkModal(thisRowData)
-                    }
+                    onClick={() => handleClickOpenBulkModal(thisRowData)}
                   ></Button>
                 </Tooltip>
                 <Tooltip title="Alert">
@@ -296,7 +294,7 @@ function ContactTracing(props) {
 
   const options = {
     filter: false,
-    onFilterChange: (changedColumn, filterList) => { },
+    onFilterChange: (changedColumn, filterList) => {},
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
@@ -307,10 +305,11 @@ function ContactTracing(props) {
     jumpToPage: true,
     textLabels: {
       body: {
-        noMatch: `${isFilterSelected
-          ? "There are no reports"
-          : "Please select filters to generate report"
-          }`,
+        noMatch: `${
+          isFilterSelected
+            ? "There are no reports"
+            : "Please select filters to generate report"
+        }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -371,7 +370,7 @@ function ContactTracing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -533,7 +532,9 @@ function ContactTracing(props) {
   });
 
   const handleClickOpenConfirmationModal = (value) => {
-    let selecteduserDtails = applicationUsers.find(usr => usr.id == searchForm.userId.id);
+    let selecteduserDtails = applicationUsers.find(
+      (usr) => usr.id == searchForm.userId.id
+    );
     // selectedUsersForCovidState
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -552,7 +553,9 @@ function ContactTracing(props) {
   const handleClickOpenBulkModal = (thisRowData) => {
     if (thisRowData) {
       setRowClickCovidState({ id: thisRowData[2] });
-      let selecteduserDtails = applicationUsers.find(usr => usr.id == thisRowData[2]);
+      let selecteduserDtails = applicationUsers.find(
+        (usr) => usr.id == thisRowData[2]
+      );
       setcovidStatelist(selecteduserDtails.covidStateDetails);
     }
     setBulkModalOpen(true);
@@ -578,7 +581,7 @@ function ContactTracing(props) {
       if (rowClickCovidState) {
         let sendData = {
           id: rowClickCovidState.id,
-          covidStateId: covidStatelist.id
+          covidStateId: covidStatelist.id,
         };
 
         userApiCall
@@ -634,7 +637,6 @@ function ContactTracing(props) {
             setshowLoadder(false);
           });
       }
-
     }
   }
   return (
@@ -668,7 +670,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                        BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
@@ -700,7 +702,10 @@ function ContactTracing(props) {
             >
               {showLoadder ? <ButtonLoadderComponent /> : "Update"}
             </Button>
-            <Button onClick={handleClickCloseBulkModal} className="global-cancel-btn">
+            <Button
+              onClick={handleClickCloseBulkModal}
+              className="global-cancel-btn"
+            >
               Cancel
             </Button>
           </DialogActions>
@@ -861,6 +866,8 @@ function ContactTracing(props) {
                           "aria-label": "change date",
                         }}
                         required
+                        minDateMessage="To date must be greater than FROM date"
+                        maxDateMessage="Select max 1 month duration"
                       />
                     </Grid>
                   </Grid>
