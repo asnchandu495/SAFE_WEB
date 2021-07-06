@@ -143,7 +143,7 @@ function AllocateUserToSecondaryGroup(props) {
         <ValidatorForm className={`global-form`} onSubmit={UserSecondaryGroup}>
           <CardContent>
             <Typography className="card-heading">
-              <label className="required">Update Secondary Group</label>
+              <label className="">Update Secondary Group</label>
             </Typography>
             <div className="card-form">
               <Grid container spacing={3}>
