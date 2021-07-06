@@ -161,7 +161,7 @@ function EmergencyContact(props) {
             return acm.module == "emergencyContact";
           });
 
-          if (thisRowData) {
+          if (thisRowData && emergencyContactACM) {
             return (
               <div className={`action-buttons-container`}>
                 <LoadActions

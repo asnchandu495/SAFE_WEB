@@ -159,7 +159,7 @@ function Teams(props) {
             return acm.module == "team";
           });
 
-          if (thisRowData) {
+          if (thisRowData && teamACM) {
             return (
               <div className={`action-buttons-container`}>
                 <LoadActions

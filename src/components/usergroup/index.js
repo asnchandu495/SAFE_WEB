@@ -166,7 +166,7 @@ function UserGroups(props) {
             return acm.module == "userGroup";
           });
 
-          if (thisRowData) {
+          if (thisRowData && usergroupACM) {
             return (
               <div className={`action-buttons-container`}>
                 <LoadActions

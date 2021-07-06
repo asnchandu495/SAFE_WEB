@@ -171,7 +171,7 @@ function ListAssignedDesignation(props) {
             return acm.module == "designation";
           });
 
-          if (thisRowData) {
+          if (thisRowData && designationACM) {
             return (
               <div className={`action-buttons-container`}>
                 <LoadActions

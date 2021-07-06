@@ -158,7 +158,7 @@ function Workflow(props) {
             return acm.module == "workflow";
           });
 
-          if (thisRowData) {
+          if (thisRowData && worflowACM) {
             return (
               <div className={`action-buttons-container`}>
                 <LoadActions
@@ -348,7 +348,7 @@ function Workflow(props) {
       });
       return isFound;
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -586,12 +586,12 @@ function Workflow(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                              return (
-                                <MenuItem value={UserStatus.id}>
-                                  {UserStatus.name}
-                                </MenuItem>
-                              );
-                            })
+                            return (
+                              <MenuItem value={UserStatus.id}>
+                                {UserStatus.name}
+                              </MenuItem>
+                            );
+                          })
                           : ""}
                       </Select>
                     </FormControl>
