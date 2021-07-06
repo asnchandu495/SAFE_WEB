@@ -199,6 +199,7 @@ function OfficeStaff(props) {
   const [isFilterSelected, setIsFilterSelected] = useState(false);
 
   useEffect(() => {
+    setComponentLoadder(true);
     Promise.all([
       siteApiCall.getListSiteSupervisor(),
       masterDataCallApi.getTeams(),
@@ -208,6 +209,10 @@ function OfficeStaff(props) {
       .then(([getAllSites, getTeamsData, gridResult, result]) => {
         setAllSites(getAllSites);
         setTeamData(getTeamsData);
+        let reportFilters = sessionStorage.getItem("officeStaff");
+        if (reportFilters) {
+          submitFiltersFromSession();
+        }
         setComponentLoadder(false);
       })
       .catch((err) => {
@@ -445,6 +450,50 @@ function OfficeStaff(props) {
     setSearchForm(resetForm);
   }
 
+  function submitFiltersFromSession() {
+    let reportFilters = sessionStorage.getItem("officeStaff");
+    let selectedReportFilter = JSON.parse(reportFilters);
+
+    setSearchFormOld((searchFormOld) => ({
+      ...searchFormOld,
+      ["FilterDate"]: selectedReportFilter.FilterDate,
+      ["frequency"]: selectedReportFilter.frequency,
+    }));
+    setselectedSiteDataOld(selectedReportFilter.selectedSiteData);
+    setselectedTeamDataOld(selectedReportFilter.selectedTeamData);
+    setSearchForm((searchForm) => ({
+      ...searchForm,
+      ["FilterDate"]: selectedReportFilter.FilterDate,
+      ["frequency"]: selectedReportFilter.frequency,
+    }));
+    setselectedSiteData(selectedReportFilter.selectedSiteData);
+    setselectedTeamData(selectedReportFilter.selectedTeamData);
+
+    let searchForm = {
+      FilterDate: selectedReportFilter.FilterDate,
+      frequency: selectedReportFilter.frequency,
+      site: selectedReportFilter.selectedSiteData.id,
+      team: selectedReportFilter.selectedTeamData.map((item) => item.id),
+    };
+
+    reportApiCall
+      .getOfficeStaffReport(searchForm)
+      .then((result) => {
+        setIsFilterSelected(true);
+        setOfficeStaffeData(result);
+        setTimeout(() => {
+          setModalOpen(false);
+          setshowLoadder(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
+  }
+
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -467,6 +516,14 @@ function OfficeStaff(props) {
       searchForm.frequency = frequencyValue.id;
     }
 
+    let storeFilters = {
+      selectedSiteData: selectedSiteData,
+      selectedTeamData: selectedTeamData,
+      FilterDate: searchForm.FilterDate,
+      frequency: searchForm.frequency,
+    };
+    sessionStorage.setItem("officeStaff", JSON.stringify(storeFilters));
+    setshowLoadder(true);
     reportApiCall
       .getOfficeStaffReport(searchForm)
       .then((result) => {
