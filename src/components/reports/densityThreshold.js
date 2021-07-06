@@ -178,6 +178,10 @@ function DensityThreshold(props) {
     ])
       .then(([getAllSites, gridResult]) => {
         setAllSites(getAllSites);
+        let reportFilters = sessionStorage.getItem("densityThreshold");
+        if (reportFilters) {
+          submitFiltersFromSession();
+        }
         setComponentLoadder(false);
       })
       .catch((err) => {
@@ -504,6 +508,52 @@ function DensityThreshold(props) {
     setSearchForm(resetForm);
   }
 
+  function submitFiltersFromSession() {
+    let reportFilters = sessionStorage.getItem("densityThreshold");
+    let selectedReportFilter = JSON.parse(reportFilters);
+
+    setSearchFormOld((searchFormOld) => ({
+      ...searchFormOld,
+      ["startDate"]: selectedReportFilter.startDate,
+      ["endDate"]: selectedReportFilter.endDate,
+    }));
+    setselectedSiteDataOld(selectedReportFilter.selectedSiteData);
+    setselectedLocationDataOld(selectedReportFilter.selectedLocationData);
+    setSearchForm((searchForm) => ({
+      ...searchForm,
+      ["startDate"]: selectedReportFilter.startDate,
+      ["endDate"]: selectedReportFilter.endDate,
+    }));
+    setselectedSiteData(selectedReportFilter.selectedSiteData);
+    setselectedLocationData(selectedReportFilter.selectedLocationData);
+
+    let searchForm = {
+      startDate: selectedReportFilter.startDate,
+      endDate: selectedReportFilter.endDate,
+      SiteId: selectedReportFilter.selectedSiteData.id,
+      LocationId: selectedReportFilter.selectedLocationData.map(
+        (item) => item.id
+      ),
+    };
+    setshowLoadder(true);
+    reportApiCall
+      .getDensityThresholdReport(searchForm)
+      .then((result) => {
+        setIsFilterSelected(true);
+        setDensityThresholdData(result);
+        setTimeout(() => {
+          setModalOpen(false);
+          setshowLoadder(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
+  }
+
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -522,7 +572,13 @@ function DensityThreshold(props) {
     } else {
       searchForm.LocationId = [];
     }
-    console.log(searchForm);
+    let storeFilters = {
+      selectedSiteData: selectedSiteData,
+      selectedLocationData: selectedLocationData,
+      startDate: searchForm.startDate,
+      endDate: searchForm.endDate,
+    };
+    sessionStorage.setItem("densityThreshold", JSON.stringify(storeFilters));
     setshowLoadder(true);
     reportApiCall
       .getDensityThresholdReport(searchForm)

@@ -145,6 +145,10 @@ function LocationDensity(props) {
     Promise.all([siteApiCall.getListSiteSupervisor(), props.LoadGridsPage()])
       .then(([getAllSites, gridResult]) => {
         setAllSites(getAllSites);
+        let reportFilters = sessionStorage.getItem("locationDensity");
+        if (reportFilters) {
+          submitFiltersFromSession();
+        }
         setComponentLoadder(false);
         setlocationDensityData();
       })
@@ -443,6 +447,50 @@ function LocationDensity(props) {
     }
   }
 
+  function submitFiltersFromSession() {
+    let reportFilters = sessionStorage.getItem("locationDensity");
+    let selectedReportFilter = JSON.parse(reportFilters);
+
+    setSearchFormOld((searchFormOld) => ({
+      ...searchFormOld,
+    }));
+    setselectedSiteDataOld(selectedReportFilter.selectedSiteData);
+    setselectedLocationDataOld(selectedReportFilter.selectedLocationData);
+    setSearchForm((searchForm) => ({
+      ...searchForm,
+    }));
+    setselectedSiteData(selectedReportFilter.selectedSiteData);
+    setselectedLocationData(selectedReportFilter.selectedLocationData);
+
+    let searchForm = {
+      SiteId: selectedReportFilter.selectedSiteData.id,
+      LocationId: selectedReportFilter.selectedLocationData.map(
+        (item) => item.id
+      ),
+    };
+    setshowLoadder(true);
+    siteApiCall
+      .getLocationBysiteReport(searchForm)
+      .then((result) => {
+        setIsFilterSelected(true);
+        // setStateSnackbar(true);
+        // setToasterMessage("success");
+        // settoasterServerity("success");
+        setlocationDensityData(result);
+        setTimeout(() => {
+          setReportTime(moment().toISOString());
+          setModalOpen(false);
+          setshowLoadder(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
+  }
+
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -481,7 +529,12 @@ function LocationDensity(props) {
     } else {
       searchForm.LocationId = [];
     }
-
+    let storeFilters = {
+      selectedSiteData: selectedSiteData,
+      selectedLocationData: selectedLocationData,
+    };
+    sessionStorage.setItem("locationDensity", JSON.stringify(storeFilters));
+    setshowLoadder(true);
     siteApiCall
       .getLocationBysiteReport(searchForm)
       .then((result) => {

@@ -190,6 +190,10 @@ function SocailDistancing(props) {
             };
             getUsers.unshift(allOption);
             setApplicationUsers(getUsers);
+            let reportFilters = sessionStorage.getItem("socialDistancing");
+            if (reportFilters) {
+              submitFiltersFromSession();
+            }
             setComponentLoadder(false);
           })
           .catch((err) => {
@@ -472,11 +476,58 @@ function SocailDistancing(props) {
   function resetFilterForm() {
     setSearchForm(resetForm);
   }
+
+  function submitFiltersFromSession() {
+    let reportFilters = sessionStorage.getItem("socialDistancing");
+    let selectedReportFilter = JSON.parse(reportFilters);
+
+    setSearchFormOld((searchFormOld) => ({
+      ...searchFormOld,
+      ["userId"]: selectedReportFilter.userId,
+      ["startDate"]: selectedReportFilter.startDate,
+      ["endDate"]: selectedReportFilter.endDate,
+    }));
+
+    setSearchForm((searchForm) => ({
+      ...searchForm,
+      ["userId"]: selectedReportFilter.userId,
+      ["startDate"]: selectedReportFilter.startDate,
+      ["endDate"]: selectedReportFilter.endDate,
+    }));
+
+    let searchForm = {
+      startDate: selectedReportFilter.startDate,
+      endDate: selectedReportFilter.endDate,
+      userId: selectedReportFilter.userId,
+    };
+
+    reportApiCall
+      .getSocialDistancingReport(searchForm)
+      .then((result) => {
+        setSocialDistancingData(result);
+        setTimeout(() => {
+          setModalOpen(false);
+          setshowLoadder(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
+  }
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
     setSearchFormOld(searchForm);
+    let storeFilters = {
+      userId: searchForm.userId,
+      startDate: searchForm.startDate,
+      endDate: searchForm.endDate,
+    };
+    sessionStorage.setItem("socialDistancing", JSON.stringify(storeFilters));
     setshowLoadder(true);
     reportApiCall
       .getSocialDistancingReport(searchForm)
