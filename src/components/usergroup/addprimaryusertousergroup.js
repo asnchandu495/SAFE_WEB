@@ -242,8 +242,10 @@ function AddPrimaryUserToUserGroups(props) {
             setBusinessGroupData(getUserGroup);
             setBusinessCovidStateData(getCovidState);
             setSelectedGroupInfo(groupInfo);
-            setApplicationUsers(applicationUsers);
-            setComponentLoadder(false);
+
+            const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+
+            setApplicationUsers(newArr1);
             var selectedUsersToGroupArray = [];
 
             applicationUsers.map((user, i) => {
@@ -253,6 +255,7 @@ function AddPrimaryUserToUserGroups(props) {
               }
             });
             setSelectedUsersToGroup(selectedUsersToGroupArray);
+            setComponentLoadder(false);
           }
         )
         .catch((error) => {
@@ -304,7 +307,7 @@ function AddPrimaryUserToUserGroups(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -329,6 +332,17 @@ function AddPrimaryUserToUserGroups(props) {
         display: "excluded",
         print: false,
         filter: false,
+      },
+    },
+    {
+      label: "selected",
+      name: "isSelected",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+        sort: true,
+        sortDirection: 'asc'
       },
     },
     {
@@ -695,7 +709,7 @@ function AddPrimaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                          BusinessUserRoleMasterData.length > 0
+                            BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -725,13 +739,13 @@ function AddPrimaryUserToUserGroups(props) {
                   <Grid
                     item
                     sm={8}
-                    // className={[userId ? classes.HideGrid : ""].join(" ")}
+                  // className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <Autocomplete
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                        BusinessDesingationData.length > 0
+                          BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -763,7 +777,7 @@ function AddPrimaryUserToUserGroups(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                        BusinessSiteMasterData.length > 0
+                          BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -795,7 +809,7 @@ function AddPrimaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                            BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }
@@ -894,10 +908,11 @@ function AddPrimaryUserToUserGroups(props) {
           <Grid container>
             <Grid item xs={12} className={`global-form inner-table-buttons`}>
               <div className={`form-buttons-container`}>
-                <LoadActions
+                {usergroupACM ? <LoadActions
                   modulePermission={usergroupACM.permissions}
                   anchorRef={anchorRef}
-                ></LoadActions>
+                ></LoadActions> : ""}
+
                 {/* <Button
                   variant="contained"
                   type="button"

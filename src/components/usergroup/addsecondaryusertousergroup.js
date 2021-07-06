@@ -209,13 +209,17 @@ function AddSecondaryUserToUserGroups(props) {
           ]) => {
             let primaryUsers = groupInfo.secondaryapplicationuserDetails;
             setSelectedGroupInfo(groupInfo);
-            setApplicationUsers(applicationUsers);
             setBusinessUserRoleMasterData(getUserRoles);
             setBusinessDesingationData(getDesignations);
             setBusinessSiteMasterData(getSites);
             setBusinessGroupData(getUserGroup);
             setBusinessCovidStateData(getCovidState);
-            setComponentLoadder(false);
+
+
+            const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+
+            setApplicationUsers(newArr1);
+
             var selectedUsersToGroupArray = [];
 
             applicationUsers.map((user, i) => {
@@ -225,6 +229,7 @@ function AddSecondaryUserToUserGroups(props) {
               }
             });
             setSelectedUsersToGroup(selectedUsersToGroupArray);
+            setComponentLoadder(false);
           }
         )
         .catch((error) => {
@@ -419,6 +424,17 @@ function AddSecondaryUserToUserGroups(props) {
         display: "excluded",
         print: false,
         filter: false,
+      },
+    },
+    {
+      label: "selected",
+      name: "isSelected",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+        sort: true,
+        sortDirection: 'asc'
       },
     },
     {
@@ -757,10 +773,10 @@ function AddSecondaryUserToUserGroups(props) {
           <Grid container>
             <Grid item xs={12} className={`global-form inner-table-buttons`}>
               <div className={`form-buttons-container`}>
-                <LoadActions
+                {usergroupACM ? <LoadActions
                   modulePermission={usergroupACM.permissions}
                   anchorRef={anchorRef}
-                ></LoadActions>
+                ></LoadActions> : ""}
 
                 <Button
                   variant="contained"
