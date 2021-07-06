@@ -167,6 +167,7 @@ function AccessBreaches(props) {
   const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
   const [viewUserDetails, setviewUserDetails] = useState();
   const [isFilterSelected, setIsFilterSelected] = useState(false);
+  const [isLocationLoading, setIsLocationLoading] = useState(false);
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -177,8 +178,11 @@ function AccessBreaches(props) {
     ])
       .then(([getAllSites, gridResult, result]) => {
         setAllSites(getAllSites);
+        let reportFilters = sessionStorage.getItem("accessBreach");
+        if (reportFilters) {
+          submitFiltersFromSession();
+        }
         setComponentLoadder(false);
-        // setviewUserDetails(result);
       })
       .catch((err) => {
         console.log(err);
@@ -222,7 +226,6 @@ function AccessBreaches(props) {
   ];
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
-      console.log(thisPage);
       return g.name == "report";
     });
 
@@ -313,8 +316,8 @@ function AccessBreaches(props) {
                     {moment(thisRowData[3]).format(
                       props.loadGlobalSettingsData
                         ? props.loadGlobalSettingsData.dateFormat +
-                            "  " +
-                            props.loadGlobalSettingsData.timeFormat
+                        "  " +
+                        props.loadGlobalSettingsData.timeFormat
                         : "hh:mm"
                     )}
                   </span>
@@ -348,17 +351,16 @@ function AccessBreaches(props) {
 
     textLabels: {
       body: {
-        noMatch: `${
-          isFilterSelected
-            ? "There are no reports"
-            : "Please select filters to generate report"
-        }`,
+        noMatch: `${isFilterSelected
+          ? "There are no reports"
+          : "Please select filters to generate report"
+          }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -424,14 +426,12 @@ function AccessBreaches(props) {
   };
 
   const handlePageChange = (_, page) => {
-    console.log(page);
     setCurrentPage(page);
   };
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
   const handleRowChange = (e) => {
-    console.log(e.target.value);
     setCurrentRowsPerPage(e.target.value);
   };
 
@@ -468,11 +468,13 @@ function AccessBreaches(props) {
     setselectedLocationData([]);
     setselectedSiteData(value);
     if (value) {
+      setIsLocationLoading(true);
       let data = value.id;
       siteApiCall
         .getAllLocationsBySiteId(data)
         .then((getResult) => {
           setLocationData(getResult);
+          setIsLocationLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -491,7 +493,6 @@ function AccessBreaches(props) {
         [name]: getSelectedVal,
       }));
     } else {
-      console.log(getSelectedVal);
       let thisValue = moment(getSelectedVal).toISOString();
       setSearchForm((searchForm) => ({
         ...searchForm,
@@ -504,6 +505,44 @@ function AccessBreaches(props) {
     setselectedSiteData();
     setselectedLocationData([]);
     setSearchForm(resetForm);
+  }
+
+  function submitFiltersFromSession() {
+    let reportFilters = sessionStorage.getItem("accessBreach");
+    let selectedReportFilter = JSON.parse(reportFilters);
+
+    setSearchFormOld((searchFormOld) => ({
+      ...searchFormOld,
+      ["startDate"]: selectedReportFilter.startDate,
+      ["endDate"]: selectedReportFilter.endDate,
+    }));
+    setselectedSiteDataOld(selectedReportFilter.selectedSiteData);
+    setselectedLocationDataOld(selectedReportFilter.selectedLocationData);
+    setSearchForm((searchForm) => ({
+      ...searchForm,
+      ["startDate"]: selectedReportFilter.startDate,
+      ["endDate"]: selectedReportFilter.endDate,
+    }));
+    setselectedSiteData(selectedReportFilter.selectedSiteData);
+    setselectedLocationData(selectedReportFilter.selectedLocationData);
+
+    let searchForm = { startDate: selectedReportFilter.startDate, endDate: selectedReportFilter.endDate, SiteId: selectedReportFilter.selectedSiteData.id, LocationId: selectedReportFilter.selectedLocationData.map((item) => item.id) }
+
+    reportApiCall
+      .getAccessBreachReport(searchForm)
+      .then((result) => {
+        setIsFilterSelected(true);
+        setlocationDensityData(result);
+        setTimeout(() => {
+          setComponentLoadder(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        setToasterMessage(err.data.errors);
+        settoasterServerity("error");
+        setStateSnackbar(true);
+        setshowLoadder(false);
+      });
   }
 
   function submitForm(e) {
@@ -525,7 +564,8 @@ function AccessBreaches(props) {
     } else {
       searchForm.LocationId = [];
     }
-    console.log(searchForm);
+    let storeFilters = { selectedSiteData: selectedSiteData, selectedLocationData: selectedLocationData, startDate: searchForm.startDate, endDate: searchForm.endDate };
+    sessionStorage.setItem("accessBreach", JSON.stringify(storeFilters));
     setshowLoadder(true);
     reportApiCall
       .getAccessBreachReport(searchForm)
@@ -558,7 +598,7 @@ function AccessBreaches(props) {
           Filter
         </DialogTitle>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-          <ValidatorForm className={`global-form`} onSubmit={submitForm}>
+          <ValidatorForm className={`global-form`} onSubmit={submitForm} id="filterForm">
             <DialogContent dividers>
               {!componentLoadder ? (
                 <Grid container spacing={3}>
@@ -605,6 +645,7 @@ function AccessBreaches(props) {
                         ></InputLabel>
                         <Autocomplete
                           multiple
+                          loading={isLocationLoading}
                           id="tags-outlined"
                           options={
                             locationData && locationData.length > 0
@@ -700,6 +741,8 @@ function AccessBreaches(props) {
                           "aria-label": "change date",
                         }}
                         required
+                        minDateMessage="To date must be greater than FROM date"
+                        maxDateMessage="Select max 1 month duration"
                       />
                     </Grid>
                   </Grid>

@@ -1187,6 +1187,9 @@ label.required {
 .report-pickers {
   .MuiInputBase-input {
     padding: 10px !important;
+    &:focus{
+      padding: 10px !important;
+    }
   }
 }
 
