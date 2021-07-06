@@ -208,7 +208,7 @@ function AssignedFAQs(props) {
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
-          <Tooltip title="Assign Faq">
+          <Tooltip title="Assign FAQ">
             <Button
               variant="contained"
               startIcon={<PostAddIcon />}
@@ -646,15 +646,15 @@ function AssignedFAQs(props) {
                       <MenuItem value="">None</MenuItem>
                       {docStatus && docStatus.length > 0
                         ? docStatus.map((docStatus) => {
-                            return (
-                              <MenuItem
-                                value={docStatus.id}
-                                key={docStatus.id + "_status"}
-                              >
-                                {docStatus.name}
-                              </MenuItem>
-                            );
-                          })
+                          return (
+                            <MenuItem
+                              value={docStatus.id}
+                              key={docStatus.id + "_status"}
+                            >
+                              {docStatus.name}
+                            </MenuItem>
+                          );
+                        })
                         : ""}
                     </Select>
                   </FormControl>

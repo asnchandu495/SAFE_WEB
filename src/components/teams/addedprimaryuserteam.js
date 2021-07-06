@@ -164,19 +164,21 @@ function AddPrimaryUserTeam(props) {
       ])
         .then(([teamInfo, applicationUsers, getDesignations, getUserList]) => {
           let primaryUsers = teamInfo.users;
-          setApplicationUsers(applicationUsers);
+          // setApplicationUsers(applicationUsers);
           setSelectedTeamInfo(teamInfo);
           setdesignationMasterData(getDesignations);
           setuserGroupList(getUserList);
-          setComponentLoadder(false);
+
+          const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+
+          setApplicationUsers(newArr1);
+
           var selectedUsersToGroupArray = [];
 
           applicationUsers.map((user, i) => {
             const found = primaryUsers.some((u) => u.id === user.id);
             if (found) {
               selectedUsersToGroupArray.push(i);
-            } else {
-              console.log("error");
             }
           });
           setSelectedUsersToTeam(selectedUsersToGroupArray);
@@ -223,7 +225,7 @@ function AddPrimaryUserTeam(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
 
     customToolbar: () => {
       return (
@@ -242,6 +244,26 @@ function AddPrimaryUserTeam(props) {
   };
 
   const columns = [
+    {
+      label: "Id",
+      name: "id",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+      },
+    },
+    {
+      label: "selected",
+      name: "isSelected",
+      options: {
+        display: "excluded",
+        print: false,
+        filter: false,
+        sort: true,
+        sortDirection: 'asc'
+      },
+    },
     {
       name: "firstName",
       label: "Name",
@@ -441,7 +463,7 @@ function AddPrimaryUserTeam(props) {
                         id="tags-outlined"
                         options={
                           designationMasterData &&
-                          designationMasterData.length > 0
+                            designationMasterData.length > 0
                             ? designationMasterData
                             : []
                         }
@@ -542,7 +564,7 @@ function AddPrimaryUserTeam(props) {
                         id="tags-outlined"
                         options={
                           designationMasterData &&
-                          designationMasterData.length > 0
+                            designationMasterData.length > 0
                             ? designationMasterData
                             : []
                         }
