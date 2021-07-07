@@ -223,7 +223,8 @@ function ImportUsers(props) {
             </Grid>
             <Grid item xs={12} className={classes.importUserFileContainer}>
               <Dropzone
-                accept={fileFormat ? "." + fileFormat : ".xls"}
+                // accept={fileFormat ? "." + fileFormat : ".xls"}
+                accept={fileFormat ? fileFormat == 'xls/xlsx' ? '.xls,.xlsx' : "." + fileFormat : ".xlsx"}
                 onDrop={onDrop}
                 noClick={true}
                 noKeyboard={true}
@@ -234,7 +235,7 @@ function ImportUsers(props) {
                       <input {...getInputProps()} />
                       <p className={classes.fileUploadParagraph}>
                         Drag and Drop OR Browse{" "}
-                        {fileFormat ? fileFormat : "xls"} file to upload
+                        {fileFormat ? fileFormat == 'xls/xlsx' ? 'xls,xlsx' : fileFormat : "xlsx"} file to upload
                       </p>
                       <div className={`fileuploadcontainer`}>
                         <Button

@@ -111,7 +111,7 @@ function GlobalSetting(props) {
   };
 
   const fileFormat = [
-    { id: "xls", format: "xls" },
+    { id: "xls", format: "xls/xlsx" },
     { id: "csv", format: "csv" },
   ];
 

@@ -186,7 +186,7 @@ function ActionFormNew(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, [props]);
+  }, [props.selectedAction]);
 
   const handleTemplate = (e, editor, index, name) => {
     const list = {
@@ -226,12 +226,13 @@ function ActionFormNew(props) {
           setStateSnackbar(true);
           setToasterMessage("Option details added");
           settoasterServerity("success");
+          // props.setDisableActions(true);
           setTimeout(() => {
             props.setDisableActions(false);
             setshowLoadder(false);
             props.setReloadPage("YES");
             props.setSelectedActionList(props.selectedAction.uniqueActivityId);
-          }, 10000);
+          }, 15000);
         })
         .catch((err) => {
           props.setDisableActions(false);
@@ -244,6 +245,7 @@ function ActionFormNew(props) {
       workflowApiCall
         .updateOptions(formData)
         .then((result) => {
+          // props.setDisableActions(true);
           setStateSnackbar(true);
           setToasterMessage("Option details updated");
           settoasterServerity("success");
@@ -252,7 +254,7 @@ function ActionFormNew(props) {
             setshowLoadder(false);
             props.setReloadPage("YES");
             props.setSelectedActionList(props.selectedAction.uniqueActivityId);
-          }, 10000);
+          }, 15000);
         })
         .catch((err) => {
           props.setDisableActions(false);
