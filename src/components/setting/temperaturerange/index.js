@@ -205,17 +205,17 @@ function TemperatureRange(props) {
       ],
     };
 
-    const listmain = {
-      ...tempsections,
-      covidStates: [
-        ...tempsections.covidStates.map((con, conIndex) => {
-          return conIndex - 1 == index - 1
-            ? { ...con, ["isNoUpperLimit"]: false }
-            : con;
-        }),
-      ],
-    };
-    settempsections(listmain);
+    // const listmain = {
+    //   ...tempsections,
+    //   covidStates: [
+    //     ...tempsections.covidStates.map((con, conIndex) => {
+    //       return conIndex - 1 == index - 1
+    //         ? { ...con, ["isNoUpperLimit"]: false }
+    //         : con;
+    //     }),
+    //   ],
+    // };
+    settempsections(list);
   }
 
   const handleRemoveClickContacts = (j) => {
@@ -273,6 +273,7 @@ function TemperatureRange(props) {
       item.lowerLimit = parseFloat(item.lowerLimit);
     });
     sendData.covidStates = getCovidStates;
+    sendData.id = sendData.globalSettingsId;
     props
       .updateTemp(sendData)
       .then((result) => {
