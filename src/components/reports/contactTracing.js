@@ -298,7 +298,7 @@ function ContactTracing(props) {
 
   const options = {
     filter: false,
-    onFilterChange: (changedColumn, filterList) => {},
+    onFilterChange: (changedColumn, filterList) => { },
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
@@ -309,11 +309,10 @@ function ContactTracing(props) {
     jumpToPage: true,
     textLabels: {
       body: {
-        noMatch: `${
-          isFilterSelected
-            ? "There are no reports"
-            : "Please select filters to generate report"
-        }`,
+        noMatch: `${isFilterSelected
+          ? "There are no reports"
+          : "Please select filters to generate report"
+          }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -374,7 +373,7 @@ function ContactTracing(props) {
       props.UpdateGridsPage(sendData);
     },
     onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -527,7 +526,7 @@ function ContactTracing(props) {
           setStateSnackbar(true);
           setshowLoadder(false);
         });
-    } else {
+    } else if (selectedReportType == 'ble') {
       reportApiCall
         .getContactTracingBleReport(searchForm)
         .then((result) => {
@@ -543,6 +542,19 @@ function ContactTracing(props) {
           settoasterServerity("error");
           setStateSnackbar(true);
           setshowLoadder(false);
+        });
+    } else {
+      Promise.all([reportApiCall.getContactTracingRlapReport(searchForm), reportApiCall.getContactTracingBleReport(searchForm)])
+        .then(([rlapData, bleData]) => {
+          setIsFilterSelected(true);
+          setContactTracingData([...rlapData, ...bleData]);
+          setTimeout(() => {
+            setModalOpen(false);
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((error) => {
+          console.log(error);
         });
     }
   }
@@ -579,7 +591,7 @@ function ContactTracing(props) {
           setStateSnackbar(true);
           setshowLoadder(false);
         });
-    } else {
+    } else if (selectedReportType == 'ble') {
       reportApiCall
         .getContactTracingBleReport(searchForm)
         .then((result) => {
@@ -595,6 +607,19 @@ function ContactTracing(props) {
           settoasterServerity("error");
           setStateSnackbar(true);
           setshowLoadder(false);
+        });
+    } else {
+      Promise.all([reportApiCall.getContactTracingRlapReport(searchForm), reportApiCall.getContactTracingBleReport(searchForm)])
+        .then(([rlapData, bleData]) => {
+          setIsFilterSelected(true);
+          setContactTracingData([...rlapData, ...bleData]);
+          setTimeout(() => {
+            setModalOpen(false);
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((error) => {
+          console.log(error);
         });
     }
   }
@@ -743,7 +768,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                        BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }
@@ -821,6 +846,11 @@ function ContactTracing(props) {
                           value="ble"
                           control={<Radio required />}
                           label="BLE"
+                        />
+                        <FormControlLabel
+                          value="both"
+                          control={<Radio required />}
+                          label="BOTH"
                         />
                       </RadioGroup>
                     </Grid>

@@ -236,17 +236,16 @@ function LocationDensity(props) {
     selectableRows: false,
     textLabels: {
       body: {
-        noMatch: `${
-          isFilterSelected
+        noMatch: `${isFilterSelected
             ? "There are no reports"
             : "Please select filters to generate report"
-        }`,
+          }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -612,7 +611,7 @@ function LocationDensity(props) {
                 </Grid>
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
-                    <label className="required">Location</label>
+                    <label>Location</label>
                   </Grid>
                   <Grid item xs={8}>
                     <FormControl variant="outlined" fullWidth>
@@ -636,9 +635,9 @@ function LocationDensity(props) {
                             {...params}
                             inputProps={{
                               ...params.inputProps,
-                              required: selectedLocationData
-                                ? selectedLocationData.length === 0
-                                : true,
+                              // required: selectedLocationData
+                              //   ? selectedLocationData.length === 0
+                              //   : true,
                             }}
                             variant="outlined"
                             placeholder="Select Location"
@@ -727,8 +726,8 @@ function LocationDensity(props) {
                           {moment(reportTime).format(
                             props.loadGlobalSettingsData
                               ? props.loadGlobalSettingsData.dateFormat +
-                                  "  " +
-                                  props.loadGlobalSettingsData.timeFormat
+                              "  " +
+                              props.loadGlobalSettingsData.timeFormat
                               : "hh:mm"
                           )}
                         </span>
