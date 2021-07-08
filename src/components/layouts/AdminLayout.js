@@ -189,7 +189,18 @@ function AdminLayout(props) {
 
   const [showLoadder, setshowLoadder] = useState(false);
   const [notificationList, setnotificationList] = useState();
-  const [gridPages, setGridPages] = useState([]);
+  const [gridPages, setGridPages] = useState([[
+    { name: "users", page: 1 },
+    { name: "sites", page: 1 },
+    { name: "designations", page: 1 },
+    { name: "covidStates", page: 1 },
+    { name: "faqs", page: 1 },
+    { name: "userGroups", page: 1 },
+    { name: "emergencyContacts", page: 1 },
+    { name: "teams", page: 1 },
+    { name: "questionnaire", page: 1 },
+    { name: "workflows", page: 1 },
+  ]]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -210,7 +221,7 @@ function AdminLayout(props) {
       .then(([loadsetting, loadgrid, loadacm, getNotificationDetails]) => {
         setnotificationList(getNotificationDetails);
       })
-      .catch((err) => {});
+      .catch((err) => { });
     if (window.performance) {
       if (performance.type == 1) {
         props.loadGlobalSetting();
@@ -411,7 +422,7 @@ function AdminLayout(props) {
         localStorage.removeItem("id_tokenExpiry");
         props.history.push("/");
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const menuId = "primary-search-account-menu";
@@ -517,7 +528,7 @@ function AdminLayout(props) {
         }
         setModalOpen(false);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const LoadMenus = (props) => {
@@ -1854,20 +1865,19 @@ function AdminLayout(props) {
                 <ul>
                   {notificationList && notificationList.getAllList
                     ? notificationList.getAllList.map((data) => (
-                        <li
-                          className={`${
-                            data.isRead ? "" : "notification-unread"
+                      <li
+                        className={`${data.isRead ? "" : "notification-unread"
                           }`}
-                          onClick={() => dislayNotificationMessage(data)}
-                          key={`notification_${data.id}`}
-                        >
-                          {data.message.substring(0, 70) + "..."}
-                          <br />
-                          <span className="notification-Settings">
-                            {moment.parseZone(data.messageDateTime).fromNow()}
-                          </span>
-                        </li>
-                      ))
+                        onClick={() => dislayNotificationMessage(data)}
+                        key={`notification_${data.id}`}
+                      >
+                        {data.message.substring(0, 70) + "..."}
+                        <br />
+                        <span className="notification-Settings">
+                          {moment.parseZone(data.messageDateTime).fromNow()}
+                        </span>
+                      </li>
+                    ))
                     : "There are no notifications"}
                 </ul>
               </Popover>
@@ -1930,7 +1940,7 @@ function AdminLayout(props) {
               }}
             />
           )}
-          // autoHeight
+        // autoHeight
         >
           <div className={`${classes.drawerContainer} side-menu`}>
             <List>
