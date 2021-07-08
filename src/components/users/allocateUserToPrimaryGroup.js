@@ -261,9 +261,7 @@ function AllocateUserToPrimaryGroup(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Whichever FAQ , Questionnaire , Emergency Contact and Workflow is
-            assigned to this user group, will be applicable for the selected
-            user(s). Are you sure you want to go ahead with the change ?
+            FAQ, Questionnaire, Emergency Contact and Workflow assigned to this user group, will be applicable for the selected user(s). Are you sure you want to go ahead with the change ?
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -296,7 +294,7 @@ function AllocateUserToPrimaryGroup(props) {
                     id="tags-outlined"
                     options={
                       BusinessTeamMasterData &&
-                      BusinessTeamMasterData.length > 0
+                        BusinessTeamMasterData.length > 0
                         ? BusinessTeamMasterData
                         : []
                     }

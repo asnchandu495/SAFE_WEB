@@ -219,7 +219,7 @@ function ListSite(props) {
     },
     {
       name: "densityThreasholdLowFrom",
-      label: "densityThreasholdLowFrom",
+      label: "densityThresholdLowFrom",
       options: {
         display: "excluded",
         print: false,
@@ -228,7 +228,7 @@ function ListSite(props) {
     },
     {
       name: "densityThreasholdLowTo",
-      label: "densityThreasholdLowTo",
+      label: "densityThresholdLowTo",
       options: {
         display: "excluded",
         print: false,
@@ -237,7 +237,7 @@ function ListSite(props) {
     },
     {
       name: "densityThreasholdMediumFrom",
-      label: "densityThreasholdMediumFrom",
+      label: "densityThresholdMediumFrom",
       options: {
         display: "excluded",
         print: false,
@@ -246,7 +246,7 @@ function ListSite(props) {
     },
     {
       name: "densityThreasholdMediumTo",
-      label: "densityThreasholdMediumTo",
+      label: "densityThresholdMediumTo",
       options: {
         display: "excluded",
         print: false,
@@ -255,7 +255,7 @@ function ListSite(props) {
     },
     {
       name: "densityThreasholdHighFrom",
-      label: "densityThreasholdHighFrom",
+      label: "densityThresholdHighFrom",
       options: {
         display: "excluded",
         print: false,
@@ -264,7 +264,7 @@ function ListSite(props) {
     },
     {
       name: "densityThreasholdHighTo",
-      label: "densityThreasholdHighTo",
+      label: "densityThresholdHighTo",
       options: {
         display: "excluded",
         print: false,

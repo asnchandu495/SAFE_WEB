@@ -68,7 +68,7 @@ function SingleChoiceDetails(props) {
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
         <Typography gutterBottom variant="h6" component="h6">
-          View question details
+          View Question
           <div className="action-buttons-container question-actions">
             <Tooltip title="Edit">
               <Button
@@ -186,12 +186,12 @@ function SingleChoiceDetails(props) {
                     {props.selectedQuestionDetails.redFlagForSingleChoice
                       .length > 0
                       ? props.selectedQuestionDetails.redFlagForSingleChoice.map(
-                          (opt) => {
-                            return (
-                              <li key={`choicesR_${opt.id}`}>{opt.option}</li>
-                            );
-                          }
-                        )
+                        (opt) => {
+                          return (
+                            <li key={`choicesR_${opt.id}`}>{opt.option}</li>
+                          );
+                        }
+                      )
                       : ""}
                   </ul>
                 </Grid>
@@ -209,12 +209,12 @@ function SingleChoiceDetails(props) {
                   {props.selectedQuestionDetails.positiveConformitySingleChoice
                     .length > 0
                     ? props.selectedQuestionDetails.positiveConformitySingleChoice.map(
-                        (opt) => {
-                          return (
-                            <li key={`choicesP_${opt.id}`}>{opt.option}</li>
-                          );
-                        }
-                      )
+                      (opt) => {
+                        return (
+                          <li key={`choicesP_${opt.id}`}>{opt.option}</li>
+                        );
+                      }
+                    )
                     : ""}
                 </ul>
               </Grid>

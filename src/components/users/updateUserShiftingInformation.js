@@ -19,7 +19,7 @@ import ToasterMessageComponent from "../common/toaster";
 import UserService from "../../services/usersService";
 import moment from "moment";
 import DateFnsUtils from "@date-io/date-fns";
-import { TimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { TimePicker, KeyboardTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 
 const useStyles = makeStyles((theme) => ({
@@ -194,11 +194,10 @@ function UpdateShiftingInfo(props) {
               <Grid container spacing={3}>
                 <Grid item xs={12} container>
                   <Grid item xs={4}>
-                    <label>Start Time</label>
+                    <label className="required">Start Time</label>
                   </Grid>
-                  <Grid item xs={6}>
-                    <TimePicker
-                      clearable
+                  <Grid item xs={6} className="date-time-pickers">
+                    <KeyboardTimePicker
                       format={
                         props.loadGlobalSettingsData
                           ? props.loadGlobalSettingsData.timeFormat
@@ -218,16 +217,16 @@ function UpdateShiftingInfo(props) {
                       value={formData.startTime}
                       name="startTime"
                       onChange={handleDateChangeS}
+                      className="global-input report-pickers"
                     />
                   </Grid>
                 </Grid>
                 <Grid container item xs={12}>
                   <Grid item xs={4}>
-                    <label>End Time</label>
+                    <label className="required">End Time</label>
                   </Grid>
-                  <Grid item xs={6}>
-                    <TimePicker
-                      clearable
+                  <Grid item xs={6} className="date-time-pickers">
+                    <KeyboardTimePicker
                       format={
                         props.loadGlobalSettingsData
                           ? props.loadGlobalSettingsData.timeFormat
@@ -247,6 +246,7 @@ function UpdateShiftingInfo(props) {
                       value={formData.endTime}
                       name="endTime"
                       onChange={handleDateChangeE}
+                      className="global-input report-pickers"
                     />
                   </Grid>
                 </Grid>

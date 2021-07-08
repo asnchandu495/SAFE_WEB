@@ -102,32 +102,32 @@ const DisplayFormControl = ({
         validators={
           loadGlobalSettingsData.temperatureUnit == "C"
             ? [
-                "required",
-                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                "maxNumber:45",
-                "minNumber:30",
-              ]
+              "required",
+              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+              "maxNumber:45",
+              "minNumber:30",
+            ]
             : [
-                "required",
-                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                "maxNumber:113",
-                "minNumber:86",
-              ]
+              "required",
+              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+              "maxNumber:113",
+              "minNumber:86",
+            ]
         }
         errorMessages={
           loadGlobalSettingsData.temperatureUnit == "C"
             ? [
-                "Please enter lower limit",
-                "Entered numbers are not valid",
-                "Maximum allowed is 45",
-                "Minimum allowed is 30",
-              ]
+              "Please enter lower limit",
+              "Entered numbers are not valid",
+              "Maximum allowed is 45",
+              "Minimum allowed is 30",
+            ]
             : [
-                "Please enter lower limit",
-                "Entered numbers are not valid",
-                "Maximum allowed is 113",
-                "Minimum allowed is 86",
-              ]
+              "Please enter lower limit",
+              "Entered numbers are not valid",
+              "Maximum allowed is 113",
+              "Minimum allowed is 86",
+            ]
         }
         id="temperature1"
         key="temperature1"
@@ -162,24 +162,22 @@ const DisplayFormControl = ({
           validators={[
             "required",
             "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-            `maxNumber:${
-              ifExists.isNoUpperLimit
-                ? loadGlobalSettingsData.temperatureUnit == "C"
-                  ? "45"
-                  : "113"
-                : ifExists.upperLimit
+            `maxNumber:${ifExists.isNoUpperLimit
+              ? loadGlobalSettingsData.temperatureUnit == "C"
+                ? "45"
+                : "113"
+              : ifExists.upperLimit
             }`,
             `minNumber:${ifExists.lowerLimit}`,
           ]}
           errorMessages={[
             "Please enter lower limit",
             "Entered numbers are not valid",
-            `Maximum allowed is ${
-              ifExists.isNoUpperLimit
-                ? loadGlobalSettingsData.temperatureUnit == "C"
-                  ? "45"
-                  : "113"
-                : ifExists.upperLimit
+            `Maximum allowed is ${ifExists.isNoUpperLimit
+              ? loadGlobalSettingsData.temperatureUnit == "C"
+                ? "45"
+                : "113"
+              : ifExists.upperLimit
             }`,
             `Minimum allowed is ${ifExists.lowerLimit}`,
           ]}
@@ -216,32 +214,32 @@ const DisplayFormControl = ({
           validators={
             loadGlobalSettingsData.temperatureUnit == "C"
               ? [
-                  "required",
-                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                  "maxNumber:45",
-                  "minNumber:30",
-                ]
+                "required",
+                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                "maxNumber:45",
+                "minNumber:30",
+              ]
               : [
-                  "required",
-                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                  "maxNumber:113",
-                  "minNumber:86",
-                ]
+                "required",
+                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                "maxNumber:113",
+                "minNumber:86",
+              ]
           }
           errorMessages={
             loadGlobalSettingsData.temperatureUnit == "C"
               ? [
-                  "Please enter lower limit",
-                  "Entered numbers are not valid",
-                  "Maximum allowed is 45",
-                  "Minimum allowed is 30",
-                ]
+                "Please enter lower limit",
+                "Entered numbers are not valid",
+                "Maximum allowed is 45",
+                "Minimum allowed is 30",
+              ]
               : [
-                  "Please enter lower limit",
-                  "Entered numbers are not valid",
-                  "Maximum allowed is 113",
-                  "Minimum allowed is 86",
-                ]
+                "Please enter lower limit",
+                "Entered numbers are not valid",
+                "Maximum allowed is 113",
+                "Minimum allowed is 86",
+              ]
           }
           id="temperature3"
           key="temperature3"
@@ -351,12 +349,12 @@ function UpdateTempearture(props) {
         setStateSnackbar(true);
         setToasterMessage("User's temperature updated");
         settoasterServerity("success");
-        props.setReloadPage("YES");
         setTimeout(() => {
           props.setopenuserTemepratureModal(false);
           setcomponentLoadder(true);
           resetUserTemeatureFormData();
           setshowLoadder(false);
+          props.setReloadPage("YES");
         }, 6000);
       })
       .catch((err) => {

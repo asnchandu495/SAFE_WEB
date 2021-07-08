@@ -605,7 +605,7 @@ function AddPrimaryUserToUserGroups(props) {
     UserGroupApi.assignUserGroups(data)
       .then((result) => {
         setStateSnackbar(true);
-        setToasterMessage("Assigned User Group as Primary Group of users.");
+        setToasterMessage("Changes updated successfully.");
         settoasterServerity("success");
         setTimeout(() => {
           props.history.push("/usergroups/allusergroups");
@@ -634,9 +634,7 @@ function AddPrimaryUserToUserGroups(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Whichever FAQ , Questionnaire , Emergency Contact and Workflow is
-            assigned to this user group, will be applicable for the selected
-            user(s). Are you sure you want to go ahead with the change ?
+            FAQ, Questionnaire, Emergency Contact and Workflow assigned to this user group, will be applicable for the selected user(s). Are you sure you want to go ahead with the change ?
           </Typography>
         </DialogContent>
         <DialogActions>

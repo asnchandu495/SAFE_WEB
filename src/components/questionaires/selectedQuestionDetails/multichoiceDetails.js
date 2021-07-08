@@ -73,7 +73,7 @@ function MultiChoiceDetails(props) {
     <Card className="question-type-card">
       <CardContent className="scrollable-card">
         <Typography gutterBottom variant="h6" component="h6">
-          View question details
+          View Question
           <div className="action-buttons-container question-actions">
             <Tooltip title="Edit">
               <Button
@@ -190,18 +190,18 @@ function MultiChoiceDetails(props) {
                   {props.selectedQuestionDetails.redFlagForMultipleChoice
                     .length > 0
                     ? props.selectedQuestionDetails.redFlagForMultipleChoice.map(
-                        (opt) => {
-                          return (
-                            <li key={`choicesR_${opt.id}`}>
-                              {Array.prototype.map
-                                .call(opt.options, function (item) {
-                                  return item.option;
-                                })
-                                .join(",")}
-                            </li>
-                          );
-                        }
-                      )
+                      (opt) => {
+                        return (
+                          <li key={`choicesR_${opt.id}`}>
+                            {Array.prototype.map
+                              .call(opt.options, function (item) {
+                                return item.option;
+                              })
+                              .join(",")}
+                          </li>
+                        );
+                      }
+                    )
                     : ""}
                 </ol>
               </Grid>
@@ -215,18 +215,18 @@ function MultiChoiceDetails(props) {
                   {props.selectedQuestionDetails.positiveConformityMultiChoice
                     .length > 0
                     ? props.selectedQuestionDetails.positiveConformityMultiChoice.map(
-                        (opt) => {
-                          return (
-                            <li key={`choicesP_${opt.id}`}>
-                              {Array.prototype.map
-                                .call(opt.options, function (item) {
-                                  return item.option;
-                                })
-                                .join(",")}
-                            </li>
-                          );
-                        }
-                      )
+                      (opt) => {
+                        return (
+                          <li key={`choicesP_${opt.id}`}>
+                            {Array.prototype.map
+                              .call(opt.options, function (item) {
+                                return item.option;
+                              })
+                              .join(",")}
+                          </li>
+                        );
+                      }
+                    )
                     : ""}
                 </ol>
               </Grid>
