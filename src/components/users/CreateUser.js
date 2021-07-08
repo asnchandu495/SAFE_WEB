@@ -262,7 +262,7 @@ function CreateUser(props) {
       if (
         formData.gender &&
         UserSelectedDesignationValue &&
-        UserSelectSupervisorData &&
+        // UserSelectSupervisorData &&
         UserSelectCountry
       ) {
         SubmitUserForm();
@@ -313,7 +313,10 @@ function CreateUser(props) {
           setStateSnackbar(true);
           setToasterMessage("Updated user details.");
           settoasterServerity("success");
-          setshowLoadder(false);
+          setTimeout(() => {
+            props.history.push(`/users/allusers`);
+            setshowLoadder(false);
+          }, 8000);
         })
         .catch((err) => {
           setToasterMessage(err.data.errors);

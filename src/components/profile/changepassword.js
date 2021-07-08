@@ -125,8 +125,8 @@ export default function ChangePassword(props) {
                   validators={[
                     "required",
                     "matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?_-])[A-Za-z\\d#$@!%&*?]{" +
-                      passwordLength +
-                      ",}$",
+                    passwordLength +
+                    ",}$",
                   ]}
                   errorMessages={[
                     "Please enter new password",
@@ -152,8 +152,8 @@ export default function ChangePassword(props) {
                     "isPasswordMatch",
 
                     "matchRegexp:^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$@!%&*?_-])[A-Za-z\\d#$@!%&*?]{" +
-                      passwordLength +
-                      ",}$",
+                    passwordLength +
+                    ",}$",
                   ]}
                   errorMessages={[
                     "Please re-enter password",

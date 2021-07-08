@@ -761,7 +761,7 @@ label.required {
     }
   }
   .submit-button {
-    margin-top: 37px;
+    margin-top: 10px;
     button {
       width: 100% !important;
     }
@@ -1598,4 +1598,14 @@ label.required {
 
 .no-pointer-events{
   cursor: not-allowed !important;
+}
+
+.change-password-form{
+  .global-input{
+    border: none !important;
+    height: auto !important;
+    .MuiOutlinedInput-input{
+      border: 1px solid #e0e0e0 !important;
+    }
+  }
 }
