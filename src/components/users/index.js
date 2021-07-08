@@ -419,8 +419,6 @@ function Users(props) {
       return g.name == "users";
     });
 
-    console.log(props.GridData);
-
     if (thisPage) {
       setCurrentPage(thisPage.page - 1);
     } else {
@@ -1110,7 +1108,6 @@ function Users(props) {
           Users
         </LinkTo>
       </Breadcrumbs>
-      {currentPage}
       {componentLoadder ? (
         <ComponentLoadderComponent />
       ) : (

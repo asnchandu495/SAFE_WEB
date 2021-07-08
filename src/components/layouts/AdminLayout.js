@@ -189,7 +189,7 @@ function AdminLayout(props) {
 
   const [showLoadder, setshowLoadder] = useState(false);
   const [notificationList, setnotificationList] = useState();
-  const [gridPages, setGridPages] = useState([[
+  const [gridPages, setGridPages] = useState([
     { name: "users", page: 1 },
     { name: "sites", page: 1 },
     { name: "designations", page: 1 },
@@ -200,7 +200,7 @@ function AdminLayout(props) {
     { name: "teams", page: 1 },
     { name: "questionnaire", page: 1 },
     { name: "workflows", page: 1 },
-  ]]);
+  ]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
