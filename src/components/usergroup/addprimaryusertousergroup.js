@@ -144,7 +144,7 @@ function AddPrimaryUserToUserGroups(props) {
     roleIds: false,
     siteId: false,
   });
-
+  const [enableSubmitButton, setEnableSubmitButton] = useState(false);
   const [designationMasterData, setdesignationMasterData] = useState();
   const [CountryMasterData, setCountryMasterData] = useState();
   const [SiteMasterData, setSiteMasterData] = useState([]);
@@ -293,6 +293,7 @@ function AddPrimaryUserToUserGroups(props) {
         selectedUsersToGroupArray.push(user.dataIndex);
       });
       setSelectedUsersToGroup(selectedUsersToGroupArray);
+      setEnableSubmitButton(true);
     },
 
     textLabels: {
@@ -379,7 +380,7 @@ function AddPrimaryUserToUserGroups(props) {
             <Button
               variant="contained"
               type="button"
-              className="global-submit-btn"
+              className={`global-submit-btn ${enableSubmitButton ? '' : 'no-pointer-events'}`}
               disabled={showLoadder}
               onClick={assignUsers}
             >
@@ -468,14 +469,14 @@ function AddPrimaryUserToUserGroups(props) {
     setcovidStatelist();
   }
 
-  function AssignFiltersForm() {
-    if (searchformData) {
-      submitAssignFilter();
-    } else {
-      submitAssignFilter(false);
-      return false;
-    }
-  }
+  // function AssignFiltersForm() {
+  //   if (searchformData) {
+  //     submitAssignFilter();
+  //   } else {
+  //     submitAssignFilter(false);
+  //     return false;
+  //   }
+  // }
 
   function handleClickViewUsers() {
     let value = userId;
@@ -610,14 +611,15 @@ function AddPrimaryUserToUserGroups(props) {
         setTimeout(() => {
           props.history.push("/usergroups/allusergroups");
           setshowLoadder(false);
+          setEnableSubmitButton(false);
         }, 3000);
       })
       .catch((err) => {
-        console.log(err);
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
         setshowLoadder(false);
+        setEnableSubmitButton(false);
       });
   }
 

@@ -160,6 +160,7 @@ function AddSecondaryUserToUserGroups(props) {
   const [selectedUsersForCovidState, setSelectedUsersForCovidState] = useState(
     []
   );
+  const [enableSubmitButton, setEnableSubmitButton] = useState(false);
 
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
@@ -355,6 +356,7 @@ function AddSecondaryUserToUserGroups(props) {
         selectedUsersToGroupArray.push(user.dataIndex);
       });
       setSelectedUsersToGroup(selectedUsersToGroupArray);
+      setEnableSubmitButton(true);
     },
 
     textLabels: {
@@ -471,7 +473,7 @@ function AddSecondaryUserToUserGroups(props) {
             <Button
               variant="contained"
               type="button"
-              className="global-submit-btn"
+              className={`global-submit-btn ${enableSubmitButton ? '' : 'no-pointer-events'}`}
               disabled={showLoadder}
               onClick={assignUsers}
             >
@@ -513,15 +515,16 @@ function AddSecondaryUserToUserGroups(props) {
           props.history.push("/usergroups/allusergroups");
           setshowsubmitLoadder(false);
           setshowLoadder(false);
+          setEnableSubmitButton(false);
         }, 3000);
       })
       .catch((err) => {
-        console.log(err);
         setToasterMessage(err.data.errors);
         settoasterServerity("error");
         setStateSnackbar(true);
         setshowsubmitLoadder(false);
         setshowLoadder(false);
+        setEnableSubmitButton(false);
       });
   }
 

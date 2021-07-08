@@ -1595,3 +1595,7 @@ label.required {
     }
   }
 }
+
+.no-pointer-events{
+  cursor: not-allowed !important;
+}
