@@ -9,8 +9,14 @@ export default class HealthCheckService {
   }
 
   getUserHealthChecks(getData) {
+    let RespondentIds = "";
+
+    RespondentIds = getData.userId.map(function (el, idx) {
+      return "RespondentIds=" + el.id;
+    }).join("&");
+
     return this.fetch(
-      `${this.questionaireURL}/Response/GetAllUsersResponse?RespondentId=${getData.userId}&FromDate=${getData.fromDate}&ToDate=${getData.toDate}`,
+      `${this.questionaireURL}/Response/GetAllUsersResponse?${RespondentIds}&FromDate=${getData.fromDate}&ToDate=${getData.toDate}`,
       {
         method: "GET",
       }

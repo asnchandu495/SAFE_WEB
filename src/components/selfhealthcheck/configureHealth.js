@@ -54,17 +54,17 @@ function ConfigureHealth(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [searchForm, setSearchForm] = useState({
-    userId: "",
+    userId: [],
     fromDate: moment().toISOString(),
     toDate: moment().toISOString(),
   });
   const [resetformData, SetresetformData] = useState({
-    userId: "",
+    userId: [],
     fromDate: moment().toISOString(),
     toDate: moment().toISOString(),
   });
 
-  const [selectedUserDetails, setSelectedUserDetails] = useState();
+  const [selectedUserDetails, setSelectedUserDetails] = useState([]);
 
   useEffect(() => {
     props.loadGlobalSettingWithoutAPICall();
@@ -196,7 +196,7 @@ function ConfigureHealth(props) {
     var nextday = "";
     if (name == "userId") {
       if (getSelectedVal) {
-        thisValue = getSelectedVal.id;
+        // thisValue = getSelectedVal.id;
         setSelectedUserDetails(getSelectedVal);
       } else {
         thisValue = "";
@@ -211,7 +211,7 @@ function ConfigureHealth(props) {
   };
 
   function resetFilterForm() {
-    setSelectedUserDetails();
+    setSelectedUserDetails([]);
     setSearchForm({
       userId: "",
       fromDate: moment().toISOString(),
@@ -225,6 +225,7 @@ function ConfigureHealth(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+    searchForm.userId = selectedUserDetails;
     setComponentLoadder(true);
     HealthCheckApiCall.getUserHealthChecks(searchForm)
       .then((healthChecks) => {
@@ -291,6 +292,7 @@ function ConfigureHealth(props) {
                   <Grid item xs={4}>
                     <FormControl variant="outlined" fullWidth>
                       <Autocomplete
+                        multiple
                         id="tags-outlined"
                         label=""
                         options={
@@ -300,7 +302,7 @@ function ConfigureHealth(props) {
                         defaultValue={
                           selectedUserDetails ? selectedUserDetails : ""
                         }
-                        value={selectedUserDetails ? selectedUserDetails : ""}
+                        value={selectedUserDetails ? selectedUserDetails : []}
                         name="userId"
                         onChange={(e, v) => handleChangeSearchForm(v, "userId")}
                         filterSelectedOptions
@@ -309,6 +311,11 @@ function ConfigureHealth(props) {
                         renderInput={(params) => (
                           <TextField
                             {...params}
+                            inputProps={{
+                              ...params.inputProps,
+                              required:
+                                selectedUserDetails.length === 0
+                            }}
                             variant="outlined"
                             placeholder="User"
                           />

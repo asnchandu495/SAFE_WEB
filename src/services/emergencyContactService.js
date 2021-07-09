@@ -7,9 +7,20 @@ export default class EmergencyContactService {
     this.fetch = this.fetch.bind(this);
   }
 
-  ViewAllEmergencyContacts() {
+  ViewAllEmergencyContacts(getLanguages) {
+    let languages = "";
+    let callURL = '';
+    if (getLanguages.length > 0) {
+      languages = getLanguages.map(function (el, idx) {
+        return "Language=" + el.id;
+      }).join("&");
+      callURL = `EmergencyContact/ViewAllEmergencyContact?${languages}`;
+    } else {
+      callURL = 'EmergencyContact/ViewAllEmergencyContact';
+    }
+
     return this.fetch(
-      `${this.baseURL}/EmergencyContact/ViewAllEmergencyContact`,
+      `${this.baseURL}/${callURL}`,
       {
         method: "GET",
       }

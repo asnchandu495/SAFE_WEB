@@ -248,6 +248,22 @@ export default class SiteService {
     });
   }
 
+  getSiteLeaders() {
+    return this.fetch(`${this.baseURL}/Site/SecurityLead`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
+  getSiteBHR() {
+    return this.fetch(`${this.baseURL}/Site/SiteBHR`, {
+      method: "GET",
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getToken() {
     // Retrieves the user token from localStorage
     return localStorage.getItem("id_token");

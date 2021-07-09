@@ -315,8 +315,8 @@ function DensityThreshold(props) {
                     {moment(thisRowData[3]).format(
                       props.loadGlobalSettingsData
                         ? props.loadGlobalSettingsData.dateFormat +
-                            "  " +
-                            props.loadGlobalSettingsData.timeFormat
+                        "  " +
+                        props.loadGlobalSettingsData.timeFormat
                         : "hh:mm"
                     )}
                   </span>
@@ -350,17 +350,16 @@ function DensityThreshold(props) {
 
     textLabels: {
       body: {
-        noMatch: `${
-          isFilterSelected
+        noMatch: `${isFilterSelected
             ? "There are no reports"
             : "Please select filters to generate report"
-        }`,
+          }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -406,7 +405,7 @@ function DensityThreshold(props) {
       let sendData = { name: "report", page: currentPage + 1 };
       props.UpdateGridsPage(sendData);
     },
-    onTableInit: tableInitiate,
+    // onTableInit: tableInitiate,
   };
   const CustomFooter = (props) => {
     return (

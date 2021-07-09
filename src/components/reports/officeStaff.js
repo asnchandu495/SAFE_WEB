@@ -344,7 +344,7 @@ function OfficeStaff(props) {
       let sendData = { name: "report", page: currentPage + 1 };
       props.UpdateGridsPage(sendData);
     },
-    onTableInit: tableInitiate,
+    // onTableInit: tableInitiate,
     customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (

@@ -24,9 +24,9 @@ export function DeleteEmergencyContactSuccess(emergencyContact) {
   return { type: DELETE_EMERGENCY_CONTACT_SUCCESS, emergencyContact };
 }
 
-export function LoadAllEmergencyContactList() {
+export function LoadAllEmergencyContactList(getLanguage) {
   return function (dispatch) {
-    return EmergencyContactApiCall.ViewAllEmergencyContacts()
+    return EmergencyContactApiCall.ViewAllEmergencyContacts(getLanguage)
       .then((response) => {
         dispatch(LoadEmergencyContactListSuccess(response));
       })

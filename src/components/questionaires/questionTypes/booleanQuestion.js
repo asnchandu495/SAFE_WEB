@@ -25,6 +25,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import questionaireService from "../../../services/questionaireService";
 import TooltipComponent from "../../common/tooltip";
+import SurveyQuestionUpdate from "../../common/surveyQuestionUpdateConfirmation";
 
 function BooleanQuestion(props) {
   const questionaireApiCall = new questionaireService();
@@ -407,6 +408,14 @@ function BooleanQuestion(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
+      {/* <SurveyQuestionUpdate
+        openConfirmationModal={openConfirmationModal}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        SelectedRowDetails={SelectedRowDetails}>
+      </SurveyQuestionUpdate> */}
     </>
   );
 }

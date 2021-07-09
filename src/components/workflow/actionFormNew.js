@@ -97,9 +97,10 @@ function ActionFormNew(props) {
 
               newFormCollection.push({
                 id: alreadyAddedAction ? alreadyAddedAction.id : "",
-                inputType: alreadyAddedAction
-                  ? alreadyAddedAction.inputType
-                  : ac.inputType,
+                // inputType: alreadyAddedAction
+                //   ? alreadyAddedAction.inputType
+                //   : ac.inputType,
+                inputType: ac.inputType,
                 name: alreadyAddedAction ? alreadyAddedAction.name : ac.name,
                 value: alreadyAddedAction ? alreadyAddedAction.value : "",
                 remarksForInput: ac.remarksForInput,
@@ -380,6 +381,79 @@ function ActionFormNew(props) {
                                 // errorMessages={[
                                 //   `Please enter ${act.remarksForInput}`,
                                 // ]}
+                                fullWidth
+                                id={`${act.name}_${index}`}
+                                placeholder={act.remarksForInput}
+                                name="value"
+                                onChange={(e) => handleInputChange(e, index)}
+                                value={act.value}
+                                InputLabelProps={{ shrink: false }}
+                                className="global-input action-form-input"
+                                onFocus={(e) => {
+                                  setCurrentInputText(e);
+                                }}
+                              />
+                              <Menu
+                                keepMounted
+                                open={stateContextMenuText.mouseY !== null}
+                                onClose={handleCloseContextMenuText}
+                                anchorReference="anchorPosition"
+                                anchorPosition={
+                                  stateContextMenuText.mouseY !== null &&
+                                    stateContextMenuText.mouseX !== null
+                                    ? {
+                                      top: stateContextMenuText.mouseY,
+                                      left: stateContextMenuText.mouseX,
+                                    }
+                                    : undefined
+                                }
+                              >
+                                {act.inputIntelliSenseOptions.length > 0 ? (
+                                  act.inputIntelliSenseOptions.map((opt) => {
+                                    return (
+                                      <MenuItem
+                                        onClick={() =>
+                                          handleClickContextMenuOptionText(
+                                            opt,
+                                            index,
+                                            "value"
+                                          )
+                                        }
+                                      >
+                                        {opt}
+                                      </MenuItem>
+                                    );
+                                  })
+                                ) : (
+                                  <MenuItem>No options</MenuItem>
+                                )}
+                              </Menu>
+                            </Grid>
+                          </Grid>
+                        );
+                      }
+                      if (act.inputType == "EmailList") {
+                        return (
+                          <Grid
+                            item
+                            xs={12}
+                            container
+                            key={`inputText_${index}`}
+                          >
+                            <Grid item xs={3}>
+                              <label>{act.remarksForInput}</label>
+                            </Grid>
+                            <Grid
+                              item
+                              xs={9}
+                              onContextMenu={handleClickContextMenuText}
+                            >
+                              <TextValidator
+                                variant="outlined"
+                                validators={["matchRegexp:^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$",]}
+                                errorMessages={[
+                                  `Please enter valid email id(s)`,
+                                ]}
                                 fullWidth
                                 id={`${act.name}_${index}`}
                                 placeholder={act.remarksForInput}

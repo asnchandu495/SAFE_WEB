@@ -309,7 +309,7 @@ function AddActivity(props) {
       let selectedWorkflowActivities = userSelectedActivities.map((act) => ({
         id: act.id ? act.id : "",
         uniqueActivityId: act.uniqueActivityId,
-        name: act.name,
+        name: act.friendlyName,
         isDelete: false,
       }));
 

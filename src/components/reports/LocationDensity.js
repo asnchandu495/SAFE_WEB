@@ -206,6 +206,22 @@ function LocationDensity(props) {
         sort: true,
       },
     },
+    {
+      label: "From",
+      name: "densityThreasholdFrom",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      label: "To",
+      name: "densityThreasholdTo",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
   ];
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
@@ -237,8 +253,8 @@ function LocationDensity(props) {
     textLabels: {
       body: {
         noMatch: `${isFilterSelected
-            ? "There are no reports"
-            : "Please select filters to generate report"
+          ? "There are no reports"
+          : "Please select filters to generate report"
           }`,
       },
       pagination: {

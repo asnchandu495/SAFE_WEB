@@ -240,6 +240,14 @@ function ContactTracing(props) {
       },
     },
     {
+      label: "Source",
+      name: "source",
+      options: {
+        filter: false,
+        sort: true,
+      },
+    },
+    {
       label: "Actions",
       name: "",
       options: {
@@ -372,7 +380,7 @@ function ContactTracing(props) {
       let sendData = { name: "report", page: currentPage + 1 };
       props.UpdateGridsPage(sendData);
     },
-    onTableInit: tableInitiate,
+    // onTableInit: tableInitiate,
     customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (

@@ -110,9 +110,13 @@ function CreateSite(props) {
   const [allLanguages, setAllLanguages] = useState([]);
   const [siteManger, setSiteManger] = useState([]);
   const [securityManger, setSecurityManger] = useState([]);
+  const [siteLead, setSiteLead] = useState([]);
+  const [siteBHR, setSiteBHR] = useState([]);
   const [userSelectedSiteManager, setUserSelectedSiteManager] = useState();
   const [userSelectedSecurityManager, setUserSelectedSecurityManager] =
     useState();
+  const [siteSelectedLead, setSiteSelectedLead] = useState();
+  const [siteSelectedBHR, setSiteSelectedBHR] = useState();
 
   const [formData, SetformData] = useState({
     id: "",
@@ -133,6 +137,10 @@ function CreateSite(props) {
     locations: [],
     isRLAPActive: false,
     rlapReferenceId: "",
+    securityLead: "",
+    siteBHR: "",
+    securityLeadName: "",
+    siteBHRName: ""
   });
 
   const [formFieldValidation, setformFieldValidation] = useState({
@@ -147,10 +155,12 @@ function CreateSite(props) {
       masterDataCallApi.getCountries(),
       siteApiCall.getSiteManagers(),
       siteApiCall.getLocationManagers(),
+      siteApiCall.getSiteLeaders(),
+      siteApiCall.getSiteBHR(),
       props.LoadData(),
     ])
       .then(
-        ([getCountries, getSiteManagers, getLocationManagers, loadData]) => {
+        ([getCountries, getSiteManagers, getLocationManagers, getSiteLeaders, getSiteBHR, loadData]) => {
           if (siteId) {
             siteApiCall
               .getSiteById(siteId)
@@ -163,6 +173,16 @@ function CreateSite(props) {
                   applicationUserId: siteDetails.siteManager,
                   name: siteDetails.siteManagerName,
                 });
+                setSiteSelectedLead({
+                  applicationUserId: siteDetails.securityLead,
+                  name: siteDetails.securityLeadName,
+                });
+                setSiteSelectedBHR({
+                  applicationUserId: siteDetails.siteBHR,
+                  name: siteDetails.siteBHRName,
+                });
+                setSiteLead(getSiteLeaders);
+                setSiteBHR(getSiteBHR);
                 SetformData(siteDetails);
                 setCountryMasterData(getCountries);
                 setSiteManger(getSiteManagers);
@@ -173,6 +193,8 @@ function CreateSite(props) {
                 console.log(error);
               });
           } else {
+            setSiteLead(getSiteLeaders);
+            setSiteBHR(getSiteBHR);
             setCountryMasterData(getCountries);
             setSiteManger(getSiteManagers);
             setSecurityManger(getLocationManagers);
@@ -261,6 +283,12 @@ function CreateSite(props) {
 
       data.securityManager = userSelectedSecurityManager.applicationUserId;
       data.securityManagerName = userSelectedSecurityManager.name;
+
+      data.securityLead = siteSelectedLead.applicationUserId;
+      data.securityLeadName = siteSelectedLead.name;
+
+      data.siteBHR = siteSelectedBHR.applicationUserId;
+      data.siteBHRName = siteSelectedBHR.name;
       props
         .AddData(data)
         .then((result) => {
@@ -286,6 +314,12 @@ function CreateSite(props) {
 
       formData.securityManager = userSelectedSecurityManager.applicationUserId;
       formData.securityManagerName = userSelectedSecurityManager.name;
+
+      formData.securityLead = siteSelectedLead.applicationUserId;
+      formData.securityLeadName = siteSelectedLead.name;
+
+      formData.siteBHR = siteSelectedBHR.applicationUserId;
+      formData.siteBHRName = siteSelectedBHR.name;
       props
         .UpdateData(formData)
         .then((result) => {
@@ -378,6 +412,14 @@ function CreateSite(props) {
         ["securityManager"]: true,
       }));
     }
+  }
+
+  function handleChangeSiteBHR(e, v) {
+    setSiteSelectedBHR(v);
+  }
+
+  function handleChangeSiteLead(e, v) {
+    setSiteSelectedLead(v);
   }
 
   function redirectToViewUsersGroup() {
@@ -527,6 +569,56 @@ function CreateSite(props) {
                       ) : (
                         ""
                       )}
+                    </Grid>
+                    <Grid item xs={4}>
+                      <label
+                        htmlFor="password"
+                        className="input-label required"
+                      >
+                        Security Lead
+                      </label>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={siteLead}
+                        getOptionLabel={(option) => option.name}
+                        onChange={handleChangeSiteLead}
+                        defaultValue={siteSelectedLead}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select security lead"
+                            required
+                          />
+                        )}
+                      />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <label
+                        htmlFor="password"
+                        className="input-label required"
+                      >
+                        Site BHR
+                      </label>
+                      <Autocomplete
+                        id="tags-outlined"
+                        options={siteBHR}
+                        getOptionLabel={(option) => option.name}
+                        onChange={handleChangeSiteBHR}
+                        defaultValue={siteSelectedBHR}
+                        filterSelectedOptions
+                        className="global-input autocomplete-select"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            placeholder="Select site BHR"
+                            required
+                          />
+                        )}
+                      />
                     </Grid>
                     <Grid item xs={4}>
                       <label htmlFor="password" className="input-label">

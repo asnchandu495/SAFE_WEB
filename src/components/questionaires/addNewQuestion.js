@@ -181,6 +181,7 @@ function AddNewQuestion(props) {
             answerTypes={props.answerTypes}
             selectedQuestionDetails={props.selectedQuestionDetails}
             loadGlobalSettingsData={props.loadGlobalSettingsData}
+            surveyDetails={props.surveyDetails}
           ></BooleanQuestion>
         );
         break;
@@ -193,6 +194,7 @@ function AddNewQuestion(props) {
             answerTypes={props.answerTypes}
             selectedQuestionDetails={props.selectedQuestionDetails}
             loadGlobalSettingsData={props.loadGlobalSettingsData}
+            surveyDetails={props.surveyDetails}
           ></FreetextQuestion>
         );
         break;
@@ -205,6 +207,7 @@ function AddNewQuestion(props) {
             answerTypes={props.answerTypes}
             selectedQuestionDetails={props.selectedQuestionDetails}
             loadGlobalSettingsData={props.loadGlobalSettingsData}
+            surveyDetails={props.surveyDetails}
           ></DateQuestion>
         );
         break;
@@ -217,6 +220,7 @@ function AddNewQuestion(props) {
             answerTypes={props.answerTypes}
             selectedQuestionDetails={props.selectedQuestionDetails}
             loadGlobalSettingsData={props.loadGlobalSettingsData}
+            surveyDetails={props.surveyDetails}
           ></TimeQuestion>
         );
         break;
@@ -229,6 +233,7 @@ function AddNewQuestion(props) {
             answerTypes={props.answerTypes}
             selectedQuestionDetails={props.selectedQuestionDetails}
             loadGlobalSettingsData={props.loadGlobalSettingsData}
+            surveyDetails={props.surveyDetails}
           ></NumericQuestion>
         );
         break;
@@ -241,6 +246,7 @@ function AddNewQuestion(props) {
             answerTypes={props.answerTypes}
             selectedQuestionDetails={props.selectedQuestionDetails}
             loadGlobalSettingsData={props.loadGlobalSettingsData}
+            surveyDetails={props.surveyDetails}
           ></SingleSelectQuestion>
         );
         break;
@@ -253,6 +259,7 @@ function AddNewQuestion(props) {
             answerTypes={props.answerTypes}
             selectedQuestionDetails={props.selectedQuestionDetails}
             loadGlobalSettingsData={props.loadGlobalSettingsData}
+            surveyDetails={props.surveyDetails}
           ></MultiSelectQuestion>
         );
         break;
@@ -329,6 +336,7 @@ function AddNewQuestion(props) {
                               loadGlobalSettingsData={
                                 props.loadGlobalSettingsData
                               }
+                              surveyDetails={surveyDetails}
                             ></AddQuestion>
                           </Grid>
                         </Grid>
