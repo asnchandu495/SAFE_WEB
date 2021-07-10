@@ -16,8 +16,8 @@ import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import questionaireService from "../../../services/questionaireService";
 import ToasterMessageComponent from "../../common/toaster";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
-
 import TooltipComponent from "../../common/tooltip";
+import ConditionalJump from "../../common/surveyQuestionUpdateConfirmation/conditionalJump";
 
 function BooleanJump(props) {
   const surveyId = props.match.params.id;
@@ -52,6 +52,9 @@ function BooleanJump(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [reloadPage, setReloadPage] = useState("false");
+  const [questionData, setQuestionData] = useState();
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [warningMessage, setWarningMessage] = useState('Updating conditional jump of this yes/no question might have impact on order of execution and questionnaire evaluation, please revisit these areas.');
 
   useEffect(() => {
     Promise.all([
@@ -144,24 +147,29 @@ function BooleanJump(props) {
     settoasterErrorMessageType("");
     setshowLoadder(true);
     if (conditionalJump.id != "") {
-      questionaireApiCall
-        .updateBooleanConditionalJump(conditionalJump)
-        .then((result) => {
-          setStateSnackbar(true);
-          setToasterMessage("Conditional jump is updated.");
-          settoasterServerity("success");
-          setTimeout(function () {
-            props.history.push("/questionaires/view-questions/" + surveyId);
+      if (!surveyDetails.isSaveasDraft && !surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+        setOpenConfirmationModal(true);
+        setQuestionData(conditionalJump);
+      } else {
+        questionaireApiCall
+          .updateBooleanConditionalJump(conditionalJump)
+          .then((result) => {
+            setStateSnackbar(true);
+            setToasterMessage("Conditional jump is updated.");
+            settoasterServerity("success");
+            setTimeout(function () {
+              props.history.push("/questionaires/view-questions/" + surveyId);
+              setshowLoadder(false);
+              setReloadPage("true");
+            }, 5000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
             setshowLoadder(false);
-            setReloadPage("true");
-          }, 5000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+          });
+      }
     } else {
       questionaireApiCall
         .addBooleanConditionalJump(conditionalJump)
@@ -213,15 +221,13 @@ function BooleanJump(props) {
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
           Conditional Jump
+          <TooltipComponent
+            isMarginBottom={true}
+            tooltipMessage={`To define the follow up question in the questionnaire depending on user's response to a question. Defined at question level.
+          `}
+          ></TooltipComponent>
         </LinkTo>
       </Breadcrumbs>
-      <span style={{ float: "right" }}>
-        <TooltipComponent
-          isMarginBottom={true}
-          tooltipMessage={`To define the follow up question in the questionnaire depending on user's response to a question. Defined at question level.
-          `}
-        ></TooltipComponent>
-      </span>
 
       <div className="main-paper-add-question">
         <div className="add-new-question">
@@ -402,6 +408,19 @@ function BooleanJump(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
+      <ConditionalJump
+        openConfirmationModal={openConfirmationModal}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        questionData={questionData}
+        warningMessage={warningMessage}
+        setshowLoadder={setshowLoadder}
+        surveyIdURL={surveyId}
+        sendQuestionType="Boolean"
+      >
+      </ConditionalJump>
     </div>
   );
 }

@@ -444,12 +444,40 @@ function ViewSite(props) {
 
                 <Grid item sm={6} container>
                   <Grid item xs={4}>
+                    <label>Site BHR :</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <label>{viewSiteValue.siteBHRName}</label>
+                  </Grid>
+                </Grid>
+
+                <Grid item sm={6} container>
+                  <Grid item xs={4}>
+                    <label>Security Lead :</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <label>{viewSiteValue.securityLeadName}</label>
+                  </Grid>
+                </Grid>
+
+                <Grid item sm={6} container>
+                  <Grid item xs={4}>
                     <label>Unique Key :</label>
                   </Grid>
                   <Grid item xs={8}>
                     <label>{viewSiteValue.uniqueKey}</label>
                   </Grid>
                 </Grid>
+
+                {viewSiteValue.isRLAPActive ? <Grid item sm={6} container>
+                  <Grid item xs={4}>
+                    <label>RLAP ReferenceId :</label>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <label>{viewSiteValue.rlapReferenceId}</label>
+                  </Grid>
+                </Grid> : ""}
+
                 <Grid item sm={6} container>
                   <Grid item xs={4}></Grid>
                   <Grid item xs={8}></Grid>

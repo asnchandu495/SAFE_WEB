@@ -759,14 +759,14 @@ function CustomizedDialogs(props) {
             className="no-button"
             disabled={showLoadder}
           >
-            No
+            {props.isDeleteMessageWarning ? "Cancel" : "No"}
           </Button>
           <Button
             onClick={handleClickYes}
             className="yes-button"
             disabled={showLoadder}
           >
-            {showLoadder ? <ButtonLoadderComponent /> : "Yes"}
+            {showLoadder ? <ButtonLoadderComponent /> : props.isDeleteMessageWarning ? "Delete" : "Yes"}
           </Button>
         </DialogActions>
       </Dialog>

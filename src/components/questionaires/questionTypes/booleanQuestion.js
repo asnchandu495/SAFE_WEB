@@ -57,6 +57,9 @@ function BooleanQuestion(props) {
     { id: "TRUE", name: "TRUE" },
     { id: "FALSE", name: "FALSE" },
   ]);
+  const [questionData, setQuestionData] = useState();
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [warningMessage, setWarningMessage] = useState('Editing of this yes/no question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas');
 
   const PurpleSwitch = withStyles({
     switchBase: {
@@ -113,26 +116,32 @@ function BooleanQuestion(props) {
       ...addQuestionData,
     };
     if (finalObject.id != 0) {
-      questionaireApiCall
-        .UpdateBoolenQuestion(finalObject)
-        .then((res) => {
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Question details updated.");
-          settoasterServerity("success");
-          setTimeout(() => {
-            props.history.push(
-              `/questionaires/view-questions/${props.surveyIdURL}`
-            );
+      if (!props.surveyDetails.isSaveasDraft && !props.surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+        setOpenConfirmationModal(true);
+        setQuestionData(finalObject);
+      } else {
+        questionaireApiCall
+          .UpdateBoolenQuestion(finalObject)
+          .then((res) => {
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Question details updated.");
+            settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 10000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
             setshowLoadder(false);
-          }, 10000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+          });
+      }
+
     } else {
       questionaireApiCall
         .AddBoolenQuestion(finalObject)
@@ -408,14 +417,20 @@ function BooleanQuestion(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
-      {/* <SurveyQuestionUpdate
+      <SurveyQuestionUpdate
         openConfirmationModal={openConfirmationModal}
         setOpenConfirmationModal={setOpenConfirmationModal}
         setStateSnackbar={setStateSnackbar}
         setToasterMessage={setToasterMessage}
         settoasterServerity={settoasterServerity}
-        SelectedRowDetails={SelectedRowDetails}>
-      </SurveyQuestionUpdate> */}
+        questionData={questionData}
+        warningMessage={warningMessage}
+        setshowLoadder={setshowLoadder}
+        surveyIdURL={props.surveyIdURL}
+        setisAlertBoxOpened={setisAlertBoxOpened}
+        sendQuestionType="Boolean"
+      >
+      </SurveyQuestionUpdate>
     </>
   );
 }

@@ -40,6 +40,8 @@ function TimeDetails(props) {
     useState("array");
   const [ConfirmationModalActionType, setConfirmationModalActionType] =
     useState("");
+  const [isDeleteMessage, setIsDeleteMessage] = useState(false);
+
   useEffect(() => {
     if (props.selectedQuestionDetails) {
     }
@@ -50,10 +52,19 @@ function TimeDetails(props) {
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteTimeQuestion");
     setConfirmationHeaderTittle("Delete  Time Question");
-    setConfirmationDialogContextText(
-      // `Are you sure you want to delete ${value.question} ?`
-      `Are you sure you want to delete this question ?`
-    );
+    if (!props.ViewQuestionaireDetails.isSaveasDraft && !props.ViewQuestionaireDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+      setConfirmationDialogContextText(
+        // `Are you sure you want to delete ${value.question} ?`
+        `Deleting of this time question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas.`
+      );
+      setIsDeleteMessage(true);
+    } else {
+      setConfirmationDialogContextText(
+        // `Are you sure you want to delete ${value.question} ?`
+        `Are you sure you want to delete this question ?`
+      );
+      setIsDeleteMessage(false);
+    }
   }
 
   function handleClickUpdateQuestions(getQueDetails) {
@@ -279,6 +290,7 @@ function TimeDetails(props) {
         SelectedRowDetails={SelectedRowDetails}
         setSelectedQuestionDetails={props.setSelectedQuestionDetails}
         selectedQuestionDetails={props.selectedQuestionDetails}
+        isDeleteMessageWarning={isDeleteMessage}
       />
       <ToasterMessageComponent
         stateSnackbar={stateSnackbar}

@@ -56,7 +56,7 @@ const DialogActions = withStyles((theme) => ({
     },
 }))(MuiDialogActions);
 
-function SurveyQuestionUpdate(props) {
+function ConditionalJump(props) {
     const questionaireApiCall = new questionaireService();
     const [showLoadderConfirmation, setshowLoadderConfirmation] = useState(false);
 
@@ -65,11 +65,10 @@ function SurveyQuestionUpdate(props) {
         switch (props.sendQuestionType) {
             case "Boolean":
                 questionaireApiCall
-                    .UpdateBoolenQuestion(props.questionData)
+                    .updateBooleanConditionalJump(props.questionData)
                     .then((res) => {
-                        props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Conditional jump is updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -91,11 +90,11 @@ function SurveyQuestionUpdate(props) {
                 break;
             case "Date":
                 questionaireApiCall
-                    .UpdateDateQuestion(props.questionData)
+                    .updateDateConditionalJump(props.questionData)
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Conditional jump is updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -117,39 +116,11 @@ function SurveyQuestionUpdate(props) {
                 break;
             case "MultiChoice":
                 questionaireApiCall
-                    .UpdateMultiChoiceQuestion(props.questionData)
+                    .updateMultiChoiceConditionalJump(props.questionData)
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
-                        props.settoasterServerity("success");
-                        setTimeout(() => {
-                            props.history.push(
-                                `/questionaires/add-questions/${props.surveyIdURL}/${props.questionData.id}?type=MultiChoice`
-                            );
-                            props.setOpenConfirmationModal(false);
-                            props.setshowLoadder(false);
-                            props.setshowLoadderFlag(false);
-                            setshowLoadderConfirmation(false);
-                        }, 10000);
-                    })
-                    .catch((err) => {
-                        setshowLoadderConfirmation(false);
-                        props.setshowLoadderFlag(false);
-                        props.setOpenConfirmationModal(false);
-                        props.setToasterMessage(err.data.errors);
-                        props.settoasterServerity("error");
-                        props.setStateSnackbar(true);
-                        props.setshowLoadder(false);
-                    });
-                break;
-            case "MultiChoiceFlag":
-                questionaireApiCall
-                    .UpdateMultiChoiceFlags(props.questionData)
-                    .then((res) => {
-                        props.setisAlertBoxOpened(false);
-                        props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Conditional jump is updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -157,13 +128,11 @@ function SurveyQuestionUpdate(props) {
                             );
                             props.setOpenConfirmationModal(false);
                             props.setshowLoadder(false);
-                            props.setshowLoadderFlag(false);
                             setshowLoadderConfirmation(false);
                         }, 10000);
                     })
                     .catch((err) => {
                         setshowLoadderConfirmation(false);
-                        props.setshowLoadderFlag(false);
                         props.setOpenConfirmationModal(false);
                         props.setToasterMessage(err.data.errors);
                         props.settoasterServerity("error");
@@ -173,11 +142,11 @@ function SurveyQuestionUpdate(props) {
                 break;
             case "Numeric":
                 questionaireApiCall
-                    .UpdateNumericQuestion(props.questionData)
+                    .updateNumericConditionalJump(props.questionData)
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Conditional jump is updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -199,39 +168,11 @@ function SurveyQuestionUpdate(props) {
                 break;
             case "SingleChoice":
                 questionaireApiCall
-                    .UpdateSingleChoiceQuestion(props.questionData)
+                    .updateSingleChoiceConditionalJump(props.questionData)
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
-                        props.settoasterServerity("success");
-                        setTimeout(() => {
-                            props.history.push(
-                                `/questionaires/add-questions/${props.surveyIdURL}/${props.questionData.id}?type=SingleChoice`
-                            );
-                            props.setOpenConfirmationModal(false);
-                            props.setshowLoadder(false);
-                            props.setshowLoadderFlag(false);
-                            setshowLoadderConfirmation(false);
-                        }, 10000);
-                    })
-                    .catch((err) => {
-                        setshowLoadderConfirmation(false);
-                        props.setshowLoadderFlag(false);
-                        props.setOpenConfirmationModal(false);
-                        props.setToasterMessage(err.data.errors);
-                        props.settoasterServerity("error");
-                        props.setStateSnackbar(true);
-                        props.setshowLoadder(false);
-                    });
-                break;
-            case "SingleChoiceFlag":
-                questionaireApiCall
-                    .UpdateBoolenQuestion(props.questionData)
-                    .then((res) => {
-                        props.setisAlertBoxOpened(false);
-                        props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Conditional jump is updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -239,13 +180,11 @@ function SurveyQuestionUpdate(props) {
                             );
                             props.setOpenConfirmationModal(false);
                             props.setshowLoadder(false);
-                            props.setshowLoadderFlag(false);
                             setshowLoadderConfirmation(false);
                         }, 10000);
                     })
                     .catch((err) => {
                         setshowLoadderConfirmation(false);
-                        props.setshowLoadderFlag(false);
                         props.setOpenConfirmationModal(false);
                         props.setToasterMessage(err.data.errors);
                         props.settoasterServerity("error");
@@ -255,11 +194,11 @@ function SurveyQuestionUpdate(props) {
                 break;
             case "Time":
                 questionaireApiCall
-                    .UpdateTimeQuestion(props.questionData)
+                    .updateTimeConditionalJump(props.questionData)
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Conditional jump is updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -327,4 +266,4 @@ function SurveyQuestionUpdate(props) {
     );
 }
 
-export default withRouter(SurveyQuestionUpdate);
+export default withRouter(ConditionalJump);

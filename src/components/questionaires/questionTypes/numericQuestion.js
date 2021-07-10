@@ -25,6 +25,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import questionaireService from "../../../services/questionaireService";
 import TooltipComponent from "../../common/tooltip";
+import SurveyQuestionUpdate from "../../common/surveyQuestionUpdateConfirmation";
 
 function NumericQuestion(props) {
   const questionaireApiCall = new questionaireService();
@@ -66,6 +67,10 @@ function NumericQuestion(props) {
     isPositiveConfirmityRedFlag: false,
     isMandatory: false,
   });
+  const [questionData, setQuestionData] = useState();
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [warningMessage, setWarningMessage] = useState('Retrieving data. Wait a few seconds and try to cut or copy again.');
+
 
   const PurpleSwitch = withStyles({
     switchBase: {
@@ -274,26 +279,31 @@ function NumericQuestion(props) {
     finalObject.redFlagForNumber = newRedFlagForNumber;
 
     if (finalObject.id != 0) {
-      questionaireApiCall
-        .UpdateNumericQuestion(finalObject)
-        .then((res) => {
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Question details updated.");
-          settoasterServerity("success");
-          setTimeout(() => {
-            props.history.push(
-              `/questionaires/view-questions/${props.surveyIdURL}`
-            );
+      if (!props.surveyDetails.isSaveasDraft && !props.surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+        setOpenConfirmationModal(true);
+        setQuestionData(finalObject);
+      } else {
+        questionaireApiCall
+          .UpdateNumericQuestion(finalObject)
+          .then((res) => {
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Question details updated.");
+            settoasterServerity("success");
+            setTimeout(() => {
+              props.history.push(
+                `/questionaires/view-questions/${props.surveyIdURL}`
+              );
+              setshowLoadder(false);
+            }, 10000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
             setshowLoadder(false);
-          }, 10000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+          });
+      }
     } else {
       questionaireApiCall
         .AddNumericQuestion(finalObject)
@@ -440,138 +450,138 @@ function NumericQuestion(props) {
                     </Grid>
                     <Grid item xs={10}>
                       {addQuestionData.redFlagForNumber &&
-                      addQuestionData.redFlagForNumber.length > 0
+                        addQuestionData.redFlagForNumber.length > 0
                         ? addQuestionData.redFlagForNumber.map((x, i) => {
-                            return (
+                          return (
+                            <Grid
+                              item
+                              container
+                              xs={12}
+                              spacing={1}
+                              key={`redflag-container${i}`}
+                              className="dynamic-flag-container"
+                            >
                               <Grid
                                 item
-                                container
-                                xs={12}
-                                spacing={1}
-                                key={`redflag-container${i}`}
-                                className="dynamic-flag-container"
+                                xs={2}
+                                key={`redflag-containerSelect${i}`}
                               >
-                                <Grid
-                                  item
-                                  xs={2}
-                                  key={`redflag-containerSelect${i}`}
-                                >
-                                  <FormControl variant="outlined" fullWidth>
-                                    <InputLabel
-                                      id={`demo-simple-select-outlined-label${i}`}
-                                      shrink={false}
-                                      className="select-label"
-                                    >
-                                      {x.numericExpressionType &&
+                                <FormControl variant="outlined" fullWidth>
+                                  <InputLabel
+                                    id={`demo-simple-select-outlined-label${i}`}
+                                    shrink={false}
+                                    className="select-label"
+                                  >
+                                    {x.numericExpressionType &&
                                       x.numericExpressionType != ""
-                                        ? ""
-                                        : "Answer type"}
-                                    </InputLabel>
-                                    <Select
-                                      labelId={`demo-simple-select-outlined-label${i}`}
-                                      id={`demo-simple-select-outlined${i}`}
-                                      value={
-                                        x.numericExpressionType
-                                          ? x.numericExpressionType
-                                          : ""
-                                      }
-                                      name="numericExpressionType"
-                                      onChange={(e) => handleChangeFlagR(e, i)}
-                                      placeholder="Answer type"
-                                      InputLabelProps={{
-                                        shrink: false,
-                                      }}
-                                      className="global-input single-select"
-                                      required={
-                                        addQuestionData.isPositiveConfirmityRedFlag
-                                      }
-                                    >
-                                      <MenuItem value="">
-                                        <em>None</em>
-                                      </MenuItem>
-                                      {props.answerTypes.map((aType) => {
-                                        return (
-                                          <MenuItem
-                                            value={aType.id}
-                                            key={`atypered_${aType.id}`}
-                                          >
-                                            {aType.name}
-                                          </MenuItem>
-                                        );
-                                      })}
-                                    </Select>
-                                  </FormControl>
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={3}
-                                  key={`redflag-containerF${i}`}
-                                >
-                                  <TextValidator
-                                    variant="outlined"
-                                    fullWidth
-                                    id={`forAnswerR${i}`}
-                                    key={`forAnswerR${i}`}
-                                    placeholder={
-                                      addQuestionData.redFlagForNumber[i]
-                                        .numericExpressionType == "RANGE"
-                                        ? "From"
-                                        : "Your answer"
+                                      ? ""
+                                      : "Answer type"}
+                                  </InputLabel>
+                                  <Select
+                                    labelId={`demo-simple-select-outlined-label${i}`}
+                                    id={`demo-simple-select-outlined${i}`}
+                                    value={
+                                      x.numericExpressionType
+                                        ? x.numericExpressionType
+                                        : ""
                                     }
-                                    name="forAnswer"
-                                    value={x.forAnswer}
+                                    name="numericExpressionType"
                                     onChange={(e) => handleChangeFlagR(e, i)}
-                                    className="global-input"
-                                    validators={[
-                                      "matchRegexp:^[0-9]+([.][0-9]+)?$",
-                                    ]}
-                                    errorMessages={[
-                                      "Only numbers and decimals are allowed",
-                                    ]}
-                                    InputLabelProps={{ shrink: false }}
-                                  />
-                                </Grid>
-                                {addQuestionData.redFlagForNumber[i]
-                                  .numericExpressionType == "RANGE" ? (
-                                  <>
-                                    <Grid
-                                      item
-                                      xs={3}
-                                      key={`redflag-containerT${i}`}
-                                    >
-                                      <TextValidator
-                                        variant="outlined"
-                                        fullWidth
-                                        id={`forRangeEndR${i}`}
-                                        key={`forRangeEndR${i}`}
-                                        placeholder="To"
-                                        name="forRangeEnd"
-                                        value={x.forRangeEnd}
-                                        onChange={(e) =>
-                                          handleChangeFlagR(e, i)
-                                        }
-                                        className="global-input"
-                                        validators={[
-                                          "matchRegexp:^[0-9]+([.][0-9]+)?$",
-                                        ]}
-                                        errorMessages={[
-                                          "Only numbers and decimals are allowed",
-                                        ]}
-                                        InputLabelProps={{ shrink: false }}
-                                      />
-                                    </Grid>
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-                                <Grid
-                                  item
-                                  xs={2}
-                                  className="row-icons-container"
-                                  key={`redflag-containerIcons${i}`}
-                                >
-                                  {addQuestionData.redFlagForNumber.length !==
-                                    1 && (
+                                    placeholder="Answer type"
+                                    InputLabelProps={{
+                                      shrink: false,
+                                    }}
+                                    className="global-input single-select"
+                                    required={
+                                      addQuestionData.isPositiveConfirmityRedFlag
+                                    }
+                                  >
+                                    <MenuItem value="">
+                                      <em>None</em>
+                                    </MenuItem>
+                                    {props.answerTypes.map((aType) => {
+                                      return (
+                                        <MenuItem
+                                          value={aType.id}
+                                          key={`atypered_${aType.id}`}
+                                        >
+                                          {aType.name}
+                                        </MenuItem>
+                                      );
+                                    })}
+                                  </Select>
+                                </FormControl>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={3}
+                                key={`redflag-containerF${i}`}
+                              >
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id={`forAnswerR${i}`}
+                                  key={`forAnswerR${i}`}
+                                  placeholder={
+                                    addQuestionData.redFlagForNumber[i]
+                                      .numericExpressionType == "RANGE"
+                                      ? "From"
+                                      : "Your answer"
+                                  }
+                                  name="forAnswer"
+                                  value={x.forAnswer}
+                                  onChange={(e) => handleChangeFlagR(e, i)}
+                                  className="global-input"
+                                  validators={[
+                                    "matchRegexp:^[0-9]+([.][0-9]+)?$",
+                                  ]}
+                                  errorMessages={[
+                                    "Only numbers and decimals are allowed",
+                                  ]}
+                                  InputLabelProps={{ shrink: false }}
+                                />
+                              </Grid>
+                              {addQuestionData.redFlagForNumber[i]
+                                .numericExpressionType == "RANGE" ? (
+                                <>
+                                  <Grid
+                                    item
+                                    xs={3}
+                                    key={`redflag-containerT${i}`}
+                                  >
+                                    <TextValidator
+                                      variant="outlined"
+                                      fullWidth
+                                      id={`forRangeEndR${i}`}
+                                      key={`forRangeEndR${i}`}
+                                      placeholder="To"
+                                      name="forRangeEnd"
+                                      value={x.forRangeEnd}
+                                      onChange={(e) =>
+                                        handleChangeFlagR(e, i)
+                                      }
+                                      className="global-input"
+                                      validators={[
+                                        "matchRegexp:^[0-9]+([.][0-9]+)?$",
+                                      ]}
+                                      errorMessages={[
+                                        "Only numbers and decimals are allowed",
+                                      ]}
+                                      InputLabelProps={{ shrink: false }}
+                                    />
+                                  </Grid>
+                                </>
+                              ) : (
+                                ""
+                              )}
+                              <Grid
+                                item
+                                xs={2}
+                                className="row-icons-container"
+                                key={`redflag-containerIcons${i}`}
+                              >
+                                {addQuestionData.redFlagForNumber.length !==
+                                  1 && (
                                     <Tooltip title="Remove">
                                       <CancelIcon
                                         className={`delete-row-icon`}
@@ -581,9 +591,9 @@ function NumericQuestion(props) {
                                       ></CancelIcon>
                                     </Tooltip>
                                   )}
-                                  {addQuestionData.redFlagForNumber.length -
-                                    1 ===
-                                    i && (
+                                {addQuestionData.redFlagForNumber.length -
+                                  1 ===
+                                  i && (
                                     <Tooltip title="Add">
                                       <AddCircleIcon
                                         className={`add-row-icon`}
@@ -591,10 +601,10 @@ function NumericQuestion(props) {
                                       ></AddCircleIcon>
                                     </Tooltip>
                                   )}
-                                </Grid>
                               </Grid>
-                            );
-                          })
+                            </Grid>
+                          );
+                        })
                         : ""}
                     </Grid>
                   </Grid>
@@ -617,140 +627,140 @@ function NumericQuestion(props) {
                   </Grid>
                   <Grid item xs={10}>
                     {addQuestionData.positiveConformityForNumber &&
-                    addQuestionData.positiveConformityForNumber.length > 0
+                      addQuestionData.positiveConformityForNumber.length > 0
                       ? addQuestionData.positiveConformityForNumber.map(
-                          (x, i) => {
-                            return (
+                        (x, i) => {
+                          return (
+                            <Grid
+                              item
+                              container
+                              xs={12}
+                              spacing={1}
+                              key={`positiveflag-container${i}`}
+                              className="dynamic-flag-container"
+                            >
                               <Grid
                                 item
-                                container
-                                xs={12}
-                                spacing={1}
-                                key={`positiveflag-container${i}`}
-                                className="dynamic-flag-container"
+                                xs={2}
+                                key={`positiveflag-containerSelect${i}`}
                               >
-                                <Grid
-                                  item
-                                  xs={2}
-                                  key={`positiveflag-containerSelect${i}`}
-                                >
-                                  <FormControl variant="outlined" fullWidth>
-                                    <InputLabel
-                                      id={`demo-simple-select-outlined-label${i}`}
-                                      shrink={false}
-                                      className="select-label"
-                                    >
-                                      {x.numericExpressionType &&
+                                <FormControl variant="outlined" fullWidth>
+                                  <InputLabel
+                                    id={`demo-simple-select-outlined-label${i}`}
+                                    shrink={false}
+                                    className="select-label"
+                                  >
+                                    {x.numericExpressionType &&
                                       x.numericExpressionType != ""
-                                        ? ""
-                                        : "Answer type"}
-                                    </InputLabel>
-                                    <Select
-                                      required
-                                      labelId={`demo-simple-select-outlined-label${i}`}
-                                      id={`demo-simple-select-outlined${i}`}
-                                      value={
-                                        x.numericExpressionType
-                                          ? x.numericExpressionType
-                                          : ""
-                                      }
-                                      name="numericExpressionType"
-                                      onChange={(e) => handleChangeFlagP(e, i)}
-                                      placeholder="Answer type"
-                                      InputLabelProps={{
-                                        shrink: false,
-                                      }}
-                                      className="global-input single-select"
-                                    >
-                                      <MenuItem value="">
-                                        <em>None</em>
-                                      </MenuItem>
-                                      {props.answerTypes.map((aType) => {
-                                        return (
-                                          <MenuItem
-                                            value={aType.id}
-                                            key={`atypered_${aType.id}`}
-                                          >
-                                            {aType.name}
-                                          </MenuItem>
-                                        );
-                                      })}
-                                    </Select>
-                                  </FormControl>
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={3}
-                                  key={`positiveflag-containerF${i}`}
-                                >
-                                  <TextValidator
-                                    variant="outlined"
-                                    fullWidth
-                                    id={`forAnswerP${i}`}
-                                    key={`forAnswerP${i}`}
-                                    placeholder={
-                                      addQuestionData
-                                        .positiveConformityForNumber[i]
-                                        .numericExpressionType == "RANGE"
-                                        ? "From"
-                                        : "Your answer"
+                                      ? ""
+                                      : "Answer type"}
+                                  </InputLabel>
+                                  <Select
+                                    required
+                                    labelId={`demo-simple-select-outlined-label${i}`}
+                                    id={`demo-simple-select-outlined${i}`}
+                                    value={
+                                      x.numericExpressionType
+                                        ? x.numericExpressionType
+                                        : ""
                                     }
-                                    name="forAnswer"
-                                    value={x.forAnswer}
+                                    name="numericExpressionType"
                                     onChange={(e) => handleChangeFlagP(e, i)}
-                                    className="global-input"
-                                    validators={[
-                                      "required",
-                                      "matchRegexp:^[0-9]+([.][0-9]+)?$",
-                                    ]}
-                                    errorMessages={[
-                                      "Please enter range",
-                                      "Only numbers and decimals are allowed",
-                                    ]}
-                                    InputLabelProps={{ shrink: false }}
-                                  />
-                                </Grid>
-                                {addQuestionData.positiveConformityForNumber[i]
-                                  .numericExpressionType == "RANGE" ? (
-                                  <>
-                                    <Grid
-                                      item
-                                      xs={3}
-                                      key={`positiveflag-containerT${i}`}
-                                    >
-                                      <TextValidator
-                                        variant="outlined"
-                                        fullWidth
-                                        id={`forRangeEndP${i}`}
-                                        key={`forRangeEndP${i}`}
-                                        placeholder="To"
-                                        name="forRangeEnd"
-                                        value={x.forRangeEnd}
-                                        onChange={(e) =>
-                                          handleChangeFlagP(e, i)
-                                        }
-                                        className="global-input"
-                                        validators={[
-                                          "matchRegexp:^[0-9]+([.][0-9]+)?$",
-                                        ]}
-                                        errorMessages={[
-                                          "Only numbers and decimals are allowed",
-                                        ]}
-                                        InputLabelProps={{ shrink: false }}
-                                      />
-                                    </Grid>
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-                                <Grid
-                                  item
-                                  xs={2}
-                                  className="row-icons-container"
-                                  key={`positiveflag-containerIcons${i}`}
-                                >
-                                  {addQuestionData.positiveConformityForNumber
-                                    .length !== 1 && (
+                                    placeholder="Answer type"
+                                    InputLabelProps={{
+                                      shrink: false,
+                                    }}
+                                    className="global-input single-select"
+                                  >
+                                    <MenuItem value="">
+                                      <em>None</em>
+                                    </MenuItem>
+                                    {props.answerTypes.map((aType) => {
+                                      return (
+                                        <MenuItem
+                                          value={aType.id}
+                                          key={`atypered_${aType.id}`}
+                                        >
+                                          {aType.name}
+                                        </MenuItem>
+                                      );
+                                    })}
+                                  </Select>
+                                </FormControl>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={3}
+                                key={`positiveflag-containerF${i}`}
+                              >
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id={`forAnswerP${i}`}
+                                  key={`forAnswerP${i}`}
+                                  placeholder={
+                                    addQuestionData
+                                      .positiveConformityForNumber[i]
+                                      .numericExpressionType == "RANGE"
+                                      ? "From"
+                                      : "Your answer"
+                                  }
+                                  name="forAnswer"
+                                  value={x.forAnswer}
+                                  onChange={(e) => handleChangeFlagP(e, i)}
+                                  className="global-input"
+                                  validators={[
+                                    "required",
+                                    "matchRegexp:^[0-9]+([.][0-9]+)?$",
+                                  ]}
+                                  errorMessages={[
+                                    "Please enter range",
+                                    "Only numbers and decimals are allowed",
+                                  ]}
+                                  InputLabelProps={{ shrink: false }}
+                                />
+                              </Grid>
+                              {addQuestionData.positiveConformityForNumber[i]
+                                .numericExpressionType == "RANGE" ? (
+                                <>
+                                  <Grid
+                                    item
+                                    xs={3}
+                                    key={`positiveflag-containerT${i}`}
+                                  >
+                                    <TextValidator
+                                      variant="outlined"
+                                      fullWidth
+                                      id={`forRangeEndP${i}`}
+                                      key={`forRangeEndP${i}`}
+                                      placeholder="To"
+                                      name="forRangeEnd"
+                                      value={x.forRangeEnd}
+                                      onChange={(e) =>
+                                        handleChangeFlagP(e, i)
+                                      }
+                                      className="global-input"
+                                      validators={[
+                                        "matchRegexp:^[0-9]+([.][0-9]+)?$",
+                                      ]}
+                                      errorMessages={[
+                                        "Only numbers and decimals are allowed",
+                                      ]}
+                                      InputLabelProps={{ shrink: false }}
+                                    />
+                                  </Grid>
+                                </>
+                              ) : (
+                                ""
+                              )}
+                              <Grid
+                                item
+                                xs={2}
+                                className="row-icons-container"
+                                key={`positiveflag-containerIcons${i}`}
+                              >
+                                {addQuestionData.positiveConformityForNumber
+                                  .length !== 1 && (
                                     <Tooltip title="Remove">
                                       <CancelIcon
                                         className={`delete-row-icon`}
@@ -760,10 +770,10 @@ function NumericQuestion(props) {
                                       ></CancelIcon>
                                     </Tooltip>
                                   )}
-                                  {addQuestionData.positiveConformityForNumber
-                                    .length -
-                                    1 ===
-                                    i && (
+                                {addQuestionData.positiveConformityForNumber
+                                  .length -
+                                  1 ===
+                                  i && (
                                     <Tooltip title="Add">
                                       <AddCircleIcon
                                         className={`add-row-icon`}
@@ -771,11 +781,11 @@ function NumericQuestion(props) {
                                       ></AddCircleIcon>
                                     </Tooltip>
                                   )}
-                                </Grid>
                               </Grid>
-                            );
-                          }
-                        )
+                            </Grid>
+                          );
+                        }
+                      )
                       : ""}
                   </Grid>
                 </Grid>
@@ -810,6 +820,20 @@ function NumericQuestion(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
+      <SurveyQuestionUpdate
+        openConfirmationModal={openConfirmationModal}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        questionData={questionData}
+        warningMessage={warningMessage}
+        setshowLoadder={setshowLoadder}
+        surveyIdURL={props.surveyIdURL}
+        setisAlertBoxOpened={setisAlertBoxOpened}
+        sendQuestionType="Numeric"
+      >
+      </SurveyQuestionUpdate>
     </>
   );
 }

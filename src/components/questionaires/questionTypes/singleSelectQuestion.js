@@ -27,6 +27,7 @@ import TextField from "@material-ui/core/TextField";
 import ComponentLoadderComponent from "../../common/loadder/componentloadder";
 import questionaireService from "../../../services/questionaireService";
 import TooltipComponent from "../../common/tooltip";
+import SurveyQuestionUpdate from "../../common/surveyQuestionUpdateConfirmation";
 
 function SingleSelectQuestion(props) {
   const questionaireApiCall = new questionaireService();
@@ -79,6 +80,10 @@ function SingleSelectQuestion(props) {
     ],
   });
   const [oldData, setOldData] = useState();
+  const [questionData, setQuestionData] = useState();
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [warningMessage, setWarningMessage] = useState('Editing of this single choice question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas');
+  const [sendQuestionType, setSendQuestionType] = useState('');
 
   const PurpleSwitch = withStyles({
     switchBase: {
@@ -120,20 +125,20 @@ function SingleSelectQuestion(props) {
               res.positiveConformitySingleChoice.length > 0
                 ? res.positiveConformitySingleChoice
                 : [
-                    {
-                      optionId: "",
-                      option: "",
-                    },
-                  ],
+                  {
+                    optionId: "",
+                    option: "",
+                  },
+                ],
             redFlagForSingleChoice:
               res.redFlagForSingleChoice.length > 0
                 ? res.redFlagForSingleChoice
                 : [
-                    {
-                      optionId: "",
-                      option: "",
-                    },
-                  ],
+                  {
+                    optionId: "",
+                    option: "",
+                  },
+                ],
           };
           setChoiceFlag(newSingleChoiceFlag);
           setshowLoadder(false);
@@ -249,27 +254,33 @@ function SingleSelectQuestion(props) {
       ...addQuestionData,
     };
     if (finalObject.id != 0) {
-      questionaireApiCall
-        .UpdateSingleChoiceQuestion(finalObject)
-        .then((res) => {
-          setisAlertBoxOpened(false);
-          setStateSnackbar(true);
-          setToasterMessage("Question details updated.");
-          settoasterServerity("success");
-          setTimeout(() => {
-            setReloadPage(true);
+      if (!props.surveyDetails.isSaveasDraft && !props.surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+        setOpenConfirmationModal(true);
+        setQuestionData(finalObject);
+        setSendQuestionType('SingleChoice');
+      } else {
+        questionaireApiCall
+          .UpdateSingleChoiceQuestion(finalObject)
+          .then((res) => {
+            setisAlertBoxOpened(false);
+            setStateSnackbar(true);
+            setToasterMessage("Question details updated.");
+            settoasterServerity("success");
+            setTimeout(() => {
+              setReloadPage(true);
+              setshowLoadder(false);
+              props.history.push(
+                `/questionaires/add-questions/${props.surveyIdURL}/${finalObject.id}?type=SingleChoice`
+              );
+            }, 10000);
+          })
+          .catch((err) => {
+            setToasterMessage(err.data.errors);
+            settoasterServerity("error");
+            setStateSnackbar(true);
             setshowLoadder(false);
-            props.history.push(
-              `/questionaires/add-questions/${props.surveyIdURL}/${finalObject.id}?type=SingleChoice`
-            );
-          }, 10000);
-        })
-        .catch((err) => {
-          setToasterMessage(err.data.errors);
-          settoasterServerity("error");
-          setStateSnackbar(true);
-          setshowLoadder(false);
-        });
+          });
+      }
     } else {
       questionaireApiCall
         .AddSingleChoiceQuestion(finalObject)
@@ -302,10 +313,10 @@ function SingleSelectQuestion(props) {
         ...choiceFlag.redFlagForSingleChoice.map((con, conIndex) =>
           conIndex == index
             ? {
-                ...con,
-                ["option"]: getSelectedVal.option,
-                ["optionId"]: getSelectedVal.optionId,
-              }
+              ...con,
+              ["option"]: getSelectedVal ? getSelectedVal.option : "",
+              ["optionId"]: getSelectedVal ? getSelectedVal.optionId : "",
+            }
             : con
         ),
       ],
@@ -320,10 +331,10 @@ function SingleSelectQuestion(props) {
         ...choiceFlag.positiveConformitySingleChoice.map((con, conIndex) =>
           conIndex == index
             ? {
-                ...con,
-                ["option"]: getSelectedVal.option,
-                ["optionId"]: getSelectedVal.optionId,
-              }
+              ...con,
+              ["option"]: getSelectedVal ? getSelectedVal.option : "",
+              ["optionId"]: getSelectedVal ? getSelectedVal.optionId : "",
+            }
             : con
         ),
       ],
@@ -385,25 +396,31 @@ function SingleSelectQuestion(props) {
     if (!choiceFlag.isPositiveConfirmityRedFlag) {
       choiceFlag.redFlagForSingleChoice = [];
     }
-    questionaireApiCall
-      .UpdateSingleChoiceFlags(choiceFlag)
-      .then((res) => {
-        setStateSnackbar(true);
-        setToasterMessage("Added new question.");
-        settoasterServerity("success");
-        setTimeout(() => {
-          props.history.push(
-            `/questionaires/view-questions/${props.surveyIdURL}`
-          );
+    if (!props.surveyDetails.isSaveasDraft && !props.surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+      setOpenConfirmationModal(true);
+      setQuestionData(choiceFlag);
+      setSendQuestionType('SingleChoiceFlag');
+    } else {
+      questionaireApiCall
+        .UpdateSingleChoiceFlags(choiceFlag)
+        .then((res) => {
+          setStateSnackbar(true);
+          setToasterMessage("Added new question.");
+          settoasterServerity("success");
+          setTimeout(() => {
+            props.history.push(
+              `/questionaires/view-questions/${props.surveyIdURL}`
+            );
+            setshowLoadderFlag(false);
+          }, 10000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
           setshowLoadderFlag(false);
-        }, 10000);
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadderFlag(false);
-      });
+        });
+    }
   }
 
   function DisplayRemove(props) {
@@ -529,50 +546,50 @@ function SingleSelectQuestion(props) {
                   </Grid>
                   <Grid item sm={10}>
                     {addQuestionData.surveyResponseChoices &&
-                    addQuestionData.surveyResponseChoices.length > 0
+                      addQuestionData.surveyResponseChoices.length > 0
                       ? addQuestionData.surveyResponseChoices.map((x, i) => {
-                          return !x.isDelete ? (
-                            <Grid
-                              container
-                              spacing={1}
-                              item
-                              xs={12}
-                              className="dynamic-rows-bottom dynamic-rows-bottom-choice"
-                              key={`choice-container${i}`}
-                            >
-                              <Grid item xs={6}>
-                                <TextValidator
-                                  variant="outlined"
-                                  validators={["required"]}
-                                  errorMessages={["Please enter answer"]}
-                                  fullWidth
-                                  id={`option${i}`}
-                                  placeholder="Enter answer"
-                                  name="option"
-                                  value={x.option}
-                                  onChange={(e) =>
-                                    handleInputChangeChoices(e, i)
-                                  }
-                                  className="global-input"
-                                  InputLabelProps={{ shrink: false }}
-                                />
-                              </Grid>
-                              <Grid item xs={2} className="row-icons-container">
-                                <DisplayRemove
-                                  allChoices={
-                                    addQuestionData.surveyResponseChoices
-                                  }
-                                  index={i}
-                                  choice={x}
-                                ></DisplayRemove>
-                                <DisplayAdd
-                                  allChoices={
-                                    addQuestionData.surveyResponseChoices
-                                  }
-                                  index={i}
-                                  choice={x}
-                                ></DisplayAdd>
-                                {/* {addQuestionData.surveyResponseChoices
+                        return !x.isDelete ? (
+                          <Grid
+                            container
+                            spacing={1}
+                            item
+                            xs={12}
+                            className="dynamic-rows-bottom dynamic-rows-bottom-choice"
+                            key={`choice-container${i}`}
+                          >
+                            <Grid item xs={6}>
+                              <TextValidator
+                                variant="outlined"
+                                validators={["required"]}
+                                errorMessages={["Please enter answer"]}
+                                fullWidth
+                                id={`option${i}`}
+                                placeholder="Enter answer"
+                                name="option"
+                                value={x.option}
+                                onChange={(e) =>
+                                  handleInputChangeChoices(e, i)
+                                }
+                                className="global-input"
+                                InputLabelProps={{ shrink: false }}
+                              />
+                            </Grid>
+                            <Grid item xs={2} className="row-icons-container">
+                              <DisplayRemove
+                                allChoices={
+                                  addQuestionData.surveyResponseChoices
+                                }
+                                index={i}
+                                choice={x}
+                              ></DisplayRemove>
+                              <DisplayAdd
+                                allChoices={
+                                  addQuestionData.surveyResponseChoices
+                                }
+                                index={i}
+                                choice={x}
+                              ></DisplayAdd>
+                              {/* {addQuestionData.surveyResponseChoices
                                   .length !== 1 && (
                                   <Tooltip title="Remove">
                                     <CancelIcon
@@ -583,7 +600,7 @@ function SingleSelectQuestion(props) {
                                     ></CancelIcon>
                                   </Tooltip>
                                 )} */}
-                                {/* {addQuestionData.surveyResponseChoices.length -
+                              {/* {addQuestionData.surveyResponseChoices.length -
                                   1 ===
                                   i && (
                                   <Tooltip title="Add">
@@ -593,12 +610,12 @@ function SingleSelectQuestion(props) {
                                     ></AddCircleIcon>
                                   </Tooltip>
                                 )} */}
-                              </Grid>
                             </Grid>
-                          ) : (
-                            ""
-                          );
-                        })
+                          </Grid>
+                        ) : (
+                          ""
+                        );
+                      })
                       : ""}
                   </Grid>
                 </Grid>
@@ -684,68 +701,68 @@ function SingleSelectQuestion(props) {
                           </Grid>
                           <Grid item xs={10}>
                             {choiceFlag.redFlagForSingleChoice &&
-                            choiceFlag.redFlagForSingleChoice.length > 0
+                              choiceFlag.redFlagForSingleChoice.length > 0
                               ? choiceFlag.redFlagForSingleChoice.map(
-                                  (x, i) => {
-                                    return (
-                                      <Grid
-                                        item
-                                        container
-                                        xs={12}
-                                        spacing={1}
-                                        key={`redflag-container${i}`}
-                                        className="dynamic-flag-container"
-                                      >
-                                        <Grid item xs={5}>
-                                          <FormControl
-                                            variant="outlined"
-                                            fullWidth
-                                          >
-                                            <Autocomplete
-                                              id="tags-outlined"
-                                              options={
-                                                addQuestionData.surveyResponseChoices &&
+                                (x, i) => {
+                                  return (
+                                    <Grid
+                                      item
+                                      container
+                                      xs={12}
+                                      spacing={1}
+                                      key={`redflag-container${i}`}
+                                      className="dynamic-flag-container"
+                                    >
+                                      <Grid item xs={5}>
+                                        <FormControl
+                                          variant="outlined"
+                                          fullWidth
+                                        >
+                                          <Autocomplete
+                                            id="tags-outlined"
+                                            options={
+                                              addQuestionData.surveyResponseChoices &&
                                                 addQuestionData
                                                   .surveyResponseChoices
                                                   .length > 0
-                                                  ? addQuestionData.surveyResponseChoices.filter(
-                                                      (opt) => {
-                                                        return (
-                                                          opt.optionId != ""
-                                                        );
-                                                      }
-                                                    )
-                                                  : []
-                                              }
-                                              getOptionLabel={(opt) =>
-                                                opt.option
-                                              }
-                                              defaultValue={x}
-                                              onChange={(e, v) =>
-                                                handleChangeFlagR(v, i)
-                                              }
-                                              filterSelectedOptions
-                                              className="global-input autocomplete-select"
-                                              renderInput={(params) => (
-                                                <TextField
-                                                  required={
-                                                    choiceFlag.isPositiveConfirmityRedFlag
+                                                ? addQuestionData.surveyResponseChoices.filter(
+                                                  (opt) => {
+                                                    return (
+                                                      opt.optionId != ""
+                                                    );
                                                   }
-                                                  {...params}
-                                                  variant="outlined"
-                                                  placeholder="Select answer"
-                                                />
-                                              )}
-                                            />
-                                          </FormControl>
-                                        </Grid>
-                                        <Grid
-                                          item
-                                          xs={2}
-                                          className="row-icons-container"
-                                        >
-                                          {choiceFlag.redFlagForSingleChoice
-                                            .length !== 1 && (
+                                                )
+                                                : []
+                                            }
+                                            getOptionLabel={(opt) =>
+                                              opt.option
+                                            }
+                                            defaultValue={x}
+                                            onChange={(e, v) =>
+                                              handleChangeFlagR(v, i)
+                                            }
+                                            filterSelectedOptions
+                                            className="global-input autocomplete-select"
+                                            renderInput={(params) => (
+                                              <TextField
+                                                required={
+                                                  choiceFlag.isPositiveConfirmityRedFlag
+                                                }
+                                                {...params}
+                                                variant="outlined"
+                                                placeholder="Select answer"
+                                              />
+                                            )}
+                                          />
+                                        </FormControl>
+                                      </Grid>
+                                      <Grid
+                                        item
+                                        xs={2}
+                                        className="row-icons-container"
+                                      >
+                                        {choiceFlag.redFlagForSingleChoice
+                                          .length !== 1 && (
                                             <Tooltip title="Remove">
                                               <CancelIcon
                                                 className={`delete-row-icon`}
@@ -755,10 +772,10 @@ function SingleSelectQuestion(props) {
                                               ></CancelIcon>
                                             </Tooltip>
                                           )}
-                                          {choiceFlag.redFlagForSingleChoice
-                                            .length -
-                                            1 ===
-                                            i && (
+                                        {choiceFlag.redFlagForSingleChoice
+                                          .length -
+                                          1 ===
+                                          i && (
                                             <Tooltip title="Add">
                                               <AddCircleIcon
                                                 className={`add-row-icon`}
@@ -766,11 +783,11 @@ function SingleSelectQuestion(props) {
                                               ></AddCircleIcon>
                                             </Tooltip>
                                           )}
-                                        </Grid>
                                       </Grid>
-                                    );
-                                  }
-                                )
+                                    </Grid>
+                                  );
+                                }
+                              )
                               : ""}
                           </Grid>
                         </Grid>
@@ -791,63 +808,63 @@ function SingleSelectQuestion(props) {
                         </Grid>
                         <Grid item xs={10}>
                           {choiceFlag.positiveConformitySingleChoice &&
-                          choiceFlag.positiveConformitySingleChoice.length > 0
+                            choiceFlag.positiveConformitySingleChoice.length > 0
                             ? choiceFlag.positiveConformitySingleChoice.map(
-                                (x, i) => {
-                                  return (
-                                    <Grid
-                                      item
-                                      container
-                                      xs={12}
-                                      spacing={1}
-                                      key={`redflag-container${i}`}
-                                      className="dynamic-flag-container"
-                                    >
-                                      <Grid item xs={5}>
-                                        <FormControl
-                                          variant="outlined"
-                                          fullWidth
-                                        >
-                                          <Autocomplete
-                                            id="tags-outlined"
-                                            options={
-                                              addQuestionData.surveyResponseChoices &&
+                              (x, i) => {
+                                return (
+                                  <Grid
+                                    item
+                                    container
+                                    xs={12}
+                                    spacing={1}
+                                    key={`redflag-container${i}`}
+                                    className="dynamic-flag-container"
+                                  >
+                                    <Grid item xs={5}>
+                                      <FormControl
+                                        variant="outlined"
+                                        fullWidth
+                                      >
+                                        <Autocomplete
+                                          id="tags-outlined"
+                                          options={
+                                            addQuestionData.surveyResponseChoices &&
                                               addQuestionData
                                                 .surveyResponseChoices.length >
-                                                0
-                                                ? addQuestionData.surveyResponseChoices.filter(
-                                                    (opt) => {
-                                                      return opt.optionId != "";
-                                                    }
-                                                  )
-                                                : []
-                                            }
-                                            getOptionLabel={(opt) => opt.option}
-                                            defaultValue={x}
-                                            onChange={(e, v) =>
-                                              handleChangeFlagP(v, i)
-                                            }
-                                            filterSelectedOptions
-                                            className="global-input autocomplete-select"
-                                            renderInput={(params) => (
-                                              <TextField
-                                                required
-                                                {...params}
-                                                variant="outlined"
-                                                placeholder="Select answer"
-                                              />
-                                            )}
-                                          />
-                                        </FormControl>
-                                      </Grid>
-                                      <Grid
-                                        item
-                                        xs={2}
-                                        className="row-icons-container"
-                                      >
-                                        {choiceFlag
-                                          .positiveConformitySingleChoice
-                                          .length !== 1 && (
+                                              0
+                                              ? addQuestionData.surveyResponseChoices.filter(
+                                                (opt) => {
+                                                  return opt.optionId != "";
+                                                }
+                                              )
+                                              : []
+                                          }
+                                          getOptionLabel={(opt) => opt.option}
+                                          defaultValue={x}
+                                          onChange={(e, v) =>
+                                            handleChangeFlagP(v, i)
+                                          }
+                                          filterSelectedOptions
+                                          className="global-input autocomplete-select"
+                                          renderInput={(params) => (
+                                            <TextField
+                                              required
+                                              {...params}
+                                              variant="outlined"
+                                              placeholder="Select answer"
+                                            />
+                                          )}
+                                        />
+                                      </FormControl>
+                                    </Grid>
+                                    <Grid
+                                      item
+                                      xs={2}
+                                      className="row-icons-container"
+                                    >
+                                      {choiceFlag
+                                        .positiveConformitySingleChoice
+                                        .length !== 1 && (
                                           <Tooltip title="Remove">
                                             <CancelIcon
                                               className={`delete-row-icon`}
@@ -857,11 +874,11 @@ function SingleSelectQuestion(props) {
                                             ></CancelIcon>
                                           </Tooltip>
                                         )}
-                                        {choiceFlag
-                                          .positiveConformitySingleChoice
-                                          .length -
-                                          1 ===
-                                          i && (
+                                      {choiceFlag
+                                        .positiveConformitySingleChoice
+                                        .length -
+                                        1 ===
+                                        i && (
                                           <Tooltip title="Add">
                                             <AddCircleIcon
                                               className={`add-row-icon`}
@@ -871,11 +888,11 @@ function SingleSelectQuestion(props) {
                                             ></AddCircleIcon>
                                           </Tooltip>
                                         )}
-                                      </Grid>
                                     </Grid>
-                                  );
-                                }
-                              )
+                                  </Grid>
+                                );
+                              }
+                            )
                             : ""}
                         </Grid>
                       </Grid>
@@ -907,6 +924,22 @@ function SingleSelectQuestion(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
+
+      <SurveyQuestionUpdate
+        openConfirmationModal={openConfirmationModal}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        questionData={questionData}
+        warningMessage={warningMessage}
+        setshowLoadder={setshowLoadder}
+        surveyIdURL={props.surveyIdURL}
+        setisAlertBoxOpened={setisAlertBoxOpened}
+        sendQuestionType={sendQuestionType}
+        setshowLoadderFlag={setshowLoadderFlag}
+      >
+      </SurveyQuestionUpdate>
     </>
   );
 }
