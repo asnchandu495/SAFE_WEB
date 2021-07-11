@@ -247,6 +247,18 @@ function OfficeStaff(props) {
       options: {
         filter: false,
         sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          return (
+            <div>
+              {moment(thisRowData[1]).format(
+                props.loadGlobalSettingsData
+                  ? props.loadGlobalSettingsData.timeFormat
+                  : "hh:mm"
+              )}
+            </div>
+          );
+        },
       },
     },
     {
