@@ -235,7 +235,7 @@ function Questionaire(props) {
                   startIcon={<EditIcon />}
                   className={`edit-icon`}
                   onClick={() =>
-                    handleClickUpdateQuestions(props.onTableInitthisRowData)
+                    handleClickUpdateQuestions(props.thisRowData)
                   }
                 ></Button>
               </Tooltip>

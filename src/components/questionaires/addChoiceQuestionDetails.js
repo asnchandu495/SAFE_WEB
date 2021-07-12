@@ -109,20 +109,20 @@ function AddChoiceQuestionDetails(props) {
                 res.positiveConformitySingleChoice.length > 0
                   ? res.positiveConformitySingleChoice
                   : [
-                      {
-                        optionId: "",
-                        option: "",
-                      },
-                    ],
+                    {
+                      optionId: "",
+                      option: "",
+                    },
+                  ],
               redFlagForSingleChoice:
                 res.redFlagForSingleChoice.length > 0
                   ? res.redFlagForSingleChoice
                   : [
-                      {
-                        optionId: "",
-                        option: "",
-                      },
-                    ],
+                    {
+                      optionId: "",
+                      option: "",
+                    },
+                  ],
             };
             setSingleChoiceFlag(newSingleChoiceFlag);
             setshowLoadder(false);
@@ -148,18 +148,18 @@ function AddChoiceQuestionDetails(props) {
                 res.positiveConformityMultiChoice.length > 0
                   ? res.positiveConformityMultiChoice
                   : [
-                      {
-                        options: [],
-                      },
-                    ],
+                    {
+                      options: [],
+                    },
+                  ],
               redFlagForMultipleChoice:
                 res.redFlagForMultipleChoice.length > 0
                   ? res.redFlagForMultipleChoice
                   : [
-                      {
-                        options: [],
-                      },
-                    ],
+                    {
+                      options: [],
+                    },
+                  ],
             };
             setMultiChoiceFlag(newMultiChoiceFlag);
             setshowLoadder(false);
@@ -217,7 +217,7 @@ function AddChoiceQuestionDetails(props) {
           .then((res) => {
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
-            setToasterMessage("Question details updated.");
+            setToasterMessage("Question Details Updated.");
             settoasterServerity("success");
             setTimeout(function () {
               setshowLoadder(false);
@@ -272,7 +272,7 @@ function AddChoiceQuestionDetails(props) {
           .then((res) => {
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
-            setToasterMessage("Question details updated.");
+            setToasterMessage("Question Details Updated.");
             settoasterServerity("success");
             setTimeout(function () {
               setshowLoadder(false);
@@ -512,42 +512,42 @@ function AddChoiceQuestionDetails(props) {
                   </Grid>
                   <Grid item sm={10}>
                     {addQuestionWithChoices.surveyResponseChoices &&
-                    addQuestionWithChoices.surveyResponseChoices.length > 0
+                      addQuestionWithChoices.surveyResponseChoices.length > 0
                       ? addQuestionWithChoices.surveyResponseChoices.map(
-                          (x, i) => {
-                            return (
+                        (x, i) => {
+                          return (
+                            <Grid
+                              container
+                              spacing={1}
+                              item
+                              xs={12}
+                              className="dynamic-rows-bottom"
+                              key={`choice-container${i}`}
+                            >
+                              <Grid item xs={6}>
+                                <TextValidator
+                                  variant="outlined"
+                                  validators={["required"]}
+                                  errorMessages={["Please enter answer"]}
+                                  fullWidth
+                                  id={`option${i}`}
+                                  placeholder="Enter answer"
+                                  name="option"
+                                  value={x.option}
+                                  onChange={(e) =>
+                                    handleInputChangeChoices(e, i)
+                                  }
+                                  className="global-input"
+                                  InputLabelProps={{ shrink: false }}
+                                />
+                              </Grid>
                               <Grid
-                                container
-                                spacing={1}
                                 item
-                                xs={12}
-                                className="dynamic-rows-bottom"
-                                key={`choice-container${i}`}
+                                xs={2}
+                                className="row-icons-container"
                               >
-                                <Grid item xs={6}>
-                                  <TextValidator
-                                    variant="outlined"
-                                    validators={["required"]}
-                                    errorMessages={["Please enter answer"]}
-                                    fullWidth
-                                    id={`option${i}`}
-                                    placeholder="Enter answer"
-                                    name="option"
-                                    value={x.option}
-                                    onChange={(e) =>
-                                      handleInputChangeChoices(e, i)
-                                    }
-                                    className="global-input"
-                                    InputLabelProps={{ shrink: false }}
-                                  />
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={2}
-                                  className="row-icons-container"
-                                >
-                                  {addQuestionWithChoices.surveyResponseChoices
-                                    .length !== 1 && (
+                                {addQuestionWithChoices.surveyResponseChoices
+                                  .length !== 1 && (
                                     <Tooltip title="Remove">
                                       <CancelIcon
                                         className={`delete-row-icon`}
@@ -557,24 +557,24 @@ function AddChoiceQuestionDetails(props) {
                                       ></CancelIcon>
                                     </Tooltip>
                                   )}
-                                  {addQuestionWithChoices.surveyResponseChoices
-                                    .length -
-                                    1 ===
-                                    i &&
-                                    addQuestionWithChoices.surveyResponseChoices
-                                      .length < 10 && (
-                                      <Tooltip title="Add">
-                                        <AddCircleIcon
-                                          className={`add-row-icon`}
-                                          onClick={handleAddClickChoices}
-                                        ></AddCircleIcon>
-                                      </Tooltip>
-                                    )}
-                                </Grid>
+                                {addQuestionWithChoices.surveyResponseChoices
+                                  .length -
+                                  1 ===
+                                  i &&
+                                  addQuestionWithChoices.surveyResponseChoices
+                                    .length < 10 && (
+                                    <Tooltip title="Add">
+                                      <AddCircleIcon
+                                        className={`add-row-icon`}
+                                        onClick={handleAddClickChoices}
+                                      ></AddCircleIcon>
+                                    </Tooltip>
+                                  )}
                               </Grid>
-                            );
-                          }
-                        )
+                            </Grid>
+                          );
+                        }
+                      )
                       : ""}
                   </Grid>
                 </Grid>

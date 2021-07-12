@@ -404,7 +404,7 @@ function AssignQuestionaires(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => {},
+    customToolbarSelect: (value, tableMeta, updateValue) => { },
 
     customToolbar: () => {
       return (
@@ -419,6 +419,26 @@ function AssignQuestionaires(props) {
           </Tooltip>
         </div>
       );
+    },
+    customSearch: (searchQuery, currentRow, columns) => {
+      let isFound = false;
+      currentRow.forEach((col) => {
+        if (typeof col !== "undefined" && col !== null) {
+          if (typeof col === "object") {
+            if (col.name) {
+              if (col.name.toString().indexOf(searchQuery) >= 0) {
+                isFound = true;
+              }
+            }
+          } else {
+            if (col.toString().indexOf(searchQuery) >= 0) {
+              isFound = true;
+            }
+          }
+        }
+      });
+
+      return isFound;
     },
   };
 
@@ -436,7 +456,7 @@ function AssignQuestionaires(props) {
       name: "groupDetails",
       label: "User Group",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           return <div>{value && value.name}</div>;
@@ -447,7 +467,7 @@ function AssignQuestionaires(props) {
       name: "questionnaireDetails",
       label: "Questionnaire",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           return <div>{value && value.name}</div>;
@@ -458,7 +478,7 @@ function AssignQuestionaires(props) {
       name: "status",
       label: "Status",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       },
     },
@@ -536,7 +556,7 @@ function AssignQuestionaires(props) {
         aria-labelledby="form-dialog-title"
         open={Modalopen}
         className="global-dialog"
-        // open={props.Modalopen}
+      // open={props.Modalopen}
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Assign Questionnaire to User Group
@@ -653,12 +673,12 @@ function AssignQuestionaires(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                              return (
-                                <MenuItem value={UserStatus.id}>
-                                  {UserStatus.name}
-                                </MenuItem>
-                              );
-                            })
+                            return (
+                              <MenuItem value={UserStatus.id}>
+                                {UserStatus.name}
+                              </MenuItem>
+                            );
+                          })
                           : ""}
                       </Select>
                     </FormControl>

@@ -69,7 +69,7 @@ function SurveyQuestionUpdate(props) {
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Question Details Updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -95,7 +95,7 @@ function SurveyQuestionUpdate(props) {
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Question Details Updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -121,7 +121,7 @@ function SurveyQuestionUpdate(props) {
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Question Details Updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -149,7 +149,7 @@ function SurveyQuestionUpdate(props) {
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Question Details Updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -177,7 +177,7 @@ function SurveyQuestionUpdate(props) {
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Question Details Updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -203,7 +203,7 @@ function SurveyQuestionUpdate(props) {
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Question Details Updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -231,7 +231,7 @@ function SurveyQuestionUpdate(props) {
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Question Details Updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(
@@ -259,7 +259,7 @@ function SurveyQuestionUpdate(props) {
                     .then((res) => {
                         props.setisAlertBoxOpened(false);
                         props.setStateSnackbar(true);
-                        props.setToasterMessage("Question details updated.");
+                        props.setToasterMessage("Question Details Updated.");
                         props.settoasterServerity("success");
                         setTimeout(() => {
                             props.history.push(

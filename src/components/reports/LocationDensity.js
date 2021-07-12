@@ -207,17 +207,26 @@ function LocationDensity(props) {
       },
     },
     {
-      label: "Density Threshold From",
+      label: "Density Range",
       name: "densityThreasholdFrom",
       options: {
         filter: false,
         sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return <span>{thisRowData[5]} - {thisRowData[6]}</span>;
+          } else {
+            return <span></span>;
+          }
+        },
       },
     },
     {
-      label: "Density Threshold To",
+      label: "Density Range",
       name: "densityThreasholdTo",
       options: {
+        display: "excluded",
         filter: false,
         sort: true,
       },

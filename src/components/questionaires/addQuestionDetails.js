@@ -216,7 +216,7 @@ function AddQuestionDetails(props) {
           .then((res) => {
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
-            setToasterMessage("Question details updated");
+            setToasterMessage("Question Details Updated");
             settoasterServerity("success");
             setTimeout(() => {
               props.history.push(
@@ -265,7 +265,7 @@ function AddQuestionDetails(props) {
           .then((res) => {
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
-            setToasterMessage("Question details updated.");
+            setToasterMessage("Question Details Updated.");
             settoasterServerity("success");
             setTimeout(() => {
               props.history.push(
@@ -363,7 +363,7 @@ function AddQuestionDetails(props) {
           .then((res) => {
             setisAlertBoxOpened(false);
             setStateSnackbar(true);
-            setToasterMessage("Question details updated.");
+            setToasterMessage("Question Details Updated.");
             settoasterServerity("success");
             setTimeout(() => {
               props.history.push(
@@ -413,7 +413,7 @@ function AddQuestionDetails(props) {
             .then((res) => {
               setisAlertBoxOpened(false);
               setStateSnackbar(true);
-              setToasterMessage("Question details updated.");
+              setToasterMessage("Question Details Updated.");
               settoasterServerity("success");
               setTimeout(() => {
                 props.history.push(
@@ -521,7 +521,7 @@ function AddQuestionDetails(props) {
   return (
     <>
       {props.questionTypeForm.questionType == "SingleChoice" ||
-      props.questionTypeForm.questionType == "MultiChoice" ? (
+        props.questionTypeForm.questionType == "MultiChoice" ? (
         <AddChoiceQuestionDetails
           questionTypeForm={props.questionTypeForm}
           surveyIdURL={props.surveyIdURL}

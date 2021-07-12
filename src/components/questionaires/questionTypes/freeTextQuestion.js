@@ -108,7 +108,7 @@ function FreetextQuestion(props) {
         .then((res) => {
           setisAlertBoxOpened(false);
           setStateSnackbar(true);
-          setToasterMessage("Question details updated.");
+          setToasterMessage("Question Details Updated.");
           settoasterServerity("success");
           setTimeout(() => {
             props.history.push(
