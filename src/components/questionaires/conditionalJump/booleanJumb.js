@@ -264,7 +264,7 @@ function BooleanJump(props) {
 
                     <Grid item container xs={12}>
                       <Grid item xs={2}>
-                        <label className="required">Select question</label>
+                        <label>Select question</label>
                       </Grid>
                       <Grid container xs={8} spacing={2}>
                         <Grid item container xs={12}>
@@ -287,7 +287,6 @@ function BooleanJump(props) {
                                   : ""}
                               </InputLabel>
                               <Select
-                                required
                                 labelId="demo-simple-select-outlined-label"
                                 id="demo-simple-select-outlined"
                                 value={
@@ -339,7 +338,6 @@ function BooleanJump(props) {
                                   : ""}
                               </InputLabel>
                               <Select
-                                required
                                 labelId="demo-simple-select-outlined-label"
                                 id="demo-simple-select-outlined"
                                 value={
