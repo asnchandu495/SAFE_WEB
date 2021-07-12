@@ -199,7 +199,7 @@ function LocationDensity(props) {
       },
     },
     {
-      label: "Count ",
+      label: "Live Density",
       name: "count",
       options: {
         filter: false,
@@ -207,7 +207,7 @@ function LocationDensity(props) {
       },
     },
     {
-      label: "From",
+      label: "Density Threshold From",
       name: "densityThreasholdFrom",
       options: {
         filter: false,
@@ -215,7 +215,7 @@ function LocationDensity(props) {
       },
     },
     {
-      label: "To",
+      label: "Density Threshold To",
       name: "densityThreasholdTo",
       options: {
         filter: false,
