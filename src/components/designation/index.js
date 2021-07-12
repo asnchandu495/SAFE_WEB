@@ -148,7 +148,7 @@ function ListAssignedDesignation(props) {
 
     {
       name: "uniqueKey",
-      label: "Unique Key",
+      label: "Designation ID",
       options: {
         filter: false,
         sort: true,

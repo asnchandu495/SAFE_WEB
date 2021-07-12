@@ -309,7 +309,7 @@ function ListSite(props) {
     },
     {
       name: "uniqueKey",
-      label: "Unique Key",
+      label: "Site ID",
       options: {
         filter: false,
         sort: true,

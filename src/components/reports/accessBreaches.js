@@ -634,7 +634,7 @@ function AccessBreaches(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="required">Location</label>
+                      <label>Location</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -663,10 +663,10 @@ function AccessBreaches(props) {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              inputProps={{
-                                ...params.inputProps,
-                                required: selectedLocationData.length === 0,
-                              }}
+                              // inputProps={{
+                              //   ...params.inputProps,
+                              //   required: selectedLocationData.length === 0,
+                              // }}
                               variant="outlined"
                               placeholder="Select Location"
                             />

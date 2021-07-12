@@ -148,7 +148,7 @@ function UserGroups(props) {
     },
     {
       name: "uniqueKey",
-      label: "Unique Key",
+      label: "Group ID",
       options: {
         filter: true,
         sort: true,

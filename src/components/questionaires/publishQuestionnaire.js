@@ -318,7 +318,7 @@ function PublishQuestionnaire(props) {
         let sendDataBoolean = booleanAnswer;
         sendDataBoolean.surveyQuestionId = currentQuestion.id;
         sendDataBoolean.answer =
-          currentQuestion.answer == "true" ? true : false;
+          sendDataBoolean.answer == "true" ? true : false;
         questionaireApiCall
           .submitBooleanAnswer(sendDataBoolean)
           .then((response) => {

@@ -186,7 +186,7 @@ function ViewTeam(props) {
                 </Grid>
                 <Grid item xs={12} container>
                   <Grid item xs={3}>
-                    <label> Unique Key :</label>
+                    <label>Team ID :</label>
                   </Grid>
                   <Grid item xs={8}>
                     <label>{ViewTeamDetails.uniqueKey}</label>
@@ -203,7 +203,7 @@ function ViewTeam(props) {
                         title={""}
                         data={
                           ViewTeamDetails.users &&
-                          ViewTeamDetails.users.length > 0
+                            ViewTeamDetails.users.length > 0
                             ? ViewTeamDetails.users
                             : []
                         }

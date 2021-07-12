@@ -131,7 +131,7 @@ function Teams(props) {
     },
     {
       name: "uniqueKey",
-      label: "Unique Key",
+      label: "Team ID",
       options: {
         sort: true,
         filterList: [],
