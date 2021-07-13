@@ -278,6 +278,10 @@ function GeoFencingBreaches(props) {
     jumpToPage: true,
     expandableRows: true,
     expandableRowsHeader: false,
+    sortOrder: {
+      name: 'userName',
+      direction: 'asc'
+    },
     renderExpandableRow: (rowData, rowMeta) => {
       const options = {
         filter: false,
@@ -299,6 +303,10 @@ function GeoFencingBreaches(props) {
           pagination: {
             jumpToPage: "Go to page:",
           },
+        },
+        sortOrder: {
+          name: 'createdDate',
+          direction: 'asc'
         },
       };
       const columns = [
@@ -360,8 +368,8 @@ function GeoFencingBreaches(props) {
     textLabels: {
       body: {
         noMatch: `${isFilterSelected
-            ? "There are no reports"
-            : "Please select filters to generate report"
+          ? "There are no reports"
+          : "Please select filters to generate report"
           }`,
       },
       pagination: {

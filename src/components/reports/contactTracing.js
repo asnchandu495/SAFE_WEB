@@ -331,6 +331,10 @@ function ContactTracing(props) {
     download: false,
     selectableRows: "multiple",
     disableToolbarSelect: true,
+    sortOrder: {
+      name: 'name',
+      direction: 'asc'
+    },
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
       var setRowsSelectedArray = [];
       allRowsSelected.map((user, i) => {

@@ -275,6 +275,10 @@ function SocailDistancing(props) {
 
     expandableRows: true,
     expandableRowsHeader: false,
+    sortOrder: {
+      name: 'userName',
+      direction: 'asc'
+    },
     renderExpandableRow: (rowData, rowMeta) => {
       const options = {
         filter: false,
@@ -296,6 +300,10 @@ function SocailDistancing(props) {
           pagination: {
             jumpToPage: "Go to page:",
           },
+        },
+        sortOrder: {
+          name: 'createdDate',
+          direction: 'asc'
         },
       };
       const columns = [

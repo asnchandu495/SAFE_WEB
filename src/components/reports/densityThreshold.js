@@ -253,6 +253,10 @@ function DensityThreshold(props) {
     jumpToPage: true,
     expandableRows: true,
     expandableRowsHeader: false,
+    sortOrder: {
+      name: 'locationName',
+      direction: 'asc'
+    },
     renderExpandableRow: (rowData, rowMeta) => {
       const options = {
         filter: false,
@@ -274,6 +278,10 @@ function DensityThreshold(props) {
           pagination: {
             jumpToPage: "Go to page:",
           },
+        },
+        sortOrder: {
+          name: 'createdDate',
+          direction: 'asc'
         },
       };
       const columns = [

@@ -325,6 +325,10 @@ function OfficeStaff(props) {
         jumpToPage: "Go to page:",
       },
     },
+    sortOrder: {
+      name: 'time',
+      direction: 'asc'
+    },
     customSearch: (searchQuery, currentRow, columns) => {
       let isFound = false;
       currentRow.forEach((col) => {

@@ -252,6 +252,10 @@ function AccessBreaches(props) {
     expandableRows: true,
 
     page: currentPage,
+    sortOrder: {
+      name: 'locationName',
+      direction: 'asc'
+    },
     expandableRowsHeader: false,
     renderExpandableRow: (rowData, rowMeta) => {
       const options = {
@@ -274,6 +278,10 @@ function AccessBreaches(props) {
           pagination: {
             jumpToPage: "Go to page:",
           },
+        },
+        sortOrder: {
+          name: 'createdDate',
+          direction: 'asc'
         },
       };
 

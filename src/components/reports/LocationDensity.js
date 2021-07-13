@@ -271,6 +271,10 @@ function LocationDensity(props) {
         jumpToPage: "Go to page:",
       },
     },
+    sortOrder: {
+      name: 'locationName',
+      direction: 'asc'
+    },
     customToolbarSelect: (value, tableMeta, updateValue) => { },
     customToolbar: () => {
       return (
