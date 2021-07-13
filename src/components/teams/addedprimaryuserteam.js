@@ -129,6 +129,8 @@ function AddPrimaryUserTeam(props) {
   });
 
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
+
   const DialogTitle = withStyles(styles)((props) => {
     const { children, classes, onClose, ...other } = props;
     return (
@@ -190,13 +192,18 @@ function AddPrimaryUserTeam(props) {
     }
   }, []);
 
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
     jumpToPage: true,
     print: false,
     viewColumns: false,

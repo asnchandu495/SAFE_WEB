@@ -101,6 +101,10 @@ function ViewTeam(props) {
     selectableRows: false,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    sortOrder: {
+      name: 'name',
+      direction: 'asc'
+    }
   };
 
   const columns = [

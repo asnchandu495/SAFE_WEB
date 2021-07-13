@@ -138,6 +138,7 @@ function LocationDensity(props) {
   const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
   const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
   const [isFilterSelected, setIsFilterSelected] = useState(false);
+  const [isLocationLoading, setIsLocationLoading] = useState(false);
 
   useEffect(() => {
     // Promise.all([siteApiCall.getListSite(), siteApiCall.getLocationManagers()])
@@ -416,6 +417,7 @@ function LocationDensity(props) {
   }
 
   function selectedSite(e, value) {
+    setlocationBySiteId([]);
     setselectedLocationData([]);
     setselectedSiteData(value);
     setformFieldValidation((ValidationForm) => ({
@@ -423,12 +425,13 @@ function LocationDensity(props) {
       ["SiteId"]: false,
     }));
     if (value) {
+      setIsLocationLoading(true);
       let data = value.id;
       siteApiCall
         .getAllLocationsBySiteId(data)
         .then((getResult) => {
-          console.log(getResult);
           setlocationBySiteId(getResult);
+          setIsLocationLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -493,17 +496,13 @@ function LocationDensity(props) {
       ),
     };
     setshowLoadder(true);
-    siteApiCall
-      .getLocationBysiteReport(searchForm)
-      .then((result) => {
+    Promise.all([siteApiCall.getLocationBysiteReport(searchForm), siteApiCall.getAllLocationsBySiteId(searchForm.SiteId)])
+      .then(([densityData, siteLocations]) => {
         setIsFilterSelected(true);
-        // setStateSnackbar(true);
-        // setToasterMessage("success");
-        // settoasterServerity("success");
-        setlocationDensityData(result);
+        setlocationDensityData(densityData);
+        setlocationBySiteId(siteLocations);
         setTimeout(() => {
           setReportTime(moment().toISOString());
-          setModalOpen(false);
           setshowLoadder(false);
         }, 3000);
       })
@@ -642,6 +641,7 @@ function LocationDensity(props) {
                     <FormControl variant="outlined" fullWidth>
                       <Autocomplete
                         multiple
+                        loading={isLocationLoading}
                         id="tags-outlined"
                         options={
                           locationBySiteId && locationBySiteId.length > 0

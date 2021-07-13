@@ -94,6 +94,10 @@ function ViewUserGroup(props) {
     selectableRows: false,
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
+    sortOrder: {
+      name: 'firstName',
+      direction: 'asc'
+    }
   };
 
   const columns = [
@@ -187,8 +191,8 @@ function ViewUserGroup(props) {
                           title={""}
                           data={
                             viewUserGroupDetails.primaryapplicationuserDetails &&
-                            viewUserGroupDetails.primaryapplicationuserDetails
-                              .length > 0
+                              viewUserGroupDetails.primaryapplicationuserDetails
+                                .length > 0
                               ? viewUserGroupDetails.primaryapplicationuserDetails
                               : []
                           }
@@ -202,8 +206,8 @@ function ViewUserGroup(props) {
                           title={""}
                           data={
                             viewUserGroupDetails.secondaryapplicationuserDetails &&
-                            viewUserGroupDetails.secondaryapplicationuserDetails
-                              .length > 0
+                              viewUserGroupDetails.secondaryapplicationuserDetails
+                                .length > 0
                               ? viewUserGroupDetails.secondaryapplicationuserDetails
                               : []
                           }
