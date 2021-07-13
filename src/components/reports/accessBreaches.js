@@ -528,11 +528,11 @@ function AccessBreaches(props) {
 
     let searchForm = { startDate: selectedReportFilter.startDate, endDate: selectedReportFilter.endDate, SiteId: selectedReportFilter.selectedSiteData.id, LocationId: selectedReportFilter.selectedLocationData.map((item) => item.id) }
 
-    reportApiCall
-      .getAccessBreachReport(searchForm)
-      .then((result) => {
+    Promise.all([reportApiCall.getAccessBreachReport(searchForm), siteApiCall.getAllLocationsBySiteId(searchForm.SiteId)])
+      .then(([breachData, siteLocations]) => {
         setIsFilterSelected(true);
-        setlocationDensityData(result);
+        setlocationDensityData(breachData);
+        setLocationData(siteLocations);
         setTimeout(() => {
           setComponentLoadder(false);
         }, 3000);

@@ -573,7 +573,7 @@ function QuestionnaireEvaluation(props) {
                                   "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + 1
+                                    : parseFloat(x.lowerLimit)
                                   }`,
                                 ]
                                 : [
@@ -581,7 +581,7 @@ function QuestionnaireEvaluation(props) {
                                   "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + 1
+                                    : parseFloat(x.lowerLimit)
                                   }`,
                                 ]
                               : x.isNoUpperLimit
@@ -589,7 +589,7 @@ function QuestionnaireEvaluation(props) {
                                   "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + 1
+                                    : parseFloat(x.lowerLimit)
                                   }`,
                                 ]
                                 : [
@@ -597,7 +597,7 @@ function QuestionnaireEvaluation(props) {
                                   "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + 1
+                                    : parseFloat(x.lowerLimit)
                                   }`,
                                 ]
                           }
@@ -608,7 +608,7 @@ function QuestionnaireEvaluation(props) {
                                   "Entered numbers are not valid",
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + 1
+                                    : parseFloat(x.lowerLimit)
                                   }`,
                                 ]
                                 : [
@@ -616,7 +616,7 @@ function QuestionnaireEvaluation(props) {
                                   "Entered numbers are not valid",
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + 1
+                                    : parseFloat(x.lowerLimit)
                                   }`,
                                 ]
                               : x.isNoUpperLimit
@@ -624,7 +624,7 @@ function QuestionnaireEvaluation(props) {
                                   "Entered numbers are not valid",
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + 1
+                                    : parseFloat(x.lowerLimit)
                                   }`,
                                 ]
                                 : [
@@ -632,7 +632,7 @@ function QuestionnaireEvaluation(props) {
                                   "Entered numbers are not valid",
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + 1
+                                    : parseFloat(x.lowerLimit)
                                   }`,
                                 ]
                           }

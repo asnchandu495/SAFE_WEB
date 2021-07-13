@@ -351,8 +351,8 @@ function DensityThreshold(props) {
     textLabels: {
       body: {
         noMatch: `${isFilterSelected
-            ? "There are no reports"
-            : "Please select filters to generate report"
+          ? "There are no reports"
+          : "Please select filters to generate report"
           }`,
       },
       pagination: {
@@ -535,13 +535,12 @@ function DensityThreshold(props) {
       ),
     };
     setshowLoadder(true);
-    reportApiCall
-      .getDensityThresholdReport(searchForm)
-      .then((result) => {
+    Promise.all([reportApiCall.getDensityThresholdReport(searchForm), siteApiCall.getAllLocationsBySiteId(searchForm.SiteId)])
+      .then(([densityData, siteLocations]) => {
         setIsFilterSelected(true);
-        setDensityThresholdData(result);
+        setDensityThresholdData(densityData);
+        setLocationData(siteLocations);
         setTimeout(() => {
-          setModalOpen(false);
           setshowLoadder(false);
         }, 3000);
       })
