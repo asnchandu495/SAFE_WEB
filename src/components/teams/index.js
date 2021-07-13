@@ -310,7 +310,7 @@ function Teams(props) {
           } else {
             getValue = col;
           }
-          if (getValue && getValue.toString().indexOf(searchQuery) >= 0) {
+          if (getValue && getValue.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
             isFound = true;
           }
         }

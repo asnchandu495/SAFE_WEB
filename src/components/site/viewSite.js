@@ -315,7 +315,7 @@ function ViewSite(props) {
                 {thisRowData[8] != -1 ? (
                   thisRowData[8]
                 ) : (
-                  <span className="infinity-symbol">&#8734;</span>
+                  <span className="infinity-symbol">No Limit</span>
                 )}
               </span>
             );

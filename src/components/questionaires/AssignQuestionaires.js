@@ -426,12 +426,12 @@ function AssignQuestionaires(props) {
         if (typeof col !== "undefined" && col !== null) {
           if (typeof col === "object") {
             if (col.name) {
-              if (col.name.toString().indexOf(searchQuery) >= 0) {
+              if (col.name.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
                 isFound = true;
               }
             }
           } else {
-            if (col.toString().indexOf(searchQuery) >= 0) {
+            if (col.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
               isFound = true;
             }
           }
