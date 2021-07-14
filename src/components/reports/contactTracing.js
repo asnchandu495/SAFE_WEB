@@ -336,6 +336,7 @@ function ContactTracing(props) {
       direction: 'asc'
     },
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
+      setRowClickCovidState();
       var setRowsSelectedArray = [];
       allRowsSelected.map((user, i) => {
         setRowsSelectedArray.push(user.dataIndex);
@@ -521,7 +522,7 @@ function ContactTracing(props) {
       userId: selectedReportFilter.userId,
     };
 
-    if (selectedReportType == "rlap") {
+    if (selectedReportFilter.selectedReportType == "rlap") {
       reportApiCall
         .getContactTracingRlapReport(searchForm)
         .then((result) => {
@@ -537,7 +538,7 @@ function ContactTracing(props) {
           setStateSnackbar(true);
           setshowLoadder(false);
         });
-    } else if (selectedReportType == 'ble') {
+    } else if (selectedReportFilter.selectedReportType == 'ble') {
       reportApiCall
         .getContactTracingBleReport(searchForm)
         .then((result) => {
@@ -684,6 +685,7 @@ function ContactTracing(props) {
     setshowLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
+    console.log(rowClickCovidState);
     if (covidStatelist) {
       if (rowClickCovidState) {
         let sendData = {
@@ -691,14 +693,22 @@ function ContactTracing(props) {
           covidStateId: covidStatelist.id,
         };
 
+        let thisUser = applicationUsers.find(usr => usr.id == rowClickCovidState.id);
+
+        thisUser.covidStateDetails.stateName = covidStatelist.stateName;
+        thisUser.covidStateDetails.id = covidStatelist.id;
+
+        applicationUsers.map(user =>
+          user.id == rowClickCovidState.id ? { ...user, thisUser } : user)
+
         userApiCall
           .UpdateUserCovidState(sendData)
           .then((result) => {
+            setRowClickCovidState();
             setStateSnackbar(true);
             setToasterMessage("Covid state updated");
             settoasterServerity("success");
             setTimeout(() => {
-              setRowClickCovidState();
               setBulkModalOpen(false);
               setSelectedUsersForCovidState([]);
               setRowsSelected([]);
@@ -724,6 +734,16 @@ function ContactTracing(props) {
           updateCOVIDStatusbyUsersList: updateCOVIDStatusbyUsersList,
         };
 
+        updateCOVIDStatusbyUsersList.forEach(userState => {
+          let thisUser = applicationUsers.find(usr => usr.id == userState.id);
+
+          thisUser.covidStateDetails.stateName = covidStatelist.stateName;
+          thisUser.covidStateDetails.id = covidStatelist.id;
+
+          applicationUsers.map(user =>
+            user.id == userState.id ? { ...user, thisUser } : user)
+        });
+
         userApiCall
           .UpdateUserCovidStateBulk(sendData)
           .then((result) => {
@@ -731,6 +751,7 @@ function ContactTracing(props) {
             setToasterMessage("Covid state update to the selected users");
             settoasterServerity("success");
             setTimeout(() => {
+              setRowClickCovidState();
               setBulkModalOpen(false);
               setSelectedUsersForCovidState([]);
               setRowsSelected([]);
