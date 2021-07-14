@@ -13,10 +13,14 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import Editor from "ckeditor5-custom-build/build/ckeditor";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
 import workflowService from "../../services/workflowService";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import CovidStateApiServices from "../../services/masterDataService";
 
 const initialState = {
   mouseX: null,
@@ -56,6 +60,7 @@ function ActionFormNew(props) {
   const uActivityId = props.match.params.uaid;
   const actionId = props.match.params.actionId;
   const workflowApiCall = new workflowService();
+  const CovidStateApi = new CovidStateApiServices();
 
   const [formData, setFormData] = useState();
   const [componentLoadder, setComponentLoadder] = useState(true);
@@ -74,57 +79,95 @@ function ActionFormNew(props) {
   const [selectedActivityDetails, setSelectedActivityDetails] = useState();
   const [currentInputText, setCurrentInputText] = useState();
   const [oldData, setOldData] = useState();
+  const [covidStates, setCovidStates] = useState([]);
 
   useEffect(() => {
     setComponentLoadder(true);
-    workflowApiCall
-      .getOptionsByActivityId(activityId)
-      .then((result) => {
-        if (result.length > 0) {
-          let thisFormData = result.find(
-            (act) =>
-              act.uniqueActivityId == props.selectedAction.uniqueActivityId
-          );
-          if (thisFormData) {
-            let actionListFromAPI = thisFormData.configurationDataList;
-            let actionListFromSelected =
-              props.selectedAction.worflowActivityInputs;
-            let newFormCollection = [];
-            actionListFromSelected.map((ac) => {
-              let alreadyAddedAction = actionListFromAPI.find((item) => {
-                return item.name == ac.name ? item : null;
-              });
+    Promise.all([
+      workflowApiCall.getOptionsByActivityId(activityId),
+      CovidStateApi.getCOVIDStates(),
+    ])
+      .then(
+        ([
+          result,
+          getCOVIDStates,
+        ]) => {
+          setCovidStates(getCOVIDStates);
+          console.log(props.selectedAction);
+          if (result.length > 0) {
+            let thisFormData = result.find(
+              (act) =>
+                act.uniqueActivityId == props.selectedAction.uniqueActivityId
+            );
+            if (thisFormData) {
+              let actionListFromAPI = thisFormData.configurationDataList;
+              let actionListFromSelected =
+                props.selectedAction.worflowActivityInputs;
+              let newFormCollection = [];
+              actionListFromSelected.map((ac) => {
+                let alreadyAddedAction = actionListFromAPI.find((item) => {
+                  return item.name == ac.name ? item : null;
+                });
 
-              newFormCollection.push({
-                id: alreadyAddedAction ? alreadyAddedAction.id : "",
-                // inputType: alreadyAddedAction
-                //   ? alreadyAddedAction.inputType
-                //   : ac.inputType,
-                inputType: ac.inputType,
-                name: alreadyAddedAction ? alreadyAddedAction.name : ac.name,
-                value: alreadyAddedAction ? alreadyAddedAction.value : "",
-                remarksForInput: ac.remarksForInput,
-                inputIntelliSenseOptions: ac.inputIntelliSenseOptions,
+                newFormCollection.push({
+                  id: alreadyAddedAction ? alreadyAddedAction.id : "",
+                  // inputType: alreadyAddedAction
+                  //   ? alreadyAddedAction.inputType
+                  //   : ac.inputType,
+                  inputType: ac.inputType,
+                  name: alreadyAddedAction ? alreadyAddedAction.name : ac.name,
+                  value: alreadyAddedAction ? alreadyAddedAction.value : "",
+                  remarksForInput: ac.remarksForInput,
+                  inputIntelliSenseOptions: ac.inputIntelliSenseOptions,
+                });
               });
-            });
-            setFormData({
-              id: thisFormData.id,
-              uniqueActivityId: thisFormData.uniqueActivityId,
-              name: thisFormData.name,
-              aimWorkflowId: thisFormData.aimWorkflowId,
-              parentActivityId: thisFormData.parentActivityId,
-              configurationDataList: newFormCollection,
-            });
-            setOldData({
-              id: thisFormData.id,
-              uniqueActivityId: thisFormData.uniqueActivityId,
-              name: thisFormData.name,
-              aimWorkflowId: thisFormData.aimWorkflowId,
-              parentActivityId: thisFormData.parentActivityId,
-              configurationDataList: newFormCollection,
-            });
-            setComponentLoadder(false);
-            props.setReloadPage("NO");
+              setFormData({
+                id: thisFormData.id,
+                uniqueActivityId: thisFormData.uniqueActivityId,
+                name: thisFormData.name,
+                aimWorkflowId: thisFormData.aimWorkflowId,
+                parentActivityId: thisFormData.parentActivityId,
+                configurationDataList: newFormCollection,
+              });
+              setOldData({
+                id: thisFormData.id,
+                uniqueActivityId: thisFormData.uniqueActivityId,
+                name: thisFormData.name,
+                aimWorkflowId: thisFormData.aimWorkflowId,
+                parentActivityId: thisFormData.parentActivityId,
+                configurationDataList: newFormCollection,
+              });
+              setComponentLoadder(false);
+              props.setReloadPage("NO");
+            } else {
+              let dynamicForm = props.selectedAction.worflowActivityInputs;
+              let newFormCollection = dynamicForm.map((form) => ({
+                id: form.id ? form.id : "",
+                inputType: form.inputType,
+                name: form.name,
+                remarksForInput: form.remarksForInput,
+                inputIntelliSenseOptions: form.inputIntelliSenseOptions,
+                value: form.value ? form.value : "",
+              }));
+              setFormData({
+                id: "",
+                uniqueActivityId: props.selectedAction.uniqueActivityId,
+                name: props.selectedAction.name,
+                aimWorkflowId: workflowId,
+                parentActivityId: activityId,
+                configurationDataList: newFormCollection,
+              });
+              setOldData({
+                id: "",
+                uniqueActivityId: props.selectedAction.uniqueActivityId,
+                name: props.selectedAction.name,
+                aimWorkflowId: workflowId,
+                parentActivityId: activityId,
+                configurationDataList: newFormCollection,
+              });
+              setComponentLoadder(false);
+              props.setReloadPage("NO");
+            }
           } else {
             let dynamicForm = props.selectedAction.worflowActivityInputs;
             let newFormCollection = dynamicForm.map((form) => ({
@@ -154,36 +197,7 @@ function ActionFormNew(props) {
             setComponentLoadder(false);
             props.setReloadPage("NO");
           }
-        } else {
-          let dynamicForm = props.selectedAction.worflowActivityInputs;
-          let newFormCollection = dynamicForm.map((form) => ({
-            id: form.id ? form.id : "",
-            inputType: form.inputType,
-            name: form.name,
-            remarksForInput: form.remarksForInput,
-            inputIntelliSenseOptions: form.inputIntelliSenseOptions,
-            value: form.value ? form.value : "",
-          }));
-          setFormData({
-            id: "",
-            uniqueActivityId: props.selectedAction.uniqueActivityId,
-            name: props.selectedAction.name,
-            aimWorkflowId: workflowId,
-            parentActivityId: activityId,
-            configurationDataList: newFormCollection,
-          });
-          setOldData({
-            id: "",
-            uniqueActivityId: props.selectedAction.uniqueActivityId,
-            name: props.selectedAction.name,
-            aimWorkflowId: workflowId,
-            parentActivityId: activityId,
-            configurationDataList: newFormCollection,
-          });
-          setComponentLoadder(false);
-          props.setReloadPage("NO");
-        }
-      })
+        })
       .catch((err) => {
         console.log(err);
       });
@@ -511,6 +525,64 @@ function ActionFormNew(props) {
                                   )}
                                 </Menu>
                                 : ""}
+                            </Grid>
+                          </Grid>
+                        );
+                      }
+                      if (act.inputType == "CovidStateDropDown") {
+                        return (
+                          <Grid
+                            item
+                            xs={12}
+                            container
+                            key={`inputSelect_${index}`}
+                          >
+                            <Grid item xs={3}>
+                              <label>{act.remarksForInput}</label>
+                            </Grid>
+                            <Grid
+                              item
+                              xs={5}
+                            >
+                              <FormControl variant="outlined" fullWidth>
+                                <InputLabel
+                                  id="demo-simple-select-outlined-label"
+                                  shrink={false}
+                                  className="select-label"
+                                >
+                                  {!act.value
+                                    ? "Select covid state"
+                                    : ""}
+                                </InputLabel>
+                                <Select
+                                  labelId="demo-simple-select-outlined-label"
+                                  id="demo-simple-select-outlined"
+                                  value={
+                                    act.value
+                                  }
+                                  name="value"
+                                  onChange={(e) => handleInputChange(e, index)}
+                                  placeholder="Select covid state"
+                                  InputLabelProps={{
+                                    shrink: false,
+                                  }}
+                                  className="global-input single-select"
+                                >
+                                  <MenuItem value="">
+                                    <em>None</em>
+                                  </MenuItem>
+                                  {covidStates.map((c) => {
+                                    return (
+                                      <MenuItem
+                                        value={c.id}
+                                        key={`atypered_${c.id}`}
+                                      >
+                                        {c.stateName}
+                                      </MenuItem>
+                                    );
+                                  })}
+                                </Select>
+                              </FormControl>
                             </Grid>
                           </Grid>
                         );

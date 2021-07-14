@@ -1597,7 +1597,7 @@ label.required {
 }
 
 .no-pointer-events{
-  cursor: not-allowed !important;
+  pointer-events: none !important;
 }
 
 .change-password-form{

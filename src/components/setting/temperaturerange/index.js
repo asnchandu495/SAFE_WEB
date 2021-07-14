@@ -449,7 +449,7 @@ function TemperatureRange(props) {
                               {...params}
                               required
                               variant="outlined"
-                              placeholder="Select  covid state"
+                              placeholder="Select covid state"
                             />
                           )}
                         />

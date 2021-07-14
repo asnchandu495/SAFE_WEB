@@ -420,6 +420,8 @@ function AdminLayout(props) {
         setAnchorEl(null);
         localStorage.removeItem("id_token");
         localStorage.removeItem("id_tokenExpiry");
+        sessionStorage.clear();
+        localStorage.clear();
         props.history.push("/");
       })
       .catch((err) => { });
