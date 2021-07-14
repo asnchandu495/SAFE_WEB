@@ -1609,3 +1609,27 @@ label.required {
     }
   }
 }
+
+.select-validator{
+  .MuiInput-root{
+    height: 36px !important;
+  }
+  .MuiInput-underline:hover:not(.Mui-disabled):before{
+      border-bottom: none;
+  }
+  .MuiInput-underline:before{
+    border-bottom: none;
+  }
+  .MuiInput-underline:after{
+    border-bottom: none;
+  }
+  .MuiInputBase-input {
+    border: 1px solid #e0e0e0 !important;
+    padding: 8px 14px !important;
+    color: #868d96;
+  }
+  .MuiInputBase-input:focus {
+    border: 1px solid #a6cbf3 !important;
+    padding: 8px 14px !important;
+  }
+}

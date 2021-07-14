@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { ValidatorForm, TextValidator, SelectValidator } from "react-material-ui-form-validator";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -767,40 +767,37 @@ function GlobalSetting(props) {
                   />
                 </Grid> */}
 
-                <Grid item xs={3}>
-                  <FormControl variant="outlined" fullWidth>
-                    <Select
-                      labelId="demo-simple-select-outlined-label"
-                      id="demo-simple-select-outlined"
-                      value={formData.fileFormatToImportUsers}
-                      name="fileFormatToImportUsers"
-                      onChange={handleChange}
-                      placeholder="Select"
-                      required
-                      InputLabelProps={{ shrink: false }}
-                      className="global-input single-select"
-                    >
-                      <MenuItem value="">
-                        <em>Select</em>
-                      </MenuItem>
-                      {fileFormat.length > 0
-                        ? fileFormat.map((fol) => {
-                          return (
-                            <MenuItem key={fol.id} value={fol.format}>
-                              {fol.format}
-                            </MenuItem>
-                          );
-                        })
-                        : ""}
-                    </Select>
-                  </FormControl>
-                  {isFormSubmit && !formData.fileFormatToImportUsers ? (
-                    <FormHelperText
-                      className={classes.errorSpanMsg}
-                    ></FormHelperText>
-                  ) : (
-                    ""
-                  )}
+                <Grid item xs={3} className="select-validator">
+                  <SelectValidator
+                    fullWidth
+                    labelId="demo-simple-select-outlined-label"
+                    id="demo-simple-select-outlined"
+                    value={formData.fileFormatToImportUsers}
+                    name="fileFormatToImportUsers"
+                    onChange={handleChange}
+                    placeholder="Select"
+                    validators={[
+                      "required",
+                    ]}
+                    errorMessages={[
+                      "Please select file format",
+                    ]}
+                    InputLabelProps={{ shrink: false }}
+                    className="global-input single-select"
+                  >
+                    <MenuItem value="">
+                      <em>Select</em>
+                    </MenuItem>
+                    {fileFormat.length > 0
+                      ? fileFormat.map((fol) => {
+                        return (
+                          <MenuItem key={fol.id} value={fol.format}>
+                            {fol.format}
+                          </MenuItem>
+                        );
+                      })
+                      : ""}
+                  </SelectValidator>
                 </Grid>
               </Grid>
 

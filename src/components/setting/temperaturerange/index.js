@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
-import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { ValidatorForm, TextValidator, SelectValidator } from "react-material-ui-form-validator";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
@@ -359,7 +359,7 @@ function TemperatureRange(props) {
                 <Grid item xs={3}>
                   <label className="required">Temperature UOM</label>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3} className="select-validator">
                   <FormControl variant="outlined" fullWidth>
                     <InputLabel
                       id="demo-simple-select-outlined-label"
@@ -367,17 +367,23 @@ function TemperatureRange(props) {
                       className="select-label"
                     >
                       {tempsections.temperatureUnit == ""
-                        ? "Select temperatures"
+                        ? "Select temperature"
                         : ""}
                     </InputLabel>
-                    <Select
+                    <SelectValidator
+                      fullWidth
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
                       value={tempsections.temperatureUnit}
                       name="temperatureUnit"
                       onChange={handleChangeInput}
                       placeholder="dsfs"
-                      required
+                      validators={[
+                        "required",
+                      ]}
+                      errorMessages={[
+                        "Please select temperature UOM",
+                      ]}
                       InputLabelProps={{ shrink: false }}
                       className="global-input single-select"
                     >
@@ -393,7 +399,7 @@ function TemperatureRange(props) {
                           );
                         })
                         : ""}
-                    </Select>
+                    </SelectValidator>
                   </FormControl>
                 </Grid>
               </Grid>
