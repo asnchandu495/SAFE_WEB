@@ -268,6 +268,35 @@ function TemperatureRange(props) {
     let sendData = tempsections;
 
     let getCovidStates = sendData.covidStates;
+
+    let isValidTempRange = true;
+
+    getCovidStates.forEach((item, i) => {
+      if (!item.isNoUpperLimit) {
+        if (parseFloat(item.upperLimit) <= parseFloat(item.lowerLimit)) {
+          isValidTempRange = false;
+        }
+      }
+      if (i > 0) {
+        if (!item.isNoUpperLimit) {
+          console.log(item);
+          if (parseFloat(item.lowerLimit) <= parseFloat(getCovidStates[i - 1].upperLimit)) {
+            isValidTempRange = false;
+          }
+        }
+      }
+      console.log(isValidTempRange);
+    });
+
+    if (!isValidTempRange) {
+      let errorObject = { "errors": { "Message": ["Please enter valid range"] } };
+      setToasterMessage(errorObject.errors);
+      settoasterServerity("error");
+      setStateSnackbar(true);
+      setshowLoadder(false);
+      return false;
+    }
+
     getCovidStates.forEach((item) => {
       item.upperLimit = parseFloat(item.upperLimit);
       item.lowerLimit = parseFloat(item.lowerLimit);
@@ -439,19 +468,19 @@ function TemperatureRange(props) {
                               : tempsections.temperatureUnit == "C"
                                 ? [
                                   "required",
-                                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                  "matchRegexp:^\\d{1,2}(\\.\\d{1,1})?$",
                                   "maxNumber:45",
-                                  `minNumber:${parseFloat(
+                                  `minNumber:${parseFloat(parseFloat(
                                     tempsections.covidStates[i - 1].upperLimit
-                                  ) + parseFloat(0.01)}`,
+                                  ) + parseFloat(0.1))}`,
                                 ]
                                 : [
                                   "required",
-                                  "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+                                  "matchRegexp:^\\d{1,3}(\\.\\d{1,1})?$",
                                   "maxNumber:113",
-                                  `minNumber:${parseFloat(
+                                  `minNumber:${parseFloat(parseFloat(
                                     tempsections.covidStates[i - 1].upperLimit
-                                  ) + parseFloat(0.01)}`,
+                                  ) + parseFloat(0.1))}`,
                                 ]
                           }
                           errorMessages={
@@ -476,7 +505,7 @@ function TemperatureRange(props) {
                                   "Maximum allowed is 45",
                                   `Minimum allowed is ${parseFloat(
                                     tempsections.covidStates[i - 1].upperLimit
-                                  ) + parseFloat(0.01)}`,
+                                  ) + parseFloat(0.1)}`,
                                 ]
                                 : [
                                   "Please enter lower limit",
@@ -484,7 +513,7 @@ function TemperatureRange(props) {
                                   "Maximum allowed is 113",
                                   `Minimum allowed is ${parseFloat(
                                     tempsections.covidStates[i - 1].upperLimit
-                                  ) + parseFloat(0.01)}`,
+                                  ) + parseFloat(0.1)}`,
                                 ]
                           }
                           id={`lowerLimit_${i}`}
@@ -516,7 +545,7 @@ function TemperatureRange(props) {
                                   "maxNumber:45",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + parseFloat(0.01)
+                                    : parseFloat(x.lowerLimit) + parseFloat(0.1)
                                   }`,
                                 ]
                                 : [
@@ -525,7 +554,7 @@ function TemperatureRange(props) {
                                   "maxNumber:45",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + parseFloat(0.01)
+                                    : parseFloat(x.lowerLimit) + parseFloat(0.1)
                                   }`,
                                 ]
                               : x.isNoUpperLimit
@@ -534,7 +563,7 @@ function TemperatureRange(props) {
                                   "maxNumber:113",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(parseFloat(x.lowerLimit) + parseFloat(0.01)).toFixed(2)
+                                    : parseFloat(parseFloat(x.lowerLimit) + parseFloat(0.1)).toFixed(1)
                                   }`,
                                 ]
                                 : [
@@ -543,7 +572,7 @@ function TemperatureRange(props) {
                                   "maxNumber:113",
                                   `minNumber:${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(parseFloat(x.lowerLimit) + parseFloat(0.01)).toFixed(2)
+                                    : parseFloat(parseFloat(x.lowerLimit) + parseFloat(0.1)).toFixed(1)
                                   }`,
                                 ]
                           }
@@ -556,7 +585,7 @@ function TemperatureRange(props) {
                                   }`,
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + parseFloat(0.01)
+                                    : parseFloat(x.lowerLimit) + parseFloat(0.1)
                                   }`,
                                 ]
                                 : [
@@ -566,7 +595,7 @@ function TemperatureRange(props) {
                                   }`,
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(x.lowerLimit) + parseFloat(0.01)
+                                    : parseFloat(x.lowerLimit) + parseFloat(0.1)
                                   }`,
                                 ]
                               : x.isNoUpperLimit
@@ -576,7 +605,7 @@ function TemperatureRange(props) {
                                   }`,
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(parseFloat(x.lowerLimit) + parseFloat(0.01)).toFixed(2)
+                                    : parseFloat(parseFloat(x.lowerLimit) + parseFloat(0.1)).toFixed(1)
                                   }`,
                                 ]
                                 : [
@@ -586,7 +615,7 @@ function TemperatureRange(props) {
                                   }`,
                                   `Minimum allowed is ${x.isNoUpperLimit
                                     ? 0
-                                    : parseFloat(parseFloat(x.lowerLimit) + parseFloat(0.01)).toFixed(2)
+                                    : parseFloat(parseFloat(x.lowerLimit) + parseFloat(0.1)).toFixed(1)
                                   }`,
                                 ]
                           }

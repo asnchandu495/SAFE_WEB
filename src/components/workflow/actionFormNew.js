@@ -452,7 +452,7 @@ function ActionFormNew(props) {
                                 variant="outlined"
                                 validators={["matchRegexp:^([_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,3})+(\\s?[,]\\s?|$))+$"]}
                                 errorMessages={[
-                                  `Please enter valid email id(s)`,
+                                  `Please Enter Valid EmailId(s)`,
                                 ]}
                                 fullWidth
                                 id={`${act.name}_${index}`}

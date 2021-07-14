@@ -117,13 +117,13 @@ function AssignEmergencyContactToUserGroup(props) {
   useEffect(() => {
     props
       .LoadAllUserGroup()
-      .then((result) => {})
+      .then((result) => { })
       .catch((err) => {
         console.log(err);
       });
     props
-      .LoadAllEmergencyContactList()
-      .then((result) => {})
+      .LoadAllEmergencyContactList([])
+      .then((result) => { })
       .catch((err) => {
         console.log(err);
       });
@@ -255,15 +255,15 @@ function AssignEmergencyContactToUserGroup(props) {
                         <MenuItem value="">None</MenuItem>
                         {props.UserGroupData.length > 0
                           ? props.UserGroupData.map((userGroup) => {
-                              return (
-                                <MenuItem
-                                  key={userGroup.id}
-                                  value={userGroup.id}
-                                >
-                                  {userGroup.groupName}
-                                </MenuItem>
-                              );
-                            })
+                            return (
+                              <MenuItem
+                                key={userGroup.id}
+                                value={userGroup.id}
+                              >
+                                {userGroup.groupName}
+                              </MenuItem>
+                            );
+                          })
                           : ""}
                       </Select>
                     </FormControl>
@@ -303,19 +303,19 @@ function AssignEmergencyContactToUserGroup(props) {
                         <MenuItem value="">None</MenuItem>
                         {props.loadEmergencyContacts.length > 0
                           ? props.loadEmergencyContacts.map(
-                              (emergencyContact) => {
-                                return (
-                                  <MenuItem value={emergencyContact.id}>
-                                    {emergencyContact.title}
-                                  </MenuItem>
-                                );
-                              }
-                            )
+                            (emergencyContact) => {
+                              return (
+                                <MenuItem value={emergencyContact.id}>
+                                  {emergencyContact.title}
+                                </MenuItem>
+                              );
+                            }
+                          )
                           : ""}
                       </Select>
                     </FormControl>
                     {!validEmergencyContactForm &&
-                    !formData.emergencyContactName ? (
+                      !formData.emergencyContactName ? (
                       <FormHelperText className="error-message-select">
                         Please select emergency contact{" "}
                       </FormHelperText>
@@ -349,12 +349,12 @@ function AssignEmergencyContactToUserGroup(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                              return (
-                                <MenuItem value={UserStatus.id}>
-                                  {UserStatus.name}
-                                </MenuItem>
-                              );
-                            })
+                            return (
+                              <MenuItem value={UserStatus.id}>
+                                {UserStatus.name}
+                              </MenuItem>
+                            );
+                          })
                           : ""}
                       </Select>
                     </FormControl>
