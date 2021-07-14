@@ -90,7 +90,7 @@ function MultiSelectQuestion(props) {
   const [oldData, setOldData] = useState();
   const [questionData, setQuestionData] = useState();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('Retrieving data. Wait a few seconds and try to cut or copy again.');
+  const [warningMessage, setWarningMessage] = useState('Editing of this multi choice question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas');
   const [sendQuestionType, setSendQuestionType] = useState('');
 
   const PurpleSwitch = withStyles({

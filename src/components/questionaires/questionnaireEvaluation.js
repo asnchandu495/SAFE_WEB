@@ -313,7 +313,7 @@ function QuestionnaireEvaluation(props) {
         .AddEvaluationResultForQuestionnaire(formData)
         .then((response) => {
           setStateSnackbar(true);
-          setToasterMessage("Created Evaluation Settings.");
+          setToasterMessage("Created evaluation settings.");
           settoasterServerity("success");
           setisAlertBoxOpened(false);
           setTimeout(() => {

@@ -69,7 +69,7 @@ function NumericQuestion(props) {
   });
   const [questionData, setQuestionData] = useState();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('Retrieving data. Wait a few seconds and try to cut or copy again.');
+  const [warningMessage, setWarningMessage] = useState('Editing of this numeric question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas');
 
 
   const PurpleSwitch = withStyles({

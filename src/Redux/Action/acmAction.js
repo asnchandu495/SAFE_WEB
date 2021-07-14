@@ -18,6 +18,7 @@ export function loadACM() {
     return function (dispatch) {
         return acmApiCall.getACMDetails()
             .then((acmData) => {
+                console.log(acmData);
                 dispatch(LoadACMSuccess(acmData));
             })
             .catch((error) => {

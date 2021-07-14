@@ -53,6 +53,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Pagination from "@material-ui/lab/Pagination";
 import ReplayIcon from "@material-ui/icons/Replay";
 import * as GridAction from "../../Redux/Action/gridAction";
+import ACMService from "../../services/acmService";
 
 const theme1 = createMuiTheme({
   overrides: {
@@ -153,6 +154,7 @@ function Users(props) {
   const GlobalSettingApi = new GlobalSettingService();
   const UserGroupApi = new UserGroupService();
   const CovidStateApi = new CovidStateApiServices();
+  const ACMServiceApi = new ACMService();
   const [openMoreMenu, setOpenMoreMenu] = useState(false);
   const anchorRef = useRef(null);
   const prevOpen = useRef(openMoreMenu);
@@ -257,6 +259,7 @@ function Users(props) {
       CovidStateApi.getCOVIDStates(),
       GlobalSettingApi.getLoadGlobalSetting(),
       props.LoadGridsPage(),
+      ACMServiceApi.getACMDetails()
     ])
       .then(
         ([
@@ -268,6 +271,7 @@ function Users(props) {
           getCovidState,
           getLoadGlobalSetting,
           gridResult,
+          acmDataFromApi
         ]) => {
           setReloadPage("NO");
           setBusinessUserRoleMasterData(getUserRoles);
@@ -280,10 +284,21 @@ function Users(props) {
           let usersACM = props.acmData.find((acm) => {
             return acm.module == "user";
           });
-          setUpdateInfo(usersACM.permissions.find(ua => ua.entity == 'update'));
-          setUpdateShiftInfo(usersACM.permissions.find(ua => ua.entity == "updateUserShift"));
-          setUpdateCovidInfo(usersACM.permissions.find(ua => ua.entity == "updateUserCovidState"));
-          setUpdateTemperatureInfo(usersACM.permissions.find(ua => ua.entity == "updateUserTemp"));
+          if (usersACM) {
+            setUpdateInfo(usersACM.permissions.find(ua => ua.entity == 'update'));
+            setUpdateShiftInfo(usersACM.permissions.find(ua => ua.entity == "updateUserShift"));
+            setUpdateCovidInfo(usersACM.permissions.find(ua => ua.entity == "updateUserCovidState"));
+            setUpdateTemperatureInfo(usersACM.permissions.find(ua => ua.entity == "updateUserTemp"));
+          } else {
+            let usersACMApi = acmDataFromApi.find((acm) => {
+              return acm.module == "user";
+            });
+
+            setUpdateInfo(usersACMApi.permissions.find(ua => ua.entity == 'update'));
+            setUpdateShiftInfo(usersACMApi.permissions.find(ua => ua.entity == "updateUserShift"));
+            setUpdateCovidInfo(usersACMApi.permissions.find(ua => ua.entity == "updateUserCovidState"));
+            setUpdateTemperatureInfo(usersACMApi.permissions.find(ua => ua.entity == "updateUserTemp"));
+          }
           setcomponentLoadder(false);
         }
       )

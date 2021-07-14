@@ -218,6 +218,7 @@ function UpdateShiftingInfo(props) {
                       name="startTime"
                       onChange={handleDateChangeS}
                       className="global-input report-pickers"
+                      required
                     />
                   </Grid>
                 </Grid>
@@ -247,6 +248,7 @@ function UpdateShiftingInfo(props) {
                       name="endTime"
                       onChange={handleDateChangeE}
                       className="global-input report-pickers"
+                      required
                     />
                   </Grid>
                 </Grid>

@@ -474,7 +474,7 @@ function AddSecondaryUserToUserGroups(props) {
               variant="contained"
               type="button"
               className={`global-submit-btn ${enableSubmitButton ? '' : 'no-pointer-events'}`}
-              disabled={showLoadder}
+              disabled={!enableSubmitButton ? true : showLoadder}
               onClick={assignUsers}
             >
               {showsubmitLoadder ? <ButtonLoadderComponent /> : "Submit"}

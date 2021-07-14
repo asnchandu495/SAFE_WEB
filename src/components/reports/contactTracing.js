@@ -528,7 +528,6 @@ function ContactTracing(props) {
           setIsFilterSelected(true);
           setContactTracingData(result);
           setTimeout(() => {
-            setModalOpen(false);
             setshowLoadder(false);
           }, 3000);
         })
@@ -545,7 +544,6 @@ function ContactTracing(props) {
           setIsFilterSelected(true);
           setContactTracingData(result);
           setTimeout(() => {
-            setModalOpen(false);
             setshowLoadder(false);
           }, 3000);
         })
@@ -561,7 +559,6 @@ function ContactTracing(props) {
           setIsFilterSelected(true);
           setContactTracingData([...rlapData, ...bleData]);
           setTimeout(() => {
-            setModalOpen(false);
             setshowLoadder(false);
           }, 3000);
         })
