@@ -76,10 +76,13 @@ export default class ReportService {
   getDensityThresholdReport(data) {
     let SiteIds = "";
     let LocationIds = "";
-
-    LocationIds = data.LocationId.map(function (el, idx) {
-      return "LocationId=" + el;
-    }).join("&");
+    if (data.LocationId.length > 0) {
+      LocationIds = data.LocationId.map(function (el, idx) {
+        return "LocationId=" + el;
+      }).join("&");
+    } else {
+      LocationIds = "LocationId=[]";
+    }
 
     SiteIds = "SiteId=" + data.SiteId;
 
