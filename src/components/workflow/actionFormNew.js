@@ -283,6 +283,10 @@ function ActionFormNew(props) {
     });
   };
 
+  const emptyCall = () => {
+    console.log('no menu');
+  }
+
   const handleCloseContextMenu = () => {
     setStateContextMenu(initialState);
   };
@@ -373,7 +377,7 @@ function ActionFormNew(props) {
                             <Grid
                               item
                               xs={9}
-                              onContextMenu={handleClickContextMenuText}
+                              onContextMenu={act.inputIntelliSenseOptions.length > 0 ? handleClickContextMenuText : emptyCall}
                             >
                               <TextValidator
                                 variant="outlined"
@@ -382,7 +386,7 @@ function ActionFormNew(props) {
                                 //   `Please enter ${act.remarksForInput}`,
                                 // ]}
                                 fullWidth
-                                id={`${act.name}_${index}`}
+                                id={`Text_${act.name}_${index}`}
                                 placeholder={act.remarksForInput}
                                 name="value"
                                 onChange={(e) => handleInputChange(e, index)}
@@ -393,41 +397,44 @@ function ActionFormNew(props) {
                                   setCurrentInputText(e);
                                 }}
                               />
-                              <Menu
-                                keepMounted
-                                open={stateContextMenuText.mouseY !== null}
-                                onClose={handleCloseContextMenuText}
-                                anchorReference="anchorPosition"
-                                anchorPosition={
-                                  stateContextMenuText.mouseY !== null &&
-                                    stateContextMenuText.mouseX !== null
-                                    ? {
-                                      top: stateContextMenuText.mouseY,
-                                      left: stateContextMenuText.mouseX,
-                                    }
-                                    : undefined
-                                }
-                              >
-                                {act.inputIntelliSenseOptions.length > 0 ? (
-                                  act.inputIntelliSenseOptions.map((opt) => {
-                                    return (
-                                      <MenuItem
-                                        onClick={() =>
-                                          handleClickContextMenuOptionText(
-                                            opt,
-                                            index,
-                                            "value"
-                                          )
-                                        }
-                                      >
-                                        {opt}
-                                      </MenuItem>
-                                    );
-                                  })
-                                ) : (
-                                  <MenuItem>No options</MenuItem>
-                                )}
-                              </Menu>
+                              {act.inputIntelliSenseOptions.length > 0 ?
+                                <Menu
+                                  id={`Text_${act.name}_${index}`}
+                                  keepMounted
+                                  open={stateContextMenuText.mouseY !== null}
+                                  onClose={handleCloseContextMenuText}
+                                  anchorReference="anchorPosition"
+                                  anchorPosition={
+                                    stateContextMenuText.mouseY !== null &&
+                                      stateContextMenuText.mouseX !== null
+                                      ? {
+                                        top: stateContextMenuText.mouseY,
+                                        left: stateContextMenuText.mouseX,
+                                      }
+                                      : undefined
+                                  }
+                                >
+                                  {act.inputIntelliSenseOptions.length > 0 ? (
+                                    act.inputIntelliSenseOptions.map((opt) => {
+                                      return (
+                                        <MenuItem
+                                          onClick={() =>
+                                            handleClickContextMenuOptionText(
+                                              opt,
+                                              index,
+                                              "value"
+                                            )
+                                          }
+                                        >
+                                          {opt}
+                                        </MenuItem>
+                                      );
+                                    })
+                                  ) : (
+                                    <MenuItem>No options</MenuItem>
+                                  )}
+                                </Menu>
+                                : ""}
                             </Grid>
                           </Grid>
                         );
@@ -446,16 +453,16 @@ function ActionFormNew(props) {
                             <Grid
                               item
                               xs={9}
-                              onContextMenu={handleClickContextMenuText}
+                              onContextMenu={act.inputIntelliSenseOptions.length > 0 ? handleClickContextMenuText : emptyCall}
                             >
                               <TextValidator
                                 variant="outlined"
-                                validators={["matchRegexp:^([_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,3})+(\\s?[,]\\s?|$))+$"]}
+                                validators={["matchRegexp:^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-z]{2,3})+(\\s?[,]\\s?|$))+$"]}
                                 errorMessages={[
                                   `Please Enter Valid EmailId(s)`,
                                 ]}
                                 fullWidth
-                                id={`${act.name}_${index}`}
+                                id={`EmailList_${act.name}_${index}`}
                                 placeholder={act.remarksForInput}
                                 name="value"
                                 onChange={(e) => handleInputChange(e, index)}
@@ -466,41 +473,44 @@ function ActionFormNew(props) {
                                   setCurrentInputText(e);
                                 }}
                               />
-                              <Menu
-                                keepMounted
-                                open={stateContextMenuText.mouseY !== null}
-                                onClose={handleCloseContextMenuText}
-                                anchorReference="anchorPosition"
-                                anchorPosition={
-                                  stateContextMenuText.mouseY !== null &&
-                                    stateContextMenuText.mouseX !== null
-                                    ? {
-                                      top: stateContextMenuText.mouseY,
-                                      left: stateContextMenuText.mouseX,
-                                    }
-                                    : undefined
-                                }
-                              >
-                                {act.inputIntelliSenseOptions.length > 0 ? (
-                                  act.inputIntelliSenseOptions.map((opt) => {
-                                    return (
-                                      <MenuItem
-                                        onClick={() =>
-                                          handleClickContextMenuOptionText(
-                                            opt,
-                                            index,
-                                            "value"
-                                          )
-                                        }
-                                      >
-                                        {opt}
-                                      </MenuItem>
-                                    );
-                                  })
-                                ) : (
-                                  <MenuItem>No options</MenuItem>
-                                )}
-                              </Menu>
+                              {act.inputIntelliSenseOptions.length > 0 ?
+                                <Menu
+                                  id={`EmailList_${act.name}_${index}`}
+                                  keepMounted
+                                  open={stateContextMenuText.mouseY !== null}
+                                  onClose={handleCloseContextMenuText}
+                                  anchorReference="anchorPosition"
+                                  anchorPosition={
+                                    stateContextMenuText.mouseY !== null &&
+                                      stateContextMenuText.mouseX !== null
+                                      ? {
+                                        top: stateContextMenuText.mouseY,
+                                        left: stateContextMenuText.mouseX,
+                                      }
+                                      : undefined
+                                  }
+                                >
+                                  {act.inputIntelliSenseOptions.length > 0 ? (
+                                    act.inputIntelliSenseOptions.map((opt) => {
+                                      return (
+                                        <MenuItem
+                                          onClick={() =>
+                                            handleClickContextMenuOptionText(
+                                              opt,
+                                              index,
+                                              "value"
+                                            )
+                                          }
+                                        >
+                                          {opt}
+                                        </MenuItem>
+                                      );
+                                    })
+                                  ) : (
+                                    <MenuItem>No options</MenuItem>
+                                  )}
+                                </Menu>
+                                : ""}
                             </Grid>
                           </Grid>
                         );
@@ -549,41 +559,44 @@ function ActionFormNew(props) {
                                   setCurrentEditor(editor);
                                 }}
                               />
-                              <Menu
-                                keepMounted
-                                open={stateContextMenu.mouseY !== null}
-                                onClose={handleCloseContextMenu}
-                                anchorReference="anchorPosition"
-                                anchorPosition={
-                                  stateContextMenu.mouseY !== null &&
-                                    stateContextMenu.mouseX !== null
-                                    ? {
-                                      top: stateContextMenu.mouseY,
-                                      left: stateContextMenu.mouseX,
-                                    }
-                                    : undefined
-                                }
-                              >
-                                {act.inputIntelliSenseOptions.length > 0 ? (
-                                  act.inputIntelliSenseOptions.map((opt) => {
-                                    return (
-                                      <MenuItem
-                                        onClick={() =>
-                                          handleClickContextMenuOption(
-                                            opt,
-                                            index,
-                                            "value"
-                                          )
-                                        }
-                                      >
-                                        {opt}
-                                      </MenuItem>
-                                    );
-                                  })
-                                ) : (
-                                  <MenuItem>No options</MenuItem>
-                                )}
-                              </Menu>
+                              {act.inputIntelliSenseOptions.length > 0 ?
+                                <Menu
+                                  id={`Menu${act.name}_${index}`}
+                                  keepMounted
+                                  open={stateContextMenu.mouseY !== null}
+                                  onClose={handleCloseContextMenu}
+                                  anchorReference="anchorPosition"
+                                  anchorPosition={
+                                    stateContextMenu.mouseY !== null &&
+                                      stateContextMenu.mouseX !== null
+                                      ? {
+                                        top: stateContextMenu.mouseY,
+                                        left: stateContextMenu.mouseX,
+                                      }
+                                      : undefined
+                                  }
+                                >
+                                  {act.inputIntelliSenseOptions.length > 0 ? (
+                                    act.inputIntelliSenseOptions.map((opt) => {
+                                      return (
+                                        <MenuItem
+                                          onClick={() =>
+                                            handleClickContextMenuOption(
+                                              opt,
+                                              index,
+                                              "value"
+                                            )
+                                          }
+                                        >
+                                          {opt}
+                                        </MenuItem>
+                                      );
+                                    })
+                                  ) : (
+                                    <MenuItem>No options</MenuItem>
+                                  )}
+                                </Menu>
+                                : ""}
                             </Grid>
                           </Grid>
                         );
