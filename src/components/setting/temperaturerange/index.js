@@ -122,6 +122,11 @@ function TemperatureRange(props) {
         setcovidStatelist(result);
         setTempCovidStatelist(result);
         if (globalSettings.covidStateTemperatures.length > 0) {
+          globalSettings.covidStateTemperatures.sort(function IHaveAName(a, b) { // non-anonymous as you ordered...
+            return b.lowerLimit < a.lowerLimit ? 1 // if b should come earlier, push a to end
+              : b.lowerLimit > a.lowerLimit ? -1 // if b should come later, push a to begin
+                : 0;                   // a and b are equal
+          });
           tempsections.covidStates = globalSettings.covidStateTemperatures;
           oldData.covidStates = globalSettings.covidStateTemperatures;
         }
@@ -279,13 +284,11 @@ function TemperatureRange(props) {
       }
       if (i > 0) {
         if (!item.isNoUpperLimit) {
-          console.log(item);
           if (parseFloat(item.lowerLimit) <= parseFloat(getCovidStates[i - 1].upperLimit)) {
             isValidTempRange = false;
           }
         }
       }
-      console.log(isValidTempRange);
     });
 
     if (!isValidTempRange) {
@@ -423,10 +426,8 @@ function TemperatureRange(props) {
                           options={
                             covidStatelist && covidStatelist.length > 0
                               ? covidStatelist.filter((cstate) => {
-                                console.log(cstate);
                                 return !tempsections.covidStates.find(
                                   (sselected) => {
-                                    console.log(sselected);
                                     if (sselected.covidState) {
                                       return (
                                         sselected.covidState.id == cstate.id
