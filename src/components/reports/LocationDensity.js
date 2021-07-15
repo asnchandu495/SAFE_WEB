@@ -208,7 +208,7 @@ function LocationDensity(props) {
       },
     },
     {
-      label: "Density Low",
+      label: "Low Density",
       name: "densityThreasholdLowFrom",
       options: {
         filter: false,
@@ -233,7 +233,7 @@ function LocationDensity(props) {
       },
     },
     {
-      label: "Density Medium",
+      label: "Medium Density",
       name: "densityThreasholdMediumFrom",
       options: {
         filter: false,
@@ -258,7 +258,7 @@ function LocationDensity(props) {
       },
     },
     {
-      label: "Density High",
+      label: "High Density",
       name: "densityThreasholdHighFrom",
       options: {
         filter: false,
