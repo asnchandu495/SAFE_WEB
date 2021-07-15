@@ -96,19 +96,19 @@ const DisplayFormControl = ({
   setCheckLowerLimit,
   setCheckUpperLimit
 }) => {
-  let getConfiguredCovidState = loadGlobalSettingsData.covidStateTemperatures;
-  console.log(loadGlobalSettingsData);
-  let ifExists = getConfiguredCovidState.find(
-    (state) => state.covidState.id == formData.covidStateId
-  );
+  let globalSettingsTemperature = loadGlobalSettingsData.covidStateTemperatures.sort(function IHaveAName(a, b) { // non-anonymous as you ordered...
+    return b.lowerLimit < a.lowerLimit ? 1 // if b should come earlier, push a to end
+      : b.lowerLimit > a.lowerLimit ? -1 // if b should come later, push a to begin
+        : 0;                   // a and b are equal
+  });
   let lowerLimit = 0;
   let upperLimit = 0;
   let noUpperLimit = false;
-  if (loadGlobalSettingsData && loadGlobalSettingsData.covidStateTemperatures.length > 0) {
-    if (loadGlobalSettingsData.covidStateTemperatures.length == 1) {
-      lowerLimit = loadGlobalSettingsData.covidStateTemperatures[0].lowerLimit;
-      upperLimit = loadGlobalSettingsData.covidStateTemperatures[0].upperLimit;
-      noUpperLimit = loadGlobalSettingsData.covidStateTemperatures[0].isNoUpperLimit;
+  if (globalSettingsTemperature && globalSettingsTemperature.length > 0) {
+    if (globalSettingsTemperature.length == 1) {
+      lowerLimit = globalSettingsTemperature[0].lowerLimit;
+      upperLimit = globalSettingsTemperature[0].upperLimit;
+      noUpperLimit = globalSettingsTemperature[0].isNoUpperLimit;
       if (noUpperLimit) {
         if (loadGlobalSettingsData.temperatureUnit == 'C') {
           upperLimit = 45;
@@ -119,10 +119,9 @@ const DisplayFormControl = ({
       setCheckLowerLimit(lowerLimit);
       setCheckUpperLimit(upperLimit);
     } else {
-      lowerLimit = loadGlobalSettingsData.covidStateTemperatures[0].lowerLimit;
-      upperLimit = loadGlobalSettingsData.covidStateTemperatures[loadGlobalSettingsData.covidStateTemperatures.length - 1].upperLimit;
-      noUpperLimit = loadGlobalSettingsData.covidStateTemperatures[loadGlobalSettingsData.covidStateTemperatures.length - 1].isNoUpperLimit;
-
+      lowerLimit = globalSettingsTemperature[0].lowerLimit;
+      upperLimit = globalSettingsTemperature[globalSettingsTemperature.length - 1].upperLimit;
+      noUpperLimit = globalSettingsTemperature[globalSettingsTemperature.length - 1].isNoUpperLimit;
       if (noUpperLimit) {
         if (loadGlobalSettingsData.temperatureUnit == 'C') {
           upperLimit = 45;
@@ -261,6 +260,7 @@ function UpdateTempearture(props) {
   }
 
   function submitUserShiftInform() {
+    var data = formData;
     if ((parseFloat(data.temperature) < checkLowerLimit) || (parseFloat(data.temperature) > checkUpperLimit)) {
       let errorObject = { "errors": { "Message": [`Please enter temperature between ${checkLowerLimit} to ${checkUpperLimit}`] } };
       setToasterMessage(errorObject.errors);
@@ -271,7 +271,7 @@ function UpdateTempearture(props) {
     setshowLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
-    var data = formData;
+
     data.id = props.SelectedRowId;
     data.temperature = parseFloat(data.temperature);
     data.temperatureUnit = props.loadGlobalSettingsData.temperatureUnit;
@@ -318,7 +318,7 @@ function UpdateTempearture(props) {
               <Grid item sm={12}>
                 <DisplayFormControl
                   formData={formData}
-                  loadGlobalSettingsData={props.loadGlobalSettingsData}
+                  loadGlobalSettingsData={props.globalData}
                   handleChange={handleChange}
                   validators={[
                     "required",

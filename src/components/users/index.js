@@ -1159,6 +1159,7 @@ function Users(props) {
         setopenuserTemepratureModal={setopenuserTemepratureModal}
         SelectedRowId={SelectedRowId}
         setReloadPage={setReloadPage}
+        globalData={globalData}
       />
       <ConfirmationDialog
         openConfirmationModal={openConfirmationModal}
