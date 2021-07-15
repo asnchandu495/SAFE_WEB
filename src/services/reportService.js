@@ -112,10 +112,7 @@ export default class ReportService {
     let SiteIds = "";
     let TeamIds = "";
 
-    TeamIds = data.Teams.map(function (el, idx) {
-      return "Teams=" + el;
-    }).join("&");
-
+    TeamIds = "Teams=" + data.Teams;
     SiteIds = "SiteId=" + data.site;
 
     let apiURL = `ApplicationUser/GetAllNumberOfStaffInTheOffice?${TeamIds}&${SiteIds}&FilterDate=${data.FilterDate}&Frequency=${parseInt(data.frequency)}`;

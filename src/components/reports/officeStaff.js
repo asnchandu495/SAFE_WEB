@@ -145,7 +145,7 @@ function OfficeStaff(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [selectedDate, setSelectedDate] = useState();
   const [selectedSiteData, setselectedSiteData] = useState();
-  const [selectedTeamData, setselectedTeamData] = useState([]);
+  const [selectedTeamData, setselectedTeamData] = useState();
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
   const [officeStaffeData, setOfficeStaffeData] = useState([]);
   const [searchForm, setSearchForm] = useState({
@@ -461,7 +461,7 @@ function OfficeStaff(props) {
 
   function resetFilterForm() {
     setselectedSiteData();
-    setselectedTeamData([]);
+    setselectedTeamData();
     setSearchForm(resetForm);
   }
 
@@ -490,7 +490,7 @@ function OfficeStaff(props) {
       FilterDate: selectedReportFilter.FilterDate,
       frequency: selectedReportFilter.frequency,
       site: selectedReportFilter.selectedSiteData.id,
-      Teams: selectedReportFilter.selectedTeamData.map((item) => item.id),
+      Teams: selectedReportFilter.selectedTeamData.id,
     };
 
     reportApiCall
@@ -522,12 +522,10 @@ function OfficeStaff(props) {
       searchForm.site = selectedSiteData.id;
     }
 
-    if (selectedTeamData.length > 0) {
-      let teamArr = selectedTeamData.map((item) => item.id);
-      searchForm.Teams = teamArr;
-    } else {
-      searchForm.Teams = [];
+    if (selectedTeamData) {
+      searchForm.Teams = selectedTeamData.id;
     }
+
     if (frequencyValue) {
       searchForm.frequency = frequencyValue.id;
     }
@@ -588,7 +586,7 @@ function OfficeStaff(props) {
                           }
                           getOptionLabel={(option) => option.name}
                           defaultValue={selectedSiteData}
-                          value={selectedSiteData ? selectedSiteData : []}
+                          value={selectedSiteData ? selectedSiteData : ""}
                           onChange={selectedSite}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
@@ -607,7 +605,7 @@ function OfficeStaff(props) {
                   </Grid>
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
-                      <label className="required">Teams</label>
+                      <label className="required">Team</label>
                     </Grid>
                     <Grid item xs={8}>
                       <FormControl variant="outlined" fullWidth>
@@ -618,26 +616,22 @@ function OfficeStaff(props) {
                         ></InputLabel>
 
                         <Autocomplete
-                          multiple
                           id="tags-outlined"
                           options={
                             TeamData && TeamData.length > 0 ? TeamData : []
                           }
                           getOptionLabel={(option) => option.name}
                           defaultValue={selectedTeamData}
-                          value={selectedTeamData ? selectedTeamData : []}
+                          value={selectedTeamData ? selectedTeamData : ""}
                           onChange={selectedTeam}
                           filterSelectedOptions
                           className="global-input autocomplete-select"
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              inputProps={{
-                                ...params.inputProps,
-                                required: selectedTeamData.length === 0,
-                              }}
                               variant="outlined"
-                              placeholder="Select Teams"
+                              placeholder="Select Team"
+                              required
                             />
                           )}
                         />
