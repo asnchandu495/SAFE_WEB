@@ -156,7 +156,7 @@ function UpdateCovidState(props) {
                 id: getCovidInfo.covidStateId,
                 stateName: getCovidInfo.stateName,
               };
-              setUserSelectedCovidStateValue(data);
+              setSelectCovidState(data);
               SetformData(getCovidInfo);
               setcomponentLoadder(false);
             } else {
@@ -327,8 +327,8 @@ function UpdateCovidState(props) {
                   }
                   getOptionLabel={(option) => option.stateName}
                   defaultValue={
-                    UserSelectedCovidStateValue
-                      ? UserSelectedCovidStateValue
+                    SelectCovidState
+                      ? SelectCovidState
                       : ""
                   }
                   onChange={handleChangeUpdateCovidState}

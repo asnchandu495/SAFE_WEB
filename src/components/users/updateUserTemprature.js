@@ -93,176 +93,101 @@ const DisplayFormControl = ({
   handleChange,
   loadGlobalSettingsData,
   SetformData,
+  setCheckLowerLimit,
+  setCheckUpperLimit
 }) => {
-  if (formData.covidStateId == "") {
-    return (
-      <TextValidator
-        variant="outlined"
-        fullWidth
-        validators={
-          loadGlobalSettingsData.temperatureUnit == "C"
-            ? [
-              "required",
-              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-              "maxNumber:45",
-              "minNumber:30",
-            ]
-            : [
-              "required",
-              "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-              "maxNumber:113",
-              "minNumber:86",
-            ]
+  let getConfiguredCovidState = loadGlobalSettingsData.covidStateTemperatures;
+  console.log(loadGlobalSettingsData);
+  let ifExists = getConfiguredCovidState.find(
+    (state) => state.covidState.id == formData.covidStateId
+  );
+  let lowerLimit = 0;
+  let upperLimit = 0;
+  let noUpperLimit = false;
+  if (loadGlobalSettingsData && loadGlobalSettingsData.covidStateTemperatures.length > 0) {
+    if (loadGlobalSettingsData.covidStateTemperatures.length == 1) {
+      lowerLimit = loadGlobalSettingsData.covidStateTemperatures[0].lowerLimit;
+      upperLimit = loadGlobalSettingsData.covidStateTemperatures[0].upperLimit;
+      noUpperLimit = loadGlobalSettingsData.covidStateTemperatures[0].isNoUpperLimit;
+      if (noUpperLimit) {
+        if (loadGlobalSettingsData.temperatureUnit == 'C') {
+          upperLimit = 45;
+        } else {
+          upperLimit = 113;
         }
-        errorMessages={
-          loadGlobalSettingsData.temperatureUnit == "C"
-            ? [
-              "Please enter lower limit",
-              "Entered numbers are not valid",
-              "Maximum allowed is 45",
-              "Minimum allowed is 30",
-            ]
-            : [
-              "Please enter lower limit",
-              "Entered numbers are not valid",
-              "Maximum allowed is 113",
-              "Minimum allowed is 86",
-            ]
-        }
-        id="temperature1"
-        key="temperature1"
-        placeholder="Temperature"
-        name="temperature"
-        autoComplete="temperature"
-        onChange={handleChange}
-        value={formData.temperature}
-        className="global-input"
-        InputLabelProps={{ shrink: false }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              {loadGlobalSettingsData
-                ? loadGlobalSettingsData.temperatureUnit
-                : ""}
-            </InputAdornment>
-          ),
-        }}
-      />
-    );
-  } else {
-    let getConfiguredCovidState = loadGlobalSettingsData.covidStateTemperatures;
-    let ifExists = getConfiguredCovidState.find(
-      (state) => state.covidState.id == formData.covidStateId
-    );
-    if (ifExists) {
-      return (
-        <TextValidator
-          variant="outlined"
-          fullWidth
-          validators={[
-            "required",
-            "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-            `maxNumber:${ifExists.isNoUpperLimit
-              ? loadGlobalSettingsData.temperatureUnit == "C"
-                ? "45"
-                : "113"
-              : ifExists.upperLimit
-            }`,
-            `minNumber:${ifExists.lowerLimit}`,
-          ]}
-          errorMessages={[
-            "Please enter lower limit",
-            "Entered numbers are not valid",
-            `Maximum allowed is ${ifExists.isNoUpperLimit
-              ? loadGlobalSettingsData.temperatureUnit == "C"
-                ? "45"
-                : "113"
-              : ifExists.upperLimit
-            }`,
-            `Minimum allowed is ${ifExists.lowerLimit}`,
-          ]}
-          id="temperature2"
-          key="temperature2"
-          placeholder="Temperature"
-          name="temperature"
-          autoComplete="temperature"
-          onChange={(e) =>
-            SetformData((formData) => ({
-              ...formData,
-              [e.target.name]: e.target.value,
-            }))
-          }
-          value={formData.temperature}
-          className="global-input"
-          InputLabelProps={{ shrink: false }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {loadGlobalSettingsData
-                  ? loadGlobalSettingsData.temperatureUnit
-                  : ""}
-              </InputAdornment>
-            ),
-          }}
-        />
-      );
+      }
+      setCheckLowerLimit(lowerLimit);
+      setCheckUpperLimit(upperLimit);
     } else {
-      return (
-        <TextValidator
-          variant="outlined"
-          fullWidth
-          validators={
-            loadGlobalSettingsData.temperatureUnit == "C"
-              ? [
-                "required",
-                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                "maxNumber:45",
-                "minNumber:30",
-              ]
-              : [
-                "required",
-                "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
-                "maxNumber:113",
-                "minNumber:86",
-              ]
-          }
-          errorMessages={
-            loadGlobalSettingsData.temperatureUnit == "C"
-              ? [
-                "Please enter lower limit",
-                "Entered numbers are not valid",
-                "Maximum allowed is 45",
-                "Minimum allowed is 30",
-              ]
-              : [
-                "Please enter lower limit",
-                "Entered numbers are not valid",
-                "Maximum allowed is 113",
-                "Minimum allowed is 86",
-              ]
-          }
-          id="temperature3"
-          key="temperature3"
-          placeholder="Temperature"
-          name="temperature"
-          autoComplete="temperature"
-          onChange={handleChange}
-          value={formData.temperature}
-          className="global-input"
-          InputLabelProps={{ shrink: false }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {loadGlobalSettingsData
-                  ? loadGlobalSettingsData.temperatureUnit
-                  : ""}
-              </InputAdornment>
-            ),
-          }}
-        />
-      );
+      lowerLimit = loadGlobalSettingsData.covidStateTemperatures[0].lowerLimit;
+      upperLimit = loadGlobalSettingsData.covidStateTemperatures[loadGlobalSettingsData.covidStateTemperatures.length - 1].upperLimit;
+      noUpperLimit = loadGlobalSettingsData.covidStateTemperatures[loadGlobalSettingsData.covidStateTemperatures.length - 1].isNoUpperLimit;
+
+      if (noUpperLimit) {
+        if (loadGlobalSettingsData.temperatureUnit == 'C') {
+          upperLimit = 45;
+        } else {
+          upperLimit = 113;
+        }
+      }
+      setCheckLowerLimit(lowerLimit);
+      setCheckUpperLimit(upperLimit);
+    }
+  } else {
+    if (loadGlobalSettingsData.temperatureUnit == 'C') {
+      lowerLimit = 30;
+      upperLimit = 45;
+      setCheckLowerLimit(lowerLimit);
+      setCheckUpperLimit(upperLimit);
+    } else {
+      lowerLimit = 86;
+      upperLimit = 113;
+      setCheckLowerLimit(lowerLimit);
+      setCheckUpperLimit(upperLimit);
     }
   }
+
+  return (
+    <TextValidator
+      variant="outlined"
+      fullWidth
+      validators={[
+        "required",
+        "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
+        `maxNumber:${upperLimit}`,
+        `minNumber:${lowerLimit}`,
+      ]}
+      errorMessages={[
+        "Please enter lower limit",
+        "Entered numbers are not valid",
+        `Maximum allowed is ${upperLimit}`,
+        `Minimum allowed is ${lowerLimit}`,
+      ]}
+      id="temperature2"
+      key="temperature2"
+      placeholder="Temperature"
+      name="temperature"
+      autoComplete="temperature"
+      onChange={(e) =>
+        SetformData((formData) => ({
+          ...formData,
+          [e.target.name]: e.target.value,
+        }))
+      }
+      value={formData.temperature}
+      className="global-input"
+      InputLabelProps={{ shrink: false }}
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            {loadGlobalSettingsData
+              ? loadGlobalSettingsData.temperatureUnit
+              : ""}
+          </InputAdornment>
+        ),
+      }}
+    />
+  );
 };
 
 function UpdateTempearture(props) {
@@ -290,8 +215,9 @@ function UpdateTempearture(props) {
     temperatureUnit: "F",
     covidStateId: "",
   });
-
   const [convertTemp, setconvertTemp] = useState();
+  const [checkLowerLimit, setCheckLowerLimit] = useState();
+  const [checkUpperLimit, setCheckUpperLimit] = useState();
 
   useEffect(() => {
     if (props.SelectedRowId) {
@@ -335,6 +261,13 @@ function UpdateTempearture(props) {
   }
 
   function submitUserShiftInform() {
+    if ((parseFloat(data.temperature) < checkLowerLimit) || (parseFloat(data.temperature) > checkUpperLimit)) {
+      let errorObject = { "errors": { "Message": [`Please enter temperature between ${checkLowerLimit} to ${checkUpperLimit}`] } };
+      setToasterMessage(errorObject.errors);
+      settoasterServerity("error");
+      setStateSnackbar(true);
+      return false;
+    }
     setshowLoadder(true);
     settoasterServerity("");
     settoasterErrorMessageType("");
@@ -396,6 +329,8 @@ function UpdateTempearture(props) {
                     "Entered numbers are not valid",
                   ]}
                   SetformData={SetformData}
+                  setCheckLowerLimit={setCheckLowerLimit}
+                  setCheckUpperLimit={setCheckUpperLimit}
                 ></DisplayFormControl>
               </Grid>
             </Grid>

@@ -208,8 +208,8 @@ function LocationDensity(props) {
       },
     },
     {
-      label: "Density Range",
-      name: "densityThreasholdFrom",
+      label: "Density Low",
+      name: "densityThreasholdLowFrom",
       options: {
         filter: false,
         sort: true,
@@ -225,7 +225,61 @@ function LocationDensity(props) {
     },
     {
       label: "Density Range",
-      name: "densityThreasholdTo",
+      name: "densityThreasholdLowTo",
+      options: {
+        display: "excluded",
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      label: "Density Medium",
+      name: "densityThreasholdMediumFrom",
+      options: {
+        filter: false,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return <span>{thisRowData[7]} - {thisRowData[8]}</span>;
+          } else {
+            return <span></span>;
+          }
+        },
+      },
+    },
+    {
+      label: "Density Range",
+      name: "densityThreasholdMediumTo",
+      options: {
+        display: "excluded",
+        filter: false,
+        sort: true,
+      },
+    },
+    {
+      label: "Density High",
+      name: "densityThreasholdHighFrom",
+      options: {
+        filter: false,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          var thisRowData = tableMeta.rowData;
+          if (thisRowData) {
+            return <span>{thisRowData[9]} - {thisRowData[10] != -1 ? (
+              thisRowData[10]
+            ) : (
+              <span className="infinity-symbol">No Limit</span>
+            )}</span>;
+          } else {
+            return <span></span>;
+          }
+        },
+      },
+    },
+    {
+      label: "Density Range",
+      name: "densityThreasholdHighTo",
       options: {
         display: "excluded",
         filter: false,

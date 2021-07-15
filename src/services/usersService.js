@@ -203,7 +203,7 @@ export default class UserService {
   GetAllUsersForSupervisor(id) {
     return this.fetch(
       `${this.baseURL}/ApplicationUser/GetAllUsersForSupervisor?ApplicationSupervisorId=` +
-        id,
+      id,
       {
         method: "GET",
       }
@@ -339,7 +339,7 @@ export default class UserService {
       } else if (response.status === 500) {
         window.location.href = "/InternalServerError";
       } else if (response.status === 401) {
-        alert("Session expired. Please login to continue");
+        alert("You have been signed out because either your last session expired or you are currently signed in on another device.");
         localStorage.removeItem("id_token");
         localStorage.removeItem("id_tokenExpiry");
         window.location.href = "/";
