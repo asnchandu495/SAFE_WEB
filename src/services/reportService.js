@@ -54,18 +54,18 @@ export default class ReportService {
   getAccessBreachReport(data) {
     let SiteIds = "";
     let LocationIds = "";
+    let apiURL = '';
+    SiteIds = "SiteId=" + data.SiteId;
+
     if (data.LocationId.length > 0) {
       LocationIds = data.LocationId.map(function (el, idx) {
         return "LocationId=" + el;
       }).join("&");
+      apiURL = `Reports/GetAllAccessBreaches?${LocationIds}&${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
     } else {
       LocationIds = "LocationId=[]";
+      apiURL = `Reports/GetAllAccessBreaches?${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
     }
-
-    SiteIds = "SiteId=" + data.SiteId;
-
-    let apiURL = `Reports/GetAllAccessBreaches?${LocationIds}&${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
-
     return this.fetch(`${this.baseURL}/${apiURL}`, {
       method: "GET",
     }).then((res) => {
@@ -76,17 +76,18 @@ export default class ReportService {
   getDensityThresholdReport(data) {
     let SiteIds = "";
     let LocationIds = "";
+    let apiURL = '';
+    SiteIds = "SiteId=" + data.SiteId;
+
     if (data.LocationId.length > 0) {
       LocationIds = data.LocationId.map(function (el, idx) {
         return "LocationId=" + el;
       }).join("&");
+      apiURL = `ApplicationUser/GetAllDensityThresholdBreaches?${LocationIds}&${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
     } else {
       LocationIds = "LocationId=[]";
+      apiURL = `ApplicationUser/GetAllDensityThresholdBreaches?${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
     }
-
-    SiteIds = "SiteId=" + data.SiteId;
-
-    let apiURL = `ApplicationUser/GetAllDensityThresholdBreaches?${LocationIds}&${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
 
     return this.fetch(`${this.baseURL}/${apiURL}`, {
       method: "GET",

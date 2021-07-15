@@ -44,6 +44,7 @@ function AdoptQuestionnaire(props) {
     isCopyEvaluation: false,
     isCopyOrder: false,
     title: "",
+    languageId: ""
   });
   const [selectedQuestionOption, setSelectedQuestionOption] = useState("");
   const [formFieldValidation, setformFieldValidation] = useState({
@@ -243,6 +244,42 @@ function AdoptQuestionnaire(props) {
                     ) : (
                       ""
                     )}
+                  </Grid>
+                </Grid>
+                <Grid item container xs={12}>
+                  <Grid item xs={3}>
+                    <label className="required">Language</label>
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel
+                        id="demo-simple-select-outlined-label"
+                        shrink={false}
+                        className="select-label"
+                      >
+                        {formData.languageId == "" ? " Select language" : ""}
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        placeholder="Select language"
+                        name="languageId"
+                        value={formData.languageId ? formData.languageId : ""}
+                        onChange={handleChange}
+                        required
+                        InputLabelProps={{ shrink: false }}
+                        className="global-input single-select"
+                      >
+                        <MenuItem value="">None</MenuItem>
+                        {allLanguages.length > 0
+                          ? allLanguages.map((lan) => {
+                            return (
+                              <MenuItem value={lan.id}>{lan.name}</MenuItem>
+                            );
+                          })
+                          : ""}
+                      </Select>
+                    </FormControl>
                   </Grid>
                 </Grid>
                 <Grid item cs={12} container>

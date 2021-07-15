@@ -228,6 +228,10 @@ function ActionFormNew(props) {
     setFormData(list);
   };
 
+  const handleInputChangeTags = (e, index) => {
+    return false;
+  };
+
   function formSubmit(e) {
     setshowLoadder(true);
     e.preventDefault();
@@ -356,6 +360,40 @@ function ActionFormNew(props) {
     setStateContextMenu(initialState);
   };
 
+  const handleClickContextMenuOptionTextTags = (opt, index, name) => {
+    let textToInsert = opt;
+    let cursorPosition = currentInputText.target.selectionStart;
+    let textBeforeCursorPosition = currentInputText.target.value.substring(
+      0,
+      cursorPosition
+    );
+    let textAfterCursorPosition = currentInputText.target.value.substring(
+      cursorPosition,
+      currentInputText.target.value.length
+    );
+
+    if (currentInputText.target.value != '') {
+      currentInputText.target.value =
+        textBeforeCursorPosition + ',' + textToInsert + textAfterCursorPosition;
+    } else {
+      currentInputText.target.value =
+        textBeforeCursorPosition + textToInsert + textAfterCursorPosition;
+    }
+
+    const list = {
+      ...formData,
+      configurationDataList: [
+        ...formData.configurationDataList.map((con, conIndex) =>
+          conIndex == index
+            ? { ...con, [name]: currentInputText.target.value }
+            : con
+        ),
+      ],
+    };
+    setFormData(list);
+    setStateContextMenu(initialState);
+  };
+
   function gotoPreviousPage() {
     // props.history.push(`/workflow/${workflowId}/activities`);
     setFormData(oldData);
@@ -434,6 +472,78 @@ function ActionFormNew(props) {
                                         <MenuItem
                                           onClick={() =>
                                             handleClickContextMenuOptionText(
+                                              opt,
+                                              index,
+                                              "value"
+                                            )
+                                          }
+                                        >
+                                          {opt}
+                                        </MenuItem>
+                                      );
+                                    })
+                                  ) : (
+                                    <MenuItem>No options</MenuItem>
+                                  )}
+                                </Menu>
+                                : ""}
+                            </Grid>
+                          </Grid>
+                        );
+                      }
+                      if (act.inputType == "EmailTags") {
+                        return (
+                          <Grid
+                            item
+                            xs={12}
+                            container
+                            key={`EmailTags_gri${index}`}
+                          >
+                            <Grid item xs={3}>
+                              <label>{act.remarksForInput}m</label>
+                            </Grid>
+                            <Grid
+                              item
+                              xs={9}
+                              onContextMenu={act.inputIntelliSenseOptions.length > 0 ? handleClickContextMenuText : emptyCall}
+                            >
+                              <TextValidator
+                                variant="outlined"
+                                fullWidth
+                                id={`EmailTags_inp${act.name}_${index}`}
+                                placeholder={act.remarksForInput}
+                                name="value"
+                                onChange={(e) => handleInputChangeTags(e, index)}
+                                value={act.value}
+                                InputLabelProps={{ shrink: false }}
+                                className="global-input action-form-input"
+                                onFocus={(e) => {
+                                  setCurrentInputText(e);
+                                }}
+                              />
+                              {act.inputIntelliSenseOptions.length > 0 ?
+                                <Menu
+                                  id={`EmailTags_opt${act.name}_${index}`}
+                                  keepMounted
+                                  open={stateContextMenuText.mouseY !== null}
+                                  onClose={handleCloseContextMenuText}
+                                  anchorReference="anchorPosition"
+                                  anchorPosition={
+                                    stateContextMenuText.mouseY !== null &&
+                                      stateContextMenuText.mouseX !== null
+                                      ? {
+                                        top: stateContextMenuText.mouseY,
+                                        left: stateContextMenuText.mouseX,
+                                      }
+                                      : undefined
+                                  }
+                                >
+                                  {act.inputIntelliSenseOptions.length > 0 ? (
+                                    act.inputIntelliSenseOptions.map((opt) => {
+                                      return (
+                                        <MenuItem
+                                          onClick={() =>
+                                            handleClickContextMenuOptionTextTags(
                                               opt,
                                               index,
                                               "value"
