@@ -124,6 +124,11 @@ function QuestionnaireEvaluation(props) {
         setcovidStatelist(covidstateRes);
         setquestionaireDetails(surveyid);
         if (getEvaluationDetails && getEvaluationDetails.id) {
+          getEvaluationDetails.positiveResponses.sort(function IHaveAName(a, b) { // non-anonymous as you ordered...
+            return b.lowerLimit < a.lowerLimit ? 1 // if b should come earlier, push a to end
+              : b.lowerLimit > a.lowerLimit ? -1 // if b should come later, push a to begin
+                : 0;                   // a and b are equal
+          });
           setTemperatureConfigForm(getEvaluationDetails);
           setOldData(getEvaluationDetails);
         }
@@ -358,15 +363,13 @@ function QuestionnaireEvaluation(props) {
           {questionaireDetails ? questionaireDetails.name : ""}
         </LinkTo>
         <LinkTo color="textPrimary" href="#" className="active">
-          Questionnaire Evaluation{" "}
+          Questionnaire Evaluation
+          <TooltipComponent
+            isMarginBottom={true}
+            tooltipMessage={`Logic defined to determined user's COVID state from their responses to questionnaire.`}
+          ></TooltipComponent>{" "}
         </LinkTo>
       </Breadcrumbs>
-      <span style={{ float: "right" }}>
-        <TooltipComponent
-          isMarginBottom={true}
-          tooltipMessage={`Logic defined to determined user's COVID state from their responses to questionnaire.`}
-        ></TooltipComponent>{" "}
-      </span>
 
       <Paper className={`main-paper`}>
         {componentLoadder ? (
