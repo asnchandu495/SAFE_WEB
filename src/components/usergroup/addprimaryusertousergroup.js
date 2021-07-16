@@ -521,10 +521,24 @@ function AddPrimaryUserToUserGroups(props) {
     // setshowLoadder(true);
     setdialogshowLoadder(true);
     UsersApi.ListFliteredData(userfilterData)
-      .then((result) => {
+      .then((applicationUsers) => {
         setshowLoadder(false);
         setdialogshowLoadder(false);
-        setApplicationUsers(result);
+
+        let primaryUsers = selectedGroupInfo.primaryapplicationuserDetails;
+        const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+
+        setApplicationUsers(newArr1);
+        var selectedUsersToGroupArray = [];
+
+        applicationUsers.map((user, i) => {
+          const found = primaryUsers.some((u) => u.id === user.id);
+          if (found) {
+            selectedUsersToGroupArray.push(i);
+          }
+        });
+        setSelectedUsersToGroup(selectedUsersToGroupArray);
+
         setModalOpen(false);
       })
       .catch((err) => {

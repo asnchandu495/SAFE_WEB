@@ -316,8 +316,24 @@ function AddSecondaryUserToUserGroups(props) {
     // setshowLoadder(true);
     setdialogshowLoadder(true);
     UsersApi.ListFliteredData(userfilterData)
-      .then((result) => {
-        setApplicationUsers(result);
+      .then((applicationUsers) => {
+
+        let primaryUsers = selectedGroupInfo.secondaryapplicationuserDetails;
+
+        const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+
+        setApplicationUsers(newArr1);
+
+        var selectedUsersToGroupArray = [];
+
+        applicationUsers.map((user, i) => {
+          const found = primaryUsers.some((u) => u.id === user.id);
+          if (found) {
+            selectedUsersToGroupArray.push(i);
+          }
+        });
+        setSelectedUsersToGroup(selectedUsersToGroupArray);
+
         setshowLoadder(false);
         setdialogshowLoadder(false);
         setModalOpen(false);
