@@ -193,7 +193,7 @@ function ListSite(props) {
       },
     },
     {
-      name: "isPinMicroActive",
+      name: "isRLAPActive",
       label: "RLAP Status",
       options: {
         filter: true,

@@ -52,6 +52,8 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import Pagination from "@material-ui/lab/Pagination";
 import ReplayIcon from "@material-ui/icons/Replay";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
 import * as GridAction from "../../Redux/Action/gridAction";
 import ACMService from "../../services/acmService";
 
@@ -146,6 +148,8 @@ const DisplayFormControl = ({
   }
 };
 
+const rlapStatusData = [{ id: "true", value: "True" }, { id: "false", value: "False" }];
+
 function Users(props) {
   const userId = props.match.params.id;
   const classes = useStyles();
@@ -208,6 +212,7 @@ function Users(props) {
     covidStateId: "",
     roleIds: [],
     siteId: [],
+    rLapStatus: ""
   });
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
@@ -902,6 +907,14 @@ function Users(props) {
     setOpenMoreMenu(false);
   }
 
+  function handleChangeRlapStatus(e) {
+    const { name, value } = e.target;
+    setsearchformData((searchformData) => ({
+      ...searchformData,
+      [name]: value,
+    }));
+  }
+
   return (
     <div className="innerpage-container">
       <Dialog
@@ -1078,6 +1091,52 @@ function Users(props) {
                         )}
                       />
                       {""}
+                    </FormControl>
+                  </Grid>
+                </Grid>
+                <Grid item cs={12} container>
+                  <Grid item xs={4}>
+                    <label className="">RLAP Status</label>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <FormControl variant="outlined" fullWidth>
+                      <InputLabel
+                        id="demo-simple-select-outlined-label"
+                        shrink={false}
+                        className="select-label"
+                      >
+                        {!searchformData.rLapStatus
+                          ? "Select status"
+                          : ""}
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={
+                          searchformData.rLapStatus
+                        }
+                        name="rLapStatus"
+                        onChange={handleChangeRlapStatus}
+                        placeholder="Select status"
+                        InputLabelProps={{
+                          shrink: false,
+                        }}
+                        className="global-input single-select"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        {rlapStatusData.map((ans) => {
+                          return (
+                            <MenuItem
+                              value={ans.id}
+                              key={`atypered_${ans.id}`}
+                            >
+                              {ans.value}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
                     </FormControl>
                   </Grid>
                 </Grid>
