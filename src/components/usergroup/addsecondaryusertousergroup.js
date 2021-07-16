@@ -315,8 +315,7 @@ function AddSecondaryUserToUserGroups(props) {
 
     // setshowLoadder(true);
     setdialogshowLoadder(true);
-    props
-      .LoadAllUser(userfilterData)
+    UsersApi.ListFliteredData(userfilterData)
       .then((result) => {
         setApplicationUsers(result);
         setshowLoadder(false);

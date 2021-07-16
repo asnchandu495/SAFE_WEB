@@ -520,8 +520,7 @@ function AddPrimaryUserToUserGroups(props) {
 
     // setshowLoadder(true);
     setdialogshowLoadder(true);
-    props
-      .LoadAllUser(userfilterData)
+    UsersApi.ListFliteredData(userfilterData)
       .then((result) => {
         setshowLoadder(false);
         setdialogshowLoadder(false);
