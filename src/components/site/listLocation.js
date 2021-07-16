@@ -98,6 +98,7 @@ function ListSite(props) {
     useState("");
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [siteName, setsiteName] = useState("");
+  const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
 
   useEffect(() => {
     Promise.all([props.LoadData(siteId), apiCallSite.getSiteById(siteId)])
@@ -136,13 +137,19 @@ function ListSite(props) {
     let value = siteId;
     props.history.push("/site/view-site/" + value);
   }
+
+  function handleRowsPerPageChange(rowsPerPage) {
+    setCurrentRowsPerPage(rowsPerPage);
+  }
+
   const options = {
     filter: false,
     filterType: "dropdown",
     responsive: "scroll",
     fixedHeader: true,
     rowsPerPageOptions: [5, 10, 15, 100],
-    rowsPerPage: 5,
+    rowsPerPage: currentRowsPerPage,
+    onChangeRowsPerPage: handleRowsPerPageChange,
     jumpToPage: true,
     print: false,
     viewColumns: false,

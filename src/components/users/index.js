@@ -148,7 +148,7 @@ const DisplayFormControl = ({
   }
 };
 
-const rlapStatusData = [{ id: "true", value: "True" }, { id: "false", value: "False" }];
+const rlapStatusData = [{ id: "true", value: "Active" }, { id: "false", value: "Inactive" }];
 
 function Users(props) {
   const userId = props.match.params.id;
@@ -379,6 +379,14 @@ function Users(props) {
     setSiteMasterData([]);
     setUserGroupData();
     setcovidStatelist();
+    setsearchformData({
+      primaryGroupId: "",
+      designationId: "",
+      covidStateId: "",
+      roleIds: [],
+      siteId: [],
+      rLapStatus: ""
+    });
   }
 
   function AssignFiltersForm() {
