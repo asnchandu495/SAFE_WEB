@@ -1633,3 +1633,11 @@ label.required {
     padding: 8px 14px !important;
   }
 }
+
+.no-questions-pub{
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    flex-direction: column;
+}

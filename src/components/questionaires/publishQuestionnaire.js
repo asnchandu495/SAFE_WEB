@@ -200,6 +200,7 @@ function PublishQuestionnaire(props) {
   const [isQuestionEnd, setIsQuestionEnd] = useState(false);
   const [isQuestionSubmit, setIsQuestionSubmit] = useState(false);
   const [isQuestionPublish, setIsQuestionPublish] = useState(false);
+  const [isEmptyFirstQuestion, setIsEmptyFirstQuestion] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -209,7 +210,11 @@ function PublishQuestionnaire(props) {
       .then(([questionaireInfo, firstQuestion]) => {
         props.loadGlobalSettingWithoutAPICall();
         setViewQuestionaireDetails(questionaireInfo);
+        console.log(firstQuestion);
         setCurrentQuestion(firstQuestion.question);
+        if (!firstQuestion.question) {
+          setIsEmptyFirstQuestion(true);
+        }
         setComponentLoadder(false);
       })
       .catch((error) => {
@@ -377,6 +382,10 @@ function PublishQuestionnaire(props) {
     }
   }
 
+  function handleClickGoBack() {
+    props.history.push("/questionaires/allquestionaires");
+  }
+
   return (
     <div className="innerpage-container">
       <Breadcrumbs aria-label="breadcrumb" className="global-breadcrumb">
@@ -411,7 +420,20 @@ function PublishQuestionnaire(props) {
       {!componentLoadder ? (
         <Paper className="main-paper main-paper-add-question">
           <Paper className="add-new-question">
-            <ValidatorForm
+            {isEmptyFirstQuestion ? <div className="no-questions-pub global-form">
+              <p>Please configure questions, order of execution and evaluation criteria to publish the questionnaire .
+              </p>
+              <div className={`form-buttons-container`}>
+                <Button
+                  variant="contained"
+                  type="reset"
+                  onClick={handleClickGoBack}
+                  className="global-cancel-btn"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div> : <ValidatorForm
               className={`global-form`}
               onSubmit={submitCurrentQuestion}
             >
@@ -439,6 +461,14 @@ function PublishQuestionnaire(props) {
                   </div>
                 </CardContent>
                 <CardActions className="action-container">
+                  <Button
+                    variant="contained"
+                    type="reset"
+                    onClick={handleClickGoBack}
+                    className="global-cancel-btn"
+                  >
+                    Cancel
+                  </Button>
                   {isQuestionEnd ? (
                     <Button
                       type="button"
@@ -456,7 +486,7 @@ function PublishQuestionnaire(props) {
                     <Button
                       type="submit"
                       onClick={submitCurrentQuestion}
-                      className="global-cancel-btn"
+                      className="global-submit-btn"
                       disabled={isQuestionSubmit}
                     >
                       {isQuestionSubmit ? <ButtonLoadderComponent /> : "Submit"}
@@ -464,7 +494,8 @@ function PublishQuestionnaire(props) {
                   )}
                 </CardActions>
               </Card>
-            </ValidatorForm>
+            </ValidatorForm>}
+
           </Paper>
 
           <Dialog
