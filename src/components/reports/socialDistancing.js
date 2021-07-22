@@ -156,11 +156,17 @@ function SocailDistancing(props) {
     userId: null,
     startDate: moment().toISOString(),
     endDate: moment().toISOString(),
+    SiteId: "",
+    LocationId: [],
+    selectedReportType: ""
   });
   const [resetForm, setResetForm] = useState({
     userId: null,
     startDate: moment().toISOString(),
     endDate: moment().toISOString(),
+    SiteId: "",
+    LocationId: [],
+    selectedReportType: ""
   });
 
   const [selectedValue, setSelectedValue] = React.useState("a");
@@ -169,6 +175,14 @@ function SocailDistancing(props) {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [searchFormOld, setSearchFormOld] = useState();
+  const [isLocationLoading, setIsLocationLoading] = useState(false);
+  const [locationBySiteId, setlocationBySiteId] = useState();
+  const [selectedReportType, setSelectedReportType] = useState("");
+  const [selectedReportTypeDataOld, setselectedReportTypeDataOld] =
+    useState("");
+  const [selectedSiteDataOld, setselectedSiteDataOld] = useState();
+  const [selectedLocationDataOld, setselectedLocationDataOld] = useState([]);
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
 
   useEffect(() => {
     setComponentLoadder(true);
@@ -177,8 +191,9 @@ function SocailDistancing(props) {
       userApiCall.getProfileDetails(),
       props.LoadGridsPage(),
       props.loadGlobalSettingWithoutAPICall(),
+      siteApiCall.getListSiteSupervisor(),
     ])
-      .then(([loggedinUserDetails, gridResult, result]) => {
+      .then(([loggedinUserDetails, gridResult, result, getAllSites]) => {
         userApiCall
           .ListApplicationUsers(loggedinUserDetails.id)
           .then((getUsers) => {
@@ -190,6 +205,7 @@ function SocailDistancing(props) {
             };
             getUsers.unshift(allOption);
             setApplicationUsers(getUsers);
+            setAllSites(getAllSites);
             let reportFilters = sessionStorage.getItem("socialDistancing");
             if (reportFilters) {
               submitFiltersFromSession();
@@ -363,7 +379,10 @@ function SocailDistancing(props) {
     download: false,
     textLabels: {
       body: {
-        noMatch: "There are no reports",
+        noMatch: `${isFilterSelected
+          ? "There are no reports"
+          : "Please select filters to generate report"
+          }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -482,6 +501,9 @@ function SocailDistancing(props) {
   };
 
   function resetFilterForm() {
+    setselectedSiteData();
+    setselectedLocationData();
+    setSelectedReportType("");
     setSearchForm(resetForm);
   }
 
@@ -494,6 +516,7 @@ function SocailDistancing(props) {
       ["userId"]: selectedReportFilter.userId,
       ["startDate"]: selectedReportFilter.startDate,
       ["endDate"]: selectedReportFilter.endDate,
+      ["selectedReportType"]: selectedReportFilter.selectedReportType
     }));
 
     setSearchForm((searchForm) => ({
@@ -501,7 +524,14 @@ function SocailDistancing(props) {
       ["userId"]: selectedReportFilter.userId,
       ["startDate"]: selectedReportFilter.startDate,
       ["endDate"]: selectedReportFilter.endDate,
+      ["selectedReportType"]: selectedReportFilter.selectedReportType
     }));
+
+    setselectedSiteDataOld(selectedReportFilter.selectedSiteData);
+    setselectedLocationDataOld(selectedReportFilter.selectedLocationData);
+
+    setselectedSiteData(selectedReportFilter.selectedSiteData);
+    setselectedLocationData(selectedReportFilter.selectedLocationData);
 
     let searchForm = {
       startDate: selectedReportFilter.startDate,
@@ -509,22 +539,54 @@ function SocailDistancing(props) {
       userId: selectedReportFilter.userId,
     };
 
-    reportApiCall
-      .getSocialDistancingReport(searchForm)
-      .then((result) => {
-        setSocialDistancingData(result);
-        setTimeout(() => {
-          setModalOpen(false);
+    setSelectedReportType(selectedReportFilter.selectedReportType);
+    setselectedReportTypeDataOld(selectedReportFilter.selectedReportType);
+
+    if (selectedReportFilter.selectedReportType == 'indoor') {
+      if (selectedReportFilter.selectedSiteData) {
+        searchForm.SiteId = selectedReportFilter.selectedSiteData.id;
+      }
+
+      if (selectedReportFilter.selectedLocationData.length > 0) {
+        let locationArr = selectedReportFilter.selectedLocationData.map((item) => item.id);
+        searchForm.LocationId = locationArr;
+      } else {
+        searchForm.LocationId = [];
+      }
+
+      Promise.all([reportApiCall.getSocialDistancingIndoorReport(searchForm), siteApiCall.getAllLocationsBySiteId(searchForm.SiteId)])
+        .then(([result, siteLocations]) => {
+          setIsFilterSelected(true);
+          setSocialDistancingData(result);
+          setlocationBySiteId(siteLocations);
+          setTimeout(() => {
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
           setshowLoadder(false);
-        }, 3000);
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
-      });
+        });
+    } else {
+      reportApiCall
+        .getSocialDistancingReport(searchForm)
+        .then((result) => {
+          setSocialDistancingData(result);
+          setTimeout(() => {
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
   }
+
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -534,30 +596,93 @@ function SocailDistancing(props) {
       userId: searchForm.userId,
       startDate: searchForm.startDate,
       endDate: searchForm.endDate,
+      selectedSiteData: selectedSiteData,
+      selectedLocationData: selectedLocationData,
+      selectedReportType: selectedReportType
     };
     sessionStorage.setItem("socialDistancing", JSON.stringify(storeFilters));
     setshowLoadder(true);
-    reportApiCall
-      .getSocialDistancingReport(searchForm)
-      .then((result) => {
-        setSocialDistancingData(result);
-        setTimeout(() => {
-          setModalOpen(false);
+    setIsFilterSelected(true);
+    if (selectedReportType == 'indoor') {
+      if (selectedSiteData) {
+        searchForm.SiteId = selectedSiteData.id;
+      }
+
+      if (selectedLocationData.length > 0) {
+        let locationArr = selectedLocationData.map((item) => item.id);
+        searchForm.LocationId = locationArr;
+      } else {
+        searchForm.LocationId = [];
+      }
+
+      setselectedSiteDataOld(selectedSiteData);
+      setselectedLocationDataOld(selectedLocationData);
+
+      reportApiCall
+        .getSocialDistancingIndoorReport(searchForm)
+        .then((result) => {
+          setSocialDistancingData(result);
+          setTimeout(() => {
+            setModalOpen(false);
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
           setshowLoadder(false);
-        }, 3000);
-      })
-      .catch((err) => {
-        setToasterMessage(err.data.errors);
-        settoasterServerity("error");
-        setStateSnackbar(true);
-        setshowLoadder(false);
-      });
+        });
+    } else {
+      reportApiCall
+        .getSocialDistancingReport(searchForm)
+        .then((result) => {
+          setSocialDistancingData(result);
+          setTimeout(() => {
+            setModalOpen(false);
+            setshowLoadder(false);
+          }, 3000);
+        })
+        .catch((err) => {
+          setToasterMessage(err.data.errors);
+          settoasterServerity("error");
+          setStateSnackbar(true);
+          setshowLoadder(false);
+        });
+    }
   }
 
   const filterOptions = createFilterOptions({
     stringify: ({ firstName, lastName, userId }) =>
       `${firstName} ${lastName} ${userId}`,
   });
+
+  function selectedSite(e, value) {
+    setlocationBySiteId([]);
+    setselectedLocationData([]);
+    setselectedSiteData(value);
+    if (value) {
+      setIsLocationLoading(true);
+      let data = value.id;
+      siteApiCall
+        .getAllLocationsBySiteId(data)
+        .then((getResult) => {
+          setlocationBySiteId(getResult);
+          setIsLocationLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
+  function selectedLocation(e, value) {
+    setselectedLocationData(value);
+  }
+
+  const handleChangeReport = (e) => {
+    setSelectedReportType(e.target.value);
+  };
 
   return (
     <div className="innerpage-container">
@@ -578,53 +703,157 @@ function SocailDistancing(props) {
                 <Grid container spacing={3}>
                   <Grid item cs={12} container>
                     <Grid item xs={4}>
-                      <label className="required">User ID </label>
+                      <label className="required">Data Source</label>
                     </Grid>
                     <Grid item xs={8}>
-                      <FormControl variant="outlined" fullWidth>
-                        <Autocomplete
-                          name="userId"
-                          id="tags-outlined"
-                          options={
-                            applicationUsers && applicationUsers.length > 0
-                              ? applicationUsers
-                              : []
-                          }
-                          getOptionLabel={({ firstName, lastName }) => {
-                            return `${firstName} ${lastName}`;
-                          }}
-                          defaultValue={searchForm.userId}
-                          value={searchForm.userId ? searchForm.userId : null}
-                          onChange={(e, v) =>
-                            handleChangeSearchForm(v, "userId")
-                          }
-                          filterSelectedOptions
-                          className="global-input autocomplete-select"
-                          filterOptions={filterOptions}
-                          renderOption={({ firstName, lastName, userId }) => {
-                            return (
-                              <div>
-                                <div>
-                                  {`${firstName} `}
-                                  {lastName}
-                                </div>
-                                <span>{userId}</span>
-                              </div>
-                            );
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              required
-                              {...params}
-                              required
-                              variant="outlined"
-                              placeholder="Select User by UserId or UserName"
-                            />
-                          )}
+                      <RadioGroup
+                        row
+                        aria-label="gender"
+                        name="report_type"
+                        value={selectedReportType}
+                        onChange={handleChangeReport}
+                      >
+                        <FormControlLabel
+                          value="indoor"
+                          control={<Radio required />}
+                          label="Indoor"
                         />
-                      </FormControl>
+                        <FormControlLabel
+                          value="outdoor"
+                          control={<Radio required />}
+                          label="Outdoor"
+                        />
+                      </RadioGroup>
                     </Grid>
                   </Grid>
+                  {selectedReportType == 'indoor' ? <>
+                    <Grid item xs={12} container>
+                      <Grid item xs={4}>
+                        <label className={`${selectedReportType == 'indoor' ? "required" : ""}`}>Site </label>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <FormControl variant="outlined" fullWidth>
+                          <Autocomplete
+                            name="siteId"
+                            id="tags-outlined"
+                            options={
+                              allSites && allSites.length > 0 ? allSites : []
+                            }
+                            getOptionLabel={(option) => option.name}
+                            defaultValue={selectedSiteData}
+                            value={selectedSiteData ? selectedSiteData : ""}
+                            onChange={selectedSite}
+                            filterSelectedOptions
+                            className="global-input autocomplete-select"
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                inputProps={{
+                                  ...params.inputProps,
+                                  required: selectedReportType == 'indoor'
+                                    ? true
+                                    : false,
+                                }}
+                                variant="outlined"
+                                placeholder="Select Site"
+                              />
+                            )}
+                          />{" "}
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} container>
+                      <Grid item xs={4}>
+                        <label>Location</label>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <FormControl variant="outlined" fullWidth>
+                          <Autocomplete
+                            multiple
+                            loading={isLocationLoading}
+                            id="tags-outlined"
+                            options={
+                              locationBySiteId && locationBySiteId.length > 0
+                                ? locationBySiteId
+                                : []
+                            }
+                            name="location"
+                            getOptionLabel={(option) => option.locationName}
+                            defaultValue={selectedLocationData}
+                            value={selectedLocationData ? selectedLocationData : []}
+                            onChange={selectedLocation}
+                            filterSelectedOptions
+                            className="global-input autocomplete-select"
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                inputProps={{
+                                  ...params.inputProps,
+                                }}
+                                variant="outlined"
+                                placeholder="Select Location"
+                              />
+                            )}
+                          />
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  </> : ""}
+                  {selectedReportType == 'outdoor' ? <>
+                    <Grid item cs={12} container>
+                      <Grid item xs={4}>
+                        <label className={`${selectedReportType == 'outdoor' ? "required" : ""}`}>User ID </label>
+                      </Grid>
+                      <Grid item xs={8}>
+                        <FormControl variant="outlined" fullWidth>
+                          <Autocomplete
+                            name="userId"
+                            id="tags-outlined"
+                            options={
+                              applicationUsers && applicationUsers.length > 0
+                                ? applicationUsers
+                                : []
+                            }
+                            getOptionLabel={({ firstName, lastName }) => {
+                              return `${firstName} ${lastName}`;
+                            }}
+                            defaultValue={searchForm.userId}
+                            value={searchForm.userId ? searchForm.userId : null}
+                            onChange={(e, v) =>
+                              handleChangeSearchForm(v, "userId")
+                            }
+                            filterSelectedOptions
+                            className="global-input autocomplete-select"
+                            filterOptions={filterOptions}
+                            renderOption={({ firstName, lastName, userId }) => {
+                              return (
+                                <div>
+                                  <div>
+                                    {`${firstName} `}
+                                    {lastName}
+                                  </div>
+                                  <span>{userId}</span>
+                                </div>
+                              );
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                inputProps={{
+                                  ...params.inputProps,
+                                  required: selectedReportType == 'outdoor'
+                                    ? true
+                                    : false,
+                                }}
+                                variant="outlined"
+                                placeholder="Select User by UserId or UserName"
+                              />
+                            )}
+                          />
+                        </FormControl>
+                      </Grid>
+                    </Grid>
+                  </> : ""}
                   <Grid item xs={12} container>
                     <Grid item xs={4}>
                       <label className="required">From</label>

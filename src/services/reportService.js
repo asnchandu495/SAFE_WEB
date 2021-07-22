@@ -18,6 +18,32 @@ export default class ReportService {
     });
   }
 
+  getSocialDistancingIndoorReport(data) {
+    let SiteIds = "";
+    let LocationIds = "";
+    let apiURL = '';
+    SiteIds = "SiteId=" + data.SiteId;
+
+    if (data.LocationId.length > 0) {
+      LocationIds = data.LocationId.map(function (el, idx) {
+        return "LocationId=" + el;
+      }).join("&");
+      apiURL = `ApplicationUser/GetAllInDoorSocialDistancingBreaches?${LocationIds}&${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
+    } else {
+      LocationIds = "LocationId=[]";
+      apiURL = `ApplicationUser/GetAllInDoorSocialDistancingBreaches?${SiteIds}&StartDate=${data.startDate}&EndDate=${data.endDate}`;
+    }
+
+    return this.fetch(
+      `${this.baseURL}/${apiURL}`,
+      {
+        method: "GET",
+      }
+    ).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
+
   getGeoFencingReport(getData) {
     return this.fetch(
       `${this.baseURL}/ApplicationUserGeoBreach/GetAllGeoBreach?FromDate=${getData.startDate}&ToDate=${getData.endDate}${getData.userId.id != "all" ? '&UserId=' + getData.userId.userId : ''}`,
