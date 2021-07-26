@@ -98,8 +98,8 @@ function ConfigureHealth(props) {
       name: "userName",
       label: "Name",
       options: {
-        print: false,
         filter: true,
+        sort: true,
       },
     },
     {
@@ -232,15 +232,13 @@ function ConfigureHealth(props) {
         if (healthChecks.length > 0) {
           let newHealthCheck = [];
           healthChecks.forEach((chk) => {
+            console.log(chk);
             newHealthCheck.push({
-              id: chk.id,
-              userName:
-                selectedUserDetails.firstName +
-                " " +
-                selectedUserDetails.lastName,
-              contactNummber: selectedUserDetails.contactNumber,
-              emailId: selectedUserDetails.emailID,
-              createdDate: chk.createdDate,
+              // id: chk.id,
+              // userName: chk.userName,
+              // contactNummber: chk.contactNumber,
+              // emailId: chk.emailId,
+              // createdDate: chk.createdDate,
             });
           });
           setSelfHealthChecks(newHealthCheck);
@@ -313,8 +311,7 @@ function ConfigureHealth(props) {
                             {...params}
                             inputProps={{
                               ...params.inputProps,
-                              required:
-                                selectedUserDetails.length === 0
+                              required: selectedUserDetails.length === 0,
                             }}
                             variant="outlined"
                             placeholder="User"

@@ -404,7 +404,7 @@ function AssignQuestionaires(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
 
     customToolbar: () => {
       return (
@@ -426,12 +426,20 @@ function AssignQuestionaires(props) {
         if (typeof col !== "undefined" && col !== null) {
           if (typeof col === "object") {
             if (col.name) {
-              if (col.name.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+              if (
+                col.name
+                  .toString()
+                  .toLowerCase()
+                  .indexOf(searchQuery.toLowerCase()) >= 0
+              ) {
                 isFound = true;
               }
             }
           } else {
-            if (col.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+            if (
+              col.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >=
+              0
+            ) {
               isFound = true;
             }
           }
@@ -491,6 +499,8 @@ function AssignQuestionaires(props) {
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
+          console.log(thisRowData[1].id);
+
           var isActive = thisRowData[5];
           if (thisRowData) {
             return (
@@ -545,7 +555,7 @@ function AssignQuestionaires(props) {
   ];
 
   function handleClickViewWorkflow(value) {
-    var groupDetails = value[2];
+    var groupDetails = value[1];
     props.history.push(`/questionaires/workflow-states/${groupDetails["id"]}`);
   }
 
@@ -556,7 +566,7 @@ function AssignQuestionaires(props) {
         aria-labelledby="form-dialog-title"
         open={Modalopen}
         className="global-dialog"
-      // open={props.Modalopen}
+        // open={props.Modalopen}
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Assign Questionnaire to User Group
@@ -673,12 +683,12 @@ function AssignQuestionaires(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                            return (
-                              <MenuItem value={UserStatus.id}>
-                                {UserStatus.name}
-                              </MenuItem>
-                            );
-                          })
+                              return (
+                                <MenuItem value={UserStatus.id}>
+                                  {UserStatus.name}
+                                </MenuItem>
+                              );
+                            })
                           : ""}
                       </Select>
                     </FormControl>
