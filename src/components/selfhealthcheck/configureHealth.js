@@ -234,11 +234,11 @@ function ConfigureHealth(props) {
           healthChecks.forEach((chk) => {
             console.log(chk);
             newHealthCheck.push({
-              // id: chk.id,
-              // userName: chk.userName,
-              // contactNummber: chk.contactNumber,
-              // emailId: chk.emailId,
-              // createdDate: chk.createdDate,
+              id: chk.id,
+              userName: chk.userName,
+              contactNummber: chk.contactNumber,
+              emailId: chk.emailId,
+              createdDate: chk.createdDate,
             });
           });
           setSelfHealthChecks(newHealthCheck);

@@ -236,9 +236,7 @@ function ListAssignedDesignation(props) {
                 startIcon={<DeleteIcon />}
                 className={`delete-icon`}
                 onClick={() =>
-                  handleClickOpenConfirmationModal(
-                    props.openCovidStateInfoModalthisRowData
-                  )
+                  handleClickOpenConfirmationModal(props.thisRowData)
                 }
               ></Button>
             </Tooltip>
