@@ -217,35 +217,35 @@ function TemperatureRange(props) {
       settempsections(list);
     } else {
       console.log(value);
-      // console.log(tempsectionsConversion);
-      // const list = {
-      //   ...tempsectionsConversion,
-      //   covidStates: [
-      //     ...tempsectionsConversion.covidStates.map((con, conIndex) => {
-      //       if (name == "lowerLimit") {
-      //         return conIndex == index ? { ...con, [name]: value } : con;
-      //       } else if (name == "upperLimit") {
-      //         return conIndex == index ? { ...con, [name]: value } : con;
-      //       } else {
-      //         if (checked) {
-      //           return conIndex == index
-      //             ? { ...con, [name]: checked, ["upperLimit"]: 0 }
-      //             : con;
-      //         } else {
-      //           return conIndex == index
-      //             ? { ...con, [name]: checked, ["upperLimit"]: 0 }
-      //             : con;
-      //         }
-      //       }
-      //     }),
-      //   ],
-      // };
-      // console.log(list);
-      // tempsectionsConversion(list);
-      // // settempsections((tempsections) => ({
-      // //   ...tempsections,
-      // //   [name]: value,
-      // // }));
+      console.log(tempsectionsConversion);
+      const list = {
+        ...tempsectionsConversion,
+        covidStates: [
+          ...tempsectionsConversion.covidStates.map((con, conIndex) => {
+            if (name == "lowerLimit") {
+              return conIndex == index ? { ...con, [name]: value } : con;
+            } else if (name == "upperLimit") {
+              return conIndex == index ? { ...con, [name]: value } : con;
+            } else {
+              if (checked) {
+                return conIndex == index
+                  ? { ...con, [name]: checked, ["upperLimit"]: 0 }
+                  : con;
+              } else {
+                return conIndex == index
+                  ? { ...con, [name]: checked, ["upperLimit"]: 0 }
+                  : con;
+              }
+            }
+          }),
+        ],
+      };
+      console.log(list);
+      tempsectionsConversion(list);
+      // settempsections((tempsections) => ({
+      //   ...tempsections,
+      //   [name]: value,
+      // }));
     }
 
     // parseFloat(settempsections(list));
@@ -669,7 +669,7 @@ function TemperatureRange(props) {
                                       `minNumber:${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(lowerLimit) +
+                                          : parseFloat(x.lowerLimit) +
                                             parseFloat(0.1)
                                       }`,
                                     ]
@@ -680,7 +680,7 @@ function TemperatureRange(props) {
                                       `minNumber:${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(lowerLimit) +
+                                          : parseFloat(x.lowerLimit) +
                                             parseFloat(0.1)
                                       }`,
                                     ]
@@ -692,7 +692,7 @@ function TemperatureRange(props) {
                                       x.isNoUpperLimit
                                         ? 0
                                         : parseFloat(
-                                            parseFloat(lowerLimit) +
+                                            parseFloat(x.lowerLimit) +
                                               parseFloat(0.1)
                                           ).toFixed(1)
                                     }`,
@@ -705,7 +705,7 @@ function TemperatureRange(props) {
                                       x.isNoUpperLimit
                                         ? 0
                                         : parseFloat(
-                                            parseFloat(lowerLimit) +
+                                            parseFloat(x.lowerLimit) +
                                               parseFloat(0.1)
                                           ).toFixed(1)
                                     }`,
@@ -722,7 +722,7 @@ function TemperatureRange(props) {
                                       `Minimum allowed is ${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(lowerLimit) +
+                                          : parseFloat(x.lowerLimit) +
                                             parseFloat(0.1)
                                       }`,
                                     ]
@@ -735,7 +735,7 @@ function TemperatureRange(props) {
                                       `Minimum allowed is ${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(lowerLimit) +
+                                          : parseFloat(x.lowerLimit) +
                                             parseFloat(0.1)
                                       }`,
                                     ]
@@ -749,7 +749,7 @@ function TemperatureRange(props) {
                                       x.isNoUpperLimit
                                         ? 0
                                         : parseFloat(
-                                            parseFloat(lowerLimit) +
+                                            parseFloat(x.lowerLimit) +
                                               parseFloat(0.1)
                                           ).toFixed(1)
                                     }`,
@@ -764,7 +764,7 @@ function TemperatureRange(props) {
                                       x.isNoUpperLimit
                                         ? 0
                                         : parseFloat(
-                                            parseFloat(lowerLimit) +
+                                            parseFloat(x.lowerLimit) +
                                               parseFloat(0.1)
                                           ).toFixed(1)
                                     }`,
