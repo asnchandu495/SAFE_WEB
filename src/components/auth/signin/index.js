@@ -95,7 +95,7 @@ function Signin(props) {
           authApiCall
             .login(loginData)
             .then((response) => {
-              let authLoginData = { "isLoggedOut": false };
+              let authLoginData = { isLoggedOut: false };
               authApiCall
                 .UpdateConcurrentLoginForAuth(authLoginData)
                 .then((response) => {
@@ -103,12 +103,12 @@ function Signin(props) {
                   props.loadACM();
                   setshowLoadder(false);
                   props.history.push("/home/dashboard");
-                }).catch((err) => {
-
                 })
+                .catch((err) => {});
             })
             .catch((err) => {
-              setToasterMessage(err.data.error);
+              // setToasterMessage(err.data.error);
+              setToasterMessage("Please enter correct credentials");
               settoasterServerity("error");
               settoasterErrorMessageType("object");
               setStateSnackbar(true);
