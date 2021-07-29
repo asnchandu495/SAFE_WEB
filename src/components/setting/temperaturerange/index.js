@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import { Link as LinkTo } from "react-router-dom";
-import {
-  ValidatorForm,
-  TextValidator,
-  SelectValidator,
-} from "react-material-ui-form-validator";
+import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
@@ -67,7 +63,6 @@ function TemperatureRange(props) {
 
   // const [faqId, setFaqId] = useState(getFaqId);
   // const [faqIdSecId, setFaqIdSecId] = useState(getFaqIdSecId);
-
   const [flagStatus, setflagStatus] = useState(false);
   const [isFormSubmit, setisFormSubmit] = useState(false);
   const [muivalidatorForm, setmuivalidatorForm] = useState(false);
@@ -82,7 +77,6 @@ function TemperatureRange(props) {
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [componentLoadder, setComponentLoadder] = useState(true);
-  const [SelectedTempUnit, setSelectedTempUnit] = useState();
   const [tempsections, settempsections] = useState({
     id: "",
     globalSettingsId: globalsettingsId,
@@ -128,14 +122,6 @@ function TemperatureRange(props) {
         setcovidStatelist(result);
         setTempCovidStatelist(result);
         if (globalSettings.covidStateTemperatures.length > 0) {
-          globalSettings.covidStateTemperatures.sort(function IHaveAName(a, b) {
-            // non-anonymous as you ordered...
-            return b.lowerLimit < a.lowerLimit
-              ? 1 // if b should come earlier, push a to end
-              : b.lowerLimit > a.lowerLimit
-              ? -1 // if b should come later, push a to begin
-              : 0; // a and b are equal
-          });
           tempsections.covidStates = globalSettings.covidStateTemperatures;
           oldData.covidStates = globalSettings.covidStateTemperatures;
         }
@@ -143,7 +129,6 @@ function TemperatureRange(props) {
         oldData.globalSettingsId = globalSettings.id;
         tempsections.temperatureUnit = globalSettings.temperatureUnit;
         oldData.temperatureUnit = globalSettings.temperatureUnit;
-        setSelectedTempUnit(tempsections.temperatureUnit);
         setComponentLoadder(false);
       })
       .catch((err) => {
@@ -161,48 +146,48 @@ function TemperatureRange(props) {
     }
   }
 
-  function handleChangeInput(e, index) {
+  function handleChangeInput(e) {
     const { name, value } = e.target;
 
-    // if (value == "F") {
-    //   const list = {
-    //     ...tempsections,
-    //     covidStates: [
-    //       ...tempsections.covidStates.map((con) => {
-    //         return {
-    //           ...con,
-    //           ["lowerLimit"]: parseFloat(con.lowerLimit * (9 / 5) + 32).toFixed(
-    //             1
-    //           ),
-    //           ["upperLimit"]: parseFloat(con.upperLimit * (9 / 5) + 32).toFixed(
-    //             1
-    //           ),
-    //         };
-    //       }),
-    //     ],
-    //   };
+    if (value == "F") {
+      const list = {
+        ...tempsections,
+        covidStates: [
+          ...tempsections.covidStates.map((con) => {
+            return {
+              ...con,
+              ["lowerLimit"]: parseFloat(con.lowerLimit * (9 / 5) + 32).toFixed(
+                1
+              ),
+              ["upperLimit"]: parseFloat(con.upperLimit * (9 / 5) + 32).toFixed(
+                1
+              ),
+            };
+          }),
+        ],
+      };
 
-    //   settempsections(list);
-    // } else {
-    //   const list = {
-    //     ...tempsections,
-    //     covidStates: [
-    //       ...tempsections.covidStates.map((con) => {
-    //         return {
-    //           ...con,
-    //           ["lowerLimit"]: parseFloat(
-    //             ((con.lowerLimit - 32) * 5) / 9
-    //           ).toFixed(1),
-    //           ["upperLimit"]: parseFloat(
-    //             ((con.upperLimit - 32) * 5) / 9
-    //           ).toFixed(1),
-    //         };
-    //       }),
-    //     ],
-    //   };
+      settempsections(list);
+    } else {
+      const list = {
+        ...tempsections,
+        covidStates: [
+          ...tempsections.covidStates.map((con) => {
+            return {
+              ...con,
+              ["lowerLimit"]: parseFloat(
+                ((con.lowerLimit - 32) * 5) / 9
+              ).toFixed(1),
+              ["upperLimit"]: parseFloat(
+                ((con.upperLimit - 32) * 5) / 9
+              ).toFixed(1),
+            };
+          }),
+        ],
+      };
 
-    //   settempsections(list);
-    // }
+      settempsections(list);
+    }
     settempsections((tempsections) => ({
       ...tempsections,
       [name]: value,
@@ -211,7 +196,6 @@ function TemperatureRange(props) {
 
   const handleInputChangeContacts = (e, index) => {
     const { name, value, checked } = e.target;
-
     const list = {
       ...tempsections,
       covidStates: [
@@ -261,17 +245,17 @@ function TemperatureRange(props) {
       ],
     };
 
-    // const listmain = {
-    //   ...tempsections,
-    //   covidStates: [
-    //     ...tempsections.covidStates.map((con, conIndex) => {
-    //       return conIndex - 1 == index - 1
-    //         ? { ...con, ["isNoUpperLimit"]: false }
-    //         : con;
-    //     }),
-    //   ],
-    // };
-    settempsections(list);
+    const listmain = {
+      ...tempsections,
+      covidStates: [
+        ...tempsections.covidStates.map((con, conIndex) => {
+          return conIndex - 1 == index - 1
+            ? { ...con, ["isNoUpperLimit"]: false }
+            : con;
+        }),
+      ],
+    };
+    settempsections(listmain);
   }
 
   const handleRemoveClickContacts = (j) => {
@@ -324,42 +308,11 @@ function TemperatureRange(props) {
     let sendData = tempsections;
 
     let getCovidStates = sendData.covidStates;
-
-    let isValidTempRange = true;
-
-    getCovidStates.forEach((item, i) => {
-      if (!item.isNoUpperLimit) {
-        if (parseFloat(item.upperLimit) <= parseFloat(item.lowerLimit)) {
-          isValidTempRange = false;
-        }
-      }
-      if (i > 0) {
-        if (!item.isNoUpperLimit) {
-          if (
-            parseFloat(item.lowerLimit) <=
-            parseFloat(getCovidStates[i - 1].upperLimit)
-          ) {
-            isValidTempRange = false;
-          }
-        }
-      }
-    });
-
-    if (!isValidTempRange) {
-      let errorObject = { errors: { Message: ["Please enter valid range"] } };
-      setToasterMessage(errorObject.errors);
-      settoasterServerity("error");
-      setStateSnackbar(true);
-      setshowLoadder(false);
-      return false;
-    }
-
     getCovidStates.forEach((item) => {
       item.upperLimit = parseFloat(item.upperLimit);
       item.lowerLimit = parseFloat(item.lowerLimit);
     });
     sendData.covidStates = getCovidStates;
-    sendData.id = sendData.globalSettingsId;
     props
       .updateTemp(sendData)
       .then((result) => {
@@ -416,7 +369,7 @@ function TemperatureRange(props) {
                 <Grid item xs={3}>
                   <label className="required">Temperature UOM</label>
                 </Grid>
-                <Grid item xs={3} className="select-validator">
+                <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
                     <InputLabel
                       id="demo-simple-select-outlined-label"
@@ -424,19 +377,17 @@ function TemperatureRange(props) {
                       className="select-label"
                     >
                       {tempsections.temperatureUnit == ""
-                        ? "Select temperature"
+                        ? "Select temperatures"
                         : ""}
                     </InputLabel>
-                    <SelectValidator
-                      fullWidth
+                    <Select
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
                       value={tempsections.temperatureUnit}
                       name="temperatureUnit"
                       onChange={handleChangeInput}
                       placeholder="dsfs"
-                      validators={["required"]}
-                      errorMessages={["Please select temperature UOM"]}
+                      required
                       InputLabelProps={{ shrink: false }}
                       className="global-input single-select"
                     >
@@ -452,7 +403,7 @@ function TemperatureRange(props) {
                             );
                           })
                         : ""}
-                    </SelectValidator>
+                    </Select>
                   </FormControl>
                 </Grid>
               </Grid>
@@ -476,8 +427,10 @@ function TemperatureRange(props) {
                             options={
                               covidStatelist && covidStatelist.length > 0
                                 ? covidStatelist.filter((cstate) => {
+                                    console.log(cstate);
                                     return !tempsections.covidStates.find(
                                       (sselected) => {
+                                        console.log(sselected);
                                         if (sselected.covidState) {
                                           return (
                                             sselected.covidState.id == cstate.id
@@ -499,7 +452,7 @@ function TemperatureRange(props) {
                                 {...params}
                                 required
                                 variant="outlined"
-                                placeholder="Select covid state"
+                                placeholder="Select  covid state"
                               />
                             )}
                           />
@@ -525,25 +478,25 @@ function TemperatureRange(props) {
                                 : tempsections.temperatureUnit == "C"
                                 ? [
                                     "required",
-                                    "matchRegexp:^\\d{1,2}(\\.\\d{1,1})?$",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                                     "maxNumber:45",
-                                    `minNumber:${parseFloat(
+                                    `minNumber:${
                                       parseFloat(
                                         tempsections.covidStates[i - 1]
                                           .upperLimit
                                       ) + parseFloat(0.1)
-                                    )}`,
+                                    }`,
                                   ]
                                 : [
                                     "required",
-                                    "matchRegexp:^\\d{1,3}(\\.\\d{1,1})?$",
+                                    "matchRegexp:^\\d{1,6}(\\.\\d{1,6})?$",
                                     "maxNumber:113",
-                                    `minNumber:${parseFloat(
+                                    `minNumber:${
                                       parseFloat(
                                         tempsections.covidStates[i - 1]
                                           .upperLimit
                                       ) + parseFloat(0.1)
-                                    )}`,
+                                    }`,
                                   ]
                             }
                             errorMessages={
@@ -637,10 +590,8 @@ function TemperatureRange(props) {
                                     `minNumber:${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(
-                                            parseFloat(x.lowerLimit) +
-                                              parseFloat(0.1)
-                                          ).toFixed(1)
+                                        : parseFloat(x.lowerLimit) +
+                                          parseFloat(0.1)
                                     }`,
                                   ]
                                 : [
@@ -650,10 +601,8 @@ function TemperatureRange(props) {
                                     `minNumber:${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(
-                                            parseFloat(x.lowerLimit) +
-                                              parseFloat(0.1)
-                                          ).toFixed(1)
+                                        : parseFloat(x.lowerLimit) +
+                                          parseFloat(0.1)
                                     }`,
                                   ]
                             }
@@ -694,10 +643,8 @@ function TemperatureRange(props) {
                                     `Minimum allowed is ${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(
-                                            parseFloat(x.lowerLimit) +
-                                              parseFloat(0.1)
-                                          ).toFixed(1)
+                                        : parseFloat(x.lowerLimit) +
+                                          parseFloat(0.1)
                                     }`,
                                   ]
                                 : [
@@ -709,10 +656,8 @@ function TemperatureRange(props) {
                                     `Minimum allowed is ${
                                       x.isNoUpperLimit
                                         ? 0
-                                        : parseFloat(
-                                            parseFloat(x.lowerLimit) +
-                                              parseFloat(0.1)
-                                          ).toFixed(1)
+                                        : parseFloat(x.lowerLimit) +
+                                          parseFloat(0.1)
                                     }`,
                                   ]
                             }
