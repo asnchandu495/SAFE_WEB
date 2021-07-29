@@ -67,6 +67,7 @@ function TemperatureRange(props) {
 
   // const [faqId, setFaqId] = useState(getFaqId);
   // const [faqIdSecId, setFaqIdSecId] = useState(getFaqIdSecId);
+
   const [flagStatus, setflagStatus] = useState(false);
   const [isFormSubmit, setisFormSubmit] = useState(false);
   const [muivalidatorForm, setmuivalidatorForm] = useState(false);
@@ -83,23 +84,6 @@ function TemperatureRange(props) {
   const [componentLoadder, setComponentLoadder] = useState(true);
   const [SelectedTempUnit, setSelectedTempUnit] = useState();
   const [tempsections, settempsections] = useState({
-    id: "",
-    globalSettingsId: globalsettingsId,
-    temperatureUnit: "",
-    covidStates: [
-      {
-        id: "",
-        lowerLimit: 0,
-        upperLimit: 0,
-        covidState: {
-          id: "",
-          stateName: "",
-        },
-        isNoUpperLimit: false,
-      },
-    ],
-  });
-  const [tempsectionsConversion, settempsectionsConversion] = useState({
     id: "",
     globalSettingsId: globalsettingsId,
     temperatureUnit: "",
@@ -178,77 +162,81 @@ function TemperatureRange(props) {
   }
 
   function handleChangeInput(e, index) {
-    const { name, value, checked } = e.target;
-    console.log(value);
-    // const tempSelected = value;
+    const { name, value } = e.target;
+
+    // if (value == "F") {
+    //   const list = {
+    //     ...tempsections,
+    //     covidStates: [
+    //       ...tempsections.covidStates.map((con) => {
+    //         return {
+    //           ...con,
+    //           ["lowerLimit"]: parseFloat(con.lowerLimit * (9 / 5) + 32).toFixed(
+    //             1
+    //           ),
+    //           ["upperLimit"]: parseFloat(con.upperLimit * (9 / 5) + 32).toFixed(
+    //             1
+    //           ),
+    //         };
+    //       }),
+    //     ],
+    //   };
+
+    //   settempsections(list);
+    // } else {
+    //   const list = {
+    //     ...tempsections,
+    //     covidStates: [
+    //       ...tempsections.covidStates.map((con) => {
+    //         return {
+    //           ...con,
+    //           ["lowerLimit"]: parseFloat(
+    //             ((con.lowerLimit - 32) * 5) / 9
+    //           ).toFixed(1),
+    //           ["upperLimit"]: parseFloat(
+    //             ((con.upperLimit - 32) * 5) / 9
+    //           ).toFixed(1),
+    //         };
+    //       }),
+    //     ],
+    //   };
+
+    //   settempsections(list);
+    // }
     settempsections((tempsections) => ({
       ...tempsections,
       [name]: value,
     }));
-    // setSelectedTempUnit(tempSelected);
   }
 
   const handleInputChangeContacts = (e, index) => {
     const { name, value, checked } = e.target;
 
-    if (SelectedTempUnit == tempsections.temperatureUnit) {
-      const list = {
-        ...tempsections,
-        covidStates: [
-          ...tempsections.covidStates.map((con, conIndex) => {
-            if (name == "lowerLimit") {
-              return conIndex == index ? { ...con, [name]: value } : con;
-            } else if (name == "upperLimit") {
-              return conIndex == index ? { ...con, [name]: value } : con;
+    const list = {
+      ...tempsections,
+      covidStates: [
+        ...tempsections.covidStates.map((con, conIndex) => {
+          if (name == "lowerLimit") {
+            return conIndex == index ? { ...con, [name]: value } : con;
+          } else if (name == "upperLimit") {
+            return conIndex == index ? { ...con, [name]: value } : con;
+          } else {
+            if (checked) {
+              return conIndex == index
+                ? { ...con, [name]: checked, ["upperLimit"]: 0 }
+                : con;
             } else {
-              if (checked) {
-                return conIndex == index
-                  ? { ...con, [name]: checked, ["upperLimit"]: 0 }
-                  : con;
-              } else {
-                return conIndex == index
-                  ? { ...con, [name]: checked, ["upperLimit"]: 0 }
-                  : con;
-              }
+              return conIndex == index
+                ? { ...con, [name]: checked, ["upperLimit"]: 0 }
+                : con;
             }
-          }),
-        ],
-      };
-      settempsections(list);
-    } else {
-      console.log(value);
-      console.log(tempsectionsConversion);
-      const list = {
-        ...tempsectionsConversion,
-        covidStates: [
-          ...tempsectionsConversion.covidStates.map((con, conIndex) => {
-            if (name == "lowerLimit") {
-              return conIndex == index ? { ...con, [name]: value } : con;
-            } else if (name == "upperLimit") {
-              return conIndex == index ? { ...con, [name]: value } : con;
-            } else {
-              if (checked) {
-                return conIndex == index
-                  ? { ...con, [name]: checked, ["upperLimit"]: 0 }
-                  : con;
-              } else {
-                return conIndex == index
-                  ? { ...con, [name]: checked, ["upperLimit"]: 0 }
-                  : con;
-              }
-            }
-          }),
-        ],
-      };
-      console.log(list);
-      tempsectionsConversion(list);
-      // settempsections((tempsections) => ({
-      //   ...tempsections,
-      //   [name]: value,
-      // }));
-    }
+          }
+        }),
+      ],
+    };
 
     // parseFloat(settempsections(list));
+    settempsections(list);
   };
 
   function handleChangeCovidState(e, value, index) {
@@ -446,6 +434,7 @@ function TemperatureRange(props) {
                       value={tempsections.temperatureUnit}
                       name="temperatureUnit"
                       onChange={handleChangeInput}
+                      placeholder="dsfs"
                       validators={["required"]}
                       errorMessages={["Please select temperature UOM"]}
                       InputLabelProps={{ shrink: false }}
@@ -469,45 +458,6 @@ function TemperatureRange(props) {
               </Grid>
               {tempsections.covidStates && tempsections.covidStates.length > 0
                 ? tempsections.covidStates.map((x, i) => {
-                    console.log("tempsections");
-                    console.log(tempsections.temperatureUnit);
-                    console.log("selected temp");
-                    console.log(SelectedTempUnit);
-                    var lowerLimit;
-                    var upperLimit;
-                    if (SelectedTempUnit == tempsections.temperatureUnit) {
-                      console.log("true");
-                      lowerLimit = x.lowerLimit;
-                      upperLimit = x.upperLimit;
-                    } else {
-                      if (
-                        SelectedTempUnit == "F" &&
-                        tempsections.temperatureUnit != ""
-                      ) {
-                        console.log(x.upperLimit);
-                        console.log(x.lowerLimit);
-
-                        upperLimit = parseFloat(
-                          parseFloat((x.upperLimit - 32) * 5) / 9 +
-                            parseFloat(0.1)
-                        ).toFixed(1);
-                        lowerLimit = parseFloat(
-                          parseFloat((x.lowerLimit - 32) * 5) / 9 +
-                            parseFloat(0.1)
-                        ).toFixed(1);
-                      } else if (
-                        SelectedTempUnit == "C" &&
-                        tempsections.temperatureUnit != ""
-                      ) {
-                        upperLimit = x.upperLimit * (9 / 5) + 32;
-                        lowerLimit = x.upperLimit * (9 / 5) + 32;
-                      } else {
-                        lowerLimit = x.lowerLimit;
-                        upperLimit = x.upperLimit;
-                      }
-
-                      console.log("false");
-                    }
                     return (
                       <Grid
                         container
@@ -638,11 +588,7 @@ function TemperatureRange(props) {
                             id={`lowerLimit_${i}`}
                             placeholder="Lower Limit"
                             name="lowerLimit"
-                            // value={x.lowerLimit}
-                            value={lowerLimit}
-                            // value={(
-                            //   parseFloat(lowerLimit) + parseFloat(0.1)
-                            // ).toFixed(1)}
+                            value={x.lowerLimit}
                             onChange={(e) => handleInputChangeContacts(e, i)}
                             className="global-input"
                             InputLabelProps={{ shrink: false }}
@@ -773,9 +719,7 @@ function TemperatureRange(props) {
                             id={`upperLimit_${i}`}
                             placeholder="Upper Limit"
                             name="upperLimit"
-                            // value={x.upperLimit}
-
-                            value={upperLimit}
+                            value={x.upperLimit}
                             onChange={(e) => handleInputChangeContacts(e, i)}
                             className="global-input"
                             InputLabelProps={{ shrink: false }}
