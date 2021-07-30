@@ -306,7 +306,7 @@ function ContactTracing(props) {
 
   const options = {
     filter: false,
-    onFilterChange: (changedColumn, filterList) => { },
+    onFilterChange: (changedColumn, filterList) => {},
     selectableRows: false,
     filterType: "dropdown",
     responsive: "scrollMaxHeight",
@@ -317,10 +317,11 @@ function ContactTracing(props) {
     jumpToPage: true,
     textLabels: {
       body: {
-        noMatch: `${isFilterSelected
-          ? "There are no reports"
-          : "Please select filters to generate report"
-          }`,
+        noMatch: `${
+          isFilterSelected
+            ? "There are no reports"
+            : "Please select filters to generate report"
+        }`,
       },
       pagination: {
         jumpToPage: "Go to page:",
@@ -332,8 +333,8 @@ function ContactTracing(props) {
     selectableRows: "multiple",
     disableToolbarSelect: true,
     sortOrder: {
-      name: 'name',
-      direction: 'asc'
+      name: "name",
+      direction: "asc",
     },
     onRowSelectionChange: (currentRowSelected, allRowsSelected) => {
       setRowClickCovidState();
@@ -360,17 +361,30 @@ function ContactTracing(props) {
         if (typeof col !== "undefined" && col !== null) {
           if (typeof col === "object") {
             if (col.name) {
-              if (col.name.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+              if (
+                col.name
+                  .toString()
+                  .toLowerCase()
+                  .indexOf(searchQuery.toLowerCase()) >= 0
+              ) {
                 isFound = true;
               }
             }
             if (col.stateName) {
-              if (col.stateName.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+              if (
+                col.stateName
+                  .toString()
+                  .toLowerCase()
+                  .indexOf(searchQuery.toLowerCase()) >= 0
+              ) {
                 isFound = true;
               }
             }
           } else {
-            if (col.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+            if (
+              col.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >=
+              0
+            ) {
               isFound = true;
             }
           }
@@ -386,7 +400,7 @@ function ContactTracing(props) {
       props.UpdateGridsPage(sendData);
     },
     // onTableInit: tableInitiate,
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -538,7 +552,7 @@ function ContactTracing(props) {
           setStateSnackbar(true);
           setshowLoadder(false);
         });
-    } else if (selectedReportFilter.selectedReportType == 'ble') {
+    } else if (selectedReportFilter.selectedReportType == "ble") {
       reportApiCall
         .getContactTracingBleReport(searchForm)
         .then((result) => {
@@ -555,7 +569,10 @@ function ContactTracing(props) {
           setshowLoadder(false);
         });
     } else {
-      Promise.all([reportApiCall.getContactTracingRlapReport(searchForm), reportApiCall.getContactTracingBleReport(searchForm)])
+      Promise.all([
+        reportApiCall.getContactTracingRlapReport(searchForm),
+        reportApiCall.getContactTracingBleReport(searchForm),
+      ])
         .then(([rlapData, bleData]) => {
           setIsFilterSelected(true);
           setContactTracingData([...rlapData, ...bleData]);
@@ -601,7 +618,7 @@ function ContactTracing(props) {
           setStateSnackbar(true);
           setshowLoadder(false);
         });
-    } else if (selectedReportType == 'ble') {
+    } else if (selectedReportType == "ble") {
       reportApiCall
         .getContactTracingBleReport(searchForm)
         .then((result) => {
@@ -619,7 +636,10 @@ function ContactTracing(props) {
           setshowLoadder(false);
         });
     } else {
-      Promise.all([reportApiCall.getContactTracingRlapReport(searchForm), reportApiCall.getContactTracingBleReport(searchForm)])
+      Promise.all([
+        reportApiCall.getContactTracingRlapReport(searchForm),
+        reportApiCall.getContactTracingBleReport(searchForm),
+      ])
         .then(([rlapData, bleData]) => {
           setIsFilterSelected(true);
           setContactTracingData([...rlapData, ...bleData]);
@@ -648,8 +668,11 @@ function ContactTracing(props) {
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("alertreport");
     setConfirmationHeaderTittle("Alert");
+    // setConfirmationDialogContextText(
+    //   `Alert! ${selecteduserDtails.firstName} ${selecteduserDtails.lastName} has been reported as ${selecteduserDtails.covidStateDetails.stateName}. As a precautionary step, please WFH for next 2 week. Contact your supervisor for more information.`
+    // );
     setConfirmationDialogContextText(
-      `Alert! ${selecteduserDtails.firstName} ${selecteduserDtails.lastName} has been reported as ${selecteduserDtails.covidStateDetails.stateName}. As a precautionary step, please WFH for next 2 week. Contact your supervisor for more information.`
+      `You have been in contact with a colleague who has tested positive/suspected, As a company policy, please work from home for next 2 week. For any question contact your manager`
     );
   };
 
@@ -693,13 +716,16 @@ function ContactTracing(props) {
           covidStateId: covidStatelist.id,
         };
 
-        let thisUser = applicationUsers.find(usr => usr.id == rowClickCovidState.id);
+        let thisUser = applicationUsers.find(
+          (usr) => usr.id == rowClickCovidState.id
+        );
 
         thisUser.covidStateDetails.stateName = covidStatelist.stateName;
         thisUser.covidStateDetails.id = covidStatelist.id;
 
-        applicationUsers.map(user =>
-          user.id == rowClickCovidState.id ? { ...user, thisUser } : user)
+        applicationUsers.map((user) =>
+          user.id == rowClickCovidState.id ? { ...user, thisUser } : user
+        );
 
         userApiCall
           .UpdateUserCovidState(sendData)
@@ -734,14 +760,15 @@ function ContactTracing(props) {
           updateCOVIDStatusbyUsersList: updateCOVIDStatusbyUsersList,
         };
 
-        updateCOVIDStatusbyUsersList.forEach(userState => {
-          let thisUser = applicationUsers.find(usr => usr.id == userState.id);
+        updateCOVIDStatusbyUsersList.forEach((userState) => {
+          let thisUser = applicationUsers.find((usr) => usr.id == userState.id);
 
           thisUser.covidStateDetails.stateName = covidStatelist.stateName;
           thisUser.covidStateDetails.id = covidStatelist.id;
 
-          applicationUsers.map(user =>
-            user.id == userState.id ? { ...user, thisUser } : user)
+          applicationUsers.map((user) =>
+            user.id == userState.id ? { ...user, thisUser } : user
+          );
         });
 
         userApiCall
@@ -798,7 +825,7 @@ function ContactTracing(props) {
                       id="tags-outlined"
                       options={
                         BusinessCovidStateData &&
-                          BusinessCovidStateData.length > 0
+                        BusinessCovidStateData.length > 0
                           ? BusinessCovidStateData
                           : []
                       }

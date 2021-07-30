@@ -44,7 +44,7 @@ function AdoptQuestionnaire(props) {
     isCopyEvaluation: false,
     isCopyOrder: false,
     title: "",
-    languageId: ""
+    languageId: "",
   });
   const [selectedQuestionOption, setSelectedQuestionOption] = useState("");
   const [formFieldValidation, setformFieldValidation] = useState({
@@ -273,10 +273,10 @@ function AdoptQuestionnaire(props) {
                         <MenuItem value="">None</MenuItem>
                         {allLanguages.length > 0
                           ? allLanguages.map((lan) => {
-                            return (
-                              <MenuItem value={lan.id}>{lan.name}</MenuItem>
-                            );
-                          })
+                              return (
+                                <MenuItem value={lan.id}>{lan.name}</MenuItem>
+                              );
+                            })
                           : ""}
                       </Select>
                     </FormControl>
@@ -287,30 +287,30 @@ function AdoptQuestionnaire(props) {
                     <label className="required">Configure Questionnaire</label>
                   </Grid>
                   <Grid item xs={8}>
-                    <FormControl variant="outlined" fullWidth>
-                      <RadioGroup
-                        aria-label="gender"
-                        name="adoptOption"
-                        value={selectedQuestionOption}
-                        onChange={handleChangeAdoptOption}
-                      >
-                        <FormControlLabel
-                          value="questions"
-                          control={<Radio />}
-                          label="Adopt only questions"
-                        />
-                        <FormControlLabel
-                          value="order"
-                          control={<Radio />}
-                          label="Adopt questions with order of execution"
-                        />
-                        <FormControlLabel
-                          value="evaluation"
-                          control={<Radio />}
-                          label="Adopt questions with order of execution and evaluation result"
-                        />
-                      </RadioGroup>
-                    </FormControl>
+                    {/* <FormControl variant="outlined" fullWidth> */}
+                    <RadioGroup
+                      aria-label="adoptOption"
+                      name="adoptOption"
+                      value={selectedQuestionOption}
+                      onChange={handleChangeAdoptOption}
+                    >
+                      <FormControlLabel
+                        value="questions"
+                        control={<Radio required />}
+                        label="Adopt only questions"
+                      />
+                      <FormControlLabel
+                        value="order"
+                        control={<Radio required />}
+                        label="Adopt questions with order of execution"
+                      />
+                      <FormControlLabel
+                        value="evaluation"
+                        control={<Radio required />}
+                        label="Adopt questions with order of execution and evaluation result"
+                      />
+                    </RadioGroup>
+                    {/* </FormControl> */}
                   </Grid>
                 </Grid>
                 <Grid item container xs={12}>

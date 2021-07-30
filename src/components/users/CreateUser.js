@@ -313,6 +313,7 @@ function CreateUser(props) {
           setStateSnackbar(true);
           setToasterMessage("Updated user details.");
           settoasterServerity("success");
+          
           setTimeout(() => {
             props.history.push(`/users/allusers`);
             setshowLoadder(false);

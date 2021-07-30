@@ -95,9 +95,9 @@ function ViewUserGroup(props) {
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
     sortOrder: {
-      name: 'firstName',
-      direction: 'asc'
-    }
+      name: "firstName",
+      direction: "asc",
+    },
   };
 
   const columns = [
@@ -150,94 +150,92 @@ function ViewUserGroup(props) {
         <form className={`global-form`}>
           <Grid container spacing={3}>
             <Grid item xs={12} container spacing={3} direction="row">
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>User Group Name :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  <label>{viewUserGroupDetails.groupName}</label>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} container>
+                <Grid item xs={3}>
+                  <label>Description :</label>
+                </Grid>
+                <Grid item xs={9}>
+                  {viewUserGroupDetails.description}
+                </Grid>
+              </Grid>
               <Grid container item xs={12} spacing={3} direction="column">
                 <Grid item xs={12} container>
                   <Grid item xs={3}>
-                    <label>User Group Name :</label>
+                    Users:
                   </Grid>
-                  <Grid item xs={9}>
-                    <label>{viewUserGroupDetails.groupName}</label>
-                  </Grid>
-                </Grid>
-                <Grid item xs={12} container>
-                  <Grid item xs={3}>
-                    <label>Description :</label>
-                  </Grid>
-                  <Grid item xs={9}>
-                    {viewUserGroupDetails.description}
-                  </Grid>
-                </Grid>
-                <Grid container item xs={12} spacing={3} direction="column">
-                  <Grid item xs={12} container>
-                    <Grid item xs={3}>
-                      Users:
-                    </Grid>
-                    <Grid item xs={9} className="inner-tabs">
-                      <AppBar position="static" color="default">
-                        <Tabs
-                          value={tabValue}
-                          onChange={handleTabChange}
-                          indicatorColor="primary"
-                          textColor="primary"
-                          variant="fullWidth"
-                          aria-label="full width tabs example"
-                        >
-                          <Tab label="Primary Users" {...a11yProps(0)} />
-                          <Tab label="Secondary Users" {...a11yProps(1)} />
-                        </Tabs>
-                      </AppBar>
-                      <TabPanel value={tabValue} index={0}>
-                        <MUIDataTable
-                          title={""}
-                          data={
-                            viewUserGroupDetails.primaryapplicationuserDetails &&
-                              viewUserGroupDetails.primaryapplicationuserDetails
-                                .length > 0
-                              ? viewUserGroupDetails.primaryapplicationuserDetails
-                              : []
-                          }
-                          columns={columns}
-                          options={options}
-                          className="global-table"
-                        />
-                      </TabPanel>
-                      <TabPanel value={tabValue} index={1}>
-                        <MUIDataTable
-                          title={""}
-                          data={
-                            viewUserGroupDetails.secondaryapplicationuserDetails &&
-                              viewUserGroupDetails.secondaryapplicationuserDetails
-                                .length > 0
-                              ? viewUserGroupDetails.secondaryapplicationuserDetails
-                              : []
-                          }
-                          columns={columns}
-                          options={options}
-                          className="global-table"
-                        />
-                      </TabPanel>
-                    </Grid>
+                  <Grid item xs={9} className="inner-tabs">
+                    <AppBar position="static" color="default">
+                      <Tabs
+                        value={tabValue}
+                        onChange={handleTabChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="fullWidth"
+                        aria-label="full width tabs example"
+                      >
+                        <Tab label="Primary Users" {...a11yProps(0)} />
+                        <Tab label="Secondary Users" {...a11yProps(1)} />
+                      </Tabs>
+                    </AppBar>
+                    <TabPanel value={tabValue} index={0}>
+                      <MUIDataTable
+                        title={""}
+                        data={
+                          viewUserGroupDetails.primaryapplicationuserDetails &&
+                          viewUserGroupDetails.primaryapplicationuserDetails
+                            .length > 0
+                            ? viewUserGroupDetails.primaryapplicationuserDetails
+                            : []
+                        }
+                        columns={columns}
+                        options={options}
+                        className="global-table"
+                      />
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={1}>
+                      <MUIDataTable
+                        title={""}
+                        data={
+                          viewUserGroupDetails.secondaryapplicationuserDetails &&
+                          viewUserGroupDetails.secondaryapplicationuserDetails
+                            .length > 0
+                            ? viewUserGroupDetails.secondaryapplicationuserDetails
+                            : []
+                        }
+                        columns={columns}
+                        options={options}
+                        className="global-table"
+                      />
+                    </TabPanel>
                   </Grid>
                 </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  container
-                  direction="row"
-                  justify="flex-end"
-                  alignItems="center"
-                >
-                  <div className={`form-buttons-container`}>
-                    <Button
-                      variant="contained"
-                      type="button"
-                      onClick={handleClickGoBack}
-                      className="global-cancel-btn"
-                    >
-                      Close
-                    </Button>
-                  </div>
-                </Grid>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                container
+                direction="row"
+                justify="flex-end"
+                alignItems="center"
+              >
+                <div className={`form-buttons-container`}>
+                  <Button
+                    variant="contained"
+                    type="button"
+                    onClick={handleClickGoBack}
+                    className="global-cancel-btn"
+                  >
+                    Close
+                  </Button>
+                </div>
               </Grid>
             </Grid>
           </Grid>
