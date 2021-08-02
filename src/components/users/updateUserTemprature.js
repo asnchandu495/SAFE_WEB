@@ -19,6 +19,7 @@ import PropTypes from "prop-types";
 import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import UserService from "../../services/usersService";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -94,13 +95,20 @@ const DisplayFormControl = ({
   loadGlobalSettingsData,
   SetformData,
   setCheckLowerLimit,
-  setCheckUpperLimit
+  setCheckUpperLimit,
 }) => {
-  let globalSettingsTemperature = loadGlobalSettingsData.covidStateTemperatures.sort(function IHaveAName(a, b) { // non-anonymous as you ordered...
-    return b.lowerLimit < a.lowerLimit ? 1 // if b should come earlier, push a to end
-      : b.lowerLimit > a.lowerLimit ? -1 // if b should come later, push a to begin
-        : 0;                   // a and b are equal
-  });
+  let globalSettingsTemperature =
+    loadGlobalSettingsData.covidStateTemperatures.sort(function IHaveAName(
+      a,
+      b
+    ) {
+      // non-anonymous as you ordered...
+      return b.lowerLimit < a.lowerLimit
+        ? 1 // if b should come earlier, push a to end
+        : b.lowerLimit > a.lowerLimit
+        ? -1 // if b should come later, push a to begin
+        : 0; // a and b are equal
+    });
   let lowerLimit = 0;
   let upperLimit = 0;
   let noUpperLimit = false;
@@ -110,7 +118,7 @@ const DisplayFormControl = ({
       upperLimit = globalSettingsTemperature[0].upperLimit;
       noUpperLimit = globalSettingsTemperature[0].isNoUpperLimit;
       if (noUpperLimit) {
-        if (loadGlobalSettingsData.temperatureUnit == 'C') {
+        if (loadGlobalSettingsData.temperatureUnit == "C") {
           upperLimit = 45;
         } else {
           upperLimit = 113;
@@ -120,10 +128,14 @@ const DisplayFormControl = ({
       setCheckUpperLimit(upperLimit);
     } else {
       lowerLimit = globalSettingsTemperature[0].lowerLimit;
-      upperLimit = globalSettingsTemperature[globalSettingsTemperature.length - 1].upperLimit;
-      noUpperLimit = globalSettingsTemperature[globalSettingsTemperature.length - 1].isNoUpperLimit;
+      upperLimit =
+        globalSettingsTemperature[globalSettingsTemperature.length - 1]
+          .upperLimit;
+      noUpperLimit =
+        globalSettingsTemperature[globalSettingsTemperature.length - 1]
+          .isNoUpperLimit;
       if (noUpperLimit) {
-        if (loadGlobalSettingsData.temperatureUnit == 'C') {
+        if (loadGlobalSettingsData.temperatureUnit == "C") {
           upperLimit = 45;
         } else {
           upperLimit = 113;
@@ -133,7 +145,7 @@ const DisplayFormControl = ({
       setCheckUpperLimit(upperLimit);
     }
   } else {
-    if (loadGlobalSettingsData.temperatureUnit == 'C') {
+    if (loadGlobalSettingsData.temperatureUnit == "C") {
       lowerLimit = 30;
       upperLimit = 45;
       setCheckLowerLimit(lowerLimit);
@@ -193,6 +205,7 @@ function UpdateTempearture(props) {
   const classes = useStyles();
 
   const usersApiCall = new UserService();
+  const history = useHistory();
 
   const [componentLoadder, setcomponentLoadder] = useState(false);
   const [stateSnackbar, setStateSnackbar] = useState(false);
@@ -217,6 +230,8 @@ function UpdateTempearture(props) {
   const [convertTemp, setconvertTemp] = useState();
   const [checkLowerLimit, setCheckLowerLimit] = useState();
   const [checkUpperLimit, setCheckUpperLimit] = useState();
+  const [Modalopen, setModalOpen] = useState(false);
+  const [showLoadder1, setshowLoadder1] = useState(false);
 
   useEffect(() => {
     if (props.SelectedRowId) {
@@ -249,6 +264,20 @@ function UpdateTempearture(props) {
     }));
   }
 
+  const handleCloseFilter = () => {
+    setModalOpen(false);
+  };
+
+  const Oksubmit = () => {
+    setshowLoadder1(true);
+    // props.setReloadPage("YES");
+    setTimeout(() => {
+      window.location.reload(false);
+    }, 10000);
+
+    history.push(`/users/allusers`);
+  };
+
   const handleClose = () => {
     props.setopenuserTemepratureModal(false);
     setcomponentLoadder(true);
@@ -261,8 +290,17 @@ function UpdateTempearture(props) {
 
   function submitUserShiftInform() {
     var data = formData;
-    if ((parseFloat(data.temperature) < checkLowerLimit) || (parseFloat(data.temperature) > checkUpperLimit)) {
-      let errorObject = { "errors": { "Message": [`Please enter temperature between ${checkLowerLimit} to ${checkUpperLimit}`] } };
+    if (
+      parseFloat(data.temperature) < checkLowerLimit ||
+      parseFloat(data.temperature) > checkUpperLimit
+    ) {
+      let errorObject = {
+        errors: {
+          Message: [
+            `Please enter temperature between ${checkLowerLimit} to ${checkUpperLimit}`,
+          ],
+        },
+      };
       setToasterMessage(errorObject.errors);
       settoasterServerity("error");
       setStateSnackbar(true);
@@ -284,10 +322,12 @@ function UpdateTempearture(props) {
         settoasterServerity("success");
         setTimeout(() => {
           props.setopenuserTemepratureModal(false);
+
           setcomponentLoadder(true);
           resetUserTemeatureFormData();
           setshowLoadder(false);
           props.setReloadPage("YES");
+          setModalOpen(true);
         }, 6000);
       })
       .catch((err) => {
@@ -300,6 +340,29 @@ function UpdateTempearture(props) {
 
   return (
     <div>
+      <Dialog
+        onClose={handleCloseFilter}
+        aria-labelledby="form-dialog-title"
+        open={Modalopen}
+      >
+        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+          Please wait
+        </DialogTitle>
+        <ValidatorForm className={`global-form`} onSubmit={Oksubmit}>
+          <DialogContent dividers>please wait for sometime</DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              type="submit"
+              className="global-submit-btn"
+              disabled={showLoadder1}
+            >
+              {showLoadder1 ? <ButtonLoadderComponent /> : "OK"}
+            </Button>
+          </DialogActions>
+        </ValidatorForm>
+      </Dialog>
+
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

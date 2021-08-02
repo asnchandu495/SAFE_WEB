@@ -160,7 +160,7 @@ function CreateUser(props) {
     supervisor: "",
     zipCode: null,
     isRLAPActive: false,
-    rlapUserReferenceId: ""
+    rlapUserReferenceId: "",
   });
 
   const [resetformData, SetresetformData] = useState({
@@ -188,7 +188,7 @@ function CreateUser(props) {
     supervisor: "",
     zipCode: null,
     isRLAPActive: false,
-    rlapUserReferenceId: ""
+    rlapUserReferenceId: "",
   });
 
   useEffect(() => {
@@ -313,7 +313,7 @@ function CreateUser(props) {
           setStateSnackbar(true);
           setToasterMessage("Updated user details.");
           settoasterServerity("success");
-          
+
           setTimeout(() => {
             props.history.push(`/users/allusers`);
             setshowLoadder(false);
@@ -811,7 +811,7 @@ function CreateUser(props) {
                       id="tags-outlined"
                       options={
                         designationMasterData &&
-                          designationMasterData.length > 0
+                        designationMasterData.length > 0
                           ? designationMasterData
                           : []
                       }
@@ -877,11 +877,10 @@ function CreateUser(props) {
                       Teams
                     </label>
                     <Autocomplete
-
                       id="tags-outlined"
                       options={
                         BusinessTeamMasterData &&
-                          BusinessTeamMasterData.length > 0
+                        BusinessTeamMasterData.length > 0
                           ? BusinessTeamMasterData
                           : []
                       }
@@ -919,7 +918,7 @@ function CreateUser(props) {
                       id="tags-outlined"
                       options={
                         BusinessUserRoleMasterData &&
-                          BusinessUserRoleMasterData.length > 0
+                        BusinessUserRoleMasterData.length > 0
                           ? BusinessUserRoleMasterData
                           : []
                       }
@@ -956,7 +955,7 @@ function CreateUser(props) {
                       id="tags-outlined"
                       options={
                         UserPrimaryGroupMasterData &&
-                          UserPrimaryGroupMasterData.length > 0
+                        UserPrimaryGroupMasterData.length > 0
                           ? UserPrimaryGroupMasterData
                           : []
                       }
@@ -995,7 +994,7 @@ function CreateUser(props) {
                       onChange={handleChangeUserSecondaryGroup}
                       options={
                         UserSecondaryGroupMasterData &&
-                          UserSecondaryGroupMasterData.length > 0
+                        UserSecondaryGroupMasterData.length > 0
                           ? UserSecondaryGroupMasterData
                           : []
                       }
@@ -1021,7 +1020,6 @@ function CreateUser(props) {
                       Sites
                     </label>
                     <Autocomplete
-
                       id="tags-outlined"
                       options={
                         SiteMasterData && SiteMasterData.length > 0
@@ -1190,6 +1188,7 @@ function CreateUser(props) {
 
                   <Grid item sm={4} className="inline-form-checkbox">
                     <Checkbox
+                      disabled={!SiteMasterData.isRLAPActive}
                       checked={formData.isRLAPActive}
                       onChange={handleChangecheckBox}
                       value={formData.isRLAPActive}
@@ -1200,32 +1199,37 @@ function CreateUser(props) {
                       RLAP active
                     </label>
                   </Grid>
-                  {userId ? <Grid item xs={4}>
-                    <label
-                      className={`input-label ${formData.isRLAPActive ? "required" : ""
+                  {userId ? (
+                    <Grid item xs={4}>
+                      <label
+                        className={`input-label ${
+                          formData.isRLAPActive ? "required" : ""
                         }`}
-                    >
-                      RLAP User ID
-                    </label>
-                    <TextValidator
-                      variant="outlined"
-                      validators={formData.isRLAPActive ? ["required"] : ""}
-                      errorMessages={
-                        formData.isRLAPActive
-                          ? ["Please enter  Reference ID"]
-                          : ""
-                      }
-                      fullWidth
-                      id="rlapUserReferenceId"
-                      disabled={!formData.isRLAPActive}
-                      placeholder="Enter Reference ID "
-                      name="rlapUserReferenceId"
-                      onChange={handleChange}
-                      value={formData.rlapUserReferenceId}
-                      className="global-input"
-                      InputLabelProps={{ shrink: false }}
-                    />
-                  </Grid> : ""}
+                      >
+                        RLAP User ID
+                      </label>
+                      <TextValidator
+                        variant="outlined"
+                        validators={formData.isRLAPActive ? ["required"] : ""}
+                        errorMessages={
+                          formData.isRLAPActive
+                            ? ["Please enter  Reference ID"]
+                            : ""
+                        }
+                        fullWidth
+                        id="rlapUserReferenceId"
+                        disabled={!formData.isRLAPActive}
+                        placeholder="Enter Reference ID "
+                        name="rlapUserReferenceId"
+                        onChange={handleChange}
+                        value={formData.rlapUserReferenceId}
+                        className="global-input"
+                        InputLabelProps={{ shrink: false }}
+                      />
+                    </Grid>
+                  ) : (
+                    ""
+                  )}
 
                   {/* <Grid item xs={4}>
                     <label
