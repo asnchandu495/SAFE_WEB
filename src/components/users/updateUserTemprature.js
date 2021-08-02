@@ -270,12 +270,20 @@ function UpdateTempearture(props) {
 
   const Oksubmit = () => {
     setshowLoadder1(true);
+    setcomponentLoadder(true);
     // props.setReloadPage("YES");
+    history.push(`/users/allusers`);
     setTimeout(() => {
       window.location.reload(false);
+      setshowLoadder1(false);
     }, 10000);
 
     history.push(`/users/allusers`);
+  };
+
+  const handleCloseSuccess = () => {
+    setModalOpen(false);
+    history.push("/");
   };
 
   const handleClose = () => {
@@ -317,9 +325,9 @@ function UpdateTempearture(props) {
     usersApiCall
       .UpdateUserCovidTempearture(data)
       .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("User's temperature updated");
-        settoasterServerity("success");
+        // setStateSnackbar(true);
+        // setToasterMessage("User's temperature updated");
+        // settoasterServerity("success");
         setTimeout(() => {
           props.setopenuserTemepratureModal(false);
 
@@ -346,10 +354,27 @@ function UpdateTempearture(props) {
         open={Modalopen}
       >
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
-          Please wait
+          Success
         </DialogTitle>
         <ValidatorForm className={`global-form`} onSubmit={Oksubmit}>
-          <DialogContent dividers>please wait for sometime</DialogContent>
+          <DialogContent dividers>
+            <Grid container spacing={3}>
+              <Grid item cs={12} container>
+                <Grid item xs={8}>
+                  <label className=""> Temperature Updated.</label>
+                </Grid>
+                <Grid item xs={8}></Grid>
+                <Grid item xs={8}>
+                  <label className="">
+                    {" "}
+                    Click on OK to continue on the same page
+                  </label>
+                </Grid>
+                <Grid item xs={8}></Grid>
+              </Grid>
+            </Grid>
+            <br />
+          </DialogContent>
           <DialogActions>
             <Button
               variant="contained"
@@ -358,6 +383,9 @@ function UpdateTempearture(props) {
               disabled={showLoadder1}
             >
               {showLoadder1 ? <ButtonLoadderComponent /> : "OK"}
+            </Button>
+            <Button onClick={handleCloseSuccess} className="global-cancel-btn">
+              Go to home page
             </Button>
           </DialogActions>
         </ValidatorForm>
