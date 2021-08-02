@@ -342,7 +342,13 @@ function TemperatureRange(props) {
     });
 
     if (!isValidTempRange) {
-      let errorObject = { errors: { Message: ["Please enter valid range"] } };
+      let errorObject = {
+        errors: {
+          Message: [
+            "The temperature range should not overlap across defined covid states",
+          ],
+        },
+      };
       setToasterMessage(errorObject.errors);
       settoasterServerity("error");
       setStateSnackbar(true);

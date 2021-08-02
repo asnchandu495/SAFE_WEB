@@ -268,13 +268,15 @@ function UpdateTempearture(props) {
     setModalOpen(false);
   };
 
-  const Oksubmit = () => {
+  const handleCustomSuccess = () => {
     setshowLoadder1(true);
     setcomponentLoadder(true);
     // props.setReloadPage("YES");
     history.push(`/users/allusers`);
     setTimeout(() => {
-      window.location.reload(false);
+      props.setReloadPage("YES");
+      history.push(`/users/allusers`);
+      // window.location.reload(false);
       setshowLoadder1(false);
     }, 10000);
 
@@ -334,7 +336,7 @@ function UpdateTempearture(props) {
           setcomponentLoadder(true);
           resetUserTemeatureFormData();
           setshowLoadder(false);
-          props.setReloadPage("YES");
+          // props.setReloadPage("YES");
           setModalOpen(true);
         }, 6000);
       })
@@ -356,7 +358,7 @@ function UpdateTempearture(props) {
         <DialogTitle id="form-dialog-title" onClose={handleClose}>
           Success
         </DialogTitle>
-        <ValidatorForm className={`global-form`} onSubmit={Oksubmit}>
+        <ValidatorForm className={`global-form`} onSubmit={handleCustomSuccess}>
           <DialogContent dividers>
             <Grid container spacing={3}>
               <Grid item cs={12} container>

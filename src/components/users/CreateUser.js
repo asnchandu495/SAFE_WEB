@@ -123,6 +123,7 @@ function CreateUser(props) {
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [showLoadder, setshowLoadder] = useState(false);
   const [isAlertBoxOpened, setisAlertBoxOpened] = useState(false);
+  const [RLAPStatus, setRLAPStatus] = useState(false);
   const [formFieldValidation, setformFieldValidation] = useState({
     Gender: false,
     designation: false,
@@ -476,8 +477,12 @@ function CreateUser(props) {
   }
 
   function userSelectSite(event, value) {
+    console.log(value);
     setisAlertBoxOpened(true);
     setUserSelectSiteValue(value);
+    if (value !== null) {
+      setRLAPStatus(value.isRLAPActive);
+    }
   }
 
   function handleChangeUserRole(event, value) {
@@ -1188,7 +1193,7 @@ function CreateUser(props) {
 
                   <Grid item sm={4} className="inline-form-checkbox">
                     <Checkbox
-                      disabled={!SiteMasterData.isRLAPActive}
+                      disabled={!RLAPStatus}
                       checked={formData.isRLAPActive}
                       onChange={handleChangecheckBox}
                       value={formData.isRLAPActive}
