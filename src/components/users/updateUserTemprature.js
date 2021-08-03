@@ -20,6 +20,8 @@ import ToasterMessageComponent from "../common/toaster";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
 import UserService from "../../services/usersService";
 import { useHistory } from "react-router-dom";
+import HomeIcon from "@material-ui/icons/Home";
+import ConfirmationDialog from "../common/EventualConsistency";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -232,7 +234,17 @@ function UpdateTempearture(props) {
   const [checkUpperLimit, setCheckUpperLimit] = useState();
   const [Modalopen, setModalOpen] = useState(false);
   const [showLoadder1, setshowLoadder1] = useState(false);
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
 
+  const [
+    ConfirmationDialogContextTextNext,
+    setConfirmationDialogContextTextNext,
+  ] = useState("");
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   useEffect(() => {
     if (props.SelectedRowId) {
       props.loadGlobalSettingWithoutAPICall();
@@ -272,15 +284,16 @@ function UpdateTempearture(props) {
     setshowLoadder1(true);
     setcomponentLoadder(true);
     // props.setReloadPage("YES");
-    history.push(`/users/allusers`);
+    // history.push(`/users/allusers`);
     setTimeout(() => {
       props.setReloadPage("YES");
-      history.push(`/users/allusers`);
+      // history.push(`/users/allusers`);
       // window.location.reload(false);
       setshowLoadder1(false);
+      setModalOpen(false);
     }, 10000);
 
-    history.push(`/users/allusers`);
+    // history.push(`/users/allusers`);
   };
 
   const handleCloseSuccess = () => {
@@ -292,6 +305,16 @@ function UpdateTempearture(props) {
     props.setopenuserTemepratureModal(false);
     setcomponentLoadder(true);
     resetUserTemeatureFormData();
+  };
+
+  const handleClickOpenEventualModal = () => {
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("Usersuccess");
+    setConfirmationHeaderTittle("Success");
+    setConfirmationDialogContextText(`Temperature Updated.`);
+    setConfirmationDialogContextTextNext(
+      `Click OK to continue working on the same page.`
+    );
   };
 
   function resetUserTemeatureFormData() {
@@ -337,7 +360,8 @@ function UpdateTempearture(props) {
           resetUserTemeatureFormData();
           setshowLoadder(false);
           // props.setReloadPage("YES");
-          setModalOpen(true);
+          handleClickOpenEventualModal();
+          // setModalOpen(true);
         }, 6000);
       })
       .catch((err) => {
@@ -352,24 +376,26 @@ function UpdateTempearture(props) {
     <div>
       <Dialog
         onClose={handleCloseFilter}
-        aria-labelledby="form-dialog-title"
+        aria-labelledby="customized-dialog-title"
         open={Modalopen}
+        className="global-dialog confirmation-dialog global-form"
       >
-        <DialogTitle id="form-dialog-title" onClose={handleClose}>
+        <DialogTitle id="customized-dialog-title" onClose={handleCloseFilter}>
           Success
         </DialogTitle>
+
         <ValidatorForm className={`global-form`} onSubmit={handleCustomSuccess}>
           <DialogContent dividers>
             <Grid container spacing={3}>
               <Grid item cs={12} container>
-                <Grid item xs={8}>
+                <Grid item xs={5}>
                   <label className=""> Temperature Updated.</label>
                 </Grid>
                 <Grid item xs={8}></Grid>
-                <Grid item xs={8}>
+                <Grid item xs={10}>
                   <label className="">
                     {" "}
-                    Click on OK to continue on the same page
+                    click OK to continue working on the same page.
                   </label>
                 </Grid>
                 <Grid item xs={8}></Grid>
@@ -387,7 +413,8 @@ function UpdateTempearture(props) {
               {showLoadder1 ? <ButtonLoadderComponent /> : "OK"}
             </Button>
             <Button onClick={handleCloseSuccess} className="global-cancel-btn">
-              Go to home page
+              GO to &nbsp;
+              <HomeIcon />
             </Button>
           </DialogActions>
         </ValidatorForm>
@@ -449,6 +476,19 @@ function UpdateTempearture(props) {
         toasterMessage={toasterMessage}
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
+      />
+
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        ConfirmationDialogContextTextNext={ConfirmationDialogContextTextNext}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        showLoadder1={showLoadder1}
+        setshowLoadder1={setshowLoadder1}
+        setcomponentLoadder={setcomponentLoadder}
+        setReloadPage={props.setReloadPage}
       />
     </div>
   );
