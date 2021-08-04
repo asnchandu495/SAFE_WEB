@@ -100,13 +100,13 @@ function OrderofExecution(props) {
           .GetBooleanConditionQuestionById(question.id)
           .then((res) => {
             let newResponse = [];
-            if (res.positiveResponseQuestionHasCondition) {
+            if (res.positiveResponseQuestionHasCondition !== "") {
               newResponse.push({
                 id: res.positiveResponseQuestionId,
                 question: res.positiveResponseQuestionName,
               });
             }
-            if (res.negativeResponseQuestionHasCondition) {
+            if (res.negativeResponseQuestionHasCondition !== "") {
               newResponse.push({
                 id: res.negativeResponseQuestionId,
                 question: res.negativeResponseQuestionName,
@@ -281,14 +281,14 @@ function OrderofExecution(props) {
                                   className="question-container-full sublist"
                                 >
                                   {selectedParentQuestions &&
-                                    selectedParentQuestions.length > 0
+                                  selectedParentQuestions.length > 0
                                     ? selectedParentQuestions.map((q, i) => {
-                                      return (
-                                        <p>
-                                          {i + 1} ) {q.question}
-                                        </p>
-                                      );
-                                    })
+                                        return (
+                                          <p>
+                                            {i + 1} ) {q.question}
+                                          </p>
+                                        );
+                                      })
                                     : ""}
                                 </Grid>
                               ) : (

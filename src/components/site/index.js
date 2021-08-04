@@ -240,7 +240,7 @@ function ListSite(props) {
         jumpToPage: "Go to page:",
       },
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -283,7 +283,7 @@ function ListSite(props) {
         sort: true,
         customBodyRender: (value, tableMeta, updateValue) => {
           var thisRowData = tableMeta.rowData;
-          console.log(thisRowData);
+
           if (thisRowData) {
             return <span>{thisRowData[2] ? thisRowData[2].length : "0"}</span>;
           }

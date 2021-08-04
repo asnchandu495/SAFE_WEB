@@ -72,7 +72,7 @@ function ImportUserHistory(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: (value, tableMeta, updateValue) => {
       return (
         <div className={`maingrid-actions`}>

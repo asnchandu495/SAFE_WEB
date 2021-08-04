@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import * as UserAction from "../../Redux/Action/userAction";
 import GlobalSettingApiServices from "../../services/globalSettingService";
 import * as globalSettingAction from "../../Redux/Action/globalSettingAction";
+import ConfirmationDialog from "../common/EventualConsistency";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
@@ -111,6 +112,19 @@ function ImportUsers(props) {
   //   noKeyboard: true,
   // });
 
+  const [showLoadder1, setshowLoadder1] = useState(false);
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
+
+  const [
+    ConfirmationDialogContextTextNext,
+    setConfirmationDialogContextTextNext,
+  ] = useState("");
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+
   const files = myFiles.map((file) => (
     <Grid item xs={12} className={classes.uploadFileContainer}>
       <Grid key={file.path}>
@@ -142,6 +156,12 @@ function ImportUsers(props) {
   function handleredirect() {
     props.history.push("/users/import-users-history");
   }
+  const handleClickOpenEventualModal = () => {
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("UserImportHistorysuccess");
+    setConfirmationHeaderTittle("Success");
+    setConfirmationDialogContextText(`Imported users details.`);
+  };
 
   function UserbulkUpload() {
     const data = new FormData();
@@ -160,12 +180,13 @@ function ImportUsers(props) {
         apiCallForUser
           .bulkUserFileUpload(finalData)
           .then((result) => {
-            setStateSnackbar(true);
-            setToasterMessage("Imported users details.");
-            settoasterServerity("success");
-            setTimeout(() => {
-              props.history.push("/users/import-users-history");
-            }, 3000);
+            // setStateSnackbar(true);
+            // setToasterMessage("Imported users details.");
+            // settoasterServerity("success");
+            // setTimeout(() => {
+            //   props.history.push("/users/import-users-history");
+            // }, 3000);
+            handleClickOpenEventualModal();
           })
           .catch((err) => {
             setStateSnackbar(true);
@@ -224,7 +245,13 @@ function ImportUsers(props) {
             <Grid item xs={12} className={classes.importUserFileContainer}>
               <Dropzone
                 // accept={fileFormat ? "." + fileFormat : ".xls"}
-                accept={fileFormat ? fileFormat == 'xls/xlsx' ? '.xls,.xlsx' : "." + fileFormat : ".xlsx"}
+                accept={
+                  fileFormat
+                    ? fileFormat == "xls/xlsx"
+                      ? ".xls,.xlsx"
+                      : "." + fileFormat
+                    : ".xlsx"
+                }
                 onDrop={onDrop}
                 noClick={true}
                 noKeyboard={true}
@@ -235,7 +262,12 @@ function ImportUsers(props) {
                       <input {...getInputProps()} />
                       <p className={classes.fileUploadParagraph}>
                         Drag and Drop OR Browse{" "}
-                        {fileFormat ? fileFormat == 'xls/xlsx' ? 'xls,xlsx' : fileFormat : "xlsx"} file to upload
+                        {fileFormat
+                          ? fileFormat == "xls/xlsx"
+                            ? "xls,xlsx"
+                            : fileFormat
+                          : "xlsx"}{" "}
+                        file to upload
                       </p>
                       <div className={`fileuploadcontainer`}>
                         <Button
@@ -293,6 +325,18 @@ function ImportUsers(props) {
         toasterMessage={toasterMessage}
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
+      />
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        ConfirmationDialogContextTextNext={ConfirmationDialogContextTextNext}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        showLoadder1={showLoadder1}
+        setshowLoadder1={setshowLoadder1}
+        setcomponentLoadder={setcomponentLoadder}
+        setReloadPage={props.setReloadPage}
       />
     </div>
   );

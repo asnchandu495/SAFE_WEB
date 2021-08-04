@@ -54,7 +54,9 @@ function BooleanJump(props) {
   const [reloadPage, setReloadPage] = useState("false");
   const [questionData, setQuestionData] = useState();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('Updating conditional jump of this yes/no question might have impact on order of execution and questionnaire evaluation, please revisit these areas.');
+  const [warningMessage, setWarningMessage] = useState(
+    "Updating conditional jump of this yes/no question might have impact on order of execution and questionnaire evaluation, please revisit these areas."
+  );
 
   useEffect(() => {
     Promise.all([
@@ -121,7 +123,8 @@ function BooleanJump(props) {
       } else {
         setConditionalJump((conditionalJump) => ({
           ...conditionalJump,
-          [name]: "",
+          // [name]: "",
+          [name]: null,
         }));
       }
     } else {
@@ -147,7 +150,10 @@ function BooleanJump(props) {
     settoasterErrorMessageType("");
     setshowLoadder(true);
     if (conditionalJump.id != "") {
-      if (!surveyDetails.isSaveasDraft && !surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+      if (
+        !surveyDetails.isSaveasDraft &&
+        !surveyDetails.isAssignedToUserGroupisAssignedToUserGroup
+      ) {
         setOpenConfirmationModal(true);
         setQuestionData(conditionalJump);
       } else {
@@ -417,8 +423,7 @@ function BooleanJump(props) {
         setshowLoadder={setshowLoadder}
         surveyIdURL={surveyId}
         sendQuestionType="Boolean"
-      >
-      </ConditionalJump>
+      ></ConditionalJump>
     </div>
   );
 }

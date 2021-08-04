@@ -76,26 +76,22 @@ function CustomizedDialogs(props) {
         props.setshowLoadder1(false);
         props.setOpenConfirmationModal(false);
       }, 10000);
+    } else if (
+      props.ConfirmationModalActionType == "UserImportHistorysuccess"
+    ) {
+      props.setshowLoadder1(true);
+      props.setcomponentLoadder(true);
+
+      setTimeout(() => {
+        history.push(`/users/import-users-history`);
+
+        props.setshowLoadder1(false);
+        props.setOpenConfirmationModal(false);
+      }, 10000);
     }
   };
 
   const handleClickNo = () => {};
-
-  const handleCustomSuccess = () => {
-    props.setshowLoadder1(true);
-    props.setcomponentLoadder(true);
-    // props.setReloadPage("YES");
-    // history.push(`/users/allusers`);
-    setTimeout(() => {
-      props.setReloadPage("YES");
-      // history.push(`/users/allusers`);
-      // window.location.reload(false);
-      props.setshowLoadder1(false);
-      props.setOpenConfirmationModal(false);
-    }, 10000);
-
-    // history.push(`/users/allusers`);
-  };
 
   const handleCloseSuccess = () => {
     props.setOpenConfirmationModal(false);
@@ -123,14 +119,13 @@ function CustomizedDialogs(props) {
         <DialogContent dividers>
           <Grid container spacing={3}>
             <Grid item cs={12} container>
-              <Grid item xs={5}>
+              <Grid item xs={12}>
                 <label className="">
-                  {" "}
                   {props.ConfirmationDialogContextText}
                 </label>
               </Grid>
               <Grid item xs={8}></Grid>
-              <Grid item xs={10}>
+              <Grid item xs={12}>
                 <label className="">
                   {props.ConfirmationDialogContextTextNext}
                 </label>

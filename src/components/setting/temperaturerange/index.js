@@ -160,50 +160,51 @@ function TemperatureRange(props) {
 
   function handleChangeInput(e) {
     const { name, value } = e.target;
+    if (value != "") {
+      if (value == "F") {
+        const list = {
+          ...tempsections,
+          covidStates: [
+            ...tempsections.covidStates.map((con) => {
+              return {
+                ...con,
+                ["lowerLimit"]: parseFloat(
+                  con.lowerLimit * (9 / 5) + 32
+                ).toFixed(1),
+                ["upperLimit"]: parseFloat(
+                  con.upperLimit * (9 / 5) + 32
+                ).toFixed(1),
+              };
+            }),
+          ],
+        };
 
-    if (value == "F") {
-      const list = {
+        settempsections(list);
+      } else {
+        const list = {
+          ...tempsections,
+          covidStates: [
+            ...tempsections.covidStates.map((con) => {
+              return {
+                ...con,
+                ["lowerLimit"]: parseFloat(
+                  ((con.lowerLimit - 32) * 5) / 9
+                ).toFixed(1),
+                ["upperLimit"]: parseFloat(
+                  ((con.upperLimit - 32) * 5) / 9
+                ).toFixed(1),
+              };
+            }),
+          ],
+        };
+
+        settempsections(list);
+      }
+      settempsections((tempsections) => ({
         ...tempsections,
-        covidStates: [
-          ...tempsections.covidStates.map((con) => {
-            return {
-              ...con,
-              ["lowerLimit"]: parseFloat(con.lowerLimit * (9 / 5) + 32).toFixed(
-                1
-              ),
-              ["upperLimit"]: parseFloat(con.upperLimit * (9 / 5) + 32).toFixed(
-                1
-              ),
-            };
-          }),
-        ],
-      };
-
-      settempsections(list);
-    } else {
-      const list = {
-        ...tempsections,
-        covidStates: [
-          ...tempsections.covidStates.map((con) => {
-            return {
-              ...con,
-              ["lowerLimit"]: parseFloat(
-                ((con.lowerLimit - 32) * 5) / 9
-              ).toFixed(1),
-              ["upperLimit"]: parseFloat(
-                ((con.upperLimit - 32) * 5) / 9
-              ).toFixed(1),
-            };
-          }),
-        ],
-      };
-
-      settempsections(list);
+        [name]: value,
+      }));
     }
-    settempsections((tempsections) => ({
-      ...tempsections,
-      [name]: value,
-    }));
   }
 
   const handleInputChangeContacts = (e, index) => {
@@ -425,25 +426,30 @@ function TemperatureRange(props) {
                       shrink={false}
                       className="select-label"
                     >
-                      {tempsections.temperatureUnit == ""
+                      {!tempsections.temperatureUnit
                         ? "Select temperature"
                         : ""}
                     </InputLabel>
                     <SelectValidator
+                      required
                       fullWidth
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
                       value={tempsections.temperatureUnit}
+                      value={
+                        tempsections.temperatureUnit
+                          ? tempsections.temperatureUnit
+                          : ""
+                      }
                       name="temperatureUnit"
                       onChange={handleChangeInput}
-                      placeholder="dsfs"
                       validators={["required"]}
                       errorMessages={["Please select temperature UOM"]}
                       InputLabelProps={{ shrink: false }}
                       className="global-input single-select"
                     >
                       <MenuItem value="">
-                        <em>Select</em>
+                        <em>None</em>
                       </MenuItem>
                       {uomTemp.length > 0
                         ? uomTemp.map((tempvalue) => {

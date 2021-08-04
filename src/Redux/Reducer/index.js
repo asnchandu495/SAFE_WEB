@@ -40,7 +40,7 @@ const rootReducer = combineReducers({
   workflowState: workflowStates,
   publishReducer: publishReducers,
   gridHistory: gridState,
-  acmData: acmState
+  acmData: acmState,
 });
 
 export default rootReducer;

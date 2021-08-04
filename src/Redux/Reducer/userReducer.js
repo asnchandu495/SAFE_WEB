@@ -18,6 +18,7 @@ export default function loadUserReducer(state = intialState, action) {
 
     case DELETEUSER_SUCCESS:
       return state.filter((user) => user.id !== action.user);
+
     case CREATEUSER_SUCCESS:
       return [{ ...action.user }, ...state];
     case UPDATEEUSER_SUCCESS:
