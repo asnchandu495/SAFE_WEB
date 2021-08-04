@@ -308,7 +308,9 @@ export default class SiteService {
       } else if (response.status === 500) {
         window.location.href = "/InternalServerError";
       } else if (response.status === 401) {
-        alert("You have been signed out because either your last session expired or you are currently signed in on another device.");
+        alert(
+          "You have been signed out because either your last session expired or you are currently signed in on another device."
+        );
         localStorage.removeItem("id_token");
         localStorage.removeItem("id_tokenExpiry");
         window.location.href = "/";
