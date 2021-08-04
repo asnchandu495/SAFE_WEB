@@ -123,8 +123,7 @@ function BooleanJump(props) {
       } else {
         setConditionalJump((conditionalJump) => ({
           ...conditionalJump,
-          // [name]: "",
-          [name]: null,
+          [name]: "",
         }));
       }
     } else {
