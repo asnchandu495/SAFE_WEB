@@ -81,9 +81,16 @@ export default class UserService {
   }
 
   DeleteApplicationUser(getId) {
+    let obj = [
+      {
+        id: `${getId}`,
+      },
+    ];
+
+    var finalData = JSON.stringify(obj);
     return this.fetch(`${this.baseURL}/ApplicationUser/DeleteApplicationUser`, {
       method: "DELETE",
-      body: getId,
+      body: finalData,
     }).then((res) => {
       return Promise.resolve(res);
     });

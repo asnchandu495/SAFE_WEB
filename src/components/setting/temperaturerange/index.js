@@ -37,6 +37,7 @@ import GlobalSettingApiServices from "../../../services/globalSettingService";
 import AlertBoxComponent from "../../common/alert";
 import { SignalCellularNullTwoTone } from "@material-ui/icons";
 import TooltipComponent from "../../common/tooltip";
+import ConfirmationDialog from "../../common/EventualConsistency";
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -81,6 +82,20 @@ function TemperatureRange(props) {
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
   const [componentLoadder, setComponentLoadder] = useState(true);
+  const [showEventualLoadder, setshowEventualLoadder] = useState(false);
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
+
+  const [
+    ConfirmationDialogContextTextNext,
+    setConfirmationDialogContextTextNext,
+  ] = useState("");
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [reloadPage, setReloadPage] = useState("NO");
+
   const [tempsections, settempsections] = useState({
     id: "",
     globalSettingsId: globalsettingsId,
@@ -236,6 +251,15 @@ function TemperatureRange(props) {
     settempsections(list);
   };
 
+  const handleClickOpenEventualModal = () => {
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("TemperatureRangesettingsSuccess");
+    setConfirmationHeaderTittle("Success");
+    setConfirmationDialogContextText(`Updated temperature range settings.`);
+    setConfirmationDialogContextTextNext(
+      `Click OK to continue working on the same page.`
+    );
+  };
   function handleChangeCovidState(e, value, index) {
     let thisValue;
     if (value) {
@@ -366,12 +390,14 @@ function TemperatureRange(props) {
     props
       .updateTemp(sendData)
       .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("Updated temperature range settings.");
-        settoasterServerity("success");
-        setisAlertBoxOpened(false);
+        // setStateSnackbar(true);
+        // setToasterMessage("Updated temperature range settings.");
+        // settoasterServerity("success");
+        // setisAlertBoxOpened(false);
         setTimeout(() => {
+          setComponentLoadder(true);
           setshowLoadder(false);
+          handleClickOpenEventualModal();
         }, 6000);
       })
       .catch((err) => {
@@ -827,6 +853,18 @@ function TemperatureRange(props) {
         toasterMessage={toasterMessage}
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
+      />
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        ConfirmationDialogContextTextNext={ConfirmationDialogContextTextNext}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        showEventualLoadder={showEventualLoadder}
+        setshowEventualLoadder={setshowEventualLoadder}
+        setComponentLoadder={setComponentLoadder}
+        setReloadPage={setReloadPage}
       />
     </div>
   );

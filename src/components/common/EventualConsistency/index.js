@@ -65,7 +65,7 @@ function CustomizedDialogs(props) {
 
   const handleClickYes = () => {
     if (props.ConfirmationModalActionType == "Usersuccess") {
-      props.setshowLoadder1(true);
+      props.setshowEventualLoadder(true);
       props.setcomponentLoadder(true);
       // props.setReloadPage("YES");
       // history.push(`/users/allusers`);
@@ -73,25 +73,74 @@ function CustomizedDialogs(props) {
         props.setReloadPage("YES");
         // history.push(`/users/allusers`);
         // window.location.reload(false);
-        props.setshowLoadder1(false);
+        props.setshowEventualLoadder(false);
+        props.setOpenConfirmationModal(false);
+      }, 10000);
+    } else if (
+      props.ConfirmationModalActionType == "UserUpdatecovidstatesuccess"
+    ) {
+      props.setshowEventualLoadder(true);
+      props.setcomponentLoadder(true);
+      setTimeout(() => {
+        props.setReloadPage("YES");
+        props.setshowEventualLoadder(false);
         props.setOpenConfirmationModal(false);
       }, 10000);
     } else if (
       props.ConfirmationModalActionType == "UserImportHistorysuccess"
     ) {
-      props.setshowLoadder1(true);
+      props.setshowEventualLoadder(true);
       props.setcomponentLoadder(true);
 
       setTimeout(() => {
         history.push(`/users/import-users-history`);
-
-        props.setshowLoadder1(false);
+        props.setshowEventualLoadder(false);
         props.setOpenConfirmationModal(false);
+      }, 10000);
+    } else if (props.ConfirmationModalActionType == "GlobalsettingsSuccess") {
+      props.setshowEventualLoadder(true);
+      props.setcomponentLoadder(true);
+      setTimeout(() => {
+        props.setReloadPage("YES");
+        props.setshowEventualLoadder(false);
+        props.setOpenConfirmationModal(false);
+        props.setcomponentLoadder(false);
+      }, 6000);
+    } else if (
+      props.ConfirmationModalActionType == "TemperatureRangesettingsSuccess"
+    ) {
+      props.setshowEventualLoadder(true);
+      props.setComponentLoadder(true);
+      setTimeout(() => {
+        props.setReloadPage("YES");
+        props.setshowEventualLoadder(false);
+        props.setOpenConfirmationModal(false);
+        props.setComponentLoadder(false);
+      }, 6000);
+    } else if (
+      props.ConfirmationModalActionType == "Questionnaireupdatesuccess"
+    ) {
+      props.setshowEventualLoadder(true);
+      props.setcomponentLoadder(true);
+      setTimeout(() => {
+        props.setReloadPage("YES");
+        props.setshowEventualLoadder(false);
+        props.setOpenConfirmationModal(false);
+        props.setcomponentLoadder(false);
+      }, 10000);
+    } else if (
+      props.ConfirmationModalActionType == "Questionnaircreatesuccess"
+    ) {
+      props.setshowEventualLoadder(true);
+      props.setcomponentLoadder(true);
+      setTimeout(() => {
+        props.setReloadPage("YES");
+        props.setshowEventualLoadder(false);
+        props.setOpenConfirmationModal(false);
+        props.setcomponentLoadder(false);
       }, 10000);
     }
   };
-
-  const handleClickNo = () => {};
 
   const handleCloseSuccess = () => {
     props.setOpenConfirmationModal(false);
@@ -115,7 +164,6 @@ function CustomizedDialogs(props) {
           {props.ConfirmationHeaderTittle}
         </DialogTitle>
 
-        {/* <ValidatorForm className={`global-form`} onSubmit={handleCustomSuccess}> */}
         <DialogContent dividers>
           <Grid container spacing={3}>
             <Grid item cs={12} container>
@@ -141,16 +189,15 @@ function CustomizedDialogs(props) {
             variant="contained"
             type="submit"
             className="global-submit-btn"
-            disabled={props.showLoadder1}
+            disabled={props.showEventualLoadder}
           >
-            {props.showLoadder1 ? <ButtonLoadderComponent /> : "OK"}
+            {props.showEventualLoadder ? <ButtonLoadderComponent /> : "OK"}
           </Button>
           <Button onClick={handleCloseSuccess} className="global-cancel-btn">
             GO to &nbsp;
             <HomeIcon />
           </Button>
         </DialogActions>
-        {/* </ValidatorForm> */}
       </Dialog>
     </div>
   );

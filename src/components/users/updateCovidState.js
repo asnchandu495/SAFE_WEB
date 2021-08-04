@@ -25,6 +25,7 @@ import FormControl from "@material-ui/core/FormControl";
 import UserService from "../../services/usersService";
 import MasterService from "../../services/masterDataService";
 import ButtonLoadderComponent from "../common/loadder/buttonloadder";
+import ConfirmationDialog from "../common/EventualConsistency";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -130,6 +131,19 @@ function UpdateCovidState(props) {
   const [toasterErrorMessageType, settoasterErrorMessageType] =
     useState("array");
   const [showLoadder, setshowLoadder] = useState(false);
+  const [showEventualLoadder, setshowEventualLoadder] = useState(false);
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
+
+  const [
+    ConfirmationDialogContextTextNext,
+    setConfirmationDialogContextTextNext,
+  ] = useState("");
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [reloadPage, setReloadPage] = useState("NO");
 
   useEffect(() => {
     setcomponentLoadder(true);
@@ -173,6 +187,15 @@ function UpdateCovidState(props) {
   const handleClose = () => {
     resetCovidStateFormData();
     props.setopenCovidStateInfoModal(false);
+  };
+  const handleClickOpenEventualModal = () => {
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("UserUpdatecovidstatesuccess");
+    setConfirmationHeaderTittle("Success");
+    setConfirmationDialogContextText(`Updated user's COVID state.`);
+    setConfirmationDialogContextTextNext(
+      `Click OK to continue working on the same page.`
+    );
   };
 
   function resetCovidStateFormData() {
@@ -238,14 +261,22 @@ function UpdateCovidState(props) {
       usersApiCall
         .UpdateUserCovidState(data)
         .then((result) => {
-          setStateSnackbar(true);
-          setToasterMessage("Updated user's COVID state.");
-          settoasterServerity("success");
+          // setStateSnackbar(true);
+          // setToasterMessage("Updated user's COVID state.");
+          // settoasterServerity("success");
+          // setTimeout(() => {
+          //   props.setopenCovidStateInfoModal(false);
+          //   resetCovidStateFormData();
+          //   props.setReloadPage(true);
+          //   setshowLoadder(false);
+          // }, 6000);
           setTimeout(() => {
             props.setopenCovidStateInfoModal(false);
             resetCovidStateFormData();
             props.setReloadPage(true);
             setshowLoadder(false);
+            handleClickOpenEventualModal();
+            // setModalOpen(true);
           }, 6000);
         })
         .catch((err) => {
@@ -326,11 +357,7 @@ function UpdateCovidState(props) {
                       : []
                   }
                   getOptionLabel={(option) => option.stateName}
-                  defaultValue={
-                    SelectCovidState
-                      ? SelectCovidState
-                      : ""
-                  }
+                  defaultValue={SelectCovidState ? SelectCovidState : ""}
                   onChange={handleChangeUpdateCovidState}
                   filterSelectedOptions
                   className="global-input autocomplete-select"
@@ -373,6 +400,18 @@ function UpdateCovidState(props) {
         toasterMessage={toasterMessage}
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
+      />
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        ConfirmationDialogContextTextNext={ConfirmationDialogContextTextNext}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        showEventualLoadder={showEventualLoadder}
+        setshowEventualLoadder={setshowEventualLoadder}
+        setcomponentLoadder={setcomponentLoadder}
+        setReloadPage={props.setReloadPage}
       />
     </div>
   );

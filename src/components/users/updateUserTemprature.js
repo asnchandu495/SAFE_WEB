@@ -233,7 +233,7 @@ function UpdateTempearture(props) {
   const [checkLowerLimit, setCheckLowerLimit] = useState();
   const [checkUpperLimit, setCheckUpperLimit] = useState();
   const [Modalopen, setModalOpen] = useState(false);
-  const [showLoadder1, setshowLoadder1] = useState(false);
+  const [showEventualLoadder, setshowEventualLoadder] = useState(false);
   const [ConfirmationModalActionType, setConfirmationModalActionType] =
     useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
@@ -275,31 +275,6 @@ function UpdateTempearture(props) {
       [name]: value,
     }));
   }
-
-  const handleCloseFilter = () => {
-    setModalOpen(false);
-  };
-
-  const handleCustomSuccess = () => {
-    setshowLoadder1(true);
-    setcomponentLoadder(true);
-    // props.setReloadPage("YES");
-    // history.push(`/users/allusers`);
-    setTimeout(() => {
-      props.setReloadPage("YES");
-      // history.push(`/users/allusers`);
-      // window.location.reload(false);
-      setshowLoadder1(false);
-      setModalOpen(false);
-    }, 10000);
-
-    // history.push(`/users/allusers`);
-  };
-
-  const handleCloseSuccess = () => {
-    setModalOpen(false);
-    history.push("/");
-  };
 
   const handleClose = () => {
     props.setopenuserTemepratureModal(false);
@@ -355,13 +330,11 @@ function UpdateTempearture(props) {
         // settoasterServerity("success");
         setTimeout(() => {
           props.setopenuserTemepratureModal(false);
-
           setcomponentLoadder(true);
           resetUserTemeatureFormData();
           setshowLoadder(false);
           // props.setReloadPage("YES");
           handleClickOpenEventualModal();
-          // setModalOpen(true);
         }, 6000);
       })
       .catch((err) => {
@@ -374,52 +347,6 @@ function UpdateTempearture(props) {
 
   return (
     <div>
-      <Dialog
-        onClose={handleCloseFilter}
-        aria-labelledby="customized-dialog-title"
-        open={Modalopen}
-        className="global-dialog confirmation-dialog global-form"
-      >
-        <DialogTitle id="customized-dialog-title" onClose={handleCloseFilter}>
-          Success
-        </DialogTitle>
-
-        <ValidatorForm className={`global-form`} onSubmit={handleCustomSuccess}>
-          <DialogContent dividers>
-            <Grid container spacing={3}>
-              <Grid item cs={12} container>
-                <Grid item xs={5}>
-                  <label className=""> Temperature Updated.</label>
-                </Grid>
-                <Grid item xs={8}></Grid>
-                <Grid item xs={10}>
-                  <label className="">
-                    {" "}
-                    click OK to continue working on the same page.
-                  </label>
-                </Grid>
-                <Grid item xs={8}></Grid>
-              </Grid>
-            </Grid>
-            <br />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              variant="contained"
-              type="submit"
-              className="global-submit-btn"
-              disabled={showLoadder1}
-            >
-              {showLoadder1 ? <ButtonLoadderComponent /> : "OK"}
-            </Button>
-            <Button onClick={handleCloseSuccess} className="global-cancel-btn">
-              GO to &nbsp;
-              <HomeIcon />
-            </Button>
-          </DialogActions>
-        </ValidatorForm>
-      </Dialog>
-
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -485,8 +412,8 @@ function UpdateTempearture(props) {
         ConfirmationDialogContextTextNext={ConfirmationDialogContextTextNext}
         setOpenConfirmationModal={setOpenConfirmationModal}
         ConfirmationModalActionType={ConfirmationModalActionType}
-        showLoadder1={showLoadder1}
-        setshowLoadder1={setshowLoadder1}
+        showEventualLoadder={showEventualLoadder}
+        setshowEventualLoadder={setshowEventualLoadder}
         setcomponentLoadder={setcomponentLoadder}
         setReloadPage={props.setReloadPage}
       />

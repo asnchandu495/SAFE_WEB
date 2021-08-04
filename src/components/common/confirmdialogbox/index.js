@@ -106,8 +106,9 @@ function CustomizedDialogs(props) {
       ];
 
       var finalData = JSON.stringify(obj);
+
       props
-        .DeleteUser(finalData)
+        .DeleteUser(thisId)
         .then((result) => {
           props.setStateSnackbar(true);
           props.setToasterMessage("Deleted user.");
@@ -333,16 +334,19 @@ function CustomizedDialogs(props) {
         });
     } else if (props.ConfirmationModalActionType == "alertreport") {
       let contactUserIds = [];
-      if (props.selectedUsersForCovidState && props.selectedUsersForCovidState.length > 0) {
+      if (
+        props.selectedUsersForCovidState &&
+        props.selectedUsersForCovidState.length > 0
+      ) {
         contactUserIds = props.selectedUsersForCovidState.map(function (item) {
-          return item['id'];
+          return item["id"];
         });
       } else {
         contactUserIds.push(props.SelectedRowDetails[2]);
       }
       let data = {
-        "applicationUserId": props.searchUserId,
-        "contactUserIds": contactUserIds
+        applicationUserId: props.searchUserId,
+        contactUserIds: contactUserIds,
       };
       setshowLoadder(true);
 
@@ -766,7 +770,13 @@ function CustomizedDialogs(props) {
             className="yes-button"
             disabled={showLoadder}
           >
-            {showLoadder ? <ButtonLoadderComponent /> : props.isDeleteMessageWarning ? "Delete" : "Yes"}
+            {showLoadder ? (
+              <ButtonLoadderComponent />
+            ) : props.isDeleteMessageWarning ? (
+              "Delete"
+            ) : (
+              "Yes"
+            )}
           </Button>
         </DialogActions>
       </Dialog>
@@ -787,7 +797,7 @@ CustomizedDialogs.propTypes = {
   DeleteDateQuestionData: PropTypes.func.isRequired,
   PublishFAQ: PropTypes.func.isRequired,
 };
-function mapStateToProps(state, ownProps) { }
+function mapStateToProps(state, ownProps) {}
 
 const mapDispatchToProps = {
   DeletEmergencyContactList: EmergencyContactAction.DeletEmergencyContactList,

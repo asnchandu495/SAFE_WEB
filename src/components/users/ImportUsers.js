@@ -112,7 +112,7 @@ function ImportUsers(props) {
   //   noKeyboard: true,
   // });
 
-  const [showLoadder1, setshowLoadder1] = useState(false);
+  const [showEventualLoadder, setshowEventualLoadder] = useState(false);
   const [ConfirmationModalActionType, setConfirmationModalActionType] =
     useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
@@ -333,8 +333,8 @@ function ImportUsers(props) {
         ConfirmationDialogContextTextNext={ConfirmationDialogContextTextNext}
         setOpenConfirmationModal={setOpenConfirmationModal}
         ConfirmationModalActionType={ConfirmationModalActionType}
-        showLoadder1={showLoadder1}
-        setshowLoadder1={setshowLoadder1}
+        showEventualLoadder={showEventualLoadder}
+        setshowEventualLoadder={setshowEventualLoadder}
         setcomponentLoadder={setcomponentLoadder}
         setReloadPage={props.setReloadPage}
       />

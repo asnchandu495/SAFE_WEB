@@ -1,6 +1,10 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
-import { ValidatorForm, TextValidator, SelectValidator } from "react-material-ui-form-validator";
+import {
+  ValidatorForm,
+  TextValidator,
+  SelectValidator,
+} from "react-material-ui-form-validator";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -32,6 +36,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import ConfirmationDialog from "../../common/EventualConsistency";
 
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
@@ -106,6 +111,21 @@ function GlobalSetting(props) {
   const [selectedDate, setSelectedDate] = useState(
     new Date("2014-08-18T21:11:54")
   );
+
+  const [showEventualLoadder, setshowEventualLoadder] = useState(false);
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
+  const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
+
+  const [
+    ConfirmationDialogContextTextNext,
+    setConfirmationDialogContextTextNext,
+  ] = useState("");
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+  const [reloadPage, setReloadPage] = useState("NO");
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -249,7 +269,15 @@ function GlobalSetting(props) {
       ["allowCheckinWithoutProfileSelfieApproval"]: e.target.checked,
     }));
   };
-
+  const handleClickOpenEventualModal = () => {
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("GlobalsettingsSuccess");
+    setConfirmationHeaderTittle("Success");
+    setConfirmationDialogContextText(`Updated Global settings.`);
+    setConfirmationDialogContextTextNext(
+      `Click OK to continue working on the same page.`
+    );
+  };
   function redirectToViewUsersGroup() {
     SetformData(cancelData);
   }
@@ -290,12 +318,14 @@ function GlobalSetting(props) {
     props
       .createGlobalSetting(finalData)
       .then((result) => {
-        setStateSnackbar(true);
-        setToasterMessage("Updated Global settings.");
-        settoasterServerity("success");
-        setisAlertBoxOpened(false);
+        // setStateSnackbar(true);
+        // setToasterMessage("Updated Global settings.");
+        // settoasterServerity("success");
+        // setisAlertBoxOpened(false);
         setTimeout(() => {
+          setcomponentLoadder(true);
           setshowLoadder(false);
+          handleClickOpenEventualModal();
         }, 6000);
       })
       .catch((err) => {
@@ -314,6 +344,7 @@ function GlobalSetting(props) {
       [name]: value,
     }));
   }
+
   return (
     <div className="innerpage-container">
       <AlertBoxComponent isAlertBoxOpened={isAlertBoxOpened} />
@@ -398,15 +429,15 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {toleranceUnits.length > 0
                         ? toleranceUnits.map((tol) => {
-                          return (
-                            <MenuItem
-                              key={`factol_${tol.geoFencingToleranceUnit}`}
-                              value={tol.geoFencingToleranceUnit}
-                            >
-                              {tol.geoFencingToleranceUnit}
-                            </MenuItem>
-                          );
-                        })
+                            return (
+                              <MenuItem
+                                key={`factol_${tol.geoFencingToleranceUnit}`}
+                                value={tol.geoFencingToleranceUnit}
+                              >
+                                {tol.geoFencingToleranceUnit}
+                              </MenuItem>
+                            );
+                          })
                         : ""}
                     </Select>
                   </FormControl>
@@ -562,15 +593,15 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {toleranceUnits.length > 0
                         ? toleranceUnits.map((tol) => {
-                          return (
-                            <MenuItem
-                              key={`soctol_${tol.geoFencingToleranceUnit}`}
-                              value={tol.geoFencingToleranceUnit}
-                            >
-                              {tol.geoFencingToleranceUnit}
-                            </MenuItem>
-                          );
-                        })
+                            return (
+                              <MenuItem
+                                key={`soctol_${tol.geoFencingToleranceUnit}`}
+                                value={tol.geoFencingToleranceUnit}
+                              >
+                                {tol.geoFencingToleranceUnit}
+                              </MenuItem>
+                            );
+                          })
                         : ""}
                     </Select>
                   </FormControl>
@@ -656,15 +687,15 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {datesFormat.length > 0
                         ? datesFormat.map((datevalue) => {
-                          return (
-                            <MenuItem
-                              key={datevalue.id}
-                              value={datevalue.formatvalue}
-                            >
-                              {datevalue.formatvalue}
-                            </MenuItem>
-                          );
-                        })
+                            return (
+                              <MenuItem
+                                key={datevalue.id}
+                                value={datevalue.formatvalue}
+                              >
+                                {datevalue.formatvalue}
+                              </MenuItem>
+                            );
+                          })
                         : ""}
                     </Select>
                   </FormControl>
@@ -711,12 +742,12 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {timesFormat.length > 0
                         ? timesFormat.map((timevalue) => {
-                          return (
-                            <MenuItem key={timevalue.id} value={timevalue.id}>
-                              {timevalue.value}
-                            </MenuItem>
-                          );
-                        })
+                            return (
+                              <MenuItem key={timevalue.id} value={timevalue.id}>
+                                {timevalue.value}
+                              </MenuItem>
+                            );
+                          })
                         : ""}
                     </Select>
                   </FormControl>
@@ -776,12 +807,8 @@ function GlobalSetting(props) {
                     name="fileFormatToImportUsers"
                     onChange={handleChange}
                     placeholder="Select"
-                    validators={[
-                      "required",
-                    ]}
-                    errorMessages={[
-                      "Please select file format",
-                    ]}
+                    validators={["required"]}
+                    errorMessages={["Please select file format"]}
                     InputLabelProps={{ shrink: false }}
                     className="global-input single-select"
                   >
@@ -790,12 +817,12 @@ function GlobalSetting(props) {
                     </MenuItem>
                     {fileFormat.length > 0
                       ? fileFormat.map((fol) => {
-                        return (
-                          <MenuItem key={fol.id} value={fol.format}>
-                            {fol.format}
-                          </MenuItem>
-                        );
-                      })
+                          return (
+                            <MenuItem key={fol.id} value={fol.format}>
+                              {fol.format}
+                            </MenuItem>
+                          );
+                        })
                       : ""}
                   </SelectValidator>
                 </Grid>
@@ -1047,12 +1074,12 @@ function GlobalSetting(props) {
                       </MenuItem>
                       {selfReminder.length > 0
                         ? selfReminder.map((tol) => {
-                          return (
-                            <MenuItem key={tol.id} value={tol.selfvalue}>
-                              {tol.selfvalue}
-                            </MenuItem>
-                          );
-                        })
+                            return (
+                              <MenuItem key={tol.id} value={tol.selfvalue}>
+                                {tol.selfvalue}
+                              </MenuItem>
+                            );
+                          })
                         : ""}
                     </Select>
                   </FormControl>
@@ -1212,6 +1239,18 @@ function GlobalSetting(props) {
         toasterMessage={toasterMessage}
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
+      />
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        ConfirmationDialogContextTextNext={ConfirmationDialogContextTextNext}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        showEventualLoadder={showEventualLoadder}
+        setshowEventualLoadder={setshowEventualLoadder}
+        setcomponentLoadder={setcomponentLoadder}
+        setReloadPage={setReloadPage}
       />
     </div>
   );
