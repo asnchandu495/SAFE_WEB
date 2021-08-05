@@ -239,7 +239,6 @@ function GlobalSetting(props) {
       GlobalSettingApi.GetGeoFencingToleranceUnits(),
     ])
       .then(([globalSettings, getGeoUnits, getToleranceUnits]) => {
-        console.log(globalSettings);
         setGeoUnits(getGeoUnits);
         setToleranceUnits(getToleranceUnits);
         if (globalSettings) {
@@ -292,9 +291,9 @@ function GlobalSetting(props) {
       formData.socialDistanceTolerance
     );
     finalData.maxPasswordlength = parseInt(formData.maxPasswordlength);
-    finalData.durationToLockUserAccount = parseInt(
-      formData.durationToLockUserAccount
-    );
+    // finalData.durationToLockUserAccount = parseInt(
+    //   formData.durationToLockUserAccount
+    // );
     finalData.automatedCheckoutTime = parseFloat(
       formData.automatedCheckoutTime
     );
@@ -311,17 +310,14 @@ function GlobalSetting(props) {
     finalData.maximumFileSizeOfUserSelfie = parseInt(
       formData.maximumFileSizeOfUserSelfie
     );
-
+    finalData.selfHealthCheckReminderUnit = "Hours";
     finalData.maximumFileSizeOfUserSelfieUnit = "MB";
     finalData.maximumFileSizeToImportUsersUnit = "MB";
 
     props
       .createGlobalSetting(finalData)
       .then((result) => {
-        // setStateSnackbar(true);
-        // setToasterMessage("Updated Global settings.");
-        // settoasterServerity("success");
-        // setisAlertBoxOpened(false);
+        setisAlertBoxOpened(false);
         setTimeout(() => {
           setcomponentLoadder(true);
           setshowLoadder(false);
@@ -828,7 +824,7 @@ function GlobalSetting(props) {
                 </Grid>
               </Grid>
 
-              <Grid item container xs={12}>
+              {/* <Grid item container xs={12}>
                 <Grid item xs={3}>
                   <label className="required">
                     Unlock Duration Of User Account
@@ -875,7 +871,7 @@ function GlobalSetting(props) {
                     }}
                   />
                 </Grid>
-              </Grid>
+              </Grid> */}
 
               <Grid item container xs={12}>
                 <Grid item xs={3}>
@@ -1046,10 +1042,15 @@ function GlobalSetting(props) {
                     value={formData.selfHealthCheckReminder}
                     className="global-input"
                     InputLabelProps={{ shrink: false }}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">Hours</InputAdornment>
+                      ),
+                    }}
                   />
                 </Grid>
 
-                <Grid item xs={2}>
+                {/* <Grid item xs={2}>
                   <FormControl variant="outlined" fullWidth>
                     <InputLabel
                       id="demo-simple-select-outlined-label"
@@ -1090,7 +1091,7 @@ function GlobalSetting(props) {
                   ) : (
                     ""
                   )}
-                </Grid>
+                </Grid> */}
               </Grid>
 
               <Grid
