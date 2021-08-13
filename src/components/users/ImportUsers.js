@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 var excelDownladFileUrl =
-  "https://ssapstorageqa.blob.core.windows.net/ssapstorageqa/Sample_bulk_upload.xlsx";
+  "https://eu2azestgssm01.blob.core.windows.net/delaysba35004d460f402572630b8ad8927cd8527258fe/Sample_bulk_upload.xlsx";
 
 function ImportUsers(props) {
   const classes = useStyles();
