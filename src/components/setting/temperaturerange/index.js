@@ -174,7 +174,8 @@ function TemperatureRange(props) {
   }
 
   function handleChangeInput(e) {
-    const { name, value } = e.target;
+    const { name, value, checked } = e.target;
+    console.log(tempsections);
     if (value != "") {
       if (value == "F") {
         const list = {
@@ -186,9 +187,17 @@ function TemperatureRange(props) {
                 ["lowerLimit"]: parseFloat(
                   con.lowerLimit * (9 / 5) + 32
                 ).toFixed(1),
-                ["upperLimit"]: parseFloat(
-                  con.upperLimit * (9 / 5) + 32
-                ).toFixed(1),
+                ...(con.isNoUpperLimit === false
+                  ? {
+                      ...con.upperLimit,
+                      ["upperLimit"]: parseFloat(
+                        con.upperLimit * (9 / 5) + 32
+                      ).toFixed(1),
+                    }
+                  : 0),
+                // ["upperLimit"]: parseFloat(
+                //   con.upperLimit * (9 / 5) + 32
+                // ).toFixed(1),
               };
             }),
           ],
@@ -205,9 +214,17 @@ function TemperatureRange(props) {
                 ["lowerLimit"]: parseFloat(
                   ((con.lowerLimit - 32) * 5) / 9
                 ).toFixed(1),
-                ["upperLimit"]: parseFloat(
-                  ((con.upperLimit - 32) * 5) / 9
-                ).toFixed(1),
+                ...(con.isNoUpperLimit === false
+                  ? {
+                      ...con.upperLimit,
+                      ["upperLimit"]: parseFloat(
+                        ((con.upperLimit - 32) * 5) / 9
+                      ).toFixed(1),
+                    }
+                  : 0),
+                // ["upperLimit"]: parseFloat(
+                //   ((con.upperLimit - 32) * 5) / 9
+                // ).toFixed(1),
               };
             }),
           ],
@@ -215,6 +232,7 @@ function TemperatureRange(props) {
 
         settempsections(list);
       }
+
       settempsections((tempsections) => ({
         ...tempsections,
         [name]: value,
