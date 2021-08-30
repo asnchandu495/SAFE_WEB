@@ -182,17 +182,27 @@ function TemperatureRange(props) {
           ...tempsections,
           covidStates: [
             ...tempsections.covidStates.map((con) => {
+              let FahrenheitValue;
+              let number = con.lowerLimit * (9 / 5) + 32;
+              if (number == Math.floor(number)) {
+                FahrenheitValue = number;
+              } else {
+                FahrenheitValue = parseFloat(number).toFixed(1);
+              }
+              let FahrenheitValueUpper;
+              let number1 = con.upperLimit * (9 / 5) + 32;
+              if (number1 == Math.floor(number1)) {
+                FahrenheitValueUpper = number1;
+              } else {
+                FahrenheitValueUpper = parseFloat(number1).toFixed(1);
+              }
               return {
                 ...con,
-                ["lowerLimit"]: parseFloat(
-                  con.lowerLimit * (9 / 5) + 32
-                ).toFixed(1),
+                ["lowerLimit"]: FahrenheitValue,
                 ...(con.isNoUpperLimit === false
                   ? {
                       ...con.upperLimit,
-                      ["upperLimit"]: parseFloat(
-                        con.upperLimit * (9 / 5) + 32
-                      ).toFixed(1),
+                      ["upperLimit"]: FahrenheitValueUpper,
                     }
                   : 0),
                 // ["upperLimit"]: parseFloat(
@@ -209,17 +219,28 @@ function TemperatureRange(props) {
           ...tempsections,
           covidStates: [
             ...tempsections.covidStates.map((con) => {
+              let celsiusValue;
+              let number = ((con.lowerLimit - 32) * 5) / 9;
+
+              if (number == Math.floor(number)) {
+                celsiusValue = number;
+              } else {
+                celsiusValue = parseFloat(number).toFixed(1);
+              }
+              let celsiusUpperLimit;
+              let number1 = ((con.upperLimit - 32) * 5) / 9;
+              if (number1 == Math.floor(number1)) {
+                celsiusUpperLimit = number1;
+              } else {
+                celsiusUpperLimit = parseFloat(number1).toFixed(1);
+              }
               return {
                 ...con,
-                ["lowerLimit"]: parseFloat(
-                  ((con.lowerLimit - 32) * 5) / 9
-                ).toFixed(1),
+                ["lowerLimit"]: celsiusValue,
                 ...(con.isNoUpperLimit === false
                   ? {
                       ...con.upperLimit,
-                      ["upperLimit"]: parseFloat(
-                        ((con.upperLimit - 32) * 5) / 9
-                      ).toFixed(1),
+                      ["upperLimit"]: celsiusUpperLimit,
                     }
                   : 0),
                 // ["upperLimit"]: parseFloat(
