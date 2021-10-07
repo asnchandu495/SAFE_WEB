@@ -15,6 +15,7 @@ import PropTypes from "prop-types";
 import * as GridAction from "../../../Redux/Action/gridAction";
 import * as AcmAction from "../../../Redux/Action/acmAction";
 import NotificationService from "../../../services/notificationService";
+import GlobalSettingApiServices from "../../../services/globalSettingService";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -29,6 +30,7 @@ const GreenCheckbox = withStyles({
 function Signin(props) {
   const authApiCall = new AuthService();
   const notificationApiCall = new NotificationService();
+  const GlobalSettingApi = new GlobalSettingApiServices();
   const [formData, SetformData] = useState({
     username: "",
     password: "",
@@ -53,14 +55,18 @@ function Signin(props) {
     { name: "workflows", page: 1 },
   ]);
   const [acm, setAcm] = useState([]);
+  const [durationLock, setDurationLock] = useState();
 
   useEffect(() => {
     setComponentLoadder(true);
-    notificationApiCall
-      .GetAllUserCommunicationsForLoggedInUser()
-      .then((loggedinUserDetails) => {
-        setApplicationUsers(loggedinUserDetails);
+    Promise.all([
+      notificationApiCall.GetAllUserCommunicationsForLoggedInUser(),
+      GlobalSettingApi.getLoadGlobalSetting(),
+    ])
 
+      .then(([loggedinUserDetails, getLockDuration]) => {
+        setApplicationUsers(loggedinUserDetails);
+        setDurationLock(getLockDuration.durationToLockUserAccount);
         setComponentLoadder(false);
       })
       .catch((err) => {
@@ -85,7 +91,7 @@ function Signin(props) {
       .then((res) => {
         if (res) {
           setToasterMessage(
-            "Your account is locked due to failed attempts. Please try after 20 mins."
+            `Your account is locked due to failed attempts. Please try after ${durationLock} mins.`
           );
           settoasterServerity("error");
           settoasterErrorMessageType("object");
