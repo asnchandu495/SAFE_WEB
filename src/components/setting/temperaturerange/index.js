@@ -135,11 +135,14 @@ function TemperatureRange(props) {
   useEffect(() => {
     Promise.all([
       CovidStateApi.getCOVIDStates(),
+      // props.loadGlobalSetting(),
       GlobalSettingApi.getLoadGlobalSetting(),
+      // props.GetCovidState(),
     ])
       .then(([result, globalSettings]) => {
         setcovidStatelist(result);
         setTempCovidStatelist(result);
+
         if (globalSettings.covidStateTemperatures.length > 0) {
           globalSettings.covidStateTemperatures.sort(function IHaveAName(a, b) {
             // non-anonymous as you ordered...
@@ -162,7 +165,7 @@ function TemperatureRange(props) {
         console.log(err);
       });
     // setComponentLoadder(false);
-  }, []);
+  }, [componentLoadder]);
 
   function handleChange(e) {
     const { name, value } = e.target.checked;
@@ -184,17 +187,19 @@ function TemperatureRange(props) {
             ...tempsections.covidStates.map((con) => {
               let FahrenheitValue;
               let number = con.lowerLimit * (9 / 5) + 32;
+
               if (number == Math.floor(number)) {
                 FahrenheitValue = number;
               } else {
-                FahrenheitValue = parseFloat(number).toFixed(1);
+                FahrenheitValue = parseFloat(number).toFixed(5);
               }
+              console.log(FahrenheitValue);
               let FahrenheitValueUpper;
               let number1 = con.upperLimit * (9 / 5) + 32;
               if (number1 == Math.floor(number1)) {
                 FahrenheitValueUpper = number1;
               } else {
-                FahrenheitValueUpper = parseFloat(number1).toFixed(1);
+                FahrenheitValueUpper = parseFloat(number1).toFixed(5);
               }
               return {
                 ...con,
@@ -221,18 +226,19 @@ function TemperatureRange(props) {
             ...tempsections.covidStates.map((con) => {
               let celsiusValue;
               let number = ((con.lowerLimit - 32) * 5) / 9;
+              console.log(number);
 
               if (number == Math.floor(number)) {
                 celsiusValue = number;
               } else {
-                celsiusValue = parseFloat(number).toFixed(1);
+                celsiusValue = parseFloat(number).toFixed(5);
               }
               let celsiusUpperLimit;
               let number1 = ((con.upperLimit - 32) * 5) / 9;
               if (number1 == Math.floor(number1)) {
                 celsiusUpperLimit = number1;
               } else {
-                celsiusUpperLimit = parseFloat(number1).toFixed(1);
+                celsiusUpperLimit = parseFloat(number1).toFixed(5);
               }
               return {
                 ...con,
@@ -426,6 +432,8 @@ function TemperatureRange(props) {
     });
     sendData.covidStates = getCovidStates;
     sendData.id = sendData.globalSettingsId;
+    console.log(sendData);
+
     props
       .updateTemp(sendData)
       .then((result) => {
@@ -435,6 +443,7 @@ function TemperatureRange(props) {
         // setisAlertBoxOpened(false);
         setTimeout(() => {
           setComponentLoadder(true);
+          // props.setReloadPage(true);
           setshowLoadder(false);
           handleClickOpenEventualModal();
         }, 6000);
@@ -598,24 +607,26 @@ function TemperatureRange(props) {
                                 : tempsections.temperatureUnit == "C"
                                 ? [
                                     "required",
-                                    "matchRegexp:^\\d{1,2}(\\.\\d{1,1})?$",
+                                    "matchRegexp:^\\d{1,2}(\\.\\d{1,5})?$",
                                     "maxNumber:45",
                                     `minNumber:${parseFloat(
                                       parseFloat(
                                         tempsections.covidStates[i - 1]
                                           .upperLimit
-                                      ) + parseFloat(0.1)
+                                      )
+                                      //  + parseFloat(0.1)
                                     )}`,
                                   ]
                                 : [
                                     "required",
-                                    "matchRegexp:^\\d{1,3}(\\.\\d{1,1})?$",
+                                    "matchRegexp:^\\d{1,3}(\\.\\d{1,5})?$",
                                     "maxNumber:113",
                                     `minNumber:${parseFloat(
                                       parseFloat(
                                         tempsections.covidStates[i - 1]
                                           .upperLimit
-                                      ) + parseFloat(0.1)
+                                      )
+                                      // + parseFloat(0.1)
                                     )}`,
                                   ]
                             }
@@ -643,7 +654,8 @@ function TemperatureRange(props) {
                                       parseFloat(
                                         tempsections.covidStates[i - 1]
                                           .upperLimit
-                                      ) + parseFloat(0.1)
+                                      )
+                                      // + parseFloat(0.1)
                                     }`,
                                   ]
                                 : [
@@ -654,7 +666,8 @@ function TemperatureRange(props) {
                                       parseFloat(
                                         tempsections.covidStates[i - 1]
                                           .upperLimit
-                                      ) + parseFloat(0.1)
+                                      )
+                                      // + parseFloat(0.1)
                                     }`,
                                   ]
                             }
@@ -688,8 +701,9 @@ function TemperatureRange(props) {
                                       `minNumber:${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit) +
-                                            parseFloat(0.1)
+                                          : parseFloat(x.lowerLimit)
+                                        //  +
+                                        //   parseFloat(0.1)
                                       }`,
                                     ]
                                   : [
@@ -699,8 +713,9 @@ function TemperatureRange(props) {
                                       `minNumber:${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit) +
-                                            parseFloat(0.1)
+                                          : parseFloat(x.lowerLimit)
+                                        //  +
+                                        //   parseFloat(0.1)
                                       }`,
                                     ]
                                 : x.isNoUpperLimit
@@ -711,9 +726,10 @@ function TemperatureRange(props) {
                                       x.isNoUpperLimit
                                         ? 0
                                         : parseFloat(
-                                            parseFloat(x.lowerLimit) +
-                                              parseFloat(0.1)
-                                          ).toFixed(1)
+                                            parseFloat(x.lowerLimit)
+                                            // +
+                                            //   parseFloat(0.1)
+                                          ).toFixed(5)
                                     }`,
                                   ]
                                 : [
@@ -724,9 +740,10 @@ function TemperatureRange(props) {
                                       x.isNoUpperLimit
                                         ? 0
                                         : parseFloat(
-                                            parseFloat(x.lowerLimit) +
-                                              parseFloat(0.1)
-                                          ).toFixed(1)
+                                            parseFloat(x.lowerLimit)
+                                            //  +
+                                            //   parseFloat(0.1)
+                                          ).toFixed(5)
                                     }`,
                                   ]
                             }
@@ -741,8 +758,9 @@ function TemperatureRange(props) {
                                       `Minimum allowed is ${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit) +
-                                            parseFloat(0.1)
+                                          : parseFloat(x.lowerLimit)
+                                        // +
+                                        //   parseFloat(0.1)
                                       }`,
                                     ]
                                   : [
@@ -754,8 +772,9 @@ function TemperatureRange(props) {
                                       `Minimum allowed is ${
                                         x.isNoUpperLimit
                                           ? 0
-                                          : parseFloat(x.lowerLimit) +
-                                            parseFloat(0.1)
+                                          : parseFloat(x.lowerLimit)
+                                        // +
+                                        //   parseFloat(0.1)
                                       }`,
                                     ]
                                 : x.isNoUpperLimit
@@ -768,9 +787,10 @@ function TemperatureRange(props) {
                                       x.isNoUpperLimit
                                         ? 0
                                         : parseFloat(
-                                            parseFloat(x.lowerLimit) +
-                                              parseFloat(0.1)
-                                          ).toFixed(1)
+                                            parseFloat(x.lowerLimit)
+                                            //  +
+                                            //   parseFloat(0.1)
+                                          ).toFixed(5)
                                     }`,
                                   ]
                                 : [
@@ -783,9 +803,10 @@ function TemperatureRange(props) {
                                       x.isNoUpperLimit
                                         ? 0
                                         : parseFloat(
-                                            parseFloat(x.lowerLimit) +
-                                              parseFloat(0.1)
-                                          ).toFixed(1)
+                                            parseFloat(x.lowerLimit)
+                                            //  +
+                                            //   parseFloat(0.1)
+                                          ).toFixed(5)
                                     }`,
                                   ]
                             }
@@ -904,6 +925,7 @@ function TemperatureRange(props) {
         setshowEventualLoadder={setshowEventualLoadder}
         setComponentLoadder={setComponentLoadder}
         setReloadPage={setReloadPage}
+        componentLoadder={componentLoadder}
       />
     </div>
   );
@@ -915,12 +937,14 @@ TemperatureRange.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    loadGlobalSettingsData: state.temperaturerangeState,
+    // loadGlobalSettingsData: state.temperaturerangeState,
+    loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
 
 const mapDispatchToProps = {
   updateTemp: globalSettingAction.updateTemp,
+  // loadGlobalSetting: globalSettingAction.LoadtempGlobalSettingCall,
 };
 
 // export default TemperatureRange;

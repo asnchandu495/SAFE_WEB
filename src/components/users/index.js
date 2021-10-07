@@ -148,7 +148,10 @@ const DisplayFormControl = ({
   }
 };
 
-const rlapStatusData = [{ id: "true", value: "Active" }, { id: "false", value: "Inactive" }];
+const rlapStatusData = [
+  { id: "true", value: "Active" },
+  { id: "false", value: "Inactive" },
+];
 
 function Users(props) {
   const userId = props.match.params.id;
@@ -212,7 +215,7 @@ function Users(props) {
     covidStateId: "",
     roleIds: [],
     siteId: [],
-    rLapStatus: ""
+    rLapStatus: "",
   });
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
@@ -264,7 +267,7 @@ function Users(props) {
       CovidStateApi.getCOVIDStates(),
       GlobalSettingApi.getLoadGlobalSetting(),
       props.LoadGridsPage(),
-      ACMServiceApi.getACMDetails()
+      ACMServiceApi.getACMDetails(),
     ])
       .then(
         ([
@@ -276,7 +279,7 @@ function Users(props) {
           getCovidState,
           getLoadGlobalSetting,
           gridResult,
-          acmDataFromApi
+          acmDataFromApi,
         ]) => {
           setReloadPage("NO");
           setBusinessUserRoleMasterData(getUserRoles);
@@ -290,25 +293,48 @@ function Users(props) {
             return acm.module == "user";
           });
           if (usersACM) {
-            setUpdateInfo(usersACM.permissions.find(ua => ua.entity == 'update'));
-            setUpdateShiftInfo(usersACM.permissions.find(ua => ua.entity == "updateUserShift"));
-            setUpdateCovidInfo(usersACM.permissions.find(ua => ua.entity == "updateUserCovidState"));
-            setUpdateTemperatureInfo(usersACM.permissions.find(ua => ua.entity == "updateUserTemp"));
+            setUpdateInfo(
+              usersACM.permissions.find((ua) => ua.entity == "update")
+            );
+            setUpdateShiftInfo(
+              usersACM.permissions.find((ua) => ua.entity == "updateUserShift")
+            );
+            setUpdateCovidInfo(
+              usersACM.permissions.find(
+                (ua) => ua.entity == "updateUserCovidState"
+              )
+            );
+            setUpdateTemperatureInfo(
+              usersACM.permissions.find((ua) => ua.entity == "updateUserTemp")
+            );
           } else {
             let usersACMApi = acmDataFromApi.find((acm) => {
               return acm.module == "user";
             });
 
-            setUpdateInfo(usersACMApi.permissions.find(ua => ua.entity == 'update'));
-            setUpdateShiftInfo(usersACMApi.permissions.find(ua => ua.entity == "updateUserShift"));
-            setUpdateCovidInfo(usersACMApi.permissions.find(ua => ua.entity == "updateUserCovidState"));
-            setUpdateTemperatureInfo(usersACMApi.permissions.find(ua => ua.entity == "updateUserTemp"));
+            setUpdateInfo(
+              usersACMApi.permissions.find((ua) => ua.entity == "update")
+            );
+            setUpdateShiftInfo(
+              usersACMApi.permissions.find(
+                (ua) => ua.entity == "updateUserShift"
+              )
+            );
+            setUpdateCovidInfo(
+              usersACMApi.permissions.find(
+                (ua) => ua.entity == "updateUserCovidState"
+              )
+            );
+            setUpdateTemperatureInfo(
+              usersACMApi.permissions.find(
+                (ua) => ua.entity == "updateUserTemp"
+              )
+            );
           }
           setcomponentLoadder(false);
         }
       )
-      .catch((err) => {
-      });
+      .catch((err) => {});
   }, [reloadPage]);
 
   const handleToggleMoreMenu = (thisRowData, e) => {
@@ -385,7 +411,7 @@ function Users(props) {
       covidStateId: "",
       roleIds: [],
       siteId: [],
-      rLapStatus: ""
+      rLapStatus: "",
     });
   }
 
@@ -515,7 +541,7 @@ function Users(props) {
         </span>
       );
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: (value, tableMeta, updateValue) => {
       return (
         <div className={`maingrid-actions action-buttons-container`}>
@@ -560,17 +586,30 @@ function Users(props) {
         if (typeof col !== "undefined" && col !== null) {
           if (typeof col === "object") {
             if (col.name) {
-              if (col.name.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+              if (
+                col.name
+                  .toString()
+                  .toLowerCase()
+                  .indexOf(searchQuery.toLowerCase()) >= 0
+              ) {
                 isFound = true;
               }
             }
             if (col.stateName) {
-              if (col.stateName.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+              if (
+                col.stateName
+                  .toString()
+                  .toLowerCase()
+                  .indexOf(searchQuery.toLowerCase()) >= 0
+              ) {
                 isFound = true;
               }
             }
           } else {
-            if (col.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+            if (
+              col.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >=
+              0
+            ) {
               isFound = true;
             }
           }
@@ -774,19 +813,27 @@ function Users(props) {
                   anchorRef={anchorRef}
                   openMoreMenu={openMoreMenu}
                 ></LoadActions>
-                {updateInfo && updateInfo.isAccess || updateShiftInfo && updateShiftInfo.isAccess || updateCovidInfo && updateCovidInfo.isAccess || updateTemperatureInfo && updateTemperatureInfo.isAccess ? <Tooltip title="More">
-                  <Button
-                    variant="contained"
-                    color="default"
-                    startIcon={<MoreHorizIcon />}
-                    className={`more-icon`}
-                    ref={anchorRef}
-                    aria-controls={openMoreMenu ? "menu-list-grow" : undefined}
-                    aria-haspopup="true"
-                    onClick={(e) => handleToggleMoreMenu(thisRowData, e)}
-                  ></Button>
-                </Tooltip> : ""}
-
+                {(updateInfo && updateInfo.isAccess) ||
+                (updateShiftInfo && updateShiftInfo.isAccess) ||
+                (updateCovidInfo && updateCovidInfo.isAccess) ||
+                (updateTemperatureInfo && updateTemperatureInfo.isAccess) ? (
+                  <Tooltip title="More">
+                    <Button
+                      variant="contained"
+                      color="default"
+                      startIcon={<MoreHorizIcon />}
+                      className={`more-icon`}
+                      ref={anchorRef}
+                      aria-controls={
+                        openMoreMenu ? "menu-list-grow" : undefined
+                      }
+                      aria-haspopup="true"
+                      onClick={(e) => handleToggleMoreMenu(thisRowData, e)}
+                    ></Button>
+                  </Tooltip>
+                ) : (
+                  ""
+                )}
               </div>
             );
           }
@@ -977,7 +1024,7 @@ function Users(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                            BusinessUserRoleMasterData.length > 0
+                          BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -1015,7 +1062,7 @@ function Users(props) {
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                          BusinessDesingationData.length > 0
+                        BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -1047,7 +1094,7 @@ function Users(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                          BusinessSiteMasterData.length > 0
+                        BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -1079,7 +1126,7 @@ function Users(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                            BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }
@@ -1113,16 +1160,12 @@ function Users(props) {
                         shrink={false}
                         className="select-label"
                       >
-                        {!searchformData.rLapStatus
-                          ? "Select status"
-                          : ""}
+                        {!searchformData.rLapStatus ? "Select status" : ""}
                       </InputLabel>
                       <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
-                        value={
-                          searchformData.rLapStatus
-                        }
+                        value={searchformData.rLapStatus}
                         name="rLapStatus"
                         onChange={handleChangeRlapStatus}
                         placeholder="Select status"
@@ -1136,10 +1179,7 @@ function Users(props) {
                         </MenuItem>
                         {rlapStatusData.map((ans) => {
                           return (
-                            <MenuItem
-                              value={ans.id}
-                              key={`atypered_${ans.id}`}
-                            >
+                            <MenuItem value={ans.id} key={`atypered_${ans.id}`}>
                               {ans.value}
                             </MenuItem>
                           );
@@ -1265,18 +1305,34 @@ function Users(props) {
             <Paper className="user-list-more-options">
               <ClickAwayListener onClickAway={handleCloseMoreMenu}>
                 <MenuList id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                  {updateInfo && updateInfo.isAccess ? <MenuItem onClick={handleClickUpdateUserDetails}>
-                    Update Other Details
-                  </MenuItem> : ""}
-                  {updateCovidInfo && updateCovidInfo.isAccess ? <MenuItem onClick={handleClickOpenCovidStateInfoModal}>
-                    Update Covid State
-                  </MenuItem> : ""}
-                  {updateTemperatureInfo && updateTemperatureInfo.isAccess ? <MenuItem onClick={handleClickOpenUserTempInfoModal}>
-                    Update Temperature
-                  </MenuItem> : ""}
-                  {updateShiftInfo && updateShiftInfo.isAccess ? <MenuItem onClick={handleClickOpenShiftInfoModal}>
-                    Update Shift Info
-                  </MenuItem> : ""}
+                  {updateInfo && updateInfo.isAccess ? (
+                    <MenuItem onClick={handleClickUpdateUserDetails}>
+                      Update Other Details
+                    </MenuItem>
+                  ) : (
+                    ""
+                  )}
+                  {updateCovidInfo && updateCovidInfo.isAccess ? (
+                    <MenuItem onClick={handleClickOpenCovidStateInfoModal}>
+                      Update Covid State
+                    </MenuItem>
+                  ) : (
+                    ""
+                  )}
+                  {updateTemperatureInfo && updateTemperatureInfo.isAccess ? (
+                    <MenuItem onClick={handleClickOpenUserTempInfoModal}>
+                      Update Temperature
+                    </MenuItem>
+                  ) : (
+                    ""
+                  )}
+                  {updateShiftInfo && updateShiftInfo.isAccess ? (
+                    <MenuItem onClick={handleClickOpenShiftInfoModal}>
+                      Update Shift Info
+                    </MenuItem>
+                  ) : (
+                    ""
+                  )}
                 </MenuList>
               </ClickAwayListener>
             </Paper>
