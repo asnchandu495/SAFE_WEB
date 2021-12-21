@@ -319,7 +319,7 @@ function AddActivity(props) {
         .UpdateActivities(formData)
         .then((result) => {
           setStateSnackbar(true);
-          setToasterMessage("Updated workflow activities.");
+          setToasterMessage("Updated Workflow Activities.");
           settoasterServerity("success");
           setTimeout(() => {
             setshowLoadder(false);

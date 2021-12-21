@@ -87,87 +87,54 @@ function ActionFormNew(props) {
       workflowApiCall.getOptionsByActivityId(activityId),
       CovidStateApi.getCOVIDStates(),
     ])
-      .then(
-        ([
-          result,
-          getCOVIDStates,
-        ]) => {
-          setCovidStates(getCOVIDStates);
-          console.log(props.selectedAction);
-          if (result.length > 0) {
-            let thisFormData = result.find(
-              (act) =>
-                act.uniqueActivityId == props.selectedAction.uniqueActivityId
-            );
-            if (thisFormData) {
-              let actionListFromAPI = thisFormData.configurationDataList;
-              let actionListFromSelected =
-                props.selectedAction.worflowActivityInputs;
-              let newFormCollection = [];
-              actionListFromSelected.map((ac) => {
-                let alreadyAddedAction = actionListFromAPI.find((item) => {
-                  return item.name == ac.name ? item : null;
-                });
+      .then(([result, getCOVIDStates]) => {
+        setCovidStates(getCOVIDStates);
+        console.log(props.selectedAction);
+        if (result.length > 0) {
+          let thisFormData = result.find(
+            (act) =>
+              act.uniqueActivityId == props.selectedAction.uniqueActivityId
+          );
+          if (thisFormData) {
+            let actionListFromAPI = thisFormData.configurationDataList;
+            let actionListFromSelected =
+              props.selectedAction.worflowActivityInputs;
+            let newFormCollection = [];
+            actionListFromSelected.map((ac) => {
+              let alreadyAddedAction = actionListFromAPI.find((item) => {
+                return item.name == ac.name ? item : null;
+              });
 
-                newFormCollection.push({
-                  id: alreadyAddedAction ? alreadyAddedAction.id : "",
-                  // inputType: alreadyAddedAction
-                  //   ? alreadyAddedAction.inputType
-                  //   : ac.inputType,
-                  inputType: ac.inputType,
-                  name: alreadyAddedAction ? alreadyAddedAction.name : ac.name,
-                  value: alreadyAddedAction ? alreadyAddedAction.value : "",
-                  remarksForInput: ac.remarksForInput,
-                  inputIntelliSenseOptions: ac.inputIntelliSenseOptions,
-                });
+              newFormCollection.push({
+                id: alreadyAddedAction ? alreadyAddedAction.id : "",
+                // inputType: alreadyAddedAction
+                //   ? alreadyAddedAction.inputType
+                //   : ac.inputType,
+                inputType: ac.inputType,
+                name: alreadyAddedAction ? alreadyAddedAction.name : ac.name,
+                value: alreadyAddedAction ? alreadyAddedAction.value : "",
+                remarksForInput: ac.remarksForInput,
+                inputIntelliSenseOptions: ac.inputIntelliSenseOptions,
               });
-              setFormData({
-                id: thisFormData.id,
-                uniqueActivityId: thisFormData.uniqueActivityId,
-                name: thisFormData.name,
-                aimWorkflowId: thisFormData.aimWorkflowId,
-                parentActivityId: thisFormData.parentActivityId,
-                configurationDataList: newFormCollection,
-              });
-              setOldData({
-                id: thisFormData.id,
-                uniqueActivityId: thisFormData.uniqueActivityId,
-                name: thisFormData.name,
-                aimWorkflowId: thisFormData.aimWorkflowId,
-                parentActivityId: thisFormData.parentActivityId,
-                configurationDataList: newFormCollection,
-              });
-              setComponentLoadder(false);
-              props.setReloadPage("NO");
-            } else {
-              let dynamicForm = props.selectedAction.worflowActivityInputs;
-              let newFormCollection = dynamicForm.map((form) => ({
-                id: form.id ? form.id : "",
-                inputType: form.inputType,
-                name: form.name,
-                remarksForInput: form.remarksForInput,
-                inputIntelliSenseOptions: form.inputIntelliSenseOptions,
-                value: form.value ? form.value : "",
-              }));
-              setFormData({
-                id: "",
-                uniqueActivityId: props.selectedAction.uniqueActivityId,
-                name: props.selectedAction.name,
-                aimWorkflowId: workflowId,
-                parentActivityId: activityId,
-                configurationDataList: newFormCollection,
-              });
-              setOldData({
-                id: "",
-                uniqueActivityId: props.selectedAction.uniqueActivityId,
-                name: props.selectedAction.name,
-                aimWorkflowId: workflowId,
-                parentActivityId: activityId,
-                configurationDataList: newFormCollection,
-              });
-              setComponentLoadder(false);
-              props.setReloadPage("NO");
-            }
+            });
+            setFormData({
+              id: thisFormData.id,
+              uniqueActivityId: thisFormData.uniqueActivityId,
+              name: thisFormData.name,
+              aimWorkflowId: thisFormData.aimWorkflowId,
+              parentActivityId: thisFormData.parentActivityId,
+              configurationDataList: newFormCollection,
+            });
+            setOldData({
+              id: thisFormData.id,
+              uniqueActivityId: thisFormData.uniqueActivityId,
+              name: thisFormData.name,
+              aimWorkflowId: thisFormData.aimWorkflowId,
+              parentActivityId: thisFormData.parentActivityId,
+              configurationDataList: newFormCollection,
+            });
+            setComponentLoadder(false);
+            props.setReloadPage("NO");
           } else {
             let dynamicForm = props.selectedAction.worflowActivityInputs;
             let newFormCollection = dynamicForm.map((form) => ({
@@ -197,7 +164,36 @@ function ActionFormNew(props) {
             setComponentLoadder(false);
             props.setReloadPage("NO");
           }
-        })
+        } else {
+          let dynamicForm = props.selectedAction.worflowActivityInputs;
+          let newFormCollection = dynamicForm.map((form) => ({
+            id: form.id ? form.id : "",
+            inputType: form.inputType,
+            name: form.name,
+            remarksForInput: form.remarksForInput,
+            inputIntelliSenseOptions: form.inputIntelliSenseOptions,
+            value: form.value ? form.value : "",
+          }));
+          setFormData({
+            id: "",
+            uniqueActivityId: props.selectedAction.uniqueActivityId,
+            name: props.selectedAction.name,
+            aimWorkflowId: workflowId,
+            parentActivityId: activityId,
+            configurationDataList: newFormCollection,
+          });
+          setOldData({
+            id: "",
+            uniqueActivityId: props.selectedAction.uniqueActivityId,
+            name: props.selectedAction.name,
+            aimWorkflowId: workflowId,
+            parentActivityId: activityId,
+            configurationDataList: newFormCollection,
+          });
+          setComponentLoadder(false);
+          props.setReloadPage("NO");
+        }
+      })
       .catch((err) => {
         console.log(err);
       });
@@ -266,7 +262,7 @@ function ActionFormNew(props) {
         .then((result) => {
           // props.setDisableActions(true);
           setStateSnackbar(true);
-          setToasterMessage("Option details updated");
+          setToasterMessage("Option Details Updated");
           settoasterServerity("success");
           setTimeout(() => {
             props.setDisableActions(false);
@@ -302,8 +298,8 @@ function ActionFormNew(props) {
   };
 
   const emptyCall = () => {
-    console.log('no menu');
-  }
+    console.log("no menu");
+  };
 
   const handleCloseContextMenu = () => {
     setStateContextMenu(initialState);
@@ -372,9 +368,9 @@ function ActionFormNew(props) {
       currentInputText.target.value.length
     );
 
-    if (currentInputText.target.value != '') {
+    if (currentInputText.target.value != "") {
       currentInputText.target.value =
-        textBeforeCursorPosition + ',' + textToInsert + textAfterCursorPosition;
+        textBeforeCursorPosition + "," + textToInsert + textAfterCursorPosition;
     } else {
       currentInputText.target.value =
         textBeforeCursorPosition + textToInsert + textAfterCursorPosition;
@@ -413,377 +409,404 @@ function ActionFormNew(props) {
               <div className="card-form">
                 <Grid container item xs={12} spacing={3} direction="column">
                   {formData.configurationDataList &&
-                    formData.configurationDataList.length > 0
+                  formData.configurationDataList.length > 0
                     ? formData.configurationDataList.map((act, index) => {
-                      if (act.inputType == "Text") {
-                        return (
-                          <Grid
-                            item
-                            xs={12}
-                            container
-                            key={`inputText_${index}`}
-                          >
-                            <Grid item xs={3}>
-                              <label>{act.remarksForInput}</label>
-                            </Grid>
+                        if (act.inputType == "Text") {
+                          return (
                             <Grid
                               item
-                              xs={9}
-                              onContextMenu={act.inputIntelliSenseOptions.length > 0 ? handleClickContextMenuText : emptyCall}
+                              xs={12}
+                              container
+                              key={`inputText_${index}`}
                             >
-                              <TextValidator
-                                variant="outlined"
-                                // validators={["required"]}
-                                // errorMessages={[
-                                //   `Please enter ${act.remarksForInput}`,
-                                // ]}
-                                fullWidth
-                                id={`Text_${act.name}_${index}`}
-                                placeholder={act.remarksForInput}
-                                name="value"
-                                onChange={(e) => handleInputChange(e, index)}
-                                value={act.value}
-                                InputLabelProps={{ shrink: false }}
-                                className="global-input action-form-input"
-                                onFocus={(e) => {
-                                  setCurrentInputText(e);
-                                }}
-                              />
-                              {act.inputIntelliSenseOptions.length > 0 ?
-                                <Menu
+                              <Grid item xs={3}>
+                                <label>{act.remarksForInput}</label>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={9}
+                                onContextMenu={
+                                  act.inputIntelliSenseOptions.length > 0
+                                    ? handleClickContextMenuText
+                                    : emptyCall
+                                }
+                              >
+                                <TextValidator
+                                  variant="outlined"
+                                  // validators={["required"]}
+                                  // errorMessages={[
+                                  //   `Please enter ${act.remarksForInput}`,
+                                  // ]}
+                                  fullWidth
                                   id={`Text_${act.name}_${index}`}
-                                  keepMounted
-                                  open={stateContextMenuText.mouseY !== null}
-                                  onClose={handleCloseContextMenuText}
-                                  anchorReference="anchorPosition"
-                                  anchorPosition={
-                                    stateContextMenuText.mouseY !== null &&
-                                      stateContextMenuText.mouseX !== null
-                                      ? {
-                                        top: stateContextMenuText.mouseY,
-                                        left: stateContextMenuText.mouseX,
-                                      }
-                                      : undefined
-                                  }
-                                >
-                                  {act.inputIntelliSenseOptions.length > 0 ? (
-                                    act.inputIntelliSenseOptions.map((opt) => {
-                                      return (
-                                        <MenuItem
-                                          onClick={() =>
-                                            handleClickContextMenuOptionText(
-                                              opt,
-                                              index,
-                                              "value"
-                                            )
-                                          }
-                                        >
-                                          {opt}
-                                        </MenuItem>
-                                      );
-                                    })
-                                  ) : (
-                                    <MenuItem>No options</MenuItem>
-                                  )}
-                                </Menu>
-                                : ""}
-                            </Grid>
-                          </Grid>
-                        );
-                      }
-                      if (act.inputType == "EmailTags") {
-                        return (
-                          <Grid
-                            item
-                            xs={12}
-                            container
-                            key={`EmailTags_gri${index}`}
-                          >
-                            <Grid item xs={3}>
-                              <label>{act.remarksForInput}m</label>
-                            </Grid>
-                            <Grid
-                              item
-                              xs={9}
-                              onContextMenu={act.inputIntelliSenseOptions.length > 0 ? handleClickContextMenuText : emptyCall}
-                            >
-                              <TextValidator
-                                variant="outlined"
-                                fullWidth
-                                id={`EmailTags_inp${act.name}_${index}`}
-                                placeholder={act.remarksForInput}
-                                name="value"
-                                onChange={(e) => handleInputChangeTags(e, index)}
-                                value={act.value}
-                                InputLabelProps={{ shrink: false }}
-                                className="global-input action-form-input"
-                                onFocus={(e) => {
-                                  setCurrentInputText(e);
-                                }}
-                              />
-                              {act.inputIntelliSenseOptions.length > 0 ?
-                                <Menu
-                                  id={`EmailTags_opt${act.name}_${index}`}
-                                  keepMounted
-                                  open={stateContextMenuText.mouseY !== null}
-                                  onClose={handleCloseContextMenuText}
-                                  anchorReference="anchorPosition"
-                                  anchorPosition={
-                                    stateContextMenuText.mouseY !== null &&
-                                      stateContextMenuText.mouseX !== null
-                                      ? {
-                                        top: stateContextMenuText.mouseY,
-                                        left: stateContextMenuText.mouseX,
-                                      }
-                                      : undefined
-                                  }
-                                >
-                                  {act.inputIntelliSenseOptions.length > 0 ? (
-                                    act.inputIntelliSenseOptions.map((opt) => {
-                                      return (
-                                        <MenuItem
-                                          onClick={() =>
-                                            handleClickContextMenuOptionTextTags(
-                                              opt,
-                                              index,
-                                              "value"
-                                            )
-                                          }
-                                        >
-                                          {opt}
-                                        </MenuItem>
-                                      );
-                                    })
-                                  ) : (
-                                    <MenuItem>No options</MenuItem>
-                                  )}
-                                </Menu>
-                                : ""}
-                            </Grid>
-                          </Grid>
-                        );
-                      }
-                      if (act.inputType == "EmailList") {
-                        return (
-                          <Grid
-                            item
-                            xs={12}
-                            container
-                            key={`inputText_${index}`}
-                          >
-                            <Grid item xs={3}>
-                              <label>{act.remarksForInput}</label>
-                            </Grid>
-                            <Grid
-                              item
-                              xs={9}
-                              onContextMenu={act.inputIntelliSenseOptions.length > 0 ? handleClickContextMenuText : emptyCall}
-                            >
-                              <TextValidator
-                                variant="outlined"
-                                validators={["matchRegexp:^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-z]{2,3})+(\\s?[,]\\s?|$))+$"]}
-                                errorMessages={[
-                                  `Please Enter Valid EmailId(s)`,
-                                ]}
-                                fullWidth
-                                id={`EmailList_${act.name}_${index}`}
-                                placeholder={act.remarksForInput}
-                                name="value"
-                                onChange={(e) => handleInputChange(e, index)}
-                                value={act.value}
-                                InputLabelProps={{ shrink: false }}
-                                className="global-input action-form-input"
-                                onFocus={(e) => {
-                                  setCurrentInputText(e);
-                                }}
-                              />
-                              {act.inputIntelliSenseOptions.length > 0 ?
-                                <Menu
-                                  id={`EmailList_${act.name}_${index}`}
-                                  keepMounted
-                                  open={stateContextMenuText.mouseY !== null}
-                                  onClose={handleCloseContextMenuText}
-                                  anchorReference="anchorPosition"
-                                  anchorPosition={
-                                    stateContextMenuText.mouseY !== null &&
-                                      stateContextMenuText.mouseX !== null
-                                      ? {
-                                        top: stateContextMenuText.mouseY,
-                                        left: stateContextMenuText.mouseX,
-                                      }
-                                      : undefined
-                                  }
-                                >
-                                  {act.inputIntelliSenseOptions.length > 0 ? (
-                                    act.inputIntelliSenseOptions.map((opt) => {
-                                      return (
-                                        <MenuItem
-                                          onClick={() =>
-                                            handleClickContextMenuOptionText(
-                                              opt,
-                                              index,
-                                              "value"
-                                            )
-                                          }
-                                        >
-                                          {opt}
-                                        </MenuItem>
-                                      );
-                                    })
-                                  ) : (
-                                    <MenuItem>No options</MenuItem>
-                                  )}
-                                </Menu>
-                                : ""}
-                            </Grid>
-                          </Grid>
-                        );
-                      }
-                      if (act.inputType == "CovidStateDropDown") {
-                        return (
-                          <Grid
-                            item
-                            xs={12}
-                            container
-                            key={`inputSelect_${index}`}
-                          >
-                            <Grid item xs={3}>
-                              <label>{act.remarksForInput}</label>
-                            </Grid>
-                            <Grid
-                              item
-                              xs={5}
-                            >
-                              <FormControl variant="outlined" fullWidth>
-                                <InputLabel
-                                  id="demo-simple-select-outlined-label"
-                                  shrink={false}
-                                  className="select-label"
-                                >
-                                  {!act.value
-                                    ? "Select covid state"
-                                    : ""}
-                                </InputLabel>
-                                <Select
-                                  labelId="demo-simple-select-outlined-label"
-                                  id="demo-simple-select-outlined"
-                                  value={
-                                    act.value
-                                  }
+                                  placeholder={act.remarksForInput}
                                   name="value"
                                   onChange={(e) => handleInputChange(e, index)}
-                                  placeholder="Select covid state"
-                                  InputLabelProps={{
-                                    shrink: false,
+                                  value={act.value}
+                                  InputLabelProps={{ shrink: false }}
+                                  className="global-input action-form-input"
+                                  onFocus={(e) => {
+                                    setCurrentInputText(e);
                                   }}
-                                  className="global-input single-select"
-                                >
-                                  <MenuItem value="">
-                                    <em>None</em>
-                                  </MenuItem>
-                                  {covidStates.map((c) => {
-                                    return (
-                                      <MenuItem
-                                        value={c.id}
-                                        key={`atypered_${c.id}`}
-                                      >
-                                        {c.stateName}
-                                      </MenuItem>
-                                    );
-                                  })}
-                                </Select>
-                              </FormControl>
+                                />
+                                {act.inputIntelliSenseOptions.length > 0 ? (
+                                  <Menu
+                                    id={`Text_${act.name}_${index}`}
+                                    keepMounted
+                                    open={stateContextMenuText.mouseY !== null}
+                                    onClose={handleCloseContextMenuText}
+                                    anchorReference="anchorPosition"
+                                    anchorPosition={
+                                      stateContextMenuText.mouseY !== null &&
+                                      stateContextMenuText.mouseX !== null
+                                        ? {
+                                            top: stateContextMenuText.mouseY,
+                                            left: stateContextMenuText.mouseX,
+                                          }
+                                        : undefined
+                                    }
+                                  >
+                                    {act.inputIntelliSenseOptions.length > 0 ? (
+                                      act.inputIntelliSenseOptions.map(
+                                        (opt) => {
+                                          return (
+                                            <MenuItem
+                                              onClick={() =>
+                                                handleClickContextMenuOptionText(
+                                                  opt,
+                                                  index,
+                                                  "value"
+                                                )
+                                              }
+                                            >
+                                              {opt}
+                                            </MenuItem>
+                                          );
+                                        }
+                                      )
+                                    ) : (
+                                      <MenuItem>No options</MenuItem>
+                                    )}
+                                  </Menu>
+                                ) : (
+                                  ""
+                                )}
+                              </Grid>
                             </Grid>
-                          </Grid>
-                        );
-                      }
-                      if (act.inputType == "Template") {
-                        return (
-                          <Grid
-                            item
-                            xs={12}
-                            container
-                            key={`inputTemplate_${index}`}
-                            className="overflow-hidden-editor"
-                          >
-                            <Grid item xs={3}>
-                              <label>{act.remarksForInput}</label>
-                            </Grid>
+                          );
+                        }
+                        if (act.inputType == "EmailTags") {
+                          return (
                             <Grid
                               item
-                              xs={9}
-                              onContextMenu={handleClickContextMenu}
+                              xs={12}
+                              container
+                              key={`EmailTags_gri${index}`}
                             >
-                              <CKEditor
-                                editor={Editor}
-                                config={editorConfiguration}
-                                data={act.value}
-                                id={act.name}
-                                name="value"
-                                onReady={(editor) => {
-                                  editor.editing.view.change((writer) => {
-                                    writer.setStyle(
-                                      "height",
-                                      "225px",
-                                      editor.editing.view.document.getRoot()
-                                    );
-                                  });
-                                }}
-                                onChange={(event, editor) => {
-                                  handleTemplate(
-                                    event,
-                                    editor.getData(),
-                                    index,
-                                    "value"
-                                  );
-                                }}
-                                onFocus={(event, editor) => {
-                                  setCurrentEditor(editor);
-                                }}
-                              />
-                              {act.inputIntelliSenseOptions.length > 0 ?
-                                <Menu
-                                  id={`Menu${act.name}_${index}`}
-                                  keepMounted
-                                  open={stateContextMenu.mouseY !== null}
-                                  onClose={handleCloseContextMenu}
-                                  anchorReference="anchorPosition"
-                                  anchorPosition={
-                                    stateContextMenu.mouseY !== null &&
-                                      stateContextMenu.mouseX !== null
-                                      ? {
-                                        top: stateContextMenu.mouseY,
-                                        left: stateContextMenu.mouseX,
-                                      }
-                                      : undefined
+                              <Grid item xs={3}>
+                                <label>{act.remarksForInput}m</label>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={9}
+                                onContextMenu={
+                                  act.inputIntelliSenseOptions.length > 0
+                                    ? handleClickContextMenuText
+                                    : emptyCall
+                                }
+                              >
+                                <TextValidator
+                                  variant="outlined"
+                                  fullWidth
+                                  id={`EmailTags_inp${act.name}_${index}`}
+                                  placeholder={act.remarksForInput}
+                                  name="value"
+                                  onChange={(e) =>
+                                    handleInputChangeTags(e, index)
                                   }
-                                >
-                                  {act.inputIntelliSenseOptions.length > 0 ? (
-                                    act.inputIntelliSenseOptions.map((opt) => {
+                                  value={act.value}
+                                  InputLabelProps={{ shrink: false }}
+                                  className="global-input action-form-input"
+                                  onFocus={(e) => {
+                                    setCurrentInputText(e);
+                                  }}
+                                />
+                                {act.inputIntelliSenseOptions.length > 0 ? (
+                                  <Menu
+                                    id={`EmailTags_opt${act.name}_${index}`}
+                                    keepMounted
+                                    open={stateContextMenuText.mouseY !== null}
+                                    onClose={handleCloseContextMenuText}
+                                    anchorReference="anchorPosition"
+                                    anchorPosition={
+                                      stateContextMenuText.mouseY !== null &&
+                                      stateContextMenuText.mouseX !== null
+                                        ? {
+                                            top: stateContextMenuText.mouseY,
+                                            left: stateContextMenuText.mouseX,
+                                          }
+                                        : undefined
+                                    }
+                                  >
+                                    {act.inputIntelliSenseOptions.length > 0 ? (
+                                      act.inputIntelliSenseOptions.map(
+                                        (opt) => {
+                                          return (
+                                            <MenuItem
+                                              onClick={() =>
+                                                handleClickContextMenuOptionTextTags(
+                                                  opt,
+                                                  index,
+                                                  "value"
+                                                )
+                                              }
+                                            >
+                                              {opt}
+                                            </MenuItem>
+                                          );
+                                        }
+                                      )
+                                    ) : (
+                                      <MenuItem>No options</MenuItem>
+                                    )}
+                                  </Menu>
+                                ) : (
+                                  ""
+                                )}
+                              </Grid>
+                            </Grid>
+                          );
+                        }
+                        if (act.inputType == "EmailList") {
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              container
+                              key={`inputText_${index}`}
+                            >
+                              <Grid item xs={3}>
+                                <label>{act.remarksForInput}</label>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={9}
+                                onContextMenu={
+                                  act.inputIntelliSenseOptions.length > 0
+                                    ? handleClickContextMenuText
+                                    : emptyCall
+                                }
+                              >
+                                <TextValidator
+                                  variant="outlined"
+                                  validators={[
+                                    "matchRegexp:^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-z]{2,3})+(\\s?[,]\\s?|$))+$",
+                                  ]}
+                                  errorMessages={[
+                                    `Please Enter Valid EmailId(s)`,
+                                  ]}
+                                  fullWidth
+                                  id={`EmailList_${act.name}_${index}`}
+                                  placeholder={act.remarksForInput}
+                                  name="value"
+                                  onChange={(e) => handleInputChange(e, index)}
+                                  value={act.value}
+                                  InputLabelProps={{ shrink: false }}
+                                  className="global-input action-form-input"
+                                  onFocus={(e) => {
+                                    setCurrentInputText(e);
+                                  }}
+                                />
+                                {act.inputIntelliSenseOptions.length > 0 ? (
+                                  <Menu
+                                    id={`EmailList_${act.name}_${index}`}
+                                    keepMounted
+                                    open={stateContextMenuText.mouseY !== null}
+                                    onClose={handleCloseContextMenuText}
+                                    anchorReference="anchorPosition"
+                                    anchorPosition={
+                                      stateContextMenuText.mouseY !== null &&
+                                      stateContextMenuText.mouseX !== null
+                                        ? {
+                                            top: stateContextMenuText.mouseY,
+                                            left: stateContextMenuText.mouseX,
+                                          }
+                                        : undefined
+                                    }
+                                  >
+                                    {act.inputIntelliSenseOptions.length > 0 ? (
+                                      act.inputIntelliSenseOptions.map(
+                                        (opt) => {
+                                          return (
+                                            <MenuItem
+                                              onClick={() =>
+                                                handleClickContextMenuOptionText(
+                                                  opt,
+                                                  index,
+                                                  "value"
+                                                )
+                                              }
+                                            >
+                                              {opt}
+                                            </MenuItem>
+                                          );
+                                        }
+                                      )
+                                    ) : (
+                                      <MenuItem>No options</MenuItem>
+                                    )}
+                                  </Menu>
+                                ) : (
+                                  ""
+                                )}
+                              </Grid>
+                            </Grid>
+                          );
+                        }
+                        if (act.inputType == "CovidStateDropDown") {
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              container
+                              key={`inputSelect_${index}`}
+                            >
+                              <Grid item xs={3}>
+                                <label>{act.remarksForInput}</label>
+                              </Grid>
+                              <Grid item xs={5}>
+                                <FormControl variant="outlined" fullWidth>
+                                  <InputLabel
+                                    id="demo-simple-select-outlined-label"
+                                    shrink={false}
+                                    className="select-label"
+                                  >
+                                    {!act.value ? "Select covid state" : ""}
+                                  </InputLabel>
+                                  <Select
+                                    labelId="demo-simple-select-outlined-label"
+                                    id="demo-simple-select-outlined"
+                                    value={act.value}
+                                    name="value"
+                                    onChange={(e) =>
+                                      handleInputChange(e, index)
+                                    }
+                                    placeholder="Select covid state"
+                                    InputLabelProps={{
+                                      shrink: false,
+                                    }}
+                                    className="global-input single-select"
+                                  >
+                                    <MenuItem value="">
+                                      <em>None</em>
+                                    </MenuItem>
+                                    {covidStates.map((c) => {
                                       return (
                                         <MenuItem
-                                          onClick={() =>
-                                            handleClickContextMenuOption(
-                                              opt,
-                                              index,
-                                              "value"
-                                            )
-                                          }
+                                          value={c.id}
+                                          key={`atypered_${c.id}`}
                                         >
-                                          {opt}
+                                          {c.stateName}
                                         </MenuItem>
                                       );
-                                    })
-                                  ) : (
-                                    <MenuItem>No options</MenuItem>
-                                  )}
-                                </Menu>
-                                : ""}
+                                    })}
+                                  </Select>
+                                </FormControl>
+                              </Grid>
                             </Grid>
-                          </Grid>
-                        );
-                      }
-                    })
+                          );
+                        }
+                        if (act.inputType == "Template") {
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              container
+                              key={`inputTemplate_${index}`}
+                              className="overflow-hidden-editor"
+                            >
+                              <Grid item xs={3}>
+                                <label>{act.remarksForInput}</label>
+                              </Grid>
+                              <Grid
+                                item
+                                xs={9}
+                                onContextMenu={handleClickContextMenu}
+                              >
+                                <CKEditor
+                                  editor={Editor}
+                                  config={editorConfiguration}
+                                  data={act.value}
+                                  id={act.name}
+                                  name="value"
+                                  onReady={(editor) => {
+                                    editor.editing.view.change((writer) => {
+                                      writer.setStyle(
+                                        "height",
+                                        "225px",
+                                        editor.editing.view.document.getRoot()
+                                      );
+                                    });
+                                  }}
+                                  onChange={(event, editor) => {
+                                    handleTemplate(
+                                      event,
+                                      editor.getData(),
+                                      index,
+                                      "value"
+                                    );
+                                  }}
+                                  onFocus={(event, editor) => {
+                                    setCurrentEditor(editor);
+                                  }}
+                                />
+                                {act.inputIntelliSenseOptions.length > 0 ? (
+                                  <Menu
+                                    id={`Menu${act.name}_${index}`}
+                                    keepMounted
+                                    open={stateContextMenu.mouseY !== null}
+                                    onClose={handleCloseContextMenu}
+                                    anchorReference="anchorPosition"
+                                    anchorPosition={
+                                      stateContextMenu.mouseY !== null &&
+                                      stateContextMenu.mouseX !== null
+                                        ? {
+                                            top: stateContextMenu.mouseY,
+                                            left: stateContextMenu.mouseX,
+                                          }
+                                        : undefined
+                                    }
+                                  >
+                                    {act.inputIntelliSenseOptions.length > 0 ? (
+                                      act.inputIntelliSenseOptions.map(
+                                        (opt) => {
+                                          return (
+                                            <MenuItem
+                                              onClick={() =>
+                                                handleClickContextMenuOption(
+                                                  opt,
+                                                  index,
+                                                  "value"
+                                                )
+                                              }
+                                            >
+                                              {opt}
+                                            </MenuItem>
+                                          );
+                                        }
+                                      )
+                                    ) : (
+                                      <MenuItem>No options</MenuItem>
+                                    )}
+                                  </Menu>
+                                ) : (
+                                  ""
+                                )}
+                              </Grid>
+                            </Grid>
+                          );
+                        }
+                      })
                     : ""}
                 </Grid>
               </div>
