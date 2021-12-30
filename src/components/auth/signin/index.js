@@ -101,7 +101,7 @@ function Signin(props) {
           authApiCall
             .login(loginData)
             .then((response) => {
-              let authLoginData = { isLoggedOut: false, tokenType: "Web" };
+              let authLoginData = { isLoggedOut: false, tokenType: "web" };
               authApiCall
                 .UpdateConcurrentLoginForAuth(authLoginData)
                 .then((response) => {
