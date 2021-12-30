@@ -413,7 +413,7 @@ function AdminLayout(props) {
   };
 
   const UseLogOut = () => {
-    let authLoginData = { isLoggedOut: true, DeviceType: "Web" };
+    let authLoginData = { isLoggedOut: true, tokenType: "Web" };
     authApiCall
       .UpdateConcurrentLoginForAuth(authLoginData)
       .then((response) => {
