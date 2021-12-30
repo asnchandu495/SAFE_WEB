@@ -393,13 +393,15 @@ function FaqSections(props) {
                                     id={`answer_${i}`}
                                     name="answer"
                                     onReady={(editor) => {
-                                      editor.editing.view.change((writer) => {
-                                        writer.setStyle(
-                                          "height",
-                                          "225px",
-                                          editor.editing.view.document.getRoot()
-                                        );
-                                      });
+                                      if (editor != null) {
+                                        editor.editing.view.change((writer) => {
+                                          writer.setStyle(
+                                            "height",
+                                            "225px",
+                                            editor.editing.view.document.getRoot()
+                                          );
+                                        });
+                                      }
                                     }}
                                     onChange={(event, editor) => {
                                       handleTemplate(

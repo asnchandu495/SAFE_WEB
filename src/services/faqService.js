@@ -44,6 +44,16 @@ export default class FaqService {
       return Promise.resolve(res);
     });
   }
+  deleteSectionFaq(data) {
+    // var deleteFinalData = data;
+    var deleteFinalData = JSON.stringify(data);
+    return this.fetch(`${this.baseURL}/FAQ/DeleteFaqSection`, {
+      method: "DELETE",
+      body: deleteFinalData,
+    }).then((res) => {
+      return Promise.resolve(res);
+    });
+  }
 
   deleteSelectedPublishFaq(data) {
     return this.fetch(`${this.baseURL}/FAQ/DeleteFaq/` + data, {
@@ -171,7 +181,9 @@ export default class FaqService {
       } else if (response.status === 500) {
         window.location.href = "/InternalServerError";
       } else if (response.status === 401) {
-        alert("You have been signed out because either your last session expired or you are currently signed in on another device.");
+        alert(
+          "You have been signed out because either your last session expired or you are currently signed in on another device."
+        );
         localStorage.removeItem("id_token");
         localStorage.removeItem("id_tokenExpiry");
         window.location.href = "/";

@@ -197,13 +197,13 @@ function ViewLocation(props) {
                   </Grid>
                   <Grid item xs={7}>
                     {props.selectedLocationDetails &&
-                      props.selectedLocationDetails[3]
+                    props.selectedLocationDetails[3]
                       ? "Active"
                       : "Inactive"}
                   </Grid>
                 </Grid>
                 {props.selectedLocationDetails &&
-                  props.selectedLocationDetails[3] ? (
+                props.selectedLocationDetails[3] ? (
                   <>
                     <Grid item cs={12} container>
                       <Grid item xs={12}>
@@ -273,9 +273,10 @@ function ViewLocation(props) {
                         <label>to</label>
                       </Grid>
                       <Grid item xs={1}>
-                        {props.selectedLocationDetails
-                          ? props.selectedLocationDetails[9]
-                          : ""}
+                        {props.selectedLocationDetails &&
+                        props.selectedLocationDetails[9] == -1
+                          ? "No Limit"
+                          : props.selectedLocationDetails[9]}
                       </Grid>
                     </Grid>
                   </>

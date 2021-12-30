@@ -238,11 +238,12 @@ function CreateUser(props) {
           setBusinessUserRoleMasterData(getUserRoles);
           setUserPrimaryGroupMasterData(UserGroup);
           setUserSecondaryGroupMasterData(UserGroup);
-          setAllSupervisorRole(
-            getAllSuperVisor.filter(function (sup) {
-              return sup.applicationUserId != getUserloggedDetails.id;
-            })
-          );
+          // setAllSupervisorRole(
+          //   getAllSuperVisor.filter(function (sup) {
+          //     return sup.applicationUserId != getUserloggedDetails.id;
+          //   })
+          // );
+          setAllSupervisorRole(getAllSuperVisor);
           setUserPrimaryGroupMasterDataOriginal(UserGroup);
           setUserSecondaryGroupMasterDataOriginal(UserGroup);
           setcomponentLoadder(false);

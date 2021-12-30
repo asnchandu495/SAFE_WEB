@@ -69,13 +69,28 @@ function ViewFaq(props) {
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [selectedFaqDetails, setSelectedFaqDetails] = useState({});
   const [expandedFaq, setExpandedFaq] = useState("panel0");
+  const [reloadPage, setReloadPage] = useState("NO");
 
   useEffect(() => {
-    faqApiCall
-      .getFaqById(props.match.params.id)
+    // faqApiCall
+    //   .getFaqById(props.match.params.id)
+    //   .then((res) => {
+    //     setSelectedFaqDetails(res);
+    //     setcomponentLoadder(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    setcomponentLoadder(true);
+    props
+      .LoadByID(props.match.params.id)
       .then((res) => {
-        setSelectedFaqDetails(res);
-        setcomponentLoadder(false);
+        if (props.FaqData != "" || props.FaqData != undefined)
+          setSelectedFaqDetails(props.FaqData);
+
+        setTimeout(() => {
+          setcomponentLoadder(false);
+        }, 5000);
       })
       .catch((err) => {
         console.log(err);
@@ -133,15 +148,15 @@ function ViewFaq(props) {
   };
 
   function editFaqBasics() {
-    props.history.push(`/faq/add-faq/${selectedFaqDetails.id}`);
+    props.history.push(`/faq/add-faq/${props.FaqData.id}`);
   }
 
   function addNewSection() {
-    props.history.push(`/faq/faq-sections/${selectedFaqDetails.id}/0`);
+    props.history.push(`/faq/faq-sections/${props.FaqData.id}/0`);
   }
 
   function editSection(getId) {
-    props.history.push(`/faq/faq-sections/${selectedFaqDetails.id}/${getId}`);
+    props.history.push(`/faq/faq-sections/${props.FaqData.id}/${getId}`);
   }
 
   // function deleteSection(getId, getName) {
@@ -155,6 +170,18 @@ function ViewFaq(props) {
   //     `Are you sure you want to delete ${getName} ?`
   //   );
   // }
+
+  function deleteSection(secID, getFaqId, secName) {
+    let sendData = [];
+    sendData.push(secID, getFaqId);
+    setSelectedRowDetails(sendData);
+    setOpenConfirmationModal(true);
+    setConfirmationModalActionType("DeleteSection");
+    setConfirmationHeaderTittle("Delete FAQ Section");
+    setConfirmationDialogContextText(
+      `Are you sure you want to delete ${secName} ?`
+    );
+  }
 
   return (
     <div className="innerpage-container">
@@ -182,10 +209,10 @@ function ViewFaq(props) {
           aria-current="page"
           className="active"
         >
-          {selectedFaqDetails.title}
+          {props.FaqData != undefined ? props.FaqData.title : ""}
         </LinkTo>
       </Breadcrumbs>
-      {componentLoadder ? (
+      {componentLoadder || props.FaqData == "" || props.FaqData == undefined ? (
         <ComponentLoadderComponent />
       ) : (
         <Grid container spacing={3} className="view-faq">
@@ -222,7 +249,11 @@ function ViewFaq(props) {
                         <label>Title</label>
                       </Grid>
                       <Grid item xs={5}>
-                        <span>{selectedFaqDetails.title}</span>
+                        <span>
+                          {props.FaqData != undefined
+                            ? props.FaqData.title
+                            : ""}
+                        </span>
                       </Grid>
                     </Grid>
                     <Grid item container xs={12}>
@@ -230,7 +261,11 @@ function ViewFaq(props) {
                         <label>Language</label>
                       </Grid>
                       <Grid item xs={5}>
-                        <span>{selectedFaqDetails.language}</span>
+                        <span>
+                          {props.FaqData != undefined
+                            ? props.FaqData.language
+                            : ""}
+                        </span>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -238,80 +273,96 @@ function ViewFaq(props) {
               </Grid>
             </Paper>
             <Paper className="view-faq-paper-section">
-              {selectedFaqDetails.sections.map((sec, i) => {
-                let thisPanel = "panel" + i;
-                return (
-                  <Accordion
-                    square
-                    expanded={expandedFaq === thisPanel}
-                    onChange={handleChangeFaqSection(thisPanel)}
-                  >
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      aria-controls="panel1bh-content"
-                      id="panel1bh-header"
-                    >
-                      <Typography className="section-heading">
-                        {sec.sectionName}
-                        <Tooltip title={sec.sectionDescription}>
-                          <Button
-                            className="edit-icon-faq"
-                            type="button"
-                            startIcon={<InfoIcon />}
-                          ></Button>
-                        </Tooltip>
-                        <Tooltip title="Edit section">
-                          <Button
-                            className="create-icon-faq"
-                            type="button"
-                            startIcon={<EditIcon />}
-                            onClick={() => editSection(sec.id)}
-                          ></Button>
-                        </Tooltip>
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Grid container item xs={12}>
-                        {sec.questions && sec.questions.length > 0
-                          ? sec.questions.map((x, i) => {
-                              return (
-                                <Grid
-                                  container
-                                  spacing={1}
-                                  item
-                                  xs={12}
-                                  key={`section-container${i}`}
-                                  className="question-container"
-                                >
-                                  <Grid
-                                    item
-                                    xs={1}
-                                    className="question-icon-container"
-                                  >
-                                    <HelpIcon></HelpIcon>
-                                  </Grid>
-                                  <Grid item xs={11}>
-                                    <p className="question-name">
-                                      {x.questionName}
-                                    </p>
-                                    <p className="question-answer">
-                                      {/* {x.answer} */}
-                                      <div
-                                        dangerouslySetInnerHTML={{
-                                          __html: x.answer,
-                                        }}
-                                      />
-                                    </p>
-                                  </Grid>
-                                </Grid>
-                              );
-                            })
-                          : ""}
-                      </Grid>
-                    </AccordionDetails>
-                  </Accordion>
-                );
-              })}
+              {props.FaqData != undefined && props.FaqData.sections != undefined
+                ? props.FaqData.sections.map((sec, i) => {
+                    let thisPanel = "panel" + i;
+                    return (
+                      <Accordion
+                        square
+                        expanded={expandedFaq === thisPanel}
+                        onChange={handleChangeFaqSection(thisPanel)}
+                      >
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1bh-content"
+                          id="panel1bh-header"
+                        >
+                          <Typography className="section-heading">
+                            {sec.sectionName}
+                            <Tooltip title={sec.sectionDescription}>
+                              <Button
+                                className="edit-icon-faq"
+                                type="button"
+                                startIcon={<InfoIcon />}
+                              ></Button>
+                            </Tooltip>
+                            <Tooltip title="Edit section">
+                              <Button
+                                className="create-icon-faq"
+                                type="button"
+                                startIcon={<EditIcon />}
+                                onClick={() => editSection(sec.id)}
+                              ></Button>
+                            </Tooltip>
+                            <Tooltip title="Delete section">
+                              <Button
+                                className="delete-icon-faq"
+                                type="button"
+                                startIcon={<DeleteIcon />}
+                                onClick={() =>
+                                  deleteSection(
+                                    sec.id,
+                                    getFaqId,
+                                    sec.sectionName
+                                  )
+                                }
+                              ></Button>
+                            </Tooltip>
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Grid container item xs={12}>
+                            {sec.questions && sec.questions.length > 0
+                              ? sec.questions.map((x, i) => {
+                                  return (
+                                    <Grid
+                                      container
+                                      spacing={1}
+                                      item
+                                      xs={12}
+                                      key={`section-container${i}`}
+                                      className="question-container"
+                                    >
+                                      <Grid
+                                        item
+                                        xs={1}
+                                        className="question-icon-container"
+                                      >
+                                        <HelpIcon></HelpIcon>
+                                      </Grid>
+                                      <Grid item xs={11}>
+                                        <p className="question-name">
+                                          {x.questionName}
+                                        </p>
+                                        <p className="question-answer">
+                                          {/* {x.answer} */}
+                                          <div
+                                            dangerouslySetInnerHTML={{
+                                              __html: x.answer,
+                                            }}
+                                          />
+                                        </p>
+                                      </Grid>
+                                    </Grid>
+                                  );
+                                })
+                              : ""}
+                          </Grid>
+                        </AccordionDetails>
+                      </Accordion>
+                    );
+                  })
+                : ""}
             </Paper>
           </Grid>
         </Grid>
@@ -323,6 +374,18 @@ function ViewFaq(props) {
         toasterServerity={toasterServerity}
         toasterErrorMessageType={toasterErrorMessageType}
       />
+      <ConfirmationDialog
+        openConfirmationModal={openConfirmationModal}
+        ConfirmationHeaderTittle={ConfirmationHeaderTittle}
+        ConfirmationDialogContextText={ConfirmationDialogContextText}
+        setOpenConfirmationModal={setOpenConfirmationModal}
+        setStateSnackbar={setStateSnackbar}
+        setToasterMessage={setToasterMessage}
+        settoasterServerity={settoasterServerity}
+        ConfirmationModalActionType={ConfirmationModalActionType}
+        SelectedRowDetails={SelectedRowDetails}
+        setReloadPage={setReloadPage}
+      />
     </div>
   );
 }
@@ -333,6 +396,7 @@ ViewFaq.propTypes = {
   getGridsPages: PropTypes.func.isRequired,
   gridState: PropTypes.array.isRequired,
   updateGridsPages: PropTypes.func.isRequired,
+  LoadByID: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -347,6 +411,7 @@ const mapDispatchToProps = {
   LoadData: faqAction.loadFaq,
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
+  LoadByID: faqAction.loadGetFAQ,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewFaq);

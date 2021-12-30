@@ -221,7 +221,7 @@ function AdminLayout(props) {
       .then(([loadsetting, loadgrid, loadacm, getNotificationDetails]) => {
         setnotificationList(getNotificationDetails);
       })
-      .catch((err) => { });
+      .catch((err) => {});
     if (window.performance) {
       if (performance.type == 1) {
         props.loadGlobalSetting();
@@ -413,7 +413,7 @@ function AdminLayout(props) {
   };
 
   const UseLogOut = () => {
-    let authLoginData = { isLoggedOut: true };
+    let authLoginData = { isLoggedOut: true, DeviceType: "Web" };
     authApiCall
       .UpdateConcurrentLoginForAuth(authLoginData)
       .then((response) => {
@@ -424,7 +424,7 @@ function AdminLayout(props) {
         localStorage.clear();
         props.history.push("/");
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   const menuId = "primary-search-account-menu";
@@ -530,7 +530,7 @@ function AdminLayout(props) {
         }
         setModalOpen(false);
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   const LoadMenus = (props) => {
@@ -1867,19 +1867,20 @@ function AdminLayout(props) {
                 <ul>
                   {notificationList && notificationList.getAllList
                     ? notificationList.getAllList.map((data) => (
-                      <li
-                        className={`${data.isRead ? "" : "notification-unread"
+                        <li
+                          className={`${
+                            data.isRead ? "" : "notification-unread"
                           }`}
-                        onClick={() => dislayNotificationMessage(data)}
-                        key={`notification_${data.id}`}
-                      >
-                        {data.message.substring(0, 70) + "..."}
-                        <br />
-                        <span className="notification-Settings">
-                          {moment.parseZone(data.messageDateTime).fromNow()}
-                        </span>
-                      </li>
-                    ))
+                          onClick={() => dislayNotificationMessage(data)}
+                          key={`notification_${data.id}`}
+                        >
+                          {data.message.substring(0, 70) + "..."}
+                          <br />
+                          <span className="notification-Settings">
+                            {moment.parseZone(data.messageDateTime).fromNow()}
+                          </span>
+                        </li>
+                      ))
                     : "There are no notifications"}
                 </ul>
               </Popover>
@@ -1942,7 +1943,7 @@ function AdminLayout(props) {
               }}
             />
           )}
-        // autoHeight
+          // autoHeight
         >
           <div className={`${classes.drawerContainer} side-menu`}>
             <List>

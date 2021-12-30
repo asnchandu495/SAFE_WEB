@@ -677,6 +677,25 @@ label.required {
   .faq-title {
     border-bottom: 1px solid #f5f5f5;
   }
+  .delete-icon-faq {
+    background: var(--danger-de1b54) 0% 0% no-repeat padding-box;
+    min-width: 25px !important;
+    padding: 2px 4px 2px 6px !important;
+    border-radius: 2px !important;
+    margin-left: 7px;
+    color: #fff;
+    .MuiButton-startIcon {
+      margin-right: 0 !important;
+    }
+    .MuiSvgIcon-root {
+      height: 15px !important;
+      width: 15px !important;
+    }
+    &:hover {
+      background: var(--danger-de1b54) 0% 0% no-repeat padding-box;
+      color: #fff;
+    }
+  }
   .edit-icon-faq {
     background: var(--info-17a2b8) 0% 0% no-repeat padding-box;
     min-width: 25px !important;
@@ -1187,7 +1206,7 @@ label.required {
 .report-pickers {
   .MuiInputBase-input {
     padding: 10px !important;
-    &:focus{
+    &:focus {
       padding: 10px !important;
     }
   }
@@ -1596,31 +1615,31 @@ label.required {
   }
 }
 
-.no-pointer-events{
+.no-pointer-events {
   pointer-events: none !important;
 }
 
-.change-password-form{
-  .global-input{
+.change-password-form {
+  .global-input {
     border: none !important;
     height: auto !important;
-    .MuiOutlinedInput-input{
+    .MuiOutlinedInput-input {
       border: 1px solid #e0e0e0 !important;
     }
   }
 }
 
-.select-validator{
-  .MuiInput-root{
+.select-validator {
+  .MuiInput-root {
     height: 36px !important;
   }
-  .MuiInput-underline:hover:not(.Mui-disabled):before{
-      border-bottom: none;
-  }
-  .MuiInput-underline:before{
+  .MuiInput-underline:hover:not(.Mui-disabled):before {
     border-bottom: none;
   }
-  .MuiInput-underline:after{
+  .MuiInput-underline:before {
+    border-bottom: none;
+  }
+  .MuiInput-underline:after {
     border-bottom: none;
   }
   .MuiInputBase-input {
@@ -1634,10 +1653,10 @@ label.required {
   }
 }
 
-.no-questions-pub{
+.no-questions-pub {
   display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 90%;
-    flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
+  flex-direction: column;
 }

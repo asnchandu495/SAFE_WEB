@@ -136,6 +136,33 @@ function CustomizedDialogs(props) {
           setshowLoadder(false);
           toasterErrorMessage(error);
         });
+    } else if (props.ConfirmationModalActionType == "DeleteSection") {
+      setshowLoadder(true);
+
+      var thisSectionId = props.SelectedRowDetails[0];
+      var thisFaqId = props.SelectedRowDetails[1];
+
+      let obj = {
+        id: `${thisFaqId}`,
+        sectionId: `${thisSectionId}`,
+      };
+
+      props
+        .DeleteSection(obj)
+        .then((result) => {
+          props.setStateSnackbar(true);
+          props.setToasterMessage("Deleted Section.");
+          props.settoasterServerity("success");
+          props.setOpenConfirmationModal(false);
+          props.setReloadPage("YES");
+
+          setshowLoadder(false);
+        })
+        .catch((error) => {
+          console.log("error", error);
+          setshowLoadder(false);
+          toasterErrorMessage(error);
+        });
     } else if (props.ConfirmationModalActionType == "DeleteUserGroup") {
       setshowLoadder(true);
       var thisId = props.SelectedRowDetails[0];
@@ -796,6 +823,7 @@ CustomizedDialogs.propTypes = {
   DeleteSelectedQuestion: PropTypes.func.isRequired,
   DeleteDateQuestionData: PropTypes.func.isRequired,
   PublishFAQ: PropTypes.func.isRequired,
+  DeleteSection: PropTypes.func.isRequired,
 };
 function mapStateToProps(state, ownProps) {}
 
@@ -835,6 +863,7 @@ const mapDispatchToProps = {
   PublishWorkflow: WorkflowAction.PublishWorkflow,
 
   PublishFAQ: PublishFAQAction.PublishFAQ,
+  DeleteSection: FaqAction.deleteFaqSection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CustomizedDialogs);
