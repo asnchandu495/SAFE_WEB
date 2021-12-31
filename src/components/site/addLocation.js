@@ -799,18 +799,23 @@ function AddLocation(props) {
                       InputLabelProps={{ shrink: false }}
                       disabled={
                         !formData.isRLAPActive ||
-                        formData.HightTemperatureNoLimit ||
+                        // formData.HightTemperatureNoLimit ||
                         formData.densityThreasholdHighTo == -1
                       }
                     />
                   </Grid>
+
                   <Grid item xs={2} style={{ paddingLeft: 10 }}>
                     <FormControlLabel
                       control={
                         <Checkbox
                           checked={
-                            formData.HightTemperatureNoLimit ||
-                            formData.densityThreasholdHighTo == -1
+                            (formData.isRLAPActive &&
+                              formData.HightTemperatureNoLimit &&
+                              formData.densityThreasholdHighTo != 0) ||
+                            (formData.isRLAPActive &&
+                              formData.densityThreasholdHighTo == -1 &&
+                              formData.densityThreasholdHighTo != 0)
                           }
                           onChange={handleChange}
                           name="HightTemperatureNoLimit"

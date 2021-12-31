@@ -194,6 +194,7 @@ function ConfigureHealth(props) {
   const handleChangeSearchForm = (getSelectedVal, name) => {
     let thisValue = "";
     var nextday = "";
+
     if (name == "userId") {
       if (getSelectedVal) {
         // thisValue = getSelectedVal.id;
@@ -201,6 +202,16 @@ function ConfigureHealth(props) {
       } else {
         thisValue = "";
       }
+    } else if (name == "fromDate") {
+      var fromDateTimezoneFormat = moment(getSelectedVal).utcOffset(0);
+      fromDateTimezoneFormat.set({
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
+
+      thisValue = fromDateTimezoneFormat.toISOString();
     } else {
       thisValue = moment(getSelectedVal).toISOString();
     }
@@ -225,7 +236,19 @@ function ConfigureHealth(props) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
+
     searchForm.userId = selectedUserDetails;
+    let fromDatedefaultZone = searchForm.fromDate;
+    let setTimeZoneFormat = moment(fromDatedefaultZone).utcOffset(0);
+    setTimeZoneFormat.set({
+      hour: 0,
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    });
+
+    searchForm.fromDate = setTimeZoneFormat.toISOString();
+
     setComponentLoadder(true);
     HealthCheckApiCall.getUserHealthChecks(searchForm)
       .then((healthChecks) => {
