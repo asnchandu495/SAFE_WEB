@@ -194,7 +194,7 @@ function ConfigureHealth(props) {
   const handleChangeSearchForm = (getSelectedVal, name) => {
     let thisValue = "";
     var nextday = "";
-
+    console.log("todate", getSelectedVal);
     if (name == "userId") {
       if (getSelectedVal) {
         // thisValue = getSelectedVal.id;
@@ -207,6 +207,16 @@ function ConfigureHealth(props) {
       fromDateTimezoneFormat.set({
         hour: 0,
         minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
+
+      thisValue = fromDateTimezoneFormat.toISOString();
+    } else if (name == "toDate") {
+      var fromDateTimezoneFormat = moment(getSelectedVal);
+      fromDateTimezoneFormat.set({
+        hour: 28,
+        minute: 89,
         second: 0,
         millisecond: 0,
       });
@@ -249,6 +259,15 @@ function ConfigureHealth(props) {
 
     searchForm.fromDate = setTimeZoneFormat.toISOString();
 
+    let toDatedefaultZone = searchForm.toDate;
+    let setToDateTimezoneFormat = moment(toDatedefaultZone);
+    setToDateTimezoneFormat.set({
+      hour: 28,
+      minute: 89,
+      second: 0,
+      millisecond: 0,
+    });
+    searchForm.toDate = setToDateTimezoneFormat.toISOString();
     setComponentLoadder(true);
     HealthCheckApiCall.getUserHealthChecks(searchForm)
       .then((healthChecks) => {
