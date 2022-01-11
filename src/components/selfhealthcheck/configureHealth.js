@@ -215,8 +215,8 @@ function ConfigureHealth(props) {
     } else if (name == "toDate") {
       var fromDateTimezoneFormat = moment(getSelectedVal);
       fromDateTimezoneFormat.set({
-        hour: 28,
-        minute: 89,
+        hour: 23,
+        minute: 59,
         second: 0,
         millisecond: 0,
       });
@@ -262,8 +262,8 @@ function ConfigureHealth(props) {
     let toDatedefaultZone = searchForm.toDate;
     let setToDateTimezoneFormat = moment(toDatedefaultZone);
     setToDateTimezoneFormat.set({
-      hour: 28,
-      minute: 89,
+      hour: 23,
+      minute: 59,
       second: 0,
       millisecond: 0,
     });
