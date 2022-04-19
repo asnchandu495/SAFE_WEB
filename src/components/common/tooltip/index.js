@@ -30,6 +30,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+Tooltip component 
+common  Info Component  to display on click of hover
+ * @param  {} props
+ */
 function TooltipComponent(props) {
   const classes = useStyles();
 

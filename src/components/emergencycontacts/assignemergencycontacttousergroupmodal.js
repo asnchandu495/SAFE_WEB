@@ -32,6 +32,7 @@ const userStatusData = [
   { id: "002", name: "Inactive" },
 ];
 
+//Styling
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -117,28 +118,39 @@ function AssignEmergencyContactToUserGroup(props) {
   useEffect(() => {
     props
       .LoadAllUserGroup()
-      .then((result) => { })
+      .then((result) => {})
       .catch((err) => {
         console.log(err);
       });
     props
       .LoadAllEmergencyContactList([])
-      .then((result) => { })
+      .then((result) => {})
       .catch((err) => {
         console.log(err);
       });
     setvalidEmergencyContactForm(true);
   }, []);
-
+  /**
+  Handle close 
+  * Method to close the popup modal and reset the form data
+   */
   const handleClose = () => {
     props.setopenAssignEmergencyContactModal(false);
     resetEmergencyContactFormData();
   };
-
+  /**
+   * Reset Emergency Contact Form Data
+   * Method to reset the form data
+   */
   function resetEmergencyContactFormData() {
     SetformData(resetformData);
   }
 
+  /**
+   * Handle Change
+   * Method data binding with the  form fields
+   * @param  {} e
+   */
   function handleChange(e) {
     let selectedText = e.nativeEvent.target.childNodes[0].data;
     const { name, value } = e.target;
@@ -165,9 +177,18 @@ function AssignEmergencyContactToUserGroup(props) {
       [name]: value,
     }));
   }
+  /**
+  Reset filter form
+   * Method to reset
+   */
   function resetFilterForm() {
     SetformData(resetformData);
   }
+
+  /**
+   * Assign Emergency contactform
+   * After form submit validate and call the methos submitAssignEmergencyContact()
+   */
   function AssignEmegencyContactForm() {
     if (
       formData.groupId &&
@@ -180,7 +201,10 @@ function AssignEmergencyContactToUserGroup(props) {
       return false;
     }
   }
-
+  /**
+   * Submit Assign emergency contact
+   * Method to swtich the status for a emergency contact
+   */
   function submitAssignEmergencyContact() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -255,15 +279,15 @@ function AssignEmergencyContactToUserGroup(props) {
                         <MenuItem value="">None</MenuItem>
                         {props.UserGroupData.length > 0
                           ? props.UserGroupData.map((userGroup) => {
-                            return (
-                              <MenuItem
-                                key={userGroup.id}
-                                value={userGroup.id}
-                              >
-                                {userGroup.groupName}
-                              </MenuItem>
-                            );
-                          })
+                              return (
+                                <MenuItem
+                                  key={userGroup.id}
+                                  value={userGroup.id}
+                                >
+                                  {userGroup.groupName}
+                                </MenuItem>
+                              );
+                            })
                           : ""}
                       </Select>
                     </FormControl>
@@ -303,19 +327,19 @@ function AssignEmergencyContactToUserGroup(props) {
                         <MenuItem value="">None</MenuItem>
                         {props.loadEmergencyContacts.length > 0
                           ? props.loadEmergencyContacts.map(
-                            (emergencyContact) => {
-                              return (
-                                <MenuItem value={emergencyContact.id}>
-                                  {emergencyContact.title}
-                                </MenuItem>
-                              );
-                            }
-                          )
+                              (emergencyContact) => {
+                                return (
+                                  <MenuItem value={emergencyContact.id}>
+                                    {emergencyContact.title}
+                                  </MenuItem>
+                                );
+                              }
+                            )
                           : ""}
                       </Select>
                     </FormControl>
                     {!validEmergencyContactForm &&
-                      !formData.emergencyContactName ? (
+                    !formData.emergencyContactName ? (
                       <FormHelperText className="error-message-select">
                         Please select emergency contact{" "}
                       </FormHelperText>
@@ -349,12 +373,12 @@ function AssignEmergencyContactToUserGroup(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                            return (
-                              <MenuItem value={UserStatus.id}>
-                                {UserStatus.name}
-                              </MenuItem>
-                            );
-                          })
+                              return (
+                                <MenuItem value={UserStatus.id}>
+                                  {UserStatus.name}
+                                </MenuItem>
+                              );
+                            })
                           : ""}
                       </Select>
                     </FormControl>
@@ -402,6 +426,7 @@ function AssignEmergencyContactToUserGroup(props) {
   );
 }
 
+//Validate the data recieved from the props
 AssignEmergencyContactToUserGroup.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
@@ -414,6 +439,7 @@ AssignEmergencyContactToUserGroup.propTypes = {
   LoadAllEmergencyContactList: PropTypes.func.isRequired,
 };
 
+//Update the redux the store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
@@ -422,6 +448,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
   UpdateAssignEmegencyContactr:
@@ -433,6 +460,7 @@ const mapDispatchToProps = {
     EmergencyContactAction.LoadAllEmergencyContactList,
 };
 
+//Connect the component with redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps

@@ -60,6 +60,11 @@ function AddDesignation(props) {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
+  /**
+   * User Basic Info
+   * Method to add or update a designation details
+   * @param  {} e
+   */
   function UserBasicInfo(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -109,7 +114,12 @@ function AddDesignation(props) {
         });
     }
   }
-
+  /**
+   * Handle Change
+   * Data binding of the form fields
+   * Also calls the check unique function
+   * @param  {} e
+   */
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -121,7 +131,11 @@ function AddDesignation(props) {
       [name]: value,
     }));
   }
-
+  /**
+   * Check Unque Name
+   * Check if any duplicate designation   exists
+   * @param  {} value-{designationname}
+   */
   function checkUnqueName(value) {
     if (props.match.params.id != 0) {
       if (props.userGroupDatas && props.userGroupDatas.length > 0) {
@@ -155,6 +169,10 @@ function AddDesignation(props) {
     props.history.push(getRoute);
   }
 
+  /**
+   * Redirect To view Usergroup
+   * Method to redirect to on click of cancel
+   */
   function redirectToViewUsersGroup() {
     props.history.push("/designation/all-designation");
   }
@@ -339,16 +357,25 @@ function AddDesignation(props) {
   );
 }
 
+/**
+ * Get Usergroup Id
+ * Method to find the user on id return 1st  matched element
+ * @param  {} users-- designation id from object
+ * @param  {} id--- with id
+ */
+
 export function getUserGroupById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
 
+//Validates data which are recevied from props
 AddDesignation.propTypes = {
   LoadData: PropTypes.array.isRequired,
   AddData: PropTypes.array.isRequired,
   UpdateData: PropTypes.func.isRequired,
 };
 
+//To update the redux store and merge into props component
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -362,10 +389,12 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: UserDesignationAction.loadUserDesignation,
   AddData: UserDesignationAction.createUserDesignation,
   UpdateData: UserDesignationAction.updateUserDesignation,
 };
 
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(AddDesignation);

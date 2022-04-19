@@ -68,7 +68,11 @@ function UserGroups(props) {
         console.log(err);
       });
   }, []);
-
+  /**
+   * Handle click delete user group
+   * Method to delete a usergroup from the table
+   * @param  {} value-usergroup id
+   */
   function handleClickDeleteUserGrup(value) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -78,11 +82,18 @@ function UserGroups(props) {
       `Are you sure you want to delete ${value[1]} ?`
     );
   }
-
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
-
+  /**
+   * Table initiate
+   * Initiate the table based on props grid data(Based logged role rights)
+   */
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
       return g.name == "userGroups";
@@ -95,6 +106,7 @@ function UserGroups(props) {
     }
   };
 
+  //set the MUI table options
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -128,6 +140,7 @@ function UserGroups(props) {
     //   },
   };
 
+  //set the MUI table columns
   const columns = [
     {
       name: "id",
@@ -186,7 +199,11 @@ function UserGroups(props) {
       },
     },
   ];
-
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -277,26 +294,42 @@ function UserGroups(props) {
       }
     });
   };
-
+  //Method to redirect on click of cancel of breadcrumb link
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  /**
+   * Handle click update user group
+   * Method on click of edit button
+   * @param  {} value-usergroupid
+   */
   function handleClickUpdateUserGroup(value) {
     var groupId = value[0];
     props.history.push("/usergroups/update-usergroup/" + groupId);
   }
-
+  /**
+   * Handle click add primary to usergroup
+   * Method to add primary user to uergroup
+   * @param  {} value-usergroupID
+   */
   function handleClickaddedprimaryusertousergroup(value) {
     var groupId = value[0];
     props.history.push("/usergroups/add-primaryuser-to-usergroup/" + groupId);
   }
-
+  /**
+   * Handle click add primary to usergroup
+   * Method to add secondary user to uergroup
+   * @param  {} value-usergroupID
+   */
   function handleClickaddedsecondaryusertousergroup(value) {
     var groupId = value[0];
     props.history.push("/usergroups/add-secondaryuser-to-usergroup/" + groupId);
   }
-
+  /**
+   * Handle click view usergroup
+   * Method to redirect to view usergroup component on click of view icon
+   * @param  {} value
+   */
   function handleClickViewUserGroup(value) {
     var groupId = value[0];
     props.history.push("/usergroups/view-usergroup/" + groupId);
@@ -361,7 +394,7 @@ function UserGroups(props) {
     </div>
   );
 }
-
+//Validate the data recieved from the props
 UserGroups.propTypes = {
   UserGroupData: PropTypes.array.isRequired,
   LoadAllUserGroup: PropTypes.func.isRequired,
@@ -369,7 +402,7 @@ UserGroups.propTypes = {
   gridState: PropTypes.array.isRequired,
   updateGridsPages: PropTypes.func.isRequired,
 };
-
+//Update the redux the store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     UserGroupData: state.usergroup,
@@ -377,11 +410,11 @@ function mapStateToProps(state, ownProps) {
     acmData: state.acmData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUserGroup: UserGroupAction.loadUserGroup,
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
 };
-
+//Connect the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(UserGroups);

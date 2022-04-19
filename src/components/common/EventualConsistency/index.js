@@ -15,6 +15,10 @@ import HomeIcon from "@material-ui/icons/Home";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
+/**
+ * Material UI  Theme styling
+ * @param  {} theme
+ */
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -63,6 +67,11 @@ function CustomizedDialogs(props) {
   const [showLoadder, setshowLoadder] = useState(false);
   const history = useHistory();
 
+  /**
+   * Handle click yes
+   * Delay the redirection of certain common components using setTimeout()
+   * setTimeout calls function after certain ms
+   */
   const handleClickYes = () => {
     if (props.ConfirmationModalActionType == "Usersuccess") {
       props.setshowEventualLoadder(true);
@@ -142,6 +151,11 @@ function CustomizedDialogs(props) {
     }
   };
 
+  /**
+   * Handle Close Success
+   * Close the popup or the dialog box if clicked on No or the operation should be performed
+   * Redirect to the home screen
+   */
   const handleCloseSuccess = () => {
     props.setOpenConfirmationModal(false);
     history.push("/");

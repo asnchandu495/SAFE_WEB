@@ -1,6 +1,11 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { Prompt } from "react-router-dom";
 
+/**
+ * Alert Box Conatiner
+ * common alert message component if user redirects to another page without saving existing
+ * @param  {} props
+ */
 function AlertBoxContainer(props) {
   return (
     <Prompt

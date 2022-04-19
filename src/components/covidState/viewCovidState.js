@@ -37,7 +37,10 @@ function ViewCovidState(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  /**
+   * Handle Click Goback
+   * Method to redirect on  click of cancel
+   */
   function handleClickGoBack() {
     props.history.push("/covidstate/all-covidstate");
   }
@@ -132,14 +135,21 @@ function ViewCovidState(props) {
   );
 }
 
+/**
+ * Get Usergroup Id
+ * Method to find the user on id return 1st  matched element
+ * @param  {} users--covid state
+ * @param  {} id---id
+ */
 export function getUserGroupById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
-
+//Validates the data which is recieved fromn the props
 ViewCovidState.propTypes = {
   LoadData: PropTypes.array.isRequired,
 };
 
+//To update the redux store and merge with props component
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -154,8 +164,10 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: CovidStateAction.loadCovidState,
 };
 
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(ViewCovidState);

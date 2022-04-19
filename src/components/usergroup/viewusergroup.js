@@ -70,6 +70,7 @@ function ViewUserGroup(props) {
       });
   }, []);
 
+  //Handle change on change of tab newValue(tab index value)
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -78,10 +79,12 @@ function ViewUserGroup(props) {
     setTabValue(index);
   };
 
+  //Method to redirect to list component(index)on click of cancel
   function handleClickGoBack() {
     props.history.push("/usergroups/allusergroups");
   }
 
+  //set the MUI Datatable options
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -100,6 +103,7 @@ function ViewUserGroup(props) {
     },
   };
 
+  //set the MUI Datatable columns
   const columns = [
     {
       name: "firstName",
@@ -244,19 +248,19 @@ function ViewUserGroup(props) {
     </div>
   );
 }
-
+//Validate the data recieved from the props
 ViewUserGroup.propTypes = {
   UserGroupData: PropTypes.array.isRequired,
 };
-
+//Update the redux the store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     UserGroupData: state.usergroup,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUserGroup: UserGroupAction.loadUserGroup,
 };
-
+//Connect the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(ViewUserGroup);

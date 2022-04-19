@@ -96,7 +96,10 @@ function ListFloor(props) {
         console.log(error);
       });
   }, []);
-
+  /**
+   *  Method to edit the floor
+   * @param  {} value-{id}
+   */
   function handleClickUpdateFloor(value) {
     var userId = value[0];
     setSelectedRowId(userId);
@@ -110,15 +113,23 @@ function ListFloor(props) {
   function handleClickOpenAddFlocationPage() {
     props.history.push("/site/add-location");
   }
+  /**
+   *  Method to view  the floor details of the user by redirecting to view site component
+  
+   */
   function handleClickViewUsers() {
     let value = siteId;
     props.history.push("/site/view-site/" + value);
   }
-
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage-{currentRowsPerPage-5}
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
-
+  //Method to set the mui table options
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -221,7 +232,12 @@ function ListFloor(props) {
       },
     },
   ];
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-{id}
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -320,23 +336,23 @@ function ListFloor(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 ListFloor.propTypes = {
   FloorData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
   DeleteSiteFloor: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     FloorData: state.FloorState,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: AddFloorAction.loadFloor,
   LoadEmptyData: AddFloorAction.loadFloorWithEmptyData,
   DeleteSiteFloor: SiteAction.deleteSiteFloor,
 };
-
+//connects the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(ListFloor);

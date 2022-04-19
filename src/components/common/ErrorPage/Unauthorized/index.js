@@ -27,6 +27,10 @@ function Unauthorized(props) {
   localStorage.removeItem("id_token");
   localStorage.removeItem("id_tokenExpiry");
 
+  /**
+   * Login Page
+   * Redirect to login if unauthorised
+   */
   function LoginPage() {
     localStorage.removeItem("id_token");
     localStorage.removeItem("id_tokenExpiry");

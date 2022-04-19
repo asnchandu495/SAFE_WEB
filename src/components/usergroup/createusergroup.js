@@ -51,7 +51,11 @@ function CreateUserGroup(props) {
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
-
+  /**
+   * User basic info
+   * Method to add or update a user group
+   * @param  {} e
+   */
   function UserBasicInfo(e) {
     setshowLoadder(true);
     e.preventDefault();
@@ -99,7 +103,11 @@ function CreateUserGroup(props) {
         });
     }
   }
-
+  /**
+   * Handle change
+   * Binding data with the form fields also calls the check unique function
+   * @param  {} e
+   */
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -111,7 +119,7 @@ function CreateUserGroup(props) {
       [name]: value,
     }));
   }
-
+  //Method to check if there's any duplicacy in the usergroup name
   function checkUnqueName(value) {
     if (props.match.params.id != 0) {
       if (props.userGroupDatas && props.userGroupDatas.length > 0) {
@@ -140,7 +148,7 @@ function CreateUserGroup(props) {
       }
     }
   }
-
+  //Method to redirect to  on click of cancel
   function redirectToViewUsersGroup() {
     props.history.push("/usergroups/allusergroups");
   }
@@ -269,11 +277,16 @@ function CreateUserGroup(props) {
     </div>
   );
 }
-
+/**
+ * Get user group By Id
+ * Method to find the conatct user on id return 1st  matched element
+ * @param  {} users--   usergroupid
+ * @param  {} id---id
+ */
 export function getUserGroupById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
-
+//Validate the data recieved from the props
 CreateUserGroup.propTypes = {
   userGroupDatas: PropTypes.array.isRequired,
   userGroupData: PropTypes.array.isRequired,
@@ -281,7 +294,7 @@ CreateUserGroup.propTypes = {
   AddUserGroup: PropTypes.func.isRequired,
   UpdateUserGroup: PropTypes.func.isRequired,
 };
-
+//Update the redux the store and merge them into props
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -294,11 +307,11 @@ function mapStateToProps(state, ownProps) {
     userGroupDatas: state.usergroup,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUserGroup: UserGroupAction.loadUserGroup,
   AddUserGroup: UserGroupAction.createUserGroup,
   UpdateUserGroup: UserGroupAction.updateUserGroup,
 };
-
+//Connect the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CreateUserGroup);

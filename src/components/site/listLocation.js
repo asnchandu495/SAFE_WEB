@@ -332,7 +332,12 @@ function ListSite(props) {
       },
     },
   ];
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-{id}
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -438,20 +443,20 @@ function ListSite(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 ListSite.propTypes = {
   LocationData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     LocationData: state.LocationState,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: UserLocationAction.loadLocation,
 };
-
+//connects the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(ListSite);

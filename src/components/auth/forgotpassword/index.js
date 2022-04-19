@@ -16,12 +16,15 @@ export default function ForgotPassword(props) {
   });
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [toasterServerity, settoasterServerity] = useState("");
   const [showLoadder, setshowLoadder] = useState(false);
-
+  /**
+   * Handle Change
+   * Text
+   * @param  {} e
+   */
   function handleChange(e) {
     const { name, value } = e.target;
     SetformData((forgotPasswordForm) => ({
@@ -29,7 +32,10 @@ export default function ForgotPassword(props) {
       [name]: value,
     }));
   }
+  /**
+    * Handle Submit
 
+   */
   function handleSubmit() {
     setshowLoadder(true);
     authApiCall

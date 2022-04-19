@@ -1,11 +1,13 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Modal from "@material-ui/core/Modal";
 
+//Function to generate a randon number
 function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
 
+//Setting the modal styles
 function getModalStyle() {
   const top = 50 + rand();
   const left = 50 + rand();
@@ -19,10 +21,10 @@ function getModalStyle() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: 'absolute',
+    position: "absolute",
     width: 400,
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
+    border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
@@ -38,6 +40,7 @@ export default function SimpleModal(props) {
     setOpen(true);
   };
 
+  //Method to close the popup modal
   const handleClose = () => {
     setOpen(false);
     props.setopenModal(false);

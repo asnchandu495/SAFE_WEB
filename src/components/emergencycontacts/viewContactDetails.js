@@ -148,13 +148,19 @@ function ViewEmergencyContactDetails(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 ViewEmergencyContactDetails.propTypes = {
   addEmergencyContact: PropTypes.func.isRequired,
   emergencyContactData: PropTypes.object.isRequired,
   loadEmergencyContacts: PropTypes.array.isRequired,
 };
 
+/**
+ * Get Emergency contact Id
+ * Method to find the user on id return 1st  matched element
+ * @param  {} loadEmergencyContacts-- emergency contact id
+ * @param  {} id--- with id
+ */
 export function getEmergencyContactById(loadEmergencyContacts, id) {
   return (
     loadEmergencyContacts.find(
@@ -162,7 +168,7 @@ export function getEmergencyContactById(loadEmergencyContacts, id) {
     ) || null
   );
 }
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -176,11 +182,13 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   CreateNewEmergencyContact: EmergencyContactAction.CreateNewEmergencyContact,
   UpdateEmergencyContact: EmergencyContactAction.UpdateEmergencyContact,
 };
 
+//connects the component with redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps

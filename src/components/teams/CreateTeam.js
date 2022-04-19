@@ -69,6 +69,11 @@ function CreateTeam(props) {
       });
   }, []);
 
+  /**
+   * Handle change
+   * Binding data with the form fields also calls the check unique function
+   * @param  {} e
+   */
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -81,6 +86,7 @@ function CreateTeam(props) {
     }));
   }
 
+  //Method to check if there's any duplicacy in the teams name
   function checkUnqueName(value) {
     if (props.match.params.id != 0) {
       if (props.teamDatas && props.teamDatas.length > 0) {
@@ -110,13 +116,12 @@ function CreateTeam(props) {
     }
   }
 
+  //Method to handle the dropdown and set the state
   function handleChangeTeamManagers(event, value) {
     setisAlertBoxOpened(true);
     setSelectedTeamManager(value);
   }
-
-  //validation
-
+  //Method after form submit and checks the form validations here if manager  is selected from dropdown then redirect or else stay in
   function teamCreation(e) {
     e.preventDefault();
     SelectManagerValidation();
@@ -127,6 +132,7 @@ function CreateTeam(props) {
     }
   }
 
+  //Method after form submit and validations to add or update a team
   function SubmitUserForm() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -179,11 +185,12 @@ function CreateTeam(props) {
         });
     }
   }
-
+  //Method to redirect to  on click of cancel
   function redirectToAllTeam() {
     props.history.push("/teams/allteams");
   }
 
+  //Validating  and setting the state on change of the select manager dropdown
   function SelectManagerValidation() {
     if (selectedTeamManager) {
       setformFieldValidation((ValidationForm) => ({
@@ -366,10 +373,17 @@ function CreateTeam(props) {
   );
 }
 
+/**
+ * Get Team By Id
+ * Method to find the conatct user on id return 1st  matched element
+ * @param  {} users--   teamId
+ * @param  {} id---id
+ */
 export function getTeamById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
 
+//Validate the data recieved from the props
 CreateTeam.propTypes = {
   teamDatas: PropTypes.array.isRequired,
   teamData: PropTypes.array.isRequired,
@@ -378,6 +392,7 @@ CreateTeam.propTypes = {
   UpdateTeamCall: PropTypes.func.isRequired,
 };
 
+//Update the redux the store and merge them into props
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -389,10 +404,11 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUserGroup: TeamAction.loadTeam,
   CreateTeamCall: TeamAction.createTeamData,
   UpdateTeamCall: TeamAction.updateTeamData,
 };
-
+//Connect the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTeam);

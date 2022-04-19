@@ -37,6 +37,7 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import ReplayIcon from "@material-ui/icons/Replay";
 import * as GridAction from "../../Redux/Action/gridAction";
 
+//styling the mui theme
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -243,7 +244,10 @@ function AddPrimaryUserToUserGroups(props) {
             setBusinessCovidStateData(getCovidState);
             setSelectedGroupInfo(groupInfo);
 
-            const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+            const newArr1 = applicationUsers.map((v) => ({
+              ...v,
+              isSelected: primaryUsers.some((u) => u.id === v.id),
+            }));
 
             setApplicationUsers(newArr1);
             var selectedUsersToGroupArray = [];
@@ -264,10 +268,16 @@ function AddPrimaryUserToUserGroups(props) {
     }
   }, []);
 
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
 
+  //set the options for the mui datatable
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -308,7 +318,7 @@ function AddPrimaryUserToUserGroups(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -325,6 +335,7 @@ function AddPrimaryUserToUserGroups(props) {
     },
   };
 
+  //set the columns for the mui datatable
   const columns = [
     {
       label: "Id",
@@ -343,7 +354,7 @@ function AddPrimaryUserToUserGroups(props) {
         print: false,
         filter: false,
         sort: true,
-        sortDirection: 'asc'
+        sortDirection: "asc",
       },
     },
     {
@@ -371,7 +382,11 @@ function AddPrimaryUserToUserGroups(props) {
       },
     },
   ];
-
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -380,7 +395,9 @@ function AddPrimaryUserToUserGroups(props) {
             <Button
               variant="contained"
               type="button"
-              className={`global-submit-btn ${enableSubmitButton ? '' : 'no-pointer-events'}`}
+              className={`global-submit-btn ${
+                enableSubmitButton ? "" : "no-pointer-events"
+              }`}
               disabled={!enableSubmitButton ? true : showLoadder}
               onClick={assignUsers}
             >
@@ -396,15 +413,15 @@ function AddPrimaryUserToUserGroups(props) {
       }
     });
   };
-
+  //Method to open the popup modal
   const handleClickOpenModal = () => {
     setModalOpen(true);
   };
-
+  //Method to close the popup modal
   const handleClose = () => {
     setModalOpen(false);
   };
-
+  //Method to redirect on click of cancel of breadcrumb link
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
@@ -413,10 +430,11 @@ function AddPrimaryUserToUserGroups(props) {
     setuserList(value);
   }
 
+  //Method to set the state on change of user role dropdown
   function handleChangeUserRole(e, value) {
     setBusinessUserRoleMasterData(value);
   }
-
+  //Method to set the role master data
   function roleDetails() {
     if (BusinessUserRoleMasterData.length > 0) {
       setformFieldValidation((ValidationForm) => ({
@@ -431,6 +449,7 @@ function AddPrimaryUserToUserGroups(props) {
     }
   }
 
+  //Method on change of site dropdown to set the state from sitemaster data
   function siteDetails() {
     if (SiteMasterData.length > 0) {
       setformFieldValidation((ValidationForm) => ({
@@ -449,6 +468,7 @@ function AddPrimaryUserToUserGroups(props) {
     setBusinessTeamMasterData(value);
   }
 
+  //method to set the user site
   function userSelectSite(e, value) {
     setSiteMasterData(value);
   }
@@ -461,6 +481,7 @@ function AddPrimaryUserToUserGroups(props) {
     setdesignationMasterData(value);
   }
 
+  //Method to reset the form on click of refresh
   function resetFilterForm() {
     setRoleMasterData([]);
     setdesignationMasterData();
@@ -478,11 +499,19 @@ function AddPrimaryUserToUserGroups(props) {
   //   }
   // }
 
+  /**
+   * Handle click view users
+   * Method to redirect to view usergroup component on click of view button from table
+   */
   function handleClickViewUsers() {
     let value = userId;
     props.history.push("/usergroups/view-usergroup/" + value);
   }
 
+  /**
+   * Assign filters form
+   * Method to add primary user to usergroup
+   */
   function AssignFiltersForm() {
     setshowLoadder(true);
     let userfilterData = searchformData;
@@ -526,7 +555,10 @@ function AddPrimaryUserToUserGroups(props) {
         setdialogshowLoadder(false);
 
         let primaryUsers = selectedGroupInfo.primaryapplicationuserDetails;
-        const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+        const newArr1 = applicationUsers.map((v) => ({
+          ...v,
+          isSelected: primaryUsers.some((u) => u.id === v.id),
+        }));
 
         setApplicationUsers(newArr1);
         var selectedUsersToGroupArray = [];
@@ -548,18 +580,48 @@ function AddPrimaryUserToUserGroups(props) {
         setshowLoadder(false);
       });
   }
+  /**
+   * Handle changeuser role
+   * Method to set the state on change of user role dropdown
+   * @param  {} e
+   * @param  {} value
+   */
   function handleChangeUserRole(e, value) {
     setRoleMasterData(value);
   }
+  /**
+   * Handle changeuser designation
+   * Method to set the state on change of user designation dropdown
+   * @param  {} e
+   * @param  {} value
+   */
   function handleChangeUserDesignation(e, value) {
     setdesignationMasterData(value);
   }
+  /**
+   * Handle change user select site
+   * Method to set the state on change of user site dropdown
+   * @param  {} e
+   * @param  {} value
+   */
   function userSelectSite(e, value) {
     setSiteMasterData(value);
   }
+  /**
+   * Handle user group select
+   * Method to set the state on change of user group dropdown
+   * @param  {} e
+   * @param  {} value
+   */
   function usergroupSelect(e, value) {
     setUserGroupData(value);
   }
+  /**
+   * Handle covid state select
+   * Method to set the state on change of covid  state dropdown
+   * @param  {} e
+   * @param  {} value
+   */
   function covidStateSelect(e, value) {
     setcovidStatelist(value);
   }
@@ -593,16 +655,28 @@ function AddPrimaryUserToUserGroups(props) {
         setshowLoadder(false);
       });
   }
+  /**
+   * Handle submit close
+   * Method to close the modal stop the loadder etc on click of cancel button
+   */
   const handlesubmitClose = () => {
     setModalsubmit(false);
     setshowLoadder(false);
     setshowsubmitLoadder(false);
   };
 
+  /**
+   * Assign users
+   * On click of submit set the loadder and open the modal
+   */
   function assignUsers() {
     setshowsubmitLoadder(true);
     setModalsubmit(true);
   }
+  /**
+   * Handle  click yes
+   * Method on click of modal submit button
+   */
   function handleClickYes() {
     setshowYesLoadder(true);
     setshowsubmitLoadder(false);
@@ -649,7 +723,9 @@ function AddPrimaryUserToUserGroups(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            FAQ, Questionnaire, Emergency Contact and Workflow assigned to this user group, will be applicable for the selected user(s). Are you sure you want to go ahead with the change ?
+            FAQ, Questionnaire, Emergency Contact and Workflow assigned to this
+            user group, will be applicable for the selected user(s). Are you
+            sure you want to go ahead with the change ?
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -722,7 +798,7 @@ function AddPrimaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                            BusinessUserRoleMasterData.length > 0
+                          BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -752,13 +828,13 @@ function AddPrimaryUserToUserGroups(props) {
                   <Grid
                     item
                     sm={8}
-                  // className={[userId ? classes.HideGrid : ""].join(" ")}
+                    // className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <Autocomplete
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                          BusinessDesingationData.length > 0
+                        BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -790,7 +866,7 @@ function AddPrimaryUserToUserGroups(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                          BusinessSiteMasterData.length > 0
+                        BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -822,7 +898,7 @@ function AddPrimaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                            BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }
@@ -921,10 +997,14 @@ function AddPrimaryUserToUserGroups(props) {
           <Grid container>
             <Grid item xs={12} className={`global-form inner-table-buttons`}>
               <div className={`form-buttons-container`}>
-                {usergroupACM ? <LoadActions
-                  modulePermission={usergroupACM.permissions}
-                  anchorRef={anchorRef}
-                ></LoadActions> : ""}
+                {usergroupACM ? (
+                  <LoadActions
+                    modulePermission={usergroupACM.permissions}
+                    anchorRef={anchorRef}
+                  ></LoadActions>
+                ) : (
+                  ""
+                )}
 
                 {/* <Button
                   variant="contained"
@@ -960,23 +1040,23 @@ function AddPrimaryUserToUserGroups(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 AddPrimaryUserToUserGroups.propTypes = {
   UserGroupData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     UserGroupData: state.usergroup,
     acmData: state.acmData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
 };
-
+//connects the component with redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps

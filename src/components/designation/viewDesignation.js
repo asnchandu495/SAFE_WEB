@@ -33,7 +33,10 @@ function CreateUserGroup(props) {
       setComponentLoadder(false);
     }
   }, [props.userGroupDatas]);
-
+  /**
+   * Handle Click Goback
+   * Method to redirect on  click of cancel
+   */
   function handleClickGoBack() {
     props.history.push("/designation/all-designation");
   }
@@ -132,16 +135,24 @@ function CreateUserGroup(props) {
   );
 }
 
+/**
+ * Get Usergroup Id
+ * Method to find the user on id return 1st  matched element
+ * @param  {} users--covid state
+ * @param  {} id---id
+ */
 export function getUserGroupById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
 
+//validates the data received from props
 CreateUserGroup.propTypes = {
   LoadData: PropTypes.array.isRequired,
   AddData: PropTypes.array.isRequired,
   UpdateData: PropTypes.func.isRequired,
 };
 
+//Updates the redux store and merge them into props component
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -155,10 +166,12 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: UserDesignationAction.loadUserDesignation,
   AddData: UserDesignationAction.createUserDesignation,
   UpdateData: UserDesignationAction.updateUserDesignation,
 };
 
+//connects the component with the redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CreateUserGroup);

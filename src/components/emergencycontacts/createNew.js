@@ -55,7 +55,11 @@ function CreateNew(props) {
       setEmergencyContact(props.emergencyContactData);
     }
   }, []);
-
+  /**
+   * Handle change input
+   * Binding data with the form fields also calls the check unique function
+   * @param  {} e
+   */
   function handleChangeInput(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -67,7 +71,11 @@ function CreateNew(props) {
       [name]: value,
     }));
   }
-
+  /**
+   *  Binding data with the form fields
+   * @param  {} e
+   * @param  {} index
+   */
   const handleInputChangeContacts = (e, index) => {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -82,12 +90,14 @@ function CreateNew(props) {
     setEmergencyContact(list);
   };
 
+  //Method to remove the contact
   const handleRemoveClickContacts = (j) => {
     const list = { ...emergencyContact };
     list.contactDetails.splice(j, 1);
     setEmergencyContact(list);
   };
 
+  //Method to add multiple contacts
   const handleAddClickContacts = (index, j) => {
     const list = { ...emergencyContact };
     const thiscontactDetails = list.contactDetails;
@@ -102,6 +112,7 @@ function CreateNew(props) {
     setEmergencyContact(list);
   };
 
+  //Method to check if there's any duplicacy in the contact names
   function checkUnqueName(value) {
     if (props.match.params.id != 0) {
       if (
@@ -137,10 +148,12 @@ function CreateNew(props) {
     }
   }
 
+  //Method to redirect to the on click of cancel
   function handleClickGoBackToPage() {
     props.history.push("/emergencycontacts/view");
   }
 
+  //Method after form submit and checks the form validations here if language is there then redirect or else stay in
   function submitForm(e) {
     e.preventDefault();
     if (emergencyContact.language) {
@@ -150,6 +163,7 @@ function CreateNew(props) {
     }
   }
 
+  //Method after form submit and validations to add or update the emergency contact
   function ValidateSubmitForm() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -441,12 +455,19 @@ function CreateNew(props) {
   );
 }
 
+//Validate the data recieved from the props
 CreateNew.propTypes = {
   addEmergencyContact: PropTypes.func.isRequired,
   emergencyContactData: PropTypes.object.isRequired,
   loadEmergencyContacts: PropTypes.array.isRequired,
 };
 
+/**
+ * Get Emergency contact Id
+ * Method to find the conatct user on id return 1st  matched element
+ * @param  {} loadEmergencyContacts--  conatct id
+ * @param  {} id---id
+ */
 export function getEmergencyContactById(loadEmergencyContacts, id) {
   return (
     loadEmergencyContacts.find(
@@ -455,6 +476,7 @@ export function getEmergencyContactById(loadEmergencyContacts, id) {
   );
 }
 
+//Update the redux the store and merge them into props
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -467,10 +489,10 @@ function mapStateToProps(state, ownProps) {
     loadEmergencyContacts: state.loadEmergencyContacts,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   CreateNewEmergencyContact: EmergencyContactAction.CreateNewEmergencyContact,
   UpdateEmergencyContact: EmergencyContactAction.UpdateEmergencyContact,
 };
-
+//Connect the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CreateNew);

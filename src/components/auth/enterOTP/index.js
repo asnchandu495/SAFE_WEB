@@ -21,6 +21,10 @@ export default function EnterOtp(props) {
   const [toasterServerity, settoasterServerity] = useState("");
   const [showLoadder, setshowLoadder] = useState(false);
 
+  /** Handle Change
+   * Text fields binding
+   * @param  {} e
+   */
   function handleChange(e) {
     const { name, value } = e.target;
     SetformData((forgotPasswordForm) => ({
@@ -29,6 +33,11 @@ export default function EnterOtp(props) {
     }));
   }
 
+  /** Handle submit method
+    *  Inside params -data: {
+    *  otp: string;
+       }
+   */
   function handleSubmit() {
     setshowLoadder(true);
     var data = formData;
@@ -47,6 +56,10 @@ export default function EnterOtp(props) {
       });
   }
 
+  /**
+   * User ResendOTP
+   * Method to resend the OTP to the user
+   */
   function UserResendOTP() {
     var userEmailId = localStorage.getItem("UserEmailId");
     var data = { email: userEmailId };

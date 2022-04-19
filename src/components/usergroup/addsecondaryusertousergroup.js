@@ -33,6 +33,8 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import Tooltip from "@material-ui/core/Tooltip";
 import MasterService from "../../services/masterDataService";
 import ReplayIcon from "@material-ui/icons/Replay";
+
+//styling the mui theme
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -216,8 +218,10 @@ function AddSecondaryUserToUserGroups(props) {
             setBusinessGroupData(getUserGroup);
             setBusinessCovidStateData(getCovidState);
 
-
-            const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+            const newArr1 = applicationUsers.map((v) => ({
+              ...v,
+              isSelected: primaryUsers.some((u) => u.id === v.id),
+            }));
 
             setApplicationUsers(newArr1);
 
@@ -238,33 +242,55 @@ function AddSecondaryUserToUserGroups(props) {
         });
     }
   }, []);
+  /**
+   * Handle click open modal
+   * Method to open the popup modal
+   */
   const handleClickOpenModal = () => {
     setModalOpen(true);
   };
-
+  /**
+   * Handle close
+   * Method to close the popup modal
+   */
   const handleClose = () => {
     setModalOpen(false);
   };
+
+  /**
+   * Handle user group select
+   * Method on change of user groupdropdown
+   */
   function usergroupSelect(e, value) {
     setUserGroupData(value);
   }
 
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
 
+  //Method on change of user role dropdown to set the variable with the selected dropdown value
   function handleChangeUserRole(e, value) {
     setRoleMasterData(value);
   }
+  //Method on change of user designation dropdown to set the variable with the selected dropdown value
   function handleChangeUserDesignation(e, value) {
     setdesignationMasterData(value);
   }
+  //Method on change of user site dropdown to set the variable with the selected dropdown value
   function userSelectSite(e, value) {
     setSiteMasterData(value);
   }
+  //Method on change of covid  state dropdown to set the variable with the selected dropdown value
   function covidStateSelect(e, value) {
     setcovidStatelist(value);
   }
+  //Method  to reset the filter form on click of reset button
   function resetFilterForm() {
     setRoleMasterData([]);
     setdesignationMasterData();
@@ -272,12 +298,18 @@ function AddSecondaryUserToUserGroups(props) {
     setUserGroupData();
     setcovidStatelist();
   }
-
+  /**
+   * Handle click view users
+   * Method on click of view users button to redirect to viewusergroup component
+   */
   function handleClickViewUsers() {
     let value = userId;
     props.history.push("/usergroups/view-usergroup/" + value);
   }
-
+  /**
+   * Assign filters form
+   * Method to add secondary  user to usergroup
+   */
   function AssignFiltersForm() {
     setshowLoadder(true);
     let userfilterData = searchformData;
@@ -317,10 +349,12 @@ function AddSecondaryUserToUserGroups(props) {
     setdialogshowLoadder(true);
     UsersApi.ListFliteredData(userfilterData)
       .then((applicationUsers) => {
-
         let primaryUsers = selectedGroupInfo.secondaryapplicationuserDetails;
 
-        const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+        const newArr1 = applicationUsers.map((v) => ({
+          ...v,
+          isSelected: primaryUsers.some((u) => u.id === v.id),
+        }));
 
         setApplicationUsers(newArr1);
 
@@ -345,7 +379,7 @@ function AddSecondaryUserToUserGroups(props) {
         setshowLoadder(false);
       });
   }
-
+  // set the MUI datatable options
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -386,7 +420,7 @@ function AddSecondaryUserToUserGroups(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: (value, tableMeta, updateValue) => {
       console.log("id");
       console.log(selectedUsersForCovidState);
@@ -433,6 +467,7 @@ function AddSecondaryUserToUserGroups(props) {
     },
   };
 
+  //set the Mui table columns
   const columns = [
     {
       label: "Id",
@@ -451,7 +486,7 @@ function AddSecondaryUserToUserGroups(props) {
         print: false,
         filter: false,
         sort: true,
-        sortDirection: 'asc'
+        sortDirection: "asc",
       },
     },
     {
@@ -479,7 +514,11 @@ function AddSecondaryUserToUserGroups(props) {
       },
     },
   ];
-
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -488,7 +527,9 @@ function AddSecondaryUserToUserGroups(props) {
             <Button
               variant="contained"
               type="button"
-              className={`global-submit-btn ${enableSubmitButton ? '' : 'no-pointer-events'}`}
+              className={`global-submit-btn ${
+                enableSubmitButton ? "" : "no-pointer-events"
+              }`}
               disabled={!enableSubmitButton ? true : showLoadder}
               onClick={assignUsers}
             >
@@ -504,11 +545,14 @@ function AddSecondaryUserToUserGroups(props) {
       }
     });
   };
-
+  //Method to redirect on click of cancel of breadcrumb link
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  /**
+   * Assign users
+   * On click of submit to update the changes
+   */
   function assignUsers() {
     setshowsubmitLoadder(true);
     settoasterServerity("");
@@ -597,7 +641,7 @@ function AddSecondaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessUserRoleMasterData &&
-                            BusinessUserRoleMasterData.length > 0
+                          BusinessUserRoleMasterData.length > 0
                             ? BusinessUserRoleMasterData
                             : []
                         }
@@ -627,13 +671,13 @@ function AddSecondaryUserToUserGroups(props) {
                   <Grid
                     item
                     sm={8}
-                  // className={[userId ? classes.HideGrid : ""].join(" ")}
+                    // className={[userId ? classes.HideGrid : ""].join(" ")}
                   >
                     <Autocomplete
                       id="tags-outlined"
                       options={
                         BusinessDesingationData &&
-                          BusinessDesingationData.length > 0
+                        BusinessDesingationData.length > 0
                           ? BusinessDesingationData
                           : []
                       }
@@ -665,7 +709,7 @@ function AddSecondaryUserToUserGroups(props) {
                       id="tags-outlined"
                       options={
                         BusinessSiteMasterData &&
-                          BusinessSiteMasterData.length > 0
+                        BusinessSiteMasterData.length > 0
                           ? BusinessSiteMasterData
                           : []
                       }
@@ -697,7 +741,7 @@ function AddSecondaryUserToUserGroups(props) {
                         id="tags-outlined"
                         options={
                           BusinessCovidStateData &&
-                            BusinessCovidStateData.length > 0
+                          BusinessCovidStateData.length > 0
                             ? BusinessCovidStateData
                             : []
                         }
@@ -791,10 +835,14 @@ function AddSecondaryUserToUserGroups(props) {
           <Grid container>
             <Grid item xs={12} className={`global-form inner-table-buttons`}>
               <div className={`form-buttons-container`}>
-                {usergroupACM ? <LoadActions
-                  modulePermission={usergroupACM.permissions}
-                  anchorRef={anchorRef}
-                ></LoadActions> : ""}
+                {usergroupACM ? (
+                  <LoadActions
+                    modulePermission={usergroupACM.permissions}
+                    anchorRef={anchorRef}
+                  ></LoadActions>
+                ) : (
+                  ""
+                )}
 
                 <Button
                   variant="contained"
@@ -821,23 +869,23 @@ function AddSecondaryUserToUserGroups(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 AddSecondaryUserToUserGroups.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
     acmData: state.acmData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
 };
-
+//connects the component with redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps

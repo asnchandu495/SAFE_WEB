@@ -23,6 +23,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 import TooltipComponent from "../common/tooltip";
 
+//Styling the MUI theme
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -132,16 +133,22 @@ function AddFloor(props) {
       SetformData(resetformData);
     }
   }, [props]);
+  //Method to close the popup modal and reset the popup form data
   const handleClose = () => {
     resetCovidStateFormData();
     props.setopenaddFloorModal(false);
     setIsDuplicate(false);
   };
 
+  //Method to reset the form on click of refresh button
   function resetCovidStateFormData() {
     SetformData(resetformData);
   }
-
+  /**
+   * Handle change
+   * Binding data with the form fields also calls the check unique function
+   * @param  {} e
+   */
   function handleChange(e) {
     const { name, value } = e.target;
     if (name == "floorName") {
@@ -153,6 +160,11 @@ function AddFloor(props) {
     }));
   }
 
+  /**
+   * Handle change checkbox
+   * Method on change of checkbox and set the rlap to checked if selected
+   * @param  {} e
+   */
   const handleChangecheckBox = (event) => {
     SetformData((formData) => ({
       ...formData,
@@ -160,6 +172,11 @@ function AddFloor(props) {
     }));
   };
 
+  /**
+   * Check unique name
+   * Method to check if there's any duplicacy in the floor name{value-floor name}
+   * @param  {} value-floor name
+   */
   function checkUnqueName(value) {
     if (props.SelectedRowId) {
       if (props.FloorData && props.FloorData.length > 0) {
@@ -192,7 +209,7 @@ function AddFloor(props) {
   function userCovidInfo() {
     submitUserCovidInformation();
   }
-
+  //Method  to add or update a floor
   function submitUserCovidInformation() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -248,7 +265,7 @@ function AddFloor(props) {
   function updateSiteFloorData(value) {
     props
       .UpdateSiteFloor(value)
-      .then((result) => { })
+      .then((result) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -327,8 +344,9 @@ function AddFloor(props) {
                 <Grid item container xs={12}>
                   <Grid item xs={3}>
                     <label
-                      className={`input-label ${formData.isRLAPActive ? "required" : ""
-                        }`}
+                      className={`input-label ${
+                        formData.isRLAPActive ? "required" : ""
+                      }`}
                     >
                       RLAP Floor ID
                     </label>{" "}
@@ -391,6 +409,7 @@ export function getFloorById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
 
+//Validates the data received from the props
 AddFloor.propTypes = {
   FloorData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
@@ -399,6 +418,7 @@ AddFloor.propTypes = {
   UpdateSiteFloor: PropTypes.func.isRequired,
 };
 
+//Update the redux store and merge with the props
 function mapStateToProps(state, ownProps) {
   const emptyObject = {};
   const selectedFloorData =
@@ -410,7 +430,7 @@ function mapStateToProps(state, ownProps) {
     FloorData: state.FloorState,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: AddFloorAction.loadFloor,
   AddData: AddFloorAction.createFloor,
@@ -418,4 +438,5 @@ const mapDispatchToProps = {
   UpdateSiteFloor: SiteAction.updateSiteFloor,
 };
 
+//Connect the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(AddFloor);

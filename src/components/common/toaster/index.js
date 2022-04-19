@@ -3,6 +3,11 @@ import Snackbar from "@material-ui/core/Snackbar";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import "../../../styles/styles.scss";
 
+/**
+ *  Toaster component
+ *  common toaster component to display either on success or failure of the api call
+ * @param  {} props
+ */
 function ToasterComponent(props) {
   const [errorMsg, setErrorMsg] = useState();
 
@@ -29,6 +34,12 @@ function ToasterComponent(props) {
     setErrorMsg(finalErrorMsg);
   }, [props]);
 
+  /**
+   * Handle Close Snackbar
+   * method on click of toaster close
+   * @param  {} event
+   * @param  {} reason
+   */
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
       return;

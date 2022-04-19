@@ -34,6 +34,10 @@ import workflowService from "../../../services/workflowService";
 import ButtonLoadderComponent from "../../common/loadder/buttonloadder";
 import * as PublishFAQAction from "../../../Redux/Action/publishFAQAction";
 
+/**
+ * Material UI  Theme styling
+ * @param  {} theme
+ */
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -86,6 +90,11 @@ function CustomizedDialogs(props) {
   const workflowApiCall = new workflowService();
   const [showLoadder, setshowLoadder] = useState(false);
 
+  /**
+   * Handle Click YES
+   Set the toaster messages after deletion
+  *  
+   */
   const handleClickYes = () => {
     props.settoasterServerity("");
 
@@ -758,6 +767,10 @@ function CustomizedDialogs(props) {
     }
   };
 
+  /**
+  * Handle Click No
+   Close the popup or the dialog box if clicked on No or the operation should be performed
+   */
   const handleClickNo = () => {
     props.setOpenConfirmationModal(false);
   };
@@ -811,6 +824,7 @@ function CustomizedDialogs(props) {
   );
 }
 
+//Validate  data which we are receiving from props
 CustomizedDialogs.propTypes = {
   DeletEmergencyContactList: PropTypes.func.isRequired,
   DeleteUser: PropTypes.func.isRequired,
@@ -825,8 +839,11 @@ CustomizedDialogs.propTypes = {
   PublishFAQ: PropTypes.func.isRequired,
   DeleteSection: PropTypes.func.isRequired,
 };
+
+//Updates to the Redux store and merge them into props in your component
 function mapStateToProps(state, ownProps) {}
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   DeletEmergencyContactList: EmergencyContactAction.DeletEmergencyContactList,
   DeleteQuestionaireUsergroup:
@@ -866,4 +883,5 @@ const mapDispatchToProps = {
   DeleteSection: FaqAction.deleteFaqSection,
 };
 
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CustomizedDialogs);

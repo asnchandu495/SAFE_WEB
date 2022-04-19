@@ -19,6 +19,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
+//styling
 const useStyles = makeStyles((theme) => ({
   gridDispaly: {
     display: "inline-flex",

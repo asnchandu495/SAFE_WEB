@@ -43,6 +43,7 @@ import { withStyles } from "@material-ui/core/styles";
 import ChangeStatusIcon from "@material-ui/icons/SyncAlt";
 import ReplayIcon from "@material-ui/icons/Replay";
 
+//Styling for mui theme defined here
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -171,7 +172,10 @@ function AddPrimaryUserTeam(props) {
           setdesignationMasterData(getDesignations);
           setuserGroupList(getUserList);
 
-          const newArr1 = applicationUsers.map(v => ({ ...v, isSelected: primaryUsers.some((u) => u.id === v.id) }))
+          const newArr1 = applicationUsers.map((v) => ({
+            ...v,
+            isSelected: primaryUsers.some((u) => u.id === v.id),
+          }));
 
           setApplicationUsers(newArr1);
 
@@ -192,10 +196,16 @@ function AddPrimaryUserTeam(props) {
     }
   }, []);
 
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
 
+  //set the options for the MUI datatable
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -232,7 +242,7 @@ function AddPrimaryUserTeam(props) {
       },
     },
 
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
 
     customToolbar: () => {
       return (
@@ -250,6 +260,7 @@ function AddPrimaryUserTeam(props) {
     },
   };
 
+  //set the column for the MUI datatable
   const columns = [
     {
       label: "Id",
@@ -268,7 +279,7 @@ function AddPrimaryUserTeam(props) {
         print: false,
         filter: false,
         sort: true,
-        sortDirection: 'asc'
+        sortDirection: "asc",
       },
     },
     {
@@ -297,22 +308,26 @@ function AddPrimaryUserTeam(props) {
     },
   ];
 
+  //Method to redirect on click of cancel of breadcrumb link
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
 
+  //Method to open the popup modal
   const handleClickOpenModal = () => {
     setModalOpen(true);
   };
-
+  //Method to close the popup modal
   const handleClose = () => {
     setModalOpen(false);
   };
+  //Method to reset the form on click of refresh button
   function resetFilterForm() {
     setselectedUserData("");
     setselectedUserDesignation("");
   }
 
+  //Method to assign a user to  team
   function assignUsers() {
     setModalsubmit(true);
     setshowsubmitLoadder(true);
@@ -347,10 +362,11 @@ function AddPrimaryUserTeam(props) {
       });
   }
 
+  //Method on  change of user dropdown from the form
   function selectedUser(e, value) {
     setselectedUserData(value);
   }
-
+  //Method on change of designation dropdown
   function selectedDesignation(e, value) {
     setselectedUserDesignation(value);
   }
@@ -364,6 +380,11 @@ function AddPrimaryUserTeam(props) {
   //   }
   // }
 
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -389,6 +410,7 @@ function AddPrimaryUserTeam(props) {
     });
   };
 
+  //Method on click of submit to assign a user to team
   function AssignFiltersForm() {
     settoasterServerity("");
     settoasterErrorMessageType("");
@@ -470,7 +492,7 @@ function AddPrimaryUserTeam(props) {
                         id="tags-outlined"
                         options={
                           designationMasterData &&
-                            designationMasterData.length > 0
+                          designationMasterData.length > 0
                             ? designationMasterData
                             : []
                         }
@@ -571,7 +593,7 @@ function AddPrimaryUserTeam(props) {
                         id="tags-outlined"
                         options={
                           designationMasterData &&
-                            designationMasterData.length > 0
+                          designationMasterData.length > 0
                             ? designationMasterData
                             : []
                         }
@@ -696,21 +718,21 @@ function AddPrimaryUserTeam(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 AddPrimaryUserTeam.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
     acmData: state.acmData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
 };
-
+//connects the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(AddPrimaryUserTeam);

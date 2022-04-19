@@ -23,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
 
 function Internalserver(props) {
   const classes = useStyles();
+
+  /**
+   *  Method to redirect to login page if any internal server error
+   * @param  {} props
+   */
   function LoginPage() {
     props.history.push("/");
   }

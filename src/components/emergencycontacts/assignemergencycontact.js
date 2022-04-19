@@ -64,6 +64,7 @@ function AssignEmergencyContacts(props) {
       });
   }, []);
 
+  //Set the MUI table options
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -102,6 +103,7 @@ function AssignEmergencyContacts(props) {
     },
   };
 
+  //Set the MUI table columns
   const columns = [
     {
       name: "id",
@@ -220,6 +222,12 @@ function AssignEmergencyContacts(props) {
     },
   ];
 
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -230,6 +238,13 @@ function AssignEmergencyContacts(props) {
     );
   };
 
+  /**
+   * Handle ClickOpen Change status modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component
+   * Method to change the status of the emergency contact     
+   * @param  {} value
+   */
   const handleClickOpenChangeStatusModal = (value) => {
     var userStatus = value[5];
     setSelectedRowDetails(value);
@@ -246,7 +261,11 @@ function AssignEmergencyContacts(props) {
       );
     }
   };
-
+  /**
+   * Handle click open assign emergency modal
+   * Method to open the emergency popup modal
+   * @param  {} value
+   */
   function handleClickOpenAssignEmergencyModal(value) {
     setopenAssignEmergencyContactModal(true);
     setSelectedRowId(value);
@@ -328,22 +347,26 @@ function AssignEmergencyContacts(props) {
   );
 }
 
+//Validates the data received from the props
 AssignEmergencyContacts.propTypes = {
   AssignEmergencyContactData: PropTypes.array.isRequired,
   LoadAllAssignEmergencyConatct: PropTypes.func.isRequired,
 };
 
+//Updates the redux store and merge then in to the props
 function mapStateToProps(state, ownProps) {
   return {
     AssignEmergencyContactData: state.loadAssignEmergencyContacts,
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllAssignEmergencyConatct:
     AssignmentEmergencycontactAction.LoadAllAssignEmergencyContactList,
 };
 
+//Connects the component with the redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps

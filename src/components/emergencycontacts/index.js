@@ -37,6 +37,7 @@ import * as GridAction from "../../Redux/Action/gridAction";
 import MasterService from "../../services/masterDataService";
 import EmergencyContactService from "../../services/emergencyContactService";
 
+//Styling
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -157,7 +158,11 @@ function EmergencyContact(props) {
   }))(MuiDialogActions);
 
   useEffect(() => {
-    Promise.all([props.LoadAllEmergencyContactList([]), props.LoadGridsPage(), masterDataCallApi.getAllLanguages()])
+    Promise.all([
+      props.LoadAllEmergencyContactList([]),
+      props.LoadGridsPage(),
+      masterDataCallApi.getAllLanguages(),
+    ])
       .then(([result, gridResult, allLanguages]) => {
         setAllLanguages(allLanguages);
         setcomponentLoadder(false);
@@ -166,19 +171,37 @@ function EmergencyContact(props) {
         console.log(err);
       });
   }, []);
-
+  /**
+   * Handle clickopen edit emergency contact
+   * Method on click of edit emeregency contact
+   * @param  {} getId- contact id
+   */
   function handleClickOpenEditEmergencyContact(getId) {
     props.history.push(`/emergencycontacts/create/${getId}`);
   }
 
+  /**
+   * Handle clickopen view emergency contact
+   * Method on click of view emeregency contact
+   * @param  {} getId- contact id
+   */
   function handleClickOpenViewEmergencyContact(getId) {
     props.history.push(`/emergencycontacts/view-contact-details/${getId}`);
   }
 
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
 
+  /**
+   * Table initiate
+   * Initiate the table based on props grid data(Based logged role rights)
+   */
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
       return g.name == "emergencyContacts";
@@ -191,6 +214,7 @@ function EmergencyContact(props) {
     }
   };
 
+  //Set the MUI table options
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -235,6 +259,7 @@ function EmergencyContact(props) {
     },
   };
 
+  //Set the Mui table columns
   const columns = [
     {
       name: "id",
@@ -301,24 +326,34 @@ function EmergencyContact(props) {
       },
     },
   ];
-
+  /**
+   * Handle click open modal
+   * Method to open the popup modal
+   */
   const handleClickOpenModal = () => {
     setModalOpen(true);
   };
 
+  /**
+   * Handle click close
+   * Method to close the popup modal
+   */
   const handleClose = () => {
     setModalOpen(false);
   };
 
+  //Method on change of the language dropdown
   const handleChangeLanguage = (e, value) => {
     console.log(value);
     setSelectedLanguages(value);
-  }
+  };
 
+  //Method to reset the filter form
   function resetFilterForm() {
     setSelectedLanguages([]);
   }
 
+  //Method for filter popup  modal on submit
   function AssignFiltersForm() {
     setshowLoadder(true);
     props
@@ -335,6 +370,11 @@ function EmergencyContact(props) {
       });
   }
 
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -398,6 +438,12 @@ function EmergencyContact(props) {
     });
   };
 
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowsDetails(value);
     setOpenConfirmationModal(true);
@@ -423,7 +469,10 @@ function EmergencyContact(props) {
             <DialogTitle id="form-dialog-title" onClose={handleClose}>
               Filters
             </DialogTitle>
-            <ValidatorForm className={`global-form`} onSubmit={AssignFiltersForm}>
+            <ValidatorForm
+              className={`global-form`}
+              onSubmit={AssignFiltersForm}
+            >
               <DialogContent dividers>
                 {!componentLoadder ? (
                   <Grid container spacing={3}>
@@ -437,8 +486,7 @@ function EmergencyContact(props) {
                             multiple
                             id="tags-outlined"
                             options={
-                              allLanguages &&
-                                allLanguages.length > 0
+                              allLanguages && allLanguages.length > 0
                                 ? allLanguages
                                 : []
                             }
@@ -446,7 +494,9 @@ function EmergencyContact(props) {
                             defaultValue={
                               selectedLanguages.length ? selectedLanguages : []
                             }
-                            value={selectedLanguages.length ? selectedLanguages : []}
+                            value={
+                              selectedLanguages.length ? selectedLanguages : []
+                            }
                             onChange={handleChangeLanguage}
                             filterSelectedOptions
                             className="global-input autocomplete-select"
@@ -455,8 +505,7 @@ function EmergencyContact(props) {
                                 {...params}
                                 inputProps={{
                                   ...params.inputProps,
-                                  required:
-                                    selectedLanguages.length === 0
+                                  required: selectedLanguages.length === 0,
                                 }}
                                 variant="outlined"
                                 placeholder="Select language"
@@ -544,7 +593,7 @@ function EmergencyContact(props) {
     </>
   );
 }
-
+//Validates the data received from the props
 EmergencyContact.propTypes = {
   loadEmergencyContacts: PropTypes.array.isRequired,
   LoadAllEmergencyContactList: PropTypes.func.isRequired,
@@ -553,6 +602,7 @@ EmergencyContact.propTypes = {
   updateGridsPages: PropTypes.func.isRequired,
 };
 
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     loadEmergencyContacts: state.loadEmergencyContacts,
@@ -561,6 +611,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllEmergencyContactList:
     EmergencyContactAction.LoadAllEmergencyContactList,
@@ -568,4 +619,5 @@ const mapDispatchToProps = {
   UpdateGridsPage: GridAction.updateGridsPages,
 };
 
+//connects the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(EmergencyContact);

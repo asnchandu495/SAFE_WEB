@@ -45,6 +45,7 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import ReplayIcon from "@material-ui/icons/Replay";
 
+//Styling
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -160,46 +161,82 @@ function ListSite(props) {
         console.log(err);
       });
   }, []);
-
+  /**
+   * Handle click update user
+   * Method to redirect on click of edit user site
+   * @param  {} value-{id}
+   */
   function handleClickUpdateUser(value) {
     var userId = value[0];
     props.history.push("/site/update-site/" + userId);
   }
+  /**
+   * Handle click view user
+   * Method to redirect on click of view user site details
+   * @param  {} value-{id}
+   */
   function handleClickViewUsers(value) {
     props.history.push("/site/view-site/" + value);
   }
 
+  /**
+   * Handle click open add floor page
+   * Method to redirect add to list floor component on click of add floor
+   * @param  {} value-{id}
+   */
   function handleClickOpenAddFloorPage(value) {
     var thisId = value[0];
     props.history.push(`/site/${thisId}/list-floor`);
   }
-
+  /**
+   * Handle click add flocation page
+   * Method to redirect add to list location component on click of add location
+   * @param  {} value-{id}
+   */
   function handleClickOpenAddFlocationPage(value) {
     var thisId = value[0];
     props.history.push(`/site/${thisId}/list-location`);
   }
 
+  /**
+   * Handle change site manager
+   * Method on change of site manager dropdown to set the state with the selected value
+   * @param  {} value-{site name}
+   */
   function handleChangeSiteManager(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectedSiteManager(value);
   }
+  /**
+   * Handle change security  manager
+   * Method on change of security manager dropdown to set the state with the selected value
+   * @param  {} value-{security name}
+   */
   function handleChangeSecurityManager(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectedSecurityManager(value);
   }
 
+  //Method to open the popup dialog box
   const handleClickOpenModal = () => {
     setModalOpen(true);
   };
-
+  //Method to close the popup dialog box
   const handleClose = () => {
     setModalOpen(false);
   };
-
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage-{currentRowsPerPage-5}
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
-
+  /**
+   * Table initiate
+   * Initiate the table based on props grid data(Based logged role rights)
+   */
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
       return g.name == "sites";
@@ -212,6 +249,7 @@ function ListSite(props) {
     }
   };
 
+  //Method to set options for the MUI table
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -447,7 +485,12 @@ function ListSite(props) {
       }
     });
   };
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-{id}
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -462,10 +505,12 @@ function ListSite(props) {
     props.history.push(getRoute);
   }
 
+  //Method to reset the filter form
   function resetFilterForm() {
     setUserSelectedSiteManager([]);
     setUserSelectedSecurityManager([]);
   }
+  //Method for filter popup  modal on submit
   function AssignFiltersForm() {
     let sitefilterData = searchformData;
     if (userSelectedSiteManager.length > 0) {
@@ -675,7 +720,7 @@ function ListSite(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 ListSite.propTypes = {
   SiteData: PropTypes.array.isRequired,
   LoadEmptyData: PropTypes.array.isRequired,
@@ -685,7 +730,7 @@ ListSite.propTypes = {
   gridState: PropTypes.array.isRequired,
   updateGridsPages: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     SiteData: state.SiteState,
@@ -693,7 +738,7 @@ function mapStateToProps(state, ownProps) {
     acmData: state.acmData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: UserSiteAction.loadSite,
   LoadEmptyData: AddFloorAction.loadFloorWithEmptyData,
@@ -701,5 +746,5 @@ const mapDispatchToProps = {
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
 };
-
+//connects the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(ListSite);

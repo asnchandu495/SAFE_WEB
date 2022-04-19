@@ -19,6 +19,11 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import * as GridAction from "../../Redux/Action/gridAction";
 
+/**
+ * Material UI  Theme styling
+ * @param  {} theme
+ */
+
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -57,6 +62,7 @@ function CovidState(props) {
   const [currentRowsPerPage, setCurrentRowsPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(0);
 
+  //Allows you to perform side effects in your component
   useEffect(() => {
     Promise.all([props.LoadData(), props.LoadGridsPage()])
       .then(([result, gridResult]) => {
@@ -66,18 +72,37 @@ function CovidState(props) {
         console.log(err);
       });
   }, []);
-
+  /**
+   * Handle Click Update User
+   * Method on click of edit covid state
+   * @param  {} value-userId
+   */
   function handleClickUpdateUser(value) {
     var userId = value[0];
     props.history.push("/covidstate/update-covidstate/" + userId);
   }
+
+  /**
+   * Handle Click View Users
+   * Function to perform on click of view covid state
+   * @param  {} value-id
+   */
   function handleClickViewUsers(value) {
     props.history.push("/covidstate/view-covidstate/" + value);
   }
+
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page
+   * @param  {} rowsPerPage
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
-
+  /**
+   * Table initiate
+   * Initiate the table based on props grid data
+   */
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
       return g.name == "covidStates";
@@ -90,6 +115,7 @@ function CovidState(props) {
     }
   };
 
+  //set the Mui table options
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -120,6 +146,7 @@ function CovidState(props) {
     },
   };
 
+  //set the Mui table columns
   const columns = [
     {
       name: "id",
@@ -169,6 +196,11 @@ function CovidState(props) {
       },
     },
   ];
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -226,7 +258,12 @@ function CovidState(props) {
       }
     });
   };
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -321,6 +358,7 @@ function CovidState(props) {
   );
 }
 
+//Validates the data which is recieved fromn the props
 CovidState.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
@@ -329,6 +367,7 @@ CovidState.propTypes = {
   updateGridsPages: PropTypes.func.isRequired,
 };
 
+//To update the redux store and merge with props component
 function mapStateToProps(state, ownProps) {
   return {
     CovidData: state.covidState,
@@ -337,10 +376,12 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: CovidStateAction.loadCovidState,
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
 };
 
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CovidState);

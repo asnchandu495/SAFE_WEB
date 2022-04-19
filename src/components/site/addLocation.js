@@ -27,6 +27,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import TooltipComponent from "../common/tooltip";
 
+//Styling
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -189,18 +190,22 @@ function AddLocation(props) {
         console.log(err);
       });
   }, [props.SelectedRowId]);
-
+  //Method to close the popup modal and reset the popup form data
   const handleClose = () => {
     resetCovidStateFormData();
     props.setopenAddLocationModal(false);
     setIsDuplicate(false);
     props.setSelectedRowId("");
   };
-
+  //Method to reset the form on click of refresh button
   function resetCovidStateFormData() {
     SetformData(resetformData);
   }
-
+  /**
+   * Handle change
+   * Binding data with the form fields also calls the check unique function
+   * @param  {} e
+   */
   function handleChange(e) {
     const { name, value } = e.target;
 
@@ -248,7 +253,11 @@ function AddLocation(props) {
       // }));
     }
   }
-
+  /**
+   * Check unique name
+   * Method to check if there's any duplicacy in the location name
+   * @param  {} value-location name
+   */
   function checkUnqueName(value) {
     if (props.SelectedRowId) {
       if (props.LocationData && props.LocationData.length > 0) {
@@ -277,7 +286,11 @@ function AddLocation(props) {
       }
     }
   }
-
+  /**
+   * Handle change density threashold
+   * Binding data with onchange of  density thershold values
+   * @param  {} e
+   */
   function handleChangedensityThreashold(e) {
     const { name, value } = e.target;
     SetformData((logInForm) => ({
@@ -286,6 +299,7 @@ function AddLocation(props) {
     }));
   }
 
+  //Method  to  validate the form and call method to add or update info
   function userCovidInfo(e) {
     e.preventDefault();
     setisFormSubmit(true);
@@ -296,7 +310,23 @@ function AddLocation(props) {
       submitUserCovidInformation();
     }
   }
-
+  /**
+   * Floor validation
+   * Method to validate floor feild
+   * @param  {} data-{
+    siteId: string;
+    id: string;
+    floorName: string;
+    floorId: string;
+    locationName: string;
+    isPinMicroActive: boolean;
+    HightTemperatureNoLimit: boolean;
+    densityThreasholdLowFrom: number;
+    densityThreasholdLowTo: number;
+    etc,,,;
+    rlapReferenceId: string;
+}
+   */
   function floorValidation(data) {
     if (data.floorId) {
       SetformValidation((ValidationForm) => ({
@@ -339,7 +369,11 @@ function AddLocation(props) {
       }));
     }
   }
-
+  /**
+   * Submit user covid info
+   * Method to add or update a location to the floor
+   * @param  {} e
+   */
   function submitUserCovidInformation(e) {
     settoasterServerity("");
     settoasterErrorMessageType("");
@@ -858,7 +892,7 @@ function AddLocation(props) {
 export function getLocationById(location, id) {
   return location.find((location) => location.id === id) || null;
 }
-
+//Validates the data received from the props
 AddLocation.propTypes = {
   LocationData: PropTypes.array.isRequired,
   selecteLocationData: PropTypes.array.isRequired,
@@ -866,7 +900,7 @@ AddLocation.propTypes = {
   AddData: PropTypes.func.isRequired,
   UpdateData: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   const emptyObject = {};
   const selecteLocationData =
@@ -878,11 +912,11 @@ function mapStateToProps(state, ownProps) {
     LocationData: state.LocationState,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: UserLocationAction.loadLocation,
   AddData: UserLocationAction.createLocation,
   UpdateData: UserLocationAction.updateLocation,
 };
-
+//connects the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(AddLocation);

@@ -140,7 +140,7 @@ function CreateSite(props) {
     securityLead: "",
     siteBHR: "",
     securityLeadName: "",
-    siteBHRName: ""
+    siteBHRName: "",
   });
 
   const [formFieldValidation, setformFieldValidation] = useState({
@@ -160,7 +160,14 @@ function CreateSite(props) {
       props.LoadData(),
     ])
       .then(
-        ([getCountries, getSiteManagers, getLocationManagers, getSiteLeaders, getSiteBHR, loadData]) => {
+        ([
+          getCountries,
+          getSiteManagers,
+          getLocationManagers,
+          getSiteLeaders,
+          getSiteBHR,
+          loadData,
+        ]) => {
           if (siteId) {
             siteApiCall
               .getSiteById(siteId)
@@ -206,7 +213,11 @@ function CreateSite(props) {
         console.log(error);
       });
   }, []);
-
+  /**
+   * User basisc info
+   * Method on after form submit to validate the form feilds
+   * @param  {} e
+   */
   function UserBasicInfo(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -224,7 +235,10 @@ function CreateSite(props) {
       return false;
     }
   }
-
+  /**
+   * Select country validation
+   * Method onchange of country dropdown
+   */
   function SelectCountryValidation() {
     if (formData.countryId) {
       setformFieldValidation((ValidationForm) => ({
@@ -238,7 +252,10 @@ function CreateSite(props) {
       }));
     }
   }
-
+  /**
+   * Select site manager validation
+   * Method onchange of site manager dropdown
+   */
   function SelectSiteManagerValidation() {
     if (
       userSelectedSiteManager &&
@@ -256,6 +273,10 @@ function CreateSite(props) {
     }
   }
 
+  /**
+   * Select security manager validation
+   * Method onchange of security manager dropdown
+   */
   function SelectSecurityManagerValidation() {
     if (
       userSelectedSecurityManager &&
@@ -272,7 +293,10 @@ function CreateSite(props) {
       }));
     }
   }
-
+  /**
+   * Submit create site form
+   * Method to  add or update a site
+   */
   function submitCreateSiteForm() {
     setshowLoadder(true);
     var data = formData;
@@ -341,6 +365,12 @@ function CreateSite(props) {
     }
   }
 
+  /**
+   * Handle change
+   * Binding data with the form fields also calls the check unique function
+   * @param  {} e
+   */
+
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -352,7 +382,11 @@ function CreateSite(props) {
       [name]: value,
     }));
   }
-
+  /**
+   * Check unique name
+   * Method to check if there's any duplicacy in the location name
+   * @param  {} value-text feild name
+   */
   function checkUnqueName(value) {
     if (props.match.params.id != 0) {
       if (props.SiteData && props.SiteData.length > 0) {
@@ -381,7 +415,11 @@ function CreateSite(props) {
       }
     }
   }
-
+  /**
+   * Method on change of site manager   dropdown
+   * @param  {} event
+   * @param  {} value --site manager  name
+   */
   function handleChangeSiteManager(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectedSiteManager(value);
@@ -398,6 +436,11 @@ function CreateSite(props) {
     }
   }
 
+  /**
+   * Method on change of security manager   dropdown
+   * @param  {} event
+   * @param  {} value --security manager  name
+   */
   function handleChangeSecurityManager(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectedSecurityManager(value);
@@ -413,18 +456,34 @@ function CreateSite(props) {
       }));
     }
   }
-
+  /**
+   * Method on change of site bhr dropdown
+   * @param  {} e
+   * @param  {} v--site name
+   */
   function handleChangeSiteBHR(e, v) {
     setSiteSelectedBHR(v);
   }
-
+  /**
+   * Method on change of security lead dropdown
+   * @param  {} e
+   * @param  {} v
+   */
   function handleChangeSiteLead(e, v) {
     setSiteSelectedLead(v);
   }
-
+  /**
+   * Redirect to view user group
+   * Method on click of cancel button to redirect to list page
+   */
   function redirectToViewUsersGroup() {
     props.history.push("/site/all-site");
   }
+  /**
+   * Handle change checkbox
+   *  Method on change of rlap feild to set the state
+   * @param  {} event
+   */
   const handleChangecheckBox = (event) => {
     SetformData((formData) => ({
       ...formData,
@@ -755,10 +814,10 @@ function CreateSite(props) {
                           <MenuItem value="">None</MenuItem>
                           {CountryMasterData && CountryMasterData.length > 0
                             ? CountryMasterData.map((lan) => {
-                              return (
-                                <MenuItem value={lan.id}>{lan.name}</MenuItem>
-                              );
-                            })
+                                return (
+                                  <MenuItem value={lan.id}>{lan.name}</MenuItem>
+                                );
+                              })
                             : ""}
                         </Select>
                       </FormControl>
@@ -811,8 +870,9 @@ function CreateSite(props) {
 
                     <Grid item xs={4}>
                       <label
-                        className={`input-label ${formData.isRLAPActive ? "required" : ""
-                          }`}
+                        className={`input-label ${
+                          formData.isRLAPActive ? "required" : ""
+                        }`}
                       >
                         RLAP Site ID
                       </label>
@@ -888,14 +948,14 @@ function CreateSite(props) {
 export function getUserSiteById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
-
+//Validates the data received from the props
 CreateSite.propTypes = {
   SiteData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
   AddData: PropTypes.func.isRequired,
   UpdateData: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -908,11 +968,11 @@ function mapStateToProps(state, ownProps) {
     SiteData: state.SiteState,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: UserSiteAction.loadSite,
   AddData: UserSiteAction.createSite,
   UpdateData: UserSiteAction.updateSite,
 };
-
+//connects the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CreateSite);

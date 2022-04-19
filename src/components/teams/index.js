@@ -70,11 +70,22 @@ function Teams(props) {
       });
   }, [reloadPage]);
 
+  /**
+   * Handle click update teams
+   * Method on click of edit emeregency contact
+   * @param  {} value- team id
+   */
   function handleClickUpdateTeams(value) {
     var userId = value[0];
     props.history.push(`/teams/add-teams/${userId}`);
   }
 
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value={id}
+   */
   function handleClickOpenConfirmationModal(value) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -84,17 +95,27 @@ function Teams(props) {
       `Are you sure you want to delete ${value[1]} ?`
     );
   }
-
+  /**
+   * Handle Click added secondary
+   * Method to assign users to team
+   * @param  {} value-team id
+   */
   function handleClickaddedsecondaryteams(value) {
     var groupId = value[0];
     props.history.push("/teams/add-primary-user-teams/" + groupId);
   }
 
+  /**
+   * Handle Click view  teams
+   * Method to redirect to view teams component
+   * @param  {} value-team id
+   */
   function handleClickViewTeams(value) {
     var teamId = value[0];
     props.history.push("/teams/view-team/" + teamId);
   }
 
+  //set MUI Datatable columns
   const columns = [
     {
       name: "id",
@@ -179,6 +200,11 @@ function Teams(props) {
     },
   ];
 
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -255,10 +281,19 @@ function Teams(props) {
     });
   };
 
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage-{currentRowsPerPage-5}
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
 
+  /**
+   * Table initiate
+   * Initiate the table based on props grid data(Based logged role rights)
+   */
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
       return g.name == "teams";
@@ -270,7 +305,7 @@ function Teams(props) {
       return 0;
     }
   };
-
+  //Set the MUI table options
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -310,14 +345,20 @@ function Teams(props) {
           } else {
             getValue = col;
           }
-          if (getValue && getValue.toString().toLowerCase().indexOf(searchQuery.toLowerCase()) >= 0) {
+          if (
+            getValue &&
+            getValue
+              .toString()
+              .toLowerCase()
+              .indexOf(searchQuery.toLowerCase()) >= 0
+          ) {
             isFound = true;
           }
         }
       });
       return isFound;
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
   };
 
   return (
@@ -383,7 +424,7 @@ function Teams(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 Teams.propTypes = {
   TeamData: propTypes.array.isRequired,
   LoadAllTeams: propTypes.func.isRequired,
@@ -391,7 +432,7 @@ Teams.propTypes = {
   gridState: PropTypes.array.isRequired,
   updateGridsPages: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     TeamData: state.team,
@@ -399,13 +440,13 @@ function mapStateToProps(state, ownProps) {
     acmData: state.acmData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllTeams: teamAction.loadTeam,
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
 };
 
-// export default Teams;
+//connects the component with redux store
 
 export default connect(mapStateToProps, mapDispatchToProps)(Teams);

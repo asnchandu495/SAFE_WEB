@@ -16,6 +16,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import * as GridAction from "../../Redux/Action/gridAction";
 
+//Styling for the MUI theme
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -61,18 +62,38 @@ function ListAssignedDesignation(props) {
       });
   }, []);
 
+  /**
+   * Handle Click Update User
+   * Method on click of edit designation
+   * @param  {} value-{id}
+   */
   function handleClickUpdateUser(value) {
     var userId = value[0];
     props.history.push("/designation/update-designation/" + userId);
   }
+
+  /**
+   * Handle Click View User
+   * Method on click of view designation
+   * @param  {} value-{id}
+   */
   function handleClickViewUsers(value) {
     props.history.push("/designation/view-designation/" + value);
   }
 
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
 
+  /**
+   * Table initiate
+   * Initiate the table based on props grid data(Based logged role rights)
+   */
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
       return g.name == "designations";
@@ -85,6 +106,7 @@ function ListAssignedDesignation(props) {
     }
   };
 
+  //set the Mui table options
   const options = {
     filter: false,
     print: false,
@@ -115,6 +137,7 @@ function ListAssignedDesignation(props) {
     },
   };
 
+  //set the Mui table columns
   const columns = [
     {
       name: "id",
@@ -192,6 +215,11 @@ function ListAssignedDesignation(props) {
     },
   ];
 
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -250,6 +278,12 @@ function ListAssignedDesignation(props) {
     });
   };
 
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -327,6 +361,7 @@ function ListAssignedDesignation(props) {
   );
 }
 
+//Validates the data received from the props
 ListAssignedDesignation.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
@@ -335,6 +370,7 @@ ListAssignedDesignation.propTypes = {
   updateGridsPages: PropTypes.func.isRequired,
 };
 
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.userDesignation,
@@ -343,12 +379,14 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUserDesignation: UserDesignationAction.loadUserDesignation,
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
 };
 
+//connect the component with the redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps

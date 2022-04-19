@@ -36,7 +36,7 @@ function TabPanel(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
@@ -85,10 +85,12 @@ function ViewTeam(props) {
     setTabValue(index);
   };
 
+  //Method to redirect  on click of cancel
   function handleClickGoBack() {
     props.history.push("/teams/allteams");
   }
 
+  //set options for the MUI datatable
   const options = {
     filter: false,
     filterType: "dropdown",
@@ -102,11 +104,12 @@ function ViewTeam(props) {
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
     sortOrder: {
-      name: 'name',
-      direction: 'asc'
-    }
+      name: "name",
+      direction: "asc",
+    },
   };
 
+  //set the columns for MUI Datatable
   const columns = [
     {
       name: "name",
@@ -207,7 +210,7 @@ function ViewTeam(props) {
                         title={""}
                         data={
                           ViewTeamDetails.users &&
-                            ViewTeamDetails.users.length > 0
+                          ViewTeamDetails.users.length > 0
                             ? ViewTeamDetails.users
                             : []
                         }
@@ -247,17 +250,18 @@ function ViewTeam(props) {
     </div>
   );
 }
-
+//Validate the data recieved from the props
 ViewTeam.propTypes = {
   UserGroupData: PropTypes.array.isRequired,
 };
 
+//Update the redux the store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     UserGroupData: state.usergroup,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUserGroup: UserGroupAction.loadUserGroup,
 };

@@ -3,6 +3,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 
+//Component(Button) to add a floor location
 function CustomToolbarAddFlocation(props) {
   function handleClickCustomAddFlocation() {
     props.setopenAddLocationModal(true);

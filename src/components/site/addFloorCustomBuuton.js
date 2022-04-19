@@ -3,6 +3,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import AddIcon from "@material-ui/icons/Add";
 import Button from "@material-ui/core/Button";
 
+//Component(Button) to add a floor
 function CustomToolbarAddFloor(props) {
   function handleClickCustomAddFloor() {
     props.setopenaddFloorModal(true);

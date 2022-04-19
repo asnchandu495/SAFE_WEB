@@ -27,6 +27,10 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import TooltipComponent from "../common/tooltip";
 
+/**
+ * Material UI  Theme styling
+ * @param  {} theme
+ */
 const defaultTheme = createMuiTheme();
 const theme = createMuiTheme({
   overrides: {
@@ -89,6 +93,7 @@ function CreateCovidState(props) {
     colorId: "",
   });
 
+  //Allows you to perform side effects in your component
   useEffect(() => {
     setComponentLoadder(true);
     if (userGroupUpdateid != 0 && props.userGroupDatas.length > 0) {
@@ -96,7 +101,7 @@ function CreateCovidState(props) {
     }
     props
       .LoadData()
-      .then((result) => { })
+      .then((result) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -116,6 +121,11 @@ function CreateCovidState(props) {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
+  /**
+   * User Basic Info
+   * Method to add or update a covid state
+   * @param  {} e
+   */
   function UserBasicInfo(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -164,7 +174,12 @@ function CreateCovidState(props) {
         });
     }
   }
-
+  /**
+   * Handle Change
+   * Method   onChange of input element
+   * Also calls the unique function to check the duplicates
+   * @param  {} e
+   */
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -185,7 +200,11 @@ function CreateCovidState(props) {
       }));
     }
   }
-
+  /**
+   * Check Unque Name
+   * Check if any duplicate covid state name exists
+   * @param  {} value-{statename}
+   */
   function checkUnqueName(value) {
     if (props.match.params.id != 0) {
       if (props.userGroupDatas && props.userGroupDatas.length > 0) {
@@ -218,7 +237,10 @@ function CreateCovidState(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  /**
+   * Redirect To view Usergroup
+   * Method to redirect to on click of cancel
+   */
   function redirectToViewUsersGroup() {
     props.history.push("/covidstate/all-covidstate");
   }
@@ -392,15 +414,15 @@ function CreateCovidState(props) {
                             <MenuItem value="">None</MenuItem>
                             {backgroundcolor.length > 0
                               ? backgroundcolor.map((value) => {
-                                return (
-                                  <MenuItem
-                                    value={value.id}
-                                    key={value.colorName}
-                                  >
-                                    {value.colorName}
-                                  </MenuItem>
-                                );
-                              })
+                                  return (
+                                    <MenuItem
+                                      value={value.id}
+                                      key={value.colorName}
+                                    >
+                                      {value.colorName}
+                                    </MenuItem>
+                                  );
+                                })
                               : ""}
                           </Select>
                         </FormControl>
@@ -453,16 +475,24 @@ function CreateCovidState(props) {
   );
 }
 
+/**
+ * Get Usergroup Id
+ * Method to find the user on id return 1st  matched element
+ * @param  {} users--covid state
+ * @param  {} id---id
+ */
 export function getUserGroupById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
 
+//Validates data which are recevied from props
 CreateCovidState.propTypes = {
   LoadData: PropTypes.array.isRequired,
   AddData: PropTypes.array.isRequired,
   UpdateData: PropTypes.func.isRequired,
 };
 
+//To update the redux store and merge into props component
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -476,10 +506,12 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadData: CovidStateAction.loadCovidState,
   AddData: CovidStateAction.createCovidState,
   UpdateData: CovidStateAction.updateCovidState,
 };
 
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCovidState);

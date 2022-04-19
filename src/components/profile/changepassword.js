@@ -60,6 +60,17 @@ export default function ChangePassword(props) {
     }));
   }
 
+  /**
+   *  handleSubmit
+   * Method to change password -
+   * data: {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+    statusMessage: string;
+    userId: any;
+     }
+   */
   function handleSubmit() {
     setshowLoadder(true);
     settoasterServerity("");
