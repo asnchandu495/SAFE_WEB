@@ -209,6 +209,7 @@ function ActionForm(props) {
     setFormData(list);
   };
 
+  //Method to bind the form feilds with form data[api]
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = {
@@ -221,7 +222,7 @@ function ActionForm(props) {
     };
     setFormData(list);
   };
-
+  //Method on click of form submit to add the action details
   function formSubmit(e) {
     setshowLoadder(true);
     e.preventDefault();
@@ -275,7 +276,7 @@ function ActionForm(props) {
       `/workflow/${workflowId}/${activityId}/${uActivityId}/actions`
     );
   }
-
+  //method on change of onContextMenu ck editor
   const handleClickContextMenu = (event) => {
     event.preventDefault();
     setStateContextMenu({
@@ -283,11 +284,11 @@ function ActionForm(props) {
       mouseY: event.clientY - 4,
     });
   };
-
+  //Method on close of menu close in ck editor
   const handleCloseContextMenu = () => {
     setStateContextMenu(initialState);
   };
-
+  //on change ck editor option text tags-[name(value)]
   const handleClickContextMenuOption = (opt, index, name) => {
     currentEditor.model.change((writer) => {
       writer.insertText(

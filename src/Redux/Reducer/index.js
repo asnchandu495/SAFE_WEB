@@ -19,7 +19,7 @@ import workflowStates from "./workflowReducer";
 import publishReducers from "./publishFaqReducer";
 import gridState from "./gridReducer";
 import acmState from "./acmReducer";
-
+//Maintain a single state for each react component
 const rootReducer = combineReducers({
   user: userState,
   loadEmergencyContacts: loadEmergencyContactState,

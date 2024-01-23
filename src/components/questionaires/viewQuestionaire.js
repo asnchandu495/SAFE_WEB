@@ -39,7 +39,7 @@ function ViewQuestionaire(props) {
         console.log(error);
       });
   }, []);
-
+//method on change of tab
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -47,7 +47,7 @@ function ViewQuestionaire(props) {
   const handleTabChangeIndex = (index) => {
     setTabValue(index);
   };
-
+//Method on click on cancel
   function handleClickGoBack() {
     props.history.push("/questionaires/allquestionaires");
   }
@@ -65,7 +65,7 @@ function ViewQuestionaire(props) {
     rowsPerPageOptions: [5, 10, 15, 100],
     rowsPerPage: 5,
   };
-
+//Breadcrumbs to redirect
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }

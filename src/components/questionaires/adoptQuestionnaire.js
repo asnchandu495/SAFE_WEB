@@ -65,7 +65,12 @@ function AdoptQuestionnaire(props) {
         console.log(error);
       });
   }, []);
-
+/**
+   * Handle Change
+   * Data binding of the form fields
+   * sets the state formdata
+   * @param  {} -target element
+   */
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -75,19 +80,42 @@ function AdoptQuestionnaire(props) {
       [name]: value,
     }));
   }
-
+ /**
+   * Handle click go back
+   * Method on click of cancel 
+   * To navigate 
+   * @param  {} -target element
+   */
   function handleClickGoBack() {
     props.history.push("/questionaires/allquestionaires");
   }
-
+   /**
+   * Handle change questionnaire
+   * Method on change of dropdown 
+   * sets the state selected user qquestionnaire
+   * @param  {} -target element
+   * value is the dropdown change value
+   */
   function handleChangeQuestionnaire(e, value) {
     setselectedUserQuestionnaire(value);
   }
-
+  /**
+   * Handle change adoption
+   * Method on change of radio button 
+   * sets the state selected  qquestionnaire adoption
+   * @param  {} -target element
+  
+   */
   function handleChangeAdoptOption(e) {
     setSelectedQuestionOption(e.target.value);
   }
-
+ /**
+  *  Adopt questionnaire
+   * Method on form submit 
+   * To validate before submitting
+   * @param  {} -target element
+   
+   */
   function adoptQuestionnaire(e) {
     e.preventDefault();
     SelectUserQuestionnaire();
@@ -97,7 +125,13 @@ function AdoptQuestionnaire(props) {
       return false;
     }
   }
-
+ /**
+  *  submit form
+   * Method on form submit 
+   * After validating the form whether a question is adopted or not
+   * @param  {} -target element
+   * */
+   
   function submitForm() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -135,7 +169,11 @@ function AdoptQuestionnaire(props) {
         setshowLoadder(false);
       });
   }
-
+  /**
+   *  Select user questionnaire
+   * Method for validationg form 
+   
+   */
   function SelectUserQuestionnaire() {
     if (selectedUserQuestionnaire) {
       setformFieldValidation((ValidationForm) => ({

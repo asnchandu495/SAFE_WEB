@@ -190,7 +190,11 @@ function ConfigureHealth(props) {
       },
     },
   };
-
+  /**
+   * Method on change of form feilds bindings
+   * @param  {} getSelectedVal-selected date value
+   * @param  {} name-userId from the user dropdown or start or end date from the feids
+   */
   const handleChangeSearchForm = (getSelectedVal, name) => {
     let thisValue = "";
     var nextday = "";
@@ -230,7 +234,9 @@ function ConfigureHealth(props) {
       [name]: thisValue,
     }));
   };
-
+  /**
+   * Method to reset the form feilds
+   */
   function resetFilterForm() {
     setSelectedUserDetails([]);
     setSearchForm({
@@ -241,7 +247,10 @@ function ConfigureHealth(props) {
 
     setSelfHealthChecks([]);
   }
-
+  /**
+   * Method on click of submit in the form to format the date feilds as per api
+   * @param  {} e
+   */
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -295,7 +304,10 @@ function ConfigureHealth(props) {
         console.log(err);
       });
   }
-
+  /**
+   * Handle click view
+   * @param  {} getId-userID
+   */
   function handleClickView(getId) {
     props.history.push(`/selfhealth/heath-declarations/${getId}`);
   }

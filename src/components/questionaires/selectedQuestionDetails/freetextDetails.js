@@ -31,22 +31,23 @@ function FreetextDetails(props) {
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
-  useEffect(() => { }, []);
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
+  useEffect(() => {}, []);
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-id
+   */
   function handleClickOpenConfirmationModal(value) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -57,7 +58,10 @@ function FreetextDetails(props) {
       `Are you sure you want to delete this question ?`
     );
   }
-
+  /**
+   * Method on click of edit to update
+   * @param  {} getQueDetails-questionid
+   */
   function handleClickUpdateQuestions(getQueDetails) {
     history.push(
       `/questionaires/add-questions/${getQueDetails.surveyId}/${getQueDetails.id}?type=${getQueDetails.questionType}`

@@ -3,6 +3,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
 
 function ShorttextQuestion(props) {
+  //Method on change of answer dropdown e -target element
   function handleChangeAnswer(e) {
     const { name, value } = e.target;
     props.setShorttextAnswer((addQuestionData) => ({

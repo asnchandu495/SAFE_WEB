@@ -175,7 +175,7 @@ function TemperatureRange(props) {
       setflagStatus(false);
     }
   }
-
+  //Method on form feilds on change to bind the data with form state{ e is the target element}
   function handleChangeInput(e) {
     const { name, value, checked } = e.target;
     console.log(tempsections);
@@ -266,7 +266,7 @@ function TemperatureRange(props) {
       }));
     }
   }
-
+  //Method on change of lower limit/upper/no limit on change to bind with form feilds {index is the row index }
   const handleInputChangeContacts = (e, index) => {
     const { name, value, checked } = e.target;
     const list = {
@@ -295,7 +295,7 @@ function TemperatureRange(props) {
     // parseFloat(settempsections(list));
     settempsections(list);
   };
-
+  //Method for eventual consistency to open popup  to update the global settings
   const handleClickOpenEventualModal = () => {
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("TemperatureRangesettingsSuccess");
@@ -305,6 +305,12 @@ function TemperatureRange(props) {
       `Click OK to continue working on the same page.`
     );
   };
+  /**
+   * Method on change of covid stata dropdown
+   * @param  {} e-target element
+   * @param  {} value-selected covid state value
+   * @param  {} index-index
+   */
   function handleChangeCovidState(e, value, index) {
     let thisValue;
     if (value) {
@@ -340,6 +346,7 @@ function TemperatureRange(props) {
     settempsections(list);
   }
 
+  //Method to remove the multiple added upper/lower/no limit feilds in row {j is the index}
   const handleRemoveClickContacts = (j) => {
     const list = { ...tempsections };
     list.covidStates.splice(j, 1);
@@ -357,7 +364,7 @@ function TemperatureRange(props) {
 
     settempsections(listmain);
   };
-
+  //Method to add  the multiple added upper/lower/no limit feilds in row {j is row the index}
   const handleAddClickContacts = (index, j) => {
     const list = { ...tempsections };
     const thistempsections = list.covidStates;
@@ -377,10 +384,11 @@ function TemperatureRange(props) {
     settempsections(list);
   };
 
+  //Method on click of cancel to redirect to some component
   function handleClickGoBackToPage() {
     settempsections(oldData);
   }
-
+  //Method on click of form submit and call the api and eventual consistency function
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -509,7 +517,6 @@ function TemperatureRange(props) {
                       fullWidth
                       labelId="demo-simple-select-outlined-label"
                       id="demo-simple-select-outlined"
-                      value={tempsections.temperatureUnit}
                       value={
                         tempsections.temperatureUnit
                           ? tempsections.temperatureUnit

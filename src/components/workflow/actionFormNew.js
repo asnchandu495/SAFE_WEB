@@ -210,7 +210,7 @@ function ActionFormNew(props) {
     };
     setFormData(list);
   };
-
+  //Method to bind with form feilds
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = {
@@ -223,11 +223,11 @@ function ActionFormNew(props) {
     };
     setFormData(list);
   };
-
+  //Method to bind with form feilds
   const handleInputChangeTags = (e, index) => {
     return false;
   };
-
+  //Method on click of form submit to add or update the options
   function formSubmit(e) {
     setshowLoadder(true);
     e.preventDefault();
@@ -280,7 +280,7 @@ function ActionFormNew(props) {
         });
     }
   }
-
+  //method on change of onContextMenu ck editor
   const handleClickContextMenu = (event) => {
     event.preventDefault();
     setStateContextMenu({
@@ -288,7 +288,7 @@ function ActionFormNew(props) {
       mouseY: event.clientY - 4,
     });
   };
-
+  //method on change of onContextMenu ck editor menu change
   const handleClickContextMenuText = (event) => {
     event.preventDefault();
     setStateContextMenuText({
@@ -301,14 +301,15 @@ function ActionFormNew(props) {
     console.log("no menu");
   };
 
+  //Method on close of menu close in ck editor
   const handleCloseContextMenu = () => {
     setStateContextMenu(initialState);
   };
-
+  //Method on close of menu text close in ck editor
   const handleCloseContextMenuText = () => {
     setStateContextMenuText(initialState);
   };
-
+  //Method on change of context menu options
   const handleClickContextMenuOption = (opt, index, name) => {
     currentEditor.model.change((writer) => {
       writer.insertText(
@@ -327,7 +328,7 @@ function ActionFormNew(props) {
     setFormData(list);
     setStateContextMenu(initialState);
   };
-
+  //Method on change of text menu options text
   const handleClickContextMenuOptionText = (opt, index, name) => {
     let textToInsert = opt;
     let cursorPosition = currentInputText.target.selectionStart;
@@ -355,7 +356,7 @@ function ActionFormNew(props) {
     setFormData(list);
     setStateContextMenu(initialState);
   };
-
+  //on change ck editor option text tags-[name(value)]
   const handleClickContextMenuOptionTextTags = (opt, index, name) => {
     let textToInsert = opt;
     let cursorPosition = currentInputText.target.selectionStart;

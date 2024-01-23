@@ -32,7 +32,7 @@ function ListofQuestions(props) {
         console.log(err);
       });
   }, []);
-
+//Method on click of questionnaire list item based on quetion type and id
   const handleListItemClick = (quesId, questionType) => {
     setSelectedIndex(quesId);
     if (questionType == "Boolean") {
@@ -88,7 +88,7 @@ function ListofQuestions(props) {
       console.log("response");
     }
   };
-
+//Method for the search quesionnaire
   function searchQuestionnaire(e) {
     var input = e.target.value;
     var filter = input.toLowerCase();

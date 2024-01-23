@@ -69,7 +69,7 @@ function Questionaire(props) {
         console.log(error);
       });
   }, [reloadPage]);
-
+//Method on click of confirmation dialog box to delete questionnaire
   function handleClickOpenConfirmationModal(value) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -83,17 +83,17 @@ function Questionaire(props) {
     var questionId = value[0];
     props.history.push("/questionaires/view-questionaire/" + questionId);
   }
-
+//Method on click of update questionnaire
   function handleClickUpdateQuestions(value) {
     var questionId = value[0];
     props.history.push(`/questionaires/create-questionaire/${questionId}`);
   }
-
+//Method on click of publish questionnaire value 
   function handleClickPublishQuestions(value) {
     var questionId = value[0];
     props.history.push(`/questionaires/publish-questionnaire/${questionId}`);
   }
-
+//Method on click of order of execution value is the selected one
   function handleClickOrderofExecution(value) {
     var questionId = value[0];
     props.history.push(`/questionaires/order-of-execution/${questionId}`);
@@ -267,11 +267,11 @@ function Questionaire(props) {
       }
     });
   };
-
+//Method to set no of rows per page
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
-
+//Method to set the state for the table
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
       return g.name == "questionnaire";
@@ -314,15 +314,15 @@ function Questionaire(props) {
       },
     },
   };
-
+//Method on click of cancel
   function gotoAddQuestion(getRowData) {
     props.history.push(`/questionaires/add-questions/${getRowData[0]}/0`);
   }
-
+//Method to redirect on click of add question
   function gotoViewQuestion(getRowData) {
     props.history.push(`/questionaires/view-questions/${getRowData[0]}`);
   }
-
+//Method to redirect on click of questionaiire evaluation
   function questionaireEvaluation(getRowData) {
     props.history.push(
       `/questionaires/questionnaire-evaluation/${getRowData[0]}`

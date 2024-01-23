@@ -69,6 +69,7 @@ function CreateFAQ(props) {
     }
   }, [props.userGroupDatas]);
 
+  //Method to add or update a FAQ
   function submitForm(e) {
     setshowLoadder(true);
     e.preventDefault();
@@ -121,7 +122,7 @@ function CreateFAQ(props) {
         });
     }
   }
-
+  //Method to bind the form feilds
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -134,7 +135,7 @@ function CreateFAQ(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  //Method to redirect on click of cancel
   function redirectToParent() {
     props.history.push("/faq/allfaqs");
   }

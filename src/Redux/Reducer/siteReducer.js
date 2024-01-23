@@ -8,6 +8,8 @@ import {
   LOAD__SITE_SECURITY_SUCCESS,
 } from "../utilits";
 var intialState = [];
+//Reducers
+//A function that takes 2 arguments and returns application current state and action from mapStateToProps updates redux store and merge them into props components
 export default function loadSiteReducer(state = intialState, action) {
   switch (action.type) {
     case LOAD_LIST_SITE_SUCCESS:

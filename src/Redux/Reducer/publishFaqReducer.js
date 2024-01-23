@@ -3,6 +3,8 @@ import {
   LOAD_FAQ_PUBLISH,
   DELETE_PUBLISH_FAQ,
 } from "../utilits";
+//Reducers
+//A function that takes 2 arguments and returns application current state and action from mapStateToProps updates redux store and merge them into props components
 var intialState = [];
 export default function loadAssignFaqReducer(state = intialState, action) {
   switch (action.type) {

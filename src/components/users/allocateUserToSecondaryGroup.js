@@ -66,6 +66,7 @@ function AllocateUserToSecondaryGroup(props) {
       });
   }, [resetComponent]);
 
+  //Method onchange secondary group dropdown to bind -value{name of the secondary group}
   function handleChangeTeam(event, value) {
     setUserSelectedSecondaryGroupValue(value);
     props.setActiveCard("secondaryGroup");
@@ -81,12 +82,13 @@ function AllocateUserToSecondaryGroup(props) {
       }));
     }
   }
-
+  //Method to cancel the values inside text feild and reset the card
   function cancelEdit() {
     props.setActiveCard("");
     setResetComponent("YES");
   }
 
+  //Method to validate the form after submit
   function SelectGroupValidation() {
     if (UserSelectedSecondaryGroupValue.length > 0) {
       setformFieldValidation((ValidationForm) => ({
@@ -100,7 +102,7 @@ function AllocateUserToSecondaryGroup(props) {
       }));
     }
   }
-
+  //Method after update secondary group form submit to validate if the text feild isnt empty
   function UserSecondaryGroup() {
     SelectGroupValidation();
     if (UserSelectedSecondaryGroupValue.length > 0) {
@@ -109,7 +111,7 @@ function AllocateUserToSecondaryGroup(props) {
       return false;
     }
   }
-
+  //Method if the secondary group feild isn't empty call the api on submit
   function UserSecondaryGroupSubmit() {
     setbuttonloadder(true);
     settoasterServerity("");

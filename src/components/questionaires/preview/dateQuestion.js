@@ -11,6 +11,11 @@ import {
 import moment from "moment";
 
 function DateQuestion(props) {
+  /**
+   * Method to select the date from date picker
+   * @param  {} date-date
+   * @param  {} name="string"-answer
+   */
   function handleChangeAnswer(date, name) {
     props.setDateAnswer((addQuestionData) => ({
       ...props.dateAnswer,

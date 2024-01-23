@@ -6,9 +6,10 @@ import {
 } from "../utilits";
 
 import GlobalSettingApiServices from "../../services/globalSettingService";
-
+//Actions are javscript objects that maintain 2 properties type and payload.These actions are "dispatched" by redux store store dispatch api method
+//constructor
 const GlobalSettingApi = new GlobalSettingApiServices();
-
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 export function LoadGlobalSettingWithoutAPISuccess(data) {
   return { type: LOAD_GLOBAL_SETTING_WITHOUT_API_SUCCESS, data };
 }

@@ -59,7 +59,9 @@ function BooleanQuestion(props) {
   ]);
   const [questionData, setQuestionData] = useState();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('Editing of this yes/no question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas');
+  const [warningMessage, setWarningMessage] = useState(
+    "Editing of this yes/no question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas"
+  );
 
   const PurpleSwitch = withStyles({
     switchBase: {
@@ -81,7 +83,12 @@ function BooleanQuestion(props) {
       setAddQuestionData(getData);
     }
   }, []);
-
+  /**
+   * Handle Change
+   * Data binding of the form fields
+  
+   * @param  {} e
+   */
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -90,7 +97,12 @@ function BooleanQuestion(props) {
       [name]: value,
     }));
   };
-
+  /**
+   * Handle Change switch
+   * Data binding of the form fields
+   * To decide whether to keep feild as mandatory or not
+   * @param  {} e
+   */
   const handleChangeSwitch = (e) => {
     const { name, value } = e.target;
     setAddQuestionData((addQuestionData) => ({
@@ -98,14 +110,18 @@ function BooleanQuestion(props) {
       [name]: e.target.checked,
     }));
   };
-
+  /**
+   * Method on click of cancel to redirect to view questionnaire component
+   */
   const navigateToQuestionType = () => {
     setTimeout(() => {
       // props.setGotoAddQuestion(false);
       props.history.push(`/questionaires/view-questions/${props.surveyIdURL}`);
     }, 1000);
   };
-
+  /**
+   * Method on click of submit to set the state and call the api
+   */
   function submitQuestionForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -116,7 +132,10 @@ function BooleanQuestion(props) {
       ...addQuestionData,
     };
     if (finalObject.id != 0) {
-      if (!props.surveyDetails.isSaveasDraft && !props.surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+      if (
+        !props.surveyDetails.isSaveasDraft &&
+        !props.surveyDetails.isAssignedToUserGroupisAssignedToUserGroup
+      ) {
         setOpenConfirmationModal(true);
         setQuestionData(finalObject);
       } else {
@@ -141,7 +160,6 @@ function BooleanQuestion(props) {
             setshowLoadder(false);
           });
       }
-
     } else {
       questionaireApiCall
         .AddBoolenQuestion(finalObject)
@@ -429,8 +447,7 @@ function BooleanQuestion(props) {
         surveyIdURL={props.surveyIdURL}
         setisAlertBoxOpened={setisAlertBoxOpened}
         sendQuestionType="Boolean"
-      >
-      </SurveyQuestionUpdate>
+      ></SurveyQuestionUpdate>
     </>
   );
 }

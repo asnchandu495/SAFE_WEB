@@ -221,7 +221,7 @@ function PublishQuestionnaire(props) {
         console.log(error);
       });
   }, []);
-
+//Method on click of publish
   function handlePublish() {
     setIsQuestionPublish(true);
     settoasterServerity("");
@@ -245,7 +245,7 @@ function PublishQuestionnaire(props) {
         setIsQuestionPublish(false);
       });
   }
-
+//Method to submit a current question
   function submitCurrentQuestion(e) {
     e.preventDefault();
     setIsQuestionSubmit(true);

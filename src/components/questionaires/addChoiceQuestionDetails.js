@@ -109,20 +109,20 @@ function AddChoiceQuestionDetails(props) {
                 res.positiveConformitySingleChoice.length > 0
                   ? res.positiveConformitySingleChoice
                   : [
-                    {
-                      optionId: "",
-                      option: "",
-                    },
-                  ],
+                      {
+                        optionId: "",
+                        option: "",
+                      },
+                    ],
               redFlagForSingleChoice:
                 res.redFlagForSingleChoice.length > 0
                   ? res.redFlagForSingleChoice
                   : [
-                    {
-                      optionId: "",
-                      option: "",
-                    },
-                  ],
+                      {
+                        optionId: "",
+                        option: "",
+                      },
+                    ],
             };
             setSingleChoiceFlag(newSingleChoiceFlag);
             setshowLoadder(false);
@@ -148,18 +148,18 @@ function AddChoiceQuestionDetails(props) {
                 res.positiveConformityMultiChoice.length > 0
                   ? res.positiveConformityMultiChoice
                   : [
-                    {
-                      options: [],
-                    },
-                  ],
+                      {
+                        options: [],
+                      },
+                    ],
               redFlagForMultipleChoice:
                 res.redFlagForMultipleChoice.length > 0
                   ? res.redFlagForMultipleChoice
                   : [
-                    {
-                      options: [],
-                    },
-                  ],
+                      {
+                        options: [],
+                      },
+                    ],
             };
             setMultiChoiceFlag(newMultiChoiceFlag);
             setshowLoadder(false);
@@ -177,7 +177,11 @@ function AddChoiceQuestionDetails(props) {
       setShowFlags(false);
     }
   }, [reloadPage]);
-
+  /**
+   * Handle Change
+   * Data binding of the form fields
+   * @param  {} e-element to target
+   */
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -186,7 +190,12 @@ function AddChoiceQuestionDetails(props) {
       [name]: value,
     }));
   };
-
+  /**
+   * Handle Change switch
+   * Data binding of the form fields
+   * To decide whether to keep feild as mandatory or not
+   * @param  {} e-element to target
+   */
   const handleChangeSwitch = (e) => {
     const { name, value } = e.target;
     setAddQuestionWithChoices((addQuestionWithChoices) => ({
@@ -194,13 +203,15 @@ function AddChoiceQuestionDetails(props) {
       [name]: e.target.checked,
     }));
   };
-
+  /**
+   * Method on click of cancel to redirect
+   */
   const navigateToQuestionType = () => {
     setTimeout(() => {
       props.setGotoAddQuestion(false);
     }, 1000);
   };
-
+  //Method on click of submit to add or update question details
   function submitQuestionForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -350,7 +361,11 @@ function AddChoiceQuestionDetails(props) {
         return <h4>Not found</h4>;
     }
   }
-
+  /**
+   * Method on change of answer text feild
+   * @param  {} e-element to target
+   * @param  {} index-index
+   */
   const handleInputChangeChoices = (e, index) => {
     const { name, value } = e.target;
     const list = {
@@ -363,13 +378,19 @@ function AddChoiceQuestionDetails(props) {
     };
     setAddQuestionWithChoices(list);
   };
-
+  /**
+   * Method to add multiple quesions
+   * @param  {} j
+   */
   const handleRemoveClickChoices = (j) => {
     const list = { ...addQuestionWithChoices };
     list.surveyResponseChoices.splice(j, 1);
     setAddQuestionWithChoices(list);
   };
-
+  /**
+   * Method to remove multiple quesions
+   * @param  {} j
+   */
   const handleAddClickChoices = (index, j) => {
     const list = { ...addQuestionWithChoices };
     const thisChoices = list.surveyResponseChoices;
@@ -382,7 +403,7 @@ function AddChoiceQuestionDetails(props) {
     ];
     setAddQuestionWithChoices(list);
   };
-
+  //Onclick of submit to add a   quesion
   function submitQuestionFormFlags(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -512,42 +533,42 @@ function AddChoiceQuestionDetails(props) {
                   </Grid>
                   <Grid item sm={10}>
                     {addQuestionWithChoices.surveyResponseChoices &&
-                      addQuestionWithChoices.surveyResponseChoices.length > 0
+                    addQuestionWithChoices.surveyResponseChoices.length > 0
                       ? addQuestionWithChoices.surveyResponseChoices.map(
-                        (x, i) => {
-                          return (
-                            <Grid
-                              container
-                              spacing={1}
-                              item
-                              xs={12}
-                              className="dynamic-rows-bottom"
-                              key={`choice-container${i}`}
-                            >
-                              <Grid item xs={6}>
-                                <TextValidator
-                                  variant="outlined"
-                                  validators={["required"]}
-                                  errorMessages={["Please enter answer"]}
-                                  fullWidth
-                                  id={`option${i}`}
-                                  placeholder="Enter answer"
-                                  name="option"
-                                  value={x.option}
-                                  onChange={(e) =>
-                                    handleInputChangeChoices(e, i)
-                                  }
-                                  className="global-input"
-                                  InputLabelProps={{ shrink: false }}
-                                />
-                              </Grid>
+                          (x, i) => {
+                            return (
                               <Grid
+                                container
+                                spacing={1}
                                 item
-                                xs={2}
-                                className="row-icons-container"
+                                xs={12}
+                                className="dynamic-rows-bottom"
+                                key={`choice-container${i}`}
                               >
-                                {addQuestionWithChoices.surveyResponseChoices
-                                  .length !== 1 && (
+                                <Grid item xs={6}>
+                                  <TextValidator
+                                    variant="outlined"
+                                    validators={["required"]}
+                                    errorMessages={["Please enter answer"]}
+                                    fullWidth
+                                    id={`option${i}`}
+                                    placeholder="Enter answer"
+                                    name="option"
+                                    value={x.option}
+                                    onChange={(e) =>
+                                      handleInputChangeChoices(e, i)
+                                    }
+                                    className="global-input"
+                                    InputLabelProps={{ shrink: false }}
+                                  />
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={2}
+                                  className="row-icons-container"
+                                >
+                                  {addQuestionWithChoices.surveyResponseChoices
+                                    .length !== 1 && (
                                     <Tooltip title="Remove">
                                       <CancelIcon
                                         className={`delete-row-icon`}
@@ -557,24 +578,24 @@ function AddChoiceQuestionDetails(props) {
                                       ></CancelIcon>
                                     </Tooltip>
                                   )}
-                                {addQuestionWithChoices.surveyResponseChoices
-                                  .length -
-                                  1 ===
-                                  i &&
-                                  addQuestionWithChoices.surveyResponseChoices
-                                    .length < 10 && (
-                                    <Tooltip title="Add">
-                                      <AddCircleIcon
-                                        className={`add-row-icon`}
-                                        onClick={handleAddClickChoices}
-                                      ></AddCircleIcon>
-                                    </Tooltip>
-                                  )}
+                                  {addQuestionWithChoices.surveyResponseChoices
+                                    .length -
+                                    1 ===
+                                    i &&
+                                    addQuestionWithChoices.surveyResponseChoices
+                                      .length < 10 && (
+                                      <Tooltip title="Add">
+                                        <AddCircleIcon
+                                          className={`add-row-icon`}
+                                          onClick={handleAddClickChoices}
+                                        ></AddCircleIcon>
+                                      </Tooltip>
+                                    )}
+                                </Grid>
                               </Grid>
-                            </Grid>
-                          );
-                        }
-                      )
+                            );
+                          }
+                        )
                       : ""}
                   </Grid>
                 </Grid>

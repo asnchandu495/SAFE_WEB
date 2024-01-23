@@ -52,6 +52,7 @@ export default function ChangePassword(props) {
     });
   }, [formData.confirmPassword, formData.newPassword]);
 
+  //Method to bind the data with form fields and the state
   function handleChange(e) {
     const { name, value } = e.target;
     SetformData((formData) => ({
@@ -71,6 +72,7 @@ export default function ChangePassword(props) {
     userId: any;
      }
    */
+  //Method on click of submit to change  and update the password
   function handleSubmit() {
     setshowLoadder(true);
     settoasterServerity("");

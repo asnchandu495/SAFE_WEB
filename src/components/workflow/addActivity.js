@@ -227,14 +227,15 @@ function AddActivity(props) {
     props.history.push(getRoute);
   }
 
+  //Method to open the  popup modal
   const handleClickOpenModal = () => {
     setModalOpen(true);
   };
-
+  //Method to close the  popup modal
   const handleClose = () => {
     setModalOpen(false);
   };
-
+  //method to assign options to activity{value-rowdata}
   function handleaddOptions(value) {
     let uActivityId = value[2];
     let activityId = value[0];
@@ -242,7 +243,11 @@ function AddActivity(props) {
       `/workflow/${workflowId}/${activityId}/${uActivityId}/actions`
     );
   }
-
+  /**
+   * Method to select an activity
+   * @param  {} event
+   * @param  {} value-activiy name
+   */
   function userSelectActivity(event, value) {
     setUserSelectedActivities(value);
     if (value) {
@@ -257,7 +262,12 @@ function AddActivity(props) {
       }));
     }
   }
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-rowdata to get id
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -268,6 +278,7 @@ function AddActivity(props) {
     );
   };
 
+  //Method for validation of form feilds after form submit
   function validateAddActivity() {
     let defaultSelectedValue = allActivities.filter((act) => {
       return userSelectedActivities.find((sact) => {
@@ -286,7 +297,7 @@ function AddActivity(props) {
       }));
     }
   }
-
+  //Method after form submit to call the validate function
   function submitActivityForm() {
     validateAddActivity();
     let defaultSelectedValue = allActivities.filter((act) => {
@@ -300,7 +311,7 @@ function AddActivity(props) {
       return false;
     }
   }
-
+  //If the validation is successful to call the api
   function submitActivityForm1() {
     // e.preventDefault();
     settoasterServerity("");

@@ -4,7 +4,8 @@ import {
   CREATE_EMERGENCY_CONTACT_SUCCESS,
   UPDATE_EMERGENCY_CONTACT_SUCCESS,
 } from "../utilits";
-
+//Reducers
+//A function that takes 2 arguments and returns application current state and action from mapStateToProps updates redux store and merge them into props components
 var intialState = [];
 
 export default function loadEmergencyContactReducer(

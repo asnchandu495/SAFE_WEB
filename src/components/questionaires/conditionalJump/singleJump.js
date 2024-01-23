@@ -76,7 +76,9 @@ function SingleJump(props) {
   const [reloadPage, setReloadPage] = useState("false");
   const [questionData, setQuestionData] = useState();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('Updating conditional jump of this single choice question might have impact on order of execution and questionnaire evaluation, please revisit these areas.');
+  const [warningMessage, setWarningMessage] = useState(
+    "Updating conditional jump of this single choice question might have impact on order of execution and questionnaire evaluation, please revisit these areas."
+  );
 
   const GreenCheckbox = withStyles({
     root: {
@@ -124,7 +126,12 @@ function SingleJump(props) {
         console.log(error);
       });
   }, [reloadPage]);
-
+  /**
+   * Handle Change
+   * Data binding of the form fields
+  
+   * @param  {} e
+   */
   const handleChange = (e) => {
     const { name, value, checked } = e.target;
 
@@ -140,7 +147,12 @@ function SingleJump(props) {
       }));
     }
   };
-
+  /**
+   * Method onchange of dropdown
+   
+   * @param  {} e-element to target
+   * @param  {} index-index
+   */
   const handleChangeLogicAnswer = (e, index) => {
     const { name, value } = e.target;
     console.log(name);
@@ -154,10 +166,10 @@ function SingleJump(props) {
               (con, conIndex) =>
                 conIndex == index
                   ? {
-                    ...con,
-                    [name]: value,
-                    ["isEndQuestion"]: thisQuestion.isEndQuestion,
-                  }
+                      ...con,
+                      [name]: value,
+                      ["isEndQuestion"]: thisQuestion.isEndQuestion,
+                    }
                   : con
             ),
           ],
@@ -171,9 +183,9 @@ function SingleJump(props) {
               (con, conIndex) =>
                 conIndex == index
                   ? {
-                    ...con,
-                    [name]: "",
-                  }
+                      ...con,
+                      [name]: "",
+                    }
                   : con
             ),
           ],
@@ -193,7 +205,7 @@ function SingleJump(props) {
       setConditionalJump(list);
     }
   };
-
+  //Method to add multiple answer
   const handleAddClickLogicAnswer = (index, j) => {
     const list = { ...conditionalJump };
     const thisconditionalJumpAnswers = list.singleChoiceConditionalQuestions;
@@ -209,26 +221,30 @@ function SingleJump(props) {
     ];
     setConditionalJump(list);
   };
-
+  //Method to remove multiple answer {j-index}
   const handleRemoveClickLogicAnswer = (j) => {
     const list = { ...conditionalJump };
     list.singleChoiceConditionalQuestions.splice(j, 1);
     setConditionalJump(list);
   };
+  //Method on click of cancel to redirect to view questions component
   function handleCancel() {
     // setConditionalJump(cancelconditionalJump);
     setTimeout(() => {
       props.history.push(`/questionaires/view-questions/${surveyId}`);
     }, 1000);
   }
-
+  //Method to after submit to add or update a conditional jump
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
     settoasterErrorMessageType("");
     setshowLoadder(true);
     if (conditionalJump.id != "") {
-      if (!surveyDetails.isSaveasDraft && !surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+      if (
+        !surveyDetails.isSaveasDraft &&
+        !surveyDetails.isAssignedToUserGroupisAssignedToUserGroup
+      ) {
         setOpenConfirmationModal(true);
         setQuestionData(conditionalJump);
       } else {
@@ -349,117 +365,117 @@ function SingleJump(props) {
                         {conditionalJump.singleChoiceConditionalQuestions
                           .length > 0
                           ? conditionalJump.singleChoiceConditionalQuestions.map(
-                            (x, i) => {
-                              return (
-                                <Grid
-                                  spacing={1}
-                                  container
-                                  sm={12}
-                                  key={`answer-logic-container${i}`}
-                                  className="answer-logic-container"
-                                >
-                                  <Grid item xs={5}>
-                                    <FormControl variant="outlined" fullWidth>
-                                      <InputLabel
-                                        id={`demo-simple-select-outlined-label${i}`}
-                                        shrink={false}
-                                        className="select-label"
-                                      >
-                                        {x.answerChoiceId &&
+                              (x, i) => {
+                                return (
+                                  <Grid
+                                    spacing={1}
+                                    container
+                                    sm={12}
+                                    key={`answer-logic-container${i}`}
+                                    className="answer-logic-container"
+                                  >
+                                    <Grid item xs={5}>
+                                      <FormControl variant="outlined" fullWidth>
+                                        <InputLabel
+                                          id={`demo-simple-select-outlined-label${i}`}
+                                          shrink={false}
+                                          className="select-label"
+                                        >
+                                          {x.answerChoiceId &&
                                           x.answerChoiceId != ""
-                                          ? ""
-                                          : "Select answer"}
-                                      </InputLabel>
-                                      <Select
-                                        required
-                                        labelId={`demo-simple-select-outlined-label${i}`}
-                                        id={`demo-simple-select-outlined${i}`}
-                                        value={
-                                          x.answerChoiceId
-                                            ? x.answerChoiceId
-                                            : ""
-                                        }
-                                        name="answerChoiceId"
-                                        onChange={(e) =>
-                                          handleChangeLogicAnswer(e, i)
-                                        }
-                                        placeholder="Select expression"
-                                        InputLabelProps={{
-                                          shrink: false,
-                                        }}
-                                        className="global-input single-select"
-                                      >
-                                        <MenuItem value="">
-                                          <em>None</em>
-                                        </MenuItem>
-                                        {answerChoices.map((aType) => {
-                                          return (
-                                            <MenuItem
-                                              value={aType.optionId}
-                                              key={`atypered_${aType.optionId}`}
-                                            >
-                                              {aType.option}
-                                            </MenuItem>
-                                          );
-                                        })}
-                                      </Select>
-                                    </FormControl>
-                                  </Grid>
-                                  <Grid item xs={6}>
-                                    <FormControl variant="outlined" fullWidth>
-                                      <InputLabel
-                                        id="demo-simple-select-outlined-label"
-                                        shrink={false}
-                                        className="select-label"
-                                      >
-                                        {x.goToSurveyQuestionId == ""
-                                          ? "Select question"
-                                          : ""}
-                                      </InputLabel>
-                                      <Select
-                                        required
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        value={x.goToSurveyQuestionId}
-                                        name="goToSurveyQuestionId"
-                                        onChange={(e) =>
-                                          handleChangeLogicAnswer(e, i)
-                                        }
-                                        placeholder="Select question"
-                                        InputLabelProps={{
-                                          shrink: false,
-                                        }}
-                                        className="global-input single-select"
-                                      >
-                                        <MenuItem value="">
-                                          <em>None</em>
-                                        </MenuItem>
-                                        {selectedSurveyQuestions.map(
-                                          (ans) => {
+                                            ? ""
+                                            : "Select answer"}
+                                        </InputLabel>
+                                        <Select
+                                          required
+                                          labelId={`demo-simple-select-outlined-label${i}`}
+                                          id={`demo-simple-select-outlined${i}`}
+                                          value={
+                                            x.answerChoiceId
+                                              ? x.answerChoiceId
+                                              : ""
+                                          }
+                                          name="answerChoiceId"
+                                          onChange={(e) =>
+                                            handleChangeLogicAnswer(e, i)
+                                          }
+                                          placeholder="Select expression"
+                                          InputLabelProps={{
+                                            shrink: false,
+                                          }}
+                                          className="global-input single-select"
+                                        >
+                                          <MenuItem value="">
+                                            <em>None</em>
+                                          </MenuItem>
+                                          {answerChoices.map((aType) => {
                                             return (
                                               <MenuItem
-                                                value={ans.id}
-                                                key={`atypered_${ans.id}`}
-                                                disabled={
-                                                  ans.hasConditionalOrder
-                                                }
+                                                value={aType.optionId}
+                                                key={`atypered_${aType.optionId}`}
                                               >
-                                                {ans.question}
+                                                {aType.option}
                                               </MenuItem>
                                             );
+                                          })}
+                                        </Select>
+                                      </FormControl>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                      <FormControl variant="outlined" fullWidth>
+                                        <InputLabel
+                                          id="demo-simple-select-outlined-label"
+                                          shrink={false}
+                                          className="select-label"
+                                        >
+                                          {x.goToSurveyQuestionId == ""
+                                            ? "Select question"
+                                            : ""}
+                                        </InputLabel>
+                                        <Select
+                                          required
+                                          labelId="demo-simple-select-outlined-label"
+                                          id="demo-simple-select-outlined"
+                                          value={x.goToSurveyQuestionId}
+                                          name="goToSurveyQuestionId"
+                                          onChange={(e) =>
+                                            handleChangeLogicAnswer(e, i)
                                           }
-                                        )}
-                                      </Select>
-                                    </FormControl>
-                                  </Grid>
-                                  <Grid
-                                    item
-                                    xs={1}
-                                    className="row-icons-container"
-                                  >
-                                    {conditionalJump
-                                      .singleChoiceConditionalQuestions
-                                      .length !== 1 && (
+                                          placeholder="Select question"
+                                          InputLabelProps={{
+                                            shrink: false,
+                                          }}
+                                          className="global-input single-select"
+                                        >
+                                          <MenuItem value="">
+                                            <em>None</em>
+                                          </MenuItem>
+                                          {selectedSurveyQuestions.map(
+                                            (ans) => {
+                                              return (
+                                                <MenuItem
+                                                  value={ans.id}
+                                                  key={`atypered_${ans.id}`}
+                                                  disabled={
+                                                    ans.hasConditionalOrder
+                                                  }
+                                                >
+                                                  {ans.question}
+                                                </MenuItem>
+                                              );
+                                            }
+                                          )}
+                                        </Select>
+                                      </FormControl>
+                                    </Grid>
+                                    <Grid
+                                      item
+                                      xs={1}
+                                      className="row-icons-container"
+                                    >
+                                      {conditionalJump
+                                        .singleChoiceConditionalQuestions
+                                        .length !== 1 && (
                                         <Tooltip title="Remove">
                                           <CancelIcon
                                             className={`delete-row-icon`}
@@ -469,11 +485,11 @@ function SingleJump(props) {
                                           ></CancelIcon>
                                         </Tooltip>
                                       )}
-                                    {conditionalJump
-                                      .singleChoiceConditionalQuestions
-                                      .length -
-                                      1 ===
-                                      i && (
+                                      {conditionalJump
+                                        .singleChoiceConditionalQuestions
+                                        .length -
+                                        1 ===
+                                        i && (
                                         <Tooltip title="Add">
                                           <AddCircleIcon
                                             className={`add-row-icon`}
@@ -481,11 +497,11 @@ function SingleJump(props) {
                                           ></AddCircleIcon>
                                         </Tooltip>
                                       )}
+                                    </Grid>
                                   </Grid>
-                                </Grid>
-                              );
-                            }
-                          )
+                                );
+                              }
+                            )
                           : ""}
                       </Grid>
                     </Grid>
@@ -606,8 +622,7 @@ function SingleJump(props) {
         setshowLoadder={setshowLoadder}
         surveyIdURL={surveyId}
         sendQuestionType="SingleChoice"
-      >
-      </ConditionalJump>
+      ></ConditionalJump>
     </div>
   );
 }

@@ -5,8 +5,10 @@ import {
   UPDATEEUSER_SUCCESS,
 } from "../utilits";
 import UserService from "../../services/usersService";
-
+//Actions are javscript objects that maintain 2 properties type and payload.These actions are "dispatched" by redux store store dispatch api method
+//constructor
 const usersApiCall = new UserService();
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 
 export function LoadUserSuccess(loadUser) {
   return { type: LOADUSER_SUCCESS, loadUser };

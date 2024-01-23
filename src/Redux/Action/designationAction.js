@@ -6,8 +6,10 @@ import {
 } from "../utilits";
 
 import UserDesignationApiServices from "../../services/designationService";
-
+//Actions are javscript objects that maintain 2 properties type and payload.These actions are "dispatched" by redux store store dispatch api method
+//constructor
 const UserDesignationApi = new UserDesignationApiServices();
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 
 export function LoadUserDesignationSuccess(loadUserDesignation) {
   return { type: LOAD_ASSIGNED_DESIGNATION_SUCCESS, loadUserDesignation };

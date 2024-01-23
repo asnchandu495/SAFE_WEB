@@ -84,7 +84,7 @@ function ListAssignedDesignation(props) {
   /**
    * Handle rows per page change
    * Method on display no of rows per page on change of dropdown
-   * @param  {} rowsPerPage
+   * @param  {} rowsPerPage-5
    */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
@@ -282,7 +282,7 @@ function ListAssignedDesignation(props) {
    * Handle ClickOpen Confirmation modal
    * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
       confirmdialogbox component 
-   * @param  {} value
+   * @param  {} value-id
    */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);

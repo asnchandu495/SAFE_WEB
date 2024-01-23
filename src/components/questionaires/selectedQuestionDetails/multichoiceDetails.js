@@ -26,34 +26,37 @@ function MultiChoiceDetails(props) {
   const [componentLoadder, setcomponentLoadder] = useState(true);
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [isDeleteMessage, setIsDeleteMessage] = useState(false);
 
   useEffect(() => {
     if (props.selectedQuestionDetails) {
     }
   }, []);
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-id
+   */
   function handleClickOpenConfirmationModal(value) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteMultichoiceQuestion");
     setConfirmationHeaderTittle("DELETE  MULTI CHOICE QUESTION");
-    if (!props.ViewQuestionaireDetails.isSaveasDraft && !props.ViewQuestionaireDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+    if (
+      !props.ViewQuestionaireDetails.isSaveasDraft &&
+      !props.ViewQuestionaireDetails.isAssignedToUserGroupisAssignedToUserGroup
+    ) {
       setConfirmationDialogContextText(
         // `Are you sure you want to delete ${value.question} ?`
         `Deleting of this multi choice question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas`
@@ -67,13 +70,19 @@ function MultiChoiceDetails(props) {
       setIsDeleteMessage(false);
     }
   }
-
+  /**
+   * Method on click of edit to update
+   * @param  {} getQueDetails-questionid
+   */
   function handleClickUpdateQuestions(getQueDetails) {
     history.push(
       `/questionaires/add-questions/${getQueDetails.surveyId}/${getQueDetails.id}?type=${getQueDetails.questionType}`
     );
   }
-
+  /**
+   * Method on click of view
+   * @param  {} getQueDetails-questionid
+   */
   function handleClickConditional(getQueDetails) {
     history.push(
       `/questionaires/${getQueDetails.surveyId}/conditional/multiple/${getQueDetails.id}`
@@ -201,18 +210,18 @@ function MultiChoiceDetails(props) {
                   {props.selectedQuestionDetails.redFlagForMultipleChoice
                     .length > 0
                     ? props.selectedQuestionDetails.redFlagForMultipleChoice.map(
-                      (opt) => {
-                        return (
-                          <li key={`choicesR_${opt.id}`}>
-                            {Array.prototype.map
-                              .call(opt.options, function (item) {
-                                return item.option;
-                              })
-                              .join(",")}
-                          </li>
-                        );
-                      }
-                    )
+                        (opt) => {
+                          return (
+                            <li key={`choicesR_${opt.id}`}>
+                              {Array.prototype.map
+                                .call(opt.options, function (item) {
+                                  return item.option;
+                                })
+                                .join(",")}
+                            </li>
+                          );
+                        }
+                      )
                     : ""}
                 </ol>
               </Grid>
@@ -226,18 +235,18 @@ function MultiChoiceDetails(props) {
                   {props.selectedQuestionDetails.positiveConformityMultiChoice
                     .length > 0
                     ? props.selectedQuestionDetails.positiveConformityMultiChoice.map(
-                      (opt) => {
-                        return (
-                          <li key={`choicesP_${opt.id}`}>
-                            {Array.prototype.map
-                              .call(opt.options, function (item) {
-                                return item.option;
-                              })
-                              .join(",")}
-                          </li>
-                        );
-                      }
-                    )
+                        (opt) => {
+                          return (
+                            <li key={`choicesP_${opt.id}`}>
+                              {Array.prototype.map
+                                .call(opt.options, function (item) {
+                                  return item.option;
+                                })
+                                .join(",")}
+                            </li>
+                          );
+                        }
+                      )
                     : ""}
                 </ol>
               </Grid>

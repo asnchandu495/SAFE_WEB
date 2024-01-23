@@ -446,7 +446,7 @@ function DensityThreshold(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+//method to open the popup modal
   const handleClickOpenModal = () => {
     if (searchFormOld) {
       setSearchForm((searchForm) => ({
@@ -463,15 +463,15 @@ function DensityThreshold(props) {
     }
     setModalOpen(true);
   };
-
+//Method to close the popup modal
   const handleClose = () => {
     setModalOpen(false);
   };
-
+//Method on change of date
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
+//Method on change of site dropdown with selected value
   function selectedSite(e, value) {
     setselectedLocationData([]);
     setIsLocationLoading(true);
@@ -489,11 +489,11 @@ function DensityThreshold(props) {
         });
     }
   }
-
+//Method on change of location dropdown change with selected value
   function selectedLocation(e, value) {
     setselectedLocationData(value);
   }
-
+//Method to bind the data with input feidls
   const handleChangeSearchForm = (getSelectedVal, name) => {
     if (name == "userId") {
       setSearchForm((searchForm) => ({
@@ -508,13 +508,13 @@ function DensityThreshold(props) {
       }));
     }
   };
-
+//Method to reset the form
   function resetFilterForm() {
     setselectedSiteData();
     setselectedLocationData([]);
     setSearchForm(resetForm);
   }
-
+//WHEN the page load inside the useffect after api call to calll the function
   function submitFiltersFromSession() {
     let reportFilters = sessionStorage.getItem("densityThreshold");
     let selectedReportFilter = JSON.parse(reportFilters);
@@ -559,7 +559,7 @@ function DensityThreshold(props) {
         setshowLoadder(false);
       });
   }
-
+//method on click of form submit
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");

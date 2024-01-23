@@ -9,6 +9,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 
 function MultiselectQuestion(props) {
+  //Method on change of answer dropdown e -target element
   function handleChangeAnswer(e) {
     const { name, value } = e.target;
     props.setSingleselectAnswer((addQuestionData) => ({
@@ -16,7 +17,7 @@ function MultiselectQuestion(props) {
       [name]: value,
     }));
   }
-
+  //Method on change of select answer multiple select dropdown {getSelectedVal-selected answer value}
   const handleChangeMultiSelectChoices = (getSelectedVal) => {
     const list = {
       ...props.multiselectAnswer,

@@ -5,6 +5,8 @@ import {
   UPDATEEUSER_SUCCESS,
 } from "../utilits";
 import moment from "moment";
+//Reducers
+//A function that takes 2 arguments and returns application current state and action from mapStateToProps updates redux store and merge them into props components
 var intialState = [];
 
 export default function loadUserReducer(state = intialState, action) {

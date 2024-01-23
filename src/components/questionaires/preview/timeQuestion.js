@@ -11,6 +11,7 @@ import {
 import moment from "moment";
 
 function TimeQuestion(props) {
+  //Method on change of answer dropdown e -target element
   function handleChangeAnswer(date, name) {
     props.setTimeAnswer((addQuestionData) => ({
       ...props.timeAnswer,

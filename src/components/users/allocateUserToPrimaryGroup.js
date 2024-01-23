@@ -28,6 +28,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
+//Styling MUI Theme
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -40,6 +41,7 @@ const theme1 = createMuiTheme({
   },
 });
 
+//Styling
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -166,6 +168,7 @@ function AllocateUserToPrimaryGroup(props) {
       });
   }, [resetComponent]);
 
+  //Method onchange of primary user dropdown change to bind
   function handleChangeTeam(event, value) {
     setUserSelectedPrimaryGroupValue(value);
     props.setActiveCard("primaryGroup");
@@ -181,7 +184,7 @@ function AllocateUserToPrimaryGroup(props) {
       }));
     }
   }
-
+  // Method to validate the form
   function SelecPrimaryGroupValidation() {
     if (UserSelectedPrimaryGroupValue) {
       setformFieldValidation((ValidationForm) => ({
@@ -195,13 +198,14 @@ function AllocateUserToPrimaryGroup(props) {
       }));
     }
   }
-
+  //Method on click of cancel to reset the form
   function cancelEdit() {
     props.setActiveCard("");
     setformFieldValidation({ primaryGroup: false });
     setResetComponent("YES");
   }
 
+  //Method to call on form submit before call the form submit validation function if true call the api else return in same
   function UserPrimaryGroup() {
     SelecPrimaryGroupValidation();
     if (UserSelectedPrimaryGroupValue) {
@@ -211,6 +215,8 @@ function AllocateUserToPrimaryGroup(props) {
       return false;
     }
   }
+
+  //Method to on click of close on form cross icon close button to reset and close the modal
   const handlesubmitClose = () => {
     props.setActiveCard("");
     setformFieldValidation({ primaryGroup: false });
@@ -218,6 +224,7 @@ function AllocateUserToPrimaryGroup(props) {
     setModalsubmit(false);
   };
 
+  //Method to assign a user to usergroup of click of popup yes button
   function handleClickYes() {
     setshowYesLoadder(true);
     setbuttonloadder(true);
@@ -261,7 +268,9 @@ function AllocateUserToPrimaryGroup(props) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            FAQ, Questionnaire, Emergency Contact and Workflow assigned to this user group, will be applicable for the selected user(s). Are you sure you want to go ahead with the change ?
+            FAQ, Questionnaire, Emergency Contact and Workflow assigned to this
+            user group, will be applicable for the selected user(s). Are you
+            sure you want to go ahead with the change ?
           </Typography>
         </DialogContent>
         <DialogActions>
@@ -294,7 +303,7 @@ function AllocateUserToPrimaryGroup(props) {
                     id="tags-outlined"
                     options={
                       BusinessTeamMasterData &&
-                        BusinessTeamMasterData.length > 0
+                      BusinessTeamMasterData.length > 0
                         ? BusinessTeamMasterData
                         : []
                     }

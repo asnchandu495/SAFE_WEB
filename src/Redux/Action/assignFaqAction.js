@@ -6,8 +6,10 @@ import {
 } from "../utilits";
 
 import FaqService from "../../services/faqService";
-
+//Actions are javscript objects that maintain 2 properties type and payload.These actions are "dispatched" by redux store store dispatch api method
+//constructor
 const faqApiCall = new FaqService();
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 
 export function LoadFaqAssignSuccess(loadAssignFaQ) {
   return { type: LOAD_ASSIGN_FAQ_SUCCESS, loadAssignFaQ };

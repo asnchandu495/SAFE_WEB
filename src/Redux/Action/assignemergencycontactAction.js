@@ -6,9 +6,10 @@ import {
 } from "../utilits";
 
 import AssignEmergencyContactApiServices from "../../services/emergencyContactService";
-
+//Actions are javscript objects that maintain 2 properties type and payload.These actions are "dispatched" by redux store store dispatch api method
+//constructor
 const AssignEmergencyContactApi = new AssignEmergencyContactApiServices();
-
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 export function LoadAssignEmergencyContactListSuccess(
   loadAssignEmergencyContacts
 ) {

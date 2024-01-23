@@ -846,7 +846,11 @@ function Users(props) {
       },
     },
   ];
-
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -916,7 +920,12 @@ function Users(props) {
       }
     });
   };
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-id
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -943,25 +952,25 @@ function Users(props) {
       `Are you sure you want to delete ${idArraycount} user?`
     );
   };
-
+  //Method to open covid state popup modal
   function handleClickOpenCovidStateInfoModal() {
     setopenCovidStateInfoModal(true);
     setSelectedRowId(SelectedRowDetails[0]);
     setOpenMoreMenu(false);
   }
-
+  //Method to open shift info  popup modal
   function handleClickOpenShiftInfoModal() {
     setopenshiftInfoModal(true);
     setSelectedRowId(SelectedRowDetails[0]);
     setOpenMoreMenu(false);
   }
-
+  //Method to open user temperature  popup modal
   function handleClickOpenUserTempInfoModal() {
     setopenuserTemepratureModal(true);
     setSelectedRowId(SelectedRowDetails[0]);
     setOpenMoreMenu(false);
   }
-
+  //Method to bind the rlap feild on change of rlap
   function handleChangeRlapStatus(e) {
     const { name, value } = e.target;
     setsearchformData((searchformData) => ({
@@ -1342,7 +1351,7 @@ function Users(props) {
     </div>
   );
 }
-
+//Validate the data received from the props
 Users.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
@@ -1350,7 +1359,7 @@ Users.propTypes = {
   gridState: PropTypes.array.isRequired,
   updateGridsPages: PropTypes.func.isRequired,
 };
-
+//To update the redux store and merge into props component
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
@@ -1358,11 +1367,11 @@ function mapStateToProps(state, ownProps) {
     acmData: state.acmData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
 };
-
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

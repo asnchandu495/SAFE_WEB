@@ -56,6 +56,11 @@ function AddQuestion(props) {
       });
   }, [surveyIdURL, questionIdURL]);
 
+  /**
+   * Method to callQuestionDetailsAPI to check whether boolean or date type etc...
+   * @param  {} getQuesId-zero for adding and if  not zero to edit
+   * @param  {} editQuestionType-type of question
+   */
   function callQuestionDetailsAPI(getQuesId, editQuestionType) {
     switch (editQuestionType) {
       case "Boolean":
@@ -253,22 +258,22 @@ function AddQuestion(props) {
     </div>
   );
 }
-
+//Validates the data received from the props
 AddQuestion.propTypes = {
   loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
 };
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   return {
     loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   loadGlobalSettingWithoutAPICall:
     globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
-
+//connect the component with the redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps

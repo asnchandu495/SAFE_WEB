@@ -268,6 +268,7 @@ function UpdateTempearture(props) {
     return users.find((user) => user.id === id) || null;
   }
 
+  //Method to bind the form feild data
   function handleChange(e) {
     const { name, value } = e.target;
     SetformData((logInForm) => ({
@@ -275,13 +276,13 @@ function UpdateTempearture(props) {
       [name]: value,
     }));
   }
-
+  //Method to close the dialog modal and reset the update user temperature form
   const handleClose = () => {
     props.setopenuserTemepratureModal(false);
     setcomponentLoadder(true);
     resetUserTemeatureFormData();
   };
-
+  //Method for delay after update user api is called
   const handleClickOpenEventualModal = () => {
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("Usersuccess");
@@ -291,11 +292,11 @@ function UpdateTempearture(props) {
       `Click OK to continue working on the same page.`
     );
   };
-
+  //Method to  reset the update user temperature form
   function resetUserTemeatureFormData() {
     SetformData(resetformData);
   }
-
+  //Method to  after form submit to update user temperature
   function submitUserShiftInform() {
     var data = formData;
     if (
@@ -420,26 +421,26 @@ function UpdateTempearture(props) {
     </div>
   );
 }
-
+//Validate the data received from the props
 UpdateTempearture.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
   UpdateUser: PropTypes.func.isRequired,
   loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
 };
-
+//To update the redux store and merge into props component
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
     loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
   UpdateUser: UserAction.UpdateUser,
   loadGlobalSettingWithoutAPICall:
     globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
-
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateTempearture);

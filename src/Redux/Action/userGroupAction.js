@@ -6,8 +6,10 @@ import {
 } from "../utilits";
 
 import UserGroupApiServices from "../../services/userGroupService";
-
+//Actions are javscript objects that maintain 2 properties type and payload.These actions are "dispatched" by redux store store dispatch api method
+//constructor
 const UserGroupApi = new UserGroupApiServices();
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 
 export function LoadUserGroupSuccess(loadUserGroup) {
   return { type: LOAD_USER_GROUP_SUCCESS, loadUserGroup };

@@ -26,22 +26,17 @@ function AddActions(props) {
   const [selectedAction, setSelectedAction] = useState();
   const [worlflowDetails, setWorkflowDetails] = useState();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [
-    ConfirmationDialogContextText,
-    setConfirmationDialogContextText,
-  ] = useState("");
-  const [
-    ConfirmationModalActionType,
-    setConfirmationModalActionType,
-  ] = useState("");
+  const [ConfirmationDialogContextText, setConfirmationDialogContextText] =
+    useState("");
+  const [ConfirmationModalActionType, setConfirmationModalActionType] =
+    useState("");
   const [ConfirmationHeaderTittle, setConfirmationHeaderTittle] = useState("");
   const [SelectedRowDetails, setSelectedRowDetails] = useState([]);
   const [stateSnackbar, setStateSnackbar] = useState(false);
   const [toasterMessage, setToasterMessage] = useState("");
   const [toasterServerity, settoasterServerity] = useState("");
-  const [toasterErrorMessageType, settoasterErrorMessageType] = useState(
-    "array"
-  );
+  const [toasterErrorMessageType, settoasterErrorMessageType] =
+    useState("array");
   const [selectedActivityDetails, setSelectedActivityDetails] = useState();
 
   useEffect(() => {
@@ -68,7 +63,7 @@ function AddActions(props) {
         console.log(error);
       });
   }, [reloadPage]);
-
+  //Mthod on click of configure button
   function configureOption(getRowData) {
     props.history.push(
       `/workflow/${workflowId}/${activityId}/${uActivityId}/${getRowData[0]}/configure-action`
@@ -156,7 +151,12 @@ function AddActions(props) {
       },
     },
   };
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-rowdata to get id
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);

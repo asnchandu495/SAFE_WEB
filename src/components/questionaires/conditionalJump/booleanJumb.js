@@ -90,7 +90,12 @@ function BooleanJump(props) {
         console.log(err);
       });
   }, [reloadPage]);
-
+  /**
+   * Handle Change
+   * Data binding of the form fields
+  
+   * @param  {} e
+   */
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -134,7 +139,7 @@ function BooleanJump(props) {
       }));
     }
   };
-
+  //Method on click of cancel to redirect
   function handleCancel() {
     // setConditionalJump(cancelconditionalJump);
 
@@ -143,7 +148,7 @@ function BooleanJump(props) {
       props.history.push(`/questionaires/view-questions/${surveyId}`);
     }, 1000);
   }
-
+  //Method after form submit to update or add a conditional jump
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");

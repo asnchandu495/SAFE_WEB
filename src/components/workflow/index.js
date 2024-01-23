@@ -189,7 +189,11 @@ function Workflow(props) {
       },
     },
   ];
-
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -282,11 +286,18 @@ function Workflow(props) {
       }
     });
   };
-
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage-5
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
-
+  /**
+   * Table initiate
+   * Initiate the table based on props grid data(Based logged role rights)
+   */
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
       return g.name == "questionnaire";
@@ -348,7 +359,7 @@ function Workflow(props) {
       });
       return isFound;
     },
-    customToolbarSelect: (value, tableMeta, updateValue) => { },
+    customToolbarSelect: (value, tableMeta, updateValue) => {},
     customToolbar: () => {
       return (
         <div className={`maingrid-actions`}>
@@ -368,29 +379,44 @@ function Workflow(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  //Method to open the popup modal
   const handleClickOpenModal = () => {
     setModalOpen(true);
   };
-
+  //Method to close the popup modal
   const handleClose = () => {
     setModalOpen(false);
   };
-
+  /**
+   *  Method on click of assign activity
+   * @param  {} value-row data to fetch the workflow id
+   */
   function handleViewActivity(value) {
     var workflowId = value[0];
     props.history.push(`/workflow/${workflowId}/activities`);
   }
 
+  /**
+  Method on click of update workflow
+   * @param  {} value-workflow row data
+   */
   function handleClickUpdateWorkflow(value) {
     var workflowId = value[0];
     props.history.push("/workflow/create-workflow/" + workflowId);
   }
+  /**
+  Method on click of view workflow
+   * @param  {} value-workflow row data
+   */
   function handleClickViewWorkflow(value) {
     var workflowId = value[0];
     props.history.push("/workflow/view-workflow/" + workflowId);
   }
 
+  /**
+   *  Method on change of user group dropdown
+   * @param  {} e,value-{groupname}
+   */
   function selectedUser(e, value) {
     setselectedUserData(value);
   }
@@ -398,7 +424,7 @@ function Workflow(props) {
   function selectedStatus(e, value) {
     setselectedStatusData(value);
   }
-
+  //Method to reset the form
   function resetFilterForm() {
     setselectedUserData();
     setsearchformData(resetformData);
@@ -418,6 +444,7 @@ function Workflow(props) {
   //   handleClose();
   // }
 
+  //Method to bind the form feilds
   function handleChange(e) {
     const { name, value } = e.target;
     setsearchformData((logInForm) => ({
@@ -435,7 +462,7 @@ function Workflow(props) {
   //     return false;
   //   }
   // }
-
+  //method on submit of filter form for advacned search from table by selecting the dropdown
   function AssignFiltersForm() {
     var workflowData = searchformData;
     if (selectedUserData) {
@@ -457,7 +484,12 @@ function Workflow(props) {
         setshowLoadder(false);
       });
   }
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-row data
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -467,7 +499,7 @@ function Workflow(props) {
       `Are you sure you want to delete ${value[1]} ?`
     );
   };
-
+  //Method to publish the data-eithwe to activate or deactivate
   const handlePublishModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -586,12 +618,12 @@ function Workflow(props) {
                         <MenuItem value="">None</MenuItem>
                         {userStatusData.length > 0
                           ? userStatusData.map((UserStatus) => {
-                            return (
-                              <MenuItem value={UserStatus.id}>
-                                {UserStatus.name}
-                              </MenuItem>
-                            );
-                          })
+                              return (
+                                <MenuItem value={UserStatus.id}>
+                                  {UserStatus.name}
+                                </MenuItem>
+                              );
+                            })
                           : ""}
                       </Select>
                     </FormControl>

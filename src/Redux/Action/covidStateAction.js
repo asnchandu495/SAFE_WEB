@@ -6,9 +6,10 @@ import {
 } from "../utilits";
 
 import CovidStateApiServices from "../../services/covidStateServices";
-
+//Actions are javscript objects that maintain 2 properties type and payload.These actions are "dispatched" by redux store store dispatch api method
+//constructor
 const CovidStateApi = new CovidStateApiServices();
-
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 export function LoadCovidStateSuccess(loadUserDesignation) {
   return { type: LOAD_COVID_STATE_SUCCESS, loadUserDesignation };
 }

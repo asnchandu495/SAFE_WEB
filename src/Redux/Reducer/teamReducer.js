@@ -4,6 +4,8 @@ import {
   UPDATE_TEAM_SUCCESS,
   DELETE_TEAM_SUCCESS,
 } from "../utilits";
+//Reducers
+//A function that takes 2 arguments and returns application current state and action from mapStateToProps updates redux store and merge them into props components
 var intialState = [];
 
 export default function loadallteamsReducer(state = intialState, action) {

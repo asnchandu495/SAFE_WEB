@@ -472,7 +472,7 @@ function ContactTracing(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+//Method to open the modal
   const handleClickOpenModal = () => {
     if (searchFormOld) {
       setSearchForm((searchForm) => ({
@@ -485,11 +485,11 @@ function ContactTracing(props) {
     setSelectedReportType(selectedReportTypeDataOld);
     setModalOpen(true);
   };
-
+//Method to close the modal
   const handleClose = () => {
     setModalOpen(false);
   };
-
+//Method on change to bind the data
   const handleChangeSearchForm = (getSelectedVal, name) => {
     if (name == "userId") {
       setSearchForm((searchForm) => ({
@@ -504,13 +504,14 @@ function ContactTracing(props) {
       }));
     }
   };
+  //Method to reset the form
   function resetFilterForm() {
     setselectedSiteData();
     setselectedLocationData([]);
     setSelectedReportType("");
     setSearchForm(resetForm);
   }
-
+//Method on submit of contract tracing form
   function submitFiltersFromSession() {
     let reportFilters = sessionStorage.getItem("contactTracing");
     let selectedReportFilter = JSON.parse(reportFilters);
@@ -585,7 +586,7 @@ function ContactTracing(props) {
         });
     }
   }
-
+//on submit of popup form
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -658,7 +659,7 @@ function ContactTracing(props) {
     stringify: ({ firstName, lastName, userId }) =>
       `${firstName} ${lastName} ${userId}`,
   });
-
+//Method for a confirmatin in dialofg box
   const handleClickOpenConfirmationModal = (value) => {
     let selecteduserDtails = applicationUsers.find(
       (usr) => usr.id == searchForm.userId.id
@@ -680,7 +681,7 @@ function ContactTracing(props) {
     setmodalChangeValue(row[0]);
     setChangeModalOpen(true);
   };
-
+//Method to open the bulk modal
   const handleClickOpenBulkModal = (thisRowData) => {
     if (thisRowData) {
       setRowClickCovidState({ id: thisRowData[2] });
@@ -691,19 +692,19 @@ function ContactTracing(props) {
     }
     setBulkModalOpen(true);
   };
-
+//Method to close the bulk modal
   const handleClickCloseBulkModal = () => {
     setBulkModalOpen(false);
   };
-
+//Method on change of covid state
   function covidStateSelect(e, value) {
     setcovidStatelist(value);
   }
-
+//Method on chnage of report type
   const handleChangeReport = (e) => {
     setSelectedReportType(e.target.value);
   };
-
+//Pop up form submission
   function submitUserCovidInformation() {
     setshowLoadder(true);
     settoasterServerity("");

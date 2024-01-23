@@ -114,7 +114,11 @@ function CreateWorkflow(props) {
   //   setSelectedFromCovidState(null);
   //   setSelectedToCovidState(null);
   // }
-
+  /**
+   * Method on change of groupname tovalidate and bind the data
+   * @param  {} event
+   * @param  {} value-groupname
+   */
   function handleChangeGroupName(event, value) {
     setisAlertBoxOpened(true);
     setSelectedGroupName(value);
@@ -130,7 +134,11 @@ function CreateWorkflow(props) {
       }));
     }
   }
-
+  /**
+   * Method on change of covid state to validate and bind the data
+   * @param  {} event
+   * @param  {} value-covid state name
+   */
   function handleChangeFromCovidState(event, value) {
     setisAlertBoxOpened(true);
     setSelectedFromCovidState(value);
@@ -167,7 +175,7 @@ function CreateWorkflow(props) {
       }));
     }
   }
-
+  //Method onchange of for feilds to bind the data
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -179,7 +187,11 @@ function CreateWorkflow(props) {
       [name]: value,
     }));
   }
-
+  /**
+   * Check Unque Name
+   * Check if any duplicate workdflow   exists
+   * @param  {} value-{workdlow name}
+   */
   function checkUnqueName(value) {
     if (props.match.params.id != 0) {
       if (props.workflowDatas && props.workflowDatas.length > 0) {
@@ -209,6 +221,7 @@ function CreateWorkflow(props) {
     }
   }
 
+  //Validation for the user group dropdown after submit
   function SelectUserGroupValidation() {
     if (selectedGroupName) {
       setformFieldValidation((ValidationForm) => ({
@@ -222,7 +235,7 @@ function CreateWorkflow(props) {
       }));
     }
   }
-
+  //Validation for the From state dropdown after submit
   function SelectFromStateValidation() {
     if (selectedFromCovidState) {
       setformFieldValidation((ValidationForm) => ({
@@ -236,7 +249,7 @@ function CreateWorkflow(props) {
       }));
     }
   }
-
+  //Validation for the To  state dropdown after submit
   function SelectToStateValidation() {
     if (selectedToCovidState) {
       setformFieldValidation((ValidationForm) => ({
@@ -250,7 +263,7 @@ function CreateWorkflow(props) {
       }));
     }
   }
-
+  //After submit for the validation
   function workflowCreation() {
     // e.preventDefault();
     SelectUserGroupValidation();
@@ -263,7 +276,7 @@ function CreateWorkflow(props) {
       return false;
     }
   }
-
+  //Method after form submit to add or update workflow
   function SubmitUserForm() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -317,7 +330,7 @@ function CreateWorkflow(props) {
         });
     }
   }
-
+  //Method to redirect on click of cancel
   function redirectToList() {
     props.history.push("/workflow/allWorkflow");
   }
@@ -579,10 +592,16 @@ function CreateWorkflow(props) {
     </div>
   );
 }
-
+/**
+ * Get Usergroup Id
+ * Method to find the user on id return 1st  matched element
+ * @param  {} users-- workflow id from object
+ * @param  {} id--- with id
+ */
 export function getWorkflowById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
+//Validates data which are recevied from props
 CreateWorkflow.propTypes = {
   workflowDatas: PropTypes.array.isRequired,
   // workflowData: PropTypes.array.isRequired,
@@ -590,7 +609,7 @@ CreateWorkflow.propTypes = {
   CreateWorkflowCall: PropTypes.func.isRequired,
   UpdateWorkflowCall: PropTypes.func.isRequired,
 };
-
+//To update the redux store and merge into props component
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -604,10 +623,11 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUserGroup: workflowAction.loadWorkflow,
   CreateWorkflowCall: workflowAction.createWorkflowData,
   UpdateWorkflowCall: workflowAction.updateWorkflowData,
 };
-
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CreateWorkflow);

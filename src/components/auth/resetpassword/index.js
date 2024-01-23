@@ -40,7 +40,11 @@ export default function ResetPassword(props) {
       return true;
     });
   }, [formData]);
-
+  /**
+   * Handle change
+   * Binding data with the form fields also calls the check unique function
+   * @param  {} e-target element
+   */
   function handleChange(e) {
     const { name, value } = e.target;
     SetformData((formData) => ({
@@ -48,7 +52,7 @@ export default function ResetPassword(props) {
       [name]: value,
     }));
   }
-
+  //Method on click of submit to reset the password and call the api
   function handleSubmit() {
     setshowLoadder(true);
     var data = formData;

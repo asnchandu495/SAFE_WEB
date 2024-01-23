@@ -473,7 +473,7 @@ function LocationDensity(props) {
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
-
+//Mehthod on change of site dropdown change
   function selectedSite(e, value) {
     setlocationBySiteId([]);
     setselectedLocationData([]);
@@ -496,7 +496,7 @@ function LocationDensity(props) {
         });
     }
   }
-
+//Method on change of location dropdown chaneg
   function selectedLocation(e, value) {
     setselectedLocationData(value);
     setformFieldValidation((ValidationForm) => ({
@@ -504,7 +504,7 @@ function LocationDensity(props) {
       ["LocationId"]: false,
     }));
   }
-
+// To set the validation for the site dropdown
   function SelectSiteValidation() {
     if (selectedSiteData) {
       setformFieldValidation((ValidationForm) => ({
@@ -518,6 +518,7 @@ function LocationDensity(props) {
       }));
     }
   }
+  //To set the vaidation for location dropown
   function SelectLocationValidation() {
     if (selectedLocationData) {
       setformFieldValidation((ValidationForm) => ({
@@ -531,7 +532,7 @@ function LocationDensity(props) {
       }));
     }
   }
-
+//WHEN the page load inside the useffect after api call to calll the function
   function submitFiltersFromSession() {
     let reportFilters = sessionStorage.getItem("locationDensity");
     let selectedReportFilter = JSON.parse(reportFilters);
@@ -571,7 +572,7 @@ function LocationDensity(props) {
         setshowLoadder(false);
       });
   }
-
+//method on click of form submit
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -589,14 +590,14 @@ function LocationDensity(props) {
       return false;
     }
   }
-
+ //Method to reset the form
   function resetFilterForm() {
     setselectedSiteData();
     setselectedLocationData();
 
     setSearchForm(resetformData);
   }
-
+//Method on form submit of density
   function submitFormDensity() {
     setshowLoadder(true);
 

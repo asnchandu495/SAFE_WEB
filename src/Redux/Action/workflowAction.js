@@ -7,8 +7,10 @@ import {
 } from "../utilits";
 
 import WorkflowService from "../../services/workflowService";
-
+//Actions are javscript objects that maintain 2 properties type and payload.These actions are "dispatched" by redux store store dispatch api method
+//constructor
 const WorkflowApi = new WorkflowService();
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 
 export function LoadWorkflowSuccess(loadWorkflow) {
   return { type: LIST_ALL_WORKFLOW, loadWorkflow };

@@ -135,26 +135,28 @@ function ViewFaq(props) {
     });
   };
 
+  //Method to redirect on click of cancel
   function handleClickGoBackToPage() {
     props.history.push("/emergencycontacts/view");
   }
 
+  //Method to navigate on click of link
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  //Method on expand of accrodion {event-event,isExpanded-true/false}
   const handleChangeFaqSection = (panel) => (event, isExpanded) => {
     setExpandedFaq(isExpanded ? panel : false);
   };
-
+  //Method to redirect on click of edit faq
   function editFaqBasics() {
     props.history.push(`/faq/add-faq/${props.FaqData.id}`);
   }
-
+  //Method to redirect on click of add new section
   function addNewSection() {
     props.history.push(`/faq/faq-sections/${props.FaqData.id}/0`);
   }
-
+  //Redirect to faq section on click of edit section
   function editSection(getId) {
     props.history.push(`/faq/faq-sections/${props.FaqData.id}/${getId}`);
   }
@@ -171,6 +173,12 @@ function ViewFaq(props) {
   //   );
   // }
 
+  //Method to delete a faq section{secID}
+  /**
+   * @param  {} secID-section id
+   * @param  {} getFaqId-faq id
+   * @param  {} secName-section name
+   */
   function deleteSection(secID, getFaqId, secName) {
     let sendData = [];
     sendData.push(secID, getFaqId);
@@ -389,7 +397,7 @@ function ViewFaq(props) {
     </div>
   );
 }
-
+//validate the data received from the props
 ViewFaq.propTypes = {
   FaqData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
@@ -399,6 +407,7 @@ ViewFaq.propTypes = {
   LoadByID: PropTypes.func.isRequired,
 };
 
+//Update the redux store and merge into props
 function mapStateToProps(state, ownProps) {
   return {
     FaqData: state.faqState,
@@ -406,13 +415,13 @@ function mapStateToProps(state, ownProps) {
     acmData: state.acmData,
   };
 }
-
+// To fire an action
 const mapDispatchToProps = {
   LoadData: faqAction.loadFaq,
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
   LoadByID: faqAction.loadGetFAQ,
 };
-
+//Connects component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(ViewFaq);
 // export default ViewFaq;

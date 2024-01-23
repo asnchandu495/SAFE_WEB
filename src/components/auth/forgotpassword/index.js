@@ -33,8 +33,8 @@ export default function ForgotPassword(props) {
     }));
   }
   /**
-    * Handle Submit
-
+   * Handle Submit
+   * Method to generate otp to the email id via api call
    */
   function handleSubmit() {
     setshowLoadder(true);

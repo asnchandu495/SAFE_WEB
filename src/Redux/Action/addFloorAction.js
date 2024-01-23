@@ -6,9 +6,10 @@ import {
 } from "../utilits";
 
 import SiteApiServices from "../../services/siteService";
-
+//Action are javascript objects thath contains 2 properties type and payload,These actions are dispatched  by redux store dipatch api method
+//constructor
 const SiteStateApi = new SiteApiServices();
-
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 export function LoadFloorSuccess(loadUserSite) {
   return { type: LOAD_FLOOR_SUCCESS, loadUserSite };
 }

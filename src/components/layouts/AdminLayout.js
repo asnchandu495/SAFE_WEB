@@ -229,6 +229,9 @@ function AdminLayout(props) {
     }
   }, []);
 
+  /**
+   * Method to expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickLevelMenu = () => {
     setOpenDrawer(true);
     setOpenUsers(!openUsers);
@@ -242,7 +245,10 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
   };
-
+  /**
+   * Method on click of setting from the menu list item  to 
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickSetting = (value) => {
     setOpenDrawer(true);
     setopenSetting(!openSetting);
@@ -256,7 +262,10 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
   };
-
+  /**
+   * Method on click of user management from the menu list item  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickUserManagment = (value) => {
     setOpenDrawer(true);
     setopenUserManagment(!openUserManagment);
@@ -270,7 +279,10 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
   };
-
+  /**
+   * Method on click of emergency conatct from the menu list item(sidebar)  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickEmergencyContact = (value) => {
     setOpenDrawer(true);
     setopenEmergencyContact(!openEmergencyContact);
@@ -284,7 +296,10 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
   };
-
+  /**
+   * Method on click of degination list  from the menu list item  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickLevelMenuForOpenDesignation = (value) => {
     setOpenDrawer(true);
     setopenEmergencyContact(false);
@@ -298,7 +313,10 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
   };
-
+  /**
+   * Method on click of covid state  from the menu list item  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickLevelMenuCovidState = (value) => {
     setOpenDrawer(true);
     setopenEmergencyContact(false);
@@ -312,7 +330,10 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
   };
-
+  /**
+   * Method on click of FAQ  from the menu list item  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickLevelMenuFAQ = () => {
     setOpenDrawer(true);
     setopenEmergencyContact(false);
@@ -326,7 +347,10 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
   };
-
+  /**
+   * Method on click of SITE  from the menu list item(sidebar)  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickLevelSiteMenu = () => {
     setOpenDrawer(true);
     setopenEmergencyContact(false);
@@ -340,7 +364,10 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
   };
-
+  /**
+   * Method on click TEAMS  from the menu list item(sidebar)  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickTeams = (value) => {
     setOpenDrawer(true);
     setopenUserManagment(false);
@@ -354,7 +381,10 @@ function AdminLayout(props) {
     setTeamMenu(!openTeamMenu);
     setOpenQuestionaires(false);
   };
-
+  /**
+   * Method on click QUESTIONNAIRE  from the menu list item(sidebar)  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickopenQuestionaire = () => {
     setOpenDrawer(true);
     setopenEmergencyContact(false);
@@ -368,7 +398,10 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(!openQuestionaires);
   };
-
+  /**
+   * Method on click WORKFLOW  from the menu list item(sidebar)  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickopenWorkflow = () => {
     setOpenDrawer(true);
     setopenEmergencyContact(false);
@@ -383,7 +416,10 @@ function AdminLayout(props) {
     setOpenQuestionaires(false);
     setOpenWorkflow(!openWorkflow);
   };
-
+  /**
+   * Method on click REPORTS  from the menu list item(sidebar)  to
+     expand the dropdown and set other list items value to expand or contract
+   */
   const handleClickopenReports = () => {
     setOpenDrawer(true);
     setopenEmergencyContact(false);
@@ -399,19 +435,32 @@ function AdminLayout(props) {
     setOpenWorkflow(false);
     setOpenReports(!openReports);
   };
-
+  /**
+   * Method on click of profile from the heeader bar to open the dropdwon menu by setting the target event
+   * @param  {} event-triggered from  onclick event
+   */
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  /**
+   * Method on click of profile from the heeader bar to close the dropdwon menu 
+   
+   */
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  /**
+   * Method on click of menu item from the menu to redirect to profile component
+   */
   const goToProfilePage = () => {
     setAnchorEl(null);
     props.history.push("/user/view-profile");
   };
-
+  /**
+   * Method to logout by calling the api and setting the local storage
+   * Local storage.removeItem -removes the data from the browser
+   * Session storage.clear-removes all the Storage Object item for this domain
+   */
   const UseLogOut = () => {
     let authLoginData = { isLoggedOut: true, tokenType: "web" };
     authApiCall
@@ -444,7 +493,9 @@ function AdminLayout(props) {
   );
 
   const [openDrawer, setOpenDrawer] = useState(false);
-
+  /**
+   * Method on click of menu icon from the MUI side bar to expand the menu list
+   */
   const handleDrawerOpen = () => {
     if (openDrawer) {
       setOpenDrawer(false);
@@ -456,7 +507,9 @@ function AdminLayout(props) {
   const handleDrawerClose = () => {
     setOpenDrawer(false);
   };
-
+  /**
+   * Method on click of menu icon from the MUI side bar to close the menu list
+   */
   function collapseAllMenu() {
     setopenEmergencyContact(false);
     setOpenUsers(false);
@@ -469,11 +522,15 @@ function AdminLayout(props) {
     setTeamMenu(false);
     setOpenQuestionaires(false);
   }
-
+  /**
+   * Method on click of notification icon from the header menu list items
+   */
   const handleClickNotifications = (event) => {
     setAnchorElNotifications(event.currentTarget);
   };
-
+  /**
+   * Method on click of notification icon from the header menu list items to close the list
+   */
   const handleCloseNotifications = () => {
     setAnchorElNotifications(null);
   };
@@ -508,13 +565,19 @@ function AdminLayout(props) {
       padding: theme.spacing(1),
     },
   }))(MuiDialogActions);
-
+  /**
+   * Method on click of particular motification
+   * @param  {} data-display the selected list data
+   */
   const dislayNotificationMessage = (data) => {
     setNotificationMessage(data);
     setModalOpen(true);
     setAnchorElNotifications(null);
   };
-
+  /**
+   * Method to close motification
+    by calling the api and set the popup to close which was opened to display the selected list data
+   */
   const handleClose = () => {
     let sendData = { id: NotificationMessage.id, isRead: true };
     notificationApiCall
@@ -532,7 +595,11 @@ function AdminLayout(props) {
       })
       .catch((err) => {});
   };
-
+  /**
+   * Load Menus
+   * Method to display the menu in the side bar based on the rights(permissions) generated by the api
+   * @param  {} props
+   */
   const LoadMenus = (props) => {
     return props.acmData.map((module) => {
       switch (module.module) {
@@ -1075,7 +1142,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Loadusers menu
+   * Method to expand the list and the the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadUsersMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1135,7 +1206,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Loadsite menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadSitesMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1178,7 +1253,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load designation menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadDesignationsMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1221,7 +1300,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load covid state menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadCovidStateMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1264,7 +1347,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load faq menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadFaqMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1341,7 +1428,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load settings menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadSettingsMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1384,7 +1475,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load user group menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadUserGroupMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1427,7 +1522,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load emergency contact menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadEmergencyContactMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1487,7 +1586,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load teams  menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadTeamsMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1530,7 +1633,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load questionnaire  menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadQuestionnaireMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1607,7 +1714,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load workflow  menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadWorkflowMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1650,7 +1761,11 @@ function AdminLayout(props) {
       }
     });
   };
-
+  /**
+   * Load report  menu
+   * Method to expand the list and display the items if they have access to it
+   * @param  {} props-data from the api  from redux
+   */
   const LoadReportMenu = (props) => {
     return props.module.map((entity) => {
       switch (entity.entity) {
@@ -1978,26 +2093,27 @@ function AdminLayout(props) {
     </div>
   );
 }
-
+//validate data recieved from the props
 AdminLayout.propTypes = {
   loadGlobalSetting: PropTypes.func.isRequired,
   loadGridsPages: PropTypes.func.isRequired,
   loadACM: PropTypes.func.isRequired,
 };
 
+//UPdate the redux store and merge into props
 function mapStateToProps(state, ownProps) {
   return {
     loadGlobalSettingsData: state.loadGlobalSettingsData,
     acmData: state.acmData,
   };
 }
-
+//Alows a component to fire an ations
 const mapDispatchToProps = {
   loadGlobalSetting: globalSettingAction.loadGlobalSetting,
   loadGridsPages: GridAction.loadGridsPages,
   loadACM: AcmAction.loadACM,
 };
-
+//Connect component to teh redux store
 export default connect(
   mapStateToProps,
   mapDispatchToProps

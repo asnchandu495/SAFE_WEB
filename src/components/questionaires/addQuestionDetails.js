@@ -175,7 +175,12 @@ function AddQuestionDetails(props) {
       }
     }
   }, []);
-
+  /**
+   * Handle Change
+   * Data binding of the form fields
+   * sets the state addquestion
+   * @param  {} -target element
+   */
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -184,7 +189,12 @@ function AddQuestionDetails(props) {
       [name]: value,
     }));
   };
-
+  /**
+   * Handle Change switch
+   * Data binding of the form fields for is mandatory
+   * Sets the state
+   * @param  {} -target element
+   */
   const handleChangeSwitch = (e) => {
     const { name, value } = e.target;
     setAddQuestion((booleanFlag) => ({
@@ -192,14 +202,24 @@ function AddQuestionDetails(props) {
       [name]: e.target.checked,
     }));
   };
-
+   /**
+   * Navigate to question type 
+   * Method on click of cancel 
+   * To navigate on settimeout() in 1sec
+   * @param  {} -target element
+   */
   const navigateToQuestionType = () => {
     setTimeout(() => {
       // props.setGotoAddQuestion(false);
       props.history.push(`/questionaires/view-questions/${props.surveyIdURL}`);
     }, 1000);
   };
-
+   /**
+   * Submit question form
+   * Method on click of cancel 
+   * Method on click of form submit based on questiontype
+   * @param  {} -target element
+   */
   function submitQuestionForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -455,7 +475,7 @@ function AddQuestionDetails(props) {
       }
     }
   }
-
+  //Renderflad component with props to check with the current question type which again contians a component questiontypeboolean
   function RenderFlagComponent(props) {
     switch (props.currentQuestionType) {
       case "Boolean":

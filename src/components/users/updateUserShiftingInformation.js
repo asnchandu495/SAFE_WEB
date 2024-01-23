@@ -132,6 +132,7 @@ function UpdateShiftingInfo(props) {
     }
   }, [props]);
 
+  //Method on change of start date calendar feild to bind data
   function handleDateChangeS(currentTime) {
     let thisTime = "startTime";
     SetformData((logInForm) => ({
@@ -139,7 +140,7 @@ function UpdateShiftingInfo(props) {
       [thisTime]: currentTime,
     }));
   }
-
+  //Method on change of end date calendar feild to bind data
   function handleDateChangeE(currentTime) {
     let thisTime = "endTime";
     SetformData((logInForm) => ({
@@ -147,11 +148,12 @@ function UpdateShiftingInfo(props) {
       [thisTime]: currentTime,
     }));
   }
-
+  //Method to close the popup modal
   const handleClose = () => {
     props.setopenshiftInfoModal(false);
   };
 
+  //Method to update the shift timings on click of submit
   function submitUserShiftInform() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -284,26 +286,26 @@ function UpdateShiftingInfo(props) {
     </div>
   );
 }
-
+//Validate the data received from the props
 UpdateShiftingInfo.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
   UpdateUser: PropTypes.func.isRequired,
   loadGlobalSettingWithoutAPICall: PropTypes.func.isRequired,
 };
-
+//To update the redux store and merge into props component
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
     loadGlobalSettingsData: state.loadGlobalSettingsData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
   UpdateUser: UserAction.UpdateUser,
   loadGlobalSettingWithoutAPICall:
     globalSettingAction.loadGlobalSettingWithoutAPICall,
 };
-
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateShiftingInfo);

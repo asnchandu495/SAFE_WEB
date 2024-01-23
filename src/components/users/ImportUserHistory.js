@@ -16,6 +16,7 @@ import ComponentLoadderComponent from "../common/loadder/componentloadder";
 import BackupIcon from "@material-ui/icons/Backup";
 import moment from "moment";
 
+//Styling Mui theme
 const theme1 = createMuiTheme({
   overrides: {
     MUIDataTable: {
@@ -183,6 +184,7 @@ function ImportUserHistory(props) {
     },
   ];
 
+  //Method to download the imported user details
   const downloadSelectedFile = (getValue) => {
     var getFileId = getValue;
     apiCallImportUserHistory
@@ -206,6 +208,7 @@ function ImportUserHistory(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
+  //Method to redirect to upload component to upload the users
   function handleupload() {
     props.history.push("/users/import-users");
   }

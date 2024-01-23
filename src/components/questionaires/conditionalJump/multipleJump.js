@@ -78,7 +78,9 @@ function MultipleJump(props) {
   const [reloadPage, setReloadPage] = useState("false");
   const [questionData, setQuestionData] = useState();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('Updating conditional jump of this multi choice question might have impact on order of execution and questionnaire evaluation, please revisit these areas.');
+  const [warningMessage, setWarningMessage] = useState(
+    "Updating conditional jump of this multi choice question might have impact on order of execution and questionnaire evaluation, please revisit these areas."
+  );
 
   const GreenCheckbox = withStyles({
     root: {
@@ -170,7 +172,12 @@ function MultipleJump(props) {
       }));
     }
   };
-
+  /**
+   * Method onchange of dropdown
+   *
+   * @param  {} e-element to target
+   * @param  {} index-index
+   */
   const handleChangeLogicAnswer = (e, index) => {
     const { name, value } = e.target;
     if (name == "goToSurveyQuestionId") {
@@ -183,10 +190,10 @@ function MultipleJump(props) {
               (con, conIndex) =>
                 conIndex == index
                   ? {
-                    ...con,
-                    [name]: value,
-                    ["isEndQuestion"]: thisQuestion.isEndQuestion,
-                  }
+                      ...con,
+                      [name]: value,
+                      ["isEndQuestion"]: thisQuestion.isEndQuestion,
+                    }
                   : con
             ),
           ],
@@ -200,9 +207,9 @@ function MultipleJump(props) {
               (con, conIndex) =>
                 conIndex == index
                   ? {
-                    ...con,
-                    [name]: "",
-                  }
+                      ...con,
+                      [name]: "",
+                    }
                   : con
             ),
           ],
@@ -222,7 +229,7 @@ function MultipleJump(props) {
       setConditionalJump(list);
     }
   };
-
+  //Method to add multiple answers
   const handleAddClickLogicAnswer = (index, j) => {
     const list = { ...conditionalJump };
     const thisconditionalJumpAnswers = list.multiChoiceConditionalQuestions;
@@ -238,13 +245,17 @@ function MultipleJump(props) {
     ];
     setConditionalJump(list);
   };
-
+  //Method to remove multiple answers
   const handleRemoveClickLogicAnswer = (j) => {
     const list = { ...conditionalJump };
     list.multiChoiceConditionalQuestions.splice(j, 1);
     setConditionalJump(list);
   };
-
+  /**
+   * Method onchange of select answer dropdown to bind
+   * @param  {} getSelectedVal-dropdown value
+   * @param  {} index-index
+   */
   const handleChangeMultiSelectChoices = (getSelectedVal, index) => {
     const list = {
       ...conditionalJump,
@@ -253,25 +264,27 @@ function MultipleJump(props) {
           (con, conIndex) =>
             conIndex == index
               ? {
-                answerChoices: getSelectedVal,
-                ["goToSurveyQuestionId"]: con.goToSurveyQuestionId,
-                ["isEndQuestion"]: con.isEndQuestion,
-                ["id"]: con.id,
-                ["multiChoiceConditionalOrderId"]:
-                  con.multiChoiceConditionalOrderId,
-              }
+                  answerChoices: getSelectedVal,
+                  ["goToSurveyQuestionId"]: con.goToSurveyQuestionId,
+                  ["isEndQuestion"]: con.isEndQuestion,
+                  ["id"]: con.id,
+                  ["multiChoiceConditionalOrderId"]:
+                    con.multiChoiceConditionalOrderId,
+                }
               : con
         ),
       ],
     };
     setConditionalJump(list);
   };
+  //Method on click of cancel to redirect
   function handleCancel() {
     // setConditionalJump(cancelconditionalJump);
     setTimeout(() => {
       props.history.push(`/questionaires/view-questions/${surveyId}`);
     }, 1000);
   }
+  //Method to after submit to add or update a conditional jump
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -300,7 +313,10 @@ function MultipleJump(props) {
     newConditionalJumpData.multiChoiceConditionalQuestions = newChoicesArray;
     setshowLoadder(true);
     if (conditionalJump.id != "") {
-      if (!surveyDetails.isSaveasDraft && !surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+      if (
+        !surveyDetails.isSaveasDraft &&
+        !surveyDetails.isAssignedToUserGroupisAssignedToUserGroup
+      ) {
         setOpenConfirmationModal(true);
         setQuestionData(newConditionalJumpData);
       } else {
@@ -422,103 +438,103 @@ function MultipleJump(props) {
                         {conditionalJump.multiChoiceConditionalQuestions
                           .length > 0
                           ? conditionalJump.multiChoiceConditionalQuestions.map(
-                            (x, i) => {
-                              return (
-                                <Grid
-                                  spacing={1}
-                                  container
-                                  sm={12}
-                                  key={`answer-logic-container${i}`}
-                                  className="answer-logic-container"
-                                >
-                                  <Grid item xs={5}>
-                                    <FormControl variant="outlined" fullWidth>
-                                      <Autocomplete
-                                        id={`tags-outlinedP${i}`}
-                                        multiple
-                                        options={
-                                          answerChoices &&
-                                            answerChoices.length > 0
-                                            ? answerChoices
-                                            : []
-                                        }
-                                        getOptionLabel={(opt) => opt.option}
-                                        defaultValue={x.answerChoices}
-                                        onChange={(e, v) =>
-                                          handleChangeMultiSelectChoices(v, i)
-                                        }
-                                        filterSelectedOptions
-                                        className="global-input autocomplete-select"
-                                        renderInput={(params) => (
-                                          <TextField
-                                            {...params}
-                                            variant="outlined"
-                                            inputProps={{
-                                              ...params.inputProps,
-                                              required:
-                                                x.answerChoices.length === 0,
-                                            }}
-                                            placeholder="Select answer"
-                                          />
-                                        )}
-                                      />
-                                    </FormControl>
-                                  </Grid>
-                                  <Grid item xs={6}>
-                                    <FormControl variant="outlined" fullWidth>
-                                      <InputLabel
-                                        id="demo-simple-select-outlined-label"
-                                        shrink={false}
-                                        className="select-label"
-                                      >
-                                        {x.goToSurveyQuestionId == ""
-                                          ? "Select question"
-                                          : ""}
-                                      </InputLabel>
-                                      <Select
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        value={x.goToSurveyQuestionId}
-                                        name="goToSurveyQuestionId"
-                                        onChange={(e) =>
-                                          handleChangeLogicAnswer(e, i)
-                                        }
-                                        placeholder="Select question"
-                                        InputLabelProps={{
-                                          shrink: false,
-                                        }}
-                                        className="global-input single-select"
-                                        required
-                                      >
-                                        <MenuItem value="">
-                                          <em>None</em>
-                                        </MenuItem>
-                                        {selectedSurveyQuestions.map(
-                                          (ans) => {
-                                            return (
-                                              <MenuItem
-                                                value={ans.id}
-                                                key={`atypered_${ans.id}`}
-                                                disabled={
-                                                  ans.hasConditionalOrder
-                                                }
-                                              >
-                                                {ans.question}
-                                              </MenuItem>
-                                            );
-                                          }
-                                        )}
-                                      </Select>
-                                    </FormControl>
-                                  </Grid>
+                              (x, i) => {
+                                return (
                                   <Grid
-                                    item
-                                    xs={1}
-                                    className="row-icons-container"
+                                    spacing={1}
+                                    container
+                                    sm={12}
+                                    key={`answer-logic-container${i}`}
+                                    className="answer-logic-container"
                                   >
-                                    {conditionalJump
-                                      .multiChoiceConditionalQuestions
-                                      .length !== 1 && (
+                                    <Grid item xs={5}>
+                                      <FormControl variant="outlined" fullWidth>
+                                        <Autocomplete
+                                          id={`tags-outlinedP${i}`}
+                                          multiple
+                                          options={
+                                            answerChoices &&
+                                            answerChoices.length > 0
+                                              ? answerChoices
+                                              : []
+                                          }
+                                          getOptionLabel={(opt) => opt.option}
+                                          defaultValue={x.answerChoices}
+                                          onChange={(e, v) =>
+                                            handleChangeMultiSelectChoices(v, i)
+                                          }
+                                          filterSelectedOptions
+                                          className="global-input autocomplete-select"
+                                          renderInput={(params) => (
+                                            <TextField
+                                              {...params}
+                                              variant="outlined"
+                                              inputProps={{
+                                                ...params.inputProps,
+                                                required:
+                                                  x.answerChoices.length === 0,
+                                              }}
+                                              placeholder="Select answer"
+                                            />
+                                          )}
+                                        />
+                                      </FormControl>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                      <FormControl variant="outlined" fullWidth>
+                                        <InputLabel
+                                          id="demo-simple-select-outlined-label"
+                                          shrink={false}
+                                          className="select-label"
+                                        >
+                                          {x.goToSurveyQuestionId == ""
+                                            ? "Select question"
+                                            : ""}
+                                        </InputLabel>
+                                        <Select
+                                          labelId="demo-simple-select-outlined-label"
+                                          id="demo-simple-select-outlined"
+                                          value={x.goToSurveyQuestionId}
+                                          name="goToSurveyQuestionId"
+                                          onChange={(e) =>
+                                            handleChangeLogicAnswer(e, i)
+                                          }
+                                          placeholder="Select question"
+                                          InputLabelProps={{
+                                            shrink: false,
+                                          }}
+                                          className="global-input single-select"
+                                          required
+                                        >
+                                          <MenuItem value="">
+                                            <em>None</em>
+                                          </MenuItem>
+                                          {selectedSurveyQuestions.map(
+                                            (ans) => {
+                                              return (
+                                                <MenuItem
+                                                  value={ans.id}
+                                                  key={`atypered_${ans.id}`}
+                                                  disabled={
+                                                    ans.hasConditionalOrder
+                                                  }
+                                                >
+                                                  {ans.question}
+                                                </MenuItem>
+                                              );
+                                            }
+                                          )}
+                                        </Select>
+                                      </FormControl>
+                                    </Grid>
+                                    <Grid
+                                      item
+                                      xs={1}
+                                      className="row-icons-container"
+                                    >
+                                      {conditionalJump
+                                        .multiChoiceConditionalQuestions
+                                        .length !== 1 && (
                                         <Tooltip title="Remove">
                                           <CancelIcon
                                             className={`delete-row-icon`}
@@ -528,11 +544,11 @@ function MultipleJump(props) {
                                           ></CancelIcon>
                                         </Tooltip>
                                       )}
-                                    {conditionalJump
-                                      .multiChoiceConditionalQuestions
-                                      .length -
-                                      1 ===
-                                      i && (
+                                      {conditionalJump
+                                        .multiChoiceConditionalQuestions
+                                        .length -
+                                        1 ===
+                                        i && (
                                         <Tooltip title="Add">
                                           <AddCircleIcon
                                             className={`add-row-icon`}
@@ -540,11 +556,11 @@ function MultipleJump(props) {
                                           ></AddCircleIcon>
                                         </Tooltip>
                                       )}
+                                    </Grid>
                                   </Grid>
-                                </Grid>
-                              );
-                            }
-                          )
+                                );
+                              }
+                            )
                           : ""}
                       </Grid>
                     </Grid>
@@ -595,7 +611,7 @@ function MultipleJump(props) {
                                     shrink: false,
                                   }}
                                   className="global-input single-select"
-                                // required={conditionalJump.goToNormalSequence}
+                                  // required={conditionalJump.goToNormalSequence}
                                 >
                                   <MenuItem value="">
                                     <em>None</em>
@@ -665,8 +681,7 @@ function MultipleJump(props) {
         setshowLoadder={setshowLoadder}
         surveyIdURL={surveyId}
         sendQuestionType="MultiChoice"
-      >
-      </ConditionalJump>
+      ></ConditionalJump>
     </div>
   );
 }

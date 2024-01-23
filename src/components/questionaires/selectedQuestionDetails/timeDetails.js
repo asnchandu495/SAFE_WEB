@@ -46,13 +46,21 @@ function TimeDetails(props) {
     if (props.selectedQuestionDetails) {
     }
   }, []);
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-id
+   */
   function handleClickOpenConfirmationModal(value) {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("DeleteTimeQuestion");
     setConfirmationHeaderTittle("Delete  Time Question");
-    if (!props.ViewQuestionaireDetails.isSaveasDraft && !props.ViewQuestionaireDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+    if (
+      !props.ViewQuestionaireDetails.isSaveasDraft &&
+      !props.ViewQuestionaireDetails.isAssignedToUserGroupisAssignedToUserGroup
+    ) {
       setConfirmationDialogContextText(
         // `Are you sure you want to delete ${value.question} ?`
         `Deleting of this time question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas.`
@@ -66,13 +74,19 @@ function TimeDetails(props) {
       setIsDeleteMessage(false);
     }
   }
-
+  /**
+   * Method on click of edit to update
+   * @param  {} getQueDetails-questionid
+   */
   function handleClickUpdateQuestions(getQueDetails) {
     history.push(
       `/questionaires/add-questions/${getQueDetails.surveyId}/${getQueDetails.id}?type=${getQueDetails.questionType}`
     );
   }
-
+  /**
+   * Method on click of view
+   * @param  {} getQueDetails-questionid
+   */
   function handleClickConditional(getQueDetails) {
     history.push(
       `/questionaires/${getQueDetails.surveyId}/conditional/time/${getQueDetails.id}`

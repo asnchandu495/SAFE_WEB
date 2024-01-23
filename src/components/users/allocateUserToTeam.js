@@ -53,7 +53,7 @@ function AllocateUserToTeam(props) {
         console.log(error);
       });
   }, [resetComponent]);
-
+  //Method onchange team  dropdown to bind -value{name of the team name}
   function handleChangeTeam(event, value) {
     setUserSelectedTeamValue(value);
     props.setActiveCard("userTeam");
@@ -69,7 +69,7 @@ function AllocateUserToTeam(props) {
       }));
     }
   }
-
+  //Method to validate the form after submit
   function SelectTeamValidation() {
     if (UserSelectedTeamValue) {
       setformFieldValidation((ValidationForm) => ({
@@ -91,6 +91,7 @@ function AllocateUserToTeam(props) {
   //   setcomponentLoadder(false);
   //   props.setActiveCard("");
   // }
+  //Method after  team  form submit to validate if the text feild isnt empty
   function UserTeamUpdate() {
     SelectTeamValidation();
     if (UserSelectedTeamValue) {
@@ -99,7 +100,7 @@ function AllocateUserToTeam(props) {
       return false;
     }
   }
-
+  //Method if the team  feild or card isn't empty call the api on submit to assign team to users
   function UserTeamUpdateSubmit() {
     setbuttonloadder(true);
     settoasterServerity("");
@@ -126,7 +127,7 @@ function AllocateUserToTeam(props) {
         setbuttonloadder(false);
       });
   }
-
+  //Method to cancel the values inside text feild and reset the card
   function cancelEdit() {
     props.setActiveCard("");
     setResetComponent("YES");

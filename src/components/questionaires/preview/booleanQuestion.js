@@ -11,7 +11,7 @@ function BooleanQuestion(props) {
     { id: "true", value: "True" },
     { id: "false", value: "False" },
   ]);
-
+  //Method on change of answer dropdown e -target element
   function handleChangeAnswer(e) {
     const { name, value } = e.target;
     props.setBooleanAnswer((addQuestionData) => ({

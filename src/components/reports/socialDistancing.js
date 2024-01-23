@@ -468,7 +468,7 @@ function SocailDistancing(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+//Method to open the popup modal
   const handleClickOpenModal = () => {
     if (searchFormOld) {
       setSearchForm((searchForm) => ({
@@ -480,11 +480,11 @@ function SocailDistancing(props) {
     }
     setModalOpen(true);
   };
-
+//method to close the popup modal
   const handleClose = () => {
     setModalOpen(false);
   };
-
+//Method to bind the data with input feidls
   const handleChangeSearchForm = (getSelectedVal, name) => {
     if (name == "userId") {
       setSearchForm((searchForm) => ({
@@ -499,14 +499,14 @@ function SocailDistancing(props) {
       }));
     }
   };
-
+//Method to reset the form
   function resetFilterForm() {
     setselectedSiteData();
     setselectedLocationData();
     setSelectedReportType("");
     setSearchForm(resetForm);
   }
-
+//WHEN the page load inside the useffect after api call to calll the function
   function submitFiltersFromSession() {
     let reportFilters = sessionStorage.getItem("socialDistancing");
     let selectedReportFilter = JSON.parse(reportFilters);
@@ -586,7 +586,7 @@ function SocailDistancing(props) {
         });
     }
   }
-
+//method on click of form submit
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -656,7 +656,7 @@ function SocailDistancing(props) {
     stringify: ({ firstName, lastName, userId }) =>
       `${firstName} ${lastName} ${userId}`,
   });
-
+//Method on change of dropdown site
   function selectedSite(e, value) {
     setlocationBySiteId([]);
     setselectedLocationData([]);
@@ -675,11 +675,11 @@ function SocailDistancing(props) {
         });
     }
   }
-
+//Method on change of location dropdown change
   function selectedLocation(e, value) {
     setselectedLocationData(value);
   }
-
+//Method on change of report type
   const handleChangeReport = (e) => {
     setSelectedReportType(e.target.value);
   };

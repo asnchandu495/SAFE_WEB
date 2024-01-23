@@ -125,7 +125,12 @@ function PublishFAQ(props) {
         console.log(err);
       });
   }, []);
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-id
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -135,7 +140,12 @@ function PublishFAQ(props) {
       `Are you sure you want to publish ${value[1]} ?`
     );
   };
-
+  /**
+   * Handle ClickOpen Confirmation modal Delete e 
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-id
+   */
   const handleClickOpenConfirmationModalDelete = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -273,12 +283,18 @@ function PublishFAQ(props) {
       },
     },
   ];
-
+  /**
+   * Method to redirect on click of add sections
+   * @param  {} value-entire row value
+   */
   function handleClickAddSections(value) {
     var faqId = value[0];
     props.history.push(`/faq/faq-sections/${faqId}/0`);
   }
-
+  /**
+   * Method to redirect on click of view sections
+   * @param  {} value-entire row value
+   */
   function handleClickView(value) {
     var faqId = value[0];
     props.history.push("/faq/view-faq/" + faqId);
@@ -288,21 +304,23 @@ function PublishFAQ(props) {
     props.history.push(getRoute);
   }
 
+  //Method to open the popup modal
   const handleClickOpenModal = () => {
     setModalOpen(true);
   };
-
+  //Method to close the popup modal
   const handleClose = () => {
     setModalOpen(false);
   };
+  //Onchange of langauge dropdown to bind the form feilds
   function handleChangeLanguage(event, value) {
     setlanguageValue(value);
   }
-
+  //Method to reset the filter form
   function resetFilterForm() {
     setlanguageValue([]);
   }
-
+  //Method after form submit
   function submitLanguage() {
     console.log(loadFormData);
     let submitFilterdata = loadFormData;

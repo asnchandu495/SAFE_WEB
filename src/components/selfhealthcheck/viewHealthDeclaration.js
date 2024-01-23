@@ -36,13 +36,26 @@ function ViewHealthDeclaration(props) {
         console.log(err);
       });
   }, []);
-
+  /**
+   * Method on change of accordion answer section
+   * @param  {} panel=>accordion
+   * @param  {}
+   * @param  {} isExpanded=>true/false
+   */
   const handleChangeAnswerSection = (panel) => (event, isExpanded) => {
     setExpandedFaq(isExpanded ? panel : false);
   };
+  /**
+   * Method on click of cancel to redirect to main page
+   */
   function handleClickGoBack() {
     props.history.push("/selfhealthcheck/configurehealth");
   }
+  /**
+  Render answers component
+   * @param  {} props-questionDetails
+    ,loadGlobalSettingsData
+   */
   function RenderAnswers(props) {
     switch (props.questionDetails.questionType) {
       case "Boolean":

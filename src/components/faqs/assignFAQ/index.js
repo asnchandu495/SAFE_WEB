@@ -174,7 +174,12 @@ function AssignedFAQs(props) {
         console.log(error);
       });
   }, []);
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-id
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -337,11 +342,11 @@ function AssignedFAQs(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  //Assign FAQ modal popup open
   function openAssignNewModal() {
     setOpenAssignNew(true);
   }
-
+  //Handle close assign FAQ modal popup
   function handleCloseAssignFaq() {
     setOpenAssignNew(false);
     setUserSelectGroup();
@@ -353,7 +358,7 @@ function AssignedFAQs(props) {
       assignStatus: false,
     });
   }
-
+  //Method  to Change Doc Status to set either to active or inactive {getData-entire row value to get the id}
   function handleClickChangeStatus(getRowData) {
     setSelectedRowDetails(getRowData);
     setOpenConfirmationModal(true);
@@ -371,25 +376,26 @@ function AssignedFAQs(props) {
     }
     setConfirmationDialogContextText(displayMessage);
   }
-
+  //Method on change of user group dropdown to form with feilds{value-groupname}
   function handleChangeUserGroup(event, value) {
     setUserSelectGroup(value);
   }
-
+  //Method on change of FAQ dropdown to form with feilds{value-FAQ name}
   function handleChangeFaqDoc(event, value) {
     setUserSelectFaqDoc(value);
   }
-
+  //Method on change of change state dropdown to form with feilds{value-state name}
   function handleChangeDocStatus(e) {
     setUserSelectStatus(e.target.value);
   }
 
+  //Method to reset the form
   function resetFilterForm() {
     setUserSelectGroup();
     setUserSelectFaqDoc();
     setUserSelectStatus("");
   }
-
+  //Method to assign user to group to validate the form feilds
   function assignToGroup(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -403,7 +409,7 @@ function AssignedFAQs(props) {
       return false;
     }
   }
-
+  //Method to assign user to group after validating the form feilds to call the api
   function SubmitUserForm() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -450,7 +456,7 @@ function AssignedFAQs(props) {
         setshowLoadder(false);
       });
   }
-
+  //Method to validate the usergroup feild
   function SelectUserGroupValidation() {
     if (UserSelectGroup) {
       setformFieldValidation((ValidationForm) => ({
@@ -464,7 +470,7 @@ function AssignedFAQs(props) {
       }));
     }
   }
-
+  //Method to validate the faq doc feild
   function SelectFaqDocValidation() {
     if (UserSelectFaqDoc) {
       setformFieldValidation((ValidationForm) => ({
@@ -478,7 +484,7 @@ function AssignedFAQs(props) {
       }));
     }
   }
-
+  //Method to validate the state  feild
   function SelectStatusValidation() {
     if (UserSelectStatus) {
       setformFieldValidation((ValidationForm) => ({
@@ -646,15 +652,15 @@ function AssignedFAQs(props) {
                       <MenuItem value="">None</MenuItem>
                       {docStatus && docStatus.length > 0
                         ? docStatus.map((docStatus) => {
-                          return (
-                            <MenuItem
-                              value={docStatus.id}
-                              key={docStatus.id + "_status"}
-                            >
-                              {docStatus.name}
-                            </MenuItem>
-                          );
-                        })
+                            return (
+                              <MenuItem
+                                value={docStatus.id}
+                                key={docStatus.id + "_status"}
+                              >
+                                {docStatus.name}
+                              </MenuItem>
+                            );
+                          })
                         : ""}
                     </Select>
                   </FormControl>
@@ -714,22 +720,23 @@ function AssignedFAQs(props) {
     </div>
   );
 }
-
+//Validate the data recieved from the props
 AssignedFAQs.propTypes = {
   AssignFaqData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
   AddData: PropTypes.func.isRequired,
 };
 
+//Update the redux store and merge to props
 function mapStateToProps(state, ownProps) {
   return {
     AssignFaqData: state.AssignFaqState,
   };
 }
-
+//Method help  component to fire an action
 const mapDispatchToProps = {
   LoadData: AssignfaqAction.loadAssignFaq,
   AddData: AssignfaqAction.CreateAssignFaq,
 };
-
+//Connects component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(AssignedFAQs);

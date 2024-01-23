@@ -458,7 +458,7 @@ function GeoFencingBreaches(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+//Method to open the popup modal
   const handleClickOpenModal = () => {
     if (searchFormOld) {
       setSearchForm((searchForm) => ({
@@ -470,11 +470,11 @@ function GeoFencingBreaches(props) {
     }
     setModalOpen(true);
   };
-
+//Method to close the popup modal
   const handleClose = () => {
     setModalOpen(false);
   };
-
+//Method to bind the data with input feidls
   const handleChangeSearchForm = (getSelectedVal, name) => {
     if (name == "userId") {
       setSearchForm((searchForm) => ({
@@ -489,9 +489,12 @@ function GeoFencingBreaches(props) {
       }));
     }
   };
+  //Method to reset the form
   function resetFilterForm() {
     setSearchForm(resetForm);
   }
+//WHEN the page load inside the useffect after api call to calll the function
+
   function submitFiltersFromSession() {
     let reportFilters = sessionStorage.getItem("geoFencing");
     let selectedReportFilter = JSON.parse(reportFilters);
@@ -533,7 +536,7 @@ function GeoFencingBreaches(props) {
         setshowLoadder(false);
       });
   }
-
+//method on click of form submit
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -564,7 +567,7 @@ function GeoFencingBreaches(props) {
         setshowLoadder(false);
       });
   }
-
+//method how to display the data inside text feild a special attribute
   const filterOptions = createFilterOptions({
     stringify: ({ firstName, lastName, userId }) =>
       `${firstName} ${lastName} ${userId}`,

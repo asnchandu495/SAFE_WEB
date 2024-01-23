@@ -129,7 +129,7 @@ function GlobalSetting(props) {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
+  //Array file format to select from the list
   const fileFormat = [
     { id: "xls", format: "xls/xlsx" },
     { id: "csv", format: "csv" },
@@ -255,19 +255,21 @@ function GlobalSetting(props) {
       });
   }, []);
 
+  //on change for  allow Checkin Without WFH Location Approval checkbox data binding{event-target element}
   const handleChangecheckBox = (event) => {
     SetformData((formData) => ({
       ...formData,
       ["allowCheckinWithoutWFHLocationApproval"]: event.target.checked,
     }));
   };
-
+  //On change for allow Checkin Without Profile Selfie Approval checkbox data binding{e-event for target element}
   const handleChangeSelfiecheckBox = (e) => {
     SetformData((formData) => ({
       ...formData,
       ["allowCheckinWithoutProfileSelfieApproval"]: e.target.checked,
     }));
   };
+  //Method for eventual consistency to open popup  to update the global settings
   const handleClickOpenEventualModal = () => {
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("GlobalsettingsSuccess");
@@ -277,9 +279,11 @@ function GlobalSetting(props) {
       `Click OK to continue working on the same page.`
     );
   };
+  //Method to redirect on click of cancel
   function redirectToViewUsersGroup() {
     SetformData(cancelData);
   }
+  //Method on click  of submit  and call the api
   function GlobalSettingForm(e) {
     e.preventDefault();
     settoasterServerity("");
@@ -331,7 +335,7 @@ function GlobalSetting(props) {
         setshowLoadder(false);
       });
   }
-
+  //Method on form feilds on change to bind the data with form state
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -629,7 +633,6 @@ function GlobalSetting(props) {
                 <Grid item xs={3}>
                   <TextValidator
                     variant="outlined"
-                    validators={["required"]}
                     validators={[
                       "required",
                       "matchRegexp:^\\d{1,2}(\\.\\d{1,2})?$",

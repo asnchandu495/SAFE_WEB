@@ -115,6 +115,7 @@ function FaqSections(props) {
     }
   }, [props]);
 
+  //Method to bind form feilds on onchange event
   function handleChangeInput(e) {
     const { name, value } = e.target;
     setFaqSections((faqSections) => ({
@@ -122,7 +123,7 @@ function FaqSections(props) {
       [name]: value,
     }));
   }
-
+  //Method to bind form feilds(questionName) on onchange event
   const handleInputChangeContacts = (e, index) => {
     const { name, value } = e.target;
     const list = {
@@ -135,7 +136,7 @@ function FaqSections(props) {
     };
     setFaqSections(list);
   };
-
+  //Method onchange of CKEditor component {editor-get editor data,name-answer ,e-event,index-i }
   const handleTemplate = (e, editor, index, name) => {
     const list = {
       ...faqSections,
@@ -147,13 +148,13 @@ function FaqSections(props) {
     };
     setFaqSections(list);
   };
-
+  //Method to remove contacts from the row {j-index}
   const handleRemoveClickContacts = (j) => {
     const list = { ...faqSections };
     list.questions.splice(j, 1);
     setFaqSections(list);
   };
-
+  //Method to add contacts to  the row on click of add
   const handleAddClickContacts = (index, j) => {
     const list = { ...faqSections };
     const thisfaqSections = list.questions;
@@ -167,17 +168,17 @@ function FaqSections(props) {
     ];
     setFaqSections(list);
   };
-
+  //Method to redirect on click of cancel
   function handleClickGoBackToPage() {
     props.history.push("/faq/allfaqs");
   }
-
+  //Method to validate the form after form submitting
   function submitForm(e) {
     e.preventDefault();
 
     ValidateSubmitForm();
   }
-
+  //Method to call the api after  the form  form submitting and validating to update or add a new section
   function ValidateSubmitForm() {
     setshowLoadder(true);
     settoasterServerity("");

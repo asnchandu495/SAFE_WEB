@@ -80,7 +80,7 @@ function AllocateUserToSupervisor(props) {
         console.log(error);
       });
   }, [resetComponent]);
-
+  //Method onchange supervisor  dropdown to bind -value{name of the supervisor name}
   function handleChangeSupervisor(event, value) {
     setUserSelectSupervisorData(value);
     props.setActiveCard("supervisor");
@@ -96,7 +96,7 @@ function AllocateUserToSupervisor(props) {
       }));
     }
   }
-
+  //Method to validate the form after submit
   function SelecSupervisorValidation() {
     if (UserSelectSupervisorData) {
       setformFieldValidation((ValidationForm) => ({
@@ -110,12 +110,13 @@ function AllocateUserToSupervisor(props) {
       }));
     }
   }
-
+  //Method to cancel the values inside text feild and reset the card
   function cancelEdit() {
     props.setActiveCard("");
     setResetComponent("YES");
     setformFieldValidation({ supervisor: false });
   }
+  //Method after  supervisor  form submit to validate if the text feild isnt empty
   function UserSupervisor() {
     SelecSupervisorValidation();
     if (UserSelectSupervisorData) {
@@ -124,7 +125,7 @@ function AllocateUserToSupervisor(props) {
       return false;
     }
   }
-
+  //Method if the supervisor  feild or card isn't empty call the api on submit
   function UserSupervisorSubmit() {
     setbuttonloadder(true);
     settoasterServerity("");

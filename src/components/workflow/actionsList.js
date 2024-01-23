@@ -65,12 +65,17 @@ function ActionList(props) {
       }
     }
   }
-
+  //Method on change of the list item
   function handleListItemClick(action) {
     props.setSelectedAction(action);
     props.setSelectedActionList(action.uniqueActivityId);
   }
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-rowdata to get id
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -104,47 +109,49 @@ function ActionList(props) {
         </ListItem>
         {props.allActivityOptions && props.allActivityOptions.length > 0
           ? props.allActivityOptions.map((act, index) => {
-            let thisFormData = assignedActivities.find(
-              (sAct) => sAct.uniqueActivityId == act.uniqueActivityId
-            );
-            return (
-              <div
-                className={`actionlistitems ${props.disableActions ? 'no-pointer-events' : ''}`}
-                key={"action=" + act.uniqueActivityId}
-              >
-                <ListItem
-                  button
-                  selected={props.selectedActionList == act.uniqueActivityId}
-                  alignItems="flex-start"
+              let thisFormData = assignedActivities.find(
+                (sAct) => sAct.uniqueActivityId == act.uniqueActivityId
+              );
+              return (
+                <div
+                  className={`actionlistitems ${
+                    props.disableActions ? "no-pointer-events" : ""
+                  }`}
+                  key={"action=" + act.uniqueActivityId}
                 >
-                  <ListItemText
-                    onClick={() => handleListItemClick(act)}
-                    secondary={
-                      <p className="question-name">{act.friendlyName}</p>
-                    }
-                  />
-                  {thisFormData ? (
-                    <>
-                      <Tooltip title="Action is configured">
-                        <DoneAllIcon className="already-saved"></DoneAllIcon>
-                      </Tooltip>
-                      <Tooltip title="Revert action">
-                        <SettingsBackupRestoreIcon
-                          className="already-configured"
-                          onClick={() =>
-                            handleClickOpenConfirmationModal(thisFormData)
-                          }
-                        ></SettingsBackupRestoreIcon>
-                      </Tooltip>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </ListItem>
-                <Divider component="li" />
-              </div>
-            );
-          })
+                  <ListItem
+                    button
+                    selected={props.selectedActionList == act.uniqueActivityId}
+                    alignItems="flex-start"
+                  >
+                    <ListItemText
+                      onClick={() => handleListItemClick(act)}
+                      secondary={
+                        <p className="question-name">{act.friendlyName}</p>
+                      }
+                    />
+                    {thisFormData ? (
+                      <>
+                        <Tooltip title="Action is configured">
+                          <DoneAllIcon className="already-saved"></DoneAllIcon>
+                        </Tooltip>
+                        <Tooltip title="Revert action">
+                          <SettingsBackupRestoreIcon
+                            className="already-configured"
+                            onClick={() =>
+                              handleClickOpenConfirmationModal(thisFormData)
+                            }
+                          ></SettingsBackupRestoreIcon>
+                        </Tooltip>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </ListItem>
+                  <Divider component="li" />
+                </div>
+              );
+            })
           : ""}
       </List>
       <ConfirmationDialog

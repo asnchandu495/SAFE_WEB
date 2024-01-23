@@ -15,7 +15,7 @@ import { Link as LinkTo, useParams } from "react-router-dom";
 
 function QuestionType(props) {
   useEffect(() => {}, []);
-
+//Method on click of next where to redirect
   const navigateToQuestionDetails = () => {
     Selectquestiontype();
     if (props.questionTypeForm.questionType) {
@@ -24,7 +24,7 @@ function QuestionType(props) {
       }, 1000);
     }
   };
-
+//Binding the input feilds
   const handleChange = (e) => {
     const { name, value } = e.target;
     props.setQuestionTypeForm((questionTypeForm) => ({

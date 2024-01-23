@@ -429,19 +429,19 @@ function OfficeStaff(props) {
   const handleClose = () => {
     setModalOpen(false);
   };
-
+//Method on channge of date
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
+//Method on chnage of site dropdown
   function selectedSite(e, value) {
     setselectedSiteData(value);
   }
-
+//Method on change of team dropdown
   function selectedTeam(e, value) {
     setselectedTeamData(value);
   }
-
+//Data binding wth text feilds
   function handleChange(e) {
     const { name, value } = e.target;
     setSearchForm((searchForm) => ({
@@ -450,7 +450,7 @@ function OfficeStaff(props) {
     }));
     // setfrequencyValue(value);
   }
-
+//data binding with form
   const handleChangeSearchForm = (getSelectedVal, name) => {
     let thisValue = moment(getSelectedVal).toISOString();
     setSearchForm((searchForm) => ({
@@ -458,13 +458,13 @@ function OfficeStaff(props) {
       [name]: thisValue,
     }));
   };
-
+//Method to reset the form
   function resetFilterForm() {
     setselectedSiteData();
     setselectedTeamData();
     setSearchForm(resetForm);
   }
-
+//WHEN the page load inside the useffect after api call to calll the function
   function submitFiltersFromSession() {
     let reportFilters = sessionStorage.getItem("officeStaff");
     let selectedReportFilter = JSON.parse(reportFilters);
@@ -509,7 +509,7 @@ function OfficeStaff(props) {
         setshowLoadder(false);
       });
   }
-
+//method on click of form submit
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");

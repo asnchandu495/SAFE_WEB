@@ -157,21 +157,22 @@ function AssignQuestionaires(props) {
     setModalOpen(true);
     // setSelectedRowId(value);
   };
-
+//Method to close the popup modal
   const handleClose = () => {
     setModalOpen(false);
     resetData();
   };
-
+//Method to reset the form data
   function resetData() {
     SetformData(resetformData);
   }
-
+///Method to reset the filter form data
   function resetFilterForm() {
     setselectedUserQuestionnaire();
     setselectedUserData();
     SetformData(resetformData);
   }
+  //Method on change of dropdown group
   function handleChangeGroup(e, value) {
     setselectedUserData(value);
     if (value) {
@@ -186,6 +187,7 @@ function AssignQuestionaires(props) {
       }));
     }
   }
+  //Method on change of questionnaier dropdown
   function handleChangeQuestionnaire(e, value) {
     setselectedUserQuestionnaire(value);
     if (value) {
@@ -200,7 +202,7 @@ function AssignQuestionaires(props) {
       }));
     }
   }
-
+//ethod for a confirm popup
   const handleClickOpenChangeStatusModal = (value) => {
     var userStatus = value[3];
     setSelectedRowDetails(value);

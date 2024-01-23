@@ -183,11 +183,12 @@ function UpdateCovidState(props) {
       }
     }
   }, [props]);
-
+  //Method to close the popup modal
   const handleClose = () => {
     resetCovidStateFormData();
     props.setopenCovidStateInfoModal(false);
   };
+  //Method for delay after update user covid state api is called
   const handleClickOpenEventualModal = () => {
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("UserUpdatecovidstatesuccess");
@@ -197,15 +198,15 @@ function UpdateCovidState(props) {
       `Click OK to continue working on the same page.`
     );
   };
-
+  //Method to reset the covid state form
   function resetCovidStateFormData() {
     SetformData(resetformData);
   }
-
+  //Method on change of covid state dropdown {value-covidstate name}
   function handleChangeUpdateCovidState(event, value) {
     setSelectCovidState(value);
   }
-
+  //Method to before update bulk covid state for the users to validate
   function userCovidInfo() {
     if (!SelectCovidState) {
       setcovidstateFieldValidation(true);
@@ -215,7 +216,7 @@ function UpdateCovidState(props) {
       submitUserCovidInformation();
     }
   }
-
+  //Method to update bulk covid state for the users
   function submitUserCovidInformation() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -416,22 +417,22 @@ function UpdateCovidState(props) {
     </div>
   );
 }
-
+//Validate the data received from the props
 UpdateCovidState.propTypes = {
   UserData: PropTypes.array.isRequired,
   LoadAllUser: PropTypes.func.isRequired,
   UpdateUser: PropTypes.func.isRequired,
 };
-
+//To update the redux store and merge into props component
 function mapStateToProps(state, ownProps) {
   return {
     UserData: state.user,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   LoadAllUser: UserAction.loadUser,
   UpdateUser: UserAction.UpdateUser,
 };
-
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateCovidState);

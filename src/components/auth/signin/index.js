@@ -73,7 +73,11 @@ function Signin(props) {
         console.log(err);
       });
   }, []);
-
+  /**
+   * Handle change
+   * Binding data with the form fields also calls the check unique function
+   * @param  {} e-target element
+   */
   function handleChange(e) {
     const { name, value } = e.target;
     SetformData((logInForm) => ({
@@ -82,6 +86,11 @@ function Signin(props) {
     }));
   }
 
+  /**
+  Method on click of submit to call the api and 
+  limit the number of wrong attempts  if valid redirect to
+  home page
+   */
   function handleSubmit() {
     setshowLoadder(true);
     let loginData = formData;
@@ -222,22 +231,23 @@ function Signin(props) {
     </>
   );
 }
+//Validates the data received from the props
 
 Signin.propTypes = {
   loadGridsPages: PropTypes.func.isRequired,
   loadACM: PropTypes.func.isRequired,
 };
-
+//Update the redux store and merge with the props
 function mapStateToProps(state, ownProps) {
   return {
     GridData: state.gridHistory,
     acmData: state.acmData,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   loadGridsPages: GridAction.loadGridsPages,
   loadACM: AcmAction.loadACM,
 };
-
+//Connect the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(Signin);

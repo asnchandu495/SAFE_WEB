@@ -58,13 +58,15 @@ function ViewWorkflow(props) {
   function goBack() {
     props.history.push("/emergencycontacts/view");
   }
-
+  //Method on change of accordion
   const handleChangeWorkflowSection = (panel) => (event, isExpanded) => {
     setExpandedWorflow(isExpanded ? panel : false);
   };
+  //Method on click of cancel to redirect
   function handleCancel() {
     props.history.push("/workflow/allWorkflow");
   }
+  //Row component inside table body
   function Row(props) {
     const { row } = props;
     const [openAction, setOpenAction] = React.useState(false);

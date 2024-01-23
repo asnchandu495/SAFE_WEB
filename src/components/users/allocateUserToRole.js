@@ -62,6 +62,7 @@ function AllocateUserToRole(props) {
       });
   }, [resetComponent]);
 
+  //Method on change of select user roles dropdown value -name of the role
   function handleChangeTeam(event, value) {
     setUserSelectedRoleValue(value);
     props.setActiveCard("userRole");
@@ -77,6 +78,7 @@ function AllocateUserToRole(props) {
       }));
     }
   }
+  //Method to validate the form feild after submit
   function SelectRoleValidation() {
     if (UserSelectedRoleValue.length > 0) {
       setformFieldValidation((ValidationForm) => ({
@@ -90,12 +92,13 @@ function AllocateUserToRole(props) {
       }));
     }
   }
-
+  //Method to cancel the values inside text feild and reset the card
   function cancelEdit() {
     props.setActiveCard("");
     setResetComponent("YES");
   }
 
+  //Method after update role forn submit to validate if the text feild isnt empty
   function UserRoleUpdate() {
     SelectRoleValidation();
     if (UserSelectedRoleValue.length > 0) {
@@ -105,6 +108,7 @@ function AllocateUserToRole(props) {
     }
   }
 
+  //Method if the role feild isn't empty call the api on submit
   function UserRoleUpdateSubmit() {
     setbuttonloadder(true);
     settoasterServerity("");
@@ -131,7 +135,7 @@ function AllocateUserToRole(props) {
         setbuttonloadder(false);
       });
   }
-
+  //Update Roles card
   return (
     <Card className="user-update-details-card">
       {!componentLoadder ? (

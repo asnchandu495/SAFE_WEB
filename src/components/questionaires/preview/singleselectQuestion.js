@@ -7,6 +7,7 @@ import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
 
 function SingleselectQuestion(props) {
+  //Method on change of answer dropdown e -target element
   function handleChangeAnswer(e) {
     const { name, value } = e.target;
     props.setSingleselectAnswer((addQuestionData) => ({

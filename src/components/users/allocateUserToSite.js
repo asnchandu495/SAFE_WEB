@@ -54,7 +54,7 @@ function AllocateUserToSite(props) {
         console.log(error);
       });
   }, [resetComponent]);
-
+  //Method onchange site  dropdown to bind -value{name of the site name}
   function handleChangeTeam(event, value) {
     setUserSelectedTeamValue(value);
     props.setActiveCard("userSite");
@@ -70,13 +70,13 @@ function AllocateUserToSite(props) {
       }));
     }
   }
-
+  //Method to cancel the values inside text feild and reset the card
   function cancelEdit() {
     props.setActiveCard("");
     setResetComponent("YES");
     setformFieldValidation({ site: false });
   }
-
+  //Method to validate the form after submit
   function SelectSiteValidation() {
     if (UserSelectedTeamValue) {
       setformFieldValidation((ValidationForm) => ({
@@ -90,6 +90,7 @@ function AllocateUserToSite(props) {
       }));
     }
   }
+  //Method after update site  form submit to validate if the text feild isnt empty
 
   function UserSitesUpdate() {
     SelectSiteValidation();
@@ -99,7 +100,7 @@ function AllocateUserToSite(props) {
       return false;
     }
   }
-
+  //Method if the site  feild isn't empty call the api on submit
   function UserSitesUpdateSubmit() {
     setbuttonloadder(true);
     settoasterServerity("");

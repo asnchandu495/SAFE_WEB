@@ -53,11 +53,11 @@ function ViewQuestions(props) {
         console.log(error);
       });
   }, [reloadListPage]);
-
+//Method on click of next
   function gotoAddQuestion() {
     props.history.push(`/questionaires/add-questions/${questionaireId}/0`);
   }
-
+//componnet for rendering flag
   function RenderFlagComponent(props) {
     switch (props.currentQuestionsType) {
       case "Boolean":

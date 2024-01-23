@@ -68,7 +68,12 @@ function FreetextQuestion(props) {
       setAddQuestionData(getData);
     }
   }, []);
-
+  /**
+   * Handle Change
+   * Data binding of the form fields
+  
+   * @param  {} e
+   */
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -77,7 +82,12 @@ function FreetextQuestion(props) {
       [name]: value,
     }));
   };
-
+  /**
+   * Handle Change switch
+   * Data binding of the form fields
+   * To decide whether to keep feild as mandatory or not
+   * @param  {} e
+   */
   const handleChangeSwitch = (e) => {
     const { name, value } = e.target;
     setAddQuestionData((addQuestionData) => ({
@@ -85,14 +95,18 @@ function FreetextQuestion(props) {
       [name]: e.target.checked,
     }));
   };
-
+  /**
+   * Method on click of cancel to redirect to view questionnaire component
+   */
   const navigateToQuestionType = () => {
     setTimeout(() => {
       // props.setGotoAddQuestion(false);
       props.history.push(`/questionaires/view-questions/${props.surveyIdURL}`);
     }, 1000);
   };
-
+  /**
+   * Method on click of submit to set the state and call the api
+   */
   function submitQuestionForm(e) {
     e.preventDefault();
     settoasterServerity("");

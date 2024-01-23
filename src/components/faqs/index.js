@@ -144,7 +144,12 @@ function ViewAllFAQs(props) {
         console.log(err);
       });
   }, []);
-
+  /**
+   * Handle ClickOpen Confirmation modal
+   * Set the action type and the message on the dialogbox and also once the modal opens and checks with commom folder 
+      confirmdialogbox component 
+   * @param  {} value-id
+   */
   const handleClickOpenConfirmationModal = (value) => {
     setSelectedRowDetails(value);
     setOpenConfirmationModal(true);
@@ -154,11 +159,18 @@ function ViewAllFAQs(props) {
       `Are you sure you want to delete ${value[1]} ?`
     );
   };
-
+  /**
+   * Handle rows per page change
+   * Method on display no of rows per page on change of dropdown
+   * @param  {} rowsPerPage-5
+   */
   function handleRowsPerPageChange(rowsPerPage) {
     setCurrentRowsPerPage(rowsPerPage);
   }
-
+  /**
+   * Table initiate
+   * Initiate the table based on props grid data(Based logged role rights)
+   */
   const tableInitiate = () => {
     let thisPage = props.GridData.find((g) => {
       return g.name == "faqs";
@@ -171,10 +183,12 @@ function ViewAllFAQs(props) {
     }
   };
 
+  //Method to open the popup modal
   const handleClickOpenModal = () => {
     setModalOpen(true);
   };
 
+  //Method to close the popup modal
   const handleClose = () => {
     setModalOpen(false);
   };
@@ -284,7 +298,11 @@ function ViewAllFAQs(props) {
       },
     },
   ];
-
+  /**
+   * Load Actions
+   * Method to display the table action icons based on permission or user  rights
+   * @param  {} props
+   */
   const LoadActions = (props) => {
     return props.modulePermission.map((entity) => {
       switch (entity.entity) {
@@ -357,16 +375,26 @@ function ViewAllFAQs(props) {
     });
   };
 
+  /**
+   * Method to redirect on click of add sections
+   * @param  {} value-entire row value
+   */
   function handleClickAddSections(value) {
     var faqId = value[0];
     props.history.push(`/faq/faq-sections/${faqId}/0`);
   }
-
+  /**
+   * Method to redirect on click of edit sections
+   * @param  {} value-entire row value
+   */
   function handleClickEditSections(value) {
     var faqId = value[0];
     props.history.push(`/faq/add-faq/${faqId}`);
   }
-
+  /**
+   * Method to redirect on click of view sections
+   * @param  {} value-entire row value
+   */
   function handleClickView(value) {
     var faqId = value[0];
     props.history.push("/faq/view-faq/" + faqId);
@@ -375,15 +403,15 @@ function ViewAllFAQs(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+  //Bind the form feild language {value-language name}
   function handleChangeLanguage(event, value) {
     setlanguageValue(value);
   }
-
+  //To resey the form
   function resetFilterForm() {
     setlanguageValue([]);
   }
-
+  //Method to change the language after form submit
   function submitLanguage() {
     console.log(loadFormData);
     let submitFilterdata = loadFormData;
@@ -536,7 +564,7 @@ function ViewAllFAQs(props) {
     </div>
   );
 }
-
+//Validate the data received from the props
 ViewAllFAQs.propTypes = {
   FaqData: PropTypes.array.isRequired,
   LoadData: PropTypes.func.isRequired,
@@ -545,6 +573,7 @@ ViewAllFAQs.propTypes = {
   updateGridsPages: PropTypes.func.isRequired,
 };
 
+//Update the redux store and merge into props
 function mapStateToProps(state, ownProps) {
   return {
     FaqData: state.faqState,
@@ -552,11 +581,11 @@ function mapStateToProps(state, ownProps) {
     acmData: state.acmData,
   };
 }
-
+//Fore an action
 const mapDispatchToProps = {
   LoadData: faqAction.loadFaq,
   LoadGridsPage: GridAction.getGridsPages,
   UpdateGridsPage: GridAction.updateGridsPages,
 };
-
+//Connects the component to redux store
 export default connect(mapStateToProps, mapDispatchToProps)(ViewAllFAQs);

@@ -75,8 +75,9 @@ function TimeQuestion(props) {
   });
   const [questionData, setQuestionData] = useState();
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('Editing of this time question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas');
-
+  const [warningMessage, setWarningMessage] = useState(
+    "Editing of this time question might have impact on conditional jump (if there) , order of execution and questionnaire evaluation, please revisit these areas"
+  );
 
   const PurpleSwitch = withStyles({
     switchBase: {
@@ -118,7 +119,12 @@ function TimeQuestion(props) {
       setAddQuestionData(getData);
     }
   }, []);
-
+  /**
+   * Handle Change
+   * Data binding of the form fields
+  
+   * @param  {} e
+   */
   const handleChange = (e) => {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -127,7 +133,12 @@ function TimeQuestion(props) {
       [name]: value,
     }));
   };
-
+  /**
+   * Handle Change switch
+   * Data binding of the form fields
+   * To decide whether to keep feild as mandatory or not
+   * @param  {} e
+   */
   const handleChangeSwitch = (e) => {
     const { name, value } = e.target;
     setAddQuestionData((addQuestionData) => ({
@@ -135,14 +146,22 @@ function TimeQuestion(props) {
       [name]: e.target.checked,
     }));
   };
-
+  /**
+   * Method on click of cancel to redirect to view questionnaire component
+   */
   const navigateToQuestionType = () => {
     setTimeout(() => {
       // props.setGotoAddQuestion(false);
       props.history.push(`/questionaires/view-questions/${props.surveyIdURL}`);
     }, 1000);
   };
-
+  /**
+   * Method on change  of dropdown to
+   * @param  {} date-date
+   * @param  {} key-"forRangeEnd" or null or forAnswer
+   * @param  {} e-to prevent from reloading
+   * @param  {} index-index
+   */
   const handleChangeFlagR = (date, key, e, index) => {
     if (key != null) {
       const list = {
@@ -167,7 +186,13 @@ function TimeQuestion(props) {
       setAddQuestionData(list);
     }
   };
-
+  /**
+   * Method on change  of dropdown answer type feild
+   * @param  {} date-date
+   * @param  {} key-"forRangeEnd" or null or forAnswer
+   * @param  {} e-to prevent from reloading
+   * @param  {} index-index
+   */
   const handleChangeFlagP = (date, key, e, index) => {
     if (key != null) {
       const list = {
@@ -192,7 +217,11 @@ function TimeQuestion(props) {
       setAddQuestionData(list);
     }
   };
-
+  /**
+   * Method to add multiple questions in the row
+   * @param  {} index
+   * @param  {} j
+   */
   const handleAddClickRedFlag = (index, j) => {
     const list = { ...addQuestionData };
     const thisRedFlagDate = list.redFlagForTime;
@@ -207,13 +236,21 @@ function TimeQuestion(props) {
     ];
     setAddQuestionData(list);
   };
-
+  /**
+   * Method to remove multiple questions
+   * @param  {} index
+   * @param  {} j-row id
+   */
   const handleRemoveClickRedFlag = (j) => {
     const list = { ...addQuestionData };
     list.redFlagForTime.splice(j, 1);
     setAddQuestionData(list);
   };
-
+  /**
+   * Method to add  multiple posivite conformity date
+   * @param  {} index
+   * @param  {} j-row id
+   */
   const handleAddClickPositiveFlag = (index, j) => {
     const list = { ...addQuestionData };
     const thisPositiveFlagDate = list.positiveConformityForTime;
@@ -245,7 +282,10 @@ function TimeQuestion(props) {
       ...addQuestionData,
     };
     if (finalObject.id != 0) {
-      if (!props.surveyDetails.isSaveasDraft && !props.surveyDetails.isAssignedToUserGroupisAssignedToUserGroup) {
+      if (
+        !props.surveyDetails.isSaveasDraft &&
+        !props.surveyDetails.isAssignedToUserGroupisAssignedToUserGroup
+      ) {
         setOpenConfirmationModal(true);
         setQuestionData(finalObject);
       } else {
@@ -417,184 +457,184 @@ function TimeQuestion(props) {
                       </Grid>
                       <Grid item xs={10}>
                         {addQuestionData.redFlagForTime &&
-                          addQuestionData.redFlagForTime.length > 0
+                        addQuestionData.redFlagForTime.length > 0
                           ? addQuestionData.redFlagForTime.map((x, i) => {
-                            return (
-                              <Grid
-                                item
-                                container
-                                xs={12}
-                                spacing={1}
-                                key={`redflag-container${i}`}
-                                className="dynamic-flag-container"
-                              >
+                              return (
                                 <Grid
                                   item
-                                  xs={2}
-                                  key={`redflag-containerSelect${i}`}
+                                  container
+                                  xs={12}
+                                  spacing={1}
+                                  key={`redflag-container${i}`}
+                                  className="dynamic-flag-container"
                                 >
-                                  <FormControl variant="outlined" fullWidth>
-                                    <InputLabel
-                                      id={`demo-simple-select-outlined-label${i}`}
-                                      shrink={false}
-                                      className="select-label"
-                                    >
-                                      {x.expressionType &&
+                                  <Grid
+                                    item
+                                    xs={2}
+                                    key={`redflag-containerSelect${i}`}
+                                  >
+                                    <FormControl variant="outlined" fullWidth>
+                                      <InputLabel
+                                        id={`demo-simple-select-outlined-label${i}`}
+                                        shrink={false}
+                                        className="select-label"
+                                      >
+                                        {x.expressionType &&
                                         x.expressionType != ""
-                                        ? ""
-                                        : "Answer type"}
-                                    </InputLabel>
-                                    <Select
-                                      labelId={`demo-simple-select-outlined-label${i}`}
-                                      id={`demo-simple-select-outlined${i}`}
-                                      value={
-                                        x.expressionType
-                                          ? x.expressionType
-                                          : ""
-                                      }
-                                      name="expressionType"
-                                      onChange={(e) =>
-                                        handleChangeFlagR(null, null, e, i)
-                                      }
-                                      placeholder="Answer type"
-                                      InputLabelProps={{
-                                        shrink: false,
-                                      }}
-                                      className="global-input single-select"
-                                      required={
-                                        addQuestionData.isPositiveConfirmityRedFlag
-                                      }
-                                    >
-                                      <MenuItem value="">
-                                        <em>None</em>
-                                      </MenuItem>
-                                      {props.answerTypes.map((aType) => {
-                                        return (
-                                          <MenuItem
-                                            value={aType.id}
-                                            key={`atypered_${aType.id}`}
-                                          >
-                                            {aType.name}
-                                          </MenuItem>
-                                        );
-                                      })}
-                                    </Select>
-                                  </FormControl>
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={3}
-                                  className="date-time-pickers"
-                                >
-                                  <KeyboardTimePicker
-                                    format={
-                                      props.loadGlobalSettingsData
-                                        ? props.loadGlobalSettingsData
-                                          .timeFormat != null
-                                          ? props.loadGlobalSettingsData
-                                            .timeFormat
-                                          : "hh:mm"
-                                        : "hh:mm"
-                                    }
-                                    ampm={
-                                      props.loadGlobalSettingsData
-                                        ? props.loadGlobalSettingsData
-                                          .timeFormat != null
-                                          ? props.loadGlobalSettingsData.timeFormat.includes(
-                                            "HH"
-                                          )
-                                            ? false
-                                            : true
-                                          : true
-                                        : true
-                                    }
-                                    fullWidth
-                                    id={`forAnswerR${i}`}
-                                    placeholder="Answer"
-                                    name="forAnswer"
-                                    value={x.forAnswer}
-                                    onChange={(date, event, e) =>
-                                      handleChangeFlagR(
-                                        date,
-                                        "forAnswer",
-                                        null,
-                                        i
-                                      )
-                                    }
-                                    className="global-input"
-                                    KeyboardButtonProps={{
-                                      "aria-label": "change date",
-                                    }}
-                                    label={
-                                      addQuestionData.redFlagForTime[i]
-                                        .expressionType == "RANGE"
-                                        ? "From"
-                                        : "Answer"
-                                    }
-                                  />
-                                </Grid>
-                                {addQuestionData.redFlagForTime[i]
-                                  .expressionType == "RANGE" ? (
-                                  <>
-                                    <Grid
-                                      item
-                                      xs={3}
-                                      className="date-time-pickers"
-                                    >
-                                      <KeyboardTimePicker
-                                        format={
-                                          props.loadGlobalSettingsData
-                                            ? props.loadGlobalSettingsData
-                                              .timeFormat != null
-                                              ? props.loadGlobalSettingsData
-                                                .timeFormat
-                                              : "hh:mm"
-                                            : "hh:mm"
+                                          ? ""
+                                          : "Answer type"}
+                                      </InputLabel>
+                                      <Select
+                                        labelId={`demo-simple-select-outlined-label${i}`}
+                                        id={`demo-simple-select-outlined${i}`}
+                                        value={
+                                          x.expressionType
+                                            ? x.expressionType
+                                            : ""
                                         }
-                                        ampm={
-                                          props.loadGlobalSettingsData
-                                            ? props.loadGlobalSettingsData
+                                        name="expressionType"
+                                        onChange={(e) =>
+                                          handleChangeFlagR(null, null, e, i)
+                                        }
+                                        placeholder="Answer type"
+                                        InputLabelProps={{
+                                          shrink: false,
+                                        }}
+                                        className="global-input single-select"
+                                        required={
+                                          addQuestionData.isPositiveConfirmityRedFlag
+                                        }
+                                      >
+                                        <MenuItem value="">
+                                          <em>None</em>
+                                        </MenuItem>
+                                        {props.answerTypes.map((aType) => {
+                                          return (
+                                            <MenuItem
+                                              value={aType.id}
+                                              key={`atypered_${aType.id}`}
+                                            >
+                                              {aType.name}
+                                            </MenuItem>
+                                          );
+                                        })}
+                                      </Select>
+                                    </FormControl>
+                                  </Grid>
+                                  <Grid
+                                    item
+                                    xs={3}
+                                    className="date-time-pickers"
+                                  >
+                                    <KeyboardTimePicker
+                                      format={
+                                        props.loadGlobalSettingsData
+                                          ? props.loadGlobalSettingsData
                                               .timeFormat != null
-                                              ? props.loadGlobalSettingsData.timeFormat.includes(
+                                            ? props.loadGlobalSettingsData
+                                                .timeFormat
+                                            : "hh:mm"
+                                          : "hh:mm"
+                                      }
+                                      ampm={
+                                        props.loadGlobalSettingsData
+                                          ? props.loadGlobalSettingsData
+                                              .timeFormat != null
+                                            ? props.loadGlobalSettingsData.timeFormat.includes(
                                                 "HH"
                                               )
-                                                ? false
-                                                : true
+                                              ? false
                                               : true
                                             : true
-                                        }
-                                        fullWidth
-                                        id={`forRangeEndR${i}`}
-                                        placeholder="Answer"
-                                        name="forRangeEnd"
-                                        value={x.forRangeEnd}
-                                        label="To"
-                                        onChange={(date, event, e) =>
-                                          handleChangeFlagR(
-                                            date,
-                                            "forRangeEnd",
-                                            null,
-                                            i
-                                          )
-                                        }
-                                        className="global-input"
-                                        KeyboardButtonProps={{
-                                          "aria-label": "change date",
-                                        }}
-                                      />
-                                    </Grid>
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-                                <Grid
-                                  item
-                                  xs={2}
-                                  className="row-icons-container"
-                                  key={`redflag-containerIcons${i}`}
-                                >
-                                  {addQuestionData.redFlagForTime.length !==
-                                    1 && (
+                                          : true
+                                      }
+                                      fullWidth
+                                      id={`forAnswerR${i}`}
+                                      placeholder="Answer"
+                                      name="forAnswer"
+                                      value={x.forAnswer}
+                                      onChange={(date, event, e) =>
+                                        handleChangeFlagR(
+                                          date,
+                                          "forAnswer",
+                                          null,
+                                          i
+                                        )
+                                      }
+                                      className="global-input"
+                                      KeyboardButtonProps={{
+                                        "aria-label": "change date",
+                                      }}
+                                      label={
+                                        addQuestionData.redFlagForTime[i]
+                                          .expressionType == "RANGE"
+                                          ? "From"
+                                          : "Answer"
+                                      }
+                                    />
+                                  </Grid>
+                                  {addQuestionData.redFlagForTime[i]
+                                    .expressionType == "RANGE" ? (
+                                    <>
+                                      <Grid
+                                        item
+                                        xs={3}
+                                        className="date-time-pickers"
+                                      >
+                                        <KeyboardTimePicker
+                                          format={
+                                            props.loadGlobalSettingsData
+                                              ? props.loadGlobalSettingsData
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData
+                                                    .timeFormat
+                                                : "hh:mm"
+                                              : "hh:mm"
+                                          }
+                                          ampm={
+                                            props.loadGlobalSettingsData
+                                              ? props.loadGlobalSettingsData
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                    "HH"
+                                                  )
+                                                  ? false
+                                                  : true
+                                                : true
+                                              : true
+                                          }
+                                          fullWidth
+                                          id={`forRangeEndR${i}`}
+                                          placeholder="Answer"
+                                          name="forRangeEnd"
+                                          value={x.forRangeEnd}
+                                          label="To"
+                                          onChange={(date, event, e) =>
+                                            handleChangeFlagR(
+                                              date,
+                                              "forRangeEnd",
+                                              null,
+                                              i
+                                            )
+                                          }
+                                          className="global-input"
+                                          KeyboardButtonProps={{
+                                            "aria-label": "change date",
+                                          }}
+                                        />
+                                      </Grid>
+                                    </>
+                                  ) : (
+                                    ""
+                                  )}
+                                  <Grid
+                                    item
+                                    xs={2}
+                                    className="row-icons-container"
+                                    key={`redflag-containerIcons${i}`}
+                                  >
+                                    {addQuestionData.redFlagForTime.length !==
+                                      1 && (
                                       <Tooltip title="Remove">
                                         <CancelIcon
                                           className={`delete-row-icon`}
@@ -604,9 +644,9 @@ function TimeQuestion(props) {
                                         ></CancelIcon>
                                       </Tooltip>
                                     )}
-                                  {addQuestionData.redFlagForTime.length -
-                                    1 ===
-                                    i && (
+                                    {addQuestionData.redFlagForTime.length -
+                                      1 ===
+                                      i && (
                                       <Tooltip title="Add">
                                         <AddCircleIcon
                                           className={`add-row-icon`}
@@ -614,10 +654,10 @@ function TimeQuestion(props) {
                                         ></AddCircleIcon>
                                       </Tooltip>
                                     )}
+                                  </Grid>
                                 </Grid>
-                              </Grid>
-                            );
-                          })
+                              );
+                            })
                           : ""}
                       </Grid>
                     </Grid>
@@ -640,184 +680,184 @@ function TimeQuestion(props) {
                     </Grid>
                     <Grid item xs={10}>
                       {addQuestionData.positiveConformityForTime &&
-                        addQuestionData.positiveConformityForTime.length > 0
+                      addQuestionData.positiveConformityForTime.length > 0
                         ? addQuestionData.positiveConformityForTime.map(
-                          (x, i) => {
-                            return (
-                              <Grid
-                                item
-                                container
-                                xs={12}
-                                spacing={1}
-                                key={`positiveflag-container${i}`}
-                                className="dynamic-flag-container"
-                              >
+                            (x, i) => {
+                              return (
                                 <Grid
                                   item
-                                  xs={2}
-                                  key={`positiveflag-containerSelect${i}`}
+                                  container
+                                  xs={12}
+                                  spacing={1}
+                                  key={`positiveflag-container${i}`}
+                                  className="dynamic-flag-container"
                                 >
-                                  <FormControl variant="outlined" fullWidth>
-                                    <InputLabel
-                                      id={`demo-simple-select-outlined-label${i}`}
-                                      shrink={false}
-                                      className="select-label"
-                                    >
-                                      {x.expressionType &&
+                                  <Grid
+                                    item
+                                    xs={2}
+                                    key={`positiveflag-containerSelect${i}`}
+                                  >
+                                    <FormControl variant="outlined" fullWidth>
+                                      <InputLabel
+                                        id={`demo-simple-select-outlined-label${i}`}
+                                        shrink={false}
+                                        className="select-label"
+                                      >
+                                        {x.expressionType &&
                                         x.expressionType != ""
-                                        ? ""
-                                        : "Answer type"}
-                                    </InputLabel>
-                                    <Select
-                                      labelId={`demo-simple-select-outlined-label${i}`}
-                                      id={`demo-simple-select-outlined${i}`}
-                                      value={
-                                        x.expressionType
-                                          ? x.expressionType
-                                          : ""
-                                      }
-                                      name="expressionType"
-                                      onChange={(e) =>
-                                        handleChangeFlagP(null, null, e, i)
-                                      }
-                                      placeholder="Answer type"
-                                      InputLabelProps={{
-                                        shrink: false,
-                                      }}
-                                      className="global-input single-select"
-                                      required
-                                    >
-                                      <MenuItem value="">
-                                        <em>None</em>
-                                      </MenuItem>
-                                      {props.answerTypes.map((aType) => {
-                                        return (
-                                          <MenuItem
-                                            value={aType.id}
-                                            key={`atypered_${aType.id}`}
-                                          >
-                                            {aType.name}
-                                          </MenuItem>
-                                        );
-                                      })}
-                                    </Select>
-                                  </FormControl>
-                                </Grid>
-                                <Grid
-                                  item
-                                  xs={3}
-                                  className="date-time-pickers"
-                                >
-                                  <KeyboardTimePicker
-                                    format={
-                                      props.loadGlobalSettingsData
-                                        ? props.loadGlobalSettingsData
-                                          .timeFormat != null
-                                          ? props.loadGlobalSettingsData
-                                            .timeFormat
-                                          : "hh:mm"
-                                        : "hh:mm"
-                                    }
-                                    ampm={
-                                      props.loadGlobalSettingsData
-                                        ? props.loadGlobalSettingsData
-                                          .timeFormat != null
-                                          ? props.loadGlobalSettingsData.timeFormat.includes(
-                                            "HH"
-                                          )
-                                            ? false
-                                            : true
-                                          : true
-                                        : true
-                                    }
-                                    fullWidth
-                                    id={`forAnswerR${i}`}
-                                    placeholder="Your answer"
-                                    name="forAnswer"
-                                    value={x.forAnswer}
-                                    onChange={(date, event, e) =>
-                                      handleChangeFlagP(
-                                        date,
-                                        "forAnswer",
-                                        null,
-                                        i
-                                      )
-                                    }
-                                    className="global-input"
-                                    label={
-                                      addQuestionData
-                                        .positiveConformityForTime[i]
-                                        .expressionType == "RANGE"
-                                        ? "From"
-                                        : "Answer"
-                                    }
-                                    KeyboardButtonProps={{
-                                      "aria-label": "change date",
-                                    }}
-                                  />
-                                </Grid>
-                                {addQuestionData.positiveConformityForTime[i]
-                                  .expressionType == "RANGE" ? (
-                                  <>
-                                    <Grid
-                                      item
-                                      xs={3}
-                                      className="date-time-pickers"
-                                    >
-                                      <KeyboardTimePicker
-                                        format={
-                                          props.loadGlobalSettingsData
-                                            ? props.loadGlobalSettingsData
-                                              .timeFormat != null
-                                              ? props.loadGlobalSettingsData
-                                                .timeFormat
-                                              : "hh:mm"
-                                            : "hh:mm"
+                                          ? ""
+                                          : "Answer type"}
+                                      </InputLabel>
+                                      <Select
+                                        labelId={`demo-simple-select-outlined-label${i}`}
+                                        id={`demo-simple-select-outlined${i}`}
+                                        value={
+                                          x.expressionType
+                                            ? x.expressionType
+                                            : ""
                                         }
-                                        ampm={
-                                          props.loadGlobalSettingsData
-                                            ? props.loadGlobalSettingsData
+                                        name="expressionType"
+                                        onChange={(e) =>
+                                          handleChangeFlagP(null, null, e, i)
+                                        }
+                                        placeholder="Answer type"
+                                        InputLabelProps={{
+                                          shrink: false,
+                                        }}
+                                        className="global-input single-select"
+                                        required
+                                      >
+                                        <MenuItem value="">
+                                          <em>None</em>
+                                        </MenuItem>
+                                        {props.answerTypes.map((aType) => {
+                                          return (
+                                            <MenuItem
+                                              value={aType.id}
+                                              key={`atypered_${aType.id}`}
+                                            >
+                                              {aType.name}
+                                            </MenuItem>
+                                          );
+                                        })}
+                                      </Select>
+                                    </FormControl>
+                                  </Grid>
+                                  <Grid
+                                    item
+                                    xs={3}
+                                    className="date-time-pickers"
+                                  >
+                                    <KeyboardTimePicker
+                                      format={
+                                        props.loadGlobalSettingsData
+                                          ? props.loadGlobalSettingsData
                                               .timeFormat != null
-                                              ? props.loadGlobalSettingsData.timeFormat.includes(
+                                            ? props.loadGlobalSettingsData
+                                                .timeFormat
+                                            : "hh:mm"
+                                          : "hh:mm"
+                                      }
+                                      ampm={
+                                        props.loadGlobalSettingsData
+                                          ? props.loadGlobalSettingsData
+                                              .timeFormat != null
+                                            ? props.loadGlobalSettingsData.timeFormat.includes(
                                                 "HH"
                                               )
-                                                ? false
-                                                : true
+                                              ? false
                                               : true
                                             : true
-                                        }
-                                        fullWidth
-                                        id={`forRangeEndR${i}`}
-                                        placeholder="Your answer"
-                                        name="forRangeEnd"
-                                        value={x.forRangeEnd}
-                                        onChange={(date, event, e) =>
-                                          handleChangeFlagP(
-                                            date,
-                                            "forRangeEnd",
-                                            null,
-                                            i
-                                          )
-                                        }
-                                        className="global-input"
-                                        label="To"
-                                        KeyboardButtonProps={{
-                                          "aria-label": "change date",
-                                        }}
-                                      />
-                                    </Grid>
-                                  </>
-                                ) : (
-                                  ""
-                                )}
-                                <Grid
-                                  item
-                                  xs={2}
-                                  className="row-icons-container"
-                                  key={`positiveflag-containerIcons${i}`}
-                                >
-                                  {addQuestionData.positiveConformityForTime
-                                    .length !== 1 && (
+                                          : true
+                                      }
+                                      fullWidth
+                                      id={`forAnswerR${i}`}
+                                      placeholder="Your answer"
+                                      name="forAnswer"
+                                      value={x.forAnswer}
+                                      onChange={(date, event, e) =>
+                                        handleChangeFlagP(
+                                          date,
+                                          "forAnswer",
+                                          null,
+                                          i
+                                        )
+                                      }
+                                      className="global-input"
+                                      label={
+                                        addQuestionData
+                                          .positiveConformityForTime[i]
+                                          .expressionType == "RANGE"
+                                          ? "From"
+                                          : "Answer"
+                                      }
+                                      KeyboardButtonProps={{
+                                        "aria-label": "change date",
+                                      }}
+                                    />
+                                  </Grid>
+                                  {addQuestionData.positiveConformityForTime[i]
+                                    .expressionType == "RANGE" ? (
+                                    <>
+                                      <Grid
+                                        item
+                                        xs={3}
+                                        className="date-time-pickers"
+                                      >
+                                        <KeyboardTimePicker
+                                          format={
+                                            props.loadGlobalSettingsData
+                                              ? props.loadGlobalSettingsData
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData
+                                                    .timeFormat
+                                                : "hh:mm"
+                                              : "hh:mm"
+                                          }
+                                          ampm={
+                                            props.loadGlobalSettingsData
+                                              ? props.loadGlobalSettingsData
+                                                  .timeFormat != null
+                                                ? props.loadGlobalSettingsData.timeFormat.includes(
+                                                    "HH"
+                                                  )
+                                                  ? false
+                                                  : true
+                                                : true
+                                              : true
+                                          }
+                                          fullWidth
+                                          id={`forRangeEndR${i}`}
+                                          placeholder="Your answer"
+                                          name="forRangeEnd"
+                                          value={x.forRangeEnd}
+                                          onChange={(date, event, e) =>
+                                            handleChangeFlagP(
+                                              date,
+                                              "forRangeEnd",
+                                              null,
+                                              i
+                                            )
+                                          }
+                                          className="global-input"
+                                          label="To"
+                                          KeyboardButtonProps={{
+                                            "aria-label": "change date",
+                                          }}
+                                        />
+                                      </Grid>
+                                    </>
+                                  ) : (
+                                    ""
+                                  )}
+                                  <Grid
+                                    item
+                                    xs={2}
+                                    className="row-icons-container"
+                                    key={`positiveflag-containerIcons${i}`}
+                                  >
+                                    {addQuestionData.positiveConformityForTime
+                                      .length !== 1 && (
                                       <Tooltip title="Remove">
                                         <CancelIcon
                                           className={`delete-row-icon`}
@@ -827,10 +867,10 @@ function TimeQuestion(props) {
                                         ></CancelIcon>
                                       </Tooltip>
                                     )}
-                                  {addQuestionData.positiveConformityForTime
-                                    .length -
-                                    1 ===
-                                    i && (
+                                    {addQuestionData.positiveConformityForTime
+                                      .length -
+                                      1 ===
+                                      i && (
                                       <Tooltip title="Add">
                                         <AddCircleIcon
                                           className={`add-row-icon`}
@@ -838,11 +878,11 @@ function TimeQuestion(props) {
                                         ></AddCircleIcon>
                                       </Tooltip>
                                     )}
+                                  </Grid>
                                 </Grid>
-                              </Grid>
-                            );
-                          }
-                        )
+                              );
+                            }
+                          )
                         : ""}
                     </Grid>
                   </Grid>
@@ -890,8 +930,7 @@ function TimeQuestion(props) {
         surveyIdURL={props.surveyIdURL}
         setisAlertBoxOpened={setisAlertBoxOpened}
         sendQuestionType="Time"
-      >
-      </SurveyQuestionUpdate>
+      ></SurveyQuestionUpdate>
     </>
   );
 }

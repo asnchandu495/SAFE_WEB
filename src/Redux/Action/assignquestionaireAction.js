@@ -6,7 +6,10 @@ import {
 } from "../utilits";
 
 import questionaireService from "../../services/questionaireService";
+//Actions are javscript objects that maintain 2 properties type and payload.These actions are "dispatched" by redux store store dispatch api method
+//constructor
 const questionaireApi = new questionaireService();
+//To change the state invokes action creators return an action object  known as action from mapDispatchToProps help you to fire an action
 
 export function AssignUsergroupQuestionaire(loadAssignQuestionnaire) {
   return { type: ASSIGN_USERGROUP_QUESTIONAIRE, loadAssignQuestionnaire };

@@ -4,6 +4,8 @@ import {
   DELETE_USER_GROUP_SUCCESS,
   UPDATE_USER_GROUP_SUCCESS,
 } from "../utilits";
+//Reducers
+//A function that takes 2 arguments and returns application current state and action from mapStateToProps updates redux store and merge them into props components
 var intialState = [];
 export default function loadUserGroupReducer(state = intialState, action) {
   switch (action.type) {

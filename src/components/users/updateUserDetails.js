@@ -151,17 +151,23 @@ function UpdateUserDetails(props) {
   );
 }
 
+//Validate the data received from the props
 UpdateUserDetails.propTypes = {
   AddUser: PropTypes.func.isRequired,
   UpdateUser: PropTypes.func.isRequired,
   users: PropTypes.array.isRequired,
   userData: PropTypes.object.isRequired,
 };
-
+/**
+ * Get Usergroup Id
+ * Method to find the user on id return 1st  matched element
+ * @param  {} users-- user id from object
+ * @param  {} id--- with id
+ */
 export function getUserById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
-
+//To update the redux store and merge into props component
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -172,10 +178,10 @@ function mapStateToProps(state, ownProps) {
     users: state.user,
   };
 }
-
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   AddUser: UserAction.CreateUser,
   UpdateUser: UserAction.UpdateUser,
 };
-
+//Connects a React component to a Redux store
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateUserDetails);

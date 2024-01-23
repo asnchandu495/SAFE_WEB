@@ -49,7 +49,7 @@ function OrderofExecution(props) {
         console.log(error);
       });
   }, [reloadPage]);
-
+//Method to drag a particular list item
   const dragProps = {
     onDragEnd(fromIndex, toIndex) {
       setcomponentLoadder(true);
@@ -92,7 +92,7 @@ function OrderofExecution(props) {
     nodeSelector: "li",
     handleSelector: "li",
   };
-
+//Method to show the div list on arrow click
   function showDIveList(index, question) {
     switch (question.questionType) {
       case "Boolean":

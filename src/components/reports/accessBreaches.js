@@ -446,7 +446,7 @@ function AccessBreaches(props) {
   function BreadcrumbNavigation(getRoute) {
     props.history.push(getRoute);
   }
-
+//method to open the popup modal
   const handleClickOpenModal = () => {
     if (searchFormOld) {
       setSearchForm((searchForm) => ({
@@ -463,7 +463,7 @@ function AccessBreaches(props) {
     }
     setModalOpen(true);
   };
-
+//Method to close the modal
   const handleClose = () => {
     setModalOpen(false);
   };
@@ -471,7 +471,7 @@ function AccessBreaches(props) {
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
+//Method on change of dropdown site 
   function selectedSite(e, value) {
     setselectedLocationData([]);
     setselectedSiteData(value);
@@ -489,11 +489,11 @@ function AccessBreaches(props) {
         });
     }
   }
-
+//Method on change of location dropdown change
   function selectedLocation(e, value) {
     setselectedLocationData(value);
   }
-
+//Mehtod on click of search form
   const handleChangeSearchForm = (getSelectedVal, name) => {
     if (name == "userId") {
       setSearchForm((searchForm) => ({
@@ -508,13 +508,13 @@ function AccessBreaches(props) {
       }));
     }
   };
-
+//Method to reset the form
   function resetFilterForm() {
     setselectedSiteData();
     setselectedLocationData([]);
     setSearchForm(resetForm);
   }
-
+//INNER function to set the reportsdata and call the api
   function submitFiltersFromSession() {
     let reportFilters = sessionStorage.getItem("accessBreach");
     let selectedReportFilter = JSON.parse(reportFilters);
@@ -552,7 +552,7 @@ function AccessBreaches(props) {
         setshowLoadder(false);
       });
   }
-
+//Mehtod on clicj of submit form
   function submitForm(e) {
     e.preventDefault();
     settoasterServerity("");

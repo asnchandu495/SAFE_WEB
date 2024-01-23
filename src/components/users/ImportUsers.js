@@ -149,13 +149,15 @@ function ImportUsers(props) {
         console.log(error);
       });
   }, []);
-
+  //Method to remove user selected file for upload
   function removeFile() {
     setMyFiles([]);
   }
+  //Method on click of cancel to redirect
   function handleredirect() {
     props.history.push("/users/import-users-history");
   }
+  //Method on success of upload  user details to open popup with details
   const handleClickOpenEventualModal = () => {
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("UserImportHistorysuccess");
@@ -163,6 +165,7 @@ function ImportUsers(props) {
     setConfirmationDialogContextText(`Imported users details.`);
   };
 
+  //Method to upload users in bulk
   function UserbulkUpload() {
     const data = new FormData();
     settoasterServerity("");

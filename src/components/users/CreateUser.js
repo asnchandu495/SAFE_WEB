@@ -253,7 +253,7 @@ function CreateUser(props) {
         console.log(error);
       });
   }, []);
-
+  //Method to validate the form after submit if the userId is not empty
   function UserBasicInfo(e) {
     e.preventDefault();
     if (userId) {
@@ -296,7 +296,7 @@ function CreateUser(props) {
       }
     }
   }
-
+  //Method if the user form  feild or card isn't empty call the api on submit to create or update user details
   function SubmitUserForm() {
     setshowLoadder(true);
     settoasterServerity("");
@@ -359,7 +359,7 @@ function CreateUser(props) {
         });
     }
   }
-
+  //Method to validate the gender form feild
   function SelectGenderValidation() {
     if (formData.gender) {
       setformFieldValidation((ValidationForm) => ({
@@ -373,7 +373,7 @@ function CreateUser(props) {
       }));
     }
   }
-
+  //Method to validate the designation form feild
   function SelectDesignationValidation() {
     if (UserSelectedDesignationValue) {
       setformFieldValidation((ValidationForm) => ({
@@ -387,7 +387,7 @@ function CreateUser(props) {
       }));
     }
   }
-
+  //Method to validate the role form feild
   function SelectRoleValidation() {
     if (UserSelectedRoleValue.length > 0) {
       setformFieldValidation((ValidationForm) => ({
@@ -401,7 +401,7 @@ function CreateUser(props) {
       }));
     }
   }
-
+  //Method to validate the team form feild
   function SelectTeamValidation() {
     if (UserSelectedTeamValue) {
       setformFieldValidation((ValidationForm) => ({
@@ -415,7 +415,7 @@ function CreateUser(props) {
       }));
     }
   }
-
+  //Method to validate the primary group form feild
   function SelectPrimaryGroupValidation() {
     if (UserSelectedPrimaryGroupValue) {
       setformFieldValidation((ValidationForm) => ({
@@ -429,7 +429,7 @@ function CreateUser(props) {
       }));
     }
   }
-
+  //Method to validate the country  form feild
   function SelectCountryValidation() {
     if (UserSelectCountry) {
       setformFieldValidation((ValidationForm) => ({
@@ -443,7 +443,7 @@ function CreateUser(props) {
       }));
     }
   }
-
+  //Method to validate the supervisor  form feild
   function SelectSuperVisorValidation() {
     if (UserSelectSupervisorData) {
       setformFieldValidation((ValidationForm) => ({
@@ -457,7 +457,7 @@ function CreateUser(props) {
       }));
     }
   }
-
+  //Method to validate the user site  form feild
   function SelectUserSiteValidation() {
     if (UserSelectSiteValue) {
       setformFieldValidation((ValidationForm) => ({
@@ -471,12 +471,12 @@ function CreateUser(props) {
       }));
     }
   }
-
+  //Method onchange of teams dropdown feild {value-team name}
   function handleChangeTeam(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectedTeamValue(value);
   }
-
+  //Method onchange of site dropdown feild {value-site name}
   function userSelectSite(event, value) {
     console.log(value);
     setisAlertBoxOpened(true);
@@ -485,12 +485,12 @@ function CreateUser(props) {
       setRLAPStatus(value.isRLAPActive);
     }
   }
-
+  //Method onchange of userrole dropdown feild {value-role name}
   function handleChangeUserRole(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectedRoleValue(value);
   }
-
+  //Method onchange of primarygroup dropdown feild {value-primary usergroup name}
   function handleChangeUserPrimaryGroup(event, value) {
     setisAlertBoxOpened(true);
     if (value) {
@@ -502,12 +502,12 @@ function CreateUser(props) {
     }
     setUserSelectedPrimaryGroupValue(value);
   }
-
+  //Method onchange of user designation dropdown feild {value-designation name}
   function handleChangeUserDesignation(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectedDesignationValue(value);
   }
-
+  //Method onchange of secondary usergroup dropdown feild {value-secondary usergroup name}
   function handleChangeUserSecondaryGroup(event, value) {
     setisAlertBoxOpened(true);
     let currentPGroupData = UserPrimaryGroupMasterDataOriginal;
@@ -517,17 +517,18 @@ function CreateUser(props) {
     setUserPrimaryGroupMasterData(filteredPGroupData);
     setUserSelectedSecondaryGroupValue(value);
   }
-
+  //Method onchange of country dropdown feild {value-country name}
   function handleChangeCountry(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectCountry(value);
   }
-
+  //Method onchange of supervisor dropdown feild {value-supervisor name}
   function handleChangeSuperVisor(event, value) {
     setisAlertBoxOpened(true);
     setUserSelectSupervisorData(value);
   }
 
+  //Method to bind the form feilds
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -537,10 +538,12 @@ function CreateUser(props) {
     }));
   }
 
+  //Method on click of cancel to redirect to list of userlist component
   function redirectUsersListPage() {
     props.history.push("/users/allusers");
   }
 
+  //Method to on change of RLAP active checkbox to bind the values
   const handleChangecheckBox = (event) => {
     SetformData((formData) => ({
       ...formData,
@@ -1306,7 +1309,7 @@ function CreateUser(props) {
 }
 
 //  export default CreateUser;
-
+//Validates the data received from the props
 CreateUser.propTypes = {
   AddUser: PropTypes.func.isRequired,
   UpdateUser: PropTypes.func.isRequired,
@@ -1317,7 +1320,7 @@ CreateUser.propTypes = {
 export function getUserById(users, id) {
   return users.find((user) => user.id === id) || null;
 }
-
+//Update redux store and merge them into props
 function mapStateToProps(state, ownProps) {
   const id = ownProps.match.params.id;
   const emptyObject = {};
@@ -1329,9 +1332,10 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+// Customizing the functions your component receives, and how they dispatch actions
 const mapDispatchToProps = {
   AddUser: UserAction.CreateUser,
   UpdateUser: UserAction.UpdateUser,
 };
-
+//connects the component with redux store
 export default connect(mapStateToProps, mapDispatchToProps)(CreateUser);

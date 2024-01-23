@@ -1,3 +1,4 @@
+//Namespaces used for redux connectivity
 export const LOADUSER_SUCCESS = "LOADUSER_SUCCESS";
 export const CREATEUSER_SUCCESS = "CREATEUSER_SUCCESS";
 export const UPDATEEUSER_SUCCESS = "UPDATEEUSER_SUCCESS";

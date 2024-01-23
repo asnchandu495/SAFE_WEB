@@ -76,7 +76,7 @@ function CreateQuestionarie(props) {
         console.log(error);
       });
   }, []);
-
+//Method to bind the data of text feilds
   function handleChange(e) {
     setisAlertBoxOpened(true);
     const { name, value } = e.target;
@@ -89,7 +89,7 @@ function CreateQuestionarie(props) {
       [name]: value,
     }));
   }
-
+//Method to check if duplicate name exists
   function checkUnqueName(value) {
     if (props.match.params.id != 0) {
       if (props.questionaireDatas && props.questionaireDatas.length > 0) {
@@ -118,7 +118,7 @@ function CreateQuestionarie(props) {
       }
     }
   }
-
+//Method on click of cancel to redirect
   function handleClickGoBack() {
     props.history.push("/questionaires/allquestionaires");
   }
@@ -126,7 +126,7 @@ function CreateQuestionarie(props) {
   function handleChangeQuestionnaire(e, value) {
     setselectedUserQuestionnaire(value);
   }
-
+//mETHOD ON CLICK OF SUBMIT TO ADD QUESTIONNAIRE
   function submitForm() {
     settoasterServerity("");
     settoasterErrorMessageType("");

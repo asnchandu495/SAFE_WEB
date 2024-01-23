@@ -159,7 +159,7 @@ function QuestionnaireEvaluation(props) {
         console.log(err);
       });
   }, []);
-
+//Method to bind with the input fields
   function handleChangeInput(e) {
     const { name, value } = e.target;
     let thisValue = "";
@@ -173,7 +173,7 @@ function QuestionnaireEvaluation(props) {
       [name]: thisValue,
     }));
   }
-
+//Metho to set the state on channge of dropdown
   function handleChangeCovidStateMain(e, selectedValue) {
     let thisValue = {
       id: selectedValue.id,
@@ -184,7 +184,7 @@ function QuestionnaireEvaluation(props) {
       ["covidState"]: thisValue,
     }));
   }
-
+//Method to set the state based on dropdown chngae
   function handleChangeCovidState(e, value, index) {
     let thisValue = { id: value.id, stateName: value.stateName };
     const list = {
@@ -202,7 +202,7 @@ function QuestionnaireEvaluation(props) {
     };
     setTemperatureConfigForm(list);
   }
-
+//Method to bind with input fields
   const handleInputChange = (e, index) => {
     const { name, value, checked } = e.target;
     const list = {
@@ -229,7 +229,7 @@ function QuestionnaireEvaluation(props) {
     };
     setTemperatureConfigForm(list);
   };
-
+//Method to remove a row
   const handleRemoveClick = (j) => {
     const list = { ...temperatureConfigForm };
     list.positiveResponses.splice(j, 1);
@@ -246,6 +246,7 @@ function QuestionnaireEvaluation(props) {
     // setTemperatureConfigForm(list);
     setTemperatureConfigForm(listmain);
   };
+  //Method for binding
   function handleChange(e) {
     setisAlertBoxOpened(true);
 
@@ -267,7 +268,7 @@ function QuestionnaireEvaluation(props) {
       }
     }
   }
-
+//Method to add a particular row with feilds
   const handleAddClick = (index, j) => {
     const list = { ...temperatureConfigForm };
     const thistempsections = list.positiveResponses;
@@ -298,7 +299,7 @@ function QuestionnaireEvaluation(props) {
     // setTemperatureConfigForm(list);
     setTemperatureConfigForm(listmain);
   };
-
+//method to open the dialog box
   const handleClickOpenEventualModal = () => {
     setOpenConfirmationModal(true);
     setConfirmationModalActionType("Questionnaireupdatesuccess");
@@ -318,7 +319,7 @@ function QuestionnaireEvaluation(props) {
       `Click OK to continue working on the same page.`
     );
   };
-
+//Binding input feilds
   function handleChange(e) {
     const { name, value } = e.target.checked;
     if (e.target.checked) {
@@ -327,6 +328,7 @@ function QuestionnaireEvaluation(props) {
       setflagStatus(false);
     }
   }
+  //Method on click of submit
   function submitForm(e) {
     e.preventDefault();
     setshowLoadder(true);
@@ -373,7 +375,7 @@ function QuestionnaireEvaluation(props) {
         });
     }
   }
-
+//Method on click of cancel to go back
   function handleClickGoBackToPage() {
     setTemperatureConfigForm(oldData);
   }

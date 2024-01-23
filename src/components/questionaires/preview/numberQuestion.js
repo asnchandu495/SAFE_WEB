@@ -3,6 +3,7 @@ import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import Grid from "@material-ui/core/Grid";
 
 function NumberQuestion(props) {
+  //Method on change of answer dropdown e -target element
   function handleChangeAnswer(e) {
     const { name, value } = e.target;
     props.setNumberAnswer((addQuestionData) => ({
